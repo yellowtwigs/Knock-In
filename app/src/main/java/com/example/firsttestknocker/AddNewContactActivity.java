@@ -33,10 +33,6 @@ public class AddNewContactActivity extends AppCompatActivity {
                 startActivity(loginIntent);
                 finish();
                 return true;
-            case R.id.nav_category:
-                return true;
-            case R.id.nav_filter:
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -12,7 +12,7 @@
         android:layout_height="@dimen/RoundedImageViewSize"
         android:layout_centerInParent="true" />
     <TextView
-        android:id="@+id/contactName"
+        android:id="@+id/contactFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"

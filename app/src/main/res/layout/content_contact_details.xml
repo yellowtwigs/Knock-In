@@ -27,9 +27,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/contact_details_BackgroundImage"
                 android:layout_width="match_parent"
-                android:layout_height="309dp"
+                android:layout_height="307dp"
+                android:layout_marginTop="54dp"
                 android:clickable="true"
                 android:contentDescription="@string/contentDescription_ContactDetailsBackgroundImage"
                 android:focusable="true"
@@ -37,38 +38,54 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.example.firsttestknocker.RoundedImageView
-                android:id="@+id/contactImage_RoundedImageView"
+                android:id="@+id/contact_details_RoundedImageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="316dp"
+                android:layout_marginTop="248dp"
                 android:layout_marginEnd="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/toolbar" />
+                app:layout_constraintTop_toTopOf="@+id/contact_details_BackgroundImage" />
 
             <TextView
-                android:id="@+id/contact_details_user_name"
+                android:id="@+id/contact_details_user_firstname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginRight="48dp"
+                android:text="Jean-Francois"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/textColor"
-                android:textSize="28sp"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="@+id/contact_details_RoundedImageView"
+                app:layout_constraintTop_toBottomOf="@+id/contact_details_RoundedImageView" />
+
+            <TextView
+                android:id="@+id/contact_details_user_lastname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="45dp"
+                android:text="Coudeyre"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textColor"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@+id/phoneNumber_RelativeLayout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contactImage_RoundedImageView" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/contact_details_user_firstname" />
 
             <RelativeLayout
                 android:id="@+id/phoneNumber_RelativeLayout"
@@ -80,7 +97,7 @@
                 android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contact_details_user_name">
+                app:layout_constraintTop_toBottomOf="@+id/contact_details_user_firstname">
 
                 <TextView
                     android:id="@+id/contact_details_phone_number"

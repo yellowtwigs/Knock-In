@@ -2,26 +2,39 @@ package com.example.firsttestknocker;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Contact {
-    private String contactName;
+    private int Id;
+    private String contactFirstName;
+    private String contactLastName;
     private String contactPhoneNumber;
     private int contactImage;
 
-    public Contact(String contactName, String contactPhoneNumber, int contactImage)
+    public Contact(String contactFirstName, String contactLastName, String contactPhoneNumber, int contactImage)
     {
-        this.contactName = contactName;
+        this.contactFirstName = contactFirstName;
+        this.contactLastName = contactLastName;
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactImage = contactImage;
     }
 
-    public String getContactName()
+    public String getContactFirstName()
     {
-        return contactName;
+        return contactFirstName;
     }
 
-    public void setContactName(String contactName)
+    public void setContactFirstName(String contactFirstName) { this.contactFirstName = contactFirstName; }
+
+    public String getContactLastName()
     {
-        this.contactName = contactName;
+        return contactLastName;
+    }
+
+    public void setContactLastName(String contactName)
+    {
+        this.contactLastName = contactLastName;
     }
 
     public int getContactImage() {
@@ -32,6 +45,7 @@ public class Contact {
         this.contactImage = contactImage;
     }
 
-    public String getContactPhoneNumber() {return contactPhoneNumber;
-    }
+    public String getContactPhoneNumber() {return contactPhoneNumber; }
+
+    public List<Contact> getContactList(List<Contact> listContact) { return listContact; }
 }

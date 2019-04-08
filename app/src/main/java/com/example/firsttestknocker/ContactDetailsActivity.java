@@ -20,7 +20,8 @@ import java.net.URI;
 
 public class ContactDetailsActivity extends AppCompatActivity {
 
-    private TextView contactName_TextView;
+    private TextView contactFirstName_TextView;
+    private TextView contactLastName_TextView;
     private TextView contactPhoneNumber_TextView;
     private RoundedImageView contactImage_RoundedImageView;
     private FloatingActionButton floating_button_contact_details;
@@ -31,7 +32,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_details);
 
         Intent intent = getIntent();
-        String contactName = intent.getStringExtra("ContactName");
+        String contactFirstName = intent.getStringExtra("ContactFirstName");
+        String contactLastName = intent.getStringExtra("ContactLastName");
         String contactPhoneNumber = intent.getStringExtra("ContactPhoneNumber");
         int contactImage = intent.getIntExtra("ContactImage", 1);
 
@@ -41,14 +43,16 @@ public class ContactDetailsActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow);
-        actionbar.setTitle("Détails du contact " + contactName);
+        actionbar.setTitle("Détails du contact " + contactFirstName);
 
-        contactName_TextView = (TextView)findViewById(R.id.contact_details_user_name);
+        contactFirstName_TextView = (TextView)findViewById(R.id.contact_details_user_firstname);
+        contactLastName_TextView = (TextView)findViewById(R.id.contact_details_user_lastname);
         contactPhoneNumber_TextView = (TextView)findViewById(R.id.contact_details_phone_number);
-        contactImage_RoundedImageView = (RoundedImageView)findViewById(R.id.contactImage_RoundedImageView);
+        contactImage_RoundedImageView = (RoundedImageView)findViewById(R.id.contact_details_RoundedImageView);
         floating_button_contact_details = findViewById(R.id.floating_button_contact_details);
 
-        contactName_TextView.setText(contactName);
+        contactFirstName_TextView.setText(contactFirstName);
+        contactLastName_TextView.setText(contactLastName);
         contactPhoneNumber_TextView.setText(contactPhoneNumber);
         contactImage_RoundedImageView.setImageResource(contactImage);
 

@@ -43,7 +43,7 @@
         <item>Personnalisé</item>
     </string-array>
     <string name="add_new_contact_add_field">Ajouter un champ</string>
-    <string name="menuMain_Validate">Valider</string>
+    <string name="add_new_contact_validate">Valider</string>
 
 
     <!-- Content description !-->

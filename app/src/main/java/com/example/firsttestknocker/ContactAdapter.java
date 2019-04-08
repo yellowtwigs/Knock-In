@@ -49,7 +49,7 @@ public class ContactAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
-            holder.contactNameView = gridview.findViewById(R.id.contactName);
+            holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
 
             gridview.setTag(holder);
         }
@@ -58,14 +58,15 @@ public class ContactAdapter extends BaseAdapter {
         }
 
         Contact contact = this.listContact.get(position);
-        holder.contactNameView.setText(contact.getContactName());
+        holder.contactFirstNameView.setText(contact.getContactFirstName());
         holder.contactRoundedImageView.setImageResource(contact.getContactImage());
 
         return gridview;
     }
 
     static class ViewHolder {
-        TextView contactNameView;
+        TextView contactFirstNameView;
+        TextView contactLastNameView;
         TextView contactPhoneNumberView;
         RoundedImageView contactRoundedImageView;
     }
