@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ContactDetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/content_frame_contact_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ContactDetailsActivity">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorKnocker"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="309dp"
+                android:clickable="true"
+                android:contentDescription="@string/contentDescription_ContactDetailsBackgroundImage"
+                android:focusable="true"
+                android:src="@drawable/aquarius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <com.example.firsttestknocker.RoundedImageView
+                android:id="@+id/contactImage_RoundedImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="316dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+            <TextView
+                android:id="@+id/contact_details_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textColor"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contactImage_RoundedImageView" />
+
+            <RelativeLayout
+                android:id="@+id/phoneNumber_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:layout_marginTop="45dp"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contact_details_user_name">
+
+                <TextView
+                    android:id="@+id/contact_details_phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/textDetailsContactSize" />
+
+                <ImageView
+                    android:id="@+id/sms_Logo"
+                    android:layout_width="@dimen/logoDetailsContactSize"
+                    android:layout_height="@dimen/logoDetailsContactSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="@string/contentDescription_SmsLink"
+                    app:srcCompat="@drawable/ic_sms" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="@dimen/ViewLignSize"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toStartOf="@+id/sms_Logo"
+                    android:layout_toLeftOf="@+id/sms_Logo"
+                    android:background="@color/borderViewColor" />
+
+                <ImageView
+                    android:id="@+id/phoneCall_Logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toStartOf="@+id/view"
+                    android:layout_toLeftOf="@+id/view"
+                    android:contentDescription="@string/contentDescription_PhoneCallLink"
+                    app:srcCompat="@drawable/ic_phone_call" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/messenger_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toTopOf="@+id/whatsapp_RelativeLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumber_RelativeLayout">
+
+                <TextView
+                    android:id="@+id/messenger_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/messenger_TextView"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/textDetailsContactSize" />
+
+                <ImageView
+                    android:id="@+id/messenger_Logo"
+                    android:layout_width="@dimen/logoDetailsContactSize"
+                    android:layout_height="@dimen/logoDetailsContactSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/contentDescription_MessengerLink"
+                    app:srcCompat="@drawable/ic_messenger" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/whatsapp_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/messenger_RelativeLayout">
+
+                <TextView
+                    android:id="@+id/whatsapp_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/whatsapp_TextView"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/textDetailsContactSize" />
+
+                <ImageView
+                    android:id="@+id/whatsapp_Logo"
+                    android:layout_width="@dimen/logoDetailsContactSize"
+                    android:layout_height="@dimen/logoDetailsContactSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/contentDescription_WhatsappLink"
+                    app:srcCompat="@drawable/ic_whatsapp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/instagram_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/whatsapp_RelativeLayout">
+
+                <TextView
+                    android:id="@+id/instagram_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/instagram_TextView"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/textDetailsContactSize" />
+
+                <ImageView
+                    android:id="@+id/instagram_Logo"
+                    android:layout_width="@dimen/logoDetailsContactSize"
+                    android:layout_height="@dimen/logoDetailsContactSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/contentDescription_InstagramLink"
+                    app:srcCompat="@drawable/ic_instagram" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/linkedin_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/instagram_RelativeLayout">
+
+                <TextView
+                    android:id="@+id/linkedin_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/linkedin_TextView"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/textDetailsContactSize" />
+
+                <ImageView
+                    android:id="@+id/linkedin_Logo"
+                    android:layout_width="@dimen/logoDetailsContactSize"
+                    android:layout_height="@dimen/logoDetailsContactSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/contentDescription_LinkedinLink"
+                    app:srcCompat="@drawable/ic_linkedin" />
+            </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+</ScrollView>

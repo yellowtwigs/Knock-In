@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddNewContactActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorKnocker"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.firsttestknocker.RoundedImageView
+        android:id="@+id/add_new_contact_RoundedImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/img_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/add_new_contact_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:autofillHints="@string/add_new_contact_last_name"
+        android:hint="@string/add_new_contact_last_name"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_RoundedImageView"
+        tools:layout_editor_absoluteX="0dp" />
+    <EditText
+        android:id="@+id/add_new_contact_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:inputType="textPersonName"
+        android:autofillHints="@string/add_new_contact_first_name"
+        android:hint="@string/add_new_contact_first_name"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_last_name" />
+
+    <View
+        android:id="@+id/add_new_contact_phone_number_view"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_marginTop="100dp"
+        android:background="@color/borderViewColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_first_name" />
+
+    <Spinner
+        android:id="@+id/add_new_contact_phone_number_spinner"
+        android:layout_width="121dp"
+        android:layout_height="45dp"
+        android:entries="@array/add_new_contact_phone_number_arrays"
+        android:prompt="@string/add_new_contact_phone_number_mobile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view"/>
+
+    <EditText
+        android:id="@+id/add_new_contact_phone_number"
+        android:layout_width="289dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_new_contact_phone_number"
+        android:autofillHints="@string/add_new_contact_phone_number"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view" />
+
+    <View
+        android:id="@+id/add_new_contact_mail_view"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:background="@color/borderViewColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number" />
+
+    <Spinner
+        android:id="@+id/add_new_contact_mail_spinner"
+        android:layout_width="121dp"
+        android:layout_height="45dp"
+        android:entries="@array/add_new_contact_mail_arrays"
+        android:prompt="@string/add_new_contact_mail_mobile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_view"/>
+
+    <EditText
+        android:id="@+id/add_new_contact_mail"
+        android:layout_width="289dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_new_contact_mail"
+        android:autofillHints="@string/add_new_contact_mail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_view" />
+
+    <View
+        android:id="@+id/add_new_contact_add_field_view"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:background="@color/borderViewColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_spinner" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_new_contact_add_field"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Knocker</string>
+
+    <!-- User Informations !-->
+    <string name="user_FirstName">Kenzy</string>
+    <string name="user_LastName">Suon</string>
+    <string name="user_PhoneNumber">06 51 74 09 03</string>
+
+    <!-- Left Drawer Titles !-->
+    <string name="leftDrawer_Home">Home</string>
+    <string name="leftDrawer_Chat">Chat</string>
+    <string name="leftDrawer_Settings">Settings</string>
+    <string name="leftDrawer_About">About</string>
+    <string name="leftDrawer_Help">Help</string>
+
+    <!-- Menu Main !-->
+    <string name="menuMain_Search">Search</string>
+    <string name="menuMain_Menu">Settings</string>
+    <string name="menuMain_CreateCategory">Créer une nouvelle catégorie</string>
+    <string name="menuMain_Filter">Filtre</string>
+
+    <!-- Add New Contact !-->
+    <string name="add_new_contact_title">Ajoutez un nouveau contact</string>
+    <string name="add_new_contact_last_name">Nom</string>
+    <string name="add_new_contact_first_name">Prénom</string>
+    <string name="add_new_contact_phone_number">Numéro de téléphone</string>
+    <string name="add_new_contact_phone_number_mobile">Mobile</string>
+    <string-array name="add_new_contact_phone_number_arrays">
+        <item>Mobile</item>
+        <item>Bureau</item>
+        <item>Domicile</item>
+        <item>Principal</item>
+        <item>Autre</item>
+        <item>Personnalisé</item>
+    </string-array>
+    <string name="add_new_contact_mail">E-mail</string>
+    <string name="add_new_contact_mail_mobile">Bureau</string>
+    <string-array name="add_new_contact_mail_arrays">
+        <item>Bureau</item>
+        <item>Domicile</item>
+        <item>Ecole</item>
+        <item>Autre</item>
+        <item>Personnalisé</item>
+    </string-array>
+    <string name="add_new_contact_add_field">Ajouter un champ</string>
+    <string name="menuMain_Validate">Valider</string>
+
+
+    <!-- Content description !-->
+    <string name="contentDescription_ContactDetailsBackgroundImage">Background Image</string>
+    <string name="contentDescription_InstagramLink">Lien vers l\'Instagram du contact</string>
+    <string name="contentDescription_LinkedinLink">Lien vers le Linkedin du contact</string>
+    <string name="contentDescription_MessengerLink">Lien vers le Messenger du contact</string>
+    <string name="contentDescription_WhatsappLink">Lien vers le Whatsapp du contact</string>
+    <string name="contentDescription_SmsLink">Lien pour envoyer un sms au contact</string>
+    <string name="contentDescription_PhoneCallLink">Lien pour appeler contact</string>
+
+    <!-- TextView from ContactDetails !-->
+    <string name="messenger_TextView">Messenger</string>
+    <string name="whatsapp_TextView">Whatsapp</string>
+    <string name="instagram_TextView">Instagram</string>
+    <string name="linkedin_TextView">Linkedin</string>
+    <string name="title_activity_test_floating_button">TestFloatingButtonActivity</string>
+
+    <!-- Settings !-->
+    <string name="settings_Notification">Notification</string>
+    <string name="settings_Notification_LongText">Personnalisez les notifications que vous souhaitez recevoir.</string>
+    <string name="settings_Knockons">Knockons</string>
+    <string name="settings_Knockons_LongText">Personnalisez vos Knockons à votre guise.</string>
+    <string name="settings_Theme">Changer le thème</string>
+    <string name="settings_Theme_LongText">Personnalisez le thème de l\'application pour vivre une meilleure expérience.</string>
+</resources>
