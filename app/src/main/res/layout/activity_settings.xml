@@ -30,9 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/settings_Notification"
+            android:text="@string/settings_notification"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/titleSettingsSize"
+            android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.048"
@@ -57,9 +57,9 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/settings_Notification"
+                android:text="@string/settings_notification"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/subtitleSettingsSize"
+                android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal" />
 
             <TextView
@@ -69,9 +69,9 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/settings_Notification_LongText"
+                android:text="@string/settings_notification_long_text"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/longTextSettingsSize"
+                android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal" />
         </RelativeLayout>
 
@@ -80,9 +80,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/settings_Knockons"
+            android:text="@string/settings_knockons"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/titleSettingsSize"
+            android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.048"
@@ -107,9 +107,9 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="16.5dp"
-                android:text="@string/settings_Knockons"
+                android:text="@string/settings_knockons"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/subtitleSettingsSize"
+                android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal" />
 
             <TextView
@@ -120,9 +120,9 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_below="@+id/knockons_subtitle_settings"
-                android:text="@string/settings_Knockons_LongText"
+                android:text="@string/settings_knockons_long_text"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/longTextSettingsSize"
+                android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal" />
         </RelativeLayout>
 
@@ -131,9 +131,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/settings_Theme"
+            android:text="@string/settings_theme"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/titleSettingsSize"
+            android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.048"
@@ -158,9 +158,9 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/settings_Theme"
+                android:text="@string/settings_theme"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/subtitleSettingsSize"
+                android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal" />
 
             <TextView
@@ -171,9 +171,9 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_below="@+id/theme_subtitle_settings"
-                android:text="@string/settings_Theme_LongText"
+                android:text="@string/settings_theme_long_text"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/longTextSettingsSize"
+                android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal" />
         </RelativeLayout>
     </android.support.constraint.ConstraintLayout>

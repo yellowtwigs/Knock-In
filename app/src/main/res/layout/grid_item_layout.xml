@@ -8,8 +8,8 @@
     android:padding="10dp">
     <com.example.firsttestknocker.RoundedImageView
         android:id="@+id/contactRoundedImageView"
-        android:layout_width="@dimen/RoundedImageViewSize"
-        android:layout_height="@dimen/RoundedImageViewSize"
+        android:layout_width="@dimen/rounded_image_view_height_width"
+        android:layout_height="@dimen/rounded_image_view_height_width"
         android:layout_centerInParent="true" />
     <TextView
         android:id="@+id/contactFirstName"

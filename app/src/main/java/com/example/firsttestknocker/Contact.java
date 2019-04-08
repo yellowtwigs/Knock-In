@@ -11,13 +11,15 @@ public class Contact {
     private String contactLastName;
     private String contactPhoneNumber;
     private int contactImage;
+    private int contactBackgroundImage;
 
-    public Contact(String contactFirstName, String contactLastName, String contactPhoneNumber, int contactImage)
+    public Contact(String contactFirstName, String contactLastName, String contactPhoneNumber, int contactImage, int contactBackgroundImage)
     {
         this.contactFirstName = contactFirstName;
         this.contactLastName = contactLastName;
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactImage = contactImage;
+        this.contactBackgroundImage = contactBackgroundImage;
     }
 
     public String getContactFirstName()
@@ -48,4 +50,8 @@ public class Contact {
     public String getContactPhoneNumber() {return contactPhoneNumber; }
 
     public List<Contact> getContactList(List<Contact> listContact) { return listContact; }
+
+    public int getContactBackgroundImage() { return contactBackgroundImage; }
+
+    public void setContactBackgroundImage(int contactBackgroundImage) { this.contactBackgroundImage = contactBackgroundImage; }
 }

@@ -1,57 +1,50 @@
 package com.example.firsttestknocker
 
-import android.app.Dialog
 import android.content.Intent
-import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.GridView
 import android.widget.AdapterView
-import android.widget.ImageView
 
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    private var gridView: GridView? = null
+    private var main_GridView: GridView? = null
     private var drawerLayout: DrawerLayout? = null
-    private var fab_open: FloatingActionButton? = null
-    private var fab_add: FloatingActionButton? = null
-    private val fab_close: FloatingActionButton? = null
-    private var fab_compose: FloatingActionButton? = null
-    private var FabOpen: Animation? = null
-    private var FabClose: Animation? = null
-    private var Fab_R_ClockWiser: Animation? = null
-    private var Fab_R_anticlockwiser: Animation? = null
+    private var main_FloatingButtonOpen: FloatingActionButton? = null
+    private var main_FloatingButtonAdd: FloatingActionButton? = null
+    private var main_FloatingButtonCompose: FloatingActionButton? = null
+    private var main_FloatingButtonOpenAnimation: Animation? = null
+    private var main_FloatingButtonCloseAnimation: Animation? = null
+    private var main_FloatingButtonClockWiserAnimation: Animation? = null
+    private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
     internal var isOpen = false
 
     private val contactList: List<Contact>
         get() {
             val list = ArrayList<Contact>()
-//            val Michel = Contact("Michel", "Ferachoglou", "06 51 74 09 03", R.drawable.michel)
-//            val Jean_Luc = Contact("Jean Luc", "Paulin", "06 66 93 32 49", R.drawable.jl)
-//            val Jean_Francois = Contact("Jean Francois", "Coudeyre", "07 78 03 65 54", R.drawable.jf)
-//            val Ryan = Contact("Ryan", "Granet", "07 04 51 42 37", R.drawable.ryan)
-//            val Florian = Contact("Florian", "Striebel", "06 96 32 09 28", R.drawable.img_avatar)
-//
-//            list.add(Michel)
-//            list.add(Jean_Luc)
-//            list.add(Jean_Francois)
-//            list.add(Ryan)
-//            list.add(Florian)
-//
+            val Michel = Contact("Michel", "Ferachoglou", "06 51 74 09 03", R.drawable.michel, R.drawable.aquarius)
+            val Jean_Luc = Contact("Jean Luc", "Paulin", "06 66 93 32 49", R.drawable.jl, R.drawable.aquarius)
+            val Jean_Francois = Contact("Jean Francois", "Coudeyre", "07 78 03 65 54", R.drawable.jf, R.drawable.aquarius)
+            val Ryan = Contact("Ryan", "Granet", "07 04 51 42 37", R.drawable.ryan, R.drawable.aquarius)
+            val Florian = Contact("Florian", "Striebel", "06 96 32 09 28", R.drawable.img_avatar, R.drawable.aquarius)
+
+            list.add(Michel)
+            list.add(Jean_Luc)
+            list.add(Jean_Francois)
+            list.add(Ryan)
+            list.add(Florian)
+
             return list
         }
 
@@ -60,13 +53,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Floating Button
-        fab_open = findViewById(R.id.fab_open)
-        fab_add = findViewById(R.id.fab_add)
-        fab_compose = findViewById(R.id.fab_compose)
-        FabOpen = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
-        FabClose = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
-        Fab_R_ClockWiser = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
-        Fab_R_anticlockwiser = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
+        main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
+        main_FloatingButtonAdd = findViewById(R.id.main_floating_button_add_id)
+        main_FloatingButtonCompose = findViewById(R.id.main_floating_button_compose_id)
+        main_FloatingButtonOpenAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
+        main_FloatingButtonCloseAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
+        main_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
+        main_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -100,15 +93,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Grid View
-        gridView = findViewById(R.id.myGridView1)
+        main_GridView = findViewById(R.id.main_grid_view_id)
         val contactList = contactList
 
-        if (gridView != null) {
+        if (main_GridView != null) {
             val contactAdapter = ContactAdapter(this, contactList)
-            gridView!!.adapter = contactAdapter
+            main_GridView!!.adapter = contactAdapter
 
-            gridView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val o = gridView!!.getItemAtPosition(position)
+            main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                val o = main_GridView!!.getItemAtPosition(position)
                 val contact = o as Contact
 
                 val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
@@ -121,13 +114,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Drag n Drop
-            gridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
+            main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
                 //                finish();
                 false
             }
         }
 
-        fab_open!!.setOnClickListener {
+        main_FloatingButtonOpen!!.setOnClickListener {
             if (isOpen) {
                 onFloatingClickBack()
                 isOpen = false
@@ -137,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fab_add!!.setOnClickListener {
+        main_FloatingButtonAdd!!.setOnClickListener {
             val loginIntent = Intent(this@MainActivity, AddNewContactActivity::class.java)
             startActivity(loginIntent)
             finish()
@@ -163,20 +156,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onFloatingClickBack() {
-        fab_add!!.startAnimation(FabClose)
-        fab_compose!!.startAnimation(FabClose)
-        fab_open!!.startAnimation(Fab_R_anticlockwiser)
+        main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonCloseAnimation)
+        main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonCloseAnimation)
+        main_FloatingButtonOpen!!.startAnimation(main_FloatingButtonAntiClockWiserAnimation)
 
-        fab_add!!.isClickable = false
-        fab_compose!!.isClickable = false
+        main_FloatingButtonAdd!!.isClickable = false
+        main_FloatingButtonCompose!!.isClickable = false
     }
 
     fun onFloatingClick() {
-        fab_add!!.startAnimation(FabOpen)
-        fab_compose!!.startAnimation(FabOpen)
-        fab_open!!.startAnimation(Fab_R_ClockWiser)
+        main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonOpenAnimation)
+        main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonOpenAnimation)
+        main_FloatingButtonOpen!!.startAnimation(main_FloatingButtonClockWiserAnimation)
 
-        fab_add!!.isClickable = true
-        fab_compose!!.isClickable = true
+        main_FloatingButtonAdd!!.isClickable = true
+        main_FloatingButtonCompose!!.isClickable = true
     }
 }

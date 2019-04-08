@@ -24,7 +24,6 @@
         <activity android:name=".ContactDetailsActivity" />
         <activity android:name=".EditProfilActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".TestFloatingButtonActivity" />
     </application>
 
 </manifest>

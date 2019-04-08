@@ -19,7 +19,7 @@
             android:background="@color/colorKnocker"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
         <GridView
-            android:id="@+id/myGridView1"
+            android:id="@+id/main_grid_view_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnWidth="120dp"

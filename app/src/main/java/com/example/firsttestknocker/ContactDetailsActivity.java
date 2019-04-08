@@ -20,21 +20,23 @@ import java.net.URI;
 
 public class ContactDetailsActivity extends AppCompatActivity {
 
-    private TextView contactFirstName_TextView;
-    private TextView contactLastName_TextView;
-    private TextView contactPhoneNumber_TextView;
-    private RoundedImageView contactImage_RoundedImageView;
-    private FloatingActionButton floating_button_contact_details;
+    private TextView contact_details_FirstName;
+    private TextView contact_details_LastName;
+    private TextView contact_details_PhoneNumber;
+    private RoundedImageView contact_details_RoundedImageView;
+    private ImageView contactImage_BackgroundImage;
+    private FloatingActionButton contact_details_FloatingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details);
 
+        // Create the Intent, and get the data from the GridView
         Intent intent = getIntent();
-        String contactFirstName = intent.getStringExtra("ContactFirstName");
-        String contactLastName = intent.getStringExtra("ContactLastName");
-        String contactPhoneNumber = intent.getStringExtra("ContactPhoneNumber");
+        String contact_details_first_name = intent.getStringExtra("ContactFirstName");
+        String contact_details_last_name = intent.getStringExtra("ContactLastName");
+        String contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber");
         int contactImage = intent.getIntExtra("ContactImage", 1);
 
         // Toolbar
@@ -43,20 +45,24 @@ public class ContactDetailsActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow);
-        actionbar.setTitle("Détails du contact " + contactFirstName);
+        actionbar.setTitle("Détails du contact " + contact_details_first_name);
 
-        contactFirstName_TextView = (TextView)findViewById(R.id.contact_details_user_firstname);
-        contactLastName_TextView = (TextView)findViewById(R.id.contact_details_user_lastname);
-        contactPhoneNumber_TextView = (TextView)findViewById(R.id.contact_details_phone_number);
-        contactImage_RoundedImageView = (RoundedImageView)findViewById(R.id.contact_details_RoundedImageView);
-        floating_button_contact_details = findViewById(R.id.floating_button_contact_details);
+        // Find View By Id
+        contact_details_FirstName = (TextView)findViewById(R.id.contact_details_first_name_id);
+        contact_details_LastName = (TextView)findViewById(R.id.contact_details_last_name_id);
+        contact_details_PhoneNumber = (TextView)findViewById(R.id.contact_details_phone_number_text_id);
+        contact_details_RoundedImageView = (RoundedImageView)findViewById(R.id.contact_details_rounded_image_view_id);
+        contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id);
+        contact_details_FloatingButton = findViewById(R.id.contact_details_floating_button_id);
 
-        contactFirstName_TextView.setText(contactFirstName);
-        contactLastName_TextView.setText(contactLastName);
-        contactPhoneNumber_TextView.setText(contactPhoneNumber);
-        contactImage_RoundedImageView.setImageResource(contactImage);
+        // Set Resources from MainActivity to ContactDetailsActivity
+        contact_details_FirstName.setText(contact_details_first_name);
+        contact_details_LastName.setText(contact_details_last_name);
+        contact_details_PhoneNumber.setText(contact_details_phone_number);
+        contact_details_RoundedImageView.setImageResource(contactImage);
+        contactImage_BackgroundImage.setImageResource(contactImage);
 
-        floating_button_contact_details.setOnClickListener(new View.OnClickListener() {
+        contact_details_FloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -69,8 +75,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent loginIntent = new Intent(ContactDetailsActivity.this, MainActivity.class);
-                startActivity(loginIntent);
+                Intent intent = new Intent(ContactDetailsActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
                 return true;
         }
