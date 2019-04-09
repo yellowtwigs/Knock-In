@@ -13,6 +13,10 @@ class DbWorkerThread(threadName: String) : HandlerThread(threadName){
     }
 
     fun postTask(task: Runnable) {
-        mWorkerHandler.post(task)
+        if (this::mWorkerHandler.isInitialized) {
+            mWorkerHandler.post(task)
+        } else {
+            System.err.println("ERROR in DbWorkerThread.kt : mWorkerHandler is not initialized")
+        }
     }
 }

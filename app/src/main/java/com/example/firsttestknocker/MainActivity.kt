@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
     private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
     internal var isOpen = false
     // Database && Thread
-    private var mDb: ContactsRoomDatabase? = null
-    private lateinit var mDbWorkerThread: DbWorkerThread
+    private var main_ContactsDatabase: ContactsRoomDatabase? = null
+    private lateinit var main_mDbWorkerThread: DbWorkerThread
 
     private val contactList: List<Contact>
         get() {
@@ -57,11 +57,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // on init WorkerThread
-        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        mDbWorkerThread.start()
+        main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        main_mDbWorkerThread.start()
 
         //on get la base de données
-        mDb = ContactsRoomDatabase.getDatabase(this)
+        main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         // Floating Button
         main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
@@ -106,7 +106,13 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
-            val contactList = mDb?.contactsDao()?.getAllContacts() //contactList
+
+//            val contactData = Contacts(null,"Ryan","Granet","0630370560", 5516,4210)
+//            main_ContactsDatabase?.contactsDao()?.insert(contactData)
+//            val testfd = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+//            println(testfd)
+//            println(contactData)
+            val contactList = contactList //main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
 
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList)
@@ -132,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        mDbWorkerThread.postTask(printContacts)
+        main_mDbWorkerThread.postTask(printContacts)
 
         main_FloatingButtonOpen!!.setOnClickListener {
             if (isOpen) {
