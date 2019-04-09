@@ -7,5 +7,7 @@ data class Contacts(
         @PrimaryKey(autoGenerate = true) val id: Long?,
         @ColumnInfo(name = "first_name") val firstName: String,
         @ColumnInfo(name = "last_name") val lastName: String,
-        @ColumnInfo(name = "phone_number") val phoneNumber: String
+        @ColumnInfo(name = "phone_number") val phoneNumber: String,
+        @ColumnInfo(name = "profile_picture") val profilePicture: String,
+        @ColumnInfo(name = "background_image") val backgroundImage: String
 )
