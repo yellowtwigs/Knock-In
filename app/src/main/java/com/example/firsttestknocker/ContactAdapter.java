@@ -13,27 +13,24 @@ import android.widget.TextView;
 import java.util.List;
 
 public class ContactAdapter extends BaseAdapter {
-    private List<Contacts> listContacts;
-//    private List<Contact> listContact;
+    private List<Contact> listContact;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public ContactAdapter(Context context, List<Contacts> listContacts) {
+    public ContactAdapter(Context context, List<Contact> listContact) {
         this.context = context;
-        this.listContacts = listContacts;
-//        this.listContact = listContact;
+        this.listContact = listContact;
         layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return listContacts.size();
-//        return listContact.size();
+        return listContact.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listContacts.get(position);
+        return listContact.get(position);
     }
 
     @Override
@@ -60,13 +57,9 @@ public class ContactAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        Contacts contact = this.listContacts.get(position);
-        holder.contactFirstNameView.setText(contact.getFirstName());
-        holder.contactRoundedImageView.setImageResource(contact.getProfilePicture());
-
-//        Contact contact = this.listContact.get(position);
-//        holder.contactFirstNameView.setText(contact.getContactFirstName());
-//        holder.contactRoundedImageView.setImageResource(contact.getContactImage());
+        Contact contact = this.listContact.get(position);
+        holder.contactFirstNameView.setText(contact.getContactFirstName());
+        holder.contactRoundedImageView.setImageResource(contact.getContactImage());
 
         return gridview;
     }

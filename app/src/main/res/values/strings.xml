@@ -85,6 +85,10 @@
     <string name="contact_details_whatsapp">Whatsapp</string>
     <string name="contact_details_instagram">Instagram</string>
     <string name="contact_details_linkedin">Linkedin</string>
+    <string name="contact_details_skype">Skype</string>
+    <string name="contact_details_twitter">Twitter</string>
+    <string name="contact_details_snapchat">Snapchat</string>
+    <string name="contact_details_telegram">Telegram</string>
 
     <!-- Settings !-->
     <string name="settings_notification">Notification</string>

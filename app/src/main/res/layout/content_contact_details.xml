@@ -54,242 +54,302 @@
             android:id="@+id/contact_details_first_name_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginRight="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="test"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/textColor"
             android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="@+id/contact_details_rounded_image_view_id"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_rounded_image_view_id" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contact_details_last_name_id" />
 
         <TextView
             android:id="@+id/contact_details_last_name_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="45dp"
+            android:text="test"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/textColor"
             android:textSize="25sp"
-            app:layout_constraintBottom_toTopOf="@+id/contact_details_phone_number_relative_layout_id"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/contact_details_first_name_id" />
-
-        <RelativeLayout
-            android:id="@+id/contact_details_phone_number_relative_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/contact_details_relative_layout_height"
-            android:layout_marginTop="45dp"
-            android:background="@drawable/selector_relative_layout"
-            android:clickable="true"
-            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_first_name_id">
+            app:layout_constraintTop_toBottomOf="@+id/contact_details_rounded_image_view_id" />
 
-            <TextView
-                android:id="@+id/contact_details_phone_number_text_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="false"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
-                android:textColor="#000000"
-                android:textSize="@dimen/contact_details_text_size" />
-
-            <ImageView
-                android:id="@+id/contact_details_sms_logo_id"
-                android:layout_width="@dimen/contact_details_logo_size"
-                android:layout_height="@dimen/contact_details_logo_size"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:contentDescription="@string/content_description_sms_link"
-                app:srcCompat="@drawable/ic_sms" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="0.75dp"
-                android:layout_height="50dp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_toStartOf="@+id/contact_details_sms_logo_id"
-                android:layout_toLeftOf="@+id/contact_details_sms_logo_id"
-                android:background="@color/borderViewColor" />
-
-            <ImageView
-                android:id="@+id/contact_details_phone_call_logo_id"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_toStartOf="@+id/view"
-                android:layout_toLeftOf="@+id/view"
-                android:contentDescription="@string/content_description_phone_call_link"
-                app:srcCompat="@drawable/ic_phone_call" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/contact_details_messenger_relative_layout_id"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/contact_details_relative_layout_height"
-            android:background="@drawable/selector_relative_layout"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toTopOf="@+id/contact_details_whatsapp_relative_layout_id"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_phone_number_relative_layout_id">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/contact_details_first_name_id"
+            tools:layout_editor_absoluteX="0dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="false"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/contact_details_messenger"
-                android:textColor="#000000"
-                android:textSize="@dimen/contact_details_text_size" />
+            <RelativeLayout
+                android:id="@+id/contact_details_phone_number_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:layout_marginTop="45dp"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
 
-            <ImageView
-                android:layout_width="@dimen/contact_details_logo_size"
-                android:layout_height="@dimen/contact_details_logo_size"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginRight="47dp"
-                android:contentDescription="@string/content_description_messenger_link"
-                app:srcCompat="@drawable/ic_messenger" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/contact_details_phone_number_text_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/contact_details_text_size" />
 
-        <RelativeLayout
-            android:id="@+id/contact_details_whatsapp_relative_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/contact_details_relative_layout_height"
-            android:background="@drawable/selector_relative_layout"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_messenger_relative_layout_id">
+                <ImageView
+                    android:id="@+id/contact_details_sms_logo_id"
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="@string/content_description_sms_link"
+                    app:srcCompat="@drawable/ic_sms" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="false"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/contact_details_whatsapp"
-                android:textColor="#000000"
-                android:textSize="@dimen/contact_details_text_size" />
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="0.75dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toStartOf="@+id/contact_details_sms_logo_id"
+                    android:layout_toLeftOf="@+id/contact_details_sms_logo_id"
+                    android:background="@color/borderViewColor" />
 
-            <ImageView
-                android:layout_width="@dimen/contact_details_logo_size"
-                android:layout_height="@dimen/contact_details_logo_size"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginRight="47dp"
-                android:contentDescription="@string/content_description_whatsapp_link"
-                app:srcCompat="@drawable/ic_whatsapp" />
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/contact_details_phone_call_logo_id"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toStartOf="@+id/view"
+                    android:layout_toLeftOf="@+id/view"
+                    android:contentDescription="@string/content_description_phone_call_link"
+                    app:srcCompat="@drawable/ic_phone_call" />
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/contact_details_instagram_relative_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/contact_details_relative_layout_height"
-            android:background="@drawable/selector_relative_layout"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_whatsapp_relative_layout_id">
+            <RelativeLayout
+                android:id="@+id/contact_details_messenger_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="false"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/contact_details_instagram"
-                android:textColor="#000000"
-                android:textSize="@dimen/contact_details_text_size" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/contact_details_messenger"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/contact_details_text_size" />
 
-            <ImageView
-                android:layout_width="@dimen/contact_details_logo_size"
-                android:layout_height="@dimen/contact_details_logo_size"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginRight="47dp"
-                android:contentDescription="@string/content_description_linkedin_link"
-                app:srcCompat="@drawable/ic_instagram" />
-        </RelativeLayout>
+                <ImageView
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/content_description_messenger_link"
+                    app:srcCompat="@drawable/ic_messenger" />
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/contact_details_linkedin_relative_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/contact_details_relative_layout_height"
-            android:background="@drawable/selector_relative_layout"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_instagram_relative_layout_id">
+            <RelativeLayout
+                android:id="@+id/contact_details_whatsapp_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="false"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/contact_details_linkedin"
-                android:textColor="#000000"
-                android:textSize="@dimen/contact_details_text_size" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/contact_details_whatsapp"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/contact_details_text_size" />
 
-            <ImageView
-                android:layout_width="@dimen/contact_details_logo_size"
-                android:layout_height="@dimen/contact_details_logo_size"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginRight="47dp"
-                android:contentDescription="@string/content_description_linkedin_link"
-                app:srcCompat="@drawable/ic_linkedin" />
-        </RelativeLayout>
+                <ImageView
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/content_description_whatsapp_link"
+                    app:srcCompat="@drawable/ic_whatsapp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contact_details_instagram_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/contact_details_instagram"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/contact_details_text_size" />
+
+                <ImageView
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/content_description_linkedin_link"
+                    app:srcCompat="@drawable/ic_instagram" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contact_details_linkedin_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/contact_details_linkedin"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/contact_details_text_size" />
+
+                <ImageView
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/content_description_linkedin_link"
+                    app:srcCompat="@drawable/ic_linkedin" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contact_details_skype_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/contact_details_skype"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/contact_details_text_size" />
+
+                <ImageView
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/content_description_linkedin_link"
+                    app:srcCompat="@drawable/ic_linkedin" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contact_details_twitter_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/contact_details_linkedin"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/contact_details_text_size" />
+
+                <ImageView
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/content_description_linkedin_link"
+                    app:srcCompat="@drawable/ic_linkedin" />
+            </RelativeLayout>
+        </LinearLayout>
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

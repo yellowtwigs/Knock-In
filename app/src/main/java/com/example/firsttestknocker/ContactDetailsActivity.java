@@ -1,8 +1,11 @@
 package com.example.firsttestknocker;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -38,6 +41,16 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private RoundedImageView contact_details_RoundedImageView;
     private ImageView contactImage_BackgroundImage;
     private FloatingActionButton contact_details_FloatingButton;
+    private String pathToFile;
+    private String contact_details_first_name;
+    private String contact_details_last_name;
+    private String contact_details_phone_number;
+    private int contact_details_rounded_image;
+    private RelativeLayout contact_details_phone_number_RelativeLayout;
+    private RelativeLayout contact_details_messenger_RelativeLayout;
+    private RelativeLayout contact_details_whatsapp_RelativeLayout;
+    private RelativeLayout contact_details_instagram_RelativeLayout;
+    private RelativeLayout contact_details_mail_RelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +59,15 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
         // Create the Intent, and get the data from the GridView
         Intent intent = getIntent();
-        String contact_details_first_name = intent.getStringExtra("ContactFirstName");
-        String contact_details_last_name = intent.getStringExtra("ContactLastName");
-        String contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber");
-        int contactImage = intent.getIntExtra("ContactImage", 1);
+        contact_details_first_name = intent.getStringExtra("ContactFirstName");
+        contact_details_last_name = intent.getStringExtra("ContactLastName");
+        contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber");
+        contact_details_rounded_image = intent.getIntExtra("ContactImage", 1);
+
+        if(!contact_details_phone_number.isEmpty())
+        {
+            contact_details_phone_number_RelativeLayout.setVisibility(View.VISIBLE);
+        }
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -60,41 +78,59 @@ public class ContactDetailsActivity extends AppCompatActivity {
         actionbar.setTitle("Détails du contact " + contact_details_first_name);
 
         // Find View By Id
-        contact_details_FirstName = (TextView)findViewById(R.id.contact_details_first_name_id);
-        contact_details_LastName = (TextView)findViewById(R.id.contact_details_last_name_id);
-        contact_details_PhoneNumber = (TextView)findViewById(R.id.contact_details_phone_number_text_id);
-        contact_details_RoundedImageView = (RoundedImageView)findViewById(R.id.contact_details_rounded_image_view_id);
+        contact_details_FirstName = findViewById(R.id.contact_details_first_name_id);
+        contact_details_LastName = findViewById(R.id.contact_details_last_name_id);
+        contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id);
+        contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id);
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id);
         contact_details_FloatingButton = findViewById(R.id.contact_details_floating_button_id);
+
+
+        contact_details_phone_number_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id);
+        contact_details_messenger_RelativeLayout = findViewById(R.id.contact_details_messenger_relative_layout_id);
+        contact_details_whatsapp_RelativeLayout = findViewById(R.id.contact_details_whatsapp_relative_layout_id);
+        contact_details_instagram_RelativeLayout = findViewById(R.id.contact_details_instagram_relative_layout_id);
+//        contact_details_mail_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id);
+
 
         // Set Resources from MainActivity to ContactDetailsActivity
         contact_details_FirstName.setText(contact_details_first_name);
         contact_details_LastName.setText(contact_details_last_name);
         contact_details_PhoneNumber.setText(contact_details_phone_number);
-        contact_details_RoundedImageView.setImageResource(contactImage);
+        contact_details_RoundedImageView.setImageResource(contact_details_rounded_image);
+
+//        if(Build.VERSION.SDK_INT >= 23){
+//            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+//        }
 
         contact_details_FloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(ContactDetailsActivity.this, EditContactActivity.class);
+
+                intent.putExtra("ContactFirstName", contact_details_first_name);
+                intent.putExtra("ContactLastName", contact_details_last_name);
+                intent.putExtra("ContactPhoneNumber", contact_details_phone_number);
+                intent.putExtra("ContactImage", contact_details_rounded_image);
+
+                startActivity(intent);
             }
         });
 
-        contactImage_BackgroundImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        contactImage_BackgroundImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                dispatchPictureTakerAction();
-            }
-        });
+//            }
+//        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(ContactDetailsActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent loginIntent = new Intent(ContactDetailsActivity.this, MainActivity.class);
+                startActivity(loginIntent);
                 finish();
                 return true;
         }
@@ -104,20 +140,24 @@ public class ContactDetailsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        contactImage_BackgroundImage.setImageBitmap(bitmap);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
+                contactImage_BackgroundImage.setImageBitmap(bitmap);
+            }
+        }
     }
 
-    public void dispatchPictureTakerAction()
-    {
+    public void dispatchPictureTakerAction() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(intent.resolveActivity(getPackageManager()) != null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             photoFile = createPhotoFile();
 
-            if(photoFile != null){
+            if (photoFile != null) {
                 String pathToFile = photoFile.getAbsolutePath();
-                Uri photoURI = FileProvider.getUriForFile(ContactDetailsActivity.this, "fssdfs", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(ContactDetailsActivity.this, "com.example.firsttestknocker.fileprovider", photoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(intent, 1);
             }
