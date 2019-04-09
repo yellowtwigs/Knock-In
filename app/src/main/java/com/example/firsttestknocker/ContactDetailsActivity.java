@@ -1,14 +1,20 @@
 package com.example.firsttestknocker;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +22,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class ContactDetailsActivity extends AppCompatActivity {
 
@@ -60,13 +72,19 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contact_details_LastName.setText(contact_details_last_name);
         contact_details_PhoneNumber.setText(contact_details_phone_number);
         contact_details_RoundedImageView.setImageResource(contactImage);
-        contactImage_BackgroundImage.setImageResource(contactImage);
 
         contact_details_FloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        contactImage_BackgroundImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                dispatchPictureTakerAction();
             }
         });
     }
@@ -81,5 +99,42 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        contactImage_BackgroundImage.setImageBitmap(bitmap);
+    }
+
+    public void dispatchPictureTakerAction()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(intent.resolveActivity(getPackageManager()) != null){
+            File photoFile = null;
+            photoFile = createPhotoFile();
+
+            if(photoFile != null){
+                String pathToFile = photoFile.getAbsolutePath();
+                Uri photoURI = FileProvider.getUriForFile(ContactDetailsActivity.this, "fssdfs", photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(intent, 1);
+            }
+        }
+    }
+
+    private File createPhotoFile() {
+        String name = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = null;
+
+        try {
+            image = File.createTempFile(name, ".jpg", storageDir);
+        } catch (IOException e) {
+            Log.d("mylog", "Excep : " + e.toString());
+        }
+
+        return image;
     }
 }

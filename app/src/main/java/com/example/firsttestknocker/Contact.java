@@ -34,18 +34,11 @@ public class Contact {
         return contactLastName;
     }
 
-    public void setContactLastName(String contactName)
-    {
-        this.contactLastName = contactLastName;
-    }
+    public void setContactLastName(String contactName) { this.contactLastName = contactLastName; }
 
-    public int getContactImage() {
-        return contactImage;
-    }
+    public int getContactImage() { return contactImage; }
 
-    public void setContactImage(int contactImage) {
-        this.contactImage = contactImage;
-    }
+    public void setContactImage(int contactImage) { this.contactImage = contactImage; }
 
     public String getContactPhoneNumber() {return contactPhoneNumber; }
 
