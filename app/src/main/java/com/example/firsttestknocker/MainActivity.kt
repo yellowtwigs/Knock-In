@@ -107,12 +107,12 @@ class MainActivity : AppCompatActivity() {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
 
-//            val contactData = Contacts(null,"Ryan","Granet","0630370560", 5516,4210)
+//            val contactData = Contacts(null,"Ryan","Granet","0630370560", R.drawable.ryan,R.drawable.aquarius)
 //            main_ContactsDatabase?.contactsDao()?.insert(contactData)
-//            val testfd = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+//            val testfd = main_ContactsDatabase?.contactsDao()?.deleteContactById(3)
 //            println(testfd)
 //            println(contactData)
-            val contactList = contactList //main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
+            val contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
 
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList)
