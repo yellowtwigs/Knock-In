@@ -33,9 +33,9 @@ class MainActivity : AppCompatActivity() {
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
-    private val contactList: List<Contact>
+    private val contactList: List<Contacts>
         get() {
-            val list = ArrayList<Contact>()
+            val list = ArrayList<Contacts>()
 //            val Michel = Contact("Michel", "Ferachoglou", "06 51 74 09 03", R.drawable.michel, R.drawable.aquarius)
 //            val Jean_Luc = Contact("Jean Luc", "Paulin", "06 66 93 32 49", R.drawable.jl, R.drawable.aquarius)
 //            val Jean_Francois = Contact("Jean Francois", "Coudeyre", "07 78 03 65 54", R.drawable.jf, R.drawable.aquarius)
