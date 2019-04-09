@@ -36,25 +36,6 @@ class MainActivity : AppCompatActivity() {
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
-    private val contactList: List<Contacts>
-        get() {
-            val list = ArrayList<Contacts>()
-//            val Michel = Contact("Michel", "Ferachoglou", "06 51 74 09 03", R.drawable.michel, R.drawable.aquarius)
-//            val Jean_Luc = Contact("Jean Luc", "Paulin", "06 66 93 32 49", R.drawable.jl, R.drawable.aquarius)
-//            val Jean_Francois = Contact("Jean Francois", "Coudeyre", "07 78 03 65 54", R.drawable.jf, R.drawable.aquarius)
-//            val Ryan = Contact("Ryan", "Granet", "07 04 51 42 37", R.drawable.ryan, R.drawable.aquarius)
-//            val Florian = Contact("Florian", "Striebel", "06 96 32 09 28", R.drawable.img_avatar, R.drawable.aquarius)
-//
-//            list.add(Michel)
-//            list.add(Jean_Luc)
-//            list.add(Jean_Francois)
-//            list.add(Ryan)
-//            list.add(Florian)
-            println("end contact")
-
-            return list
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -127,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                     val o = main_GridView!!.getItemAtPosition(position)
-                    val contact = o as Contact
+                    val contact = o as Contacts
 
                     val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
 //                    intent.putExtra("ContactFirstName", contact.firstName)
@@ -135,10 +116,10 @@ class MainActivity : AppCompatActivity() {
 //                    intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
 //                    intent.putExtra("ContactImage", contact.profilePicture)
 
-                    intent.putExtra("ContactFirstName", contact.contactFirstName)
-                    intent.putExtra("ContactLastName", contact.contactLastName)
-                    intent.putExtra("ContactPhoneNumber", contact.contactPhoneNumber)
-                    intent.putExtra("ContactImage", contact.contactImage)
+                    intent.putExtra("ContactFirstName", contact.firstName)
+                    intent.putExtra("ContactLastName", contact.lastName)
+                    intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
+                    intent.putExtra("ContactImage", contact.profilePicture)
                     startActivity(intent)
                     //                finish();
                 }

@@ -53,14 +53,9 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
-                if (add_new_contact_FirstName!!.text.toString().isEmpty() || add_new_contact_LastName!!.text.toString().isEmpty()) {
-                    Toast.makeText(this, "Les champs nom et prénom ne peuvent pas être vide !", Toast.LENGTH_SHORT).show()
-                } else {
-                        val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                }
+                val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
             R.id.nav_validate -> if (add_new_contact_FirstName!!.text.toString().isEmpty() || add_new_contact_LastName!!.text.toString().isEmpty()) {
                 Toast.makeText(this, "Les champs nom et prénom ne peuvent pas être vide !", Toast.LENGTH_SHORT).show()
