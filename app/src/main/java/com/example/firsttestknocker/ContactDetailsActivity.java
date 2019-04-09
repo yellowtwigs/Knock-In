@@ -38,6 +38,11 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private RoundedImageView contact_details_RoundedImageView;
     private ImageView contactImage_BackgroundImage;
     private FloatingActionButton contact_details_FloatingButton;
+    private RelativeLayout contact_details_phone_number_RelativeLayout;
+    private RelativeLayout contact_details_messenger_RelativeLayout;
+    private RelativeLayout contact_details_whatsapp_RelativeLayout;
+    private RelativeLayout contact_details_instagram_RelativeLayout;
+    private RelativeLayout contact_details_mail_RelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,12 @@ public class ContactDetailsActivity extends AppCompatActivity {
         String contact_details_first_name = intent.getStringExtra("ContactFirstName");
         String contact_details_last_name = intent.getStringExtra("ContactLastName");
         String contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber");
-        int contactImage = intent.getIntExtra("ContactImage", 1);
+        int contact_details_rounded_image = intent.getIntExtra("ContactImage", 1);
+
+        if(!contact_details_phone_number.isEmpty())
+        {
+            contact_details_phone_number_RelativeLayout.setVisibility(View.VISIBLE);
+        }
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -60,18 +70,27 @@ public class ContactDetailsActivity extends AppCompatActivity {
         actionbar.setTitle("Détails du contact " + contact_details_first_name);
 
         // Find View By Id
-        contact_details_FirstName = (TextView)findViewById(R.id.contact_details_first_name_id);
-        contact_details_LastName = (TextView)findViewById(R.id.contact_details_last_name_id);
-        contact_details_PhoneNumber = (TextView)findViewById(R.id.contact_details_phone_number_text_id);
-        contact_details_RoundedImageView = (RoundedImageView)findViewById(R.id.contact_details_rounded_image_view_id);
+        contact_details_FirstName = findViewById(R.id.contact_details_first_name_id);
+        contact_details_LastName = findViewById(R.id.contact_details_last_name_id);
+        contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id);
+        contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id);
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id);
         contact_details_FloatingButton = findViewById(R.id.contact_details_floating_button_id);
+
+
+        contact_details_phone_number_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id);
+        contact_details_messenger_RelativeLayout = findViewById(R.id.contact_details_messenger_relative_layout_id);
+        contact_details_whatsapp_RelativeLayout = findViewById(R.id.contact_details_whatsapp_relative_layout_id);
+        contact_details_instagram_RelativeLayout = findViewById(R.id.contact_details_instagram_relative_layout_id);
+//        contact_details_mail_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id);
+
 
         // Set Resources from MainActivity to ContactDetailsActivity
         contact_details_FirstName.setText(contact_details_first_name);
         contact_details_LastName.setText(contact_details_last_name);
         contact_details_PhoneNumber.setText(contact_details_phone_number);
-        contact_details_RoundedImageView.setImageResource(contactImage);
+        contact_details_RoundedImageView.setImageResource(contact_details_rounded_image);
+
 
         contact_details_FloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override

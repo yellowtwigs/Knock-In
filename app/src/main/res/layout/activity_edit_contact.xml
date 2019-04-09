@@ -34,20 +34,22 @@
     <EditText
         android:id="@+id/edit_contact_last_name_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/edit_text_height"
         android:layout_marginTop="44dp"
         android:autofillHints="@string/edit_contact_last_name"
         android:hint="@string/edit_contact_last_name"
         android:inputType="textPersonName"
+        android:background="@drawable/custom_edit_text"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_rounded_image_view_id"
         tools:layout_editor_absoluteX="0dp" />
     <EditText
         android:id="@+id/edit_contact_first_name_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/edit_text_height"
         android:layout_marginTop="15dp"
         android:inputType="textPersonName"
         android:autofillHints="@string/add_new_contact_first_name"
+        android:background="@drawable/custom_edit_text"
         android:hint="@string/add_new_contact_first_name"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_last_name_id" />
 
@@ -63,7 +65,7 @@
     <Spinner
         android:id="@+id/add_new_contact_phone_number_spinner"
         android:layout_width="121dp"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/edit_text_height"
         android:entries="@array/add_new_contact_phone_number_arrays"
         android:prompt="@string/add_new_contact_phone_number_mobile"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +79,7 @@
         android:autofillHints="@string/add_new_contact_phone_number"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/custom_edit_text"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_view_id" />
 
     <View
@@ -90,7 +93,7 @@
     <Spinner
         android:id="@+id/add_new_contact_mail_spinner_id"
         android:layout_width="121dp"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/edit_text_height"
         android:entries="@array/add_new_contact_mail_arrays"
         android:prompt="@string/add_new_contact_mail_mobile"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,10 +102,11 @@
     <EditText
         android:id="@+id/add_new_contact_mail_id"
         android:layout_width="289dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/edit_text_height"
         android:hint="@string/add_new_contact_mail"
         android:autofillHints="@string/add_new_contact_mail"
         android:inputType="textEmailAddress"
+        android:background="@drawable/custom_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_view_id" />
 
