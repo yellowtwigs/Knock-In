@@ -25,7 +25,7 @@
             android:id="@+id/contact_details_background_image_id"
             android:layout_width="match_parent"
             android:layout_height="307dp"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="50dp"
             android:clickable="true"
             android:contentDescription="@string/content_description_contact_details_background_image"
             android:focusable="true"

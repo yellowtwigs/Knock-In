@@ -45,6 +45,32 @@
     <string name="add_new_contact_add_field">Ajouter un champ</string>
     <string name="add_new_contact_validate">Valider</string>
 
+    <!-- Edit Contact !-->
+    <string name="edit_contact_title">Ajoutez un nouveau contact</string>
+    <string name="edit_contact_last_name">Nom</string>
+    <string name="edit_contact_first_name">Prénom</string>
+    <string name="edit_contact_phone_number">Numéro de téléphone</string>
+    <string name="edit_contact_phone_number_mobile">Mobile</string>
+    <string-array name="edit_contact_phone_number_arrays">
+        <item>Mobile</item>
+        <item>Bureau</item>
+        <item>Domicile</item>
+        <item>Principal</item>
+        <item>Autre</item>
+        <item>Personnalisé</item>
+    </string-array>
+    <string name="edit_contact_mail">E-mail</string>
+    <string name="edit_contact_mail_mobile">Bureau</string>
+    <string-array name="edit_contact_mail_arrays">
+        <item>Bureau</item>
+        <item>Domicile</item>
+        <item>Ecole</item>
+        <item>Autre</item>
+        <item>Personnalisé</item>
+    </string-array>
+    <string name="edit_contact_add_field">Ajouter un champ</string>
+    <string name="edit_contact_validate">Valider</string>
+
     <!-- Content description !-->
     <string name="content_description_contact_details_background_image">Background Image</string>
     <string name="content_description_instagram_link">Lien vers l\'Instagram du contact</string>
