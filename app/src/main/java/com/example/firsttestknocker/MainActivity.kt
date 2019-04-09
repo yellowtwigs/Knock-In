@@ -29,21 +29,25 @@ class MainActivity : AppCompatActivity() {
     private var main_FloatingButtonClockWiserAnimation: Animation? = null
     private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
     internal var isOpen = false
+    // Database && Thread
+    private var mDb: ContactsRoomDatabase? = null
+    private lateinit var mDbWorkerThread: DbWorkerThread
 
     private val contactList: List<Contact>
         get() {
             val list = ArrayList<Contact>()
-            val Michel = Contact("Michel", "Ferachoglou", "06 51 74 09 03", R.drawable.michel, R.drawable.aquarius)
-            val Jean_Luc = Contact("Jean Luc", "Paulin", "06 66 93 32 49", R.drawable.jl, R.drawable.aquarius)
-            val Jean_Francois = Contact("Jean Francois", "Coudeyre", "07 78 03 65 54", R.drawable.jf, R.drawable.aquarius)
-            val Ryan = Contact("Ryan", "Granet", "07 04 51 42 37", R.drawable.ryan, R.drawable.aquarius)
-            val Florian = Contact("Florian", "Striebel", "06 96 32 09 28", R.drawable.img_avatar, R.drawable.aquarius)
-
-            list.add(Michel)
-            list.add(Jean_Luc)
-            list.add(Jean_Francois)
-            list.add(Ryan)
-            list.add(Florian)
+//            val Michel = Contact("Michel", "Ferachoglou", "06 51 74 09 03", R.drawable.michel, R.drawable.aquarius)
+//            val Jean_Luc = Contact("Jean Luc", "Paulin", "06 66 93 32 49", R.drawable.jl, R.drawable.aquarius)
+//            val Jean_Francois = Contact("Jean Francois", "Coudeyre", "07 78 03 65 54", R.drawable.jf, R.drawable.aquarius)
+//            val Ryan = Contact("Ryan", "Granet", "07 04 51 42 37", R.drawable.ryan, R.drawable.aquarius)
+//            val Florian = Contact("Florian", "Striebel", "06 96 32 09 28", R.drawable.img_avatar, R.drawable.aquarius)
+//
+//            list.add(Michel)
+//            list.add(Jean_Luc)
+//            list.add(Jean_Francois)
+//            list.add(Ryan)
+//            list.add(Florian)
+            println("end contact")
 
             return list
         }
@@ -51,6 +55,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // on init WorkerThread
+        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        mDbWorkerThread.start()
+
+        //on get la base de données
+        mDb = ContactsRoomDatabase.getDatabase(this)
 
         // Floating Button
         main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
@@ -92,33 +103,36 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // Grid View
-        main_GridView = findViewById(R.id.main_grid_view_id)
-        val contactList = contactList
+        val printContacts = Runnable {
+            // Grid View
+            main_GridView = findViewById(R.id.main_grid_view_id)
+            val contactList = mDb?.contactsDao()?.getAllContacts() //contactList
 
-        if (main_GridView != null) {
-            val contactAdapter = ContactAdapter(this, contactList)
-            main_GridView!!.adapter = contactAdapter
+            if (main_GridView != null) {
+                val contactAdapter = ContactAdapter(this, contactList)
+                main_GridView!!.adapter = contactAdapter
 
-            main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val o = main_GridView!!.getItemAtPosition(position)
-                val contact = o as Contact
+                main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                    val o = main_GridView!!.getItemAtPosition(position)
+                    val contact = o as Contact
 
-                val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
-                intent.putExtra("ContactFirstName", contact.contactFirstName)
-                intent.putExtra("ContactLastName", contact.contactLastName)
-                intent.putExtra("ContactPhoneNumber", contact.contactPhoneNumber)
-                intent.putExtra("ContactImage", contact.contactImage)
-                startActivity(intent)
-                //                finish();
-            }
+                    val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
+                    intent.putExtra("ContactFirstName", contact.contactFirstName)
+                    intent.putExtra("ContactLastName", contact.contactLastName)
+                    intent.putExtra("ContactPhoneNumber", contact.contactPhoneNumber)
+                    intent.putExtra("ContactImage", contact.contactImage)
+                    startActivity(intent)
+                    //                finish();
+                }
 
-            // Drag n Drop
-            main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
-                //                finish();
-                false
+                // Drag n Drop
+                main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, _, _ ->
+                    //                finish();
+                    false
+                }
             }
         }
+        mDbWorkerThread.postTask(printContacts)
 
         main_FloatingButtonOpen!!.setOnClickListener {
             if (isOpen) {
