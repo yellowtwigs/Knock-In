@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/nav_search"
+        android:id="@+id/nav_validate"
         android:icon="@drawable/ic_validate"
         android:title="@string/add_new_contact_validate"
         android:orderInCategory="100"

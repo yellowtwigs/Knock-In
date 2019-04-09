@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProfilActivity">
+    tools:context=".EditContactActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_rounded_image_view_id"
         tools:layout_editor_absoluteX="0dp" />
     <EditText
-        android:id="@+id/add_new_contact_first_name_id"
+        android:id="@+id/edit_contact_first_name_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -58,7 +58,7 @@
         android:layout_marginTop="100dp"
         android:background="@color/borderViewColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_first_name_id" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_contact_first_name_id" />
 
     <Spinner
         android:id="@+id/add_new_contact_phone_number_spinner"
