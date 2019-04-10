@@ -9,41 +9,12 @@
     <include layout="@layout/content_contact_details" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/contact_details_floating_button_edit_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginRight="@dimen/floating_button_margin"
-        android:layout_marginBottom="180dp"
-        android:backgroundTint="@color/colorKnocker"
-        android:elevation="6dp"
-        android:visibility="invisible"
-        app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/ic_edit_floating_button" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/contact_details_floating_button_delete_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginRight="@dimen/floating_button_margin"
-        android:layout_marginBottom="100dp"
-        android:backgroundTint="@color/colorKnocker"
-        android:elevation="6dp"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_delete" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/contact_details_floating_button_open_id"
+        android:id="@+id/contact_details_floating_button_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/floating_button_margin"
         android:backgroundTint="@color/colorKnocker"
-        android:elevation="6dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/ic_list" />
+        app:srcCompat="@drawable/ic_edit_floating_button" />
 
 </android.support.design.widget.CoordinatorLayout>

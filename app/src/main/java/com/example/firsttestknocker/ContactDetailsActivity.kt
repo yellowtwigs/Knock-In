@@ -33,8 +33,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import android.os.Environment.getExternalStoragePublicDirectory
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 
 class ContactDetailsActivity : AppCompatActivity() {
 
@@ -44,23 +42,15 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_Mail: TextView? = null
     private var contact_details_RoundedImageView: RoundedImageView? = null
     private var contactImage_BackgroundImage: ImageView? = null
-
-    private var contact_details_FloatingButtonOpen: FloatingActionButton? = null
-    private var contact_details_FloatingButtonEdit: FloatingActionButton? = null
-    private var contact_details_FloatingButtonDelete: FloatingActionButton? = null
-
-    private var contact_details_FloatingButtonOpenAnimation: Animation? = null
-    private var contact_details_FloatingButtonCloseAnimation: Animation? = null
-    private var contact_details_FloatingButtonClockWiserAnimation: Animation? = null
-    private var contact_details_FloatingButtonAntiClockWiserAnimation: Animation? = null
-
-    internal var isOpen = false
+    private var contact_details_FloatingButton: FloatingActionButton? = null
 
     private var contact_details_phone_number_RelativeLayout: RelativeLayout? = null
     private var contact_details_mail_RelativeLayout: RelativeLayout? = null
     private var contact_details_messenger_RelativeLayout: RelativeLayout? = null
     private var contact_details_whatsapp_RelativeLayout: RelativeLayout? = null
     private var contact_details_instagram_RelativeLayout: RelativeLayout? = null
+
+    private val pathToFile: String? = null
 
     private var contact_details_id: Long? = null
     private var contact_details_first_name: String? = null
@@ -107,22 +97,13 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_Mail = findViewById(R.id.contact_details_mail_id)
         contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id)
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id)
+        contact_details_FloatingButton = findViewById(R.id.contact_details_floating_button_id)
 
         contact_details_phone_number_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id)
         contact_details_messenger_RelativeLayout = findViewById(R.id.contact_details_messenger_relative_layout_id)
         contact_details_whatsapp_RelativeLayout = findViewById(R.id.contact_details_whatsapp_relative_layout_id)
         contact_details_instagram_RelativeLayout = findViewById(R.id.contact_details_instagram_relative_layout_id)
         contact_details_mail_RelativeLayout = findViewById(R.id.contact_details_mail_relative_layout_id)
-
-
-        // Floating Button
-        contact_details_FloatingButtonOpen = findViewById(R.id.contact_details_floating_button_open_id)
-        contact_details_FloatingButtonEdit = findViewById(R.id.contact_details_floating_button_edit_id)
-        contact_details_FloatingButtonDelete = findViewById(R.id.contact_details_floating_button_delete_id)
-        contact_details_FloatingButtonOpenAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
-        contact_details_FloatingButtonCloseAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
-        contact_details_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
-        contact_details_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
 
         if (contact_details_phone_number != null) {
             contact_details_phone_number_RelativeLayout!!.visibility = View.VISIBLE
@@ -138,18 +119,11 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_PhoneNumber!!.text = contact_details_phone_number
         contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
 
-        contact_details_FloatingButtonOpen!!.setOnClickListener {
-            if (isOpen) {
-                onFloatingClickBack()
-                isOpen = false
-            } else {
-                onFloatingClick()
-                isOpen = true
-            }
-        }
+        //        if(Build.VERSION.SDK_INT >= 23){
+        //            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        //        }
 
-        contact_details_FloatingButtonEdit!!.setOnClickListener {
-
+        contact_details_FloatingButton!!.setOnClickListener {
             val intent = Intent(this@ContactDetailsActivity, EditContactActivity::class.java)
 
             intent.putExtra("ContactFirstName", contact_details_first_name)
@@ -181,22 +155,43 @@ class ContactDetailsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    fun onFloatingClickBack() {
-        contact_details_FloatingButtonDelete!!.startAnimation(contact_details_FloatingButtonCloseAnimation)
-        contact_details_FloatingButtonEdit!!.startAnimation(contact_details_FloatingButtonCloseAnimation)
-        contact_details_FloatingButtonOpen!!.startAnimation(contact_details_FloatingButtonAntiClockWiserAnimation)
-
-        contact_details_FloatingButtonEdit!!.isClickable = false
-        contact_details_FloatingButtonDelete!!.isClickable = false
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1) {
+                val bitmap = BitmapFactory.decodeFile(pathToFile)
+                contactImage_BackgroundImage!!.setImageBitmap(bitmap)
+            }
+        }
     }
 
-    fun onFloatingClick() {
-        contact_details_FloatingButtonDelete!!.startAnimation(contact_details_FloatingButtonOpenAnimation)
-        contact_details_FloatingButtonEdit!!.startAnimation(contact_details_FloatingButtonOpenAnimation)
-        contact_details_FloatingButtonOpen!!.startAnimation(contact_details_FloatingButtonClockWiserAnimation)
+    fun dispatchPictureTakerAction() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            //var photoFile: File? = null
+            val photoFile: File? = createPhotoFile()
 
-        contact_details_FloatingButtonEdit!!.isClickable = true
-        contact_details_FloatingButtonDelete!!.isClickable = true
+            if (photoFile != null) {
+                //val pathToFile = photoFile.absolutePath
+                val photoURI = FileProvider.getUriForFile(this@ContactDetailsActivity, "com.example.firsttestknocker.fileprovider", photoFile)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(intent, 1)
+            }
+        }
+    }
+
+    private fun createPhotoFile(): File? {
+        val name = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        var image: File? = null
+
+        try {
+            image = File.createTempFile(name, ".jpg", storageDir)
+        } catch (e: IOException) {
+            Log.d("mylog", "Excep : $e")
+        }
+
+        return image
     }
 }
