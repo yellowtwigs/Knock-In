@@ -1,11 +1,13 @@
 package com.example.firsttestknocker
 
+import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.migration.Migration
 import android.content.Context
 
-@Database(entities = [Contacts::class], version = 1)
+@Database(entities = [Contacts::class], version = 2)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     companion object {
@@ -21,8 +23,14 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                         context.getApplicationContext(),
                         ContactsRoomDatabase::class.java,
                         "Contact_database"
-                ).build()
+                ).addMigrations(MIGRATION_1_2)
+                        .build()
                 return INSTANCE
+            }
+        }
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN mail TEXT DEFAULT '' NOT NULL")
             }
         }
         fun destroyInstance() {

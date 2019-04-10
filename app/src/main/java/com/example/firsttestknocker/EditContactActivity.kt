@@ -86,7 +86,7 @@ class EditContactActivity : AppCompatActivity() {
             }
             R.id.nav_validate -> {
             val editContact = Runnable {
-                edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(),edit_contact_FirstName!!.text.toString(),edit_contact_LastName!!.text.toString(),edit_contact_PhoneNumber!!.text.toString(),edit_contact_rounded_image) //edit contact rounded maybe not work
+                edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(),edit_contact_FirstName!!.text.toString(),edit_contact_LastName!!.text.toString(),edit_contact_PhoneNumber!!.text.toString(),"",edit_contact_rounded_image) //edit contact rounded maybe not work
                 val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
                 intent.putExtra("ContactFirstName", edit_contact_first_name)
                 intent.putExtra("ContactLastName", edit_contact_last_name)

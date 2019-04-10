@@ -20,8 +20,8 @@ interface ContactsDao {
     fun insert(contacts: Contacts)
 
     //update un contact grace à son id
-    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, phone_number = :phoneNumber, profile_picture = :profilePicture WHERE id = :id")
-    fun updateContactById(id: Int, firstName: String, lastName: String, phoneNumber: String, profilePicture: Int)
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, phone_number = :phoneNumber, mail = :mail, profile_picture = :profilePicture WHERE id = :id")
+    fun updateContactById(id: Int, firstName: String, lastName: String, phoneNumber: String, mail: String, profilePicture: Int)
 
     //delete un contact grace à un id
     @Query("DELETE FROM contacts_table WHERE id = :id")

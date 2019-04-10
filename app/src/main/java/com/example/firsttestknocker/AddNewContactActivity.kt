@@ -65,7 +65,7 @@ class AddNewContactActivity : AppCompatActivity() {
             } else {
                 if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                     val printContacts = Runnable {
-                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(),  R.drawable.img_avatar, R.drawable.aquarius)
+                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius)
                         println(contactData)
                         main_ContactsDatabase?.contactsDao()?.insert(contactData)
                         val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)

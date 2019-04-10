@@ -8,7 +8,7 @@ data class Contacts(
         @ColumnInfo(name = "first_name") val firstName: String,
         @ColumnInfo(name = "last_name") val lastName: String,
         @ColumnInfo(name = "phone_number") val phoneNumber: String,
-//        @ColumnInfo(name = "mail") val mail: String,
+        @ColumnInfo(name = "mail") val mail: String,
         @ColumnInfo(name = "profile_picture") val profilePicture: Int,
         @ColumnInfo(name = "background_image") val backgroundImage: Int
 )
