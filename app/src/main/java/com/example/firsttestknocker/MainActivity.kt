@@ -17,6 +17,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.GridView
 import android.widget.AdapterView
+import android.widget.Toast
 
 import java.util.ArrayList
 
@@ -149,6 +150,11 @@ class MainActivity : AppCompatActivity() {
             val loginIntent = Intent(this@MainActivity, AddNewContactActivity::class.java)
             startActivity(loginIntent)
             finish()
+        }
+
+        var isDelete = intent.getBooleanExtra("isDelete", false)
+        if(isDelete){
+            Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
         }
     }
 

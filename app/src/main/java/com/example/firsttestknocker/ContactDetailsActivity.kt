@@ -35,6 +35,7 @@ import java.util.Date
 import android.os.Environment.getExternalStoragePublicDirectory
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 
 class ContactDetailsActivity : AppCompatActivity() {
 
@@ -164,6 +165,10 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FloatingButtonDelete!!.setOnClickListener {
             val deleteContact = Runnable {
                 contact_details_ContactsDatabase?.contactsDao()?.deleteContactById(contact_details_id!!.toInt())
+
+                val intent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
+                intent.putExtra("isDelete", true);
+                startActivity(intent)
             }
             contact_details_mDbWorkerThread.postTask(deleteContact)
         }
