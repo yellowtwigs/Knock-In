@@ -16,7 +16,7 @@ class DbWorkerThread(threadName: String) : HandlerThread(threadName){
         if (this::mWorkerHandler.isInitialized) {
             mWorkerHandler.post(task)
         } else {
-            System.err.println("ERROR in DbWorkerThread.kt : mWorkerHandler is not initialized")
+            postTask(task)
         }
     }
 }
