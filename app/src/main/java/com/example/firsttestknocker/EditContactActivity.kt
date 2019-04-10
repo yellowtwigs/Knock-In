@@ -4,16 +4,12 @@ import android.content.Intent
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v7.widget.Toolbar
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.TextView
-import android.widget.Toast
 
 class EditContactActivity : AppCompatActivity() {
 
@@ -30,8 +26,6 @@ class EditContactActivity : AppCompatActivity() {
     // Database && Thread
     private var edit_contact_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var edit_contact_mDbWorkerThread: DbWorkerThread
-
-    private val isChanged: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,67 +68,29 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-
-//        edit_contact_FirstName!!.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-//
-//            }
-//
-//            override fun afterTextChanged(s: Editable) {
-//
-//            }
-//        })
-//
-//        edit_contact_LastName!!.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-//
-//            }
-//
-//            override fun afterTextChanged(s: Editable) {
-//
-//            }
-//        })
-//
-//        edit_contact_PhoneNumber!!.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-//
-//            }
-//
-//            override fun afterTextChanged(s: Editable) {
-//
-//            }
-//        })
-//
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                if(isChanged){
-                    onBackPressed()
-                }else{
+                onBackPressed()
+                // Update
+                val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
+                    intent.putExtra("ContactFirstName", edit_contact_first_name)
+                    intent.putExtra("ContactLastName", edit_contact_last_name)
+                    intent.putExtra("ContactPhoneNumber", edit_contact_phone_number)
+                    intent.putExtra("ContactImage", edit_contact_rounded_image)
 
-                }
+                    startActivity(intent)
+                    finish()
             }
             R.id.nav_validate -> {
             val editContact = Runnable {
                 edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(),edit_contact_FirstName!!.text.toString(),edit_contact_LastName!!.text.toString(),edit_contact_PhoneNumber!!.text.toString(),"",edit_contact_rounded_image) //edit contact rounded maybe not work
                 val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
-                intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text)
-                intent.putExtra("ContactLastName", edit_contact_LastName!!.text)
-                intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.text)
+                intent.putExtra("ContactFirstName", edit_contact_first_name)
+                intent.putExtra("ContactLastName", edit_contact_last_name)
+                intent.putExtra("ContactPhoneNumber", edit_contact_phone_number)
                 intent.putExtra("ContactImage", edit_contact_rounded_image)
 
                 startActivity(intent)

@@ -103,10 +103,4 @@
     <string name="settings_knockons_long_text">Personnalisez vos Knockons à votre guise.</string>
     <string name="settings_theme">Changer le thème</string>
     <string name="settings_theme_long_text">Personnalisez le thème de l\'application pour vivre une meilleure expérience.</string>
-
-    <!-- EditContactPopup !-->
-    <string name="edit_contact_popup_message">Attention, vous êtes sur le point de quitter la page, vos modifications vont être annulés, voulez vous continuer ?</string>
-    <string name="edit_contact_popup_button_yes">Oui</string>
-    <string name="edit_contact_popup_button_no">Non</string>
-
 </resources>

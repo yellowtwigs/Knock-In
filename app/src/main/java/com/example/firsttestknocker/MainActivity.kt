@@ -84,9 +84,6 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.nav_settings) {
                 val loginIntent = Intent(this@MainActivity, SettingsActivity::class.java)
                 startActivity(loginIntent)
-            }else if (id == R.id.nav_chat) {
-                val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
-                startActivity(loginIntent)
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -121,6 +118,10 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("ContactImage", contact.profilePicture)
                     intent.putExtra("ContactId", contact.id)
 
+//                    intent.putExtra("ContactFirstName", contact.firstName)
+//                    intent.putExtra("ContactLastName", contact.contactLastName)
+//                    intent.putExtra("ContactPhoneNumber", contact.contactPhoneNumber)
+//                    intent.putExtra("ContactImage", contact.contactImage)
                     startActivity(intent)
                     //                finish();
                 }
