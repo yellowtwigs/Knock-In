@@ -70,6 +70,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber");
         contact_details_mail = intent.getStringExtra("ContactMail");
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1);
+        contact_details_id = intent.getLongExtra("ContactId", 1);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);

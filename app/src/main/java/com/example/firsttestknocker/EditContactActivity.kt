@@ -24,22 +24,23 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_phone_number: String? = null
     private var edit_contact_rounded_image: Int = 0
     // Database && Thread
-    private var main_ContactsDatabase: ContactsRoomDatabase? = null
-    private lateinit var main_mDbWorkerThread: DbWorkerThread
+    private var edit_contact_ContactsDatabase: ContactsRoomDatabase? = null
+    private lateinit var edit_contact_mDbWorkerThread: DbWorkerThread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_contact)
 
         // on init WorkerThread
-        main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        main_mDbWorkerThread.start()
+        edit_contact_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        edit_contact_mDbWorkerThread.start()
 
         //on get la base de données
-        main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        edit_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         // Create the Intent, and get the data from the GridView
         val intent = intent
+//        val idContact =
         edit_contact_id = intent.getLongExtra("ContactId", 1)
         edit_contact_first_name = intent.getStringExtra("ContactFirstName")
         edit_contact_last_name = intent.getStringExtra("ContactLastName")
@@ -74,9 +75,7 @@ class EditContactActivity : AppCompatActivity() {
             android.R.id.home -> {
                 onBackPressed()
                 // Update
-                val editContact = Runnable {
-                    val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
-
+                val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
                     intent.putExtra("ContactFirstName", edit_contact_first_name)
                     intent.putExtra("ContactLastName", edit_contact_last_name)
                     intent.putExtra("ContactPhoneNumber", edit_contact_phone_number)
@@ -84,10 +83,10 @@ class EditContactActivity : AppCompatActivity() {
 
                     startActivity(intent)
                     finish()
-                }
-                main_mDbWorkerThread.postTask(editContact)
             }
             R.id.nav_validate -> {
+            val editContact = Runnable {
+                edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(),edit_contact_FirstName!!.text.toString(),edit_contact_LastName!!.text.toString(),edit_contact_PhoneNumber!!.text.toString(),edit_contact_rounded_image) //edit contact rounded maybe not work
                 val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
                 intent.putExtra("ContactFirstName", edit_contact_first_name)
                 intent.putExtra("ContactLastName", edit_contact_last_name)
@@ -96,6 +95,8 @@ class EditContactActivity : AppCompatActivity() {
 
                 startActivity(intent)
                 finish()
+            }
+                edit_contact_mDbWorkerThread.postTask(editContact)
             }
         }
         return super.onOptionsItemSelected(item)
