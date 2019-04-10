@@ -9,14 +9,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 
 class AddNewContactActivity : AppCompatActivity() {
 
-    private var add_new_contact_FirstName: TextView? = null
-    private var add_new_contact_LastName: TextView? = null
-    private var add_new_contact_PhoneNumber: TextView? = null
+    private var add_new_contact_FirstName: EditText? = null
+    private var add_new_contact_LastName: EditText? = null
+    private var add_new_contact_PhoneNumber: EditText? = null
+    private var add_new_contact_Email: EditText? = null
     private var add_new_contact_RoundedImageView: RoundedImageView? = null
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
@@ -45,6 +47,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_FirstName = findViewById(R.id.add_new_contact_first_name_id)
         add_new_contact_LastName = findViewById(R.id.add_new_contact_last_name_id)
         add_new_contact_PhoneNumber = findViewById(R.id.add_new_contact_phone_number_id)
+        add_new_contact_Email = findViewById(R.id.add_new_contact_mail_id)
         add_new_contact_RoundedImageView = findViewById(R.id.add_new_contact_rounded_image_view_id)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
@@ -57,18 +60,29 @@ class AddNewContactActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-            R.id.nav_validate -> if (add_new_contact_FirstName!!.text.toString().isEmpty() || add_new_contact_LastName!!.text.toString().isEmpty()) {
+            R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName) || isEmptyField(add_new_contact_LastName)) {
                 Toast.makeText(this, "Les champs nom et prénom ne peuvent pas être vide !", Toast.LENGTH_SHORT).show()
             } else {
-            val printContacts = Runnable {
-                val contactData = Contacts(null,add_new_contact_FirstName!!.text.toString(),add_new_contact_LastName!!.text.toString(),add_new_contact_PhoneNumber!!.text.toString(), R.drawable.ryan,R.drawable.aquarius)
-                println(contactData)
-                main_ContactsDatabase?.contactsDao()?.insert(contactData)
-                val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-                main_mDbWorkerThread.postTask(printContacts)
+                if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
+                    if(isValidMail(add_new_contact_Email!!.text.toString()))
+                    {
+                        val printContacts = Runnable {
+                            val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), R.drawable.ryan, R.drawable.aquarius)
+                            println(contactData)
+                            main_ContactsDatabase?.contactsDao()?.insert(contactData)
+                            val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        main_mDbWorkerThread.postTask(printContacts)
+                    }
+                    else{
+                        Toast.makeText(this, "Votre mai n'est pas valide !", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
+                }
             }
 
         }
@@ -79,5 +93,17 @@ class AddNewContactActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_add_contact, menu)
         return true
+    }
+
+    fun isValidMobile(phone: String): Boolean {
+        return android.util.Patterns.PHONE.matcher(phone).matches()
+    }
+
+    fun isEmptyField(field: EditText?): Boolean {
+        return field!!.text.toString().isEmpty()
+    }
+
+    fun isValidMail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }

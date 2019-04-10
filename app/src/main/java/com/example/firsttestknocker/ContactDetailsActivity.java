@@ -64,11 +64,6 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber");
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1);
 
-        if(!contact_details_phone_number.isEmpty())
-        {
-            contact_details_phone_number_RelativeLayout.setVisibility(View.VISIBLE);
-        }
-
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,13 +80,16 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id);
         contact_details_FloatingButton = findViewById(R.id.contact_details_floating_button_id);
 
-
         contact_details_phone_number_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id);
         contact_details_messenger_RelativeLayout = findViewById(R.id.contact_details_messenger_relative_layout_id);
         contact_details_whatsapp_RelativeLayout = findViewById(R.id.contact_details_whatsapp_relative_layout_id);
         contact_details_instagram_RelativeLayout = findViewById(R.id.contact_details_instagram_relative_layout_id);
 //        contact_details_mail_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id);
 
+        if(!contact_details_phone_number.isEmpty())
+        {
+            contact_details_phone_number_RelativeLayout.setVisibility(View.VISIBLE);
+        }
 
         // Set Resources from MainActivity to ContactDetailsActivity
         contact_details_FirstName.setText(contact_details_first_name);

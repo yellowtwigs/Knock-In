@@ -40,6 +40,7 @@
         android:hint="@string/add_new_contact_last_name"
         android:inputType="textPersonName"
         android:background="@drawable/custom_edit_text"
+        android:textColor="@color/textColor"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_rounded_image_view_id"
         tools:layout_editor_absoluteX="0dp" />
     <EditText
@@ -49,6 +50,7 @@
         android:layout_marginTop="15dp"
         android:inputType="textPersonName"
         android:autofillHints="@string/add_new_contact_first_name"
+        android:textColor="@color/textColor"
         android:background="@drawable/custom_edit_text"
         android:hint="@string/add_new_contact_first_name"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_last_name_id" />
@@ -79,6 +81,7 @@
         android:autofillHints="@string/add_new_contact_phone_number"
         android:background="@drawable/custom_edit_text"
         android:hint="@string/add_new_contact_phone_number"
+        android:textColor="@color/textColor"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view_id" />
@@ -108,6 +111,7 @@
         android:background="@drawable/custom_edit_text"
         android:hint="@string/add_new_contact_mail"
         android:inputType="textEmailAddress"
+        android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_view_id" />
 
