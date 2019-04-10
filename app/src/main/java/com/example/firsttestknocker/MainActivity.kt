@@ -111,15 +111,15 @@ class MainActivity : AppCompatActivity() {
                     val contact = o as Contacts
 
                     val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
-//                    intent.putExtra("ContactFirstName", contact.firstName)
-//                    intent.putExtra("ContactLastName", contact.lastName)
-//                    intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
-//                    intent.putExtra("ContactImage", contact.profilePicture)
-
                     intent.putExtra("ContactFirstName", contact.firstName)
                     intent.putExtra("ContactLastName", contact.lastName)
                     intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
                     intent.putExtra("ContactImage", contact.profilePicture)
+
+//                    intent.putExtra("ContactFirstName", contact.firstName)
+//                    intent.putExtra("ContactLastName", contact.contactLastName)
+//                    intent.putExtra("ContactPhoneNumber", contact.contactPhoneNumber)
+//                    intent.putExtra("ContactImage", contact.contactImage)
                     startActivity(intent)
                     //                finish();
                 }

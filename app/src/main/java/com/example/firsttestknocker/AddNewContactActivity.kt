@@ -66,7 +66,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                     if(isValidMail(add_new_contact_Email!!.text.toString()))
                     {
-                        val printContacts = Runnable {
+                        val createNewContact = Runnable {
                             val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), R.drawable.ryan, R.drawable.aquarius)
                             println(contactData)
                             main_ContactsDatabase?.contactsDao()?.insert(contactData)
@@ -74,7 +74,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         }
-                        main_mDbWorkerThread.postTask(printContacts)
+                        main_mDbWorkerThread.postTask(createNewContact)
                     }
                     else{
                         Toast.makeText(this, "Votre mai n'est pas valide !", Toast.LENGTH_SHORT).show()
