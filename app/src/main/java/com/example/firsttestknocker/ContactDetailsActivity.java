@@ -38,19 +38,25 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private TextView contact_details_FirstName;
     private TextView contact_details_LastName;
     private TextView contact_details_PhoneNumber;
+    private TextView contact_details_Mail;
     private RoundedImageView contact_details_RoundedImageView;
     private ImageView contactImage_BackgroundImage;
     private FloatingActionButton contact_details_FloatingButton;
-    private String pathToFile;
-    private String contact_details_first_name;
-    private String contact_details_last_name;
-    private String contact_details_phone_number;
-    private int contact_details_rounded_image;
+
     private RelativeLayout contact_details_phone_number_RelativeLayout;
+    private RelativeLayout contact_details_mail_RelativeLayout;
     private RelativeLayout contact_details_messenger_RelativeLayout;
     private RelativeLayout contact_details_whatsapp_RelativeLayout;
     private RelativeLayout contact_details_instagram_RelativeLayout;
-    private RelativeLayout contact_details_mail_RelativeLayout;
+
+    private String pathToFile;
+
+    private Long contact_details_id;
+    private String contact_details_first_name;
+    private String contact_details_last_name;
+    private String contact_details_phone_number;
+    private String contact_details_mail;
+    private int contact_details_rounded_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contact_details_first_name = intent.getStringExtra("ContactFirstName");
         contact_details_last_name = intent.getStringExtra("ContactLastName");
         contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber");
+        contact_details_mail = intent.getStringExtra("ContactMail");
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1);
 
         // Toolbar
@@ -76,6 +83,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contact_details_FirstName = findViewById(R.id.contact_details_first_name_id);
         contact_details_LastName = findViewById(R.id.contact_details_last_name_id);
         contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id);
+        contact_details_Mail = findViewById(R.id.contact_details_mail_id);
         contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id);
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id);
         contact_details_FloatingButton = findViewById(R.id.contact_details_floating_button_id);
@@ -84,11 +92,14 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contact_details_messenger_RelativeLayout = findViewById(R.id.contact_details_messenger_relative_layout_id);
         contact_details_whatsapp_RelativeLayout = findViewById(R.id.contact_details_whatsapp_relative_layout_id);
         contact_details_instagram_RelativeLayout = findViewById(R.id.contact_details_instagram_relative_layout_id);
-//        contact_details_mail_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id);
+        contact_details_mail_RelativeLayout = findViewById(R.id.contact_details_mail_relative_layout_id);
 
-        if(!contact_details_phone_number.isEmpty())
-        {
+        if(contact_details_phone_number != null) {
             contact_details_phone_number_RelativeLayout.setVisibility(View.VISIBLE);
+        }
+
+        if(contact_details_mail != null) {
+            contact_details_mail_RelativeLayout.setVisibility(View.VISIBLE);
         }
 
         // Set Resources from MainActivity to ContactDetailsActivity
@@ -110,6 +121,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 intent.putExtra("ContactLastName", contact_details_last_name);
                 intent.putExtra("ContactPhoneNumber", contact_details_phone_number);
                 intent.putExtra("ContactImage", contact_details_rounded_image);
+                intent.putExtra("ContactId", contact_details_id);
 
                 startActivity(intent);
             }

@@ -15,6 +15,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".AddNewContactActivity"/>
+        <activity android:name=".EditContactActivity"/>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +25,6 @@
         </activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ContactDetailsActivity" />
-        <activity android:name=".EditContactActivity" />
         <activity android:name=".MainActivity" />
 
         <!--<provider-->

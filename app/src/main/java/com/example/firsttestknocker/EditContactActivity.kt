@@ -17,6 +17,8 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_LastName: TextView? = null
     private var edit_contact_PhoneNumber: TextView? = null
     private var edit_contact_RoundedImageView: RoundedImageView? = null
+
+    private var edit_contact_id: Long? = null
     private var edit_contact_first_name: String? = null
     private var edit_contact_last_name: String? = null
     private var edit_contact_phone_number: String? = null
@@ -38,6 +40,7 @@ class EditContactActivity : AppCompatActivity() {
 
         // Create the Intent, and get the data from the GridView
         val intent = intent
+        edit_contact_id = intent.getLongExtra("ContactId", 1)
         edit_contact_first_name = intent.getStringExtra("ContactFirstName")
         edit_contact_last_name = intent.getStringExtra("ContactLastName")
         edit_contact_phone_number = intent.getStringExtra("ContactPhoneNumber")
@@ -90,6 +93,7 @@ class EditContactActivity : AppCompatActivity() {
                 intent.putExtra("ContactLastName", edit_contact_last_name)
                 intent.putExtra("ContactPhoneNumber", edit_contact_phone_number)
                 intent.putExtra("ContactImage", edit_contact_rounded_image)
+
                 startActivity(intent)
                 finish()
             }

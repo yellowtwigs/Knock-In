@@ -114,7 +114,9 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("ContactFirstName", contact.firstName)
                     intent.putExtra("ContactLastName", contact.lastName)
                     intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
+//                    intent.putExtra("ContactMail", contact.)
                     intent.putExtra("ContactImage", contact.profilePicture)
+                    intent.putExtra("ContactId", contact.id)
 
 //                    intent.putExtra("ContactFirstName", contact.firstName)
 //                    intent.putExtra("ContactLastName", contact.contactLastName)

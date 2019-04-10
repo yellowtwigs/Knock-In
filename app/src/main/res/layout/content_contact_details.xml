@@ -54,35 +54,23 @@
             android:id="@+id/contact_details_first_name_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="test"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/textColor"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_last_name_id" />
-
-        <TextView
-            android:id="@+id/contact_details_last_name_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="test"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/textColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/contact_details_rounded_image_view_id" />
+        <TextView
+            android:id="@+id/contact_details_last_name_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/textColor"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contact_details_first_name_id" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -151,6 +139,41 @@
                     android:layout_toLeftOf="@+id/view"
                     android:contentDescription="@string/content_description_phone_call_link"
                     app:srcCompat="@drawable/ic_phone_call" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contact_details_mail_relative_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_details_relative_layout_height"
+                android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/contact_details_mail_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/contact_details_mail"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/contact_details_text_size" />
+
+                <ImageView
+                    android:layout_width="@dimen/contact_details_logo_size"
+                    android:layout_height="@dimen/contact_details_logo_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="47dp"
+                    android:contentDescription="@string/content_description_mail_link"
+                    app:srcCompat="@drawable/ic_email" />
             </RelativeLayout>
 
             <RelativeLayout

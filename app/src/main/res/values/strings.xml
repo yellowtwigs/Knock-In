@@ -78,9 +78,15 @@
     <string name="content_description_messenger_link">Lien vers le Messenger du contact</string>
     <string name="content_description_whatsapp_link">Lien vers le Whatsapp du contact</string>
     <string name="content_description_sms_link">Lien pour envoyer un sms au contact</string>
-    <string name="content_description_phone_call_link">Lien pour appeler contact</string>
+    <string name="content_description_phone_call_link">Lien pour appeler un contact</string>
+    <string name="content_description_mail_link">Lien pour appeler un contact</string>
+    <string name="content_description_skype_link">Lien pour appeler un contact via Skype</string>
+    <string name="content_description_twitter_link">Lien vers Twitter</string>
+    <string name="content_description_snapchat_link">Lien vers Snapchat</string>
+    <string name="content_description_telegram_link">Lien vers Telegram</string>
 
     <!-- ContactDetails !-->
+    <string name="contact_details_mail">Mail</string>
     <string name="contact_details_messenger">Messenger</string>
     <string name="contact_details_whatsapp">Whatsapp</string>
     <string name="contact_details_instagram">Instagram</string>

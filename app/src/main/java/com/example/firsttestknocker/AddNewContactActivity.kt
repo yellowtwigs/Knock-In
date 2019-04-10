@@ -64,21 +64,15 @@ class AddNewContactActivity : AppCompatActivity() {
                 Toast.makeText(this, "Les champs nom et prénom ne peuvent pas être vide !", Toast.LENGTH_SHORT).show()
             } else {
                 if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
-                    if(isValidMail(add_new_contact_Email!!.text.toString()))
-                    {
-                        val createNewContact = Runnable {
-                            val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), R.drawable.ryan, R.drawable.aquarius)
-                            println(contactData)
-                            main_ContactsDatabase?.contactsDao()?.insert(contactData)
-                            val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                        main_mDbWorkerThread.postTask(createNewContact)
+                    val printContacts = Runnable {
+                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(),  R.drawable.img_avatar, R.drawable.aquarius)
+                        println(contactData)
+                        main_ContactsDatabase?.contactsDao()?.insert(contactData)
+                        val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     }
-                    else{
-                        Toast.makeText(this, "Votre mai n'est pas valide !", Toast.LENGTH_SHORT).show()
-                    }
+                    main_mDbWorkerThread.postTask(printContacts)
                 }
                 else{
                     Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
