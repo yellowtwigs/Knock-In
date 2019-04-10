@@ -68,6 +68,9 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_phone_number: String? = null
     private var contact_details_mail: String? = null
     private var contact_details_rounded_image: Int = 0
+    // Database && Thread
+    private var contact_details_ContactsDatabase: ContactsRoomDatabase? = null
+    private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +84,13 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_mail = intent.getStringExtra("ContactMail")
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
         contact_details_id = intent.getLongExtra("ContactId", 1)
+
+        // on init WorkerThread
+        contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        contact_details_mDbWorkerThread.start()
+
+        //on get la base de données
+        contact_details_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -152,7 +162,10 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
 
         contact_details_FloatingButtonDelete!!.setOnClickListener {
-            // Delete
+            val deleteContact = Runnable {
+                contact_details_ContactsDatabase?.contactsDao()?.deleteContactById(contact_details_id!!.toInt())
+            }
+            contact_details_mDbWorkerThread.postTask(deleteContact)
         }
     }
 
