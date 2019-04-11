@@ -96,38 +96,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-//        //start
-//        val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null, null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
-//        val phoneContactsList = arrayListOf<Contacts>()
-//        while (phonecontact.moveToNext()) {
-//            println("ALL CONTACTS =" + phonecontact)
-//
-//            //println("FirstName = " + phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)))
-//            //println("LastName = " + phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME)))
-//            val fullName = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-//            val phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-//            if (phoneContactsList.isEmpty()) {
-//                var lastName = ""
-//                if (fullName!!.contains(' '))
-//                    lastName = fullName.substringAfter(' ')
-//                val contactData = Contacts(null,fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
-//                phoneContactsList.add(contactData)
-//            } else if (!isDuplicate(fullName!!, phoneContactsList)) {
-//                var lastName = ""
-//                if (fullName.contains(' '))
-//                    lastName = fullName.substringAfter(' ')
-//                val contactData = Contacts(null,fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
-//                phoneContactsList.add(contactData)
-//            }
-//        }
-//        val addAllContacts = Runnable {
-//            phoneContactsList.forEach {
-//                main_ContactsDatabase?.contactsDao()?.insert(it)
-//            }
-//        }
-//        main_mDbWorkerThread.postTask(addAllContacts)
-//        // end
-
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
@@ -189,22 +157,49 @@ class MainActivity : AppCompatActivity() {
         }
 
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
-            // Sync
-            // Met ton code ici
+
+            val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null, null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
+            val phoneContactsList = arrayListOf<Contacts>()
+            while (phonecontact.moveToNext()) {
+                val fullName = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                if (phoneContactsList.isEmpty()) {
+                    var lastName = ""
+                    if (fullName!!.contains(' '))
+                        lastName = fullName.substringAfter(' ')
+                    val contactData = Contacts(null,fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
+                    phoneContactsList.add(contactData)
+                } else if (!isDuplicate(fullName!!, phoneContactsList)) {
+                    var lastName = ""
+                    if (fullName.contains(' '))
+                        lastName = fullName.substringAfter(' ')
+                    val contactData = Contacts(null,fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
+                    phoneContactsList.add(contactData)
+                }
+            }
+            val addAllContacts = Runnable {
+                phoneContactsList.forEach {
+                    main_ContactsDatabase?.contactsDao()?.insert(it)
+                }
+                val intent = intent
+                finish()
+                startActivity(intent)
+            }
+            main_mDbWorkerThread.postTask(addAllContacts)
         })
 
-        var isDelete = intent.getBooleanExtra("isDelete", false)
+        val isDelete = intent.getBooleanExtra("isDelete", false)
         if(isDelete){
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
         }
     }
 
-    fun isDuplicate(contact: String, contactsList: List<Contacts>): Boolean {
+    private fun isDuplicate(contact: String, contactsList: List<Contacts>): Boolean {
         contactsList.forEach {
             if (it.lastName == "" && it.firstName == contact || it.firstName + " " + it.lastName == contact)
-                return (true)
+                return true
         }
-        return(false)
+        return false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
