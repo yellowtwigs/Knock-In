@@ -1,20 +1,23 @@
 package com.example.firsttestknocker
 
+import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.WindowManager
-import android.widget.TextView
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
+import java.io.ByteArrayOutputStream
 
 
 class EditContactActivity : AppCompatActivity() {
@@ -36,6 +39,10 @@ class EditContactActivity : AppCompatActivity() {
     private lateinit var edit_contact_mDbWorkerThread: DbWorkerThread
 
     private var isChanged = false
+
+    private var REQUEST_CAMERA: Int? = 1
+    private var SELECT_FILE: Int? = 0
+    var edit_contact_imgString: String? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,10 +93,6 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_LastName, edit_contact_last_name)
         textChanged(edit_contact_PhoneNumber, edit_contact_phone_number)
         textChanged(edit_contact_Mail, edit_contact_mail)
-
-//        val customDialogClass = CustomDialogClass(this@EditContactActivity)
-////                    customDialogClass.setText("Attention, vous risquez de perdre toutes vos modifications, voulez vous vraiment continuer ?")
-//        customDialogClass.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -154,8 +157,7 @@ class EditContactActivity : AppCompatActivity() {
         return true
     }
 
-    fun textChanged(textView : TextView?, txt : String?)
-    {
+    fun textChanged(textView: TextView?, txt: String?) {
         textView!!.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
@@ -171,5 +173,58 @@ class EditContactActivity : AppCompatActivity() {
 
             }
         })
+    }
+
+    private fun SelectImage() {
+
+        val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
+        //            ActionBar.DisplayOptions[]
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Add Image")
+        builder.setItems(items) { dialog, i ->
+            if (items[i] == "Camera") {
+
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, REQUEST_CAMERA!!)
+
+            } else if (items[i] == "Gallery") {
+
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                intent.type = "image/*"
+                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE!!)
+
+            } else if (items[i] == "Cancel") {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA) {
+
+                val bundle = data!!.extras
+                val bitmap = bundle!!.get("data") as Bitmap
+                edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
+
+            } else if (requestCode == SELECT_FILE) {
+                val selectedImageUri = data!!.data
+                edit_contact_RoundedImageView!!.setImageURI(selectedImageUri)
+            }
+        }
+    }
+
+    fun imageToBase64(img: ImageView): String {
+        val baos = ByteArrayOutputStream()
+        val bitmap = BitmapFactory.decodeResource(resources, img!!.id)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val imageBytes = baos.toByteArray()
+        val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+
+        return imageString;
     }
 }

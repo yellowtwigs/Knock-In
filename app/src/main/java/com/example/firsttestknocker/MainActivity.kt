@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS),1)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
         }
 
         // on init WorkerThread
@@ -91,6 +91,10 @@ class MainActivity : AppCompatActivity() {
                 val loginIntent = Intent(this@MainActivity, SettingsActivity::class.java)
                 startActivity(loginIntent)
             }
+                else if (id == R.id.nav_chat) {
+                    val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
+                    startActivity(loginIntent)
+            }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
@@ -101,11 +105,6 @@ class MainActivity : AppCompatActivity() {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
 
-//            val contactData = Contacts(null,"Ryan","Granet","0630370560", R.drawable.ryan,R.drawable.aquarius)
-//            main_ContactsDatabase?.contactsDao()?.updateContactById(contactData)
-//            val testfd = main_ContactsDatabase?.contactsDao()?.deleteContactById(3)
-//            println(testfd)
-//            println(contactData)
             val contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
 
             if (main_GridView != null) {
@@ -124,17 +123,11 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("ContactImage", contact.profilePicture)
                     intent.putExtra("ContactId", contact.id)
 
-//                    intent.putExtra("ContactFirstName", contact.firstName)
-//                    intent.putExtra("ContactLastName", contact.contactLastName)
-//                    intent.putExtra("ContactPhoneNumber", contact.contactPhoneNumber)
-//                    intent.putExtra("ContactImage", contact.contactImage)
                     startActivity(intent)
-                    //                finish();
                 }
 
                 // Drag n Drop
                 main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, _, _ ->
-                    //                finish();
                     false
                 }
             }
@@ -208,7 +201,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
-        if(isDelete){
+        if (isDelete) {
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
         }
     }

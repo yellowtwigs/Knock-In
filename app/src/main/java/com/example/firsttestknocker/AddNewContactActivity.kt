@@ -1,13 +1,20 @@
 package com.example.firsttestknocker
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,6 +23,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import java.io.ByteArrayOutputStream
 
 class AddNewContactActivity : AppCompatActivity() {
 
@@ -28,6 +36,11 @@ class AddNewContactActivity : AppCompatActivity() {
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
+    private var REQUEST_CAMERA: Int? = 1
+    private var SELECT_FILE: Int? = 0
+    var add_new_contact_imgString: String? = null;
+
+    @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_contact)
@@ -55,6 +68,12 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_RoundedImageView = findViewById(R.id.add_new_contact_rounded_image_view_id)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+        add_new_contact_RoundedImageView!!.setOnClickListener {
+            SelectImage()
+        }
+
+        add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -119,5 +138,59 @@ class AddNewContactActivity : AppCompatActivity() {
 
     fun isValidMail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun SelectImage() {
+
+        val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
+        //            ActionBar.DisplayOptions[]
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Add Image")
+        builder.setItems(items) { dialog, i ->
+            if (items[i] == "Camera") {
+
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, REQUEST_CAMERA!!)
+
+            } else if (items[i] == "Gallery") {
+
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                intent.type = "image/*"
+                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE!!)
+
+            } else if (items[i] == "Cancel") {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA) {
+
+                val bundle = data!!.extras
+                val bitmap = bundle!!.get("data") as Bitmap
+                add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
+
+            } else if (requestCode == SELECT_FILE) {
+                val selectedImageUri = data!!.data
+                add_new_contact_RoundedImageView!!.setImageURI(selectedImageUri)
+            }
+        }
+    }
+
+    fun imageToBase64(img : ImageView) : String
+    {
+        val baos = ByteArrayOutputStream()
+        val bitmap = BitmapFactory.decodeResource(resources, img!!.id)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val imageBytes = baos.toByteArray()
+        val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+
+        return imageString;
     }
 }
