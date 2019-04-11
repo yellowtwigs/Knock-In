@@ -9,6 +9,20 @@
     <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/main_floating_button_sync_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/floating_button_margin"
+        android:layout_marginRight="@dimen/floating_button_margin"
+        android:layout_marginBottom="260dp"
+        android:backgroundTint="@color/colorKnocker"
+        android:elevation="6dp"
+        android:visibility="invisible"
+        app:pressedTranslationZ="12dp"
+        android:src="@android:drawable/stat_notify_sync" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/main_floating_button_compose_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

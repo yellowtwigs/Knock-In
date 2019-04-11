@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.GridView
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var main_FloatingButtonOpen: FloatingActionButton? = null
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonCompose: FloatingActionButton? = null
+    private var main_FloatingButtonSync: FloatingActionButton? = null
     private var main_FloatingButtonOpenAnimation: Animation? = null
     private var main_FloatingButtonCloseAnimation: Animation? = null
     private var main_FloatingButtonClockWiserAnimation: Animation? = null
@@ -57,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
         main_FloatingButtonAdd = findViewById(R.id.main_floating_button_add_id)
         main_FloatingButtonCompose = findViewById(R.id.main_floating_button_compose_id)
+        main_FloatingButtonSync = findViewById(R.id.main_floating_button_sync_id)
         main_FloatingButtonOpenAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
         main_FloatingButtonCloseAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
         main_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
@@ -148,7 +151,7 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("ContactFirstName", contact.firstName)
                     intent.putExtra("ContactLastName", contact.lastName)
                     intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
-//                    intent.putExtra("ContactMail", contact.)
+                    intent.putExtra("ContactMail", contact.mail)
                     intent.putExtra("ContactImage", contact.profilePicture)
                     intent.putExtra("ContactId", contact.id)
 
@@ -185,6 +188,11 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
+            // Sync
+            // Met ton code ici
+        })
+
         var isDelete = intent.getBooleanExtra("isDelete", false)
         if(isDelete){
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
@@ -220,18 +228,22 @@ class MainActivity : AppCompatActivity() {
     fun onFloatingClickBack() {
         main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonCloseAnimation)
         main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonCloseAnimation)
+        main_FloatingButtonSync!!.startAnimation(main_FloatingButtonCloseAnimation)
         main_FloatingButtonOpen!!.startAnimation(main_FloatingButtonAntiClockWiserAnimation)
 
         main_FloatingButtonAdd!!.isClickable = false
         main_FloatingButtonCompose!!.isClickable = false
+        main_FloatingButtonSync!!.isClickable = false
     }
 
     fun onFloatingClick() {
         main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonOpenAnimation)
         main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonOpenAnimation)
+        main_FloatingButtonSync!!.startAnimation(main_FloatingButtonOpenAnimation)
         main_FloatingButtonOpen!!.startAnimation(main_FloatingButtonClockWiserAnimation)
 
         main_FloatingButtonAdd!!.isClickable = true
         main_FloatingButtonCompose!!.isClickable = true
+        main_FloatingButtonSync!!.isClickable = true
     }
 }
