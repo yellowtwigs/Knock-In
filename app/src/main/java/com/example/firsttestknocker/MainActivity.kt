@@ -1,6 +1,7 @@
 package com.example.firsttestknocker
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.support.design.widget.FloatingActionButton
@@ -158,34 +159,52 @@ class MainActivity : AppCompatActivity() {
 
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
 
-            val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null, null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
-            val phoneContactsList = arrayListOf<Contacts>()
-            while (phonecontact.moveToNext()) {
-                val fullName = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                if (phoneContactsList.isEmpty()) {
-                    var lastName = ""
-                    if (fullName!!.contains(' '))
-                        lastName = fullName.substringAfter(' ')
-                    val contactData = Contacts(null,fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
-                    phoneContactsList.add(contactData)
-                } else if (!isDuplicate(fullName!!, phoneContactsList)) {
-                    var lastName = ""
-                    if (fullName.contains(' '))
-                        lastName = fullName.substringAfter(' ')
-                    val contactData = Contacts(null,fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
-                    phoneContactsList.add(contactData)
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("SYNCHRONISATION DE VOS CONTACTS")
+            builder.setMessage("Voulez vous synchroniser les contacts de votre téléphone avec Knoker ?")
+            builder.setPositiveButton("OUI") { dialog, which ->
+                val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
+                val phoneContactsList = arrayListOf<Contacts>()
+                while (phonecontact.moveToNext()) {
+                    val fullName = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    val phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                    if (phoneContactsList.isEmpty()) {
+                        var lastName = ""
+                        if (fullName!!.contains(' '))
+                            lastName = fullName.substringAfter(' ')
+                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
+                        phoneContactsList.add(contactData)
+                    } else if (!isDuplicate(fullName!!, phoneContactsList)) {
+                        var lastName = ""
+                        if (fullName.contains(' '))
+                            lastName = fullName.substringAfter(' ')
+                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
+                        phoneContactsList.add(contactData)
+                    }
                 }
-            }
-            val addAllContacts = Runnable {
-                phoneContactsList.forEach {
-                    main_ContactsDatabase?.contactsDao()?.insert(it)
+                val addAllContacts = Runnable {
+                    var isDuplicate = false
+                    val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                    phoneContactsList.forEach { phoneContactList ->
+                        allcontacts?.forEach { contactsDB ->
+                            if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
+                                isDuplicate = true
+                        }
+                        if (isDuplicate == false) {
+                            main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
+                        }
+                    }
+                    val intent = intent
+                    finish()
+                    startActivity(intent)
                 }
-                val intent = intent
-                finish()
-                startActivity(intent)
+                main_mDbWorkerThread.postTask(addAllContacts)
             }
-            main_mDbWorkerThread.postTask(addAllContacts)
+            builder.setNegativeButton("NON") { dialog, which ->
+                //non
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
         })
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
