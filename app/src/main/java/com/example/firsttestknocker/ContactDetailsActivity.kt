@@ -3,6 +3,8 @@ package com.example.firsttestknocker
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -165,14 +167,25 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
 
         contact_details_FloatingButtonDelete!!.setOnClickListener {
-            val deleteContact = Runnable {
-                contact_details_ContactsDatabase?.contactsDao()?.deleteContactById(contact_details_id!!.toInt())
+            //lateinit var dialog: AlertDialog
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("SUPPRIMER CONTACT")
+            builder.setMessage("Voulez vous vraiment supprimer ce contact ?")
+            builder.setPositiveButton("OUI") { dialog, which ->
+                val deleteContact = Runnable {
+                    contact_details_ContactsDatabase?.contactsDao()?.deleteContactById(contact_details_id!!.toInt())
 
-                val intent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
-                intent.putExtra("isDelete", true);
-                startActivity(intent)
+                    val intent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
+                    intent.putExtra("isDelete", true);
+                    startActivity(intent)
+                }
+                contact_details_mDbWorkerThread.postTask(deleteContact)
             }
-            contact_details_mDbWorkerThread.postTask(deleteContact)
+            builder.setNegativeButton("NON") { dialog, which ->
+            //non
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
         }
     }
 
