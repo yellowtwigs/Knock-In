@@ -4,12 +4,16 @@ import android.content.Intent
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 
@@ -19,7 +23,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_LastName: EditText? = null
     private var add_new_contact_PhoneNumber: EditText? = null
     private var add_new_contact_Email: EditText? = null
-    private var add_new_contact_RoundedImageView: RoundedImageView? = null
+    private var add_new_contact_RoundedImageView: ImageView? = null
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
@@ -56,9 +60,26 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                if (isEmptyField(add_new_contact_FirstName) && isEmptyField(add_new_contact_LastName) && isEmptyField(add_new_contact_PhoneNumber) && isEmptyField(add_new_contact_Email)) {
+                    val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    var alertDialog = AlertDialog.Builder(this)
+                    alertDialog.setTitle("Attention")
+                    alertDialog.setMessage("Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?")
+
+                    alertDialog.setPositiveButton("Oui", { _, _ ->
+
+                        val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    })
+
+                    alertDialog.setNegativeButton("Non", { _, _ ->
+                    })
+                    alertDialog.show()
+                }
             }
             R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName)) {
                 Toast.makeText(this, "Le champ prénom ne peut pas être vide !", Toast.LENGTH_SHORT).show()
@@ -73,8 +94,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         finish()
                     }
                     main_mDbWorkerThread.postTask(printContacts)
-                }
-                else{
+                } else {
                     Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
                 }
             }

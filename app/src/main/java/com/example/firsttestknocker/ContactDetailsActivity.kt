@@ -43,7 +43,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_LastName: TextView? = null
     private var contact_details_PhoneNumber: TextView? = null
     private var contact_details_Mail: TextView? = null
-    private var contact_details_RoundedImageView: RoundedImageView? = null
+    private var contact_details_RoundedImageView: ImageView? = null
     private var contactImage_BackgroundImage: ImageView? = null
 
     private var contact_details_FloatingButtonOpen: FloatingActionButton? = null
@@ -125,11 +125,11 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
         contact_details_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
 
-        if (contact_details_phone_number != null) {
+        if (!contact_details_phone_number.isNullOrEmpty()) {
             contact_details_phone_number_RelativeLayout!!.visibility = View.VISIBLE
         }
 
-        if (contact_details_mail != null) {
+        if (!contact_details_mail.isNullOrEmpty()) {
             contact_details_mail_RelativeLayout!!.visibility = View.VISIBLE
         }
 
@@ -138,6 +138,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_LastName!!.text = contact_details_last_name
         contact_details_PhoneNumber!!.text = contact_details_phone_number
         contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
+        contact_details_Mail!!.text = contact_details_mail
 
         contact_details_FloatingButtonOpen!!.setOnClickListener {
             if (isOpen) {
@@ -158,6 +159,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             intent.putExtra("ContactPhoneNumber", contact_details_phone_number)
             intent.putExtra("ContactImage", contact_details_rounded_image)
             intent.putExtra("ContactId", contact_details_id!!)
+            intent.putExtra("ContactMail", contact_details_mail!!)
 
             startActivity(intent)
         }

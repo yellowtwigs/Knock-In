@@ -35,7 +35,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.firsttestknocker.RoundedImageView
+        <ImageView
+            android:background="@drawable/circle"
             android:id="@+id/contact_details_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
             android:layout_height="@dimen/rounded_image_view_height_width"

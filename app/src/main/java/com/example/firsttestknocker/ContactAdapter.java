@@ -68,6 +68,6 @@ public class ContactAdapter extends BaseAdapter {
         TextView contactFirstNameView;
         TextView contactLastNameView;
         TextView contactPhoneNumberView;
-        RoundedImageView contactRoundedImageView;
+        ImageView contactRoundedImageView;
     }
 }

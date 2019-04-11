@@ -20,7 +20,7 @@
         android:elevation="6dp"
         android:visibility="invisible"
         app:pressedTranslationZ="12dp"
-        android:src="@android:drawable/stat_notify_sync" />
+        app:srcCompat="@drawable/ic_synchronization_arrows" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/main_floating_button_compose_id"
