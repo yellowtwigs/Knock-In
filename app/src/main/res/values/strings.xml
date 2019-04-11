@@ -103,4 +103,8 @@
     <string name="settings_knockons_long_text">Personnalisez vos Knockons à votre guise.</string>
     <string name="settings_theme">Changer le thème</string>
     <string name="settings_theme_long_text">Personnalisez le thème de l\'application pour vivre une meilleure expérience.</string>
+
+    <!-- Custom Popup !-->
+    <string name="custom_popup_yes_btn">Yes</string>
+    <string name="custom_popup_no_btn">No</string>
 </resources>

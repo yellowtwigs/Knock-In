@@ -60,8 +60,8 @@ class AddNewContactActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-            R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName) || isEmptyField(add_new_contact_LastName)) {
-                Toast.makeText(this, "Les champs nom et prénom ne peuvent pas être vide !", Toast.LENGTH_SHORT).show()
+            R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName)) {
+                Toast.makeText(this, "Le champ prénom ne peut pas être vide !", Toast.LENGTH_SHORT).show()
             } else {
                 if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                     val printContacts = Runnable {

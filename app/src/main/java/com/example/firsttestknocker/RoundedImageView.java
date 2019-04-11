@@ -1,4 +1,5 @@
 package com.example.firsttestknocker;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -47,7 +48,6 @@ public class RoundedImageView extends AppCompatImageView {
 
         Bitmap roundBitmap = getCroppedBitmap(bitmap, w);
         canvas.drawBitmap(roundBitmap, 0, 0, null);
-
     }
 
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
