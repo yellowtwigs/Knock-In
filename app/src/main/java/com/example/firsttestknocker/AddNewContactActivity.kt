@@ -73,7 +73,24 @@ class AddNewContactActivity : AppCompatActivity() {
             SelectImage()
         }
 
-        add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
+        //add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
+    }
+
+    private fun confirmationDuplicate(contactData: Contacts){
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("CONTACT DEJA EXISTANT !")
+        builder.setMessage("Un contact porte déjà ce nom. L'enregistrer quand même sous ce nom ?")
+        builder.setPositiveButton("OUI") { dialog, which ->
+            main_ContactsDatabase?.contactsDao()?.insert(contactData)
+            val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        builder.setNegativeButton("NON") { dialog, which ->
+            //NOM
+        }
+        val dialog: android.app.AlertDialog = builder.create()
+        dialog.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -107,10 +124,22 @@ class AddNewContactActivity : AppCompatActivity() {
                     val printContacts = Runnable {
                         val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius)
                         println(contactData)
-                        main_ContactsDatabase?.contactsDao()?.insert(contactData)
-                        val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        //
+                        var isDuplicate = false
+                        val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                        allcontacts?.forEach { contactsDB ->
+                            if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
+                                isDuplicate = true
+                        }
+                        if (isDuplicate == false) {
+                            main_ContactsDatabase?.contactsDao()?.insert(contactData)
+                            val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            confirmationDuplicate(contactData)
+                        }
+                        //
                     }
                     main_mDbWorkerThread.postTask(printContacts)
                 } else {
