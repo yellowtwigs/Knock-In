@@ -1,5 +1,6 @@
 package com.example.notificationlistener;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -12,25 +13,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Window;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private TextView txtView;
     private StatusbarReceiver sbr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        txtView= findViewById(R.id.txtView);
-        if(!isNotificationServiceEnabled()){
-            AlertDialog alertDialog = buildNotificationServiceAlertDialog();
-            alertDialog.show();
-        }
-        sbr = new StatusbarReceiver();
-        Log.i("message","test");
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.example.testnotifiacation.notificationExemple");
-        registerReceiver(sbr,intentFilter);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //setContentView(R.layout.activity_main);
+        //txtView= findViewById(R.id.txtView);
+
+       if(!isNotificationServiceEnabled()) {
+
+           AlertDialog alertDialog = buildNotificationServiceAlertDialog();
+           alertDialog.show();
+           }
+
+           sbr = new StatusbarReceiver();
+           Log.i("message", "test");
+           IntentFilter intentFilter = new IntentFilter();
+           intentFilter.addAction("com.example.testnotifiacation.notificationExemple");
+           registerReceiver(sbr, intentFilter);
+       if(isNotificationServiceEnabled()) {
+           finish();
+       }
     }
 
     private boolean isNotificationServiceEnabled(){
@@ -73,11 +82,10 @@ public class MainActivity extends AppCompatActivity {
     public class StatusbarReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context,Intent intent){
-
+/*
             StatusBarParcelable sbp= intent.getParcelableExtra("statusBar");
             String textNotif = "notification id: "+sbp.getId()+ " envoyé par "+sbp.getAppNotifier()+" l'expediteur du message est "+sbp.getStatusBarNotificationInfo().get("android.title")+" voici le contenu de ce message" + sbp.getStatusBarNotificationInfo().get("android.text")+"\n" +txtView.getText();
             txtView.setText(textNotif);
-
-        }
+  */      }
     }
 }
