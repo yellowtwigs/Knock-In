@@ -166,8 +166,9 @@ class ContactDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //bonton suppression de contact
         contact_details_FloatingButtonDelete!!.setOnClickListener {
-            //lateinit var dialog: AlertDialog
+            //crée une pop up de confirmation avant de supprimer un contact
             val builder = AlertDialog.Builder(this)
             builder.setTitle("SUPPRIMER CONTACT")
             builder.setMessage("Voulez vous vraiment supprimer ce contact ?")
@@ -182,7 +183,7 @@ class ContactDetailsActivity : AppCompatActivity() {
                 contact_details_mDbWorkerThread.postTask(deleteContact)
             }
             builder.setNegativeButton("NON") { dialog, which ->
-            //non
+            //annule la suppression
             }
             val dialog: AlertDialog = builder.create()
             dialog.show()

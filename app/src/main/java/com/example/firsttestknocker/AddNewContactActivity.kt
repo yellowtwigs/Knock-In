@@ -75,6 +75,7 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    //demmande de confirmation de la création d'un contact en double
     private fun confirmationDuplicate(contactData: Contacts){
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle("CONTACT DEJA EXISTANT !")
@@ -121,9 +122,10 @@ class AddNewContactActivity : AppCompatActivity() {
             } else {
                 if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                     val printContacts = Runnable {
+
+                        //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
                         val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius)
                         println(contactData)
-                        //
                         var isDuplicate = false
                         val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
                         allcontacts?.forEach { contactsDB ->
@@ -138,7 +140,6 @@ class AddNewContactActivity : AppCompatActivity() {
                         } else {
                             confirmationDuplicate(contactData)
                         }
-                        //
                     }
                     main_mDbWorkerThread.postTask(printContacts)
                 } else {

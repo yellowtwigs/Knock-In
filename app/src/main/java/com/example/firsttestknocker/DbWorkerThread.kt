@@ -12,6 +12,7 @@ class DbWorkerThread(threadName: String) : HandlerThread(threadName){
         mWorkerHandler = Handler(looper)
     }
 
+    //lance la fonction task dans un thread
     fun postTask(task: Runnable) {
         if (this::mWorkerHandler.isInitialized) {
             mWorkerHandler.post(task)

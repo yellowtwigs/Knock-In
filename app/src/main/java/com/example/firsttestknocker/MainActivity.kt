@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        //affiche tout les contacts de la Database
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
@@ -150,12 +151,15 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
 
+            //création de la pop up de confirmation de synchro
             val builder = AlertDialog.Builder(this)
             builder.setTitle("SYNCHRONISATION DE VOS CONTACTS")
             builder.setMessage("Voulez vous synchroniser les contacts de votre téléphone avec Knoker ?")
             builder.setPositiveButton("OUI") { dialog, which ->
+                //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
                 val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
                 val phoneContactsList = arrayListOf<Contacts>()
                 while (phonecontact.moveToNext()) {
@@ -175,6 +179,8 @@ class MainActivity : AppCompatActivity() {
                         phoneContactsList.add(contactData)
                     }
                 }
+
+                //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
                 val addAllContacts = Runnable {
                     var isDuplicate = false
                     val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
@@ -194,7 +200,7 @@ class MainActivity : AppCompatActivity() {
                 main_mDbWorkerThread.postTask(addAllContacts)
             }
             builder.setNegativeButton("NON") { dialog, which ->
-                //non
+                //retour à la liste de contacts
             }
             val dialog: AlertDialog = builder.create()
             dialog.show()
@@ -206,6 +212,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //compare le contact données avec tous ceux de la Database
     private fun isDuplicate(contact: String, contactsList: List<Contacts>): Boolean {
         contactsList.forEach {
             if (it.lastName == "" && it.firstName == contact || it.firstName + " " + it.lastName == contact)
