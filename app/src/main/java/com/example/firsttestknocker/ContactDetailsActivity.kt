@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -103,7 +104,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
         actionbar.setTitle("Détails du contact " + contact_details_first_name!!)
 
-        // Find View By Id
+        // Contact's informations, link between Layout and the Activity
         contact_details_FirstName = findViewById(R.id.contact_details_first_name_id)
         contact_details_LastName = findViewById(R.id.contact_details_last_name_id)
         contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id)
@@ -111,14 +112,14 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id)
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id)
 
+        // RelativeLayout to link with other SM's apps, link between Layout and the Activity
         contact_details_phone_number_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id)
         contact_details_messenger_RelativeLayout = findViewById(R.id.contact_details_messenger_relative_layout_id)
         contact_details_whatsapp_RelativeLayout = findViewById(R.id.contact_details_whatsapp_relative_layout_id)
         contact_details_instagram_RelativeLayout = findViewById(R.id.contact_details_instagram_relative_layout_id)
         contact_details_mail_RelativeLayout = findViewById(R.id.contact_details_mail_relative_layout_id)
 
-
-        // Floating Button
+        // Floating Button link between Layout and the Activity
         contact_details_FloatingButtonOpen = findViewById(R.id.contact_details_floating_button_open_id)
         contact_details_FloatingButtonEdit = findViewById(R.id.contact_details_floating_button_edit_id)
         contact_details_FloatingButtonDelete = findViewById(R.id.contact_details_floating_button_delete_id)
@@ -127,10 +128,11 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
         contact_details_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
 
+
         if (!contact_details_phone_number.isNullOrEmpty()) {
             contact_details_phone_number_RelativeLayout!!.visibility = View.VISIBLE
+            contact_details_whatsapp_RelativeLayout!!.visibility = View.VISIBLE
         }
-
         if (!contact_details_mail.isNullOrEmpty()) {
             contact_details_mail_RelativeLayout!!.visibility = View.VISIBLE
         }
@@ -142,6 +144,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
         contact_details_Mail!!.text = contact_details_mail
 
+        // The click for the animation
         contact_details_FloatingButtonOpen!!.setOnClickListener {
             if (isOpen) {
                 onFloatingClickBack()
@@ -152,10 +155,17 @@ class ContactDetailsActivity : AppCompatActivity() {
             }
         }
 
+        // Link to Whatsapp contact chat
+        contact_details_whatsapp_RelativeLayout!!.setOnClickListener {
+            onWhatsappClick(contact_details_PhoneNumber!!.text)
+        }
+
+        // Floating button, edit a contact
         contact_details_FloatingButtonEdit!!.setOnClickListener {
 
             val intent = Intent(this@ContactDetailsActivity, EditContactActivity::class.java)
 
+            // Creation of a intent to transfer data's contact from ContactDetails to EditContact
             intent.putExtra("ContactFirstName", contact_details_first_name)
             intent.putExtra("ContactLastName", contact_details_last_name)
             intent.putExtra("ContactPhoneNumber", contact_details_phone_number)
@@ -166,7 +176,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //bonton suppression de contact
+        // Floating button, detete a contact
         contact_details_FloatingButtonDelete!!.setOnClickListener {
             //crée une pop up de confirmation avant de supprimer un contact
             val builder = AlertDialog.Builder(this)
@@ -190,6 +200,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
+    // Intent to return to the MainActivity
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -202,7 +213,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
+    // Animation for the Floating Button
     fun onFloatingClickBack() {
         contact_details_FloatingButtonDelete!!.startAnimation(contact_details_FloatingButtonCloseAnimation)
         contact_details_FloatingButtonEdit!!.startAnimation(contact_details_FloatingButtonCloseAnimation)
@@ -212,6 +223,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FloatingButtonDelete!!.isClickable = false
     }
 
+    // Animation for the Floating Button
     fun onFloatingClick() {
         contact_details_FloatingButtonDelete!!.startAnimation(contact_details_FloatingButtonOpenAnimation)
         contact_details_FloatingButtonEdit!!.startAnimation(contact_details_FloatingButtonOpenAnimation)
@@ -219,5 +231,21 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         contact_details_FloatingButtonEdit!!.isClickable = true
         contact_details_FloatingButtonDelete!!.isClickable = true
+    }
+
+    // Link to Whatsapp
+    fun onWhatsappClick(contact : CharSequence){
+        val url = "https://api.whatsapp.com/send?phone=$contact"
+        try {
+            val pm = this.getPackageManager()
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(this, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
+
     }
 }

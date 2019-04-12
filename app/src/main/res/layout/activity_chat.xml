@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/ic_messenger" />
 
     <ImageView
-        android:id="@+id/whatsapp"
+        android:id="@+id/instagram"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="152dp"
@@ -30,6 +30,6 @@
         android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_whatsapp" />
+        app:srcCompat="@drawable/ic_instagram" />
 
 </android.support.constraint.ConstraintLayout>
