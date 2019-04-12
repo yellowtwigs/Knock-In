@@ -93,6 +93,11 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_LastName, edit_contact_last_name)
         textChanged(edit_contact_PhoneNumber, edit_contact_phone_number)
         textChanged(edit_contact_Mail, edit_contact_mail)
+
+        edit_contact_RoundedImageView!!.setOnClickListener {
+            SelectImage()
+//            add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

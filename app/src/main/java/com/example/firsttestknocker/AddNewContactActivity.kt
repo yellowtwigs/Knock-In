@@ -71,9 +71,8 @@ class AddNewContactActivity : AppCompatActivity() {
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
             SelectImage()
+//            add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
         }
-
-        //add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
     }
 
     private fun confirmationDuplicate(contactData: Contacts){
