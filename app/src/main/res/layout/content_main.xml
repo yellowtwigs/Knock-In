@@ -17,7 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorKnocker"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+            <!--search bar à changer car c'est moche-->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/main_search_bar"
+                android:background="#FFFFFF" />
+        </android.support.v7.widget.Toolbar>
+
         <GridView
             android:id="@+id/main_grid_view_id"
             android:layout_width="match_parent"

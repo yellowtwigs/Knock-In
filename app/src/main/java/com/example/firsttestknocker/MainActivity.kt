@@ -20,6 +20,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.GridView
 import android.widget.AdapterView
+import android.widget.EditText
 import android.widget.Toast
 
 import java.util.ArrayList
@@ -37,6 +38,11 @@ class MainActivity : AppCompatActivity() {
     private var main_FloatingButtonClockWiserAnimation: Animation? = null
     private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
     internal var isOpen = false
+    //<check Kenzy
+    internal var main_search_bar_value = ""
+    private var main_SearchBar: EditText? = null
+    //check Kenzy>
+
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
@@ -65,6 +71,12 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonCloseAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
         main_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
         main_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
+
+        // Search bar //<check Kenzy
+        main_SearchBar = findViewById(R.id.main_search_bar)
+        val intentSearchBar = intent
+        var main_search_bar = intent.getStringExtra("SearchBar")
+        //check Kenzy>
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -105,8 +117,14 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
+            var contactList: List<Contacts>?
 
-            val contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
+            println("teeeeest = " + main_search_bar)
+            if (main_search_bar == null) {
+                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
+            } else {
+                contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
+            }
 
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList)
@@ -227,6 +245,14 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout!!.openDrawer(GravityCompat.START)
                 return true
             }
+            //<check Kenzy
+            R.id.nav_search -> {
+                main_search_bar_value = main_SearchBar!!.text.toString()
+                intent.putExtra("SearchBar", main_search_bar_value)
+                println(main_SearchBar!!.text.toString())
+                startActivity(intent)
+            }
+            //check Kenzy>
             R.id.nav_category -> return true
             R.id.nav_filter -> return true
         }

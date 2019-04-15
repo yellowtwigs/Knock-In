@@ -16,7 +16,7 @@ interface ContactsDao {
     fun getContact(id: Int): Contacts
 
     //get des contacts grace à leurs name/lastname
-    @Query("SELECT * FROM contacts_table WHERE instr(first_name, :name) > 0 OR instr(last_name, :name) > 0")
+    @Query("SELECT * FROM contacts_table WHERE instr(lower(first_name), :name) > 0 OR instr(lower(last_name), :name) > 0")
     fun getContactByName(name: String): List<Contacts>
 
     //get les contacts qui possèdent un mail
