@@ -27,7 +27,8 @@
         </activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ContactDetailsActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+                  android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

@@ -16,8 +16,8 @@
     <!-- Menu Main !-->
     <string name="main_search">Search</string>
     <string name="main_menu">Settings</string>
-    <string name="main_create_category">Créer une nouvelle catégorie</string>
-    <string name="main_filter">Filtre</string>
+    <string name="main_create_category">sms</string>
+    <string name="main_filter">email</string>
 
     <!-- Add New Contact !-->
     <string name="add_new_contact_title">Ajoutez un nouveau contact</string>
