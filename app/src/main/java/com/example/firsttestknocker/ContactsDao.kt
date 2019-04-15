@@ -15,6 +15,18 @@ interface ContactsDao {
     @Query("SELECT * FROM contacts_table WHERE id = :id")
     fun getContact(id: Int): Contacts
 
+    //get des contacts grace à leurs name/lastname
+    @Query("SELECT * FROM contacts_table WHERE instr(first_name, :name) > 0 OR instr(last_name, :name) > 0")
+    fun getContactByName(name: String): List<Contacts>
+
+    //get les contacts qui possèdent un mail
+    @Query("SELECT * FROM contacts_table WHERE mail <> ''")
+    fun getContactWithMail(): List<Contacts>
+
+    //get les contacts qui possède un numéro
+    @Query("SELECT * FROM contacts_table WHERE phone_number <> ''")
+    fun getContactWithPhoneNumber(): List<Contacts>
+
     //add un contact
     @Insert
     fun insert(contacts: Contacts)
