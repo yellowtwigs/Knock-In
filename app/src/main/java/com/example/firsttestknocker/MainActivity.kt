@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
         }
@@ -74,7 +75,6 @@ class MainActivity : AppCompatActivity() {
 
         // Search bar //<check Kenzy
         main_SearchBar = findViewById(R.id.main_search_bar)
-        val intentSearchBar = intent
         var main_search_bar = intent.getStringExtra("SearchBar")
         //check Kenzy>
 
@@ -176,7 +176,7 @@ class MainActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("SYNCHRONISATION DE VOS CONTACTS")
             builder.setMessage("Voulez vous synchroniser les contacts de votre téléphone avec Knoker ?")
-            builder.setPositiveButton("OUI") { dialog, which ->
+            builder.setPositiveButton("OUI") { _, _ ->
                 //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
                 val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
                 val phoneContactsList = arrayListOf<Contacts>()
@@ -197,6 +197,7 @@ class MainActivity : AppCompatActivity() {
                         phoneContactsList.add(contactData)
                     }
                 }
+                phonecontact?.close()
 
                 //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
                 val addAllContacts = Runnable {
@@ -217,7 +218,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 main_mDbWorkerThread.postTask(addAllContacts)
             }
-            builder.setNegativeButton("NON") { dialog, which ->
+            builder.setNegativeButton("NON") { _, _ ->
                 //retour à la liste de contacts
             }
             val dialog: AlertDialog = builder.create()

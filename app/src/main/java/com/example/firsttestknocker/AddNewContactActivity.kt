@@ -80,14 +80,14 @@ class AddNewContactActivity : AppCompatActivity() {
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle("CONTACT DEJA EXISTANT !")
         builder.setMessage("Un contact porte déjà ce nom. L'enregistrer quand même sous ce nom ?")
-        builder.setPositiveButton("OUI") { dialog, which ->
+        builder.setPositiveButton("OUI") { _, _ ->
             main_ContactsDatabase?.contactsDao()?.insert(contactData)
             val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
-        builder.setNegativeButton("NON") { dialog, which ->
-            //NOM
+        builder.setNegativeButton("NON") { _, _ ->
+            //NON
         }
         val dialog: android.app.AlertDialog = builder.create()
         dialog.show()
@@ -215,7 +215,7 @@ class AddNewContactActivity : AppCompatActivity() {
     fun imageToBase64(img : ImageView) : String
     {
         val baos = ByteArrayOutputStream()
-        val bitmap = BitmapFactory.decodeResource(resources, img!!.id)
+        val bitmap = BitmapFactory.decodeResource(resources, img.id)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val imageBytes = baos.toByteArray()
         val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)

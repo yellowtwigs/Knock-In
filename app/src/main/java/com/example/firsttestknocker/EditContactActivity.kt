@@ -225,7 +225,7 @@ class EditContactActivity : AppCompatActivity() {
 
     fun imageToBase64(img: ImageView): String {
         val baos = ByteArrayOutputStream()
-        val bitmap = BitmapFactory.decodeResource(resources, img!!.id)
+        val bitmap = BitmapFactory.decodeResource(resources, img.id)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val imageBytes = baos.toByteArray()
         val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)

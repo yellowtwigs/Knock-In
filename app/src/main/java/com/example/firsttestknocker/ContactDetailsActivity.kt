@@ -182,7 +182,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("SUPPRIMER CONTACT")
             builder.setMessage("Voulez vous vraiment supprimer ce contact ?")
-            builder.setPositiveButton("OUI") { dialog, which ->
+            builder.setPositiveButton("OUI") { _, _ ->
                 val deleteContact = Runnable {
                     contact_details_ContactsDatabase?.contactsDao()?.deleteContactById(contact_details_id!!.toInt())
 
@@ -192,7 +192,7 @@ class ContactDetailsActivity : AppCompatActivity() {
                 }
                 contact_details_mDbWorkerThread.postTask(deleteContact)
             }
-            builder.setNegativeButton("NON") { dialog, which ->
+            builder.setNegativeButton("NON") { _, _ ->
             //annule la suppression
             }
             val dialog: AlertDialog = builder.create()
