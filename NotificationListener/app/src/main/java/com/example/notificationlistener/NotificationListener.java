@@ -45,11 +45,7 @@ public class NotificationListener extends NotificationListenerService {
             for (String key : sbn.getNotification().extras.keySet()) {
                 Log.i(TAG, key + "=" + sbn.getNotification().extras.get(key));
             }
-            Intent i = new Intent();
-            i.setClass(getApplicationContext(), NotificationPopUpActivity.class);
-            i.putExtra("statusBar", sbp);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //startActivity(i);
+
             if(Settings.canDrawOverlays(this)) {
 
                 WindowManager.LayoutParams parameters = new WindowManager.LayoutParams(
@@ -60,16 +56,16 @@ public class NotificationListener extends NotificationListenerService {
                 parameters.flags=WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
                 WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.activity_notification_pop_up, null);
+                /*View popupView = inflater.inflate(R.layout.activity_notification_pop_up, null);
                 notifLayout(sbp, popupView);
 
-                windowManager.addView(popupView, parameters);
+                windowManager.addView(popupView, parameters);*/
             }
         }
 
     }
 
-    private void notifLayout(StatusBarParcelable sbp, final View view) {
+   /* private void notifLayout(StatusBarParcelable sbp, final View view) {
         TextView expediteur =view.findViewById(R.id.expediteur2);
         TextView message=(TextView) view.findViewById(R.id.txtView2);
         expediteur.setText(sbp.getStatusBarNotificationInfo().get("android.title")+"");
@@ -85,7 +81,7 @@ public class NotificationListener extends NotificationListenerService {
                     }
                 }
         );
-    }
+    }*/
 
 
     public boolean appNotifiable(StatusBarParcelable sbp){
