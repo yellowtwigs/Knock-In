@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     internal var isOpen = false
     //<check Kenzy
     internal var main_search_bar_value = ""
+    private var main_filter: MutableList<String> = mutableListOf<String>()
     private var main_SearchBar: EditText? = null
     //check Kenzy>
 
@@ -97,6 +98,28 @@ class MainActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+
+        ///TEST
+        var first = arrayListOf<String>()
+        val second = arrayListOf<String>()
+        val third = arrayListOf<String>()
+        first.add("okk")
+        first.add("error")
+        first.add("foo")
+        second.add("end")
+        second.add("bar")
+        second.add("error")
+        second.add("okk")
+        third.add("oddy")
+        third.add("choose")
+        third.add("ok")
+        third.add("error")
+//        second.forEach {
+//            first.add(it)
+//        }
+
+        println(third.intersect(first.intersect(second)))
+        ///ENDTEST
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -254,6 +277,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        println("Start = " + main_filter)
         when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
@@ -270,24 +294,26 @@ class MainActivity : AppCompatActivity() {
             R.id.sms_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)
-                    //lancer recherche avec sms
+                    main_filter.remove("sms")
+                    println("OffIIIII = " + main_filter)
                 } else {
                     item.setChecked(true)
-                    //recherche normal
+                    main_filter.add("sms")
                 }
                 return true
             }
             R.id.mail_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)
-                    //
+                    main_filter.remove("mail")
                 } else {
                     item.setChecked(true)
-                    //
+                    main_filter.add("mail")
                 }
                 return true
             }
         }
+        println("End = " + main_filter)
         return super.onOptionsItemSelected(item)
     }
 
