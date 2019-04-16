@@ -107,4 +107,7 @@
     <!-- Custom Popup !-->
     <string name="custom_popup_yes_btn">Yes</string>
     <string name="custom_popup_no_btn">No</string>
+
+    <!-- service !-->
+    <string name="service">Knocker</string>
 </resources>

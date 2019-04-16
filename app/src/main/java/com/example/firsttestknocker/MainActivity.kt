@@ -2,8 +2,12 @@ package com.example.firsttestknocker
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.ComponentName
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -11,8 +15,10 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.Toolbar
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -52,7 +58,17 @@ class MainActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
         }
+        if (!isNotificationServiceEnabled) {
 
+            val alertDialog = buildNotificationServiceAlertDialog()
+            alertDialog.show()
+        }
+        if(Build.VERSION.SDK_INT>=23) {
+            if (!Settings.canDrawOverlays(this)) {
+                val alertDialog = OverlayAlertDialog()
+                alertDialog.show()
+            }
+        }
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
@@ -301,5 +317,53 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonAdd!!.isClickable = true
         main_FloatingButtonCompose!!.isClickable = true
         main_FloatingButtonSync!!.isClickable = true
+    }
+    private val isNotificationServiceEnabled: Boolean
+        get() {
+            val pkgName = packageName
+            val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+            if (!TextUtils.isEmpty(str)) {
+                val names = str.split(":")
+                for (i in names.indices) {
+                    val cn = ComponentName.unflattenFromString(names[i])
+                    if (cn != null) {
+                        if (TextUtils.equals(pkgName, cn.packageName)) {
+                            return true
+                        }
+                    }
+                }
+            }
+            return false
+        }
+    private fun buildNotificationServiceAlertDialog(): AlertDialog {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Knocker")
+        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à acceder a vos notifications")
+        alertDialogBuilder.setPositiveButton("yes"
+        ) { dialog, id ->
+            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+            val intentFilter = IntentFilter()
+            intentFilter.addAction("com.example.testnotifiacation.notificationExemple")
+            //registerReceiver(sbr, intentFilter);
+            if (isNotificationServiceEnabled) {
+            }
+        }
+        alertDialogBuilder.setNegativeButton("no"
+        ) { dialog, id -> }
+        return alertDialogBuilder.create()
+    }
+
+    private fun OverlayAlertDialog(): AlertDialog {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Knocker")
+        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications dirrectement sur d'autre application")
+        alertDialogBuilder.setPositiveButton("oui"
+        ) { dialog, id ->
+            val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+            startActivity(intentPermission)
+        }
+        alertDialogBuilder.setNegativeButton("no"
+        ) { dialog, id -> }
+        return alertDialogBuilder.create()
     }
 }
