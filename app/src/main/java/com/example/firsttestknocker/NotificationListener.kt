@@ -2,6 +2,7 @@ package com.example.firsttestknocker
 
 
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -29,6 +30,8 @@ class NotificationListener : NotificationListenerService() {
         intent.putExtra("statusBar", sbp)
         sendBroadcast(intent)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        saveNotfication(sbp)//retourne notfication
+        //sauvegarder dans la bdd
         this.cancelNotification(sbn.key)
         if (appNotifiable(sbp)) {
             Log.i(TAG, "application notifier:" + sbn.packageName)
@@ -46,6 +49,10 @@ class NotificationListener : NotificationListenerService() {
             }
         }
 
+    }
+    public fun saveNotfication(sbp:StatusBarParcelable):Notifications{
+        val notif = Notifications(null,sbp.tickerText.toString(),sbp.statusBarNotificationInfo["android.title"]!!.toString(),sbp.statusBarNotificationInfo["android.text"]!!.toString(),sbp.appNotifier);
+        return notif;
     }
     public fun displayLayout(sbp:StatusBarParcelable){
         val parameters = WindowManager.LayoutParams(

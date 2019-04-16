@@ -11,7 +11,9 @@ import java.util.HashMap
 class StatusBarParcelable : Parcelable {
     var id: Int = 0
         private set
-    var appNotifier: String? = null
+    var appNotifier: String = ""
+        private set
+    var tickerText: String=""
         private set
     var tailleList: Int = 0
         private set
@@ -23,6 +25,7 @@ class StatusBarParcelable : Parcelable {
         id = sbn.id
         tailleList = sbn.notification.extras.keySet().size
         appNotifier = sbn.packageName
+        tickerText= sbn.notification.tickerText.toString()
         for (keySbn in sbn.notification.extras.keySet()) {
             key.add(keySbn)
             if(sbn.notification.extras.get(keySbn)!= null) {
@@ -45,7 +48,7 @@ class StatusBarParcelable : Parcelable {
         dest.writeInt(id)
         dest.writeString(appNotifier)
         dest.writeInt(tailleList)
-
+        dest.writeString(tickerText)
         val entree = statusBarNotificationInfo.entries
 
         for ((key1, value) in entree) {
@@ -63,7 +66,7 @@ class StatusBarParcelable : Parcelable {
         id = `in`.readInt()
         appNotifier = `in`.readString()
         tailleList = `in`.readInt()
-
+        tickerText= `in`.readString()
         Log.i(TAG, "posted by:$appNotifier taille list$tailleList")
         for (i in 0 until tailleList) {
             val keysbn = `in`.readString()
