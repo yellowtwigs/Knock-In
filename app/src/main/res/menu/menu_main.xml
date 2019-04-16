@@ -9,16 +9,17 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/nav_category"
-        android:title="@string/main_create_category"
-        android:orderInCategory="100"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/nav_filter"
-        android:title="@string/main_filter"
-        android:orderInCategory="100"
-        app:showAsAction="never"/>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/sms_filter"
+            android:title="@string/main_create_category"
+            android:checkable = "true"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/mail_filter"
+            android:title="@string/main_filter"
+            android:checkable = "true"/>
+    </group>
+
 
 
 </menu>

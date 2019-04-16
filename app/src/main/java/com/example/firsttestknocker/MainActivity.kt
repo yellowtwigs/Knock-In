@@ -18,10 +18,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.GridView
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 
 import java.util.ArrayList
 
@@ -254,8 +251,26 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             //check Kenzy>
-            R.id.nav_category -> return true
-            R.id.nav_filter -> return true
+            R.id.sms_filter -> {
+                if (item.isChecked) {
+                    item.setChecked(false)
+                    //lancer recherche avec sms
+                } else {
+                    item.setChecked(true)
+                    //recherche normal
+                }
+                return true
+            }
+            R.id.mail_filter -> {
+                if (item.isChecked) {
+                    item.setChecked(false)
+                    //
+                } else {
+                    item.setChecked(true)
+                    //
+                }
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
