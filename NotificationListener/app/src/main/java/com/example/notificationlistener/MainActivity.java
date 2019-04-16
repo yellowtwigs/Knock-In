@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,28 +19,31 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
     private TextView txtView;
-    private StatusbarReceiver sbr;
+    //private StatusbarReceiver sbr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //setContentView(R.layout.activity_main);
-        //txtView= findViewById(R.id.txtView);
-
+        setContentView(R.layout.activity_main);
        if(!isNotificationServiceEnabled()) {
 
            AlertDialog alertDialog = buildNotificationServiceAlertDialog();
            alertDialog.show();
-           }
+       }
+        if(!Settings.canDrawOverlays(this)){
+            AlertDialog alertDialog = OverlayAlertDialog();
+            alertDialog.show();
+        }
+        if(isNotificationServiceEnabled() && Settings.canDrawOverlays(this)){
 
-           sbr = new StatusbarReceiver();
-           Log.i("message", "test");
            IntentFilter intentFilter = new IntentFilter();
            intentFilter.addAction("com.example.testnotifiacation.notificationExemple");
-           registerReceiver(sbr, intentFilter);
-       if(isNotificationServiceEnabled()) {
            finish();
+
        }
+
+          // sbr = new StatusbarReceiver();
+
     }
 
     private boolean isNotificationServiceEnabled(){
@@ -62,30 +66,54 @@ public class MainActivity extends Activity {
 
     private AlertDialog buildNotificationServiceAlertDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("NotificationService");
+        alertDialogBuilder.setTitle("Knocker");
         alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à acceder a vos notifications");
         alertDialogBuilder.setPositiveButton("yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                        IntentFilter intentFilter = new IntentFilter();
+                        intentFilter.addAction("com.example.testnotifiacation.notificationExemple");
+                        //registerReceiver(sbr, intentFilter);
+                        if(isNotificationServiceEnabled()) {
+                        }
+
                     }
                 });
         alertDialogBuilder.setNegativeButton("no",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // If you choose to not enable the notification listener
-                        // the app. will not work as expected
+
                     }
                 });
         return(alertDialogBuilder.create());
     }
-    public class StatusbarReceiver extends BroadcastReceiver{
+    private AlertDialog OverlayAlertDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Knocker");
+        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher certaines notifications sur l'affichage d'autre application");
+        alertDialogBuilder.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intentPermission =new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName()));
+                        startActivity(intentPermission);
+                    }
+                });
+        alertDialogBuilder.setNegativeButton("no",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        return(alertDialogBuilder.create());
+    }
+   /* public class StatusbarReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context,Intent intent){
-/*
+
             StatusBarParcelable sbp= intent.getParcelableExtra("statusBar");
             String textNotif = "notification id: "+sbp.getId()+ " envoyé par "+sbp.getAppNotifier()+" l'expediteur du message est "+sbp.getStatusBarNotificationInfo().get("android.title")+" voici le contenu de ce message" + sbp.getStatusBarNotificationInfo().get("android.text")+"\n" +txtView.getText();
             txtView.setText(textNotif);
-  */      }
     }
+    }*/
 }
