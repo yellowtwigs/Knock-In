@@ -26,8 +26,6 @@ class NotificationListener : NotificationListenerService() {
 
         val intent = Intent("com.example.testnotifiacation.notificationExemple")
         val sbp = StatusBarParcelable(sbn)
-        intent.putExtra("statusBar", sbp)
-        sendBroadcast(intent)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         this.cancelNotification(sbn.key)
         if (appNotifiable(sbp)) {

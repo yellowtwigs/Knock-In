@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     internal var isOpen = false
     //<check Kenzy
     internal var main_search_bar_value = ""
-    private var main_filter: MutableList<String> = mutableListOf<String>()
+    private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
     //check Kenzy>
 
@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
 
         // Search bar //<check Kenzy
         main_SearchBar = findViewById(R.id.main_search_bar)
-        var main_search_bar = intent.getStringExtra("SearchBar")
+        val main_search_bar = intent.getStringExtra("SearchBar")
+        val main_filter_value = intent.getStringArrayListExtra("Filter")
         //check Kenzy>
 
         // Toolbar
@@ -100,9 +101,10 @@ class MainActivity : AppCompatActivity() {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
 
         ///TEST
-        var first = arrayListOf<String>()
+        val first = arrayListOf<String>()
         val second = arrayListOf<String>()
         val third = arrayListOf<String>()
+        val vide = arrayListOf<String>()
         first.add("okk")
         first.add("error")
         first.add("foo")
@@ -114,11 +116,9 @@ class MainActivity : AppCompatActivity() {
         third.add("choose")
         third.add("ok")
         third.add("error")
-//        second.forEach {
-//            first.add(it)
-//        }
 
-        println(third.intersect(first.intersect(second)))
+
+        println("test ENDTEST "+third.intersect(vide))
         ///ENDTEST
 
         // Drawerlayout
@@ -156,10 +156,18 @@ class MainActivity : AppCompatActivity() {
             var contactList: List<Contacts>?
 
             println("teeeeest = " + main_search_bar)
-            if (main_search_bar == null) {
+            println("teeeeest = " + main_filter_value)
+            if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
                 contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
             } else {
+                println("start")
+                val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter_value)
+                println("okk " + contactFilterList)
                 contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
+                println(contactFilterList)
+                if (contactFilterList != null) {
+                    contactList = contactList!!.intersect(contactFilterList).toList()
+                }
             }
 
             if (main_GridView != null) {
@@ -267,6 +275,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // need opti filter
+    private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
+        var filter: List<Contacts>? = null
+        var sms: List<Contacts>? = null
+        if (filterList.contains("sms")) {
+            sms = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()
+        }
+        if (filterList.contains("email") && sms != null) {
+            val okay = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
+            filter = sms.intersect(okay!!).toList()
+        } else if (filterList.contains("email"))
+            filter = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
+        return filter
+    }
+
     //compare le contact données avec tous ceux de la Database
     private fun isDuplicate(contact: String, contactsList: List<Contacts>): Boolean {
         contactsList.forEach {
@@ -287,6 +310,7 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_search -> {
                 main_search_bar_value = main_SearchBar!!.text.toString()
                 intent.putExtra("SearchBar", main_search_bar_value)
+                intent.putStringArrayListExtra("Filter", main_filter)
                 println(main_SearchBar!!.text.toString())
                 startActivity(intent)
             }
@@ -295,7 +319,6 @@ class MainActivity : AppCompatActivity() {
                 if (item.isChecked) {
                     item.setChecked(false)
                     main_filter.remove("sms")
-                    println("OffIIIII = " + main_filter)
                 } else {
                     item.setChecked(true)
                     main_filter.add("sms")
@@ -313,7 +336,6 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         }
-        println("End = " + main_filter)
         return super.onOptionsItemSelected(item)
     }
 
@@ -365,16 +387,15 @@ class MainActivity : AppCompatActivity() {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
         alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à acceder a vos notifications")
-        alertDialogBuilder.setPositiveButton("yes"
+        alertDialogBuilder.setPositiveButton("oui"
         ) { dialog, id ->
             startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
             val intentFilter = IntentFilter()
             intentFilter.addAction("com.example.testnotifiacation.notificationExemple")
-            //registerReceiver(sbr, intentFilter);
             if (isNotificationServiceEnabled) {
             }
         }
-        alertDialogBuilder.setNegativeButton("no"
+        alertDialogBuilder.setNegativeButton("non"
         ) { dialog, id -> }
         return alertDialogBuilder.create()
     }
@@ -388,7 +409,7 @@ class MainActivity : AppCompatActivity() {
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
         }
-        alertDialogBuilder.setNegativeButton("no"
+        alertDialogBuilder.setNegativeButton("non"
         ) { dialog, id -> }
         return alertDialogBuilder.create()
     }
