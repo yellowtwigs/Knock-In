@@ -91,6 +91,8 @@ class MainActivity : AppCompatActivity() {
         main_SearchBar = findViewById(R.id.main_search_bar)
         val main_search_bar = intent.getStringExtra("SearchBar")
         val main_filter_value = intent.getStringArrayListExtra("Filter")
+        if (main_filter_value != null)
+            main_filter = main_filter_value
         //check Kenzy>
 
         // Toolbar
@@ -307,8 +309,21 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        val main_filter = intent.getStringArrayListExtra("Filter")
+        if (main_filter != null && main_filter.contains("sms")) {
+            menu?.findItem(R.id.sms_filter)?.setChecked(true)
+            intent.putStringArrayListExtra("Filter", main_filter)
+        }
+        if (main_filter != null && main_filter.contains("mail")) {
+            menu?.findItem(R.id.mail_filter)?.setChecked(true)
+            intent.putStringArrayListExtra("Filter", main_filter)
+        }
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        println("Start = " + main_filter)
         when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
@@ -318,6 +333,7 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_search -> {
                 main_search_bar_value = main_SearchBar!!.text.toString()
                 intent.putExtra("SearchBar", main_search_bar_value)
+                println(main_filter)
                 intent.putStringArrayListExtra("Filter", main_filter)
                 println(main_SearchBar!!.text.toString())
                 startActivity(intent)
