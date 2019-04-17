@@ -18,34 +18,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.TextView
+import java.util.ArrayList
 
 
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
+
+    var popupView : View? = null
     override fun onNotificationPosted(sbn: StatusBarNotification) {
 
         val intent = Intent("com.example.testnotifiacation.notificationExemple")
         val sbp = StatusBarParcelable(sbn)
-        intent.putExtra("statusBar", sbp)
-        sendBroadcast(intent)
+        /*intent.putExtra("statusBar", sbp)
+        System.out.println("test "+(sbn.tag))
+        sendBroadcast(intent)*/
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         saveNotfication(sbp)//retourne notfication
         //sauvegarder dans la bdd
-        this.cancelNotification(sbn.key)
-        if (appNotifiable(sbp)) {
-            Log.i(TAG, "application notifier:" + sbn.packageName)
-            Log.i(TAG, "tickerText:" + sbn.notification.tickerText)
+
+        if (appNotifiable(sbp) ) {
+            this.cancelNotification(sbn.key)
+            Log.i(TAG,"application context s"+applicationContext.toString());
+            Log.i(TAG, "application notifier:" + sbp.appNotifier)
+            Log.i(TAG, "tickerText:" + sbp.tickerText)
 
             for (key in sbn.notification.extras.keySet()) {
-                Log.i(TAG, key + "=" + sbn.notification.extras.get(key))
+                Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
             }
-            if(Build.VERSION.SDK_INT>=23) {
-                if (Settings.canDrawOverlays(this)) {
+            if (popupView == null) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (Settings.canDrawOverlays(this)) {
+                        displayLayout(sbp);
+                    }
+                } else {
                     displayLayout(sbp);
                 }
             }else{
-                displayLayout(sbp);
+                Log.i(TAG,"different de null")
+                notifLayout(sbp,popupView)
             }
         }
 
@@ -63,20 +75,28 @@ class NotificationListener : NotificationListenerService() {
         parameters.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
+        popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
         notifLayout(sbp, popupView)
-
-        windowManager.addView(popupView, parameters)
+        windowManager.addView(popupView, parameters) // affichage de la popupview
     }
-    private fun notifLayout(sbp: StatusBarParcelable, view: View) {
-        val expediteur = view.findViewById<TextView>(R.id.expediteur2)
+    private fun notifLayout(sbp: StatusBarParcelable, view: View?) {
+        listNotif.add(sbp)
+        val adapterNotification = NotifAdapter(applicationContext, listNotif as ArrayList<StatusBarParcelable>?)
+        val listViews = view?.findViewById<ListView>(R.id.notification_pop_up_listView)
+        listViews?.adapter=adapterNotification
+        val layout = view?.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
+        layout.setOnClickListener { System.exit(0) }
+      /*  val expediteur = view.findViewById<TextView>(R.id.expediteur2)
         val message = view.findViewById<View>(R.id.txtView2) as TextView
-        expediteur.text = sbp.statusBarNotificationInfo["android.title"]!!.toString() + ""
-        message.text = sbp.statusBarNotificationInfo["android.text"]!!.toString() + ""
+        val expTxt=sbp.statusBarNotificationInfo["android.title"]
+        expediteur.text = "$expTxt"
+        val msgTxt= sbp.statusBarNotificationInfo["android.text"]
+        message.text ="$msgTxt"
         val layout = view.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
         val imgPlat = view.findViewById<View>(R.id.imageView3) as ImageView
         imgPlat.setImageResource(getApplicationNotifier(sbp))
-        layout.setOnClickListener { System.exit(0) }
+        layout.setOnClickListener { System.exit(0) }*/
+
     }
 
 
@@ -103,7 +123,20 @@ class NotificationListener : NotificationListenerService() {
         }
         return R.drawable.sms
     }
-
+    private fun convertPackageToString(packageName:String):String{
+        if(packageName.equals(FACEBOOK_PACKAGE)){
+            return "Facebook";
+        }else if(packageName.equals(MESSENGER_PACKAGE)){
+            return "Messenger";
+        }else if(packageName.equals(WATHSAPP_SERVICE)){
+            return "WhatsApp"
+        }else if(packageName.equals(GMAIL_PACKAGE)){
+            return "gmail"
+        }else if(packageName.equals(MESSAGE_PACKAGE)){
+            return "message"
+        }
+        return ""
+    }
     companion object {
         var TAG = NotificationListener::class.java.simpleName
         val FACEBOOK_PACKAGE = "com.facebook.katana"
@@ -111,5 +144,7 @@ class NotificationListener : NotificationListenerService() {
         val WATHSAPP_SERVICE = "com.whatsapp"
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = ""
+        val listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
+
     }
 }

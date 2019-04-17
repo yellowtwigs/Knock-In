@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:icon="@drawable/ic_letter_k"
@@ -15,7 +16,8 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatActivity"/>
+        <activity android:name=".NotificationAdapter"></activity>
+        <activity android:name=".ChatActivity" />
         <activity android:name=".AddNewContactActivity" />
         <activity android:name=".EditContactActivity" />
         <activity android:name=".SplashScreenActivity">
@@ -27,8 +29,10 @@
         </activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ContactDetailsActivity" />
-        <activity android:name=".MainActivity"
-                  android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden" />
+
         <service
             android:name=".NotificationListener"
             android:label="@string/service"
@@ -38,6 +42,5 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
 </manifest>
