@@ -155,14 +155,10 @@ class MainActivity : AppCompatActivity() {
             main_GridView = findViewById(R.id.main_grid_view_id)
             var contactList: List<Contacts>?
 
-            println("teeeeest = " + main_search_bar)
-            println("teeeeest = " + main_filter_value)
             if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
-                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
+                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
             } else {
-                println("start")
                 val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter_value)
-                println("okk " + contactFilterList)
                 contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
                 println(contactFilterList)
                 if (contactFilterList != null) {
@@ -275,19 +271,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // need opti filter
+    // fonction qui filtre
     private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
+        val allFilters: MutableList<List<Contacts>> = mutableListOf()
         var filter: List<Contacts>? = null
-        var sms: List<Contacts>? = null
+
         if (filterList.contains("sms")) {
-            sms = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()
+            filter = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()
+            if (filter != null && filter.isEmpty() == false)
+                allFilters.add(filter)
         }
-        if (filterList.contains("email") && sms != null) {
-            val okay = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
-            filter = sms.intersect(okay!!).toList()
-        } else if (filterList.contains("email"))
+        if (filterList.contains("mail")) {
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
-        return filter
+            if (filter != null && filter.isEmpty() == false)
+                allFilters.add(filter)
+        } else
+            return null
+        var i = 0
+        if (allFilters.size != 1) {
+            while (i < allFilters.size - 1) {
+                allFilters[i+1] = allFilters[i].intersect(allFilters[i+1]).toList()
+                i++
+            }
+        } else
+            return allFilters[0]
+        return allFilters[i]
     }
 
     //compare le contact données avec tous ceux de la Database
