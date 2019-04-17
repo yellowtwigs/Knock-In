@@ -229,13 +229,13 @@ class MainActivity : AppCompatActivity() {
                         var lastName = ""
                         if (fullName!!.contains(' '))
                             lastName = fullName.substringAfter(' ')
-                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
+                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius, 0)
                         phoneContactsList.add(contactData)
                     } else if (!isDuplicate(fullName!!, phoneContactsList)) {
                         var lastName = ""
                         if (fullName.contains(' '))
                             lastName = fullName.substringAfter(' ')
-                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius)
+                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!, "", R.drawable.ryan, R.drawable.aquarius, 0)
                         phoneContactsList.add(contactData)
                     }
                 }

@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 3,
-    "identityHash": "99d0bce05fb15bd4259bb8e4604a0eb5",
+    "version": 4,
+    "identityHash": "4fde8431826951d4b28877bd6be206ad",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -68,7 +68,7 @@
       },
       {
         "tableName": "notifications_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `contact_priority` TEXT NOT NULL, `is_blacklist` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `contact_priority` INTEGER NOT NULL, `is_blacklist` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -103,7 +103,7 @@
           {
             "fieldPath": "contactPriority",
             "columnName": "contact_priority",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -125,7 +125,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"99d0bce05fb15bd4259bb8e4604a0eb5\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4fde8431826951d4b28877bd6be206ad\")"
     ]
   }
 }
