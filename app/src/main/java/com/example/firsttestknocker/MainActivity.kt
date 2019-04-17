@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     internal var isOpen = false
     //<check Kenzy
     internal var main_search_bar_value = ""
+    private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
     //check Kenzy>
 
@@ -88,7 +89,10 @@ class MainActivity : AppCompatActivity() {
 
         // Search bar //<check Kenzy
         main_SearchBar = findViewById(R.id.main_search_bar)
-        var main_search_bar = intent.getStringExtra("SearchBar")
+        val main_search_bar = intent.getStringExtra("SearchBar")
+        val main_filter_value = intent.getStringArrayListExtra("Filter")
+        if (main_filter_value != null)
+            main_filter = main_filter_value
         //check Kenzy>
 
         // Toolbar
@@ -97,6 +101,27 @@ class MainActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+
+        ///TEST
+        val first = arrayListOf<String>()
+        val second = arrayListOf<String>()
+        val third = arrayListOf<String>()
+        val vide = arrayListOf<String>()
+        first.add("okk")
+        first.add("error")
+        first.add("foo")
+        second.add("end")
+        second.add("bar")
+        second.add("error")
+        second.add("okk")
+        third.add("oddy")
+        third.add("choose")
+        third.add("ok")
+        third.add("error")
+
+
+        println("test ENDTEST "+third.intersect(vide))
+        ///ENDTEST
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -132,11 +157,15 @@ class MainActivity : AppCompatActivity() {
             main_GridView = findViewById(R.id.main_grid_view_id)
             var contactList: List<Contacts>?
 
-            println("teeeeest = " + main_search_bar)
-            if (main_search_bar == null) {
-                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts() //contactList
+            if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
+                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
             } else {
+                val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter_value)
                 contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
+                println(contactFilterList)
+                if (contactFilterList != null) {
+                    contactList = contactList!!.intersect(contactFilterList).toList()
+                }
             }
 
             if (main_GridView != null) {
@@ -244,6 +273,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // fonction qui filtre
+    private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
+        val allFilters: MutableList<List<Contacts>> = mutableListOf()
+        var filter: List<Contacts>? = null
+
+        if (filterList.contains("sms")) {
+            filter = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()
+            if (filter != null && filter.isEmpty() == false)
+                allFilters.add(filter)
+        }
+        if (filterList.contains("mail")) {
+            filter = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
+            if (filter != null && filter.isEmpty() == false)
+                allFilters.add(filter)
+        } else
+            return null
+        var i = 0
+        if (allFilters.size != 1) {
+            while (i < allFilters.size - 1) {
+                allFilters[i+1] = allFilters[i].intersect(allFilters[i+1]).toList()
+                i++
+            }
+        } else
+            return allFilters[0]
+        return allFilters[i]
+    }
+
     //compare le contact données avec tous ceux de la Database
     private fun isDuplicate(contact: String, contactsList: List<Contacts>): Boolean {
         contactsList.forEach {
@@ -251,6 +307,20 @@ class MainActivity : AppCompatActivity() {
                 return true
         }
         return false
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        val main_filter = intent.getStringArrayListExtra("Filter")
+        if (main_filter != null && main_filter.contains("sms")) {
+            menu?.findItem(R.id.sms_filter)?.setChecked(true)
+            intent.putStringArrayListExtra("Filter", main_filter)
+        }
+        if (main_filter != null && main_filter.contains("mail")) {
+            menu?.findItem(R.id.mail_filter)?.setChecked(true)
+            intent.putStringArrayListExtra("Filter", main_filter)
+        }
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -263,6 +333,8 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_search -> {
                 main_search_bar_value = main_SearchBar!!.text.toString()
                 intent.putExtra("SearchBar", main_search_bar_value)
+                println(main_filter)
+                intent.putStringArrayListExtra("Filter", main_filter)
                 println(main_SearchBar!!.text.toString())
                 startActivity(intent)
             }
@@ -270,20 +342,20 @@ class MainActivity : AppCompatActivity() {
             R.id.sms_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)
-                    //lancer recherche avec sms
+                    main_filter.remove("sms")
                 } else {
                     item.setChecked(true)
-                    //recherche normal
+                    main_filter.add("sms")
                 }
                 return true
             }
             R.id.mail_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)
-                    //
+                    main_filter.remove("mail")
                 } else {
                     item.setChecked(true)
-                    //
+                    main_filter.add("mail")
                 }
                 return true
             }
@@ -339,16 +411,15 @@ class MainActivity : AppCompatActivity() {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
         alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à acceder a vos notifications")
-        alertDialogBuilder.setPositiveButton("yes"
+        alertDialogBuilder.setPositiveButton("oui"
         ) { dialog, id ->
             startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
             val intentFilter = IntentFilter()
             intentFilter.addAction("com.example.testnotifiacation.notificationExemple")
-            //registerReceiver(sbr, intentFilter);
             if (isNotificationServiceEnabled) {
             }
         }
-        alertDialogBuilder.setNegativeButton("no"
+        alertDialogBuilder.setNegativeButton("non"
         ) { dialog, id -> }
         return alertDialogBuilder.create()
     }
@@ -362,7 +433,7 @@ class MainActivity : AppCompatActivity() {
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
         }
-        alertDialogBuilder.setNegativeButton("no"
+        alertDialogBuilder.setNegativeButton("non"
         ) { dialog, id -> }
         return alertDialogBuilder.create()
     }

@@ -31,9 +31,6 @@ class NotificationListener : NotificationListenerService() {
 
         val intent = Intent("com.example.testnotifiacation.notificationExemple")
         val sbp = StatusBarParcelable(sbn)
-        /*intent.putExtra("statusBar", sbp)
-        System.out.println("test "+(sbn.tag))
-        sendBroadcast(intent)*/
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         saveNotfication(sbp)//retourne notfication
         //sauvegarder dans la bdd
