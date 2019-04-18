@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -54,6 +55,14 @@ public class SettingsActivity extends AppCompatActivity {
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
+            }
+        });
+
+        final RelativeLayout notificationRL =(RelativeLayout) findViewById(R.id.notification_RelativeLayout_settings);
+        notificationRL.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent notificationSettingsIntent;
+                startActivity(notificationSettingsIntent);
             }
         });
     }

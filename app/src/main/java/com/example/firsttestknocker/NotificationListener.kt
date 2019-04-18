@@ -31,6 +31,7 @@ class NotificationListener : NotificationListenerService() {
     private lateinit var notification_listener_mDbWorkerThread: DbWorkerThread
 
     var popupView : View? = null
+    var windowManager: WindowManager? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -57,7 +58,6 @@ class NotificationListener : NotificationListenerService() {
             Log.i(TAG,"application context s"+applicationContext.toString());
             Log.i(TAG, "application notifier:" + sbp.appNotifier)
             Log.i(TAG, "tickerText:" + sbp.tickerText)
-
             for (key in sbn.notification.extras.keySet()) {
                 Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
             }
@@ -87,19 +87,27 @@ class NotificationListener : NotificationListenerService() {
                 PixelFormat.TRANSLUCENT)
         parameters.gravity = Gravity.RIGHT or Gravity.TOP
         parameters.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
         notifLayout(sbp, popupView)
-        windowManager.addView(popupView, parameters) // affichage de la popupview
+        windowManager!!.addView(popupView, parameters) // affichage de la popupview
     }
     private fun notifLayout(sbp: StatusBarParcelable, view: View?) {
         listNotif.add(sbp)
-        val adapterNotification = NotifAdapter(applicationContext, listNotif as ArrayList<StatusBarParcelable>?)
+        val listInverse : MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
+        for(i in listNotif.size-1 downTo 0 ){
+            listInverse.add(listNotif.get(i))
+        }//affichetr du plus récent au plus ancien les notifications
+        val adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>?)
         val listViews = view?.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter=adapterNotification
         val layout = view?.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
-        layout.setOnClickListener { System.exit(0) }
+        layout.setOnClickListener { //System.exit(0)
+            windowManager?.removeView(view)
+            popupView = null
+            //effacer le window manager en rendre popup-view pour lui réaffecter de nouvelle valeur
+        }
       /*  val expediteur = view.findViewById<TextView>(R.id.expediteur2)
         val message = view.findViewById<View>(R.id.txtView2) as TextView
         val expTxt=sbp.statusBarNotificationInfo["android.title"]
