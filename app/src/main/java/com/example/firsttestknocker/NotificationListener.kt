@@ -45,8 +45,6 @@ class NotificationListener : NotificationListenerService() {
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-
-        val intent = Intent("com.example.testnotifiacation.notificationExemple")
         val sbp = StatusBarParcelable(sbn)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val addNotification = Runnable {
@@ -82,8 +80,14 @@ class NotificationListener : NotificationListenerService() {
         return notif;
     }
     public fun displayLayout(sbp:StatusBarParcelable){
+        var flag = 0
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            flag =WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        }else{
+            flag = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+        }
         val parameters = WindowManager.LayoutParams(
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                flag,
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT)
         parameters.gravity = Gravity.RIGHT or Gravity.TOP
