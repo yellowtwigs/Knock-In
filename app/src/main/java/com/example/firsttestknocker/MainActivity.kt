@@ -2,9 +2,7 @@ package com.example.firsttestknocker
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.ComponentName
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -423,6 +421,14 @@ class MainActivity : AppCompatActivity() {
         return alertDialogBuilder.create()
     }
 
+
+
+
+
+
+
+
+
     private fun OverlayAlertDialog(): AlertDialog {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
@@ -431,9 +437,22 @@ class MainActivity : AppCompatActivity() {
         ) { dialog, id ->
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
+            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val edit : SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif",true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+            edit.putBoolean("serviceNotif",false)
+            edit.commit()
+
         }
         alertDialogBuilder.setNegativeButton("non"
-        ) { dialog, id -> }
+        ) { dialog, id ->
+            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val edit : SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif",false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+            edit.putBoolean("serviceNotif",true)
+            edit.commit()
+        }
         return alertDialogBuilder.create()
     }
 }
+

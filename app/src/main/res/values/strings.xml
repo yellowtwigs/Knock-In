@@ -110,4 +110,6 @@
 
     <!-- service !-->
     <string name="service">Knocker</string>
+    <string name="notification_manager_stop_popup">voulez-vous autoriser Knocker a afficher des notification par dessus d\'autre application</string>
+    <string name="notification_manager_stop_service">arrêter le s\'ervice de notification pour économiser de la batterie</string>
 </resources>

@@ -6,6 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ManageNotificationActivity">
 
+    <TextView
+        android:id="@+id/textView_stop_service"
+        android:layout_width="268dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/notification_manager_stop_service"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_manage_notification" />
+
+    <Switch
+        android:id="@+id/switch_stop_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_manage_notification" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_manage_notification"
         android:layout_width="match_parent"
@@ -18,10 +37,21 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="271dp"
-        android:layout_height="60dp"
+        android:layout_width="268dp"
+        android:layout_height="55dp"
         android:layout_marginStart="16dp"
-        android:text="garder "
+        android:layout_marginTop="148dp"
+        android:text="@string/notification_manager_stop_popup"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="99dp" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_manage_notification" />
+
+    <Switch
+        android:id="@+id/switch_stop_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_manage_notification" />
+
 </android.support.constraint.ConstraintLayout>

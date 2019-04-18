@@ -6,6 +6,7 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
@@ -52,8 +53,8 @@ class NotificationListener : NotificationListenerService() {
             notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
         }
         notification_listener_mDbWorkerThread.postTask(addNotification)
-
-        if (appNotifiable(sbp) ) {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+        if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
             this.cancelNotification(sbn.key)
             Log.i(TAG,"application context s"+applicationContext.toString());
             Log.i(TAG, "application notifier:" + sbp.appNotifier)
@@ -106,6 +107,8 @@ class NotificationListener : NotificationListenerService() {
         layout.setOnClickListener { //System.exit(0)
             windowManager?.removeView(view)
             popupView = null
+            listNotif.clear()
+            listInverse.clear()
             //effacer le window manager en rendre popup-view pour lui réaffecter de nouvelle valeur
         }
       /*  val expediteur = view.findViewById<TextView>(R.id.expediteur2)

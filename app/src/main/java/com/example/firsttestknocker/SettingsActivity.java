@@ -61,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
         final RelativeLayout notificationRL =(RelativeLayout) findViewById(R.id.notification_RelativeLayout_settings);
         notificationRL.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent notificationSettingsIntent;
+                Intent notificationSettingsIntent =new Intent(SettingsActivity.this, ManageNotificationActivity.class);
                 startActivity(notificationSettingsIntent);
             }
         });
