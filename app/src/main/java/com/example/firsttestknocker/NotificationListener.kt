@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -25,15 +26,31 @@ import java.util.ArrayList
 
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
+    // Database && Thread
+    private var notification_listener_ContactsDatabase: ContactsRoomDatabase? = null
+    private lateinit var notification_listener_mDbWorkerThread: DbWorkerThread
 
     var popupView : View? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        // on init WorkerThread
+        notification_listener_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        notification_listener_mDbWorkerThread.start()
+
+        //on get la base de données
+        notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+    }
+
     override fun onNotificationPosted(sbn: StatusBarNotification) {
 
         val intent = Intent("com.example.testnotifiacation.notificationExemple")
         val sbp = StatusBarParcelable(sbn)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        saveNotfication(sbp)//retourne notfication
-        //sauvegarder dans la bdd
+        val addNotification = Runnable {
+            notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
+        }
+        notification_listener_mDbWorkerThread.postTask(addNotification)
 
         if (appNotifiable(sbp) ) {
             this.cancelNotification(sbn.key)
@@ -60,7 +77,7 @@ class NotificationListener : NotificationListenerService() {
 
     }
     public fun saveNotfication(sbp:StatusBarParcelable):Notifications{
-        val notif = Notifications(null,sbp.tickerText.toString(),sbp.statusBarNotificationInfo["android.title"]!!.toString(),sbp.statusBarNotificationInfo["android.text"]!!.toString(),sbp.appNotifier);
+        val notif = Notifications(null,sbp.tickerText.toString(),sbp.statusBarNotificationInfo["android.title"]!!.toString(),sbp.statusBarNotificationInfo["android.text"]!!.toString(),sbp.appNotifier,0,false);
         return notif;
     }
     public fun displayLayout(sbp:StatusBarParcelable){

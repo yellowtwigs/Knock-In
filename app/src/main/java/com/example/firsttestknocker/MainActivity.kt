@@ -87,13 +87,13 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
         main_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
 
-        // Search bar //<check Kenzy
+        // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
         val main_search_bar = intent.getStringExtra("SearchBar")
         val main_filter_value = intent.getStringArrayListExtra("Filter")
         if (main_filter_value != null)
             main_filter = main_filter_value
-        //check Kenzy>
+
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -309,6 +309,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    //check les checkbox si elle ont été check apres une recherche
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         super.onPrepareOptionsMenu(menu)
         val main_filter = intent.getStringArrayListExtra("Filter")
@@ -329,7 +330,6 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout!!.openDrawer(GravityCompat.START)
                 return true
             }
-            //<check Kenzy
             R.id.nav_search -> {
                 main_search_bar_value = main_SearchBar!!.text.toString()
                 intent.putExtra("SearchBar", main_search_bar_value)
@@ -338,7 +338,6 @@ class MainActivity : AppCompatActivity() {
                 println(main_SearchBar!!.text.toString())
                 startActivity(intent)
             }
-            //check Kenzy>
             R.id.sms_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)
