@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class NotifAdapter extends BaseAdapter {
     private Context context;
@@ -72,13 +75,16 @@ public class NotifAdapter extends BaseAdapter {
                 }else if(app.equals("Messenger"))
                 {
                     gotToFacebookPage("");
-                }else if(app.equals("whatsapp")){
-                    onWhatsappClick("");
+                }else if(app.equals("WhatsApp")){
+
+                    Log.i(TAG,"test in whatsapp if");
+                    onWhatsappClick();
                 }else if(app.equals("gmail")){
 
                 }else if(app.equals("messeage")) {
 
                 }
+
                 windowManager.removeView(view);
             }
         };
@@ -119,6 +125,7 @@ public class NotifAdapter extends BaseAdapter {
     private void gotToFacebookPage(String id) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
@@ -127,18 +134,18 @@ public class NotifAdapter extends BaseAdapter {
     }
 
 
-    private void onWhatsappClick( CharSequence contact){
-        String url = "https://api.whatsapp.com/send?phone=$contact";
-        try {
-            PackageManager pm = context.getPackageManager();
-            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData( Uri.parse(url));
+    private void onWhatsappClick(){
+        //String url = "https://api.whatsapp.com/";
+        // try{
+            //PackageManager pm = context.getPackageManager();
+            //pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+            Log.i(TAG,"test in whatsapp");
+            Intent i = context.getPackageManager().getLaunchIntentForPackage("com.whatsapp");
             context.startActivity(i);
-        } catch (PackageManager.NameNotFoundException e) {
+        /*} catch (PackageManager.NameNotFoundException e) {
             Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-        }
+        }*/
 
     }
 }

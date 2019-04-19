@@ -4,6 +4,7 @@ package com.example.firsttestknocker
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -44,6 +45,10 @@ class NotificationListener : NotificationListenerService() {
         notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return Service.START_STICKY //dire qu'on doit relancer quand il se stop
+    }
+
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val sbp = StatusBarParcelable(sbn)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -52,13 +57,12 @@ class NotificationListener : NotificationListenerService() {
         }
         notification_listener_mDbWorkerThread.postTask(addNotification)
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-        Log.i(TAG,"application context s"+applicationContext.toString());
+        Log.i(TAG,"application context "+applicationContext.toString());
         Log.i(TAG, "application notifier:" + sbp.appNotifier)
         Log.i(TAG, "tickerText:" + sbp.tickerText)
         for (key in sbn.notification.extras.keySet()) {
             Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
         }
-        println(appNotifiable(sbp).toString() + " est notifiable")
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
             this.cancelNotification(sbn.key)
 
