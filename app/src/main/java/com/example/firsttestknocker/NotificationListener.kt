@@ -66,7 +66,12 @@ class NotificationListener : NotificationListenerService() {
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
             this.cancelNotification(sbn.key)
 
-            if (popupView == null) {
+            if (popupView == null || !sharedPreferences.getBoolean("view",false)) {
+                popupView=null
+                listNotif.clear();
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("view", true)
+                edit.commit()
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (Settings.canDrawOverlays(this)) {
                         displayLayout(sbp);
@@ -75,7 +80,7 @@ class NotificationListener : NotificationListenerService() {
                     displayLayout(sbp);
                 }
             }else{
-                Log.i(TAG,"different de null")
+                Log.i(TAG,"different de null"+  sharedPreferences.getBoolean("view",true) )
                 notifLayout(sbp,popupView)
             }
         }

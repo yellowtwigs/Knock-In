@@ -4,6 +4,7 @@ package com.example.firsttestknocker;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
@@ -86,6 +87,10 @@ public class NotifAdapter extends BaseAdapter {
                 }
 
                 windowManager.removeView(view);
+                SharedPreferences sharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit= sharedPreferences.edit();
+                edit.putBoolean("view",false);
+                edit.commit();
             }
         };
 
