@@ -1,28 +1,39 @@
 package com.example.firsttestknocker;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class NotifAdapter extends BaseAdapter {
     private Context context;
+    private View view;
     private ArrayList<StatusBarParcelable> notifications;
+    private WindowManager windowManager;
     private final String TAG = NotificationListener.class.getSimpleName();
     private final String FACEBOOK_PACKAGE = "com.facebook.katana";
     private final String MESSENGER_PACKAGE = "com.facebook.orca";
     private final String WATHSAPP_SERVICE = "com.whatsapp";
     private final String GMAIL_PACKAGE = "com.google.android.gm";
     private final String  MESSAGE_PACKAGE = "";
-    public NotifAdapter(Context context, ArrayList<StatusBarParcelable> listNotification){
+    public NotifAdapter(Context context, ArrayList<StatusBarParcelable> listNotification, WindowManager windowManager,View view){
         this.context=context;
         this.notifications= listNotification;
+        this.windowManager=windowManager;
+        this.view=view;
     }
     public int getCount() {
         return notifications.size();
@@ -39,12 +50,11 @@ public class NotifAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_notification_adapter,parent,false);
-
         }
-        StatusBarParcelable sbp = getItem(position);
+        final StatusBarParcelable sbp = getItem(position);
         TextView app= (TextView) convertView.findViewById(R.id.notification_plateformeTv);
         TextView contenue= (TextView) convertView.findViewById(R.id.notification_contenu);
         ImageView appImg= (ImageView) convertView.findViewById(R.id.notification_plateformeImg);
@@ -52,7 +62,30 @@ public class NotifAdapter extends BaseAdapter {
         app.setText(convertPackageToString(sbp.getAppNotifier()));
         contenue.setText(sbp.getStatusBarNotificationInfo().get("android.title")+":"+sbp.getStatusBarNotificationInfo().get("android.text"));
         appImg.setImageResource(getApplicationNotifier(sbp));
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("click on constraint layout");
+                String app=convertPackageToString(sbp.getAppNotifier());
+                if(app.equals("Facebook")){
+                    gotToFacebookPage("");
+                }else if(app.equals("Messenger"))
+                {
+                    gotToFacebookPage("");
+                }else if(app.equals("whatsapp")){
+                    onWhatsappClick("");
+                }else if(app.equals("gmail")){
 
+                }else if(app.equals("messeage")) {
+
+                }
+                windowManager.removeView(view);
+            }
+        };
+
+        contenue.setOnClickListener(listener);
+        app.setOnClickListener(listener);
+        app.setOnClickListener(listener);
         return convertView;
     }
     private String  convertPackageToString(String packageName){
@@ -81,5 +114,32 @@ public class NotifAdapter extends BaseAdapter {
         return R.drawable.sms;
     }
 
+
+/////****** code dupliqué faire attention trouvé un moyen de ne plus en avoir *******//////
+    private void gotToFacebookPage(String id) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
+            context.startActivity(intent);
+        }
+    }
+
+
+    private void onWhatsappClick( CharSequence contact){
+        String url = "https://api.whatsapp.com/send?phone=$contact";
+        try {
+            PackageManager pm = context.getPackageManager();
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData( Uri.parse(url));
+            context.startActivity(i);
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
+    }
 }
 

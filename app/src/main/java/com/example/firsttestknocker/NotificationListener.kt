@@ -52,14 +52,15 @@ class NotificationListener : NotificationListenerService() {
         }
         notification_listener_mDbWorkerThread.postTask(addNotification)
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+        Log.i(TAG,"application context s"+applicationContext.toString());
+        Log.i(TAG, "application notifier:" + sbp.appNotifier)
+        Log.i(TAG, "tickerText:" + sbp.tickerText)
+        for (key in sbn.notification.extras.keySet()) {
+            Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
+        }
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
             this.cancelNotification(sbn.key)
-            Log.i(TAG,"application context s"+applicationContext.toString());
-            Log.i(TAG, "application notifier:" + sbp.appNotifier)
-            Log.i(TAG, "tickerText:" + sbp.tickerText)
-            for (key in sbn.notification.extras.keySet()) {
-                Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
-            }
+
             if (popupView == null) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (Settings.canDrawOverlays(this)) {
@@ -104,7 +105,7 @@ class NotificationListener : NotificationListenerService() {
         for(i in listNotif.size-1 downTo 0 ){
             listInverse.add(listNotif.get(i))
         }//affichetr du plus récent au plus ancien les notifications
-        val adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>?)
+        val adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>?,windowManager,view)
         val listViews = view?.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter=adapterNotification
         val layout = view?.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
@@ -115,16 +116,7 @@ class NotificationListener : NotificationListenerService() {
             listInverse.clear()
             //effacer le window manager en rendre popup-view pour lui réaffecter de nouvelle valeur
         }
-      /*  val expediteur = view.findViewById<TextView>(R.id.expediteur2)
-        val message = view.findViewById<View>(R.id.txtView2) as TextView
-        val expTxt=sbp.statusBarNotificationInfo["android.title"]
-        expediteur.text = "$expTxt"
-        val msgTxt= sbp.statusBarNotificationInfo["android.text"]
-        message.text ="$msgTxt"
-        val layout = view.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
-        val imgPlat = view.findViewById<View>(R.id.imageView3) as ImageView
-        imgPlat.setImageResource(getApplicationNotifier(sbp))
-        layout.setOnClickListener { System.exit(0) }*/
+
 
     }
 
@@ -132,13 +124,8 @@ class NotificationListener : NotificationListenerService() {
     fun appNotifiable(sbp: StatusBarParcelable): Boolean {
         return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
-                sbp.statusBarNotificationInfo["android.title"] != "android" &&
-                sbp.appNotifier != "com.google.android.gms" &&
-                sbp.appNotifier != "com.android.providers.downloads" &&
-                sbp.appNotifier != "com.samsung.android.da.daagent" &&
-                sbp.appNotifier != "com.android.vending" &&
-                sbp.statusBarNotificationInfo["android.text"] != null &&
-                sbp.appNotifier != "android"
+                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
+                convertPackageToString(sbp.appNotifier)!=""
     }
 
     private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
@@ -172,7 +159,7 @@ class NotificationListener : NotificationListenerService() {
         val MESSENGER_PACKAGE = "com.facebook.orca"
         val WATHSAPP_SERVICE = "com.whatsapp"
         val GMAIL_PACKAGE = "com.google.android.gm"
-        val MESSAGE_PACKAGE = ""
+        val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
         val listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
 
     }
