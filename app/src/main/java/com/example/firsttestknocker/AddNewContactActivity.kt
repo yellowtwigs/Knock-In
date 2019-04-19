@@ -190,10 +190,7 @@ class AddNewContactActivity : AppCompatActivity() {
         builder.setTitle("Add Image")
         builder.setItems(items) { dialog, i ->
             if (items[i] == "Camera") {
-
                 openCamera()
-//                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                startActivityForResult(intent, REQUEST_CAMERA!!)
 
             } else if (items[i] == "Gallery") {
 
@@ -226,8 +223,6 @@ class AddNewContactActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMAGE_CAPTURE_CODE) {
 
-                //val bundle = data!!.extras
-                //val bitmap = bundle!!.get("data") as Bitmap
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
                 var matrix = Matrix()
@@ -240,8 +235,12 @@ class AddNewContactActivity : AppCompatActivity() {
 
             } else if (requestCode == SELECT_FILE) {
                 val selectedImageUri = data!!.data
-                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                add_new_contact_RoundedImageView!!.setImageURI(selectedImageUri)
+                var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
+                bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
+                var matrix = Matrix()
+                matrix.postRotate(90f)
+                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
+                add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 add_new_contact_imgString = bitmapToBase64(bitmap)
             }
         }
@@ -250,7 +249,6 @@ class AddNewContactActivity : AppCompatActivity() {
     fun bitmapToBase64(bitmap: Bitmap) : String {
         val baos = ByteArrayOutputStream()
         //val bitmap = BitmapFactory.decodeResource(resources, img.id)
-        println("bitmap equal to = " + bitmap)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 
