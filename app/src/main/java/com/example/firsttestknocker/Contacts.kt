@@ -11,5 +11,6 @@ data class Contacts(
         @ColumnInfo(name = "mail") val mail: String,                                //email du contact
         @ColumnInfo(name = "profile_picture") val profilePicture: Int,              //image de profile du contact
         @ColumnInfo(name = "background_image") val backgroundImage: Int,            //image d'arriere plan du contact
-        @ColumnInfo(name = "contact_priority") val contactPriority: Int             //priorité du contact
+        @ColumnInfo(name = "contact_priority") val contactPriority: Int,            //priorité du contact
+        @ColumnInfo(name = "profile_picture_str") val profilePicture64: String
 )

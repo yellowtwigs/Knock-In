@@ -58,6 +58,7 @@ class NotificationListener : NotificationListenerService() {
         for (key in sbn.notification.extras.keySet()) {
             Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
         }
+        println(appNotifiable(sbp).toString() + " est notifiable")
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
             this.cancelNotification(sbn.key)
 

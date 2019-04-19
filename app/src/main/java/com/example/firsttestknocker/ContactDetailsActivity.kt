@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import android.os.Environment.getExternalStoragePublicDirectory
+import android.util.Base64
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -72,6 +73,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_phone_number: String? = null
     private var contact_details_mail: String? = null
     private var contact_details_rounded_image: Int = 0
+    private var contact_details_image64: String? = null
     // Database && Thread
     private var contact_details_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
@@ -79,6 +81,21 @@ class ContactDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_details)
+
+        // on init WorkerThread
+        contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        contact_details_mDbWorkerThread.start()
+
+        //on get la base de données
+        contact_details_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+
+        // Contact's informations, link between Layout and the Activity
+        contact_details_FirstName = findViewById(R.id.contact_details_first_name_id)
+        contact_details_LastName = findViewById(R.id.contact_details_last_name_id)
+        contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id)
+        contact_details_Mail = findViewById(R.id.contact_details_mail_id)
+        contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id)
+        contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id)
 
         // Create the Intent, and get the data from the GridView
         val intent = intent
@@ -88,13 +105,19 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_mail = intent.getStringExtra("ContactMail")
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
         contact_details_id = intent.getLongExtra("ContactId", 1)
-
-        // on init WorkerThread
-        contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        contact_details_mDbWorkerThread.start()
-
-        //on get la base de données
-        contact_details_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        val getimage64 = Runnable {
+            val id = contact_details_id
+            val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
+            contact_details_image64 = contact!!.profilePicture64
+            if (contact_details_image64 == "") {
+                println(" contact detail ======= " + contact_details_rounded_image)
+                contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
+            } else {
+                val image64 = contact_details_image64
+                contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
+            }
+        }
+        contact_details_mDbWorkerThread.postTask(getimage64)
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -102,15 +125,10 @@ class ContactDetailsActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+        println("contact name = " + contact_details_first_name)
+        println("contact last name = " + contact_details_last_name)
+        println("contact image = " + contact_details_rounded_image)
         actionbar.setTitle("Détails du contact " + contact_details_first_name!!)
-
-        // Contact's informations, link between Layout and the Activity
-        contact_details_FirstName = findViewById(R.id.contact_details_first_name_id)
-        contact_details_LastName = findViewById(R.id.contact_details_last_name_id)
-        contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id)
-        contact_details_Mail = findViewById(R.id.contact_details_mail_id)
-        contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id)
-        contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id)
 
         // RelativeLayout to link with other SM's apps, link between Layout and the Activity
         contact_details_phone_number_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id)
@@ -141,7 +159,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FirstName!!.text = contact_details_first_name
         contact_details_LastName!!.text = contact_details_last_name
         contact_details_PhoneNumber!!.text = contact_details_phone_number
-        contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
+
         contact_details_Mail!!.text = contact_details_mail
 
         // The click for the animation
@@ -165,6 +183,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
             val intent = Intent(this@ContactDetailsActivity, EditContactActivity::class.java)
 
+            println("imaaage befor send to edit = " + contact_details_rounded_image)
             // Creation of a intent to transfer data's contact from ContactDetails to EditContact
             intent.putExtra("ContactFirstName", contact_details_first_name)
             intent.putExtra("ContactLastName", contact_details_last_name)
@@ -180,6 +199,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FloatingButtonDelete!!.setOnClickListener {
             //crée une pop up de confirmation avant de supprimer un contact
             val builder = AlertDialog.Builder(this)
+            println("ouioiuioiuioiuioiuiou + =" + contact_details_image64)
             builder.setTitle("SUPPRIMER CONTACT")
             builder.setMessage("Voulez vous vraiment supprimer ce contact ?")
             builder.setPositiveButton("OUI") { _, _ ->
@@ -198,6 +218,11 @@ class ContactDetailsActivity : AppCompatActivity() {
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
+    }
+
+    fun base64ToBitmap(base64: String) : Bitmap {
+        val imageBytes = Base64.decode(base64,0)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
     // Intent to return to the MainActivity

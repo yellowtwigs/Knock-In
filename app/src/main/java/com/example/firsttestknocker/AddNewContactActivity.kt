@@ -1,24 +1,28 @@
 package com.example.firsttestknocker
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.net.Uri
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,13 +36,16 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_PhoneNumber: EditText? = null
     private var add_new_contact_Email: EditText? = null
     private var add_new_contact_RoundedImageView: ImageView? = null
+    var imageUri: Uri? = null
+    private val IMAGE_CAPTURE_CODE = 1001
+
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
-    private var REQUEST_CAMERA: Int? = 1
+    //private var REQUEST_CAMERA: Int? = 1
     private var SELECT_FILE: Int? = 0
-    var add_new_contact_imgString: String? = null;
+    var add_new_contact_imgString: String? = "";
 
     @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,7 +131,8 @@ class AddNewContactActivity : AppCompatActivity() {
                     val printContacts = Runnable {
 
                         //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, 0)
+                        println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_imgString!!)
+                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, 0, add_new_contact_imgString!!)
                         println(contactData)
                         var isDuplicate = false
                         val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
@@ -174,13 +182,18 @@ class AddNewContactActivity : AppCompatActivity() {
         val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
         //            ActionBar.DisplayOptions[]
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Add Image")
         builder.setItems(items) { dialog, i ->
             if (items[i] == "Camera") {
 
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, REQUEST_CAMERA!!)
+                openCamera()
+//                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                startActivityForResult(intent, REQUEST_CAMERA!!)
 
             } else if (items[i] == "Gallery") {
 
@@ -195,31 +208,57 @@ class AddNewContactActivity : AppCompatActivity() {
         builder.show()
     }
 
+    private fun openCamera() {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "New Picture")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
+    }
+
+
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CAMERA) {
+            if (requestCode == IMAGE_CAPTURE_CODE) {
 
-                val bundle = data!!.extras
-                val bitmap = bundle!!.get("data") as Bitmap
+                //val bundle = data!!.extras
+                //val bitmap = bundle!!.get("data") as Bitmap
+                var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
+                var matrix = Matrix()
+                matrix.postRotate(90f)
+                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
+                add_new_contact_imgString = bitmapToBase64(bitmap)
+                println("convert to = " + base64ToBitmap(bitmapToBase64(bitmap)))
+                println("is the same ? result: " + bitmap.sameAs(base64ToBitmap(bitmapToBase64(bitmap))))
 
             } else if (requestCode == SELECT_FILE) {
                 val selectedImageUri = data!!.data
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 add_new_contact_RoundedImageView!!.setImageURI(selectedImageUri)
+                add_new_contact_imgString = bitmapToBase64(bitmap)
             }
         }
     }
 
-    fun imageToBase64(img : ImageView) : String
-    {
+    fun bitmapToBase64(bitmap: Bitmap) : String {
         val baos = ByteArrayOutputStream()
-        val bitmap = BitmapFactory.decodeResource(resources, img.id)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        //val bitmap = BitmapFactory.decodeResource(resources, img.id)
+        println("bitmap equal to = " + bitmap)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
-        val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)
 
-        return imageString;
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+
+    fun base64ToBitmap(base64: String) : Bitmap {
+        val imageBytes = Base64.decode(base64,0)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }

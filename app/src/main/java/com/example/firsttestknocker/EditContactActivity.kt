@@ -1,11 +1,14 @@
 package com.example.firsttestknocker
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -141,11 +144,12 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString(), "", edit_contact_rounded_image) //edit contact rounded maybe not work
                     val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
 
-                    intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text)
-                    intent.putExtra("ContactLastName", edit_contact_LastName!!.text)
-                    intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.text)
+                    println("JE VAIS LE SAAAAAAVE = " + edit_contact_RoundedImageView!!.id)
+                    intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text.toString())
+                    intent.putExtra("ContactLastName", edit_contact_LastName!!.text.toString())
+                    intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.text.toString())
                     intent.putExtra("ContactImage", edit_contact_RoundedImageView!!.id)
-                    intent.putExtra("ContactMail", edit_contact_Mail!!.text)
+                    intent.putExtra("ContactMail", edit_contact_Mail!!.text.toString())
 
                     startActivity(intent)
                     finish()
@@ -184,12 +188,14 @@ class EditContactActivity : AppCompatActivity() {
 
         val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
         //            ActionBar.DisplayOptions[]
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+        }
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Add Image")
         builder.setItems(items) { dialog, i ->
             if (items[i] == "Camera") {
-
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent, REQUEST_CAMERA!!)
 
@@ -208,7 +214,7 @@ class EditContactActivity : AppCompatActivity() {
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+//apres la photo avant de l'afficher
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
 
@@ -223,13 +229,18 @@ class EditContactActivity : AppCompatActivity() {
         }
     }
 
-    fun imageToBase64(img: ImageView): String {
+    fun bitmapToBase64(bitmap: Bitmap) : String {
         val baos = ByteArrayOutputStream()
-        val bitmap = BitmapFactory.decodeResource(resources, img.id)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        //val bitmap = BitmapFactory.decodeResource(resources, img.id)
+        println("bitmap equal to = " + bitmap)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
-        val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)
 
-        return imageString;
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+
+    fun base64ToBitmap(base64: String) : Bitmap {
+        val imageBytes = Base64.decode(base64,0)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }

@@ -7,7 +7,7 @@ import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.migration.Migration
 import android.content.Context
 
-@Database(entities = [Contacts::class, Notifications::class], version = 4)
+@Database(entities = [Contacts::class, Notifications::class], version = 5)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -27,6 +27,7 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                         .addMigrations(MIGRATION_1_2)
                         .addMigrations(MIGRATION_2_3)
                         .addMigrations(MIGRATION_3_4)
+                        .addMigrations(MIGRATION_4_5)
                         .build()
                 return INSTANCE
             }
@@ -46,6 +47,11 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN contact_priority INTEGER DEFAULT 0 NOT NULL ")
                 database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN contact_priority INTEGER DEFAULT 0 NOT NULL ")
                 database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN is_blacklist INTEGER DEFAULT 0 NOT NULL ")
+            }
+        }
+        private val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN profile_picture_str TEXT DEFAULT '' NOT NULL")
             }
         }
         fun destroyInstance() {
