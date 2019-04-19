@@ -136,6 +136,7 @@ class EditContactActivity : AppCompatActivity() {
                     alertDialog.setPositiveButton("Oui", { _, _ ->
 
                         val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
+                        intent.putExtra("ContactId", edit_contact_id)
                         intent.putExtra("ContactFirstName", edit_contact_first_name)
                         intent.putExtra("ContactLastName", edit_contact_last_name)
                         intent.putExtra("ContactPhoneNumber", edit_contact_phone_number)
@@ -151,6 +152,7 @@ class EditContactActivity : AppCompatActivity() {
                     alertDialog.show()
                 } else {
                     val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
+                    intent.putExtra("ContactId", edit_contact_id)
                     intent.putExtra("ContactFirstName", edit_contact_first_name)
                     intent.putExtra("ContactLastName", edit_contact_last_name)
                     intent.putExtra("ContactPhoneNumber", edit_contact_phone_number)
@@ -170,12 +172,13 @@ class EditContactActivity : AppCompatActivity() {
                     }
                     val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
 
-                    println("JE VAIS LE SAAAAAAVE = " + edit_contact_RoundedImageView!!.id)
+                    intent.putExtra("ContactId", edit_contact_id)
                     intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text.toString())
                     intent.putExtra("ContactLastName", edit_contact_LastName!!.text.toString())
                     intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.text.toString())
                     intent.putExtra("ContactImage", edit_contact_RoundedImageView!!.id)
                     intent.putExtra("ContactMail", edit_contact_Mail!!.text.toString())
+
 
                     startActivity(intent)
                     finish()
@@ -242,6 +245,7 @@ class EditContactActivity : AppCompatActivity() {
         values.put(MediaStore.Images.Media.TITLE, "New Picture")
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        println("image URI inside = " + imageUri)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
@@ -252,7 +256,7 @@ class EditContactActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMAGE_CAPTURE_CODE) {
-
+                println("image URI = " + imageUri)
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
                 val matrix = Matrix()

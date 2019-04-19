@@ -19,8 +19,10 @@
         <activity android:name=".ManageNotificationActivity"></activity>
         <activity android:name=".NotificationAdapter" />
         <activity android:name=".ChatActivity" />
-        <activity android:name=".AddNewContactActivity" />
-        <activity android:name=".EditContactActivity" />
+        <activity android:name=".AddNewContactActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".EditContactActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
