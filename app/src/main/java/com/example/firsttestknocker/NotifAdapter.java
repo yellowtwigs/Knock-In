@@ -31,7 +31,7 @@ public class NotifAdapter extends BaseAdapter {
     private final String MESSENGER_PACKAGE = "com.facebook.orca";
     private final String WATHSAPP_SERVICE = "com.whatsapp";
     private final String GMAIL_PACKAGE = "com.google.android.gm";
-    private final String  MESSAGE_PACKAGE = "";
+    private final String  MESSAGE_PACKAGE = "com.google.android.apps.messaging";
     public NotifAdapter(Context context, ArrayList<StatusBarParcelable> listNotification, WindowManager windowManager,View view){
         this.context=context;
         this.notifications= listNotification;
@@ -80,9 +80,9 @@ public class NotifAdapter extends BaseAdapter {
                     Log.i(TAG,"test in whatsapp if");
                     onWhatsappClick();
                 }else if(app.equals("gmail")){
-
+                    openGmail();
                 }else if(app.equals("messeage")) {
-
+                    openSms();
                 }
 
                 windowManager.removeView(view);
@@ -139,14 +139,24 @@ public class NotifAdapter extends BaseAdapter {
         // try{
             //PackageManager pm = context.getPackageManager();
             //pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-            Log.i(TAG,"test in whatsapp");
             Intent i = context.getPackageManager().getLaunchIntentForPackage("com.whatsapp");
+            i.setFlags(FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         /*} catch (PackageManager.NameNotFoundException e) {
             Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }*/
 
+    }
+    private void openGmail(){
+        Intent i = context.getPackageManager().getLaunchIntentForPackage("com.google.android.gm");
+        i.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+    private void openSms(){
+        Intent i = context.getPackageManager().getLaunchIntentForPackage("com.google.android.apps.messaging");
+        i.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
     }
 }
 
