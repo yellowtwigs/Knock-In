@@ -248,7 +248,6 @@ class AddNewContactActivity : AppCompatActivity() {
 
     fun bitmapToBase64(bitmap: Bitmap) : String {
         val baos = ByteArrayOutputStream()
-        //val bitmap = BitmapFactory.decodeResource(resources, img.id)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 

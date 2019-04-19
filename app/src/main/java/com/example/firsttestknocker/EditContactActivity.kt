@@ -67,7 +67,6 @@ class EditContactActivity : AppCompatActivity() {
 
         // Create the Intent, and get the data from the GridView
         val intent = intent
-//        val idContact =
         edit_contact_id = intent.getLongExtra("ContactId", 1)
         edit_contact_first_name = intent.getStringExtra("ContactFirstName")
         edit_contact_last_name = intent.getStringExtra("ContactLastName")
@@ -121,7 +120,6 @@ class EditContactActivity : AppCompatActivity() {
 
         edit_contact_RoundedImageView!!.setOnClickListener {
             SelectImage()
-//            add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
         }
     }
 
@@ -245,7 +243,6 @@ class EditContactActivity : AppCompatActivity() {
         values.put(MediaStore.Images.Media.TITLE, "New Picture")
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        println("image URI inside = " + imageUri)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
@@ -280,7 +277,6 @@ class EditContactActivity : AppCompatActivity() {
 
     fun bitmapToBase64(bitmap: Bitmap) : String {
         val baos = ByteArrayOutputStream()
-        //val bitmap = BitmapFactory.decodeResource(resources, img.id)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 
