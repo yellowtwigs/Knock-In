@@ -122,7 +122,6 @@ class NotificationListener : NotificationListenerService() {
             //effacer le window manager en rendre popup-view pour lui réaffecter de nouvelle valeur
         }
 
-
     }
 
 
