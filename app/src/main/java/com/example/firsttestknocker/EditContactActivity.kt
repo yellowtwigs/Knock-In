@@ -74,6 +74,13 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_mail = intent.getStringExtra("ContactMail")
         edit_contact_rounded_image = intent.getIntExtra("ContactImage", 1)
 
+        // Find View By Id
+        edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
+        edit_contact_LastName = findViewById(R.id.edit_contact_last_name_id)
+        edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
+        edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
+        edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
+
         val getimage64 = Runnable {
             val id = edit_contact_id
             val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
@@ -96,13 +103,6 @@ class EditContactActivity : AppCompatActivity() {
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
         actionbar.title = "Editer le contact"
-
-        // Find View By Id
-        edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
-        edit_contact_LastName = findViewById(R.id.edit_contact_last_name_id)
-        edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
-        edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
-        edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
 
         // Set Resources from MainActivity to ContactDetailsActivity
         edit_contact_FirstName!!.text = edit_contact_first_name
@@ -166,7 +166,7 @@ class EditContactActivity : AppCompatActivity() {
                     if (edit_contact_imgString != null) {
                         edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString(), "", edit_contact_rounded_image, edit_contact_imgString!!) //edit contact rounded maybe not work
                     } else {
-
+                        edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString(), "", edit_contact_rounded_image)
                     }
                     val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
 

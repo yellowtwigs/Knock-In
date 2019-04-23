@@ -100,27 +100,6 @@ class MainActivity : AppCompatActivity() {
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
 
-        ///TEST
-        val first = arrayListOf<String>()
-        val second = arrayListOf<String>()
-        val third = arrayListOf<String>()
-        val vide = arrayListOf<String>()
-        first.add("okk")
-        first.add("error")
-        first.add("foo")
-        second.add("end")
-        second.add("bar")
-        second.add("error")
-        second.add("okk")
-        third.add("oddy")
-        third.add("choose")
-        third.add("ok")
-        third.add("error")
-
-
-        println("test ENDTEST "+third.intersect(vide))
-        ///ENDTEST
-
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
 
@@ -153,6 +132,7 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
+            //main_GridView!!.setNumColumns(4) // permet de changer
             var contactList: List<Contacts>?
 
             if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
@@ -213,10 +193,10 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
 
             //création de la pop up de confirmation de synchro
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("SYNCHRONISATION DE VOS CONTACTS")
-            builder.setMessage("Voulez vous synchroniser les contacts de votre téléphone avec Knoker ?")
-            builder.setPositiveButton("OUI") { _, _ ->
+//            val builder = AlertDialog.Builder(this)
+//            builder.setTitle("SYNCHRONISATION DE VOS CONTACTS")
+//            builder.setMessage("Voulez vous synchroniser les contacts de votre téléphone avec Knoker ?")
+//            builder.setPositiveButton("OUI") { _, _ ->
                 //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
                 val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
                 val phoneContactsList = arrayListOf<Contacts>()
@@ -257,12 +237,12 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 main_mDbWorkerThread.postTask(addAllContacts)
-            }
-            builder.setNegativeButton("NON") { _, _ ->
-                //retour à la liste de contacts
-            }
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+//            }
+//            builder.setNegativeButton("NON") { _, _ ->
+//                //retour à la liste de contacts
+//            }
+//            val dialog: AlertDialog = builder.create()
+//            dialog.show()
         })
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
