@@ -136,7 +136,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
                         //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
                         println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_Priority!!.selectedItem.toString())
-                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, 0, add_new_contact_imgString!!)
+                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(), add_new_contact_imgString!!)
                         println(contactData)
                         var isDuplicate = false
                         val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
