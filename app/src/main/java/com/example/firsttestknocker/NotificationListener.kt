@@ -61,22 +61,28 @@ class NotificationListener : NotificationListenerService() {
             for (key in sbn.notification.extras.keySet()) {
                 Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
             }
-            //ContactsPriority.checkPriority2(notification_listener_ContactsDatabase?.contactsDao()?.())
-            if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
-                this.cancelNotification(sbn.key)
 
-                if (popupView == null || !sharedPreferences.getBoolean("view",false)) {
-                    popupView=null
-                    listNotif.clear();
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putBoolean("view", true)
-                    edit.commit()
-                    displayLayout(sbp)
-                }else{
-                    Log.i(TAG,"different de null"+  sharedPreferences.getBoolean("view",true) )
-                    notifLayout(sbp,popupView)
+            println("getPriority "+ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts()))
+            if( ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())==2){
+                if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false) ) {
+                    this.cancelNotification(sbn.key)
+
+                    if (popupView == null || !sharedPreferences.getBoolean("view",false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
+                        popupView=null
+                        listNotif.clear();
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putBoolean("view", true)
+                        edit.commit()
+                        displayLayout(sbp)
+                    }else{
+                        Log.i(TAG,"different de null"+  sharedPreferences.getBoolean("view",true) )
+                        notifLayout(sbp,popupView)
+                    }
                 }
+            }else{
+                println("non prioritaire")
             }
+
         }
         notification_listener_mDbWorkerThread.postTask(addNotification)
 
