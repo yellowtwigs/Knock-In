@@ -74,12 +74,9 @@
         android:id="@+id/add_new_contact_phone_number_spinner"
         android:layout_width="141dp"
         android:layout_height="@dimen/edit_text_height"
-        android:layout_marginStart="8dp"
         android:entries="@array/add_new_contact_phone_number_arrays"
         android:prompt="@string/add_new_contact_phone_number_mobile"
         app:layout_constraintEnd_toStartOf="@+id/add_new_contact_phone_number_id"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view_id" />
 
     <EditText
@@ -106,11 +103,10 @@
         android:id="@+id/add_new_contact_mail_spinner_id"
         android:layout_width="142dp"
         android:layout_height="@dimen/edit_text_height"
-        android:layout_marginStart="12dp"
         android:entries="@array/add_new_contact_mail_arrays"
         android:prompt="@string/add_new_contact_mail_mobile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_view_id" />
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_view_id"
+        tools:layout_editor_absoluteX="12dp" />
 
     <EditText
         android:id="@+id/add_new_contact_mail_id"
