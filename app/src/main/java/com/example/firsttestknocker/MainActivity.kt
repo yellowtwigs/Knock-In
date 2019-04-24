@@ -1,6 +1,7 @@
 package com.example.firsttestknocker
 
 import android.Manifest
+import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
@@ -17,6 +18,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -53,26 +55,36 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
+
         }
         if (!isNotificationServiceEnabled) {
 
             val alertDialog = buildNotificationServiceAlertDialog()
             alertDialog.show()
         }
-        if(Build.VERSION.SDK_INT>=23) {
-            if (!Settings.canDrawOverlays(this)) {
-                val alertDialog = OverlayAlertDialog()
-                alertDialog.show()
-            }
-        }
+
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
 
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+
+        val threadVerifPopup = Runnable {
+            if(Build.VERSION.SDK_INT>=23) {
+                if (!Settings.canDrawOverlays(this)) {
+                    if(ContactsPriority.checkPriority2(main_ContactsDatabase?.contactsDao()?.getAllContacts() )){
+                        val alertDialog = OverlayAlertDialog()
+                        alertDialog.show()
+                        println("test overlay")
+                    }
+                }
+            }
+        }// comme nous faisons appel a la bdd nous lançons un thread
+        main_mDbWorkerThread.postTask(threadVerifPopup)
 
         // Floating Button
         main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
@@ -136,6 +148,7 @@ class MainActivity : AppCompatActivity() {
 
             if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
                 contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+
             } else {
                 val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter_value)
                 contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
@@ -148,7 +161,6 @@ class MainActivity : AppCompatActivity() {
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList)
                 main_GridView!!.adapter = contactAdapter
-
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                     val o = main_GridView!!.getItemAtPosition(position)
                     val contact = o as Contacts
@@ -251,6 +263,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
         }
     }
+
 
 
 
@@ -389,7 +402,24 @@ class MainActivity : AppCompatActivity() {
         }
     private fun buildNotificationServiceAlertDialog(): AlertDialog {
         val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Knocker")
+        val inflater : LayoutInflater = this.getLayoutInflater()
+        val alertView: View = inflater.inflate(R.layout.alert_dialog_notification,null);
+        alertDialogBuilder.setView(alertView);
+        val alertDialog = alertDialogBuilder.create()
+        val tvNo= alertView.findViewById<TextView>(R.id.tv_alert_dialog)
+        tvNo.setOnClickListener {
+            alertDialog.cancel()
+        };
+        val btnYes = alertView.findViewById<Button>(R.id.button_alert_dialog)
+        btnYes.setOnClickListener{
+            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+            val intentFilter = IntentFilter()
+            intentFilter.addAction("com.example.testnotifiacation.notificationExemple")
+            alertDialog.cancel()
+
+        }
+
+       /* alertDialogBuilder.setTitle("Knocker")
         alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à acceder a vos notifications")
         alertDialogBuilder.setPositiveButton("oui"
         ) { dialog, id ->
@@ -402,20 +432,15 @@ class MainActivity : AppCompatActivity() {
         alertDialogBuilder.setNegativeButton("non"
         ) { dialog, id -> }
         return alertDialogBuilder.create()
+        */
+        return alertDialog
     }
 
-
-
-
-
-
-
-
-
+    //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): AlertDialog {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
-        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications dirrectement sur d'autre application")
+        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
         alertDialogBuilder.setPositiveButton("oui"
         ) { dialog, id ->
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
@@ -437,5 +462,12 @@ class MainActivity : AppCompatActivity() {
         }
         return alertDialogBuilder.create()
     }
+
+
+
+
+
+
+
 }
 

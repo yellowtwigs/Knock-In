@@ -2,9 +2,8 @@ package com.example.firsttestknocker
 
 
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
+import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -34,6 +33,7 @@ class NotificationListener : NotificationListenerService() {
 
     var popupView : View? = null
     var windowManager: WindowManager? = null
+    var priority: Int?=null
 
     override fun onCreate() {
         super.onCreate()
@@ -54,36 +54,31 @@ class NotificationListener : NotificationListenerService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val addNotification = Runnable {
             notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
-        }
-        notification_listener_mDbWorkerThread.postTask(addNotification)
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-        Log.i(TAG,"application context "+applicationContext.toString());
-        Log.i(TAG, "application notifier:" + sbp.appNotifier)
-        Log.i(TAG, "tickerText:" + sbp.tickerText)
-        for (key in sbn.notification.extras.keySet()) {
-            Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
-        }
-        if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
-            this.cancelNotification(sbn.key)
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            Log.i(TAG,"application context "+applicationContext.toString());
+            Log.i(TAG, "application notifier:" + sbp.appNotifier)
+            Log.i(TAG, "tickerText:" + sbp.tickerText)
+            for (key in sbn.notification.extras.keySet()) {
+                Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
+            }
+            //ContactsPriority.checkPriority2(notification_listener_ContactsDatabase?.contactsDao()?.())
+            if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false)) {
+                this.cancelNotification(sbn.key)
 
-            if (popupView == null || !sharedPreferences.getBoolean("view",false)) {
-                popupView=null
-                listNotif.clear();
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                edit.putBoolean("view", true)
-                edit.commit()
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (Settings.canDrawOverlays(this)) {
-                        displayLayout(sbp);
-                    }
-                } else {
-                    displayLayout(sbp);
+                if (popupView == null || !sharedPreferences.getBoolean("view",false)) {
+                    popupView=null
+                    listNotif.clear();
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.commit()
+                    displayLayout(sbp)
+                }else{
+                    Log.i(TAG,"different de null"+  sharedPreferences.getBoolean("view",true) )
+                    notifLayout(sbp,popupView)
                 }
-            }else{
-                Log.i(TAG,"different de null"+  sharedPreferences.getBoolean("view",true) )
-                notifLayout(sbp,popupView)
             }
         }
+        notification_listener_mDbWorkerThread.postTask(addNotification)
 
     }
     public fun saveNotfication(sbp:StatusBarParcelable):Notifications{
@@ -162,6 +157,12 @@ class NotificationListener : NotificationListenerService() {
         }
         return ""
     }
+    private fun afficherNotif(){
+
+    }
+    private fun empecheNotif(){
+
+    }
     companion object {
         var TAG = NotificationListener::class.java.simpleName
         val FACEBOOK_PACKAGE = "com.facebook.katana"
@@ -172,4 +173,5 @@ class NotificationListener : NotificationListenerService() {
         val listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
 
     }
+
 }
