@@ -33,11 +33,12 @@ public class NotifAdapter extends BaseAdapter {
     private final String WATHSAPP_SERVICE = "com.whatsapp";
     private final String GMAIL_PACKAGE = "com.google.android.gm";
     private final String  MESSAGE_PACKAGE = "com.google.android.apps.messaging";
+
     public NotifAdapter(Context context, ArrayList<StatusBarParcelable> listNotification, WindowManager windowManager,View view){
         this.context=context;
         this.notifications= listNotification;
         this.windowManager=windowManager;
-        this.view=view;
+        this.view= view;
     }
     public int getCount() {
         return notifications.size();
@@ -163,5 +164,6 @@ public class NotifAdapter extends BaseAdapter {
         i.setFlags(FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
     }
+
 }
 

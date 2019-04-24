@@ -1,5 +1,7 @@
 package com.example.firsttestknocker
 
+import android.os.Build
+import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 
 object ContactsPriority : AppCompatActivity() {
@@ -8,7 +10,7 @@ object ContactsPriority : AppCompatActivity() {
     fun getPriorityWithName(name: String, platform: String, listContact: List<Contacts>?): Int {
         var priority = 1
         when (platform) {
-            "sms" -> {
+            "message" -> {
                 // jean, jean michel, jean michel pelletier
                 priority = getPriority(name,listContact)
             }
@@ -34,4 +36,16 @@ object ContactsPriority : AppCompatActivity() {
         }
         return priority
     }
+
+    fun checkPriority2(contactList: List<Contacts>?): Boolean {
+        if (contactList != null) {
+            for (contact in contactList){
+               if(contact.contactPriority==2){
+                   return true
+               }
+            }
+        }
+        return false
+    }
+
 }

@@ -86,10 +86,9 @@ class EditContactActivity : AppCompatActivity() {
             val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
             edit_contact_image64 = contact!!.profilePicture64
             if (edit_contact_image64 == "") {
-                println(" contact detail ======= " + edit_contact_rounded_image)
+
                 edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
             } else {
-                println(" contact detail ======= " + edit_contact_image64)
                 val image64 = edit_contact_image64
                 edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
             }
@@ -165,8 +164,10 @@ class EditContactActivity : AppCompatActivity() {
                 val editContact = Runnable {
                     if (edit_contact_imgString != null) {
                         edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString(), "", edit_contact_rounded_image, edit_contact_imgString!!, 0) //edit contact rounded maybe not work
+
                     } else {
                         edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString(), "", edit_contact_rounded_image, 0)
+
                     }
                     val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
 
@@ -174,7 +175,7 @@ class EditContactActivity : AppCompatActivity() {
                     intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text.toString())
                     intent.putExtra("ContactLastName", edit_contact_LastName!!.text.toString())
                     intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.text.toString())
-                    intent.putExtra("ContactImage", edit_contact_RoundedImageView!!.id)
+                    intent.putExtra("ContactImage", edit_contact_rounded_image)
                     intent.putExtra("ContactMail", edit_contact_Mail!!.text.toString())
 
 

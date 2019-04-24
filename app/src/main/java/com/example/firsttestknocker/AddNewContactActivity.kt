@@ -3,19 +3,18 @@ package com.example.firsttestknocker
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentResolver
-import android.content.ContentValues
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
+import android.os.Build
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
@@ -133,7 +132,6 @@ class AddNewContactActivity : AppCompatActivity() {
             } else {
                 if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                     val printContacts = Runnable {
-
                         //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
                         println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_Priority!!.selectedItem.toString())
                         val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(), add_new_contact_imgString!!)
@@ -144,6 +142,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
                                 isDuplicate = true
                         }
+
                         if (isDuplicate == false) {
                             main_ContactsDatabase?.contactsDao()?.insert(contactData)
                             val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
@@ -262,4 +261,7 @@ class AddNewContactActivity : AppCompatActivity() {
         val imageBytes = Base64.decode(base64,0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
+
+
+
 }
