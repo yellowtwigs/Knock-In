@@ -39,15 +39,14 @@ class MainActivity : AppCompatActivity() {
     private var main_FloatingButtonClockWiserAnimation: Animation? = null
     private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
     internal var isOpen = false
-    //<check Kenzy
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
-    //check Kenzy>
 
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
+    //private lateinit var mainContactsPriority: ContactsPriority
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -223,8 +222,8 @@ class MainActivity : AppCompatActivity() {
                 val addAllContacts = Runnable {
                     var isDuplicate = false
                     val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                    val priority = getPriorityWithName("Ryan Granet", "sms", allcontacts)
-                    println("priorité === "+priority)
+                    //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
+                    //println("priorité === "+priority)
                     phoneContactsList.forEach { phoneContactList ->
                         allcontacts?.forEach { contactsDB ->
                             if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
@@ -253,36 +252,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // fonction qui recupere la priorité grâce au nom du contact et la plateforme
-    private fun getPriorityWithName(name: String, platform: String, listContact: List<Contacts>?): Int {
-        var priority = 1
-        when (platform) {
-            "sms" -> {
-                // jean, jean michel, jean michel pelletier
-                priority = getPriority(name,listContact)
-            }
-        }
-        return priority
-    }
 
-    // get la priorité grace à la liste
-    private fun getPriority(name: String, listContact: List<Contacts>?): Int {
-        var priority = -1
-        if (name.contains(" ")) {
-            listContact!!.forEach { dbContact ->
-                if (dbContact.firstName+" "+dbContact.lastName == name) { //contain or == |jean michel pellier && michel pellier !=
-                    priority = dbContact.contactPriority
-                }
-            }
-        } else {
-            listContact!!.forEach { dbContact ->
-                if (dbContact.firstName == name && dbContact.lastName == "" || dbContact.firstName == "" && dbContact.lastName == name) {
-                    priority = dbContact.contactPriority
-                }
-            }
-        }
-        return priority
-    }
 
     // fonction qui filtre
     private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
