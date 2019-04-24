@@ -73,19 +73,6 @@ class MainActivity : AppCompatActivity() {
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-        val threadVerifPopup = Runnable {
-            if(Build.VERSION.SDK_INT>=23) {
-                if (!Settings.canDrawOverlays(this)) {
-                    if(ContactsPriority.checkPriority2(main_ContactsDatabase?.contactsDao()?.getAllContacts() )){
-                        val alertDialog = OverlayAlertDialog()
-                        alertDialog.show()
-                        println("test overlay")
-                    }
-                }
-            }
-        }// comme nous faisons appel a la bdd nous lançons un thread
-        main_mDbWorkerThread.postTask(threadVerifPopup)
-
         // Floating Button
         main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
         main_FloatingButtonAdd = findViewById(R.id.main_floating_button_add_id)
@@ -262,6 +249,20 @@ class MainActivity : AppCompatActivity() {
         if (isDelete) {
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
         }
+
+        val threadVerifPopup = Runnable {
+            if(Build.VERSION.SDK_INT>=23) {
+                if (!Settings.canDrawOverlays(this)) {
+                    if(ContactsPriority.checkPriority2(main_ContactsDatabase?.contactsDao()?.getAllContacts() )){
+                        val alertDialog = OverlayAlertDialog()
+                        alertDialog.show()
+                        println("test overlay")
+                    }
+                }
+            }
+        }// comme nous faisons appel a la bdd nous lançons un thread
+        main_mDbWorkerThread.postTask(threadVerifPopup)
+
     }
 
 

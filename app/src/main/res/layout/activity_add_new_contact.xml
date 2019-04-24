@@ -111,7 +111,7 @@
     <EditText
         android:id="@+id/add_new_contact_mail_id"
         android:layout_width="256dp"
-        android:layout_height="44dp"
+        android:layout_height="43dp"
         android:autofillHints="@string/add_new_contact_mail"
         android:background="@drawable/custom_edit_text"
         android:hint="@string/add_new_contact_mail"
@@ -149,9 +149,10 @@
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/add_new_contact_add_field_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view"
-        app:layout_constraintVertical_bias="0.692" />
+        app:layout_constraintVertical_bias="0.923" />
 </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

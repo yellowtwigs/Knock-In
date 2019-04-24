@@ -8,7 +8,7 @@ object ContactsPriority : AppCompatActivity() {
 
     // fonction qui recupere la priorité grâce au nom du contact et la plateforme
     fun getPriorityWithName(name: String, platform: String, listContact: List<Contacts>?): Int {
-        var priority = 1
+        var priority = -1
         when (platform) {
             "message" -> {
                 // jean, jean michel, jean michel pelletier
