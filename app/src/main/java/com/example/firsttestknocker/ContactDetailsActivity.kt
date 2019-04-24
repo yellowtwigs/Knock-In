@@ -74,6 +74,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_mail: String? = null
     private var contact_details_rounded_image: Int = 0
     private var contact_details_image64: String? = null
+    private var contact_details_priority: Int = 1
     // Database && Thread
     private var contact_details_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
@@ -105,6 +106,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_mail = intent.getStringExtra("ContactMail")
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
         contact_details_id = intent.getLongExtra("ContactId", 1)
+        contact_details_priority = intent.getIntExtra("ContactPriority", 1)
         val getimage64 = Runnable {
             val id = contact_details_id
             val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
@@ -191,6 +193,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             intent.putExtra("ContactImage", contact_details_rounded_image)
             intent.putExtra("ContactId", contact_details_id!!)
             intent.putExtra("ContactMail", contact_details_mail!!)
+            intent.putExtra("ContactPriority", contact_details_priority)
 
             startActivity(intent)
         }
