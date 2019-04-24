@@ -15,9 +15,20 @@ object ContactsPriority : AppCompatActivity() {
 >>>>>>> Stashed changes
         when (platform) {
             "message" -> {
-                // jean, jean michel, jean michel pelletier
                 priority = getPriority(name,listContact)
             }
+            "gmail" -> {
+                priority = getPriorityGmail(name, listContact)
+            }
+        }
+        return priority
+    }
+
+    fun getPriorityGmail(mail: String, listContact: List<Contacts>?): Int {
+        var priority = -1
+        listContact!!.forEach {dbContact ->
+            if (dbContact.mail == mail)
+                priority = dbContact.contactPriority
         }
         return priority
     }
