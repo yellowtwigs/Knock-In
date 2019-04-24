@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddNewContactActivity">
@@ -69,21 +74,23 @@
         android:id="@+id/add_new_contact_phone_number_spinner"
         android:layout_width="141dp"
         android:layout_height="@dimen/edit_text_height"
+        android:layout_marginStart="8dp"
         android:entries="@array/add_new_contact_phone_number_arrays"
         android:prompt="@string/add_new_contact_phone_number_mobile"
         app:layout_constraintEnd_toStartOf="@+id/add_new_contact_phone_number_id"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view_id" />
 
     <EditText
         android:id="@+id/add_new_contact_phone_number_id"
-        android:layout_width="269dp"
-        android:layout_height="@dimen/edit_text_height"
+        android:layout_width="267dp"
+        android:layout_height="44dp"
         android:autofillHints="@string/add_new_contact_phone_number"
         android:background="@drawable/custom_edit_text"
         android:hint="@string/add_new_contact_phone_number"
-        android:textColor="@color/textColor"
         android:inputType="phone"
+        android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view_id" />
 
@@ -99,6 +106,7 @@
         android:id="@+id/add_new_contact_mail_spinner_id"
         android:layout_width="142dp"
         android:layout_height="@dimen/edit_text_height"
+        android:layout_marginStart="8dp"
         android:entries="@array/add_new_contact_mail_arrays"
         android:prompt="@string/add_new_contact_mail_mobile"
         app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +136,26 @@
         android:id="@+id/add_new_contact_add_field_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
         android:text="@string/add_new_contact_add_field"
-        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
+        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view"
+        tools:layout_editor_absoluteX="0dp" />
 
+    <Spinner
+        android:id="@+id/add_new_contact_priority"
+        android:layout_width="122dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@+id/add_new_contact_add_field_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view"
+        app:layout_constraintVertical_bias="0.692" />
 </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+

@@ -23,10 +23,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.*
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import java.io.ByteArrayOutputStream
 
 class AddNewContactActivity : AppCompatActivity() {
@@ -36,6 +33,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_PhoneNumber: EditText? = null
     private var add_new_contact_Email: EditText? = null
     private var add_new_contact_RoundedImageView: ImageView? = null
+    private var add_new_contact_Priority: Spinner? = null
     var imageUri: Uri? = null
     private val IMAGE_CAPTURE_CODE = 1001
 
@@ -73,6 +71,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_PhoneNumber = findViewById(R.id.add_new_contact_phone_number_id)
         add_new_contact_Email = findViewById(R.id.add_new_contact_mail_id)
         add_new_contact_RoundedImageView = findViewById(R.id.add_new_contact_rounded_image_view_id)
+        add_new_contact_Priority = findViewById(R.id.add_new_contact_priority)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
@@ -80,6 +79,11 @@ class AddNewContactActivity : AppCompatActivity() {
             SelectImage()
 //            add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
         }
+        // drop list
+        val priority_list = arrayOf(0,1,2)
+        val array_adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, priority_list)
+        array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        add_new_contact_Priority!!.adapter = array_adapter
     }
 
     //demmande de confirmation de la création d'un contact en double
@@ -131,8 +135,8 @@ class AddNewContactActivity : AppCompatActivity() {
                     val printContacts = Runnable {
 
                         //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                        println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_imgString!!)
-                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, 0, add_new_contact_imgString!!)
+                        println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_Priority!!.selectedItem.toString())
+                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(), add_new_contact_imgString!!)
                         println(contactData)
                         var isDuplicate = false
                         val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
