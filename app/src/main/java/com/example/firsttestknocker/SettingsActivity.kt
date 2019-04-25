@@ -60,7 +60,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         button_to_delete?.setOnClickListener {
-            nbGrid+=1
+            if (nbGrid < 6) {
+                nbGrid += 1
+            }
         }
 
         val notificationRL = findViewById<View>(R.id.notification_RelativeLayout_settings) as RelativeLayout

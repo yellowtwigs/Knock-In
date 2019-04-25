@@ -125,7 +125,8 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
-            main_GridView!!.setNumColumns(intent.getIntExtra("nbGridview", 3)) // permet de changer
+            val len = intent.getIntExtra("nbGridview", 3)
+            main_GridView!!.setNumColumns(len) // permet de changer
             var contactList: List<Contacts>?
 
             if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
@@ -141,7 +142,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (main_GridView != null) {
-                val contactAdapter = ContactAdapter(this, contactList)
+                val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                     if (isOpen == false) {

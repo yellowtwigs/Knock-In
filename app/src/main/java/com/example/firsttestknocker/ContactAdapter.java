@@ -19,10 +19,12 @@ public class ContactAdapter extends BaseAdapter {
     private List<Contacts> listContacts;
     private LayoutInflater layoutInflater;
     private Context context;
+    private Integer len;
 
-    public ContactAdapter(Context context, List<Contacts> listContacts) {
+    public ContactAdapter(Context context, List<Contacts> listContacts, Integer len) {
         this.context = context;
         this.listContacts = listContacts;
+        this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -61,7 +63,17 @@ public class ContactAdapter extends BaseAdapter {
         }
 
         Contacts contact = this.listContacts.get(position);
-        holder.contactFirstNameView.setText(contact.getFirstName());
+        String firstname = contact.getFirstName();
+        if (len == 4 && contact.getFirstName().length() > 10) {
+            firstname = contact.getFirstName().substring(0,10);
+        }
+        if (len == 5 && contact.getFirstName().length() > 7) {
+            firstname = contact.getFirstName().substring(0,7);
+        }
+        if (len == 6 && contact.getFirstName().length() > 5) {
+            firstname = contact.getFirstName().substring(0,5);
+        }
+        holder.contactFirstNameView.setText(firstname);
         if (!contact.getProfilePicture64().equals("")) {
             base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(base64ToBitmap(contact.getProfilePicture64()));
