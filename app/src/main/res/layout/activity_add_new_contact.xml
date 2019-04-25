@@ -94,19 +94,7 @@
             app:layout_constraintStart_toEndOf="@+id/add_new_contact_phone_number_spinner"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view_id" />
 
-<<<<<<< Updated upstream
-    <EditText
-        android:id="@+id/add_new_contact_mail_id"
-        android:layout_width="256dp"
-        android:layout_height="43dp"
-        android:autofillHints="@string/add_new_contact_mail"
-        android:background="@drawable/custom_edit_text"
-        android:hint="@string/add_new_contact_mail"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/textColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_view_id" />
-=======
+
         <View
             android:id="@+id/add_new_contact_mail_view_id"
             android:layout_width="match_parent"
@@ -114,9 +102,7 @@
             android:background="@color/borderViewColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_id" />
->>>>>>> Stashed changes
-
-        <Spinner
+<Spinner
             android:id="@+id/add_new_contact_mail_spinner_id"
             android:layout_width="142dp"
             android:layout_height="@dimen/edit_text_height"
@@ -156,7 +142,7 @@
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view"
             tools:layout_editor_absoluteX="0dp" />
 
-<<<<<<< Updated upstream
+
     <Spinner
         android:id="@+id/add_new_contact_priority"
         android:layout_width="122dp"
@@ -174,24 +160,5 @@
         app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view"
         app:layout_constraintVertical_bias="0.923" />
 </android.support.constraint.ConstraintLayout>
-    </ScrollView>
-=======
-        <Spinner
-            android:id="@+id/add_new_contact_priority"
-            android:layout_width="122dp"
-            android:layout_height="37dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
-            app:layout_constraintBottom_toTopOf="@+id/add_new_contact_add_field_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view"
-            app:layout_constraintVertical_bias="0.692" />
-    </android.support.constraint.ConstraintLayout>
 </ScrollView>
->>>>>>> Stashed changes
 
