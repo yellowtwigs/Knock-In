@@ -175,7 +175,19 @@
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal" />
+
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/todelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/add_new_contact_add_field"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
+            tools:layout_editor_absoluteX="0dp" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView

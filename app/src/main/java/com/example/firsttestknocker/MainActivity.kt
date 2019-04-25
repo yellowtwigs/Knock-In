@@ -18,10 +18,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
@@ -53,8 +50,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
@@ -130,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
-            //main_GridView!!.setNumColumns(4) // permet de changer
+            main_GridView!!.setNumColumns(intent.getIntExtra("nbGridview", 3)) // permet de changer
             var contactList: List<Contacts>?
 
             if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
@@ -262,11 +257,7 @@ class MainActivity : AppCompatActivity() {
             }
         }// comme nous faisons appel a la bdd nous lançons un thread
         main_mDbWorkerThread.postTask(threadVerifPopup)
-
     }
-
-
-
 
     // fonction qui filtre
     private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {

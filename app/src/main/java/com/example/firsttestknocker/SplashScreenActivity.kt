@@ -7,7 +7,7 @@ import android.os.Bundle
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private val SPLASH_DISPLAY_LENGHT = 5000
+    private val SPLASH_DISPLAY_LENGHT = 2000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
