@@ -154,6 +154,7 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("ContactMail", contact.mail)
                     intent.putExtra("ContactImage", contact.profilePicture)
                     intent.putExtra("ContactId", contact.id)
+                    intent.putExtra("ContactPriority", contact.contactPriority)
 
                     startActivity(intent)
                 }
