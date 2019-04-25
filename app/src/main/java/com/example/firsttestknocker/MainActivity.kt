@@ -144,19 +144,21 @@ class MainActivity : AppCompatActivity() {
                 val contactAdapter = ContactAdapter(this, contactList)
                 main_GridView!!.adapter = contactAdapter
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                    val o = main_GridView!!.getItemAtPosition(position)
-                    val contact = o as Contacts
+                    if (isOpen == false) {
+                        val o = main_GridView!!.getItemAtPosition(position)
+                        val contact = o as Contacts
 
-                    val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
-                    intent.putExtra("ContactFirstName", contact.firstName)
-                    intent.putExtra("ContactLastName", contact.lastName)
-                    intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
-                    intent.putExtra("ContactMail", contact.mail)
-                    intent.putExtra("ContactImage", contact.profilePicture)
-                    intent.putExtra("ContactId", contact.id)
-                    intent.putExtra("ContactPriority", contact.contactPriority)
+                        val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
+                        intent.putExtra("ContactFirstName", contact.firstName)
+                        intent.putExtra("ContactLastName", contact.lastName)
+                        intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
+                        intent.putExtra("ContactMail", contact.mail)
+                        intent.putExtra("ContactImage", contact.profilePicture)
+                        intent.putExtra("ContactId", contact.id)
+                        intent.putExtra("ContactPriority", contact.contactPriority)
 
-                    startActivity(intent)
+                        startActivity(intent)
+                    }
                 }
 
                 // Drag n Drop
