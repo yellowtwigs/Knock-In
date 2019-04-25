@@ -92,14 +92,28 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/contact_details_phone_number_text_id"
+                    android:id="@+id/contact_details_phone_property_text_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="false"
-                    android:layout_centerVertical="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="47dp"
+                    android:layout_marginBottom="7dp"
+                    android:textColor="@color/textColor_light"
+                    android:textSize="@dimen/contact_details_text_size" />
+
+                <TextView
+                    android:id="@+id/contact_details_phone_number_text_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="39dp"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/contact_details_text_size" />
 
@@ -152,11 +166,23 @@
                 android:visibility="gone">
 
                 <TextView
+                    android:id="@+id/contact_details_mail_property_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="41dp"
+                    android:layout_marginBottom="13dp"
+                    android:textColor="@color/textColor_light"
+                    android:textSize="@dimen/contact_details_text_size" />
+
+                <TextView
                     android:id="@+id/contact_details_mail_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="false"
-                    android:layout_centerVertical="true"
+                    android:layout_alignParentTop="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"

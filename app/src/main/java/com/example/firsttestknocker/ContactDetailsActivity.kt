@@ -46,7 +46,10 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_FirstName: TextView? = null
     private var contact_details_LastName: TextView? = null
     private var contact_details_PhoneNumber: TextView? = null
+    private var contact_details_PhoneNumber_Property: TextView? = null
+    private var contact_details_Mail_Property: TextView? = null
     private var contact_details_Mail: TextView? = null
+
     private var contact_details_RoundedImageView: ImageView? = null
     private var contactImage_BackgroundImage: ImageView? = null
 
@@ -71,7 +74,9 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_first_name: String? = null
     private var contact_details_last_name: String? = null
     private var contact_details_phone_number: String? = null
+    private var contact_details_phone_property: String? = null
     private var contact_details_mail: String? = null
+    private var contact_details_mail_property: String? = null
     private var contact_details_rounded_image: Int = 0
     private var contact_details_image64: String? = null
     private var contact_details_priority: Int = 1
@@ -94,16 +99,22 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FirstName = findViewById(R.id.contact_details_first_name_id)
         contact_details_LastName = findViewById(R.id.contact_details_last_name_id)
         contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id)
+        contact_details_PhoneNumber_Property = findViewById(R.id.contact_details_phone_property_text_id)
         contact_details_Mail = findViewById(R.id.contact_details_mail_id)
         contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id)
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id)
-
+        contact_details_Mail_Property= findViewById(R.id.contact_details_mail_property_id)
         // Create the Intent, and get the data from the GridView
         val intent = intent
         contact_details_first_name = intent.getStringExtra("ContactFirstName")
         contact_details_last_name = intent.getStringExtra("ContactLastName")
-        contact_details_phone_number = intent.getStringExtra("ContactPhoneNumber")
-        contact_details_mail = intent.getStringExtra("ContactMail")
+        var tmp = intent.getStringExtra("ContactPhoneNumber")
+        println("tmp "+tmp);
+        contact_details_phone_number =  NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
+        contact_details_phone_property =  NumberAndMailDB.extractStringFromNumber(tmp)
+        tmp=intent.getStringExtra("ContactMail")
+        contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
+        contact_details_mail_property= NumberAndMailDB.extractStringFromNumber(tmp)
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
         contact_details_id = intent.getLongExtra("ContactId", 1)
         contact_details_priority = intent.getIntExtra("ContactPriority", 1)
@@ -161,8 +172,9 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_FirstName!!.text = contact_details_first_name
         contact_details_LastName!!.text = contact_details_last_name
         contact_details_PhoneNumber!!.text = contact_details_phone_number
-
+        contact_details_PhoneNumber_Property!!.text=contact_details_phone_property
         contact_details_Mail!!.text = contact_details_mail
+        contact_details_Mail_Property!!.text = contact_details_mail_property
 
         // The click for the animation
         contact_details_FloatingButtonOpen!!.setOnClickListener {
@@ -189,10 +201,11 @@ class ContactDetailsActivity : AppCompatActivity() {
             // Creation of a intent to transfer data's contact from ContactDetails to EditContact
             intent.putExtra("ContactFirstName", contact_details_first_name)
             intent.putExtra("ContactLastName", contact_details_last_name)
-            intent.putExtra("ContactPhoneNumber", contact_details_phone_number)
+            intent.putExtra("ContactPhoneNumber", contact_details_phone_number+NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!))
+            println("we send this "+contact_details_PhoneNumber+NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!)+ contact_details_phone_property)
             intent.putExtra("ContactImage", contact_details_rounded_image)
             intent.putExtra("ContactId", contact_details_id!!)
-            intent.putExtra("ContactMail", contact_details_mail!!)
+            intent.putExtra("ContactMail", contact_details_mail!!+NumberAndMailDB.convertSpinnerStringToChar(contact_details_mail_property!!))
             intent.putExtra("ContactPriority", contact_details_priority)
 
             startActivity(intent)

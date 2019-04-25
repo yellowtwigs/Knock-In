@@ -33,6 +33,8 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_Email: EditText? = null
     private var add_new_contact_RoundedImageView: ImageView? = null
     private var add_new_contact_Priority: Spinner? = null
+    private var add_new_contact_Phone_Property :Spinner? =null
+    private var add_new_contact_Mail_Property :Spinner?= null
     var imageUri: Uri? = null
     private val IMAGE_CAPTURE_CODE = 1001
 
@@ -71,7 +73,8 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_Email = findViewById(R.id.add_new_contact_mail_id)
         add_new_contact_RoundedImageView = findViewById(R.id.add_new_contact_rounded_image_view_id)
         add_new_contact_Priority = findViewById(R.id.add_new_contact_priority)
-
+        add_new_contact_Phone_Property = findViewById(R.id.add_new_contact_phone_number_spinner)
+        add_new_contact_Mail_Property = findViewById(R.id.add_new_contact_mail_spinner_id)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
@@ -133,8 +136,17 @@ class AddNewContactActivity : AppCompatActivity() {
                 if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                     val printContacts = Runnable {
                         //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                        println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_Priority!!.selectedItem.toString())
-                        val contactData = Contacts(null, add_new_contact_FirstName!!.text.toString(), add_new_contact_LastName!!.text.toString(), add_new_contact_PhoneNumber!!.text.toString(), add_new_contact_Email!!.text.toString(), R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(), add_new_contact_imgString!!)
+                        println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_Mail_Property!!.selectedItem.toString())
+                        val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_Phone_Property!!.selectedItem.toString())
+                        val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_Mail_Property!!.selectedItem.toString(),add_new_contact_Email!!.text.toString())
+                        println("teeeeeeeeeessssssssssssstttttttttt2 = "+ mailSpinnerChar)
+                        val contactData = Contacts(null,
+                                add_new_contact_FirstName!!.text.toString(),
+                                add_new_contact_LastName!!.text.toString(),
+                                add_new_contact_PhoneNumber!!.text.toString()+spinnerChar,
+                                add_new_contact_Email!!.text.toString()+mailSpinnerChar,
+                                R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(),
+                                add_new_contact_imgString!!)
                         println(contactData)
                         var isDuplicate = false
                         val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()

@@ -5,8 +5,9 @@
     <color name="colorKnocker">#6082be</color>
 
     <color name="white">#FFFFFF</color>
-    <color name="textColor">#2a2a2a</color>
+    <color name="textColor">#2B2B2B</color>
     <color name="borderViewColor">#f3f3f3</color>
     <color name="relativeLayoutPressedColor">#ececec</color>
     <color name="editTextBackgroundColor">#eeeeee</color>
+    <color name="textColor_light">#772D2D2D</color>
 </resources>

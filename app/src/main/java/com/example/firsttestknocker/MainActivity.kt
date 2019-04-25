@@ -60,6 +60,9 @@ class MainActivity : AppCompatActivity() {
             val alertDialog = buildNotificationServiceAlertDialog()
             alertDialog.show()
         }
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
+        println("lancement du service")
 
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -410,7 +413,7 @@ class MainActivity : AppCompatActivity() {
         btnYes.setOnClickListener{
             startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
             val intentFilter = IntentFilter()
-            intentFilter.addAction("com.example.testnotifiacation.notificationExemple")
+            intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
             alertDialog.cancel()
 
         }
