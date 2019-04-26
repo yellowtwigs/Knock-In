@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -18,6 +22,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.engine.Resource;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -66,7 +74,22 @@ public class NotifAdapter extends BaseAdapter {
         ImageView expImg= (ImageView) convertView.findViewById(R.id.notification_expediteurImg);
         app.setText(convertPackageToString(sbp.getAppNotifier()));
         contenue.setText(sbp.getStatusBarNotificationInfo().get("android.title")+":"+sbp.getStatusBarNotificationInfo().get("android.text"));
-        appImg.setImageResource(getApplicationNotifier(sbp));
+        //appImg.setImageResource(getApplicationNotifier(sbp));
+
+        String pckg= sbp.getAppNotifier();
+        int iconID = Integer.parseInt(sbp.getStatusBarNotificationInfo().get("android.icon").toString());
+        try {
+            PackageManager pckManager = context.getPackageManager();
+            Drawable icon = pckManager.getApplicationIcon(sbp.getAppNotifier());
+            appImg.setImageDrawable(icon);
+        }catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(!sbp.getStatusBarNotificationInfo().get("android.largeIcon").equals("")) {//image de l'expediteur provenant l'application source
+            System.out.println("bitmap :"+sbp.getStatusBarNotificationInfo().get("android.largeIcon"));
+            Bitmap bitmap = (Bitmap) sbp.getStatusBarNotificationInfo().get("android.largeIcon");
+            expImg.setImageBitmap(bitmap);
+        }
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,12 +101,10 @@ public class NotifAdapter extends BaseAdapter {
                 {
                     gotToFacebookPage("");
                 }else if(app.equals("WhatsApp")){
-
-                    Log.i(TAG,"test in whatsapp if");
                     onWhatsappClick();
                 }else if(app.equals("gmail")){
                     openGmail();
-                }else if(app.equals("messeage")) {
+                }else if(app.equals("message")) {
                     openSms();
                 }
 

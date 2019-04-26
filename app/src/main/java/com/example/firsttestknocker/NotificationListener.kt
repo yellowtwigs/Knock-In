@@ -19,9 +19,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.ListView
-import android.widget.TextView
 import java.util.ArrayList
 
 
@@ -54,7 +52,9 @@ class NotificationListener : NotificationListenerService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         Log.i(TAG,"application context "+applicationContext.toString());
         Log.i(TAG, "application notifier:" + sbp.appNotifier)
-        Log.i(TAG, "tickerText:" + sbp.tickerText)
+        val i = Log.i(TAG, "tickerText:" + sbp.tickerText)
+        //sbn.notification.smallIcon
+
         for (key in sbn.notification.extras.keySet()) {
             Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
         }
@@ -64,6 +64,7 @@ class NotificationListener : NotificationListenerService() {
 
 
             val prioriteContact =ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
+            println("priorité "+ prioriteContact)
             if(prioriteContact == 2){
                 if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false) ) {
                     this.cancelNotification(sbn.key)

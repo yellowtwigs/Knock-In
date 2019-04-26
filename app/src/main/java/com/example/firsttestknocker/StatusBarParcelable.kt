@@ -1,5 +1,7 @@
 package com.example.firsttestknocker
 
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.service.notification.StatusBarNotification
@@ -19,12 +21,14 @@ class StatusBarParcelable : Parcelable {
         private set
     val key = ArrayList<String>()
 
+
     val statusBarNotificationInfo = HashMap<String, Any>()
 
     constructor(sbn: StatusBarNotification) {
         id = sbn.id
         tailleList = sbn.notification.extras.keySet().size
         appNotifier = sbn.packageName
+
         if(sbn.notification.tickerText!= null) {
             tickerText = sbn.notification.tickerText.toString()
         }else{
