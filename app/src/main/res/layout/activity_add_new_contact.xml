@@ -8,7 +8,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".AddNewContactActivity">
 
         <android.support.v7.widget.Toolbar
@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <com.example.firsttestknocker.CircularImageView
             android:id="@+id/add_new_contact_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
             android:layout_height="@dimen/rounded_image_view_height_width"
@@ -77,7 +77,7 @@
             android:layout_height="45dp"
             android:entries="@array/add_new_contact_phone_number_arrays"
             android:prompt="@string/add_new_contact_phone_number_mobile"
-            app:layout_constraintEnd_toStartOf="@+id/scrollView2"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_view_id" />
 
         <EditText

@@ -40,6 +40,7 @@ public class ChatActivity extends AppCompatActivity {
         instagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gotToWhatsapp();
                 gotToInstagramPage();
             }
         });
@@ -53,6 +54,13 @@ public class ChatActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
             startActivity(intent);
         }
+    }
+
+    private void gotToWhatsapp() {
+        Uri uri = Uri.parse("smsto: " + "12345");
+        Intent i = new Intent(Intent.ACTION_SENDTO, uri);
+        i.setPackage("com.whatsapp");
+        startActivity(i);
     }
 
     private void gotToInstagramPage() {

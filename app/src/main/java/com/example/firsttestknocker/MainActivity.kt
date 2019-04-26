@@ -321,12 +321,13 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.nav_search -> {
-                main_search_bar_value = main_SearchBar!!.text.toString()
-                intent.putExtra("SearchBar", main_search_bar_value)
-                println(main_filter)
-                intent.putStringArrayListExtra("Filter", main_filter)
-                println(main_SearchBar!!.text.toString())
-                startActivity(intent)
+                main_SearchBar!!.visibility = View.VISIBLE
+//                main_search_bar_value = main_SearchBar!!.text.toString()
+//                intent.putExtra("SearchBar", main_search_bar_value)
+//                println(main_filter)
+//                intent.putStringArrayListExtra("Filter", main_filter)
+//                println(main_SearchBar!!.text.toString())
+//                startActivity(intent)
             }
             R.id.sms_filter -> {
                 if (item.isChecked) {
@@ -379,6 +380,7 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonCompose!!.isClickable = true
         main_FloatingButtonSync!!.isClickable = true
     }
+
     private val isNotificationServiceEnabled: Boolean
         get() {
             val pkgName = packageName
