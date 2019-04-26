@@ -125,7 +125,9 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
-            val len = intent.getIntExtra("nbGridview", 3)
+            //////////////
+            val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+            val len = sharedPreferences.getInt("gridview",3)
             main_GridView!!.setNumColumns(len) // permet de changer
             var contactList: List<Contacts>?
 
@@ -460,12 +462,6 @@ class MainActivity : AppCompatActivity() {
         }
         return alertDialogBuilder.create()
     }
-
-
-
-
-
-
 
 }
 

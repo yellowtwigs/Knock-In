@@ -1,6 +1,8 @@
 package com.example.firsttestknocker
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -18,13 +20,16 @@ import android.widget.RelativeLayout
 class SettingsActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
-    private var button_to_delete: Button? = null
+    private var button_add: Button? = null
+    private var button_delete: Button? = null
     private var nbGrid: Int = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        nbGrid = sharedPreferences.getInt("gridview",3)
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -35,7 +40,8 @@ class SettingsActivity : AppCompatActivity() {
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
-        button_to_delete = findViewById(R.id.todelete)
+        button_add = findViewById(R.id.activity_settings_add_column)
+        button_delete = findViewById(R.id.activity_settings_delete_column)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -59,9 +65,15 @@ class SettingsActivity : AppCompatActivity() {
             true
         }
 
-        button_to_delete?.setOnClickListener {
+        button_add?.setOnClickListener {
             if (nbGrid < 6) {
                 nbGrid += 1
+            }
+        }
+
+        button_delete?.setOnClickListener{
+            if (nbGrid > 3) {
+                nbGrid -= 1
             }
         }
 
@@ -74,7 +86,10 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val loginIntent = Intent(this@SettingsActivity, MainActivity::class.java)
-        loginIntent.putExtra("nbGridview", nbGrid)
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val edit : SharedPreferences.Editor = sharedPreferences.edit()
+        edit.putInt("gridview", nbGrid)
+        edit.apply()
         startActivity(loginIntent)
         finish()
         return super.onOptionsItemSelected(item)
