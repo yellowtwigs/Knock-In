@@ -179,15 +179,32 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/todelete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/activity_settings_add_column"
+            android:layout_width="141dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="52dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/add_new_contact_add_field"
+            android:text="add"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
-            tools:layout_editor_absoluteX="0dp" />
+            app:layout_constraintVertical_bias="0.506" />
+
+        <Button
+            android:id="@+id/activity_settings_delete_column"
+            android:layout_width="141dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="8dp"
+            android:text="delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_settings_add_column"
+            app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
+            app:layout_constraintVertical_bias="0.506" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView
