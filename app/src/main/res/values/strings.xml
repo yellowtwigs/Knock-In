@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Knocker</string>
+    <string name="app_name_by">by Yellowtwigs</string>
 
     <!-- User Informations !-->
     <string name="user_FirstName">Kenzy</string>
@@ -16,8 +17,9 @@
     <!-- Menu Main !-->
     <string name="main_search">Search</string>
     <string name="main_menu">Settings</string>
-    <string name="main_create_category">sms</string>
-    <string name="main_filter">email</string>
+    <string name="main_create_category">Sms</string>
+    <string name="main_filter">Email</string>
+    <string name="main_search_hint">Rechercher un contact</string>
 
     <!-- Add New Contact !-->
     <string name="add_new_contact_title">Ajoutez un nouveau contact</string>
