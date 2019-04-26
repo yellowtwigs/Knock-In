@@ -21,7 +21,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.firsttestknocker.CircularImageView
+        <ImageView
             android:id="@+id/contact_details_background_image_id"
             android:layout_width="match_parent"
             android:layout_height="307dp"
@@ -35,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <com.example.firsttestknocker.CircularImageView
             android:background="@drawable/circle"
             android:id="@+id/contact_details_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
