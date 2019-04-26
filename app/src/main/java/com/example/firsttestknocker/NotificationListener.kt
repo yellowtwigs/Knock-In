@@ -63,8 +63,8 @@ class NotificationListener : NotificationListenerService() {
             val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
 
 
-            println("getPriority "+ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts()))
-            if( ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())==2){
+            val prioriteContact =ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
+            if(prioriteContact == 2){
                 if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false) ) {
                     this.cancelNotification(sbn.key)
 
@@ -80,8 +80,10 @@ class NotificationListener : NotificationListenerService() {
                         notifLayout(sbp,popupView)
                     }
                 }
-            }else{
-                println("non prioritaire")
+            }else if (prioriteContact == 1){
+
+            }else if(prioriteContact == 0){
+                this.cancelNotification(sbn.key)
             }
 
         }
