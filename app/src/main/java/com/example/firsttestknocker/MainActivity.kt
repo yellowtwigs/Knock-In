@@ -22,8 +22,9 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
-
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-
+        
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
 
@@ -161,9 +162,11 @@ class MainActivity : AppCompatActivity() {
                         intent.putExtra("ContactPriority", contact.contactPriority)
 
                         startActivity(intent)
+                    } else {
+                        isOpen = false
+                        onFloatingClickBack()
                     }
                 }
-
                 // Drag n Drop
                 main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, _, _ ->
                     false
