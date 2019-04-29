@@ -60,9 +60,7 @@ class MainActivity : AppCompatActivity() {
             val alertDialog = buildNotificationServiceAlertDialog()
             alertDialog.show()
         }
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
-        println("lancement du service")
+
 
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -87,7 +85,6 @@ class MainActivity : AppCompatActivity() {
         val main_filter_value = intent.getStringArrayListExtra("Filter")
         if (main_filter_value != null)
             main_filter = main_filter_value
-
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)

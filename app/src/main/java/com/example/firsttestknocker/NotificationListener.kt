@@ -4,6 +4,7 @@ package com.example.firsttestknocker
 import android.annotation.SuppressLint
 import android.app.*
 import android.app.usage.UsageStatsManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -38,6 +39,8 @@ class NotificationListener : NotificationListenerService() {
 
     override fun onCreate() {
         super.onCreate()
+
+        println("on create")
         // on init WorkerThread
         notification_listener_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         notification_listener_mDbWorkerThread.start()
@@ -46,10 +49,11 @@ class NotificationListener : NotificationListenerService() {
         notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+ /*  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        println("start command")
         return Service.START_STICKY //dire qu'on doit relancer quand il se stop
     }
-
+*/
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val sbp = StatusBarParcelable(sbn)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -69,7 +73,7 @@ class NotificationListener : NotificationListenerService() {
             val prioriteContact =ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
             println("priorité "+ prioriteContact)
             if(prioriteContact == 2){
-                if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif",false) ) {
+                if (appNotifiable(sbp)&& sharedPreferences.getBoolean("popupNotif",false) ) {
                     this.cancelNotification(sbn.key)
 
                     if (popupView == null || !sharedPreferences.getBoolean("view",false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
@@ -145,7 +149,7 @@ class NotificationListener : NotificationListenerService() {
                 convertPackageToString(sbp.appNotifier)!=""
     }
 
-    private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
+   /* private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
 
         if (sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE) {
             return R.drawable.facebook
@@ -155,7 +159,7 @@ class NotificationListener : NotificationListenerService() {
             return R.drawable.download
         }
         return R.drawable.sms
-    }
+    }*/
     private fun convertPackageToString(packageName:String):String{
         if(packageName.equals(FACEBOOK_PACKAGE)){
             return "Facebook";
@@ -165,7 +169,7 @@ class NotificationListener : NotificationListenerService() {
             return "WhatsApp"
         }else if(packageName.equals(GMAIL_PACKAGE)){
             return "gmail"
-        }else if(packageName.equals(MESSAGE_PACKAGE)){
+        }else if(packageName.equals(MESSAGE_PACKAGE)|| packageName.equals(MESSAGE_SAMSUNG_PACKAGE)){
             return "message"
         }
         return ""
@@ -183,8 +187,8 @@ class NotificationListener : NotificationListenerService() {
         val WATHSAPP_SERVICE = "com.whatsapp"
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
+        val MESSAGE_SAMSUNG_PACKAGE= "com.samsung.android.messaging"
         val listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
 
     }
-
 }

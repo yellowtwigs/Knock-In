@@ -77,7 +77,9 @@ public class NotifAdapter extends BaseAdapter {
         //appImg.setImageResource(getApplicationNotifier(sbp));
 
         String pckg= sbp.getAppNotifier();
-        int iconID = Integer.parseInt(sbp.getStatusBarNotificationInfo().get("android.icon").toString());
+        if(sbp.getStatusBarNotificationInfo().get("android.icon")!=null) {
+            int iconID = Integer.parseInt(sbp.getStatusBarNotificationInfo().get("android.icon").toString());
+        }
         try {
             PackageManager pckManager = context.getPackageManager();
             Drawable icon = pckManager.getApplicationIcon(sbp.getAppNotifier());
