@@ -20,7 +20,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.ListView
-import java.util.ArrayList
+import java.sql.Date
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @SuppressLint("OverrideAbstract")
@@ -92,13 +95,13 @@ class NotificationListener : NotificationListenerService() {
 
     }
     public fun saveNotfication(sbp:StatusBarParcelable):Notifications{
-        val notif = Notifications(null,sbp.tickerText.toString(),sbp.statusBarNotificationInfo["android.title"]!!.toString(),sbp.statusBarNotificationInfo["android.text"]!!.toString(),sbp.appNotifier,0,false);
+        val notif = Notifications(null,sbp.tickerText.toString(),sbp.statusBarNotificationInfo["android.title"]!!.toString(),sbp.statusBarNotificationInfo["android.text"]!!.toString(),sbp.appNotifier,0,false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(java.util.Date(Calendar.getInstance().timeInMillis.toString().toLong())), java.util.Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt());
         return notif;
     }
     public fun displayLayout(sbp:StatusBarParcelable){
         var flag = 0
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            flag =WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            flag = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         }else{
             flag = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         }
