@@ -18,6 +18,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ManageNotificationActivity"/>
         <activity android:name=".NotificationAdapter" />
+        <activity android:name=".ContactInfo" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".ContactsPriority" />
         <activity android:name=".AddNewContactActivity"

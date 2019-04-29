@@ -34,7 +34,7 @@ object ContactsPriority : AppCompatActivity() {
         var priority = -1
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->
-                if (dbContact.firstName+" "+dbContact.lastName == name) { //contain or == |jean michel pellier && michel pellier !=
+                if (dbContact.firstName+" "+dbContact.lastName == name) {
                     priority = dbContact.contactPriority
                 }
             }
