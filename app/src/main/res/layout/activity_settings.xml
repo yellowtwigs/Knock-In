@@ -179,32 +179,56 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/activity_settings_add_column"
-            android:layout_width="141dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="52dp"
+            android:id="@+id/activity_settings_six_column"
+            android:layout_width="72dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="add"
+            android:text="6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_settings_five_column"
+            app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
+            app:layout_constraintVertical_bias="0.546" />
+
+        <Button
+            android:id="@+id/activity_settings_five_column"
+            android:layout_width="72dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_settings_four_column"
+            app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
+            app:layout_constraintVertical_bias="0.546" />
+
+        <Button
+            android:id="@+id/activity_settings_three_column"
+            android:layout_width="72dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
-            app:layout_constraintVertical_bias="0.506" />
+            app:layout_constraintVertical_bias="0.533" />
 
         <Button
-            android:id="@+id/activity_settings_delete_column"
-            android:layout_width="141dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="8dp"
+            android:id="@+id/activity_settings_four_column"
+            android:layout_width="80dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="64dp"
             android:layout_marginBottom="8dp"
-            android:text="delete"
+            android:text="4"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/activity_settings_add_column"
+            app:layout_constraintStart_toEndOf="@+id/activity_settings_three_column"
             app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
-            app:layout_constraintVertical_bias="0.506" />
+            app:layout_constraintVertical_bias="0.54" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView

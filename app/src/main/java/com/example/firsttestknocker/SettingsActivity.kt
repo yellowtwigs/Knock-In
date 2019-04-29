@@ -20,8 +20,10 @@ import android.widget.RelativeLayout
 class SettingsActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
-    private var button_add: Button? = null
-    private var button_delete: Button? = null
+    private var button_three: Button? = null
+    private var button_four: Button? = null
+    private var button_five: Button? = null
+    private var button_six: Button? = null
     private var nbGrid: Int = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,8 +42,10 @@ class SettingsActivity : AppCompatActivity() {
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
-        button_add = findViewById(R.id.activity_settings_add_column)
-        button_delete = findViewById(R.id.activity_settings_delete_column)
+        button_three = findViewById(R.id.activity_settings_three_column)
+        button_four = findViewById(R.id.activity_settings_four_column)
+        button_five = findViewById(R.id.activity_settings_five_column)
+        button_six = findViewById(R.id.activity_settings_six_column)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -65,16 +69,20 @@ class SettingsActivity : AppCompatActivity() {
             true
         }
 
-        button_add?.setOnClickListener {
-            if (nbGrid < 6) {
-                nbGrid += 1
-            }
+        button_three?.setOnClickListener {
+            nbGrid = 3
         }
 
-        button_delete?.setOnClickListener{
-            if (nbGrid > 3) {
-                nbGrid -= 1
-            }
+        button_four?.setOnClickListener{
+            nbGrid = 4
+        }
+
+        button_five?.setOnClickListener{
+            nbGrid = 5
+        }
+
+        button_six?.setOnClickListener{
+            nbGrid = 6
         }
 
         val notificationRL = findViewById<View>(R.id.notification_RelativeLayout_settings) as RelativeLayout
