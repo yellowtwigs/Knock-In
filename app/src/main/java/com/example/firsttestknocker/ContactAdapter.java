@@ -57,17 +57,19 @@ public class ContactAdapter extends BaseAdapter {
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
             int len = sharedPreferences.getInt("gridview",3);
-            System.out.printf("%s Bonjours !!!!!\n",holder.contactRoundedImageView.getLayoutParams().height);
+            System.out.printf("%s Bonjours (%s)!!!!!\n",holder.contactRoundedImageView.getLayoutParams().height, len);
             System.out.printf("%s Bonjoursddd !!!!!\n",holder.contactRoundedImageView.getLayoutParams().width);
+            int height = holder.contactRoundedImageView.getLayoutParams().height;
+            int width = holder.contactRoundedImageView.getLayoutParams().width;
             if (len == 3) {
-                holder.contactRoundedImageView.getLayoutParams().height = 350;
-                holder.contactRoundedImageView.getLayoutParams().width = 350;
+                holder.contactRoundedImageView.getLayoutParams().height -= height*0.05;
+                holder.contactRoundedImageView.getLayoutParams().width -= height*0.05;
             } else if (len == 4) {
-                holder.contactRoundedImageView.getLayoutParams().height = 263;
-                holder.contactRoundedImageView.getLayoutParams().width = 263;
+                holder.contactRoundedImageView.getLayoutParams().height -= height*0.15;
+                holder.contactRoundedImageView.getLayoutParams().width -= width*0.15;
             } else if (len == 5 || len == 6) {
-                holder.contactRoundedImageView.getLayoutParams().height = 175;
-                holder.contactRoundedImageView.getLayoutParams().width = 175;
+                holder.contactRoundedImageView.getLayoutParams().height -= height*0.50; //175
+                holder.contactRoundedImageView.getLayoutParams().width -= width*0.50;
             }
             holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
 
