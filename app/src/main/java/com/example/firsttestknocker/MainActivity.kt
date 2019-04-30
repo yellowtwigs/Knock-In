@@ -54,14 +54,11 @@ class MainActivity : AppCompatActivity() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
-
         }
         if (!isNotificationServiceEnabled) {
-
             val alertDialog = buildNotificationServiceAlertDialog()
             alertDialog.show()
         }
-
 
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -93,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-        
+
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
 
@@ -193,60 +190,30 @@ class MainActivity : AppCompatActivity() {
 
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
-
-            //création de la pop up de confirmation de synchro
-//            val builder = AlertDialog.Builder(this)
-//            builder.setTitle("SYNCHRONISATION DE VOS CONTACTS")
-//            builder.setMessage("Voulez vous synchroniser les contacts de votre téléphone avec Knoker ?")
-//            builder.setPositiveButton("OUI") { _, _ ->
-                //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-                val phonecontact = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
-                val phoneContactsList = arrayListOf<Contacts>()
-                while (phonecontact.moveToNext()) {
-                    val fullName = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                    val phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                    if (phoneContactsList.isEmpty()) {
-                        var lastName = ""
-                        if (fullName!!.contains(' '))
-                            lastName = fullName.substringAfter(' ')
-                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!+"P", "", R.drawable.ryan, R.drawable.aquarius, 0, "")
-                        phoneContactsList.add(contactData)
-                    } else if (!isDuplicate(fullName!!, phoneContactsList)) {
-                        var lastName = ""
-                        if (fullName.contains(' '))
-                            lastName = fullName.substringAfter(' ')
-                        val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!+"P", "", R.drawable.ryan, R.drawable.aquarius, 0, "")
-                        phoneContactsList.add(contactData)
-                    }
-                }
-                phonecontact?.close()
+            //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
+            val phoneContactsList = ContactSync.getAllContact(contentResolver)
 
                 //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
-                val addAllContacts = Runnable {
-                    var isDuplicate = false
-                    val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                    //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
-                    //println("priorité === "+priority)
-                    phoneContactsList.forEach { phoneContactList ->
-                        allcontacts?.forEach { contactsDB ->
-                            if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
-                                isDuplicate = true
-                        }
-                        if (isDuplicate == false) {
-                            main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
-                        }
+
+            val addAllContacts = Runnable {
+                var isDuplicate = false
+                val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
+                //println("priorité === "+priority)
+                phoneContactsList?.forEach { phoneContactList ->
+                    allcontacts?.forEach { contactsDB ->
+                        if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
+                            isDuplicate = true
                     }
-                    val intent = intent
-                    finish()
-                    startActivity(intent)
+                    if (isDuplicate == false) {
+                        main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
+                    }
                 }
-                main_mDbWorkerThread.postTask(addAllContacts)
-//            }
-//            builder.setNegativeButton("NON") { _, _ ->
-//                //retour à la liste de contacts
-//            }
-//            val dialog: AlertDialog = builder.create()
-//            dialog.show()
+                val intent = intent
+                finish()
+                startActivity(intent)
+            }
+            main_mDbWorkerThread.postTask(addAllContacts)
         })
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
@@ -293,15 +260,6 @@ class MainActivity : AppCompatActivity() {
         } else
             return allFilters[0]
         return allFilters[i]
-    }
-
-    //compare le contact données avec tous ceux de la Database
-    private fun isDuplicate(contact: String, contactsList: List<Contacts>): Boolean {
-        contactsList.forEach {
-            if (it.lastName == "" && it.firstName == contact || it.firstName + " " + it.lastName == contact)
-                return true
-        }
-        return false
     }
 
     //check les checkbox si elle ont été check apres une recherche
@@ -403,6 +361,7 @@ class MainActivity : AppCompatActivity() {
             }
             return false
         }
+
     private fun buildNotificationServiceAlertDialog(): AlertDialog {
         val alertDialogBuilder = AlertDialog.Builder(this)
         val inflater : LayoutInflater = this.getLayoutInflater()
@@ -421,21 +380,6 @@ class MainActivity : AppCompatActivity() {
             alertDialog.cancel()
 
         }
-
-       /* alertDialogBuilder.setTitle("Knocker")
-        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à acceder a vos notifications")
-        alertDialogBuilder.setPositiveButton("oui"
-        ) { dialog, id ->
-            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
-            val intentFilter = IntentFilter()
-            intentFilter.addAction("com.example.testnotifiacation.notificationExemple")
-            if (isNotificationServiceEnabled) {
-            }
-        }
-        alertDialogBuilder.setNegativeButton("non"
-        ) { dialog, id -> }
-        return alertDialogBuilder.create()
-        */
         return alertDialog
     }
 
@@ -465,6 +409,5 @@ class MainActivity : AppCompatActivity() {
         }
         return alertDialogBuilder.create()
     }
-
 }
 
