@@ -47,11 +47,13 @@ class NotificationListener : NotificationListenerService() {
 
         //on get la base de données
         notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        println("lancement du service")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         println("start command")
         return Service.START_STICKY //dire qu'on doit relancer quand il se stop
+        println("lancement du service")
     }
 //trouver une solution au probleme de notification stop when screen is lock
 
