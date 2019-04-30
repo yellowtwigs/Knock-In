@@ -128,19 +128,24 @@ class MainActivity : AppCompatActivity() {
             val len = sharedPreferences.getInt("gridview",3)
             main_GridView!!.setNumColumns(len) // permet de changer
             var contactList: List<Contacts>?
+            if(main_ContactsDatabase?.contactsDao()?.getAllContacts()!!.isEmpty()){
+                contactList= null
+                val contact= ListContact.loadJSONFromAsset(this)
+                contactList= ListContact.construireListe(contact)
+                println("contact list size"+ contactList.size)
+            }else {
+                if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
+                    contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
 
-            if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
-                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-
-            } else {
-                val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter_value)
-                contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
-                println(contactFilterList)
-                if (contactFilterList != null) {
-                    contactList = contactList!!.intersect(contactFilterList).toList()
+                } else {
+                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter_value)
+                    contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
+                    println(contactFilterList)
+                    if (contactFilterList != null) {
+                        contactList = contactList!!.intersect(contactFilterList).toList()
+                    }
                 }
             }
-
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
