@@ -23,27 +23,27 @@
 
         <ImageView
             android:id="@+id/contact_details_background_image_id"
-            android:layout_width="match_parent"
-            android:layout_height="307dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="444dp"
+            android:layout_height="163dp"
+            android:layout_marginTop="56dp"
             android:clickable="true"
             android:contentDescription="@string/content_description_contact_details_background_image"
             android:focusable="true"
             android:src="@drawable/aquarius"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.example.firsttestknocker.CircularImageView
-            android:background="@drawable/circle"
             android:id="@+id/contact_details_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
             android:layout_height="@dimen/rounded_image_view_height_width"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="248dp"
+            android:layout_marginTop="112dp"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/circle"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"

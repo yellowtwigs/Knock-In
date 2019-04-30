@@ -48,12 +48,12 @@ class NotificationListener : NotificationListenerService() {
         //on get la base de données
         notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
     }
-/*
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         println("start command")
         return Service.START_STICKY //dire qu'on doit relancer quand il se stop
     }
-*///trouver une solution au probleme de notification stop when screen is lock
+//trouver une solution au probleme de notification stop when screen is lock
 
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -130,7 +130,7 @@ class NotificationListener : NotificationListenerService() {
         for(i in listNotif.size-1 downTo 0 ){
             listInverse.add(listNotif.get(i))
         }//affichetr du plus récent au plus ancien les notifications
-        val adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>?,windowManager,view)
+        val adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>, windowManager!!, view!!)
         val listViews = view?.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter=adapterNotification
         val layout = view?.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
