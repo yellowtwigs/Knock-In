@@ -3,7 +3,20 @@ package com.example.firsttestknocker
 import android.support.v7.app.AppCompatActivity
 
 object ContactInfo : AppCompatActivity() {
-    fun getInfoWithName(name: String, platform: String, listContact: List<Contacts>?): String {
+
+    private var main_ContactsDatabase: ContactsRoomDatabase? = null
+    private lateinit var main_mDbWorkerThread: DbWorkerThread
+
+    fun getInfoWithName(name: String, platform: String): String {
+        // on init WorkerThread
+        main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        main_mDbWorkerThread.start()
+
+        //on get la base de données
+        main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+
+        val listContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+
         var info = "Platform Error"
         when (platform) {
             "message" -> {

@@ -8,14 +8,14 @@ import android.arch.persistence.room.migration.Migration
 import android.content.Context
 
 @Database(entities = [Contacts::class, Notifications::class], version = 6)
- public abstract  class ContactsRoomDatabase : RoomDatabase() {
+ abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
     companion object {
         private var INSTANCE: ContactsRoomDatabase? = null
 
         //creation de la base de données
-        public fun getDatabase(context: Context): ContactsRoomDatabase? {
+        fun getDatabase(context: Context): ContactsRoomDatabase? {
             if (INSTANCE != null) {
                 return INSTANCE
             }
@@ -29,6 +29,7 @@ import android.content.Context
                         .addMigrations(MIGRATION_3_4)
                         .addMigrations(MIGRATION_4_5)
                         .addMigrations(MIGRATION_5_6)
+                        .allowMainThreadQueries()
                         .build()
                 return INSTANCE
             }
