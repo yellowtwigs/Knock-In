@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
             val phoneContactsList = ContactSync.getAllContact(contentResolver)
-
+            ContactSync.getAllContacsInfo(contentResolver)
                 //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
             val addAllContacts = Runnable {
