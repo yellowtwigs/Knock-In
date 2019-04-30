@@ -23,7 +23,7 @@
 
         <ImageView
             android:id="@+id/contact_details_background_image_id"
-            android:layout_width="444dp"
+            android:layout_width="731dp"
             android:layout_height="163dp"
             android:layout_marginTop="56dp"
             android:clickable="true"
