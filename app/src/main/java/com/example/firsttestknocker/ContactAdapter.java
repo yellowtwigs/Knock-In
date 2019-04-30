@@ -57,8 +57,6 @@ public class ContactAdapter extends BaseAdapter {
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
             int len = sharedPreferences.getInt("gridview",3);
-            System.out.printf("%s Bonjours (%s)!!!!!\n",holder.contactRoundedImageView.getLayoutParams().height, len);
-            System.out.printf("%s Bonjoursddd !!!!!\n",holder.contactRoundedImageView.getLayoutParams().width);
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
             if (len == 3) {
@@ -104,11 +102,6 @@ public class ContactAdapter extends BaseAdapter {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString,0, decodedString.length);
     }
-
-//    fun base64ToBitmap(base64: String) : Bitmap {
-//        val imageBytes = Base64.decode(base64,0)
-//        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-//    }
 
     static class ViewHolder {
         TextView contactFirstNameView;
