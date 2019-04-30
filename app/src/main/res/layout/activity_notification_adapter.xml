@@ -2,33 +2,40 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout_notifiacation_adapter"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/constraintLayout_notifiacation_adapter">
+    android:layout_height="match_parent">
+
     <android.support.constraint.ConstraintLayout
-    android:layout_width="240dp"
-    android:layout_height="69dp"
-    android:layout_gravity="center_vertical|center_horizontal"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/rounded_corner_light_grey"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:gravity="center">
+        android:id="@+id/constraintLayout2"
+        android:layout_width="245dp"
+        android:layout_height="102dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_corner_light_grey"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout_notifiacation_adapter2"
             android:layout_width="237dp"
             android:layout_height="24dp"
+            android:layout_marginTop="4dp"
             android:minHeight="250dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.571"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/constraintLayout_notifiacation_adapter2">>
+            app:layout_constraintTop_toTopOf="parent"><![CDATA[>
+
+            ]]>
 
             <ImageView
                 android:id="@+id/notification_expediteurImg"
@@ -68,16 +75,59 @@
 
         <TextView
             android:id="@+id/notification_contenu"
-            android:layout_width="237dp"
-            android:layout_height="38dp"
+            android:layout_width="239dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.461"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.774" />
+            app:layout_constraintVertical_bias="0.518" />
+
+        <EditText
+            android:id="@+id/notification_adapter_editText"
+            android:layout_width="217dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="2dp"
+            android:ems="10"
+            android:inputType="textLongMessage"
+            android:lineSpacingExtra="0sp"
+            android:selectAllOnFocus="true"
+            android:text="réponse"
+            android:textAlignment="viewStart"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.156"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notification_contenu"
+            app:layout_constraintVertical_bias="0.181" />
+
+        <Button
+            android:id="@+id/notification_adapter_button_send"
+            android:layout_width="25dp"
+            android:layout_height="18dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/notification_adapter_editText" />
+
+        <Button
+            android:id="@+id/notification_adapter_button_response"
+            android:layout_width="51dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="1dp"
+            android:text="répondre"
+            android:textSize="5sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
+
 </android.support.constraint.ConstraintLayout>

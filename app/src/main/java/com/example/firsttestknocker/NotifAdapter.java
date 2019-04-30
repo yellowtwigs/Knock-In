@@ -17,7 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,8 @@ public class NotifAdapter extends BaseAdapter {
     private ArrayList<StatusBarParcelable> notifications;
     private WindowManager windowManager;
     private final String TAG = NotificationListener.class.getSimpleName();
+    private  ContactsRoomDatabase notification_listener_ContactsDatabase ;
+    private  DbWorkerThread notification_listener_mDbWorkerThread ;
     private final String FACEBOOK_PACKAGE = "com.facebook.katana";
     private final String MESSENGER_PACKAGE = "com.facebook.orca";
     private final String WATHSAPP_SERVICE = "com.whatsapp";
@@ -47,7 +52,12 @@ public class NotifAdapter extends BaseAdapter {
         this.notifications= listNotification;
         this.windowManager=windowManager;
         this.view= view;
+        notification_listener_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+        notification_listener_mDbWorkerThread.start();
+        //on get la base de données
+        //notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(context);
     }
+
     public int getCount() {
         return notifications.size();
     }
@@ -72,6 +82,10 @@ public class NotifAdapter extends BaseAdapter {
         TextView contenue= (TextView) convertView.findViewById(R.id.notification_contenu);
         ImageView appImg= (ImageView) convertView.findViewById(R.id.notification_plateformeImg);
         ImageView expImg= (ImageView) convertView.findViewById(R.id.notification_expediteurImg);
+        final Button buttonResponse = (Button) convertView.findViewById(R.id.notification_adapter_button_response);
+        final Button buttonSend = (Button) convertView.findViewById(R.id.notification_adapter_button_send);
+        final EditText editText = (EditText) convertView.findViewById(R.id.notification_adapter_editText);
+
         app.setText(convertPackageToString(sbp.getAppNotifier()));
         contenue.setText(sbp.getStatusBarNotificationInfo().get("android.title")+":"+sbp.getStatusBarNotificationInfo().get("android.text"));
         //appImg.setImageResource(getApplicationNotifier(sbp));
@@ -96,32 +110,55 @@ public class NotifAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 System.out.println("click on constraint layout");
-                String app=convertPackageToString(sbp.getAppNotifier());
-                if(app.equals("Facebook")){
-                    gotToFacebookPage("");
-                }else if(app.equals("Messenger"))
-                {
-                    gotToFacebookPage("");
-                }else if(app.equals("WhatsApp")){
-                    onWhatsappClick();
-                }else if(app.equals("gmail")){
-                    openGmail();
-                }else if(app.equals("message")) {
-                    openSms();
+                String app = convertPackageToString(sbp.getAppNotifier());
+                if (v.getId() == R.id.notification_adapter_button_response) {
+                    System.out.println("click on button response");
+                    buttonResponse.setVisibility(View.GONE);
+                    buttonSend.setVisibility(View.VISIBLE);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.requestFocus();
+                    InputMethodManager inputMM= (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMM.showSoftInput(editText,InputMethodManager.SHOW_IMPLICIT);
+                } else if (v.getId() == R.id.notification_adapter_button_send){
+                    System.out.println("click on button send");
+
+                }else{
+
+                    if (app.equals("Facebook")) {
+                        gotToFacebookPage("");
+                        closeNotification();
+                    } else if (app.equals("Messenger")) {
+                        gotToFacebookPage("");
+                        closeNotification();
+                    } else if (app.equals("WhatsApp")) {
+                        onWhatsappClick();
+                        closeNotification();
+                    } else if (app.equals("gmail")) {
+                        openGmail();
+                        closeNotification();
+                    } else if (app.equals("message")) {
+                        openSms();
+                        closeNotification();
+                    }
                 }
 
-                windowManager.removeView(view);
-                SharedPreferences sharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE);
-                SharedPreferences.Editor edit= sharedPreferences.edit();
-                edit.putBoolean("view",false);
-                edit.commit();
+
             }
         };
 
         contenue.setOnClickListener(listener);
         app.setOnClickListener(listener);
         app.setOnClickListener(listener);
+        buttonResponse.setOnClickListener(listener);
+        buttonSend.setOnClickListener(listener);
         return convertView;
+    }
+    private void closeNotification(){
+        windowManager.removeView(view);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit= sharedPreferences.edit();
+        edit.putBoolean("view",false);
+        edit.commit();
     }
     private String  convertPackageToString(String packageName){
         if(packageName.equals(FACEBOOK_PACKAGE)){

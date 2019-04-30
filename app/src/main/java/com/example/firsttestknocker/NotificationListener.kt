@@ -48,12 +48,14 @@ class NotificationListener : NotificationListenerService() {
         //on get la base de données
         notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
     }
-
- /*  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+/*
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         println("start command")
         return Service.START_STICKY //dire qu'on doit relancer quand il se stop
     }
-*/
+*///trouver une solution au probleme de notification stop when screen is lock
+
+
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val sbp = StatusBarParcelable(sbn)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -74,7 +76,7 @@ class NotificationListener : NotificationListenerService() {
             println("priorité "+ prioriteContact)
             if(prioriteContact == 2){
                 if (appNotifiable(sbp)&& sharedPreferences.getBoolean("popupNotif",false) ) {
-                    this.cancelNotification(sbn.key)
+                   //this.cancelNotification(sbn.key)
 
                     if (popupView == null || !sharedPreferences.getBoolean("view",false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
                         popupView=null
@@ -91,7 +93,8 @@ class NotificationListener : NotificationListenerService() {
             }else if (prioriteContact == 1){
 
             }else if(prioriteContact == 0){
-                this.cancelNotification(sbn.key)
+                println("priority 0")
+               //this.cancelNotification(sbn.key)
             }
 
         }
