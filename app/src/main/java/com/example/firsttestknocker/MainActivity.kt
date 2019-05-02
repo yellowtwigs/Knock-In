@@ -145,34 +145,51 @@ class MainActivity : AppCompatActivity() {
                         contactList = contactList!!.intersect(contactFilterList).toList()
                     }
                 }
-            }
+             }
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
+
+               main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener{ _, _, position, _ ->
+                    val item =main_GridView!!.getChildAt(position)
+                   val contact = main_GridView!!.getItemAtPosition(position) as Contacts
+                   BubbleActions.on(item)
+                         .addAction("Messenger", R.drawable.ic_messenger_circle_menu,
+                           {
+                               ContactGesture.openMessenger("",this@MainActivity)
+                           }).addAction("SMS",R.drawable.sms,{
+                             val  intent = ContactGesture.putContactIntent(contact,this@MainActivity,ComposeMessageActivity::class.java)
+                             startActivity(intent)
+                         }).addAction("Gmail",R.drawable.gmail,{
+                             ContactGesture.openGmail(this@MainActivity)
+                         }).addAction("whatsapp",R.drawable.ic_whatsapp_circle_menu,{
+                             ContactGesture.openWhatsapp(contact.phoneNumber,this@MainActivity)
+                         }).addAction("edit", R.drawable.ic_edit_floating_button,{
+                             val  intent = ContactGesture.putContactIntent(contact,this@MainActivity,EditContactActivity::class.java)
+                             startActivity(intent)
+                         })
+                         .show()
+
+                    false
+               }
+
+
+
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                     if (isOpen == false) {
                         val o = main_GridView!!.getItemAtPosition(position)
                         val contact = o as Contacts
 
-                        val intent = Intent(this@MainActivity, ContactDetailsActivity::class.java)
-                        intent.putExtra("ContactFirstName", contact.firstName)
-                        intent.putExtra("ContactLastName", contact.lastName)
-                        intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
-                        intent.putExtra("ContactMail", contact.mail)
-                        intent.putExtra("ContactImage", contact.profilePicture)
-                        intent.putExtra("ContactId", contact.id)
-                        intent.putExtra("ContactPriority", contact.contactPriority)
-
+                        val intent =ContactGesture.putContactIntent(contact, this@MainActivity, ContactDetailsActivity::class.java)
                         startActivity(intent)
                     } else {
                         isOpen = false
                         onFloatingClickBack()
                     }
+
                 }
                 // Drag n Drop
-                main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, _, _ ->
-                    false
-                }
+
             }
         }
         main_mDbWorkerThread.postTask(printContacts)

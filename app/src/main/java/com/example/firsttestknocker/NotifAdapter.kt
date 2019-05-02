@@ -1,18 +1,11 @@
 package com.example.firsttestknocker
 
 
-import android.content.ActivityNotFoundException
+import android.Manifest
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.Icon
-import android.net.Uri
-import android.support.constraint.ConstraintLayout
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,15 +16,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-
-import com.bumptech.glide.load.engine.Resource
-
-import java.io.IOException
-import java.lang.reflect.Type
 import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.support.v4.content.ContextCompat.checkSelfPermission
+import android.telephony.SmsManager
 
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
     private val TAG = NotificationListener::class.java.simpleName
@@ -89,6 +78,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
             expImg.setImageBitmap(bitmap)
         }
+        if(canResponse(sbp.appNotifier)){
+            buttonResponse.visibility= View.VISIBLE
+        }
         val listener = View.OnClickListener { v ->
             println("click on constraint layout")
             val app = convertPackageToString(sbp.appNotifier)
@@ -105,22 +97,26 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 val message = editText.text.toString()
                 // String number= ContactInfo.
                 val number= ContactInfo.getInfoWithName(sbp.statusBarNotificationInfo["android.title"].toString(),app)
+                if(sbp.appNotifier.equals(MESSAGE_PACKAGE)){
+                    val smsManager= SmsManager.getDefault()
+                    smsManager.sendTextMessage(number,null, message,null,null)
+                }
                 println("message :"+message + "sendto : "+ number)
                 closeNotification()
 
             } else {
 
                 if (app == "Facebook") {
-                    gotToFacebookPage("")
+                    ContactGesture.openMessenger("",context)//TODO modifier si modification pour accès au post fb
                     closeNotification()
                 } else if (app == "Messenger") {
-                    gotToFacebookPage("")
+                    ContactGesture.openMessenger("",context)
                     closeNotification()
                 } else if (app == "WhatsApp") {
                     onWhatsappClick()
                     closeNotification()
                 } else if (app == "gmail") {
-                    openGmail()
+                    ContactGesture.openGmail(context)
                     closeNotification()
                 } else if (app == "message") {
                     openSms()
@@ -159,10 +155,15 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         }
         return ""
     }
-
+    private fun canResponse(packageName: String):Boolean{
+        if((checkSelfPermission(context,Manifest.permission.SEND_SMS)==PackageManager.PERMISSION_GRANTED)&&(packageName== MESSAGE_PACKAGE || packageName==WATHSAPP_SERVICE)){
+            return true
+        }
+        return false
+    }
     private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
 
-        if (sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE) {
+        if ((sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE)) {
             return R.drawable.facebook
         } else if (sbp.appNotifier == GMAIL_PACKAGE) {
             return R.drawable.gmail
@@ -174,17 +175,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
 
     /////****** code dupliqué faire attention trouvé un moyen de ne plus en avoir *******//////
-    private fun gotToFacebookPage(id: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
-            intent.flags = FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
-            context.startActivity(intent)
-        }
 
-    }
 
 
     private fun onWhatsappClick() {
@@ -202,11 +193,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
     }
 
-    private fun openGmail() {
-        val i = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
-        i!!.flags = FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(i)
-    }
+
 
     private fun openSms() {
         val i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")

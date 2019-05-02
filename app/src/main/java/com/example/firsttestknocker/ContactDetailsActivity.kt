@@ -200,7 +200,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         // Link to Whatsapp contact chat
         contact_details_whatsapp_RelativeLayout!!.setOnClickListener {
-            onWhatsappClick(contact_details_PhoneNumber!!.text)
+            ContactGesture.openWhatsapp(contact_details_PhoneNumber!!.text,this)
         }
 
         // Floating button, edit a contact
@@ -213,7 +213,6 @@ class ContactDetailsActivity : AppCompatActivity() {
             intent.putExtra("ContactFirstName", contact_details_first_name)
             intent.putExtra("ContactLastName", contact_details_last_name)
             intent.putExtra("ContactPhoneNumber", contact_details_phone_number + NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!))
-            println("we send this " + contact_details_PhoneNumber + NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!) + contact_details_phone_property)
             intent.putExtra("ContactImage", contact_details_rounded_image)
             intent.putExtra("ContactId", contact_details_id!!)
             intent.putExtra("ContactMail", contact_details_mail!! + NumberAndMailDB.convertSpinnerStringToChar(contact_details_mail_property!!))
@@ -247,7 +246,6 @@ class ContactDetailsActivity : AppCompatActivity() {
                 intent.putExtra("ContactFirstName", contact_details_first_name)
                 intent.putExtra("ContactLastName", contact_details_last_name)
                 intent.putExtra("ContactPhoneNumber", contact_details_phone_number + NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!))
-                println("we send this " + contact_details_PhoneNumber + NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!) + contact_details_phone_property)
                 intent.putExtra("ContactImage", contact_details_rounded_image)
                 intent.putExtra("ContactId", contact_details_id!!)
                 intent.putExtra("ContactMail", contact_details_mail!! + NumberAndMailDB.convertSpinnerStringToChar(contact_details_mail_property!!))
@@ -323,7 +321,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     }
 
     // Link to Whatsapp
-    fun onWhatsappClick(contact: CharSequence) {
+ /*   fun onWhatsappClick(contact: CharSequence) {
         val url = "https://api.whatsapp.com/send?phone=$contact"
         try {
             val pm = this.getPackageManager()
@@ -336,5 +334,5 @@ class ContactDetailsActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-    }
+    }*/
 }
