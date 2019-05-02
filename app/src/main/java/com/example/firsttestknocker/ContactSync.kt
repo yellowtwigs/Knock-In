@@ -100,6 +100,14 @@ object ContactSync : AppCompatActivity() {
         return false
     }
 
+    private fun isDuplicate(contact: String, contactsList:List<Contacts>): Boolean {
+        contactsList.forEach {
+            if (it.lastName == "" && it.firstName == contact || it.firstName + " " + it.lastName == contact)
+                return true
+        }
+        return false
+    }
+
     fun bitmapToBase64(bitmap: Bitmap) : String {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
