@@ -192,7 +192,8 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-        main_mDbWorkerThread.postTask(printContacts)
+        runOnUiThread(printContacts)
+        //main_mDbWorkerThread.postTask(printContacts)
 
         main_FloatingButtonOpen!!.setOnClickListener {
             if (isOpen) {
