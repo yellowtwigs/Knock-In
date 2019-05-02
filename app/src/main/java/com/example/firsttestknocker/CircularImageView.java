@@ -18,10 +18,7 @@ import android.util.AttributeSet;
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
 
-/**
- * Copyright (C) 2018 Mikhael LOPEZ
- * Licensed under the Apache License Version 2.0
- */
+
 public class CircularImageView extends AppCompatImageView {
 
     // Default Values

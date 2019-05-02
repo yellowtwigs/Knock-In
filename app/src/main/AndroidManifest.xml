@@ -9,23 +9,27 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <application
         android:icon="@drawable/ic_letter_k"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ManageNotificationActivity"/>
+        <activity android:name=".ComposeMessageActivity"></activity>
+        <activity android:name=".ManageNotificationActivity" />
         <activity android:name=".NotificationAdapter" />
         <activity android:name=".ContactSync" />
         <activity android:name=".ContactInfo" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".ContactsPriority" />
-        <activity android:name=".AddNewContactActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".EditContactActivity"
-            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".AddNewContactActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".EditContactActivity"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +45,7 @@
 
         <service
             android:name=".NotificationListener"
-            android:label="@string/service"
+            android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />

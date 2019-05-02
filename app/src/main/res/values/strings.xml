@@ -99,7 +99,7 @@
     <string name="contact_details_telegram">Telegram</string>
 
     <!-- Settings !-->
-    <string name="settings_notification">Notification</string>
+    <string name="settings_notification">Notifications</string>
     <string name="settings_notification_long_text">Personnalisez les notifications que vous souhaitez recevoir.</string>
     <string name="settings_knockons">Knockons</string>
     <string name="settings_knockons_long_text">Personnalisez vos Knockons à votre guise.</string>
@@ -110,8 +110,7 @@
     <string name="custom_popup_yes_btn">Yes</string>
     <string name="custom_popup_no_btn">No</string>
 
-    <!-- service !-->
-    <string name="service">Knocker</string>
-    <string name="notification_manager_stop_popup">voulez-vous autoriser Knocker a afficher des notification par dessus d\'autre application</string>
-    <string name="notification_manager_stop_service">arrêter le s\'ervice de notification pour économiser de la batterie</string>
+    <!-- Service !-->
+    <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notification par dessus d\'autre applications</string>
+    <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
 </resources>

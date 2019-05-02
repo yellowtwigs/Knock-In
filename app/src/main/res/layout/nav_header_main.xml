@@ -19,7 +19,6 @@
             android:layout_height="90dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="25dp"
             app:srcCompat="@drawable/img_avatar" />
 
@@ -28,11 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="35dp"
             android:layout_toEndOf="@+id/my_profile_user_image"
-            android:layout_toRightOf="@+id/my_profile_user_image"
-            android:text="@string/user_FirstName"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -42,11 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="35dp"
             android:layout_toEndOf="@+id/my_profile_user_name"
-            android:layout_toRightOf="@+id/my_profile_user_name"
-            android:text="@string/user_LastName"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -56,12 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/my_profile_user_name"
             android:layout_toEndOf="@+id/my_profile_user_image"
-            android:layout_toRightOf="@+id/my_profile_user_image"
-            android:text="@string/user_PhoneNumber"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
             android:textSize="16sp" />

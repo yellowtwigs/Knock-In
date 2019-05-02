@@ -193,6 +193,12 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        main_FloatingButtonCompose!!.setOnClickListener {
+            val loginIntent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
+            startActivity(loginIntent)
+            finish()
+        }
+
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
@@ -290,11 +296,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.nav_search -> {
                 main_SearchBar!!.visibility = View.VISIBLE
-//                main_search_bar_value = main_SearchBar!!.text.toString()
-//                intent.putExtra("SearchBar", main_search_bar_value)
-//                println(main_filter)
-//                intent.putStringArrayListExtra("Filter", main_filter)
-//                println(main_SearchBar!!.text.toString())
+                main_search_bar_value = main_SearchBar!!.text.toString()
+                intent.putExtra("SearchBar", main_search_bar_value)
+                println(main_filter)
+                intent.putStringArrayListExtra("Filter", main_filter)
+                println(main_SearchBar!!.text.toString())
 //                startActivity(intent)
             }
             R.id.sms_filter -> {
