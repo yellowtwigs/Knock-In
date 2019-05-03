@@ -6,21 +6,18 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ContactDetailsActivity">
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/contact_details_constraint_layout_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorKnocker"
+            android:background="@color/knockerColorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/contact_details_background_image_id"
             android:layout_width="731dp"
@@ -34,7 +31,6 @@
             app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <com.example.firsttestknocker.CircularImageView
             android:id="@+id/contact_details_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
@@ -50,13 +46,12 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contact_details_background_image_id" />
-
         <TextView
             android:id="@+id/contact_details_first_name_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/textColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/textColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,41 +87,39 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/contact_details_phone_property_text_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="47dp"
-                    android:layout_marginBottom="7dp"
-                    android:textColor="@color/textColor_light"
-                    android:textSize="@dimen/contact_details_text_size" />
-
-                <TextView
                     android:id="@+id/contact_details_phone_number_text_id"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="13dp"
                     android:layout_marginBottom="39dp"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/contact_details_text_size" />
+                    android:textColor="?attr/textColor"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/contact_details_phone_property_text_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="47dp"
+                    android:layout_marginBottom="7dp"
+                    android:textColor="?attr/textColorLight"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:id="@+id/contact_details_sms_logo_id"
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
                     android:contentDescription="@string/content_description_sms_link"
                     app:srcCompat="@drawable/ic_sms" />
 
@@ -137,10 +130,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
                     android:layout_toStartOf="@+id/contact_details_sms_logo_id"
-                    android:layout_toLeftOf="@+id/contact_details_sms_logo_id"
-                    android:background="@color/borderViewColor" />
+                    android:background="?attr/borderViewColor" />
 
                 <ImageView
                     android:id="@+id/contact_details_phone_call_logo_id"
@@ -149,9 +140,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
                     android:layout_toStartOf="@+id/view"
-                    android:layout_toLeftOf="@+id/view"
                     android:contentDescription="@string/content_description_phone_call_link"
                     app:srcCompat="@drawable/ic_phone_call" />
             </RelativeLayout>
@@ -172,10 +161,9 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="41dp"
                     android:layout_marginBottom="13dp"
-                    android:textColor="@color/textColor_light"
+                    android:textColor="?attr/textColorLight"
                     android:textSize="@dimen/contact_details_text_size" />
 
                 <TextView
@@ -184,21 +172,18 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/contact_details_mail"
-                    android:textColor="@color/textColor"
+                    android:textColor="?attr/textColor"
                     android:textSize="@dimen/contact_details_text_size" />
 
                 <ImageView
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="28dp"
-                    android:layout_marginRight="47dp"
                     android:contentDescription="@string/content_description_mail_link"
                     app:srcCompat="@drawable/ic_email" />
             </RelativeLayout>
@@ -218,21 +203,19 @@
                     android:layout_centerInParent="false"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/contact_details_messenger"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/contact_details_text_size" />
+                    android:textColor="?attr/textColor"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="28dp"
-                    android:layout_marginRight="47dp"
                     android:contentDescription="@string/content_description_messenger_link"
                     app:srcCompat="@drawable/ic_messenger" />
             </RelativeLayout>
@@ -252,21 +235,19 @@
                     android:layout_centerInParent="false"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/contact_details_whatsapp"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/contact_details_text_size" />
+                    android:textColor="?attr/textColor"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="28dp"
-                    android:layout_marginRight="47dp"
                     android:contentDescription="@string/content_description_whatsapp_link"
                     app:srcCompat="@drawable/ic_whatsapp" />
             </RelativeLayout>
@@ -286,21 +267,19 @@
                     android:layout_centerInParent="false"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/contact_details_instagram"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/contact_details_text_size" />
+                    android:textColor="?attr/textColor"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="28dp"
-                    android:layout_marginRight="47dp"
                     android:contentDescription="@string/content_description_linkedin_link"
                     app:srcCompat="@drawable/ic_instagram" />
             </RelativeLayout>
@@ -320,21 +299,19 @@
                     android:layout_centerInParent="false"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/contact_details_linkedin"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/contact_details_text_size" />
+                    android:textColor="?attr/textColor"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="28dp"
-                    android:layout_marginRight="47dp"
                     android:contentDescription="@string/content_description_linkedin_link"
                     app:srcCompat="@drawable/ic_linkedin" />
             </RelativeLayout>
@@ -354,21 +331,19 @@
                     android:layout_centerInParent="false"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/contact_details_skype"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/contact_details_text_size" />
+                    android:textColor="?attr/textColor"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="28dp"
-                    android:layout_marginRight="47dp"
                     android:contentDescription="@string/content_description_linkedin_link"
                     app:srcCompat="@drawable/ic_skype" />
             </RelativeLayout>
@@ -388,25 +363,22 @@
                     android:layout_centerInParent="false"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/contact_details_linkedin"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/contact_details_text_size" />
+                    android:textColor="?attr/textColor"
+                    android:textSize="@dimen/contact_details_text_size"
+                    tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:layout_width="@dimen/contact_details_logo_size"
                     android:layout_height="@dimen/contact_details_logo_size"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="28dp"
-                    android:layout_marginRight="47dp"
                     android:contentDescription="@string/content_description_linkedin_link"
                     app:srcCompat="@drawable/ic_twitter" />
             </RelativeLayout>
         </LinearLayout>
-
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

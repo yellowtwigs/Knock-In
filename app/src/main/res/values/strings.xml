@@ -99,6 +99,8 @@
     <string name="contact_details_telegram">Telegram</string>
 
     <!-- Settings !-->
+    <string name="settings_owner_edit">Modifier vos informations</string>
+    <string name="settings_owner_edit_long_text">Changer votre numéro de téléphone, ainsi que vos nom(s) et/ou prénom(s)</string>
     <string name="settings_notification">Notifications</string>
     <string name="settings_notification_long_text">Personnalisez les notifications que vous souhaitez recevoir.</string>
     <string name="settings_knockons">Knockons</string>

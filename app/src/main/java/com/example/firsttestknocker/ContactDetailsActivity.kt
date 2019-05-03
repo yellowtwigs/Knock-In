@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import android.os.Environment.getExternalStoragePublicDirectory
+import android.support.v7.app.AppCompatDelegate
 import android.text.TextUtils
 import android.util.Base64
 import android.view.LayoutInflater
@@ -71,6 +72,9 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_messenger_RelativeLayout: RelativeLayout? = null
     private var contact_details_whatsapp_RelativeLayout: RelativeLayout? = null
     private var contact_details_instagram_RelativeLayout: RelativeLayout? = null
+    private var contact_details_telegram_RelativeLayout: RelativeLayout? = null
+    private var contact_details_linkedin_RelativeLayout: RelativeLayout? = null
+    private var contact_details_twitter_RelativeLayout: RelativeLayout? = null
 
     private var contact_details_id: Long? = null
     private var contact_details_first_name: String? = null
@@ -79,6 +83,14 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_phone_property: String? = null
     private var contact_details_mail: String? = null
     private var contact_details_mail_property: String? = null
+
+    private var contact_details_facebook_id: String? = null
+    private var contact_details_twitter_id: String? = null
+    private var contact_details_skype_id: String? = null
+    private var contact_details_telegram_id: String? = null
+    private var contact_details_linkedin_id: String? = null
+    private var contact_details_instagram_id: String? = null
+
     private var contact_details_rounded_image: Int = 0
     private var contact_details_image64: String? = null
     private var contact_details_priority: Int = 1
@@ -91,6 +103,11 @@ class ContactDetailsActivity : AppCompatActivity() {
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 111
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_details)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
@@ -177,6 +194,21 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
         if (!contact_details_mail.isNullOrEmpty()) {
             contact_details_mail_RelativeLayout!!.visibility = View.VISIBLE
+        }
+        if (!contact_details_facebook_id.isNullOrEmpty()) {
+            contact_details_messenger_RelativeLayout!!.visibility = View.VISIBLE
+        }
+        if (!contact_details_instagram_id.isNullOrEmpty()) {
+            contact_details_instagram_RelativeLayout!!.visibility = View.VISIBLE
+        }
+        if (!contact_details_twitter_id.isNullOrEmpty()) {
+            contact_details_twitter_RelativeLayout!!.visibility = View.VISIBLE
+        }
+        if (!contact_details_linkedin_id.isNullOrEmpty()) {
+            contact_details_linkedin_RelativeLayout!!.visibility = View.VISIBLE
+        }
+        if (!contact_details_telegram_id.isNullOrEmpty()) {
+            contact_details_telegram_RelativeLayout!!.visibility = View.VISIBLE
         }
 
         // Set Resources from MainActivity to ContactDetailsActivity

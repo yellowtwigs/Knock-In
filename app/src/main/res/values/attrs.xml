@@ -15,5 +15,11 @@
             <flag name="start" value="4" />
             <flag name="end" value="5" />
         </attr>
+
+        <attr name="backgroundColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="textColorLight" format="color" />
+        <attr name="relativeLayoutPressedColor" format="color" />
+        <attr name="borderViewColor" format="color" />
     </declare-styleable>
 </resources>

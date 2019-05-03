@@ -1,9 +1,11 @@
 package com.example.firsttestknocker
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatDelegate
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -12,8 +14,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-
-        //        getSupportActionBar().hide();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
 
         Handler().postDelayed({
             val loginIntent = Intent(this@SplashScreenActivity, MainActivity::class.java)

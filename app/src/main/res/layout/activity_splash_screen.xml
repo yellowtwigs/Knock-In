@@ -2,10 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    style="?attr/backgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".SplashScreenActivity">
     <TextView
         android:layout_width="wrap_content"
@@ -16,7 +15,7 @@
         android:layout_above="@+id/knocker_logo"
         android:text="@string/app_name"
         android:layout_marginBottom="50dp"
-        android:textColor="@color/colorKnocker"/>
+        android:textColor="@color/knockerColorPrimary"/>
     <ImageView
         android:id="@+id/knocker_logo"
         android:layout_width="wrap_content"
@@ -40,5 +39,5 @@
         android:layout_below="@+id/progressBar"
         android:text="@string/app_name_by"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorKnocker"/>
+        android:textColor="@color/knockerColorPrimary"/>
 </RelativeLayout>

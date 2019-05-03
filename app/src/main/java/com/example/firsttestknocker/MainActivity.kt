@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.*
@@ -49,6 +50,11 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var mainContactsPriority: ContactsPriority
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -208,13 +214,11 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonAdd!!.setOnClickListener {
             val loginIntent = Intent(this@MainActivity, AddNewContactActivity::class.java)
             startActivity(loginIntent)
-            finish()
         }
 
         main_FloatingButtonCompose!!.setOnClickListener {
             val loginIntent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
             startActivity(loginIntent)
-            finish()
         }
 
         //bouton synchronisation des contacts du téléphone
@@ -407,7 +411,6 @@ class MainActivity : AppCompatActivity() {
             val intentFilter = IntentFilter()
             intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
             alertDialog.cancel()
-
         }
         return alertDialog
     }

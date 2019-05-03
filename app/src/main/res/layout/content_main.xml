@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorKnocker"
+            android:background="@color/knockerColorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
             <EditText
                 android:layout_width="match_parent"

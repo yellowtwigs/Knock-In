@@ -3,10 +3,10 @@
     android:shape="rectangle">
 
     <!-- This is the stroke you want to define -->
-    <stroke android:width="0.75dp"
-        android:color="@color/borderViewColor"/>
-    <gradient android:startColor="@color/relativeLayoutPressedColor"
-        android:centerColor="@color/relativeLayoutPressedColor"
-        android:endColor="@color/relativeLayoutPressedColor"
+    <stroke android:width="0.10dp"
+        android:color="?attr/borderViewColor"/>
+    <gradient android:startColor="?attr/relativeLayoutPressedColor"
+        android:centerColor="?attr/relativeLayoutPressedColor"
+        android:endColor="?attr/relativeLayoutPressedColor"
         android:angle="90"/>
 </shape>
