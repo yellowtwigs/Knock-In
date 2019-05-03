@@ -93,22 +93,25 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Mail_Property= findViewById(R.id.edit_contact_mail_spinner_id)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.add_new_contact_phone_number_spinner)
-
-        val getimage64 = Runnable {
-            val id = edit_contact_id
-            val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
-            edit_contact_image64 = contact!!.profilePicture64
-            if (edit_contact_image64 == "") {
-                println(" contact detail ======= " + edit_contact_rounded_image)
-                edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
-            } else {
-                println(" contact detail ======= " + edit_contact_image64)
-                val image64 = edit_contact_image64
-                edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
+        if(edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt())==null)
+        {
+            print("it works")
+        }else {
+            val getimage64 = Runnable {
+                val id = edit_contact_id
+                val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
+                edit_contact_image64 = contact!!.profilePicture64
+                if (edit_contact_image64 == "") {
+                    println(" contact detail ======= " + edit_contact_rounded_image)
+                    edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
+                } else {
+                    println(" contact detail ======= " + edit_contact_image64)
+                    val image64 = edit_contact_image64
+                    edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
+                }
             }
+            edit_contact_mDbWorkerThread.postTask(getimage64)
         }
-        edit_contact_mDbWorkerThread.postTask(getimage64)
-
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

@@ -93,9 +93,9 @@
         android:id="@+id/edit_contact_mail_view_id"
         android:layout_width="match_parent"
         android:layout_height="18dp"
-        android:background="?attr/borderViewColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_id" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_id"
+       />
 
     <Spinner
         android:id="@+id/edit_contact_mail_spinner_id"
