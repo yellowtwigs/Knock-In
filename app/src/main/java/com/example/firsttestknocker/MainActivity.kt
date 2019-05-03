@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.Settings
+import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
@@ -23,6 +24,7 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import me.samthompson.bubbleactions.BubbleActions
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private var main_FloatingButtonCloseAnimation: Animation? = null
     private var main_FloatingButtonClockWiserAnimation: Animation? = null
     private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
+    private var main_CoordinationLayout:CoordinatorLayout? = null
     internal var isOpen = false
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
@@ -64,6 +67,8 @@ class MainActivity : AppCompatActivity() {
         if (!isNotificationServiceEnabled) {
             val alertDialog = buildNotificationServiceAlertDialog()
             alertDialog.show()
+        }else{
+            toggleNotificationListenerService()
         }
 
         // on init WorkerThread
@@ -158,8 +163,9 @@ class MainActivity : AppCompatActivity() {
 
                main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener{ _, _, position, _ ->
                     val item =main_GridView!!.getChildAt(position)
+                   main_CoordinationLayout= findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
                    val contact = main_GridView!!.getItemAtPosition(position) as Contacts
-                   BubbleActions.on(item)
+                   BubbleActions.on(main_CoordinationLayout)
                          .addAction("Messenger", R.drawable.ic_messenger_circle_menu,
                            {
                                ContactGesture.openMessenger("",this@MainActivity)
@@ -441,5 +447,12 @@ class MainActivity : AppCompatActivity() {
         }
         return alertDialogBuilder.create()
     }
+    fun toggleNotificationListenerService(){
+        val pm =getPackageManager()
+        val cmpName = ComponentName(this,NotificationListener::class.java)
+        pm.setComponentEnabledSetting(cmpName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+        pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+    }
+
 }
 

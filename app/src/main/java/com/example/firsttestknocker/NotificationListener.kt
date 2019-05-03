@@ -4,10 +4,8 @@ package com.example.firsttestknocker
 import android.annotation.SuppressLint
 import android.app.*
 import android.app.usage.UsageStatsManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
+import android.content.pm.PackageManager
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.ListView
+import java.io.File
 import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -37,6 +36,7 @@ class NotificationListener : NotificationListenerService() {
     var windowManager: WindowManager? = null
     var priority: Int?=null
 
+
     override fun onCreate() {
         super.onCreate()
 
@@ -48,8 +48,24 @@ class NotificationListener : NotificationListenerService() {
         //on get la base de données
         notification_listener_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
         println("lancement du service")
+
+        //pour empêcher le listener de s'arreter
+    }
+    fun toggleNotificationListenerService(){
+        val pm =getPackageManager()
+        val cmpName = ComponentName(this,NotificationListener::class.java)
+        pm.setComponentEnabledSetting(cmpName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+        pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
     }
 
+    override fun onListenerDisconnected() {
+        super.onListenerDisconnected()
+        println("isDisconnect")
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            println("into the rebind")
+            requestRebind(ComponentName(this, NotificationListenerService::class.java))
+        }
+    }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         println("start command")
         return Service.START_STICKY //dire qu'on doit relancer quand il se stop

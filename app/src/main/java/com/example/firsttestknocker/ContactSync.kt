@@ -52,6 +52,8 @@ object ContactSync : AppCompatActivity() {
             if (phoneNumber == null)
                 phoneNumber = ""
             if (phonePic != null) {
+                println("phone pic"+phonePic)
+                println("openPhoto "+phoneId!!.toLong()+" main content resolver "+main_contentResolver)
                 phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(),main_contentResolver)))
             } else {
                 phonePic = ""
