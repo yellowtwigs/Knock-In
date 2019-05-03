@@ -255,14 +255,13 @@ class AddNewContactActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMAGE_CAPTURE_CODE) {
 
-                println("MMMMMMMMMMMMMMCCCCCCCCCCCCCCCC = "+imageUri!!.getPath())
                 val matrix = Matrix()
                 val exif = ExifInterface(getRealPathFromUri(this,imageUri!!));
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
+                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
                 bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 add_new_contact_imgString = bitmapToBase64(bitmap)
@@ -272,7 +271,7 @@ class AddNewContactActivity : AppCompatActivity() {
             } else if (requestCode == SELECT_FILE) {
                 val selectedImageUri = data!!.data
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
+                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
 //                var matrix = Matrix()
 //                matrix.postRotate(90f)
 //                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
