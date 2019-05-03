@@ -160,30 +160,31 @@ class MainActivity : AppCompatActivity() {
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
+                if (android.os.Build.VERSION.SDK_INT != 28) {
+                    main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
+                        val item = main_GridView!!.getChildAt(position)
+                        main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
+                        val contact = main_GridView!!.getItemAtPosition(position) as Contacts
+                        BubbleActions.on(main_CoordinationLayout)
+                                .addAction("Messenger", R.drawable.ic_messenger_circle_menu,
+                                        {
+                                            ContactGesture.openMessenger("", this@MainActivity)
+                                        }).addAction("SMS", R.drawable.sms, {
+                                    val intent = ContactGesture.putContactIntent(contact, this@MainActivity, ComposeMessageActivity::class.java)
+                                    startActivity(intent)
+                                }).addAction("Gmail", R.drawable.gmail, {
+                                    ContactGesture.openGmail(this@MainActivity)
+                                }).addAction("whatsapp", R.drawable.ic_whatsapp_circle_menu, {
+                                    ContactGesture.openWhatsapp(contact.phoneNumber, this@MainActivity)
+                                }).addAction("edit", R.drawable.ic_edit_floating_button, {
+                                    val intent = ContactGesture.putContactIntent(contact, this@MainActivity, EditContactActivity::class.java)
+                                    startActivity(intent)
+                                })
+                                .show()
 
-               main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener{ _, _, position, _ ->
-                    val item =main_GridView!!.getChildAt(position)
-                   main_CoordinationLayout= findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
-                   val contact = main_GridView!!.getItemAtPosition(position) as Contacts
-                   BubbleActions.on(main_CoordinationLayout)
-                         .addAction("Messenger", R.drawable.ic_messenger_circle_menu,
-                           {
-                               ContactGesture.openMessenger("",this@MainActivity)
-                           }).addAction("SMS",R.drawable.sms,{
-                             val  intent = ContactGesture.putContactIntent(contact,this@MainActivity,ComposeMessageActivity::class.java)
-                             startActivity(intent)
-                         }).addAction("Gmail",R.drawable.gmail,{
-                             ContactGesture.openGmail(this@MainActivity)
-                         }).addAction("whatsapp",R.drawable.ic_whatsapp_circle_menu,{
-                             ContactGesture.openWhatsapp(contact.phoneNumber,this@MainActivity)
-                         }).addAction("edit", R.drawable.ic_edit_floating_button,{
-                             val  intent = ContactGesture.putContactIntent(contact,this@MainActivity,EditContactActivity::class.java)
-                             startActivity(intent)
-                         })
-                         .show()
-
-                    false
-               }
+                        false
+                    }
+                }
 
 
 

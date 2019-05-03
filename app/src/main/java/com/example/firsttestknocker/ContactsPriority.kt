@@ -34,6 +34,8 @@ object ContactsPriority : AppCompatActivity() {
         var priority = -1
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->
+
+                println("contact "+dbContact+ "différent de name"+name)
                 if (dbContact.firstName+" "+dbContact.lastName == name) {
                     priority = dbContact.contactPriority
                 }

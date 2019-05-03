@@ -31,6 +31,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private val WATHSAPP_SERVICE = "com.whatsapp"
     private val GMAIL_PACKAGE = "com.google.android.gm"
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
+    val MESSAGE_SAMSUNG_PACKAGE= "com.samsung.android.messaging"
     override fun getCount(): Int {
         return notifications.size
     }
@@ -150,13 +151,16 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             return "WhatsApp"
         } else if (packageName == GMAIL_PACKAGE) {
             return "gmail"
-        } else if (packageName == MESSAGE_PACKAGE) {
+        } else if (packageName == MESSAGE_PACKAGE || packageName==
+
+
+                  MESSAGE_SAMSUNG_PACKAGE) {
             return "message"
         }
         return ""
     }
     private fun canResponse(packageName: String):Boolean{
-        if((checkSelfPermission(context,Manifest.permission.SEND_SMS)==PackageManager.PERMISSION_GRANTED)&&(packageName== MESSAGE_PACKAGE || packageName==WATHSAPP_SERVICE)){
+        if((checkSelfPermission(context,Manifest.permission.SEND_SMS)==PackageManager.PERMISSION_GRANTED)&&(packageName== MESSAGE_PACKAGE || packageName==WATHSAPP_SERVICE|| packageName==MESSAGE_SAMSUNG_PACKAGE )){
             return true
         }
         return false
