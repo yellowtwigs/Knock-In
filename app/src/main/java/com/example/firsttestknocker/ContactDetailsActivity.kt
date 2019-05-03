@@ -144,21 +144,24 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
         contact_details_id = intent.getLongExtra("ContactId", 1)
         contact_details_priority = intent.getIntExtra("ContactPriority", 1)
-
-
-        val getimage64 = Runnable {
-            val id = contact_details_id
-            val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
-            contact_details_image64 = contact!!.profilePicture64
-            if (contact_details_image64 == "") {
-                println(" contact detail ======= " + contact_details_rounded_image)
-                contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
-            } else {
-                val image64 = contact_details_image64
-                contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
+        if(contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_id!!.toInt())==null)
+        {
+                    print("it works")
+        }else{
+            val getimage64 = Runnable {
+                val id = contact_details_id
+                val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
+                contact_details_image64 = contact!!.profilePicture64
+                if (contact_details_image64 == "") {
+                    println(" contact detail ======= " + contact_details_rounded_image)
+                    contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
+                } else {
+                    val image64 = contact_details_image64
+                    contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
+                }
             }
+            contact_details_mDbWorkerThread.postTask(getimage64)
         }
-        contact_details_mDbWorkerThread.postTask(getimage64)
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -189,6 +192,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
 
         if (!contact_details_phone_number.isNullOrEmpty()) {
+
             contact_details_phone_number_RelativeLayout!!.visibility = View.VISIBLE
             contact_details_whatsapp_RelativeLayout!!.visibility = View.VISIBLE
         }
