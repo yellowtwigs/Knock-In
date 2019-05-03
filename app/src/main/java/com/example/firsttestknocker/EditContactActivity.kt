@@ -3,11 +3,14 @@ package com.example.firsttestknocker
 import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -289,16 +292,35 @@ class EditContactActivity : AppCompatActivity() {
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
+    fun getRealPathFromUri(context: Context, contentUri: Uri): String {
+        var cursor: Cursor? = null
+        try {
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.contentResolver.query(contentUri, proj, null, null, null)
+            val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            return cursor.getString(column_index)
+        } finally {
+            if (cursor != null) {
+                cursor.close()
+            }
+        }
+    }
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMAGE_CAPTURE_CODE) {
                 println("image URI = " + imageUri)
-                var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
+
                 val matrix = Matrix()
-                matrix.postRotate(90f)
+                val exif = ExifInterface(getRealPathFromUri(this,imageUri!!));
+                val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+                val rotationInDegrees = exifToDegrees(rotation);
+                matrix.postRotate(rotationInDegrees.toFloat())
+                var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
                 bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmapToBase64(bitmap)
@@ -306,7 +328,7 @@ class EditContactActivity : AppCompatActivity() {
             } else if (requestCode == SELECT_FILE) {
                 val selectedImageUri = data!!.data
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,250,200,true)
+                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
                 val matrix = Matrix()
                 matrix.postRotate(90f)
                 bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
@@ -314,6 +336,13 @@ class EditContactActivity : AppCompatActivity() {
                 edit_contact_imgString = bitmapToBase64(bitmap)
             }
         }
+    }
+
+    fun exifToDegrees(exifOrientation: Int): Int {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90}
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) { return 180}
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) { return 270}
+        return 0
     }
 
     fun bitmapToBase64(bitmap: Bitmap) : String {

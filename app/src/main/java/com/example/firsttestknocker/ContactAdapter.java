@@ -90,8 +90,8 @@ public class ContactAdapter extends BaseAdapter {
         }
         holder.contactFirstNameView.setText(firstname);
         if (!contact.getProfilePicture64().equals("")) {
-            base64ToBitmap(contact.getProfilePicture64());
-            holder.contactRoundedImageView.setImageBitmap(base64ToBitmap(contact.getProfilePicture64()));
+            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+            holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             holder.contactRoundedImageView.setImageResource(contact.getProfilePicture());
         }
@@ -100,7 +100,9 @@ public class ContactAdapter extends BaseAdapter {
 
     public Bitmap base64ToBitmap(String base64) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString,0, decodedString.length);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 2;
+        return BitmapFactory.decodeByteArray(decodedString,0, decodedString.length, options);
     }
 
     static class ViewHolder {
