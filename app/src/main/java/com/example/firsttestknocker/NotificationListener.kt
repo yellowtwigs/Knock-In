@@ -75,49 +75,49 @@ class NotificationListener : NotificationListenerService() {
 
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        val sbp = StatusBarParcelable(sbn)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        Log.i(TAG,"application context "+applicationContext.toString());
-        Log.i(TAG, "application notifier:" + sbp.appNotifier)
-        val i = Log.i(TAG, "tickerText:" + sbp.tickerText)
-        //sbn.notification.smallIcon
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+        if(!sharedPreferences.getBoolean("serviceNotif",true)) {
+            val sbp = StatusBarParcelable(sbn)
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            Log.i(TAG, "application context " + applicationContext.toString());
+            Log.i(TAG, "application notifier:" + sbp.appNotifier)
+            val i = Log.i(TAG, "tickerText:" + sbp.tickerText)
+            //sbn.notification.smallIcon
 
-        for (key in sbn.notification.extras.keySet()) {
-            Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
-        }
-        val addNotification = Runnable {
-            notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
-            val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-
-
-            val prioriteContact =ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(),this.convertPackageToString(sbp.appNotifier),notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
-            println("priorité "+ prioriteContact)
-            if(prioriteContact == 2){
-                if (appNotifiable(sbp)&& sharedPreferences.getBoolean("popupNotif",false) ) {
-                   //this.cancelNotification(sbn.key)
-
-                    if (popupView == null || !sharedPreferences.getBoolean("view",false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
-                        popupView=null
-                        listNotif.clear();
-                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                        edit.putBoolean("view", true)
-                        edit.commit()
-                        displayLayout(sbp)
-                    }else{
-                        Log.i(TAG,"different de null"+  sharedPreferences.getBoolean("view",true) )
-                        notifLayout(sbp,popupView)
-                    }
-                }
-            }else if (prioriteContact == 1){
-
-            }else if(prioriteContact == 0){
-                println("priority 0")
-               //this.cancelNotification(sbn.key)
+            for (key in sbn.notification.extras.keySet()) {
+                Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
             }
+            val addNotification = Runnable {
+                notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
 
+                val prioriteContact = ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(), this.convertPackageToString(sbp.appNotifier), notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
+                println("priorité " + prioriteContact)
+                if (prioriteContact == 2) {
+                    if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
+                        //this.cancelNotification(sbn.key)
+
+                        if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
+                            popupView = null
+                            listNotif.clear();
+                            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                            edit.putBoolean("view", true)
+                            edit.commit()
+                            displayLayout(sbp)
+                        } else {
+                            Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
+                            notifLayout(sbp, popupView)
+                        }
+                    }
+                } else if (prioriteContact == 1) {
+
+                } else if (prioriteContact == 0) {
+                    println("priority 0")
+                    //this.cancelNotification(sbn.key)
+                }
+
+            }
+            notification_listener_mDbWorkerThread.postTask(addNotification)
         }
-        notification_listener_mDbWorkerThread.postTask(addNotification)
-
     }
     public fun saveNotfication(sbp:StatusBarParcelable):Notifications{
         val notif = Notifications(null,sbp.tickerText.toString(),sbp.statusBarNotificationInfo["android.title"]!!.toString(),sbp.statusBarNotificationInfo["android.text"]!!.toString(),sbp.appNotifier,0,false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(java.util.Date(Calendar.getInstance().timeInMillis.toString().toLong())), java.util.Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt());

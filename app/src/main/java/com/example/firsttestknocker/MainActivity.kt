@@ -65,10 +65,16 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
         }
         if (!isNotificationServiceEnabled) {
-            val alertDialog = buildNotificationServiceAlertDialog()
-            alertDialog.show()
+            //val alertDialog = buildNotificationServiceAlertDialog()
+            // alertDialog.show()
+            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val edit : SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif",false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+            edit.putBoolean("serviceNotif",true)
+            edit.commit()
         }else{
             toggleNotificationListenerService()
+
         }
 
         // on init WorkerThread
@@ -181,7 +187,6 @@ class MainActivity : AppCompatActivity() {
                                     startActivity(intent)
                                 })
                                 .show()
-
                         false
                     }
                 }
@@ -400,27 +405,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             return false
-        }
+        }//TODO: enlever code duplicate
 
-    private fun buildNotificationServiceAlertDialog(): AlertDialog {
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        val inflater : LayoutInflater = this.getLayoutInflater()
-        val alertView: View = inflater.inflate(R.layout.alert_dialog_notification,null);
-        alertDialogBuilder.setView(alertView);
-        val alertDialog = alertDialogBuilder.create()
-        val tvNo= alertView.findViewById<TextView>(R.id.tv_alert_dialog)
-        tvNo.setOnClickListener {
-            alertDialog.cancel()
-        };
-        val btnYes = alertView.findViewById<Button>(R.id.button_alert_dialog)
-        btnYes.setOnClickListener{
-            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
-            val intentFilter = IntentFilter()
-            intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
-            alertDialog.cancel()
-        }
-        return alertDialog
-    }
+//    private fun buildNotificationServiceAlertDialog(): AlertDialog {
+//        val alertDialogBuilder = AlertDialog.Builder(this)
+//        val inflater : LayoutInflater = this.getLayoutInflater()
+//        val alertView: View = inflater.inflate(R.layout.alert_dialog_notification,null);
+//        alertDialogBuilder.setView(alertView);
+//        val alertDialog = alertDialogBuilder.create()
+//        val tvNo= alertView.findViewById<TextView>(R.id.tv_alert_dialog)
+//        tvNo.setOnClickListener {
+//            alertDialog.cancel()
+//        };
+//        val btnYes = alertView.findViewById<Button>(R.id.button_alert_dialog)
+//        btnYes.setOnClickListener{
+//            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+//            val intentFilter = IntentFilter()
+//            intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
+//            alertDialog.cancel()
+//        }
+//        return alertDialog
+//    }
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): AlertDialog {

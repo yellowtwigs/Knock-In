@@ -1,11 +1,16 @@
 package com.example.firsttestknocker
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.app.AlertDialog
+import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
 import android.widget.Switch
+import android.widget.TextView
 
 class ManageNotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,9 +20,13 @@ class ManageNotificationActivity : AppCompatActivity() {
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice =this.findViewById<Switch>(R.id.switch_stop_service)
         switchPopupNotif.setChecked(sharedPreferences.getBoolean("popupNotif",false))
+        switchservice.setChecked(sharedPreferences.getBoolean("serviceNotif",true))
         switchPopupNotif.setOnClickListener{
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             if(switchPopupNotif.isChecked){
+                if (!isNotificationServiceEnabled) {
+                    buildNotificationServiceAlertDialog().show()
+                }
                 switchservice.setChecked(false)
                 edit.remove("popupNotif")
                 edit.remove("serviceNotif")
@@ -26,8 +35,6 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.commit()
                 System.out.println("pop up true "+ sharedPreferences.getBoolean("popupNotif",false))
             }else{
-
-
                 edit.remove("popupNotif")
                 edit.putBoolean("popupNotif",false)
                 edit.commit()
@@ -46,7 +53,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.commit()
                 System.out.println("service economy true "+ sharedPreferences.getBoolean("serviceNotif",true))
             }else{
-
+                if (!isNotificationServiceEnabled) {
+                    buildNotificationServiceAlertDialog().show()
+                }
                 edit.remove("serviceNotif")
                 edit.putBoolean("serviceNotif",false)
                 edit.commit()
@@ -55,4 +64,40 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         }
     }
+    private fun buildNotificationServiceAlertDialog(): AlertDialog {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        val inflater : LayoutInflater = this.getLayoutInflater()
+        val alertView: View = inflater.inflate(R.layout.alert_dialog_notification,null);
+        alertDialogBuilder.setView(alertView);
+        val alertDialog = alertDialogBuilder.create()
+        val tvNo= alertView.findViewById<TextView>(R.id.tv_alert_dialog)
+        tvNo.setOnClickListener {
+            alertDialog.cancel()
+        };
+        val btnYes = alertView.findViewById<Button>(R.id.button_alert_dialog)
+        btnYes.setOnClickListener{
+            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+            val intentFilter = IntentFilter()
+            intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
+            alertDialog.cancel()
+        }
+        return alertDialog
+    }
+    private val isNotificationServiceEnabled: Boolean
+        get() {
+            val pkgName = packageName
+            val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+            if (!TextUtils.isEmpty(str)) {
+                val names = str.split(":")
+                for (i in names.indices) {
+                    val cn = ComponentName.unflattenFromString(names[i])
+                    if (cn != null) {
+                        if (TextUtils.equals(pkgName, cn.packageName)) {
+                            return true
+                        }
+                    }
+                }
+            }
+            return false
+        }
 }
