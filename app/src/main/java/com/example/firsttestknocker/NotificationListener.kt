@@ -221,6 +221,7 @@ class NotificationListener : NotificationListenerService() {
         if(NameFromSbp.matches(pregMatchString.toRegex())){
          return   NameFromSbp.substring(0,lastIndexOf(NameFromSbp,'('))
         }else{
+            println("pregmatch fail")
             return NameFromSbp
         }
     }
