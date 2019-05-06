@@ -38,6 +38,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_Priority: Spinner? = null
     private var add_new_contact_Phone_Property :Spinner? =null
     private var add_new_contact_Mail_Property :Spinner?= null
+    private var add_new_contact_Priority_explain: TextView? = null
     var imageUri: Uri? = null
     private val IMAGE_CAPTURE_CODE = 1001
 
@@ -79,6 +80,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_Priority = findViewById(R.id.add_new_contact_priority)
         add_new_contact_Phone_Property = findViewById(R.id.add_new_contact_phone_number_spinner)
         add_new_contact_Mail_Property = findViewById(R.id.add_new_contact_mail_spinner_id)
+        add_new_contact_Priority_explain = findViewById(R.id.add_new_contact_priority_explain)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
@@ -90,6 +92,21 @@ class AddNewContactActivity : AppCompatActivity() {
         val array_adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, priority_list)
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         add_new_contact_Priority!!.adapter = array_adapter
+        add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) {
+                    add_new_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
+                } else if (position == 1) {
+                    add_new_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority1))
+                } else if (position == 2) {
+                    add_new_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority2))
+                }
+            }
+        }
     }
 
     //demmande de confirmation de la création d'un contact en double
