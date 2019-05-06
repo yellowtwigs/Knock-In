@@ -13,6 +13,7 @@ import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.support.constraint.ConstraintLayout
+import android.text.TextUtils.lastIndexOf
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -90,7 +91,9 @@ class NotificationListener : NotificationListenerService() {
             val addNotification = Runnable {
                 notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
 
-                val prioriteContact = ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString(), this.convertPackageToString(sbp.appNotifier), notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
+                val prioriteContact = ContactsPriority.getPriorityWithName(getContactNameFromString(sbp.statusBarNotificationInfo.get("android.title").toString())
+                        , this.convertPackageToString(sbp.appNotifier)
+                        , notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
                 println("priorité " + prioriteContact)
                 if (prioriteContact == 2) {
                     if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
@@ -212,4 +215,14 @@ class NotificationListener : NotificationListenerService() {
         val listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
 
     }
+    private fun getContactNameFromString(NameFromSbp :String):String{
+        val pregMatchString : Regex= "[a-zA-Z]*([0-9]*)".toRegex()
+        if(NameFromSbp.matches(pregMatchString)){
+         return   NameFromSbp.substring(0,lastIndexOf(NameFromSbp,'('))
+        }else{
+            return NameFromSbp
+        }
+    }
+
+
 }
