@@ -101,7 +101,7 @@ public class ContactAdapter extends BaseAdapter {
     public Bitmap base64ToBitmap(String base64) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 2;
+        //options.inSampleSize = 2;
         return BitmapFactory.decodeByteArray(decodedString,0, decodedString.length, options);
     }
 

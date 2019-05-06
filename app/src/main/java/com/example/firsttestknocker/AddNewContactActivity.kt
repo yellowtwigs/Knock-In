@@ -269,12 +269,17 @@ class AddNewContactActivity : AppCompatActivity() {
                 println("is the same ? result: " + bitmap.sameAs(base64ToBitmap(bitmapToBase64(bitmap))))
 
             } else if (requestCode == SELECT_FILE) {
+                val matrix = Matrix()
                 val selectedImageUri = data!!.data
+                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri));
+                val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+                val rotationInDegrees = exifToDegrees(rotation);
+                matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
 //                var matrix = Matrix()
 //                matrix.postRotate(90f)
-//                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
+                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 add_new_contact_imgString = bitmapToBase64(bitmap)
             }
