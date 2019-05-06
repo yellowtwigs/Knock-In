@@ -15,39 +15,14 @@ import java.io.InputStream
 
 
 object ContactSync : AppCompatActivity() {
-    fun getAllContact(main_contentResolver: ContentResolver): List<Contacts>? {
-        val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
-        val phoneContactsList = arrayListOf<Contacts>()
-        while (phonecontact.moveToNext()) {
-            val phone_id = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
-            val fullName = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-            val phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            println("\n//////////////\n"+fullName+"\n"+phoneNumber)
-            if (phoneContactsList.isEmpty()) {
-                var lastName = ""
-                if (fullName!!.contains(' '))
-                    lastName = fullName.substringAfter(' ')
-                val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!+"P", "", R.drawable.ryan, R.drawable.aquarius, 0, "")
-                phoneContactsList.add(contactData)
-            } else if (!isDuplicate(fullName!!, phoneContactsList)) {
-                var lastName = ""
-                if (fullName.contains(' '))
-                    lastName = fullName.substringAfter(' ')
-                val contactData = Contacts(null, fullName.substringBefore(' '), lastName, phoneNumber!!+"P", "", R.drawable.ryan, R.drawable.aquarius, 0, "")
-                phoneContactsList.add(contactData)
-            }
-        }
-        phonecontact?.close()
-        return phoneContactsList
-    }
-
+    
     fun getPhoneNumber(main_contentResolver: ContentResolver): List<Triple<Int,String?,String?>>? {
         val contactPhoneNumber = arrayListOf<Triple<Int,String?,String?>>()
         var idAndPhoneNumber: Triple<Int,String?,String?>
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
         while (phonecontact.moveToNext()) {
             val phoneId = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
-            var phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            var phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER))
             var phonePic = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
             if (phoneNumber == null)
                 phoneNumber = ""
@@ -62,7 +37,7 @@ object ContactSync : AppCompatActivity() {
             if (contactPhoneNumber.isEmpty()) {
                 //println("1er = "+idAndPhoneNumber)
                 contactPhoneNumber.add(idAndPhoneNumber)
-            } else if (!isDuplicate(idAndPhoneNumber,contactPhoneNumber)){
+            } else if (!isDuplicateNumber(idAndPhoneNumber,contactPhoneNumber)){
                 //println("AND = "+idAndPhoneNumber)
                 contactPhoneNumber.add(idAndPhoneNumber)
             }
@@ -154,11 +129,11 @@ object ContactSync : AppCompatActivity() {
         return phoneContactsList
     }
 
-    private fun isDuplicate(idAndPhoneNumber: Triple<Int,String?,String?>, contactPhoneNumber:List<Triple<Int,String?,String?>>): Boolean{
+    private fun isDuplicateNumber(idAndPhoneNumber: Triple<Int,String?,String?>, contactPhoneNumber:List<Triple<Int,String?,String?>>): Boolean{
         //println("/////////////////////////////  "+ contactPhoneNumber.size)
         contactPhoneNumber.forEach {
            // println("ID = "+it.first+" NUMBER = "+it.second)
-            if (it.first == idAndPhoneNumber.first)
+            if (it.first == idAndPhoneNumber.first || it.second == idAndPhoneNumber.second)
                 return true
         }
         return false
