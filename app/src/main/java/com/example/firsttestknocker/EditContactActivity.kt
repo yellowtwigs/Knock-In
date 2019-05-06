@@ -23,6 +23,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import java.io.ByteArrayOutputStream
@@ -36,7 +37,8 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Mail: TextView? = null
     private var edit_contact_RoundedImageView: ImageView? = null
     private var edit_contact_Priority: Spinner? = null
-    private var edit_contact_Phone_Property: Spinner? =null
+    private var edit_contact_Priority_explain: TextView? = null
+    private var edit_contact_Phone_Property: Spinner? = null
     private var edit_contact_Mail_Property : Spinner? = null
 
     private var edit_contact_id: Long? = null
@@ -44,7 +46,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_last_name: String? = null
     private var edit_contact_phone_number: String? = null
     private var edit_contact_phone_property: String? = null
-    private var edit_contact_mail_property: String?=null
+    private var edit_contact_mail_property: String? = null
     private var edit_contact_mail: String? = null
     private var edit_contact_rounded_image: Int = 0
     private var edit_contact_image64: String? = null
@@ -96,6 +98,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Mail_Property= findViewById(R.id.edit_contact_mail_spinner_id)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.add_new_contact_phone_number_spinner)
+        edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
         if(edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt())==null)
         {
             print("it works")
@@ -150,6 +153,21 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Priority!!.adapter = array_adapter
         println("edit contact prio === " + edit_contact_priority)
         edit_contact_Priority!!.setSelection(edit_contact_priority)
+        edit_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) {
+                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
+                } else if (position == 1) {
+                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority1))
+                } else if (position == 2) {
+                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority2))
+                }
+            }
+        }
     }
     private fun getPosItemSpinner(item: String, spinner:Spinner): Int {
         val tailleSpinner: Int= spinner.adapter.count

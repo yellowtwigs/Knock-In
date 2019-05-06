@@ -92,7 +92,6 @@ class AddNewContactActivity : AppCompatActivity() {
         val array_adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, priority_list)
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         add_new_contact_Priority!!.adapter = array_adapter
-        add_new_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
