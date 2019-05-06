@@ -25,6 +25,7 @@ import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 
 @SuppressLint("OverrideAbstract")
@@ -90,8 +91,8 @@ class NotificationListener : NotificationListenerService() {
             }
             val addNotification = Runnable {
                 notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
-
-                val prioriteContact = ContactsPriority.getPriorityWithName(getContactNameFromString(sbp.statusBarNotificationInfo.get("android.title").toString())
+                sbp.statusBarNotificationInfo.put("android.title", getContactNameFromString(sbp.statusBarNotificationInfo.get("android.title").toString()))
+                val prioriteContact = ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString()
                         , this.convertPackageToString(sbp.appNotifier)
                         , notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
                 println("priorité " + prioriteContact)
@@ -216,8 +217,8 @@ class NotificationListener : NotificationListenerService() {
 
     }
     private fun getContactNameFromString(NameFromSbp :String):String{
-        val pregMatchString : Regex= "[a-zA-Z]*([0-9]*)".toRegex()
-        if(NameFromSbp.matches(pregMatchString)){
+        val pregMatchString : String= ".*\\([0-9]*\\)"
+        if(NameFromSbp.matches(pregMatchString.toRegex())){
          return   NameFromSbp.substring(0,lastIndexOf(NameFromSbp,'('))
         }else{
             return NameFromSbp
