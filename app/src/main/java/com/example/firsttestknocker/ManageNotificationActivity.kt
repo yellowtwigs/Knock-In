@@ -5,6 +5,7 @@ import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,13 @@ class ManageNotificationActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice =this.findViewById<Switch>(R.id.switch_stop_service)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_manage_notification)
+        setSupportActionBar(toolbar)
+        val actionbar = supportActionBar
+        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+        actionbar.title = "Notifications"
+
         switchPopupNotif.setChecked(sharedPreferences.getBoolean("popupNotif",false))
         switchservice.setChecked(sharedPreferences.getBoolean("serviceNotif",true))
         switchPopupNotif.setOnClickListener{

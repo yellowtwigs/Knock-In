@@ -125,10 +125,12 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.nav_settings) {
                 val loginIntent = Intent(this@MainActivity, SettingsActivity::class.java)
                 startActivity(loginIntent)
-            }
-                else if (id == R.id.nav_chat) {
-                    val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
-                    startActivity(loginIntent)
+            } else if (id == R.id.nav_chat) {
+                val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
+                startActivity(loginIntent)
+            } else if (id == R.id.nav_history){
+                val loginIntent = Intent(this@MainActivity, NotificationHistoryActivity::class.java)
+                startActivity(loginIntent)
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)

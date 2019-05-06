@@ -161,7 +161,7 @@ class NotificationListener : NotificationListenerService() {
             popupView = null
             listNotif.clear()
             listInverse.clear()
-            //effacer le window manager en rendre popup-view pour lui réaffecter de nouvelle valeur
+            //effacer le window manager en rendre popup-view null pour lui réaffecter de nouvelle valeur
         }
 
     }

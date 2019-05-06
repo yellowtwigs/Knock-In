@@ -16,5 +16,9 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about"
             android:title="@string/left_drawer_about" />
+        <item
+            android:id="@+id/nav_history"
+            android:title="@string/left_drawer_notification_history"/>
+
     </group>
 </menu>
