@@ -326,10 +326,15 @@ class EditContactActivity : AppCompatActivity() {
                 edit_contact_imgString = bitmapToBase64(bitmap)
 
             } else if (requestCode == SELECT_FILE) {
+                val matrix = Matrix()
                 val selectedImageUri = data!!.data
+                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri));
+                val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+                val rotationInDegrees = exifToDegrees(rotation);
+                matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
-                val matrix = Matrix()
+
                 matrix.postRotate(90f)
                 bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)

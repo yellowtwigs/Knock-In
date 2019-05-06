@@ -27,6 +27,9 @@
     <string name="add_new_contact_first_name">Prénom</string>
     <string name="add_new_contact_phone_number">Numéro de téléphone</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
+    <string name="add_new_contact_priority0">Toutes les notifications de ce contact seront désactivées </string>
+    <string name="add_new_contact_priority1">Toutes les notifications de ce contact s\'afficheront comme avant</string>
+    <string name="add_new_contact_priority2">Toutes les notifications de ce contact seront affiché au milieu de l\'écran</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
         <item>Bureau</item>
