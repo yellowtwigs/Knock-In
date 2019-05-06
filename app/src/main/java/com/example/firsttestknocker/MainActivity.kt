@@ -253,14 +253,16 @@ class MainActivity : AppCompatActivity() {
                             isDuplicate = true
                     }
                     if (isDuplicate == false) {
+                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                        val len = sharedPreferences.getInt("gridview",3)
                         main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
+                        val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                        val contactAdapter = ContactAdapter(this, syncContact, len)
+                        main_GridView!!.adapter = contactAdapter
                     }
                 }
-                val intent = intent
-                finish()
-                startActivity(intent)
             }
-            main_mDbWorkerThread.postTask(addAllContacts)
+            runOnUiThread(addAllContacts)
         })
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
