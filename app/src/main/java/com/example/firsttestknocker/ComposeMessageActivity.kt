@@ -1,6 +1,7 @@
 package com.example.firsttestknocker
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -17,6 +18,7 @@ import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
@@ -92,6 +94,13 @@ class ComposeMessageActivity : AppCompatActivity() {
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
         }
+        ///problem with editText he needs delay
+        val inputMM = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        compose_message_MessageEditText!!.postDelayed({
+            compose_message_MessageEditText!!.requestFocus()
+            inputMM.showSoftInput(compose_message_MessageEditText,InputMethodManager.SHOW_IMPLICIT)
+        },100)
+        //inputMM.showSoftInput(compose_message_MessageEditText, InputMethodManager.SHOW_IMPLICIT)
 
         compose_message_send_Button!!.setOnClickListener(View.OnClickListener {
             val msg = compose_message_MessageEditText!!.text.toString()

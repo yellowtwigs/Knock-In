@@ -4,6 +4,8 @@ import android.app.Notification
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.Toolbar
+import android.widget.ImageView
 import android.widget.ListView
 
 class NotificationHistoryActivity : AppCompatActivity() {
@@ -13,6 +15,16 @@ class NotificationHistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_history)
         // on init WorkerThread
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_notification_history)
+        setSupportActionBar(toolbar)
+        val actionbar = supportActionBar
+        //actionbar!!.setDisplayHomeAsUpEnabled(true)
+        //actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+        actionbar!!.title = "\t \t \t \t Notification log"
+        var retour:ImageView = findViewById(R.id.imageView_notification_history)
+        retour.setOnClickListener(){
+            this.finish()
+        }
         contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         contact_details_mDbWorkerThread.start()
         //on get la base de données

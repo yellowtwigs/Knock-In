@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 
@@ -23,10 +24,13 @@ class ManageNotificationActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar_manage_notification)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar.title = "Notifications"
-
+        //actionbar!!.setDisplayHomeAsUpEnabled(true)
+        //actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+        actionbar!!.title = " \t \t \t \t Notifications"
+        var retour: ImageView = findViewById(R.id.imageView_notification_manager)
+        retour.setOnClickListener(){
+            this.finish()
+        }
         switchPopupNotif.setChecked(sharedPreferences.getBoolean("popupNotif",false))
         switchservice.setChecked(sharedPreferences.getBoolean("serviceNotif",true))
         switchPopupNotif.setOnClickListener{
