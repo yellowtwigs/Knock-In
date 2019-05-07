@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
     //private lateinit var mainContactsPriority: ContactsPriority
+    val main_search_bar = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
@@ -97,10 +98,6 @@ class MainActivity : AppCompatActivity() {
 
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
-        val main_search_bar = intent.getStringExtra("SearchBar")
-        val main_filter_value = intent.getStringArrayListExtra("Filter")
-        if (main_filter_value != null)
-            main_filter = main_filter_value
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -156,19 +153,9 @@ class MainActivity : AppCompatActivity() {
                 contactList= ListContact.construireListe(contact)
                 println("contact list size"+ contactList.size)
             }else {
-                if (main_search_bar == null || main_search_bar == "" && main_filter_value == null || main_search_bar == "" && main_filter_value.isEmpty() == true) {
-                    contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-
-                } else {
-                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter_value)
-                    contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar)
-                    println(contactFilterList)
-                    if (contactFilterList != null) {
-                        contactList = contactList!!.intersect(contactFilterList).toList()
-                    }
-                }
+                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
              }
-            if (main_GridView != null) {
+            if (main_GridView != null && contactList != null) {
                 val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
                 var index = sharedPreferences.getInt("index",0)
@@ -309,26 +296,32 @@ class MainActivity : AppCompatActivity() {
     private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
         val allFilters: MutableList<List<Contacts>> = mutableListOf()
         var filter: List<Contacts>? = null
-
+        println(filterList)
         if (filterList.contains("sms")) {
+            println("GOOOOOD")
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()
             if (filter != null && filter.isEmpty() == false)
                 allFilters.add(filter)
         }
         if (filterList.contains("mail")) {
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
+            println("FILTER = ! "+ filter)
             if (filter != null && filter.isEmpty() == false)
                 allFilters.add(filter)
         } else
             return null
         var i = 0
-        if (allFilters.size != 1) {
+        println(allFilters.size.toString() + " CODYYYYYYYYYYYYYYYYYYYYY")
+        if (allFilters.size > 1) {
             while (i < allFilters.size - 1) {
                 allFilters[i+1] = allFilters[i].intersect(allFilters[i+1]).toList()
                 i++
             }
+        } else if (allFilters.size == 0) {
+            return null
         } else
             return allFilters[0]
+        println("all filter [i] = "+ allFilters)
         return allFilters[i]
     }
 
@@ -354,13 +347,28 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.nav_search -> {
-                main_SearchBar!!.visibility = View.VISIBLE
-                main_search_bar_value = main_SearchBar!!.text.toString()
-                intent.putExtra("SearchBar", main_search_bar_value)
-                println(main_filter)
-                intent.putStringArrayListExtra("Filter", main_filter)
-                println(main_SearchBar!!.text.toString())
-//                startActivity(intent)
+                if (main_SearchBar!!.visibility != View.VISIBLE) {
+                    main_SearchBar!!.visibility = View.VISIBLE
+                } else {
+                    main_search_bar_value = main_SearchBar!!.text.toString()
+                    println(main_filter)
+                    println(main_SearchBar!!.text.toString())
+                    //
+                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
+                    var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
+                    println(contactFilterList)
+                    if (contactFilterList != null) {
+                        contactList = contactList!!.intersect(contactFilterList).toList()
+                    }
+                    //
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview",3)
+                    //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                    println("LIIIIIIST = "+ contactList)
+                    val contactAdapter = ContactAdapter(this, contactList, len)
+                    main_GridView!!.adapter = contactAdapter
+                    //startActivity(intent)
+                }
             }
             R.id.sms_filter -> {
                 if (item.isChecked) {
