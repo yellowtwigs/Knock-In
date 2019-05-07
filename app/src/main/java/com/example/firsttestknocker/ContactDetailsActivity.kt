@@ -48,8 +48,10 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     private var contact_details_FirstName: TextView? = null
     private var contact_details_LastName: TextView? = null
-    private var contact_details_PhoneNumber: TextView? = null
-    private var contact_details_PhoneNumber_Property: TextView? = null
+    private var contact_details_PhoneNumber_SMS: TextView? = null
+    private var contact_details_PhoneNumber_Call: TextView?= null
+    private var contact_details_PhoneNumber_SMSProperty: TextView? = null
+    private var contact_details_phoneNumber_CallProperty:TextView?=null
     private var contact_details_Mail_Property: TextView? = null
     private var contact_details_Mail: TextView? = null
 
@@ -67,7 +69,8 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     internal var isOpen = false
 
-    private var contact_details_phone_number_RelativeLayout: RelativeLayout? = null
+    private var contact_details_phone_number_SMS_RelativeLayout: RelativeLayout? = null
+    private var contact_details_phone_number_Call_RelativeLayout: RelativeLayout? = null
     private var contact_details_mail_RelativeLayout: RelativeLayout? = null
     private var contact_details_messenger_RelativeLayout: RelativeLayout? = null
     private var contact_details_whatsapp_RelativeLayout: RelativeLayout? = null
@@ -122,8 +125,10 @@ class ContactDetailsActivity : AppCompatActivity() {
         // Contact's informations, link between Layout and the Activity
         contact_details_FirstName = findViewById(R.id.contact_details_first_name_id)
         contact_details_LastName = findViewById(R.id.contact_details_last_name_id)
-        contact_details_PhoneNumber = findViewById(R.id.contact_details_phone_number_text_id)
-        contact_details_PhoneNumber_Property = findViewById(R.id.contact_details_phone_property_text_id)
+        contact_details_PhoneNumber_SMS = findViewById(R.id.contact_details_phone_number_sms_text_id)
+        contact_details_PhoneNumber_Call= findViewById(R.id.contact_details_phone_number_call_text_id)
+        contact_details_PhoneNumber_SMSProperty = findViewById(R.id.contact_details_phone_sms_property_text_id)
+        contact_details_phoneNumber_CallProperty= findViewById(R.id.contact_details_phone_call_property_text_id)
         contact_details_Mail = findViewById(R.id.contact_details_mail_id)
         contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view_id)
         contactImage_BackgroundImage = findViewById(R.id.contact_details_background_image_id)
@@ -184,7 +189,8 @@ class ContactDetailsActivity : AppCompatActivity() {
         actionbar.setTitle("Détails du contact " + contact_details_first_name!!)
 
         // RelativeLayout to link with other SM's apps, link between Layout and the Activity
-        contact_details_phone_number_RelativeLayout = findViewById(R.id.contact_details_phone_number_relative_layout_id)
+        contact_details_phone_number_SMS_RelativeLayout = findViewById(R.id.contact_details_phone_number_sms_relative_layout_id)
+        contact_details_phone_number_Call_RelativeLayout = findViewById(R.id.contact_details_phone_number_call_relative_layout_id)
         contact_details_messenger_RelativeLayout = findViewById(R.id.contact_details_messenger_relative_layout_id)
         contact_details_whatsapp_RelativeLayout = findViewById(R.id.contact_details_whatsapp_relative_layout_id)
         contact_details_instagram_RelativeLayout = findViewById(R.id.contact_details_instagram_relative_layout_id)
@@ -202,8 +208,9 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         if (!contact_details_phone_number.isNullOrEmpty()) {
 
-            contact_details_phone_number_RelativeLayout!!.visibility = View.VISIBLE
+            contact_details_phone_number_SMS_RelativeLayout!!.visibility = View.VISIBLE
             contact_details_whatsapp_RelativeLayout!!.visibility = View.VISIBLE
+            contact_details_phone_number_Call_RelativeLayout!!.visibility= View.VISIBLE
         }
         if (!contact_details_mail.isNullOrEmpty()) {
             contact_details_mail_RelativeLayout!!.visibility = View.VISIBLE
@@ -227,8 +234,10 @@ class ContactDetailsActivity : AppCompatActivity() {
         // Set Resources from MainActivity to ContactDetailsActivity
         contact_details_FirstName!!.text = contact_details_first_name
         contact_details_LastName!!.text = contact_details_last_name
-        contact_details_PhoneNumber!!.text = contact_details_phone_number
-        contact_details_PhoneNumber_Property!!.text = contact_details_phone_property
+        contact_details_PhoneNumber_SMS!!.text = contact_details_phone_number
+        contact_details_PhoneNumber_Call!!.text=contact_details_phone_number
+        contact_details_PhoneNumber_SMSProperty!!.text = contact_details_phone_property
+        contact_details_phoneNumber_CallProperty!!.text= contact_details_phone_property
         contact_details_Mail!!.text = contact_details_mail
         contact_details_Mail_Property!!.text = contact_details_mail_property
 
@@ -245,7 +254,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         // Link to Whatsapp contact chat
         contact_details_whatsapp_RelativeLayout!!.setOnClickListener {
-            ContactGesture.openWhatsapp(contact_details_PhoneNumber!!.text,this)
+            ContactGesture.openWhatsapp(contact_details_PhoneNumber_SMS!!.text,this)
         }
 
         // Floating button, edit a contact
@@ -266,8 +275,8 @@ class ContactDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        contact_details_phone_number_RelativeLayout!!.setOnClickListener {
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_phone_number, null)
+        contact_details_phone_number_SMS_RelativeLayout!!.setOnClickListener {
+           /* val mDialogView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_phone_number, null)
             val mBuilder = AlertDialog.Builder(this)
                     .setView(mDialogView)
                     .setTitle("Phone Call or SMS")
@@ -281,7 +290,9 @@ class ContactDetailsActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@ContactDetailsActivity, "Enter a phone number", Toast.LENGTH_SHORT).show()
                 }
-            }
+
+
+        }
 
             mDialogView.alert_dialog_sms_id!!.setOnClickListener {
                 val intent = Intent(this@ContactDetailsActivity, ComposeMessageActivity::class.java)
@@ -299,6 +310,28 @@ class ContactDetailsActivity : AppCompatActivity() {
                 startActivity(intent)
 
                 mBuilder.setCancelable(true)
+            }
+        */
+            val intent = Intent(this@ContactDetailsActivity, ComposeMessageActivity::class.java)
+
+            println("image befor send to edit = " + contact_details_rounded_image)
+            // Creation of a intent to transfer data's contact from ContactDetails to EditContact
+            intent.putExtra("ContactFirstName", contact_details_first_name)
+            intent.putExtra("ContactLastName", contact_details_last_name)
+            intent.putExtra("ContactPhoneNumber", contact_details_phone_number + NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!))
+            intent.putExtra("ContactImage", contact_details_rounded_image)
+            intent.putExtra("ContactId", contact_details_id!!)
+            intent.putExtra("ContactMail", contact_details_mail!! + NumberAndMailDB.convertSpinnerStringToChar(contact_details_mail_property!!))
+            intent.putExtra("ContactPriority", contact_details_priority)
+
+            startActivity(intent)
+        }
+        contact_details_phone_number_Call_RelativeLayout!!.setOnClickListener {
+            if (!TextUtils.isEmpty(contact_details_phone_number)) {
+                val dial = "tel:$contact_details_phone_number"
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+            } else {
+                Toast.makeText(this@ContactDetailsActivity, "Enter a phone number", Toast.LENGTH_SHORT).show()
             }
         }
 
