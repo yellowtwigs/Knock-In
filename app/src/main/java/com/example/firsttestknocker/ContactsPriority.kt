@@ -13,6 +13,9 @@ object ContactsPriority : AppCompatActivity() {
             "message" -> {
                 priority = getPriority(name,listContact)
             }
+            "whatsapp" -> {
+                priority = getPriority(name,listContact)
+            }
             "gmail" -> {
                 priority = getPriorityGmail(name, listContact)
             }
