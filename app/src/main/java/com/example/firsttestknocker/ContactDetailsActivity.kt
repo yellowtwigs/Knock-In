@@ -147,6 +147,15 @@ class ContactDetailsActivity : AppCompatActivity() {
         if(contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_id!!.toInt())==null)
         {
                     print("it works")
+                    var contactList: List<Contacts>?
+                    val contact= ListContact.loadJSONFromAsset(this)
+                    contactList= ListContact.construireListe(contact)
+                    for(contact in contactList){
+                        if(contact_details_first_name.equals(contact.firstName) && contact_details_last_name.equals(contact.lastName)){
+                            contact_details_image64= contact.profilePicture64
+                            contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(contact_details_image64.toString()))
+                        }
+                    }
         }else{
             val getimage64 = Runnable {
                 val id = contact_details_id

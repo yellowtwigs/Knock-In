@@ -101,7 +101,17 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
         if(edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt())==null)
         {
-            print("it works")
+            var contactList: List<Contacts>?
+            val contact= ListContact.loadJSONFromAsset(this)
+            contactList= ListContact.construireListe(contact)
+            for(contact in contactList){
+                println("nom attendu :"+edit_contact_first_name+" "+edit_contact_last_name+" voici le nom de ce contact"+contact.firstName+" "+contact.lastName)
+                if(edit_contact_first_name.equals(contact.firstName) && edit_contact_last_name.equals(contact.lastName)){
+                    edit_contact_image64= contact.profilePicture64
+                    edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
+                    println("image set to image view")
+                }
+            }
         }else {
             val getimage64 = Runnable {
                 val id = edit_contact_id
@@ -133,7 +143,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property!!, edit_contact_Phone_Property!!))
         edit_contact_Mail!!.text = edit_contact_mail
         edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property!!,edit_contact_Mail_Property!!))
-        edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
+        //edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
