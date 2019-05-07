@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476">
+        app:layout_constraintVertical_bias="0.482">
 
         <TextView
             android:id="@+id/textView3"
@@ -47,12 +47,12 @@
 
         <Button
             android:id="@+id/button_alert_dialog"
-            android:layout_width="100dp"
-            android:layout_height="38dp"
+            android:layout_width="104dp"
+            android:layout_height="34dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="autoriser"
-            android:textSize="10sp"
+            android:text="gérer dans settings"
+            android:textSize="6sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -67,7 +67,7 @@
             android:text="ne pas autoriser "
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/button_alert_dialog"
             app:layout_constraintStart_toStartOf="parent" />
 
 

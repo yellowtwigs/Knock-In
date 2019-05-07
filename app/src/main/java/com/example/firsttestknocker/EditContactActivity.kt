@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -12,8 +13,10 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -169,16 +172,24 @@ class EditContactActivity : AppCompatActivity() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position == 0) {
-                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
-                } else if (position == 1) {
-                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority1))
-                } else if (position == 2) {
-                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority2))
+                    if (position == 0) {
+                        edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
+                    } else if (position == 1) {
+                        edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority1))
+                    } else if (position == 2) {
+                        edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority2))
+
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            if (!Settings.canDrawOverlays(applicationContext)) {
+                                val alertDialog = OverlayAlertDialog()
+                                alertDialog.show()
+
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
     private fun getPosItemSpinner(item: String, spinner:Spinner): Int {
         val tailleSpinner: Int= spinner.adapter.count
         println("taille spinner"+tailleSpinner)
@@ -389,5 +400,31 @@ class EditContactActivity : AppCompatActivity() {
     fun base64ToBitmap(base64: String) : Bitmap {
         val imageBytes = Base64.decode(base64,0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+    }
+    //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
+    private fun OverlayAlertDialog(): android.app.AlertDialog {
+        val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Knocker")
+        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
+        alertDialogBuilder.setPositiveButton("oui"
+        ) { dialog, id ->
+            val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+            startActivity(intentPermission)
+            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val edit : SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif",true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+            edit.putBoolean("serviceNotif",false)
+            edit.commit()
+
+        }
+        alertDialogBuilder.setNegativeButton("non"
+        ) { dialog, id ->
+            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val edit : SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif",false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+            edit.putBoolean("serviceNotif",true)
+            edit.commit()
+        }
+        return alertDialogBuilder.create()
     }
 }

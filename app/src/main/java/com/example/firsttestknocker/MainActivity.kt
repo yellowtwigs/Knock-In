@@ -23,6 +23,7 @@ import android.text.TextUtils
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.Interpolator
 import android.widget.*
 import me.samthompson.bubbleactions.BubbleActions
 import java.text.SimpleDateFormat
@@ -176,8 +177,7 @@ class MainActivity : AppCompatActivity() {
                 main_GridView!!.setSelection(index)
                 edit.putInt("index", 0)
                 edit.commit()
-
-                /*if (android.os.Build.VERSION.SDK_INT != 28) {
+              /*if (android.os.Build.VERSION.SDK_INT != 28) {
                     main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
                         main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
                         val contact = main_GridView!!.getItemAtPosition(position) as Contacts

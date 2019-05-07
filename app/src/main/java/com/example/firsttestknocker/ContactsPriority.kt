@@ -13,7 +13,7 @@ object ContactsPriority : AppCompatActivity() {
             "message" -> {
                 priority = getPriority(name,listContact)
             }
-            "whatsapp" -> {
+            "WhatsApp" -> {
                 priority = getPriority(name,listContact)
             }
             "gmail" -> {
@@ -38,7 +38,7 @@ object ContactsPriority : AppCompatActivity() {
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->
 
-                println("contact "+dbContact+ "différent de name"+name)
+//                println("contact "+dbContact+ "différent de name"+name)
                 if (dbContact.firstName+" "+dbContact.lastName == name) {
                     priority = dbContact.contactPriority
                 }

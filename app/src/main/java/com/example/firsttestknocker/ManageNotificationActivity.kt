@@ -33,7 +33,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
         switchPopupNotif.setChecked(sharedPreferences.getBoolean("popupNotif",false))
         switchservice.setChecked(sharedPreferences.getBoolean("serviceNotif",true))
-        switchPopupNotif.setOnClickListener{
+        switchPopupNotif.setOnCheckedChangeListener{ buttonView, isChecked ->
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             if(switchPopupNotif.isChecked){
                 if (!isNotificationServiceEnabled) {
@@ -52,9 +52,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.commit()
                 System.out.println("pop up false"+ sharedPreferences.getBoolean("popupNotif",false))
             }
-
         }
-        switchservice.setOnClickListener{
+        switchservice.setOnCheckedChangeListener{ buttonView, isChecked ->
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             if(switchservice.isChecked){
                 switchPopupNotif.setChecked(false)
@@ -73,8 +72,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.commit()
                 System.out.println("service economy false "+ sharedPreferences.getBoolean("serviceNotif",true))
             }
-
         }
+        
     }
     private fun buildNotificationServiceAlertDialog(): AlertDialog {
         val alertDialogBuilder = AlertDialog.Builder(this)

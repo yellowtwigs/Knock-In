@@ -20,7 +20,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ComposeMessageActivity"></activity>
         <activity android:name=".ManageNotificationActivity" />
-        <activity android:name=".NotificationAdapter" />
+        <activity android:name=".NotifAdapter" />
         <activity android:name=".ContactSync" />
         <activity android:name=".ContactInfo" />
         <activity android:name=".testpinch" />
