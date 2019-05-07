@@ -146,6 +146,8 @@ class MainActivity : AppCompatActivity() {
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview",3)
             main_GridView!!.setNumColumns(len) // permet de changer
+
+
             var contactList: List<Contacts>?
             if(main_ContactsDatabase?.contactsDao()?.getAllContacts()!!.isEmpty()){
                 contactList= null
@@ -168,9 +170,15 @@ class MainActivity : AppCompatActivity() {
             if (main_GridView != null) {
                 val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
+                var index = sharedPreferences.getInt("index",0)
+                println("okkkkkkk = " + index)
+                val edit : SharedPreferences.Editor = sharedPreferences.edit()
+                main_GridView!!.setSelection(index)
+                edit.putInt("index", 0)
+                edit.commit()
+
                 if (android.os.Build.VERSION.SDK_INT != 28) {
                     main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
-                        val item = main_GridView!!.getChildAt(position)
                         main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
                         val contact = main_GridView!!.getItemAtPosition(position) as Contacts
                         BubbleActions.on(main_CoordinationLayout)
@@ -197,6 +205,15 @@ class MainActivity : AppCompatActivity() {
 
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                     if (isOpen == false) {
+                        //Save position in gridview
+                        //val state = main_GridView!!.onSaveInstanceState()
+                        index = main_GridView!!.getFirstVisiblePosition()
+                        println("wheeeeeeee = " + index)
+
+                        val edit : SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putInt("index", index)
+                        edit.commit()
+                        //
                         val o = main_GridView!!.getItemAtPosition(position)
                         val contact = o as Contacts
 
@@ -248,13 +265,17 @@ class MainActivity : AppCompatActivity() {
                 //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
                 //println("priorité === "+priority)
                 phoneContactsList?.forEach { phoneContactList ->
+                    isDuplicate = false
                     allcontacts?.forEach { contactsDB ->
+                        //println("LOOOOOOOOOOOOP "+ contactsDB)
                         if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
                             isDuplicate = true
+                        println("STATE = "+isDuplicate) //////////
                     }
                     if (isDuplicate == false) {
                         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                         val len = sharedPreferences.getInt("gridview",3)
+                        println("PLSSSSSSSSSSSSSS "+ phoneContactList)
                         main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
                         val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
                         val contactAdapter = ContactAdapter(this, syncContact, len)
