@@ -153,8 +153,9 @@ class MainActivity : AppCompatActivity() {
                 contactList= ListContact.construireListe(contact)
                 println("contact list size"+ contactList.size)
             }else {
-                contactList = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-             }
+                contactList = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
+                println("list contact db "+contactList)
+            }
             if (main_GridView != null && contactList != null) {
                 val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
@@ -248,7 +249,7 @@ class MainActivity : AppCompatActivity() {
 
             val addAllContacts = Runnable {
                 var isDuplicate = false
-                val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                val allcontacts = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
                 //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
                 //println("priorité === "+priority)
                 phoneContactsList?.forEach { phoneContactList ->

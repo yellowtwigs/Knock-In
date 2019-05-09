@@ -24,10 +24,10 @@ import kotlinx.android.synthetic.main.alert_dialog_phone_number.view.*
 
 class SettingsActivity : AppCompatActivity() {
 
-    private var button_three: Button? = null
-    private var button_four: Button? = null
-    private var button_five: Button? = null
-    private var button_six: Button? = null
+    private var tv_three: ImageView? = null
+    private var tv_four: ImageView? = null
+    private var tv_five: ImageView? = null
+    private var tv_six: ImageView? = null
     private var activity_settings_switch_Theme: Switch? = null
     private var nbGrid: Int = 3
     private var knockerTheme: Boolean? = true
@@ -58,10 +58,14 @@ class SettingsActivity : AppCompatActivity() {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
         actionbar.title = "Settings"
 
-        button_three = findViewById(R.id.activity_settings_three_column)
-        button_four = findViewById(R.id.activity_settings_four_column)
-        button_five = findViewById(R.id.activity_settings_five_column)
-        button_six = findViewById(R.id.activity_settings_six_column)
+        tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
+        tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
+        tv_five = findViewById(R.id.activity_settings_imageView_5_contact)
+        tv_six = findViewById(R.id.activity_settings_imageView_6_contact)
+        tv_six!!.setImageResource(R.drawable.contactbyline6)
+        tv_five!!.setImageResource(R.drawable.contactbyline5)
+        tv_four!!.setImageResource(R.drawable.contactbyline4)
+        tv_three!!.setImageResource(R.drawable.contactbyline3)
 
         activity_settings_switch_Theme = findViewById(R.id.activity_settings_switch_theme)
         edit_owner_RelativeLayout_settings = findViewById(R.id.edit_owner_RelativeLayout_settings)
@@ -100,20 +104,28 @@ class SettingsActivity : AppCompatActivity() {
 
         }
 
-        button_three?.setOnClickListener {
+        tv_three?.setOnClickListener {
             nbGrid = 3
+            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
         }
 
-        button_four?.setOnClickListener {
+        tv_four?.setOnClickListener {
             nbGrid = 4
+            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
         }
 
-        button_five?.setOnClickListener {
+        tv_five?.setOnClickListener {
             nbGrid = 5
+            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
         }
 
-        button_six?.setOnClickListener {
+        tv_six?.setOnClickListener {
             nbGrid = 6
+            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
         }
 
         val notificationRL = findViewById<View>(R.id.notification_RelativeLayout_settings) as RelativeLayout

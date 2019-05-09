@@ -12,17 +12,10 @@ import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
-import android.graphics.PixelFormat
-import android.os.Build
-import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat.checkSelfPermission
-import android.support.v4.content.ContextCompat.getSystemService
 import android.telephony.SmsManager
 import android.view.*
 import android.widget.*
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import org.json.JSONObject
 
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
     private val TAG = NotificationListener::class.java.simpleName
