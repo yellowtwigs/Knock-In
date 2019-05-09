@@ -112,7 +112,8 @@ class NotificationListener : NotificationListenerService() {
                             displayLayout(sbp)
                         } else {
                             Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
-                            notifLayout(sbp, popupView)
+                            //notifLayout(sbp, popupView)
+                            adapterNotification!!.addNotification(sbp)
                         }
                     }
                 } else if (prioriteContact == 1) {
@@ -159,7 +160,7 @@ class NotificationListener : NotificationListenerService() {
         for(i in listNotif.size-1 downTo 0 ){
             listInverse.add(listNotif.get(i))
         }//affiche du plus récent au plus ancien toutes les notifications
-        val adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>, windowManager!!, view!!)
+        adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>, windowManager!!, view!!)
         val listViews = view?.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter=adapterNotification
         val layout = view?.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
@@ -171,7 +172,7 @@ class NotificationListener : NotificationListenerService() {
             //effacer le window manager en rendre popup-view null pour lui réaffecter de nouvelle valeur
         }
 
-    }
+    }//TODO:améliorer alogorithmique
 
 
     fun appNotifiable(sbp: StatusBarParcelable): Boolean {
@@ -220,8 +221,8 @@ class NotificationListener : NotificationListenerService() {
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
         val MESSAGE_SAMSUNG_PACKAGE= "com.samsung.android.messaging"
-        val listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
-
+        var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
+        var adapterNotification : NotifAdapter? =null
     }
     private fun getContactNameFromString(NameFromSbp :String):String{
         val pregMatchString : String= ".*\\([0-9]*\\)"

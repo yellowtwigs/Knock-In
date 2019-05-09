@@ -3,24 +3,26 @@ package com.example.firsttestknocker
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.SharedPreferences
+import android.graphics.PixelFormat
+import android.os.Build
+import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat.checkSelfPermission
+import android.support.v4.content.ContextCompat.getSystemService
 import android.telephony.SmsManager
+import android.view.*
+import android.widget.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import org.json.JSONObject
 
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
     private val TAG = NotificationListener::class.java.simpleName
@@ -45,10 +47,11 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
+        var convertView = convertView//valeur qui prendra les changement
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_notification_adapter, parent, false)
         }
+        System.out.println("notifications taile"+notifications.size)
         val sbp = getItem(position)
         val app = convertView!!.findViewById<View>(R.id.notification_plateformeTv) as TextView
         val contenue = convertView.findViewById<View>(R.id.notification_contenu) as TextView
@@ -98,12 +101,23 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 val message = editText.text.toString()
                 // String number= ContactInfo.
                 val number= ContactInfo.getInfoWithName(sbp.statusBarNotificationInfo["android.title"].toString(),app)
-                if(sbp.appNotifier.equals(MESSAGE_PACKAGE)){
+                if(sbp.appNotifier.equals(MESSAGE_PACKAGE )|| sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)){
                     val smsManager= SmsManager.getDefault()
                     smsManager.sendTextMessage(number,null, message,null,null)
                 }
-                println("message :"+message + "sendto : "+ number)
-                closeNotification()
+                notifications.remove(sbp)
+                val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                //val edit = sharedPreferences.edit()
+                //val gson=GsonBuilder().serializeNulls().create()
+                //var notificationJson = gson.toJson()
+                //println("JSON " +notificationJson.toString())
+                this.notifyDataSetChanged()
+                println("message :"+message + " sendto : "+ number)
+                buttonResponse.visibility = View.VISIBLE
+                buttonSend.visibility = View.GONE
+                editText.visibility = View.GONE
+                editText.text=null
+                //closeNotification()
 
             } else {
 
@@ -120,7 +134,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     ContactGesture.openGmail(context)
                     closeNotification()
                 } else if (app == "message") {
-                    openSms()
+                    openSms(sbp)
                     closeNotification()
                 }
             }
@@ -199,10 +213,19 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
 
 
-    private fun openSms() {
-        val i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")
+    private fun openSms(sbp: StatusBarParcelable) {
+        var i: Intent
+        if (sbp.appNotifier.equals(MESSAGE_PACKAGE)){
+            i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")
+        }else {
+            i = context.packageManager.getLaunchIntentForPackage("com.samsung.android.messaging")
+        }
         i!!.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
+    }
+    public fun addNotification(sbp: StatusBarParcelable){
+        notifications.add(sbp)
+        this.notifyDataSetChanged()
     }
 
 }

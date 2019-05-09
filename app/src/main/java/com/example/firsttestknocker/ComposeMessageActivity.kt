@@ -94,7 +94,7 @@ class ComposeMessageActivity : AppCompatActivity() {
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
         }
-        ///problem with editText he needs delay
+        ///problem with editText he needs delay to be editable with keyboard
         val inputMM = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         compose_message_MessageEditText!!.postDelayed({
             compose_message_MessageEditText!!.requestFocus()
