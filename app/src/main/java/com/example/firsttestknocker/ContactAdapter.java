@@ -5,13 +5,19 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -62,38 +68,67 @@ public class ContactAdapter extends BaseAdapter {
             if (len == 3) {
                 holder.contactRoundedImageView.getLayoutParams().height -= height*0.05;
                 holder.contactRoundedImageView.getLayoutParams().width -= height*0.05;
+                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(holder.contactRoundedImageView.getLayoutParams().width, holder.contactRoundedImageView.getLayoutParams().height);
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                holder.contactRoundedImageView.setLayoutParams(layoutParams);
             } else if (len == 4) {
                 holder.contactRoundedImageView.getLayoutParams().height -= height*0.15;
                 holder.contactRoundedImageView.getLayoutParams().width -= width*0.15;
+                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(holder.contactRoundedImageView.getLayoutParams().width, holder.contactRoundedImageView.getLayoutParams().height);
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                holder.contactRoundedImageView.setLayoutParams(layoutParams);
             } else if (len == 5 || len == 6) {
                 holder.contactRoundedImageView.getLayoutParams().height -= height*0.50; //175
                 holder.contactRoundedImageView.getLayoutParams().width -= width*0.50;
+                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(holder.contactRoundedImageView.getLayoutParams().width, holder.contactRoundedImageView.getLayoutParams().height);
+                //layoutParams.addRule(RelativeLayout.BELOW, R.id.contactFirstName);
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                holder.contactRoundedImageView.setLayoutParams(layoutParams);
             }
             holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
 
             gridview.setTag(holder);
-        }
-        else{
+        } else {
             holder = (ViewHolder)convertView.getTag();
         }
 
         Contacts contact = this.listContacts.get(position);
         String firstname = contact.getFirstName();
-        if (len == 4 && contact.getFirstName().length() > 10) {
-            firstname = contact.getFirstName().substring(0,10);
+        if (len == 3) {
+            holder.contactFirstNameView.setText(firstname);
+            //holder.contactFirstNameView.;
         }
-        if (len == 5 && contact.getFirstName().length() > 7) {
-            firstname = contact.getFirstName().substring(0,7);
+        if (len == 4) {
+            if (contact.getFirstName().length() > 10)
+                firstname = contact.getFirstName().substring(0,10).concat("..");
+            holder.contactFirstNameView.setText(firstname);
+            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
+            span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(span);
         }
-        if (len == 6 && contact.getFirstName().length() > 5) {
-            firstname = contact.getFirstName().substring(0,5);
+        if (len == 5) {
+            if (contact.getFirstName().length() > 9)
+                firstname = contact.getFirstName().substring(0,9).concat("..");
+            holder.contactFirstNameView.setText(firstname);
+            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
+            span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(span);
+            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.knockerColorPrimary));
         }
-        holder.contactFirstNameView.setText(firstname);
+        if (len == 6) {
+            if (contact.getFirstName().length() > 8)
+                firstname = contact.getFirstName().substring(0,8).concat("..");
+            holder.contactFirstNameView.setText(firstname);
+            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
+            span.setSpan(new RelativeSizeSpan(0.71f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(span);
+        }
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             holder.contactRoundedImageView.setImageResource(contact.getProfilePicture());
+            //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         return gridview;
     }
