@@ -7,6 +7,30 @@ import android.arch.persistence.room.Query
 @Dao
 interface ContactsDao {
 
+    //trier les contacts par prénom A->Z
+    @Query("SELECT * FROM contacts_table ORDER BY first_name ASC")
+    fun sortContactByFirstNameAZ(): List<Contacts>
+
+    //trier les contacts par prénom Z->A
+    @Query("SELECT * FROM contacts_table ORDER BY first_name DESC")
+    fun sortContactByFirstNameZA(): List<Contacts>
+
+    //trier les contacts par nom A->Z
+    @Query("SELECT * FROM contacts_table ORDER BY last_name ASC")
+    fun sortContactByLastNameAZ(): List<Contacts>
+
+    //trier les contacts par nom Z->A
+    @Query("SELECT * FROM contacts_table ORDER BY last_name DESC")
+    fun sortContactByLastNameZA(): List<Contacts>
+
+    //trier les contacts par priorité 0->2
+    @Query("SELECT * FROM contacts_table ORDER BY contact_priority ASC")
+    fun sortContactByPriority02(): List<Contacts>
+
+    //trier les contacts par priorité 2->0
+    @Query("SELECT * FROM contacts_table ORDER BY contact_priority DESC")
+    fun sortContactByPriority20(): List<Contacts>
+
     //get tout les contacts de la database
     @Query("SELECT * FROM contacts_table ORDER BY id ASC")
     fun getAllContacts(): List<Contacts>
