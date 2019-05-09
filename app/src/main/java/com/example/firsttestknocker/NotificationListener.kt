@@ -90,8 +90,11 @@ class NotificationListener : NotificationListenerService() {
                 Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
             }
             val addNotification = Runnable {
-                notification_listener_ContactsDatabase?.notificationsDao()?.insert(saveNotfication(sbp))//retourne notfication
-                sbp.statusBarNotificationInfo.put("android.title", getContactNameFromString(sbp.statusBarNotificationInfo.get("android.title").toString()))
+                val save=saveNotfication(sbp)
+                if(save!=null) {
+                    notification_listener_ContactsDatabase?.notificationsDao()?.insert(save)//ajouter notification a la database
+                }
+                sbp.statusBarNotificationInfo.put("android.title", getContactNameFromString(sbp.statusBarNotificationInfo.get("android.title").toString()))//permet de récupérer le vrai nom du contact
                 val prioriteContact = ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString()
                         , this.convertPackageToString(sbp.appNotifier)
                         , notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
@@ -123,9 +126,13 @@ class NotificationListener : NotificationListenerService() {
             notification_listener_mDbWorkerThread.postTask(addNotification)
         }
     }
-    public fun saveNotfication(sbp:StatusBarParcelable):Notifications{
-        val notif = Notifications(null,sbp.tickerText.toString(),sbp.statusBarNotificationInfo["android.title"]!!.toString(),sbp.statusBarNotificationInfo["android.text"]!!.toString(),sbp.appNotifier,0,false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(java.util.Date(Calendar.getInstance().timeInMillis.toString().toLong())), java.util.Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt());
-        return notif;
+    public fun saveNotfication(sbp:StatusBarParcelable): Notifications? {
+        if(sbp.statusBarNotificationInfo["android.title"]!=null && sbp.statusBarNotificationInfo["android.text"].toString()!= null) {
+            val notif = Notifications(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, 0, false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(java.util.Date(Calendar.getInstance().timeInMillis.toString().toLong())), java.util.Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt());
+            return notif;
+        }else{
+            return null
+        }
     }
     public fun displayLayout(sbp:StatusBarParcelable){
         var flag = 0
@@ -151,7 +158,7 @@ class NotificationListener : NotificationListenerService() {
         val listInverse : MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
         for(i in listNotif.size-1 downTo 0 ){
             listInverse.add(listNotif.get(i))
-        }//affichetr du plus récent au plus ancien les notifications
+        }//affiche du plus récent au plus ancien toutes les notifications
         val adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>, windowManager!!, view!!)
         val listViews = view?.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter=adapterNotification
@@ -221,7 +228,7 @@ class NotificationListener : NotificationListenerService() {
         if(NameFromSbp.matches(pregMatchString.toRegex())){
          return   NameFromSbp.substring(0,lastIndexOf(NameFromSbp,'('))
         }else{
-            println("pregmatch fail")
+            println("pregmatch fail"+NameFromSbp)
             return NameFromSbp
         }
     }
