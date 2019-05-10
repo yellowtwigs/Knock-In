@@ -36,9 +36,6 @@ class ManageNotificationActivity : AppCompatActivity() {
         switchPopupNotif.setOnCheckedChangeListener{ buttonView, isChecked ->
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             if(switchPopupNotif.isChecked){
-                if (!isNotificationServiceEnabled) {
-                    buildNotificationServiceAlertDialog().show()
-                }
                 switchservice.setChecked(false)
                 edit.remove("popupNotif")
                 edit.remove("serviceNotif")

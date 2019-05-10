@@ -238,10 +238,9 @@
             android:layout_width="75dp"
             android:layout_height="65dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
 
         <TextView
             android:id="@+id/activity_settings_change_nb_contact"
@@ -259,8 +258,17 @@
             android:layout_width="75dp"
             android:layout_height="65dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_6_contact"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
+
+        <ImageView
+            android:id="@+id/activity_settings_imageView_3_contact"
+            android:layout_width="75dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_4_contact"
             app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
 
         <ImageView
@@ -268,19 +276,8 @@
             android:layout_width="75dp"
             android:layout_height="65dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_5_contact"
-            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
-
-        <ImageView
-            android:id="@+id/activity_settings_imageView_3_contact"
-            android:layout_width="75dp"
-            android:layout_height="65dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_4_contact"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

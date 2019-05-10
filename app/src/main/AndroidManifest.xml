@@ -23,6 +23,7 @@
         <activity android:name=".NotifAdapter" />
         <activity android:name=".ContactSync" />
         <activity android:name=".ContactInfo" />
+        <activity android:name=".NotificationHistoryActivity"/>
         <activity android:name=".testpinch" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".ContactsPriority" />
