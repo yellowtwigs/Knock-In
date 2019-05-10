@@ -92,6 +92,13 @@ public class ContactAdapter extends BaseAdapter {
         }
 
         Contacts contact = this.listContacts.get(position);
+        if (contact.getContactPriority() == 0){
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
+        } else if (contact.getContactPriority() == 1) {
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
+        } else if (contact.getContactPriority() == 2) {
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
+        }
         String firstname = contact.getFirstName();
         if (len == 3) {
             holder.contactFirstNameView.setText(firstname);
@@ -143,6 +150,6 @@ public class ContactAdapter extends BaseAdapter {
         TextView contactFirstNameView;
         TextView contactLastNameView;
         TextView contactPhoneNumberView;
-        ImageView contactRoundedImageView;
+        CircularImageView contactRoundedImageView;
     }
 }
