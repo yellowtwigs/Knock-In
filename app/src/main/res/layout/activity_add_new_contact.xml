@@ -36,37 +36,36 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/add_new_contact_last_name_id"
+            android:id="@+id/add_new_contact_first_name_id"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="44dp"
-            android:autofillHints="@string/add_new_contact_last_name"
+            android:autofillHints="@string/add_new_contact_first_name"
             android:background="@drawable/custom_edit_text"
-            android:hint="@string/add_new_contact_last_name"
+            android:hint="@string/add_new_contact_first_name"
             android:inputType="textPersonName"
             android:textColor="@color/textColor"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_rounded_image_view_id"
             tools:layout_editor_absoluteX="0dp" />
 
         <EditText
-            android:id="@+id/add_new_contact_first_name_id"
+            android:id="@+id/add_new_contact_last_name_id"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="15dp"
-            android:autofillHints="@string/add_new_contact_first_name"
+            android:autofillHints="@string/add_new_contact_last_name"
             android:background="@drawable/custom_edit_text"
-            android:hint="@string/add_new_contact_first_name"
+            android:hint="@string/add_new_contact_last_name"
             android:inputType="textPersonName"
             android:textColor="@color/textColor"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_last_name_id" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_first_name_id" />
 
         <View
             android:id="@+id/add_new_contact_phone_number_view_id"
             android:layout_width="match_parent"
             android:layout_height="18dp"
-            android:layout_marginTop="100dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_first_name_id" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_last_name_id" />
 
         <Spinner
             android:id="@+id/add_new_contact_phone_number_spinner"

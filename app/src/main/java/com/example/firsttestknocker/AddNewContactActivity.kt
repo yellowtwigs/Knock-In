@@ -154,7 +154,7 @@ class AddNewContactActivity : AppCompatActivity() {
             R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName)) {
                 Toast.makeText(this, "Le champ prénom ne peut pas être vide !", Toast.LENGTH_SHORT).show()
             } else {
-                if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
+                //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                     val printContacts = Runnable {
                         //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
                         println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_Mail_Property!!.selectedItem.toString())
@@ -186,9 +186,9 @@ class AddNewContactActivity : AppCompatActivity() {
                         }
                     }
                     main_mDbWorkerThread.postTask(printContacts)
-                } else {
-                    Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
-                }
+                //} else {
+                 //   Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
+                //}
             }
 
         }
