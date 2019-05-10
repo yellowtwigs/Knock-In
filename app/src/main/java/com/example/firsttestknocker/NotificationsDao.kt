@@ -8,7 +8,7 @@ import android.arch.persistence.room.Query
 interface NotificationsDao {
 
     //get toutes les notification de la database
-    @Query("SELECT * FROM notifications_table ORDER BY timestamp ASC")
+    @Query("SELECT * FROM notifications_table ORDER BY timestamp DESC")
     fun getAllnotifications(): List<Notifications>
 
     //get les notifications grace à une platform
