@@ -227,7 +227,7 @@ class NotificationListener : NotificationListenerService() {
     private fun getContactNameFromString(NameFromSbp :String):String{
         val pregMatchString : String= ".*\\([0-9]*\\)"
         if(NameFromSbp.matches(pregMatchString.toRegex())){
-         return   NameFromSbp.substring(0,lastIndexOf(NameFromSbp,'('))
+         return   NameFromSbp.substring(0,lastIndexOf(NameFromSbp,'(')).dropLast(1)
         }else{
             println("pregmatch fail"+NameFromSbp)
             return NameFromSbp
