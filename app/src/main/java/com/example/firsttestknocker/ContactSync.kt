@@ -26,12 +26,12 @@ object ContactSync : AppCompatActivity() {
             var phonePic = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
             if (phoneNumber == null)
                 phoneNumber = ""
-            if (phonePic != null) {
-                println("phone pic"+phonePic)
-                println("openPhoto "+phoneId!!.toLong()+" main content resolver "+main_contentResolver)
-                phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(),main_contentResolver)))
-            } else {
+            if (phonePic == null || phonePic.contains("content://com.android.contacts/contacts/", ignoreCase = true)){
                 phonePic = ""
+            } else if (phonePic != null ) {
+                println("phone pic"+phonePic)
+                println("openPhoto "+phoneId!!.toLong()+" main content resolver "+main_contentResolver) // huwei content://com.android.contacts/contacts/1600/photo
+                phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(),main_contentResolver)))
             }
             idAndPhoneNumber = Triple(phoneId!!.toInt(), phoneNumber, phonePic)
             if (contactPhoneNumber.isEmpty()) {
