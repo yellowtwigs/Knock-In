@@ -9,12 +9,11 @@
         android:id="@+id/contactRoundedImageView"
         android:layout_width="@dimen/rounded_image_view_height_width"
         android:layout_height="@dimen/rounded_image_view_height_width"
-        android:layout_centerInParent="true" />
+        android:layout_centerHorizontal="true"/>
     <TextView
         android:id="@+id/contactFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:textColor="?attr/textColor"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/contactRoundedImageView"/>

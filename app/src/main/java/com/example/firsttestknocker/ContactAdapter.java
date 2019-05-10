@@ -65,25 +65,24 @@ public class ContactAdapter extends BaseAdapter {
             int len = sharedPreferences.getInt("gridview",3);
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
+            holder.contactFirstNameView =  gridview.findViewById(R.id.contactFirstName);
+            RelativeLayout.LayoutParams layoutParamsTV= (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
+            RelativeLayout.LayoutParams layoutParamsIV= (RelativeLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
             if (len == 3) {
                 holder.contactRoundedImageView.getLayoutParams().height -= height*0.05;
                 holder.contactRoundedImageView.getLayoutParams().width -= height*0.05;
-                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(holder.contactRoundedImageView.getLayoutParams().width, holder.contactRoundedImageView.getLayoutParams().height);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                holder.contactRoundedImageView.setLayoutParams(layoutParams);
+                layoutParamsTV.topMargin=30;
+                layoutParamsIV.topMargin=10;
             } else if (len == 4) {
                 holder.contactRoundedImageView.getLayoutParams().height -= height*0.15;
                 holder.contactRoundedImageView.getLayoutParams().width -= width*0.15;
-                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(holder.contactRoundedImageView.getLayoutParams().width, holder.contactRoundedImageView.getLayoutParams().height);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                holder.contactRoundedImageView.setLayoutParams(layoutParams);
+                layoutParamsTV.topMargin=10;
+                layoutParamsIV.topMargin=10;
             } else if (len == 5 || len == 6) {
                 holder.contactRoundedImageView.getLayoutParams().height -= height*0.50; //175
                 holder.contactRoundedImageView.getLayoutParams().width -= width*0.50;
-                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(holder.contactRoundedImageView.getLayoutParams().width, holder.contactRoundedImageView.getLayoutParams().height);
-                //layoutParams.addRule(RelativeLayout.BELOW, R.id.contactFirstName);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                holder.contactRoundedImageView.setLayoutParams(layoutParams);
+                layoutParamsTV.topMargin=0;
+                layoutParamsIV.topMargin=0;
             }
             holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
 
