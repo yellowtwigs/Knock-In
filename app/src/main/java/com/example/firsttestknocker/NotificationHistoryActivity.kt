@@ -30,6 +30,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //on get la base de données
         contact_details_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
         val list=contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<Notifications>
+        println("voici la liste"+list)
         val adapter =NotificationHistoryAdapterActivity(this,list)
         val listviews = findViewById<ListView>(R.id.listView_notification_history)
         listviews.adapter= adapter

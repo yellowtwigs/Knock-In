@@ -26,8 +26,6 @@ import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import android.widget.*
 import me.samthompson.bubbleactions.BubbleActions
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -165,8 +163,7 @@ class MainActivity : AppCompatActivity() {
                 main_GridView!!.setSelection(index)
                 edit.putInt("index", 0)
                 edit.commit()
-              /*if (android.os.Build.VERSION.SDK_INT != 28) {
-                    main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
+              main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
                         main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
                         val contact = main_GridView!!.getItemAtPosition(position) as Contacts
                         BubbleActions.on(main_CoordinationLayout)
@@ -187,10 +184,6 @@ class MainActivity : AppCompatActivity() {
                                 .show()
                         false
                     }
-                }*/
-
-
-
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                     if (isOpen == false) {
                         //Save position in gridview
