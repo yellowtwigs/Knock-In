@@ -128,7 +128,7 @@
         android:id="@+id/edit_contact_add_field_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="196dp"
         android:text="@string/add_new_contact_add_field"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_add_field_view"
         tools:layout_editor_absoluteX="0dp" />
@@ -139,29 +139,28 @@
         android:layout_height="37dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/edit_contact_add_field_button"
-        app:layout_constraintEnd_toEndOf="@+id/edit_contact_priority_explain"
-        app:layout_constraintHorizontal_bias="0.008"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/edit_contact_add_field_view"
-        app:layout_constraintVertical_bias="0.272" />
+        app:layout_constraintVertical_bias="0.43" />
 
     <TextView
         android:id="@+id/edit_contact_priority_explain"
-        android:layout_width="197dp"
-        android:layout_height="49dp"
+        android:layout_width="171dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/edit_contact_add_field_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit_contact_priority"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_mail_id"
-        app:layout_constraintVertical_bias="0.729" />
+        app:layout_constraintVertical_bias="0.654" />
 
 </android.support.constraint.ConstraintLayout>
     </ScrollView>
