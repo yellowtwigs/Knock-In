@@ -75,16 +75,19 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/contact_details_first_name_id"
             tools:layout_editor_absoluteX="0dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"/>
 
             <RelativeLayout
                 android:id="@+id/contact_details_phone_number_sms_relative_layout_id"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/contact_details_relative_layout_height"
-                android:layout_marginTop="45dp"
                 android:background="@drawable/selector_relative_layout"
                 android:clickable="true"
                 android:focusable="true"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/contact_details_phone_number_sms_text_id"
