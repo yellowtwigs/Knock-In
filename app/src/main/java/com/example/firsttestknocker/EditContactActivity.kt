@@ -242,27 +242,29 @@ class EditContactActivity : AppCompatActivity() {
             }
             R.id.nav_validate -> {
                 val editContact = Runnable {
+                    if (edit_contact_FirstName!!.text.toString() != "" || edit_contact_LastName!!.text.toString() != "") {
+                        val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())
+                        val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString())
+                        if (edit_contact_imgString != null) {
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+                        } else {
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
+                        }
+                        val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
 
-                    val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())
-                    val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString())
-                    if (edit_contact_imgString != null) {
-                        edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString()+spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+                        intent.putExtra("ContactId", edit_contact_id)
+                        intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text.toString())
+                        intent.putExtra("ContactLastName", edit_contact_LastName!!.text.toString())
+                        intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.text.toString() + spinnerPhoneChar)
+                        intent.putExtra("ContactImage", edit_contact_rounded_image)
+                        intent.putExtra("ContactMail", edit_contact_Mail!!.text.toString() + spinnerMailChar)
+                        intent.putExtra("ContactPriority", edit_contact_Priority!!.selectedItem.toString().toInt())
+
+                        startActivity(intent)
+                        finish()
                     } else {
-                        edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString()+spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
+                        Toast.makeText(this, "Nom ou Prénom requis", Toast.LENGTH_LONG).show()
                     }
-                    val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
-
-                    intent.putExtra("ContactId", edit_contact_id)
-                    intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text.toString())
-                    intent.putExtra("ContactLastName", edit_contact_LastName!!.text.toString())
-                    intent.putExtra("ContactPhoneNumber", edit_contact_phone_number+spinnerPhoneChar)
-                    intent.putExtra("ContactImage", edit_contact_rounded_image)
-                    intent.putExtra("ContactMail", edit_contact_Mail!!.text.toString()+spinnerMailChar)
-                    intent.putExtra("ContactPriority", edit_contact_Priority!!.selectedItem.toString().toInt())
-
-
-                    startActivity(intent)
-                    finish()
                 }
                 edit_contact_mDbWorkerThread.postTask(editContact)
             }
@@ -407,7 +409,7 @@ class EditContactActivity : AppCompatActivity() {
         alertDialogBuilder.setTitle("Knocker")
         alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
         alertDialogBuilder.setPositiveButton("oui"
-        ) { dialog, id ->
+        ) { _, _ ->
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
@@ -418,7 +420,7 @@ class EditContactActivity : AppCompatActivity() {
 
         }
         alertDialogBuilder.setNegativeButton("non"
-        ) { dialog, id ->
+        ) { _, _ ->
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif",false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
