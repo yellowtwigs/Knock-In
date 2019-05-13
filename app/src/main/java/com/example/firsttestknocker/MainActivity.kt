@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
-            //////////////
+            ////////
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview",3)
             main_GridView!!.setNumColumns(len) // permet de changer
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
 
             var contactList: List<Contacts>?
             if(main_ContactsDatabase?.contactsDao()?.getAllContacts()!!.isEmpty()){
-                contactList= null
+                //contactList= null
                 val contact= ListContact.loadJSONFromAsset(this)
                 contactList= ListContact.construireListe(contact)
                 println("contact list size"+ contactList.size)
@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity() {
                         index = main_GridView!!.getFirstVisiblePosition()
                         println("wheeeeeeee = " + index)
 
-                        val edit : SharedPreferences.Editor = sharedPreferences.edit()
+                        //val edit : SharedPreferences.Editor = sharedPreferences.edit()
                         edit.putInt("index", index)
                         edit.commit()
                         //
@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity() {
                 //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
             val addAllContacts = Runnable {
-                var isDuplicate = false
+                var isDuplicate: Boolean
                 val allcontacts = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
                 //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
                 //println("priorité === "+priority)
@@ -289,7 +289,7 @@ class MainActivity : AppCompatActivity() {
     // fonction qui filtre
     private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
         val allFilters: MutableList<List<Contacts>> = mutableListOf()
-        var filter: List<Contacts>? = null
+        var filter: List<Contacts>?
         println(filterList)
         if (filterList.contains("sms")) {
             println("GOOOOOD")
@@ -460,7 +460,7 @@ class MainActivity : AppCompatActivity() {
         alertDialogBuilder.setTitle("Knocker")
         alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
         alertDialogBuilder.setPositiveButton("oui"
-        ) { dialog, id ->
+        ) { _, _ ->
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
@@ -471,7 +471,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         alertDialogBuilder.setNegativeButton("non"
-        ) { dialog, id ->
+        ) { _, _ ->
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif",false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
