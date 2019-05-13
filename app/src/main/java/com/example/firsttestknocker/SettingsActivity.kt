@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -103,29 +104,54 @@ class SettingsActivity : AppCompatActivity() {
 
 
         }
-
+        if(nbGrid==3){
+            tv_three!!.setBackgroundResource(R.drawable.border_imageview)
+        }else if(nbGrid==4){
+            tv_four!!.setBackgroundResource(R.drawable.border_imageview)
+        }else if(nbGrid==5){
+            tv_five!!.setBackgroundResource(R.drawable.border_imageview)
+        }else if(nbGrid==6){
+            tv_six!!.setBackgroundResource(R.drawable.border_imageview)
+        }
         tv_three?.setOnClickListener {
             nbGrid = 3
-            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+           // val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+           // Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+            tv_four!!.background=null
+            tv_five!!.background=null
+            tv_six!!.background=null
+            tv_three!!.setBackgroundResource(R.drawable.border_imageview)
+
         }
 
         tv_four?.setOnClickListener {
             nbGrid = 4
-            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+           // val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+           // Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+            tv_three!!.background=null
+            tv_five!!.background=null
+            tv_six!!.background=null
+            tv_four!!.setBackgroundResource(R.drawable.border_imageview)
         }
 
         tv_five?.setOnClickListener {
             nbGrid = 5
-            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+           // val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+           // Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+            tv_three!!.background=null
+            tv_four!!.background=null
+            tv_six!!.background=null
+            tv_five!!.setBackgroundResource(R.drawable.border_imageview)
         }
 
         tv_six?.setOnClickListener {
             nbGrid = 6
-            val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+            //val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
+            //Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+            tv_three!!.background=null
+            tv_four!!.background=null
+            tv_five!!.background=null
+            tv_six!!.setBackgroundResource(R.drawable.border_imageview)
         }
 
         val notificationRL = findViewById<View>(R.id.notification_RelativeLayout_settings) as RelativeLayout
