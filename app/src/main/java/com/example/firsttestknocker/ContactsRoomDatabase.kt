@@ -7,7 +7,7 @@ import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.migration.Migration
 import android.content.Context
 
-@Database(entities = [Contacts::class, Notifications::class], version = 6)
+@Database(entities = [Contacts::class, Notifications::class], version = 7)
  abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -29,6 +29,7 @@ import android.content.Context
                         .addMigrations(MIGRATION_3_4)
                         .addMigrations(MIGRATION_4_5)
                         .addMigrations(MIGRATION_5_6)
+                        .addMigrations(MIGRATION_6_7)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -60,6 +61,11 @@ import android.content.Context
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN date_time TEXT DEFAULT '' NOT NULL")
                 database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN timestamp INTEGER DEFAULT 0 NOT NULL")
+            }
+        }
+        private val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'groups_table' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'members' TEXT NOT NULL, 'nb_members' INTEGER DEFAULT 0 NOT NULL, 'profile_picture_str' TEXT NOT NULL)")
             }
         }
         fun destroyInstance() {
