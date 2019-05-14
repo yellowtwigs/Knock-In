@@ -31,7 +31,8 @@ object GroupsUsefulFunctions : AppCompatActivity() {
             val idList = idString.split(',')
             for (i in 0..idList.size-1) {
                 contact = Groups_Useful_functions_ContactsDatabase?.contactsDao()?.getContact(idList[i].toInt())
-                contactsList.add(contact!!)
+                if (contact != null)
+                    contactsList.add(contact)
             }
         } else {
             contact = Groups_Useful_functions_ContactsDatabase?.contactsDao()?.getContact(idString.toInt())
