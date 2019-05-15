@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.*
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.Settings
+import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatDelegate
@@ -52,6 +54,23 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var mainContactsPriority: ContactsPriority
     val main_search_bar = ""
 
+    private var navigation : BottomNavigationView? = null
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_phone_book -> {
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_user-> {
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_phone_keyboard -> {
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             setTheme(R.style.DarkTheme)
@@ -59,7 +78,14 @@ class MainActivity : AppCompatActivity() {
             setTheme(R.style.AppTheme)
         }
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N){
+            setContentView(R.layout.activity_main)
+        } else{
+            setContentView(R.layout.activity_main)
+        }
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
@@ -93,6 +119,9 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonCloseAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
         main_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
         main_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
+
+        navigation = findViewById(R.id.navigation)
+        navigation!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)

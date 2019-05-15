@@ -82,7 +82,7 @@
         <EditText
             android:id="@+id/compose_message_chatbox"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="27dp"
             android:layout_gravity="center"
             android:layout_marginStart="15dp"
             android:layout_marginTop="8dp"

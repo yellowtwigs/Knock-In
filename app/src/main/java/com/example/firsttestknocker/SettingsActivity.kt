@@ -80,16 +80,14 @@ class SettingsActivity : AppCompatActivity() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 val sharedThemePreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("ThemeLight", true)
-                edit.putBoolean("ThemeDark", false)
+                edit.putBoolean("theme", false)
                 edit.apply()
                 restartActivity()
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("ThemeDark", true)
-                edit.putBoolean("ThemeLight", false)
+                edit.putBoolean("theme", true)
                 edit.apply()
                 restartActivity()
             }
