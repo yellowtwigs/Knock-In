@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.firsttestknocker"
+        applicationId "com.example.knocker"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1

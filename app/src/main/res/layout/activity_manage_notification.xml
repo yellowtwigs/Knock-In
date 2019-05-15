@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManageNotificationActivity">
+    tools:context=".controller.ManageNotificationActivity">
 
     <TextView
         android:id="@+id/textView_stop_service"

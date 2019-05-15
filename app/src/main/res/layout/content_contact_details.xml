@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ContactDetailsActivity">
+    tools:context=".controller.ContactDetailsActivity">
     <android.support.constraint.ConstraintLayout
         android:id="@+id/contact_details_constraint_layout_id"
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <com.example.firsttestknocker.CircularImageView
+        <com.example.knocker.CircularImageView
             android:id="@+id/contact_details_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
             android:layout_height="@dimen/rounded_image_view_height_width"
