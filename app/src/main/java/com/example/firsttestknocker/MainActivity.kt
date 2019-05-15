@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.Settings
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.ActivityCompat
@@ -59,16 +60,23 @@ class MainActivity : AppCompatActivity() {
     //endregion
 
     private var navigation : BottomNavigationView? = null
+    private var phone_call_layout : ConstraintLayout? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_phone_book -> {
+                phone_call_layout!!.visibility = View.GONE
+                main_GridView!!.visibility = View.VISIBLE
+                main_FloatingButtonOpen!!.visibility = View.VISIBLE
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_user-> {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_phone_keyboard -> {
+                phone_call_layout!!.visibility = View.VISIBLE
+                main_FloatingButtonOpen!!.visibility = View.GONE
+                main_GridView!!.visibility = View.GONE
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -133,6 +141,8 @@ class MainActivity : AppCompatActivity() {
 
         navigation = findViewById(R.id.navigation)
         navigation!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        phone_call_layout = findViewById(R.id.phone_call_layout_id)
 
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
