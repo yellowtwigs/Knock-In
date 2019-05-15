@@ -202,13 +202,13 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
 
     private fun openSms(sbp: StatusBarParcelable) {
-        var i: Intent
+        val i: Intent
         if (sbp.appNotifier.equals(MESSAGE_PACKAGE)){
             i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")
         }else {
             i = context.packageManager.getLaunchIntentForPackage("com.samsung.android.messaging")
         }
-        i!!.flags = FLAG_ACTIVITY_NEW_TASK
+        i.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
     }
     public fun addNotification(sbp: StatusBarParcelable){

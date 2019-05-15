@@ -73,7 +73,7 @@ class NotificationListener : NotificationListenerService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         println("start command")
         return Service.START_STICKY //dire qu'on doit relancer quand il se stop
-        println("lancement du service")
+        //println("lancement du service")
     }
 //trouver une solution au probleme de notification stop when screen is lock
 
@@ -166,9 +166,9 @@ class NotificationListener : NotificationListenerService() {
             listInverse.add(listNotif.get(i))
         }//affiche du plus récent au plus ancien toutes les notifications
         adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>, windowManager!!, view!!)
-        val listViews = view?.findViewById<ListView>(R.id.notification_pop_up_listView)
+        val listViews = view.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification
-        val layout = view?.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
+        val layout = view.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
         layout.setOnClickListener {
             //System.exit(0)
             windowManager?.removeView(view)

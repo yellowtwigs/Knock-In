@@ -33,7 +33,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
         switchPopupNotif.setChecked(sharedPreferences.getBoolean("popupNotif",false))
         switchservice.setChecked(sharedPreferences.getBoolean("serviceNotif",true))
-        switchPopupNotif.setOnCheckedChangeListener{ buttonView, isChecked ->
+        switchPopupNotif.setOnCheckedChangeListener{ _, _ ->
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             if(switchPopupNotif.isChecked){
                 switchservice.setChecked(false)
@@ -50,7 +50,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 System.out.println("pop up false"+ sharedPreferences.getBoolean("popupNotif",false))
             }
         }
-        switchservice.setOnCheckedChangeListener{ buttonView, isChecked ->
+        switchservice.setOnCheckedChangeListener{ _, _ ->
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             if(switchservice.isChecked){
                 switchPopupNotif.setChecked(false)
