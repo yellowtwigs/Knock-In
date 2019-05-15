@@ -60,7 +60,5 @@
             android:layout_height="233dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

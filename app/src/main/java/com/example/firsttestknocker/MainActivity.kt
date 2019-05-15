@@ -32,6 +32,8 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    //region ========================================== Var or Val ==========================================
+
     private var main_GridView: GridView? = null
     private var drawerLayout: DrawerLayout? = null
     private var main_FloatingButtonOpen: FloatingActionButton? = null
@@ -54,6 +56,8 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var mainContactsPriority: ContactsPriority
     val main_search_bar = ""
 
+    //endregion
+
     private var navigation : BottomNavigationView? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -72,11 +76,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //region ============================= Check For AppTheme or DarkTheme ==============================
+
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             setTheme(R.style.DarkTheme)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         super.onCreate(savedInstanceState)
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N){
@@ -110,6 +119,8 @@ class MainActivity : AppCompatActivity() {
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
+        //region ====================================== FindViewById() ======================================
+
         // Floating Button
         main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
         main_FloatingButtonAdd = findViewById(R.id.main_floating_button_add_id)
@@ -126,12 +137,20 @@ class MainActivity : AppCompatActivity() {
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
 
+        //endregion
+
+        //region ========================================== Toolbar =========================================
+
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+
+        //endregion
+
+        //region ======================================= DrawerLayout =======================================
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -163,6 +182,8 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        //endregion
+
         //affiche tout les contacts de la Database
         val printContacts = Runnable {
             // Grid View
@@ -183,6 +204,7 @@ class MainActivity : AppCompatActivity() {
                 contactList = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
                 println("list contact db "+contactList)
             }
+
             if (main_GridView != null && contactList != null) {
                 val contactAdapter = ContactAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
@@ -192,6 +214,7 @@ class MainActivity : AppCompatActivity() {
                 main_GridView!!.setSelection(index)
                 edit.putInt("index", 0)
                 edit.commit()
+
               main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
                         main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
                         val contact = main_GridView!!.getItemAtPosition(position) as Contacts
@@ -199,10 +222,10 @@ class MainActivity : AppCompatActivity() {
                                 .addAction("Messenger", R.drawable.ic_messenger_circle_menu,
                                         {
                                             ContactGesture.openMessenger("", this@MainActivity)
-                                        }).addAction("SMS", R.drawable.sms, {
+                                        }).addAction("SMS", R.drawable.ic_sms, {
                                     val intent = ContactGesture.putContactIntent(contact, this@MainActivity, ComposeMessageActivity::class.java)
                                     startActivity(intent)
-                                }).addAction("Gmail", R.drawable.gmail, {
+                                }).addAction("Gmail", R.drawable.ic_gmail, {
                                     ContactGesture.openGmail(this@MainActivity)
                                 }).addAction("whatsapp", R.drawable.ic_whatsapp_circle_menu, {
                                     ContactGesture.openWhatsapp(contact.phoneNumber, this@MainActivity)
@@ -240,7 +263,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
         runOnUiThread(printContacts)
+
         //main_mDbWorkerThread.postTask(printContacts)
+
+        //region ==================================== SetOnClickListener ====================================
 
         main_FloatingButtonOpen!!.setOnClickListener {
             if (isOpen) {
@@ -255,11 +281,15 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonAdd!!.setOnClickListener {
             val loginIntent = Intent(this@MainActivity, AddNewContactActivity::class.java)
             startActivity(loginIntent)
+            onFloatingClickBack()
+            isOpen = false
         }
 
         main_FloatingButtonCompose!!.setOnClickListener {
             val loginIntent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
             startActivity(loginIntent)
+            onFloatingClickBack()
+            isOpen = false
         }
 
         //bouton synchronisation des contacts du téléphone
@@ -296,6 +326,8 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread(addAllContacts)
         })
 
+        //endregion
+
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
@@ -314,6 +346,8 @@ class MainActivity : AppCompatActivity() {
         }// comme nous faisons appel a la bdd nous lançons un thread
         main_mDbWorkerThread.postTask(threadVerifPopup)
     }
+
+    //region ========================================== Functions ===========================================
 
     // fonction qui filtre
     private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
@@ -487,9 +521,9 @@ class MainActivity : AppCompatActivity() {
     private fun OverlayAlertDialog(): AlertDialog {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
-        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
-        alertDialogBuilder.setPositiveButton("oui"
-        ) { _, _ ->
+        alertDialogBuilder.setMessage("vous voulez vous autoriser Knocker à afficher des notifications directement sur d'autres applications")
+        alertDialogBuilder.setPositiveButton("Oui"
+        ) { dialog, id ->
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
@@ -499,8 +533,8 @@ class MainActivity : AppCompatActivity() {
             edit.commit()
 
         }
-        alertDialogBuilder.setNegativeButton("non"
-        ) { _, _ ->
+        alertDialogBuilder.setNegativeButton("Non"
+        ) { dialog, id ->
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit : SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif",false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
@@ -516,5 +550,6 @@ class MainActivity : AppCompatActivity() {
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
     }
 
+    //endregion
 }
 

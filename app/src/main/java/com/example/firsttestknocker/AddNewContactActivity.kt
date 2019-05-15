@@ -30,6 +30,8 @@ import java.io.ByteArrayOutputStream
 
 class AddNewContactActivity : AppCompatActivity() {
 
+    //region ========================================== Var or Val ==========================================
+
     private var add_new_contact_FirstName: EditText? = null
     private var add_new_contact_LastName: EditText? = null
     private var add_new_contact_PhoneNumber: EditText? = null
@@ -50,6 +52,8 @@ class AddNewContactActivity : AppCompatActivity() {
     private var SELECT_FILE: Int? = 0
     var add_new_contact_imgString: String? = "";
 
+    //endregion
+
     @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +67,8 @@ class AddNewContactActivity : AppCompatActivity() {
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
+        //region ========================================== Toolbar =========================================
+
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -70,6 +76,10 @@ class AddNewContactActivity : AppCompatActivity() {
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
         actionbar.title = "Ajouter un nouveau contact"
+
+        //endregion
+
+        //region ====================================== FindViewById() ======================================
 
         // Find View By Id
         add_new_contact_FirstName = findViewById(R.id.add_new_contact_first_name_id)
@@ -83,14 +93,21 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_Priority_explain = findViewById(R.id.add_new_contact_priority_explain)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
+        //endregion
+
+        //region ==================================== SetOnClickListener ====================================
+
         add_new_contact_RoundedImageView!!.setOnClickListener {
             SelectImage()
-//            add_new_contact_imgString = imageToBase64(add_new_contact_RoundedImageView!!)
         }
+
+        //endregion
+
         // drop list
         val priority_list = arrayOf(0,1,2)
         val array_adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, priority_list)
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
         add_new_contact_Priority!!.adapter = array_adapter
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
@@ -108,6 +125,8 @@ class AddNewContactActivity : AppCompatActivity() {
             }
         }
     }
+
+    //region ========================================== Functions ===========================================
 
     //demmande de confirmation de la création d'un contact en double
     private fun confirmationDuplicate(contactData: Contacts){
@@ -201,16 +220,8 @@ class AddNewContactActivity : AppCompatActivity() {
         return true
     }
 
-    fun isValidMobile(phone: String): Boolean {
-        return android.util.Patterns.PHONE.matcher(phone).matches()
-    }
-
     fun isEmptyField(field: EditText?): Boolean {
         return field!!.text.toString().isEmpty()
-    }
-
-    fun isValidMail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private fun SelectImage() {
@@ -323,6 +334,5 @@ class AddNewContactActivity : AppCompatActivity() {
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
-
-
+    //endregion
 }

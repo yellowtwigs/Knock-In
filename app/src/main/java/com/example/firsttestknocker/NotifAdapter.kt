@@ -175,13 +175,13 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
 
         if ((sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE)) {
-            return R.drawable.facebook
+            return R.drawable.ic_facebook
         } else if (sbp.appNotifier == GMAIL_PACKAGE) {
-            return R.drawable.gmail
+            return R.drawable.ic_gmail
         } else if (sbp.appNotifier == WATHSAPP_SERVICE) {
-            return R.drawable.download
+            return R.drawable.ic_whatsapp_circle_menu
         }
-        return R.drawable.sms
+        return R.drawable.ic_sms
     }
 
 

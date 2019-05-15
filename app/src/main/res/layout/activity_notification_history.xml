@@ -37,5 +37,4 @@
     app:layout_constraintTop_toTopOf="parent"
     app:srcCompat="@drawable/ic_left_arrow" />
 
-
 </android.support.constraint.ConstraintLayout>

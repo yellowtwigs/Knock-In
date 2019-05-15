@@ -18,13 +18,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar_notification_history)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        //actionbar!!.setDisplayHomeAsUpEnabled(true)
-        //actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar!!.title = "\t \t \t \t Notification log"
-        var retour:ImageView = findViewById(R.id.imageView_notification_history)
-        retour.setOnClickListener(){
-            this.finish()
-        }
+        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+        actionbar!!.title = "Notifications log"
+
         contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         contact_details_mDbWorkerThread.start()
         //on get la base de données
