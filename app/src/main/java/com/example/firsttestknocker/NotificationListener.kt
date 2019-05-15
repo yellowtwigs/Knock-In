@@ -132,7 +132,7 @@ class NotificationListener : NotificationListenerService() {
 
     public fun saveNotfication(sbp: StatusBarParcelable): Notifications? {
         if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"].toString() != null) {
-            val notif = Notifications(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, 0, false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(java.util.Date(Calendar.getInstance().timeInMillis.toString().toLong())), java.util.Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt());
+            val notif = Notifications(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, 0, false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(java.util.Date(Calendar.getInstance().timeInMillis.toString().toLong())), java.util.Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt(),0,"");
             return notif;
         } else {
             return null
