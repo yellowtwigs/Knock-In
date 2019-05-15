@@ -12,6 +12,7 @@ import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
+import android.net.Uri
 import android.support.v4.content.ContextCompat.checkSelfPermission
 import android.telephony.SmsManager
 import android.view.*
@@ -97,6 +98,12 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 if(sbp.appNotifier.equals(MESSAGE_PACKAGE )|| sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)){
                     val smsManager= SmsManager.getDefault()
                     smsManager.sendTextMessage(number,null, message,null,null)
+                }else if(sbp.appNotifier.equals(WATHSAPP_SERVICE)){
+                    /*context.startActivity( Intent(Intent.ACTION_VIEW,
+                            Uri.parse(
+                                    "https://api.whatsapp.com/send?phone="+number+"&text="+message)));
+                    */
+                    //println("whatsapp message")
                 }
                 notifications.remove(sbp)
                 val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
@@ -110,6 +117,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 buttonSend.visibility = View.GONE
                 editText.visibility = View.GONE
                 editText.text=null
+                if(this.notifications.size==0){
+                    closeNotification()
+                }
                 //closeNotification()
 
             } else {
@@ -121,7 +131,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     ContactGesture.openMessenger("",context)
                     closeNotification()
                 } else if (app == "WhatsApp") {
-                    onWhatsappClick()
+                    ContactGesture.openWhatsapp(ContactInfo.getInfoWithName(sbp.statusBarNotificationInfo["android.title"].toString(),app),context)
                     closeNotification()
                 } else if (app == "gmail") {
                     ContactGesture.openGmail(context)
@@ -189,21 +199,6 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
 
 
-    private fun onWhatsappClick() {
-        //String url = "https://api.whatsapp.com/";
-        // try{
-        //PackageManager pm = context.getPackageManager();
-        //pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-        val i = context.packageManager.getLaunchIntentForPackage("com.whatsapp")
-        i!!.flags = FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(i)
-        /*} catch (PackageManager.NameNotFoundException e) {
-            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }*/
-
-    }
-
 
 
     private fun openSms(sbp: StatusBarParcelable) {
@@ -217,7 +212,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         context.startActivity(i)
     }
     public fun addNotification(sbp: StatusBarParcelable){
-        notifications.add(sbp)
+        notifications.add(0,sbp)
         this.notifyDataSetChanged()
     }
 
