@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private var main_BottomNavigationView: BottomNavigationView? = null
     private var phone_call_layout: ConstraintLayout? = null
+    private var my_informations_layout: ConstraintLayout? = null
 
     //endregion
 
@@ -124,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         phone_call_layout = findViewById(R.id.phone_call_layout_id)
+        my_informations_layout = findViewById(R.id.my_informations_layout_id)
 
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
@@ -277,7 +279,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         main_FloatingButtonCompose!!.setOnClickListener {
-            val loginIntent = Intent(this@MainActivity, testpinch::class.java)
+            val loginIntent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
             startActivity(loginIntent)
             onFloatingClickBack()
             main_FloatingButtonIsOpen = false
@@ -362,15 +364,21 @@ class MainActivity : AppCompatActivity() {
                 phone_call_layout!!.visibility = View.GONE
                 main_GridView!!.visibility = View.VISIBLE
                 main_FloatingButtonOpen!!.visibility = View.VISIBLE
+                my_informations_layout!!.visibility = View.GONE
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_user -> {
+                my_informations_layout!!.visibility = View.VISIBLE
+                main_FloatingButtonOpen!!.visibility = View.GONE
+                phone_call_layout!!.visibility = View.GONE
+                main_GridView!!.visibility = View.GONE
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_phone_keyboard -> {
                 phone_call_layout!!.visibility = View.VISIBLE
                 main_FloatingButtonOpen!!.visibility = View.GONE
                 main_GridView!!.visibility = View.GONE
+                my_informations_layout!!.visibility = View.GONE
                 return@OnNavigationItemSelectedListener true
             }
         }
