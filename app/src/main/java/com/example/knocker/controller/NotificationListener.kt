@@ -1,4 +1,4 @@
-package com.example.knocker.model
+package com.example.knocker.controller
 
 
 import android.annotation.SuppressLint
@@ -18,7 +18,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ListView
 import com.example.knocker.R
-import com.example.knocker.controller.NotifAdapter
+import com.example.knocker.model.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -135,9 +135,9 @@ class NotificationListener : NotificationListenerService() {
     }
 
     public fun displayLayout(sbp: StatusBarParcelable) {
-        var flag = 0
+        var flag : Int
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            flag = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            flag = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
             flag = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         }
