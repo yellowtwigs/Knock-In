@@ -1,7 +1,7 @@
 package com.example.knocker.model
 
 import android.provider.ContactsContract
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.*
 import android.graphics.Bitmap
 import android.net.Uri

@@ -9,7 +9,7 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.support.constraint.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import android.text.TextUtils.lastIndexOf
 import android.util.Log
 import android.view.Gravity

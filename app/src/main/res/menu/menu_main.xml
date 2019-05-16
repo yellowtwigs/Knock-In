@@ -4,21 +4,20 @@
     <item
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_search"
-        android:title="@string/main_search"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/main_search"
+        app:showAsAction="ifRoom" />
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/sms_filter"
-            android:title="@string/main_create_category"
-            android:checkable = "true"/>
+        <item
+            android:id="@+id/sms_filter"
+            android:checkable="true"
+            android:title="@string/main_create_category" />
     </group>
     <group android:checkableBehavior="single">
-        <item android:id="@+id/mail_filter"
-            android:title="@string/main_filter"
-            android:checkable = "true"/>
+        <item
+            android:id="@+id/mail_filter"
+            android:checkable="true"
+            android:title="@string/main_filter" />
     </group>
-
-
-
 </menu>

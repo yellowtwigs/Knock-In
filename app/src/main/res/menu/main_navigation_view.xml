@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-
     <item
         android:id="@+id/navigation_phone_book"
         android:icon="@drawable/ic_phone_book"
-        android:title="Dashboard"/>
-
+        android:title="Dashboard" />
     <item
         android:id="@+id/navigation_user"
         android:icon="@drawable/ic_user"
@@ -16,5 +13,4 @@
         android:id="@+id/navigation_phone_keyboard"
         android:icon="@drawable/ic_phone_keyboard"
         android:title="Call" />
-
 </menu>

@@ -1,6 +1,6 @@
 package com.example.knocker.model
 
-import android.arch.persistence.room.*
+import androidx.room.*
 
 @Entity(tableName = "groups_table")
 data class Groups(

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_home"
+        <item
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/left_drawer_home" />
         <item
@@ -15,6 +16,10 @@
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_about"
-            android:title="@string/left_drawer_notification_history"/>
+            android:title="@string/left_drawer_notification_history" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_help"
+            android:title="@string/left_drawer_help" />
     </group>
 </menu>

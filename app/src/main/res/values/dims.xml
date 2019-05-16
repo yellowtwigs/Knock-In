@@ -3,7 +3,7 @@
     <!-- In All the App !-->
     <dimen name="rounded_image_view_height_width">100dp</dimen>
     <dimen name="floating_button_margin">16dp</dimen>
-    <dimen name="edit_text_height">45dp</dimen>
+    <dimen name="edit_text_height">65dp</dimen>
 
     <!-- Contact Details !-->
     <dimen name="contact_details_text_size">15sp</dimen>

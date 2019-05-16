@@ -12,7 +12,7 @@ import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
-import android.support.v4.content.ContextCompat.checkSelfPermission
+import androidx.core.content.ContextCompat.checkSelfPermission
 import android.telephony.SmsManager
 import android.view.*
 import android.widget.*
