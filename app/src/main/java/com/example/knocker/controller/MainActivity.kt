@@ -1,12 +1,9 @@
 package com.example.knocker.controller
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -277,7 +274,7 @@ class MainActivity : AppCompatActivity() {
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-            val phoneContactsList = ContactSync.getAllContactsInfo(contentResolver)//ContactSync.getAllContact(contentResolver)
+            val phoneContactsList = ContactSync.getAllContacsInfo(contentResolver)//ContactSync.getAllContact(contentResolver)
 
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
