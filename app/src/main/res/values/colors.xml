@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="knockerColorPrimary">#ffc000</color>
-    <color name="knockerColorPrimaryDark">#ffc000</color>
+    <color name="knockerColorPrimary">#ffd71e</color>
+    <color name="knockerColorPrimaryDark">#eca700</color>
 
     <color name="backgroundColor">#00bebebc</color>
     <color name="textColor">#2B2B2B</color>
     <color name="whiteColor">#FFFFFF</color>
-    <color name="textColor_light">#772D2D2D</color>
+    <color name="textColorLight">#772D2D2D</color>
     <color name="relativeLayoutPressedColor">#ececec</color>
     <color name="borderViewColor">#f3f3f3</color>
 

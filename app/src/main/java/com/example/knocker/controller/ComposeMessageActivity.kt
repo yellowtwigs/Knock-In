@@ -24,13 +24,14 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.example.knocker.model.NumberAndMailDB
 import com.example.knocker.R
+import com.google.android.material.textfield.TextInputLayout
 
 class ComposeMessageActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    private var compose_message_MessageEditText: EditText? = null
-    private var compose_message_PhoneNumberEditText: EditText? = null
+    private var compose_message_MessageEditText: TextInputLayout? = null
+    private var compose_message_PhoneNumberEditText: TextInputLayout? = null
 
     private var compose_message_Attachement: ImageView? = null
     private var compose_message_Attachement_Blue: ImageView? = null
@@ -51,16 +52,6 @@ class ComposeMessageActivity : AppCompatActivity() {
 
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
-        //region ============================= Check For AppTheme or DarkTheme ==============================
-
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_compose_message)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
@@ -99,7 +90,7 @@ class ComposeMessageActivity : AppCompatActivity() {
             compose_message_phone_property = NumberAndMailDB.extractStringFromNumber(tmp)
         }
 
-        compose_message_PhoneNumberEditText!!.setText(compose_message_phone_number)
+        compose_message_PhoneNumberEditText!!.editText!!.setText(compose_message_phone_number)
 
         if (checkPermission(Manifest.permission.SEND_SMS)) {
             compose_message_send_Button!!.isEnabled = true
@@ -120,24 +111,28 @@ class ComposeMessageActivity : AppCompatActivity() {
         compose_message_Attachement!!.setOnClickListener(View.OnClickListener {
             compose_message_layout_Attachement!!.visibility = View.VISIBLE
             compose_message_Attachement_Blue!!.visibility = View.VISIBLE
-            compose_message_Attachement!!.visibility = View.GONE
+            compose_message_Attachement!!.visibility = View.INVISIBLE
+            compose_message_Attachement!!.isClickable = false
+            compose_message_Attachement_Blue!!.isClickable = true
         })
 
         compose_message_Attachement_Blue!!.setOnClickListener(View.OnClickListener {
             compose_message_layout_Attachement!!.visibility = View.GONE
             compose_message_Attachement!!.visibility = View.VISIBLE
-            compose_message_Attachement_Blue!!.visibility = View.GONE
+            compose_message_Attachement_Blue!!.visibility = View.INVISIBLE
+            compose_message_Attachement!!.isClickable = true
+            compose_message_Attachement_Blue!!.isClickable = false
         })
 
         compose_message_send_Button!!.setOnClickListener(View.OnClickListener {
-            val msg = compose_message_MessageEditText!!.text.toString()
-            val phoneNumb = compose_message_PhoneNumberEditText!!.text.toString()
+            val msg = compose_message_MessageEditText!!.editText!!.text.toString()
+            val phoneNumb = compose_message_PhoneNumberEditText!!.editText!!.text.toString()
 
             if (!TextUtils.isEmpty(msg) && !TextUtils.isEmpty(phoneNumb)) {
                 if (checkPermission(Manifest.permission.SEND_SMS)) {
                     val smsManager = SmsManager.getDefault()
                     smsManager.sendTextMessage(phoneNumb, null, msg, null, null)
-                    compose_message_MessageEditText!!.getText().clear()
+                    compose_message_MessageEditText!!.editText!!.text.clear()
                     Toast.makeText(this, "Message envoyé", Toast.LENGTH_SHORT).show()
                     val intent = intent
                     finish()

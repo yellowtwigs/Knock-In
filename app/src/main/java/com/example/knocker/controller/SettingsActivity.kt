@@ -28,14 +28,9 @@ class SettingsActivity : AppCompatActivity() {
     private var edit_owner_RelativeLayout_settings: RelativeLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         nbGrid = sharedPreferences.getInt("gridview", 3)
@@ -90,9 +85,7 @@ class SettingsActivity : AppCompatActivity() {
             val mBuilder = AlertDialog.Builder(this)
                     .setView(mDialogView)
                     .setTitle(R.string.settings_owner_edit)
-            val mAlertDialog = mBuilder.show()
-
-
+//            val mAlertDialog = mBuilder.show()
         }
         if(nbGrid==3){
             tv_three!!.setBackgroundResource(R.drawable.border_imageview)

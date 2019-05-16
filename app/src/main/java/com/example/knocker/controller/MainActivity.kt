@@ -66,16 +66,6 @@ class MainActivity : AppCompatActivity() {
      * @param max test ok google
      */
     override fun onCreate(savedInstanceState: Bundle?) {
-        //region ============================= Check For AppTheme or DarkTheme ==============================
-
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
-
         super.onCreate(savedInstanceState)
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -275,21 +265,19 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonAdd!!.setOnClickListener {
             val loginIntent = Intent(this@MainActivity, AddNewContactActivity::class.java)
             startActivity(loginIntent)
-            onFloatingClickBack()
             main_FloatingButtonIsOpen = false
         }
 
         main_FloatingButtonCompose!!.setOnClickListener {
             val loginIntent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
             startActivity(loginIntent)
-            onFloatingClickBack()
             main_FloatingButtonIsOpen = false
         }
 
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-            val phoneContactsList = ContactSync.getAllContacsInfo(contentResolver)//ContactSync.getAllContact(contentResolver)
+            val phoneContactsList = ContactSync.getAllContactsInfo(contentResolver)//ContactSync.getAllContact(contentResolver)
 
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
@@ -358,6 +346,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -488,13 +482,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    fun onFloatingClickBack() {
+    private fun onFloatingClickBack() {
         main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonCloseAnimation)
         main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonCloseAnimation)
         main_FloatingButtonSync!!.startAnimation(main_FloatingButtonCloseAnimation)
@@ -505,7 +493,7 @@ class MainActivity : AppCompatActivity() {
         main_FloatingButtonSync!!.isClickable = false
     }
 
-    fun onFloatingClick() {
+    private fun onFloatingClick() {
         main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonOpenAnimation)
         main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonOpenAnimation)
         main_FloatingButtonSync!!.startAnimation(main_FloatingButtonOpenAnimation)

@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/backgroundColor"
     tools:context=".controller.MainActivity">
 
     <include layout="@layout/content_main" />
@@ -16,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginRight="@dimen/floating_button_margin"
         android:layout_marginBottom="324dp"
         android:backgroundTint="@color/knockerColorPrimary"
         android:elevation="6dp"
@@ -30,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginRight="@dimen/floating_button_margin"
         android:layout_marginBottom="244dp"
         android:backgroundTint="@color/knockerColorPrimary"
         android:elevation="6dp"

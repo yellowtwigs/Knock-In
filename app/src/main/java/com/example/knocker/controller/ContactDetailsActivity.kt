@@ -3,6 +3,7 @@
 package com.example.knocker.controller
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
@@ -25,6 +26,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ContactDetailsActivity : AppCompatActivity() {
 
@@ -89,11 +91,6 @@ class ContactDetailsActivity : AppCompatActivity() {
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 111
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_details)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
@@ -286,25 +283,12 @@ class ContactDetailsActivity : AppCompatActivity() {
         // Floating button, detete a contact
         contact_details_FloatingButtonDelete!!.setOnClickListener {
             //crée une pop up de confirmation avant de supprimer un contact
-            val builder = AlertDialog.Builder(this)
-            println("ouioiuioiuioiuioiuiou + =" + contact_details_image64)
-            builder.setTitle("SUPPRIMER CONTACT")
-            builder.setMessage("Voulez vous vraiment supprimer ce contact ?")
-            builder.setPositiveButton("OUI") { _, _ ->
-                val deleteContact = Runnable {
-                    contact_details_ContactsDatabase?.contactsDao()?.deleteContactById(contact_details_id!!.toInt())
-
-                    val intent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
-                    intent.putExtra("isDelete", true);
-                    startActivity(intent)
-                }
-                contact_details_mDbWorkerThread.postTask(deleteContact)
-            }
-            builder.setNegativeButton("NON") { _, _ ->
-                //annule la suppression
-            }
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+            MaterialAlertDialogBuilder(this)
+                    .setTitle("Supprimer un contact")
+                    .setMessage("Voulez vous vraiment supprimer ce contact ?")
+                    .setPositiveButton("Oui") { _, _ -> positiveFloatingDeleteButtonClick() }
+                    .setNegativeButton("Non") { _, _ -> }
+                    .show()
         }
     }
 
@@ -344,5 +328,16 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         contact_details_FloatingButtonEdit!!.isClickable = true
         contact_details_FloatingButtonDelete!!.isClickable = true
+    }
+
+    fun positiveFloatingDeleteButtonClick() {
+        val deleteContact = Runnable {
+            contact_details_ContactsDatabase?.contactsDao()?.deleteContactById(contact_details_id!!.toInt())
+
+            val intent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
+            intent.putExtra("isDelete", true);
+            startActivity(intent)
+        }
+        contact_details_mDbWorkerThread.postTask(deleteContact)
     }
 }

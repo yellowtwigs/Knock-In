@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
@@ -47,11 +48,53 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/phone_call_layout_id"
-            android:visibility="gone"
-            android:layout_marginBottom="50dp"
+            android:id="@+id/my_informations_layout_id"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.example.knocker.CircularImageView
+                android:id="@+id/add_new_contact_rounded_image_view_id"
+                android:layout_width="@dimen/rounded_image_view_height_width"
+                android:layout_height="@dimen/rounded_image_view_height_width"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="96dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/img_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/add_new_contact_first_name_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="44dp"
+                android:hint="@string/add_new_contact_first_name"
+                app:layout_constraintTop_toBottomOf="@+id/add_new_contact_rounded_image_view_id">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_edit_text"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:textColor="@color/textColor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/phone_call_layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
@@ -59,6 +102,8 @@
                 android:layout_height="55dp"
                 android:layout_marginTop="84dp"
                 android:background="@drawable/selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +141,8 @@
                 android:id="@+id/constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/selector_relative_layout"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
@@ -131,6 +178,8 @@
                 android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/selector_relative_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -179,9 +228,6 @@
                 android:id="@+id/constraintLayout6"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@drawable/selector_relative_layout"
-                android:clickable="false"
-                android:focusable="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -203,52 +249,14 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/my_informations_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-            <com.example.knocker.CircularImageView
-                android:id="@+id/add_new_contact_rounded_image_view_id"
-                android:layout_width="@dimen/rounded_image_view_height_width"
-                android:layout_height="@dimen/rounded_image_view_height_width"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="96dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/img_avatar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/add_new_contact_first_name_id"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edit_text_height"
-                android:layout_marginTop="44dp"
-                android:hint="@string/add_new_contact_first_name"
-                app:layout_constraintTop_toBottomOf="@+id/add_new_contact_rounded_image_view_id">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textColor"
-                    android:maxLines="1"
-                    android:inputType="textPersonName"
-                    android:background="@drawable/custom_edit_text"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="#f0f0f0"
+            app:itemTextColor="@color/bottom_navigation_color"
+            app:itemIconTint="@color/bottom_navigation_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

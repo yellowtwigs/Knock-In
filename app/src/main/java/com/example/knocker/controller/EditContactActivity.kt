@@ -31,28 +31,29 @@ import android.view.WindowManager
 import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
+import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 
 
 class EditContactActivity : AppCompatActivity() {
 
-    private var edit_contact_FirstName: TextView? = null
-    private var edit_contact_LastName: TextView? = null
-    private var edit_contact_PhoneNumber: TextView? = null
-    private var edit_contact_Mail: TextView? = null
+    private var edit_contact_FirstName: TextInputLayout? = null
+    private var edit_contact_LastName: TextInputLayout? = null
+    private var edit_contact_PhoneNumber: TextInputLayout? = null
+    private var edit_contact_Mail: TextInputLayout? = null
     private var edit_contact_RoundedImageView: ImageView? = null
     private var edit_contact_Priority: Spinner? = null
     private var edit_contact_Priority_explain: TextView? = null
     private var edit_contact_Phone_Property: Spinner? = null
-    private var edit_contact_Mail_Property : Spinner? = null
+    private var edit_contact_Mail_Property: Spinner? = null
 
     private var edit_contact_id: Long? = null
     private var edit_contact_first_name: String? = null
     private var edit_contact_last_name: String? = null
     private var edit_contact_phone_number: String? = null
-    private var edit_contact_phone_property: String? = null
-    private var edit_contact_mail_property: String? = null
-    private var edit_contact_mail: String? = null
+    private var edit_contact_phone_property_result: String? = null
+    private var edit_contact_mail_property_result:String? = null
+    private var edit_contact_mail:String? = null
     private var edit_contact_rounded_image: Int = 0
     private var edit_contact_image64: String? = null
     private var edit_contact_priority: Int = 1
@@ -64,10 +65,9 @@ class EditContactActivity : AppCompatActivity() {
     private var isChanged = false
 
     var imageUri: Uri? = null
-    private var REQUEST_CAMERA: Int? = 1
     private var SELECT_FILE: Int? = 0
     private val IMAGE_CAPTURE_CODE = 1001
-    var edit_contact_imgString: String? = null;
+    private var edit_contact_imgString: String? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,14 +85,14 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_id = intent.getLongExtra("ContactId", 1)
         edit_contact_first_name = intent.getStringExtra("ContactFirstName")
         edit_contact_last_name = intent.getStringExtra("ContactLastName")
-        var tmp=intent.getStringExtra("ContactPhoneNumber")
+        var tmp = intent.getStringExtra("ContactPhoneNumber")
         edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
-        edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmp)
-        tmp= intent.getStringExtra("ContactMail")
+        edit_contact_phone_property_result = NumberAndMailDB.extractStringFromNumber(tmp)
+        tmp = intent.getStringExtra("ContactMail")
         edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
-        edit_contact_mail_property= NumberAndMailDB.extractStringFromNumber(tmp)
+        edit_contact_mail_property_result = NumberAndMailDB.extractStringFromNumber(tmp)
         edit_contact_rounded_image = intent.getIntExtra("ContactImage", 1)
-        edit_contact_priority = intent.getIntExtra("ContactPriority",1)
+        edit_contact_priority = intent.getIntExtra("ContactPriority", 1)
 
         // Find View By Id
         edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
@@ -100,24 +100,23 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
         edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
         edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
-        edit_contact_Mail_Property= findViewById(R.id.edit_contact_mail_spinner_id)
+        edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.add_new_contact_phone_number_spinner)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
-        if(edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt())==null)
-        {
+        if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
             var contactList: List<Contacts>?
-            val contact= ListContact.loadJSONFromAsset(this)
-            contactList= ListContact.buildList(contact)
-            for(contact in contactList){
-                println("nom attendu :"+edit_contact_first_name+" "+edit_contact_last_name+" voici le nom de ce contact"+contact.firstName+" "+contact.lastName)
-                if(edit_contact_first_name.equals(contact.firstName) && edit_contact_last_name.equals(contact.lastName)){
-                    edit_contact_image64= contact.profilePicture64
+            val contact = ListContact.loadJSONFromAsset(this)
+            contactList = ListContact.buildList(contact)
+            for (contact in contactList) {
+                println("nom attendu :" + edit_contact_first_name + " " + edit_contact_last_name + " voici le nom de ce contact" + contact.firstName + " " + contact.lastName)
+                if (edit_contact_first_name.equals(contact.firstName) && edit_contact_last_name.equals(contact.lastName)) {
+                    edit_contact_image64 = contact.profilePicture64
                     edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
                     println("image set to image view")
                 }
             }
-        }else {
+        } else {
             val getimage64 = Runnable {
                 val id = edit_contact_id
                 val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
@@ -142,28 +141,24 @@ class EditContactActivity : AppCompatActivity() {
         actionbar.title = "Editer le contact"
 
         // Set Resources from MainActivity to ContactDetailsActivity
-        edit_contact_FirstName!!.text = edit_contact_first_name
-        edit_contact_LastName!!.text = edit_contact_last_name
-        edit_contact_PhoneNumber!!.text = edit_contact_phone_number
-        edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property!!, edit_contact_Phone_Property!!))
-        edit_contact_Mail!!.text = edit_contact_mail
-        edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property!!,edit_contact_Mail_Property!!))
-        //edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
+//        edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property_result!!, edit_contact_Phone_Property!!))
+//        edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property_result!!, edit_contact_Mail_Property!!))
+//        //edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-        textChanged(edit_contact_FirstName, edit_contact_first_name)
-        textChanged(edit_contact_LastName, edit_contact_last_name)
-        textChanged(edit_contact_PhoneNumber, edit_contact_phone_number)
-        textChanged(edit_contact_Mail, edit_contact_mail)
+        textChanged(edit_contact_FirstName, edit_contact_FirstName!!.editText!!.text?.toString())
+        textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
+        textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
+        textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
 
         edit_contact_RoundedImageView!!.setOnClickListener {
             SelectImage()
         }
 
         // drop list
-        val priority_list = arrayOf(0,1,2)
-        val array_adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, priority_list)
+        val priority_list = arrayOf(0, 1, 2)
+        val array_adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priority_list)
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         edit_contact_Priority!!.adapter = array_adapter
         println("edit contact prio === " + edit_contact_priority)
@@ -173,35 +168,38 @@ class EditContactActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
+
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    if (position == 0) {
-                        edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
-                    } else if (position == 1) {
-                        edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority1))
-                    } else if (position == 2) {
-                        edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority2))
+                if (position == 0) {
+                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
+                } else if (position == 1) {
+                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority1))
+                } else if (position == 2) {
+                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority2))
 
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            if (!Settings.canDrawOverlays(applicationContext)) {
-                                val alertDialog = OverlayAlertDialog()
-                                alertDialog.show()
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        if (!Settings.canDrawOverlays(applicationContext)) {
+                            val alertDialog = OverlayAlertDialog()
+                            alertDialog.show()
 
-                            }
                         }
                     }
                 }
             }
         }
-    private fun getPosItemSpinner(item: String, spinner:Spinner): Int {
-        val tailleSpinner: Int= spinner.adapter.count
-        println("taille spinner"+tailleSpinner)
-            for(x in 0 until tailleSpinner) {
-                if (spinner.getItemAtPosition(x).equals(item)) {
-                    return x
-                }
+    }
+
+    private fun getPosItemSpinner(item: String, spinner: Spinner): Int {
+        val tailleSpinner: Int = spinner.adapter.count
+        println("taille spinner" + tailleSpinner)
+        for (x in 0 until tailleSpinner) {
+            if (spinner.getItemAtPosition(x).equals(item)) {
+                return x
             }
+        }
         return 0;
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -210,32 +208,32 @@ class EditContactActivity : AppCompatActivity() {
                     alertDialog.setTitle("Attention")
                     alertDialog.setMessage("Vous risquez de perdre toutes vos modifications, voulez vous vraiment continuer ?")
 
-                    alertDialog.setPositiveButton("Oui", { _, _ ->
+                    alertDialog.setPositiveButton("Oui") { _, _ ->
 
                         val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
                         intent.putExtra("ContactId", edit_contact_id)
                         intent.putExtra("ContactFirstName", edit_contact_first_name)
                         intent.putExtra("ContactLastName", edit_contact_last_name)
-                        intent.putExtra("ContactPhoneNumber", edit_contact_phone_number+ NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString()))
+                        intent.putExtra("ContactPhoneNumber", edit_contact_phone_number + NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString()))
                         intent.putExtra("ContactImage", edit_contact_rounded_image)
-                        intent.putExtra("ContactMail", edit_contact_mail+ NumberAndMailDB.convertSpinnerMailStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), edit_contact_mail!!))
+                        intent.putExtra("ContactMail", edit_contact_mail + NumberAndMailDB.convertSpinnerMailStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), edit_contact_mail!!))
                         intent.putExtra("ContactPriority", edit_contact_priority)
 
                         startActivity(intent)
                         finish()
-                    })
+                    }
 
-                    alertDialog.setNegativeButton("Non", { _, _ ->
-                    })
+                    alertDialog.setNegativeButton("Non") { _, _ ->
+                    }
                     alertDialog.show()
                 } else {
                     val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
                     intent.putExtra("ContactId", edit_contact_id)
                     intent.putExtra("ContactFirstName", edit_contact_first_name)
                     intent.putExtra("ContactLastName", edit_contact_last_name)
-                    intent.putExtra("ContactPhoneNumber", edit_contact_phone_number+ NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.prompt.toString()))
+                    intent.putExtra("ContactPhoneNumber", edit_contact_phone_number + NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.prompt.toString()))
                     intent.putExtra("ContactImage", edit_contact_rounded_image)
-                    intent.putExtra("ContactMail", edit_contact_mail+ NumberAndMailDB.convertSpinnerMailStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), edit_contact_mail!!))
+                    intent.putExtra("ContactMail", edit_contact_mail + NumberAndMailDB.convertSpinnerMailStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), edit_contact_mail!!))
                     intent.putExtra("ContactPriority", edit_contact_priority)
 
                     startActivity(intent)
@@ -244,22 +242,22 @@ class EditContactActivity : AppCompatActivity() {
             }
             R.id.nav_validate -> {
                 val editContact = Runnable {
-                    if (edit_contact_FirstName!!.text.toString() != "" || edit_contact_LastName!!.text.toString() != "") {
+                    if (edit_contact_FirstName!!.editText!!.text.toString() != "" || edit_contact_LastName!!.editText.toString() != "") {
                         val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())
                         val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString())
                         if (edit_contact_imgString != null) {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText.toString(), edit_contact_LastName!!.editText.toString(), edit_contact_PhoneNumber!!.editText.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
                         } else {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_PhoneNumber!!.text.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText.toString(), edit_contact_LastName!!.editText.toString(), edit_contact_PhoneNumber!!.editText.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
                         val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
 
                         intent.putExtra("ContactId", edit_contact_id)
-                        intent.putExtra("ContactFirstName", edit_contact_FirstName!!.text.toString())
-                        intent.putExtra("ContactLastName", edit_contact_LastName!!.text.toString())
-                        intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.text.toString() + spinnerPhoneChar)
+                        intent.putExtra("ContactFirstName", edit_contact_FirstName!!.editText.toString())
+                        intent.putExtra("ContactLastName", edit_contact_LastName!!.editText.toString())
+                        intent.putExtra("ContactPhoneNumber", edit_contact_PhoneNumber!!.editText.toString() + spinnerPhoneChar)
                         intent.putExtra("ContactImage", edit_contact_rounded_image)
-                        intent.putExtra("ContactMail", edit_contact_Mail!!.text.toString() + spinnerMailChar)
+                        intent.putExtra("ContactMail", edit_contact_Mail!!.editText.toString() + spinnerMailChar)
                         intent.putExtra("ContactPriority", edit_contact_Priority!!.selectedItem.toString().toInt())
 
                         startActivity(intent)
@@ -280,11 +278,11 @@ class EditContactActivity : AppCompatActivity() {
         return true
     }
 
-    fun textChanged(textView: TextView?, txt: String?) {
-        textView!!.addTextChangedListener(object : TextWatcher {
+    fun textChanged(textInput: TextInputLayout?, txt: String?) {
+        textInput!!.editText!!.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                isChanged = textView.text != txt
+                isChanged = textInput.editText.toString() != txt
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int,
@@ -358,13 +356,13 @@ class EditContactActivity : AppCompatActivity() {
                 println("image URI = " + imageUri)
 
                 val matrix = Matrix()
-                val exif = ExifInterface(getRealPathFromUri(this,imageUri!!));
+                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!));
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
-                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmapToBase64(bitmap)
 
@@ -376,10 +374,10 @@ class EditContactActivity : AppCompatActivity() {
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
 
                 //matrix.postRotate(90f)
-                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmapToBase64(bitmap)
             }
@@ -387,13 +385,17 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     fun exifToDegrees(exifOrientation: Int): Int {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90}
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) { return 180}
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) { return 270}
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270
+        }
         return 0
     }
 
-    fun bitmapToBase64(bitmap: Bitmap) : String {
+    fun bitmapToBase64(bitmap: Bitmap): String {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
@@ -401,10 +403,11 @@ class EditContactActivity : AppCompatActivity() {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
-    fun base64ToBitmap(base64: String) : Bitmap {
-        val imageBytes = Base64.decode(base64,0)
+    fun base64ToBitmap(base64: String): Bitmap {
+        val imageBytes = Base64.decode(base64, 0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
+
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
@@ -415,18 +418,18 @@ class EditContactActivity : AppCompatActivity() {
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-            val edit : SharedPreferences.Editor = sharedPreferences.edit()
-            edit.putBoolean("popupNotif",true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-            edit.putBoolean("serviceNotif",false)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+            edit.putBoolean("serviceNotif", false)
             edit.commit()
 
         }
         alertDialogBuilder.setNegativeButton("non"
         ) { _, _ ->
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-            val edit : SharedPreferences.Editor = sharedPreferences.edit()
-            edit.putBoolean("popupNotif",false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-            edit.putBoolean("serviceNotif",true)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+            edit.putBoolean("serviceNotif", true)
             edit.commit()
         }
         return alertDialogBuilder.create()

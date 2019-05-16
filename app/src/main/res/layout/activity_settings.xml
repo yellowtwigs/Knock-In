@@ -9,7 +9,7 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/backgroundColor"
+        android:background="@color/backgroundColor"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/settings_owner_edit"
-            android:textColor="?attr/textColor"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="16.5dp"
                 android:text="@string/settings_owner_edit"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal" />
 
@@ -65,7 +65,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/settings_owner_edit_long_text"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal" />
         </RelativeLayout>
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/settings_notification"
-            android:textColor="?attr/textColor"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +102,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/settings_notification"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal" />
 
@@ -114,7 +114,7 @@
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/settings_notification_long_text"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal" />
         </RelativeLayout>
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/settings_knockons"
-            android:textColor="?attr/textColor"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -151,7 +151,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="16.5dp"
                 android:text="@string/settings_knockons"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal" />
 
@@ -163,7 +163,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/settings_knockons_long_text"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal" />
         </RelativeLayout>
@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/settings_theme"
-            android:textColor="?attr/textColor"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -198,7 +198,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/settings_theme"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -213,7 +213,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/settings_theme_long_text"
-                android:textColor="?attr/textColor"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -250,7 +250,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/settings_number_of_line"
-            android:textColor="?attr/textColor"
+            android:textColor="@color/textColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings"
             android:padding="2dp" />

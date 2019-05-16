@@ -3,14 +3,14 @@
     <item
         android:id="@+id/navigation_phone_book"
         android:icon="@drawable/ic_phone_book"
-        android:title="Dashboard" />
+        android:title="Phone Book" />
     <item
         android:id="@+id/navigation_user"
         android:icon="@drawable/ic_user"
-        android:title="My Information" />
+        android:title="My Informations" />
 
     <item
         android:id="@+id/navigation_phone_keyboard"
         android:icon="@drawable/ic_phone_keyboard"
-        android:title="Call" />
+        android:title="Phone Keyboard" />
 </menu>
