@@ -34,15 +34,21 @@ object ListContact {
     fun getContactFromJSONObject(json: JSONObject): Contacts {
         val firstName:String = json.getString("first_name")
         val lastName:String = json.getString("last_name")
-        val phoneNumber:String = json.getString("phone_number")
-        val mail:String=json.getString("mail")
+
         val profilPicture: Int = R.drawable.img_avatar
         var backgroundImage:Int = R.drawable.aquarius
         val contactPriority :Int= json.getInt("contact_priority")
         val profilPictureStr:String = json.getString("profile_picture_str")
 
         println("contact :"+ firstName +" "+ lastName)
-        val contact: Contacts = Contacts(null, firstName, lastName, phoneNumber, mail, profilPicture, backgroundImage, contactPriority, profilPictureStr)
+        val contact: Contacts = Contacts(null, firstName, lastName, profilPicture, backgroundImage, contactPriority, profilPictureStr)
         return contact
     }
+ /*   fun getContactDeatailFromJSONObject(json: JSONObject): ContactsDetails {
+        val phoneNumber:String = json.getString("phone_number")
+        val mail:String=json.getString("mail")
+        val contactDetails: ContactDetails = ContactDetails(null,null,phoneNumber,"phone")
+        val contactDetails2: ContactDetails = ContactDetails(null,null,phoneNumber,"phone")
+        return contactDetails
+    }*/
 }

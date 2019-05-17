@@ -10,12 +10,12 @@ import android.widget.Toast
 
 object ContactGesture {
 
-    fun putContactIntent (contact : Contacts, context: Context, classToSend : Class<*>):Intent{
+    fun putContactIntent (contact : Contacts, phoneNumber:String,mail:String,context: Context, classToSend : Class<*>):Intent{
         val intent = Intent( context,classToSend)
         intent.putExtra("ContactFirstName", contact.firstName)
         intent.putExtra("ContactLastName", contact.lastName)
-        intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
-        intent.putExtra("ContactMail", contact.mail)
+        intent.putExtra("ContactPhoneNumber",phoneNumber)
+        intent.putExtra("ContactMail",mail)
         intent.putExtra("ContactImage", contact.profilePicture)
         intent.putExtra("ContactId", contact.id)
         intent.putExtra("ContactPriority", contact.contactPriority)

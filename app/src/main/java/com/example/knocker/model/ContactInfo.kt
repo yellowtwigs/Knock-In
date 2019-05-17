@@ -7,7 +7,7 @@ object ContactInfo : AppCompatActivity() {
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
-    fun getInfoWithName(name: String, platform: String): String {
+ /*   fun getInfoWithName(name: String, platform: String): String {
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
@@ -25,13 +25,13 @@ object ContactInfo : AppCompatActivity() {
         }
         return info
     }
-
-    fun getPhoneNumberWithName(name: String, listContact: List<Contacts>?): String {
+*/
+   /* fun getPhoneNumberWithName(name: String, listContact: List<Contacts>?): String {
         var info = "Name Error"
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->
                 if (dbContact.firstName+" "+dbContact.lastName == name) {
-                    info = dbContact.phoneNumber.dropLast(1)
+                    info = main_ContactsDatabase.contactsDao()?.ge
                 }
             }
         } else {
@@ -42,5 +42,5 @@ object ContactInfo : AppCompatActivity() {
             }
         }
         return info
-    }
+    }*/
 }

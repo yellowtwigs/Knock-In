@@ -15,17 +15,8 @@ object ContactsPriority : AppCompatActivity() {
                 priority = getPriority(name, listContact)
             }
             "gmail" -> {
-                priority = getPriorityGmail(name, listContact)
+                priority = getPriority(name, listContact)
             }
-        }
-        return priority
-    }
-
-    fun getPriorityGmail(mail: String, listContact: List<Contacts>?): Int {
-        var priority = -1
-        listContact!!.forEach {dbContact ->
-            if (dbContact.mail == mail)
-                priority = dbContact.contactPriority
         }
         return priority
     }

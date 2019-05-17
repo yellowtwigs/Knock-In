@@ -110,10 +110,12 @@ object ContactSync : AppCompatActivity() {
             contactNumberAndPic!!.forEach { numberPic ->
                 if (fullName.first == numberPic.first) {
                     if (fullName.second.second == "") {
-                        val contact = Contacts(null, fullName.second.first, fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                       // val contact = Contacts(null, fullName.second.first, fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                        val contact = Contacts(null, fullName.second.first, fullName.second.third, R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
                         phoneContactsList.add(contact)
                     } else if (fullName.second.second != "") {
-                        val contact = Contacts(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                        //val contact = Contacts(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                        val contact = Contacts(null, fullName.second.first, fullName.second.second + " " + fullName.second.third,R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
                         phoneContactsList.add(contact)
                     }
                 }

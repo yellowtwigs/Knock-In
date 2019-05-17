@@ -43,25 +43,20 @@ interface ContactsDao {
     @Query("SELECT * FROM contacts_table WHERE instr(lower(first_name), :name) > 0 OR instr(lower(last_name), :name) > 0")
     fun getContactByName(name: String): List<Contacts>
 
-    //get les contacts qui possèdent un mail
-    @Query("SELECT * FROM contacts_table WHERE mail <> ''")
-    fun getContactWithMail(): List<Contacts>
-
-    //get les contacts qui possède un numéro
-    @Query("SELECT * FROM contacts_table WHERE phone_number <> ''")
-    fun getContactWithPhoneNumber(): List<Contacts>
-
     //add un contact
     @Insert
     fun insert(contacts: Contacts)
 
-    //update un contact grace à son id
-    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, phone_number = :phoneNumber, mail = :mail, profile_picture = :profilePicture, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
-    fun updateContactById(id: Int, firstName: String, lastName: String, phoneNumber: String, mail: String, profilePicture: Int, profilePicture64: String, priority: Int)
+    @Query("INSERT INTO contact_details_table VALUES(LAST_INSERT_ID(),:contactDetails, :tag) ")
+    fun insertWithContactDetail(contacts: Contacts, contactDetails: String,tag:String)
 
     //update un contact grace à son id
-    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, phone_number = :phoneNumber, mail = :mail, profile_picture = :profilePicture, contact_priority = :priority WHERE id = :id")
-    fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, phoneNumber: String, mail: String, profilePicture: Int, priority: Int)
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
+    fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture: Int, profilePicture64: String, priority: Int)
+
+    //update un contact grace à son id
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, contact_priority = :priority WHERE id = :id")
+    fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, profilePicture: Int, priority: Int)
 
     //delete un contact grace à un id
     @Query("DELETE FROM contacts_table WHERE id = :id")
@@ -70,5 +65,14 @@ interface ContactsDao {
     //delete tout les contacts de la database
     @Query("DELETE FROM contacts_table")
     fun deleteAll()
+
+    //get les contacts qui possèdent un mail
+    @Query("SELECT * FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id = contacts_table.id WHERE tag='mail'")
+    fun getContactWithMail(): List<Contacts>
+
+    //get les contacts qui possède un numéro
+    @Query("SELECT * FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id = contacts_table.id WHERE tag='phone'")
+    fun getContactWithPhoneNumber(): List<Contacts>
+
 
 }

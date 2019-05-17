@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
     //endregion
 
     /**
-     * test test test siiiiiiii
-     * @param max test ok google
+     *
+     * @param Bundle @type
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         //region ============================= Check For AppTheme or DarkTheme ==============================
@@ -243,8 +243,16 @@ class MainActivity : AppCompatActivity() {
                         //
                         val o = main_GridView!!.getItemAtPosition(position)
                         val contact = o as Contacts
+                        var intent:Intent
+                        if(main_ContactsDatabase?.contactsDao()?.getAllContacts()!!.isEmpty()) {
+                             intent = ContactGesture.putContactIntent(contact," "," ", this@MainActivity, ContactDetailsActivity::class.java)
+                        }else{
 
-                        val intent = ContactGesture.putContactIntent(contact, this@MainActivity, ContactDetailsActivity::class.java)
+                            val mail = main_ContactsDatabase!!.contactDetailsDao().getMailById(contact.id)
+                            val phone=main_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(contact.id)
+                            println(contact.id.toString()+" phone and mail" +mail+ "   "+phone)
+                             intent = ContactGesture.putContactIntent(contact, phone.contactDetails,mail.contactDetails,this@MainActivity, ContactDetailsActivity::class.java)
+                        }
                         startActivity(intent)
                     } else {
                         main_FloatingButtonIsOpen = false
@@ -312,8 +320,10 @@ class MainActivity : AppCompatActivity() {
                         println("PLSSSSSSSSSSSSSS " + phoneContactList)
                         main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
                         val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                        //for(x in syncContact)
                         val contactAdapter = ContactAdapter(this, syncContact, len)
                         main_GridView!!.adapter = contactAdapter
+
                     }
                 }
             }

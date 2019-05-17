@@ -22,10 +22,7 @@ import android.util.Base64
 import android.view.*
 import android.widget.*
 import com.example.knocker.*
-import com.example.knocker.model.Contacts
-import com.example.knocker.model.ContactsRoomDatabase
-import com.example.knocker.model.DbWorkerThread
-import com.example.knocker.model.NumberAndMailDB
+import com.example.knocker.model.*
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 
@@ -184,8 +181,6 @@ class AddNewContactActivity : AppCompatActivity() {
                         val contactData = Contacts(null,
                                 add_new_contact_FirstName!!.editText!!.text.toString(),
                                 add_new_contact_LastName!!.editText!!.text.toString(),
-                                add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar,
-                                add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar,
                                 R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(),
                                 add_new_contact_ImgString!!)
                         println(contactData)
@@ -198,6 +193,15 @@ class AddNewContactActivity : AppCompatActivity() {
 
                         if (isDuplicate == false) {
                             main_ContactsDatabase?.contactsDao()?.insert(contactData)
+                            val listContacts:List<Contacts>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
+                            val contact:Contacts?=getContact(contactData.firstName+" "+contactData.lastName,listContacts)
+
+                            var contactDetails= ContactDetails(null,contact?.id,""+add_new_contact_PhoneNumber!!.editText!!.text.toString()+spinnerChar,"phone")
+                            main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
+                            contactDetails= ContactDetails(null,contact?.id,""+add_new_contact_Email!!.editText!!.text.toString()+mailSpinnerChar,"mail")
+                            main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
+
+                            println("test"+main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
                             val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
@@ -336,4 +340,25 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     //endregion
+
+    fun getContact(name: String, listContact: List<Contacts>?): Contacts? {
+
+        if (name.contains(" ")) {
+            listContact!!.forEach { dbContact ->
+
+                //                println("contact "+dbContact+ "différent de name"+name)
+                if (dbContact.firstName+" "+dbContact.lastName == name) {
+                    return dbContact
+                }
+            }
+        } else {
+            listContact!!.forEach { dbContact ->
+                if (dbContact.firstName == name && dbContact.lastName == "" || dbContact.firstName == "" && dbContact.lastName == name) {
+                    return dbContact
+                }
+            }
+        }
+        return null
+    }//TODO : trouver une place pour toutes les méthodes des contacts
+
 }
