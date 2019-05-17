@@ -248,7 +248,7 @@ class MainActivity : AppCompatActivity() {
                              intent = ContactGesture.putContactIntent(contact," "," ", this@MainActivity, ContactDetailsActivity::class.java)
                         }else{
 
-                            val mail = main_ContactsDatabase!!.contactDetailsDao().getMailById(contact.id)
+                            val mail = main_ContactsDatabase!!.contactDetailsDao().getMailById(contact.id!!.toInt())
                             val phone=main_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(contact.id)
                             println(contact.id.toString()+" phone and mail" +mail+ "   "+phone)
                              intent = ContactGesture.putContactIntent(contact, phone.contactDetails,mail.contactDetails,this@MainActivity, ContactDetailsActivity::class.java)

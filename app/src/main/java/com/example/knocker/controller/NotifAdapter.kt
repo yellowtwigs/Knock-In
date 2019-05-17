@@ -139,7 +139,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     val openWhatsApp=Runnable{
                         val contacts: List<Contacts> = notification_adapeter_ContactsDatabase!!.contactsDao().getAllContacts()
                         val id_contact=getContact(sbp.statusBarNotificationInfo.get("android.title").toString(),contacts)!!.id
-                        val phoneNumber=notification_adapeter_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(id_contact).contactDetails
+                        val phoneNumber=notification_adapeter_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(id_contact!!.toInt()).contactDetails
                         ContactGesture.openWhatsapp(phoneNumber, context)
                     }
 

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
 
-@Database(entities = [Contacts::class, Notifications::class,Groups::class,ContactDetails::class], version = 10)
+@Database(entities = [Contacts::class, Notifications::class,Groups::class,ContactDetails::class], version = 9)
  abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -33,7 +33,6 @@ import android.content.Context
                         .addMigrations(MIGRATION_6_7)
                         .addMigrations(MIGRATION_7_8)
                         .addMigrations(MIGRATION_8_9)
-                        .addMigrations(MIGRATION_9_10)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -80,15 +79,16 @@ import android.content.Context
         }
         private val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("CREATE TABLE IF NOT EXISTS 'contact_details_table' ('id' LONG PRIMARY KEY AUTOINCREMENT, 'id_contact' LONG NOT NULL, 'contact_details' TEXT NOT NULL, 'tag' TEXT NOT NULL, FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'))")
-                database.execSQL("CREATE TABLE IF NOT EXISTS 'link_contact_group_table' ('id_group' LONG NOT NULL, 'id_contact' LONG NOT NULL, PRIMARY KEY('id_group','id_contact'),  FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'), FOREIGN KEY('id_group') REFERENCES groups_table('id'))")
-                database.execSQL("ALTER TABLE contacts_table " + " DROP COLUMN phone_number")
-                database.execSQL("ALTER TABLE contacts_table " + " DROP COLUMN mail")
-                database.execSQL("ALTER TABLE groups_table " + " DROP COLUMN members")
-            }
-        }
-        private val MIGRATION_9_10 = object : Migration(9,10) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'contact_details_table' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'id_contact' INTEGER NOT NULL, 'contact_details' TEXT NOT NULL, 'tag' TEXT NOT NULL, FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'))")
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'link_contact_group_table' ('id_group' INTEGER NOT NULL, 'id_contact' INTEGER NOT NULL, PRIMARY KEY('id_group','id_contact'),  FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'), FOREIGN KEY('id_group') REFERENCES groups_table('id'))")
+                database.execSQL("CREATE TABLE  tmp_name ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'first_name' TEXT NOT NULL, 'last_name' TEXT NOT NULL, 'profile_picture' INTEGER NOT NULL, 'background_image' INTEGER NOT NULL, 'contact_priority' INTEGER DEFAULT 0 NOT NULL, 'profile_picture_str' TEXT DEFAULT '' NOT NULL)")
+                database.execSQL("INSERT INTO tmp_name ('id','first_name','last_name','profile_picture','background_image','contact_priority','profile_picture_str') SELECT 'contacts_table.id','contacts_table.first_name','contacts_table.last_name','contacts_table.profile_picture','contacts_table.background_image','contacts_table.contact_priority','contacts_table.profile_picture_str' FROM contacts_table")
+                database.execSQL("DROP TABLE contacts_table")
+                database.execSQL("ALTER TABLE tmp_name RENAME TO contacts_table")
+                database.execSQL("CREATE TABLE  tmp_name ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'nb_members' INTEGER NOT NULL, 'profile_picture_str' TEXT DEFAULT '' NOT NULL)")
+                database.execSQL("INSERT INTO tmp_name ('id','name','nb_members','profile_picture_str') SELECT 'id','name','nb_members','profile_picture_str' FROM groups_table")
+                database.execSQL("DROP TABLE groups_table")
+                database.execSQL("ALTER TABLE tmp_name RENAME TO groups_table")
                 database.execSQL("ALTER TABLE contact_details_table " + " ADD COLUMN field_position INTEGER NOT NULL")
             }
         }

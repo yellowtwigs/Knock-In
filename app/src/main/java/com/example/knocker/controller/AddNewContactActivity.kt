@@ -196,9 +196,9 @@ class AddNewContactActivity : AppCompatActivity() {
                             val listContacts:List<Contacts>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
                             val contact:Contacts?=getContact(contactData.firstName+" "+contactData.lastName,listContacts)
 
-                            var contactDetails= ContactDetails(null,contact?.id,""+add_new_contact_PhoneNumber!!.editText!!.text.toString()+spinnerChar,"phone")
+                            var contactDetails= ContactDetails(null,contact?.id,""+add_new_contact_PhoneNumber!!.editText!!.text.toString()+spinnerChar,"phone",2)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
-                            contactDetails= ContactDetails(null,contact?.id,""+add_new_contact_Email!!.editText!!.text.toString()+mailSpinnerChar,"mail")
+                            contactDetails= ContactDetails(null,contact?.id!!.toInt(),""+add_new_contact_Email!!.editText!!.text.toString()+mailSpinnerChar,"mail", 2)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
 
                             println("test"+main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())

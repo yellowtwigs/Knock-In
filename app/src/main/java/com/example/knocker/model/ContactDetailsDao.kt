@@ -8,10 +8,10 @@ import androidx.room.Query
 interface ContactDetailsDao {
 
     @Query("SELECT * FROM contact_details_table where tag='phone'AND id_contact=:id")
-    fun getPhoneNumberById(id:Long?):ContactDetails
+    fun getPhoneNumberById(id:Int?):ContactDetails
 
     @Query("SELECT * FROM contact_details_table where tag='mail'AND id_contact=:id")
-    fun getMailById(id:Long?):ContactDetails
+    fun getMailById(id:Int?):ContactDetails
 
     @Query("SELECT * FROM contact_details_table")
     fun getAllpropertiesEditContact():List<ContactDetails>

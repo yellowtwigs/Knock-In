@@ -47,8 +47,8 @@ interface ContactsDao {
     @Insert
     fun insert(contacts: Contacts)
 
-    @Query("INSERT INTO contact_details_table VALUES(:contactId, :contactDetails, :tag) ")////
-    fun insertWithContactDetail(contactId: Int, contacts: Contacts, contactDetails: String, tag:String)
+//    @Query("INSERT INTO contact_details_table VALUES(last_insert_rowid(), :contactDetails, :tag) ")////
+//    fun insertWithContactDetail(contactDetails: String, tag:String)
 
     //update un contact grace à son id
     @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
