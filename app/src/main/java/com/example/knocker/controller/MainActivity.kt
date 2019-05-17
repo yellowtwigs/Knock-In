@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
             val len = sharedPreferences.getInt("gridview", 4)
             main_GridView!!.setNumColumns(len) // permet de changer
 
-            println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO = " + GroupsUsefulFunctions.stringIdToList("1,2000,3"))
+//            println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO = " + GroupsUsefulFunctions.stringIdToList("1,2000,3"))
             var contactList: List<Contacts>?
             if (main_ContactsDatabase?.contactsDao()?.getAllContacts()!!.isEmpty()) {
                 //contactList= null
@@ -297,37 +297,9 @@ class MainActivity : AppCompatActivity() {
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-            val phoneContactsList = ContactSync.getAllContacsInfo(contentResolver)//ContactSync.getAllContact(contentResolver)
-
+            ContactSync.getAllContacsInfo(contentResolver,main_GridView)//ContactSync.getAllContact(contentResolver)
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
-            val addAllContacts = Runnable {
-                var isDuplicate: Boolean
-                val allcontacts = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
-                //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
-                //println("priorité === "+priority)
-                phoneContactsList?.forEach { phoneContactList ->
-                    isDuplicate = false
-                    allcontacts?.forEach { contactsDB ->
-                        //println("LOOOOOOOOOOOOP "+ contactsDB)
-                        if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
-                            isDuplicate = true
-                        println("STATE = " + isDuplicate) //////////
-                    }
-                    if (isDuplicate == false) {
-                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                        val len = sharedPreferences.getInt("gridview", 3)
-                        println("PLSSSSSSSSSSSSSS " + phoneContactList)
-                        main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
-                        val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                        //for(x in syncContact)
-                        val contactAdapter = ContactAdapter(this, syncContact, len)
-                        main_GridView!!.adapter = contactAdapter
-
-                    }
-                }
-            }
-            runOnUiThread(addAllContacts)
         })
 
         //endregion

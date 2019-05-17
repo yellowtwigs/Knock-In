@@ -8,7 +8,7 @@ import androidx.room.*
         onDelete = ForeignKey.CASCADE)))
 data class ContactDetails(
         @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int?,    //id du contact
-        @ColumnInfo(name = "id_contact") val idContact: Int?,                      //id du contact
+        @ColumnInfo(name = "id_contact") var idContact: Int?,                      //id du contact
         @ColumnInfo(name = "contact_details") val contactDetails: String,           //
         @ColumnInfo(name = "tag") val tag: String,                                  //
         @ColumnInfo(name = "field_position") val fieldPosition: Int                 //

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "28e01f65b83c107acdc8f6b43de88eb9",
+    "identityHash": "90c01f7f2965fa94dd640e123ed5be16",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -180,7 +180,7 @@
       },
       {
         "tableName": "contact_details_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `contact_details` TEXT NOT NULL, `tag` TEXT NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `contact_details` TEXT NOT NULL, `tag` TEXT NOT NULL, `field_position` INTEGER NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -204,6 +204,12 @@
             "fieldPath": "tag",
             "columnName": "tag",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fieldPosition",
+            "columnName": "field_position",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -231,7 +237,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"28e01f65b83c107acdc8f6b43de88eb9\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"90c01f7f2965fa94dd640e123ed5be16\")"
     ]
   }
 }

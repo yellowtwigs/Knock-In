@@ -2,6 +2,7 @@ package com.example.knocker.model
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -45,11 +46,10 @@ interface ContactsDao {
 
     //add un contact
     @Insert
-    fun insert(contacts: Contacts)
+    fun insert(contacts: Contacts):Long?
 
-//    @Query("INSERT INTO contact_details_table VALUES(last_insert_rowid(), :contactDetails, :tag) ")////
-//    fun insertWithContactDetail(contactDetails: String, tag:String)
-
+    @Insert
+    fun insertDetails(contactDetails: List<ContactDetails>)
     //update un contact grace à son id
     @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
     fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture: Int, profilePicture64: String, priority: Int)

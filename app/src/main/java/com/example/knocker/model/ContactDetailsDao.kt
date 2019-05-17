@@ -22,4 +22,7 @@ interface ContactDetailsDao {
 
     @Insert
     fun insert(contactDetails:ContactDetails)
+
+    @Query("SELECT * FROM contact_details_table")
+    fun getAllDetails():List<ContactDetails>
 }
