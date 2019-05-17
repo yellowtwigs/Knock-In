@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
 
-@Database(entities = [Contacts::class, Notifications::class,Groups::class,ContactDetails::class], version = 8)
+@Database(entities = [Contacts::class, Notifications::class,Groups::class,ContactDetails::class], version = 10)
  abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -33,6 +33,7 @@ import android.content.Context
                         .addMigrations(MIGRATION_6_7)
                         .addMigrations(MIGRATION_7_8)
                         .addMigrations(MIGRATION_8_9)
+                        .addMigrations(MIGRATION_9_10)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -84,6 +85,11 @@ import android.content.Context
                 database.execSQL("ALTER TABLE contacts_table " + " DROP COLUMN phone_number")
                 database.execSQL("ALTER TABLE contacts_table " + " DROP COLUMN mail")
                 database.execSQL("ALTER TABLE groups_table " + " DROP COLUMN members")
+            }
+        }
+        private val MIGRATION_9_10 = object : Migration(9,10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE contact_details_table " + " ADD COLUMN field_position INTEGER NOT NULL")
             }
         }
         fun destroyInstance() {
