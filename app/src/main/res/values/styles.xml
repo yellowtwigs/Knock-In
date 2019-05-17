@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <!-- Light/Day Mode theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -13,34 +13,9 @@
         <item name="textColorLight">@color/textColorLight</item>
         <item name="relativeLayoutPressedColor">@color/relativeLayoutPressedColor</item>
         <item name="borderViewColor">@color/borderViewColor</item>
+        <item name="colorSurface">@color/borderViewColor</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
     </style>
-
-    <!-- Dark/Night Mode theme. -->
-    <!--<style name="DarkTheme" parent="Theme.MaterialComponents.NoActionBar">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowNoTitle">true</item>-->
-        <!--<item name="colorPrimary">@color/knockerColorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/knockerColorPrimaryDark</item>-->
-        <!--<item name="backgroundColor">@color/backgroundColorDark</item>-->
-        <!--<item name="textColor">@color/textColorDark</item>-->
-        <!--<item name="textColorLight">@color/textColor_lightDark</item>-->
-        <!--<item name="relativeLayoutPressedColor">@color/relativeLayoutPressedColorDark</item>-->
-        <!--<item name="borderViewColor">@color/borderViewColorDark</item>-->
-        <!--<item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>-->
-    <!--</style>-->
-
-    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/knockerColorPrimary</item>
-        <item name="colorPrimaryDark">@color/knockerColorPrimaryDark</item>
-    </style>
-
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="windowAnimationTransition">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>

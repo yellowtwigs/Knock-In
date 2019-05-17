@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/backgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controller.SplashScreenActivity">
@@ -24,7 +23,6 @@
         app:srcCompat="@drawable/ic_letter_k"/>
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/knocker_logo"
         android:layout_width="wrap_content"

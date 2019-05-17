@@ -12,6 +12,10 @@
 
     <color name="nav_header_textColor">#2B2B2B</color>
 
+    <color name="rounded_button_focused_color">#649bc8</color>
+    <color name="rounded_button_unfocused_color">#71a3e1</color>
+    <color name="rounded_button_pressed_color">#5a91be</color>
+
     <color name="editTextBackgroundColor">#eeeeee</color>
 
     <color name="backgroundColorDark">#282828</color>

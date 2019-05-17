@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_informations"
+            android:icon="@drawable/ic_avatar"
+            android:title="@string/left_drawer_informations" />
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/left_drawer_home" />
         <item
-            android:id="@+id/nav_chat"
-            android:icon="@drawable/ic_chat"
-            android:title="@string/left_drawer_chat" />
+            android:id="@+id/nav_notif_config"
+            android:icon="@drawable/ic_notifications_button"
+            android:title="@string/left_drawer_notif_config" />
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/left_drawer_settings" />
+            android:id="@+id/nav_screen_size"
+            android:icon="@drawable/ic_size_screen"
+            android:title="@string/left_drawer_screen_size" />
         <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/ic_about"
-            android:title="@string/left_drawer_notification_history" />
+            android:id="@+id/nav_theme"
+            android:icon="@drawable/ic_web_design"
+            android:title="@string/left_drawer_theme" />
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
         <item
-            android:id="@+id/nav_about"
+            android:id="@+id/nav_data_access"
+            android:icon="@drawable/ic_folder"
+            android:title="@string/left_drawer_data_access" />
+        <item
+            android:id="@+id/nav_knockons"
+            android:icon="@drawable/ic_letter_k"
+            android:title="@string/left_drawer_knockons" />
+        <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/ic_statistics"
+            android:title="@string/left_drawer_statistics" />
+        <item
+            android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
             android:title="@string/left_drawer_help" />
     </group>

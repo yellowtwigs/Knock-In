@@ -2,8 +2,6 @@
 
 package com.example.knocker.controller
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
@@ -15,7 +13,6 @@ import android.view.MenuItem
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import android.text.TextUtils
 import android.util.Base64
 import android.view.animation.Animation

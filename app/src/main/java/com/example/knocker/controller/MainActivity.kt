@@ -1,6 +1,7 @@
 package com.example.knocker.controller
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -15,7 +16,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.view.*
@@ -24,7 +24,7 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
-import me.samthompson.bubbleactions.BubbleActions
+import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     internal var main_FloatingButtonIsOpen = false
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
-    private var main_SearchBar: EditText? = null
+    private var main_SearchBar: TextInputLayout? = null
     var scaleGestureDetectore: ScaleGestureDetector? = null
 
     // Database && Thread
@@ -143,16 +143,28 @@ class MainActivity : AppCompatActivity() {
             val id = menuItem.itemId
 
             if (id == R.id.nav_home) {
-                val loginIntent = Intent(this@MainActivity, MainActivity::class.java)
-                startActivity(loginIntent)
+                startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 finish()
-            } else if (id == R.id.nav_settings) {
-                val loginIntent = Intent(this@MainActivity, SettingsActivity::class.java)
-                startActivity(loginIntent)
-            } else if (id == R.id.nav_chat) {
+            } else if (id == R.id.nav_informations) {
+
+            } else if (id == R.id.nav_notif_config) {
+                startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
+            } else if (id == R.id.nav_screen_size) {
                 val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
                 startActivity(loginIntent)
-            } else if (id == R.id.nav_history) {
+            } else if (id == R.id.nav_theme) {
+                val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
+                startActivity(loginIntent)
+            } else if (id == R.id.nav_data_access) {
+                val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
+                startActivity(loginIntent)
+            } else if (id == R.id.nav_knockons) {
+                val loginIntent = Intent(this@MainActivity, NotificationHistoryActivity::class.java)
+                startActivity(loginIntent)
+            } else if (id == R.id.nav_statistics) {
+                val loginIntent = Intent(this@MainActivity, NotificationHistoryActivity::class.java)
+                startActivity(loginIntent)
+            } else if (id == R.id.nav_help) {
                 val loginIntent = Intent(this@MainActivity, NotificationHistoryActivity::class.java)
                 startActivity(loginIntent)
             }
@@ -274,7 +286,7 @@ class MainActivity : AppCompatActivity() {
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-            val phoneContactsList = ContactSync.getAllContacsInfo(contentResolver)//ContactSync.getAllContact(contentResolver)
+            val phoneContactsList = ContactSync.getAllContactsInfo(contentResolver)//ContactSync.getAllContact(contentResolver)
 
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
@@ -425,6 +437,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    @SuppressLint("ShowToast")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -435,24 +448,27 @@ class MainActivity : AppCompatActivity() {
                 if (main_SearchBar!!.visibility != View.VISIBLE) {
                     main_SearchBar!!.visibility = View.VISIBLE
                 } else {
-                    main_search_bar_value = main_SearchBar!!.text.toString()
-                    println(main_filter)
-                    println(main_SearchBar!!.text.toString())
-                    //
-                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
-                    var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
-                    println(contactFilterList)
-                    if (contactFilterList != null) {
-                        contactList = contactList!!.intersect(contactFilterList).toList()
+                    if (!isEmptyField(main_SearchBar)) {
+                        main_search_bar_value = main_SearchBar!!.editText!!.text.toString()
+                        println(main_filter)
+                        println(main_SearchBar!!.editText!!.text.toString())
+                        //
+                        val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
+                        var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
+                        println(contactFilterList)
+                        if (contactFilterList != null) {
+                            contactList = contactList!!.intersect(contactFilterList).toList()
+                        }
+                        //
+                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                        val len = sharedPreferences.getInt("gridview", 3)
+                        //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                        println("LIIIIIIST = " + contactList)
+                        val contactAdapter = ContactAdapter(this, contactList, len)
+                        main_GridView!!.adapter = contactAdapter
+                    } else {
+                        Toast.makeText(this, "Le champ est vide", Toast.LENGTH_SHORT)
                     }
-                    //
-                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    val len = sharedPreferences.getInt("gridview", 3)
-                    //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                    println("LIIIIIIST = " + contactList)
-                    val contactAdapter = ContactAdapter(this, contactList, len)
-                    main_GridView!!.adapter = contactAdapter
-                    //startActivity(intent)
                 }
             }
             R.id.sms_filter -> {
@@ -519,11 +535,15 @@ class MainActivity : AppCompatActivity() {
             return false
         }//TODO: enlever code duplicate
 
-    fun toggleNotificationListenerService() {
+    private fun toggleNotificationListenerService() {
         val pm = getPackageManager()
         val cmpName = ComponentName(this, NotificationListener::class.java)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+    }
+
+    private fun isEmptyField(field: TextInputLayout?): Boolean {
+        return field!!.editText!!.text.toString().isEmpty()
     }
 
     //endregion

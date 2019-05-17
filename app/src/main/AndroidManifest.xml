@@ -13,46 +13,47 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_MMS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <application
         android:icon="@drawable/ic_letter_k"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_letter_k"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:largeHeap="true"
+        android:roundIcon="@drawable/ic_letter_k"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.example.knocker.controller.ComposeMessageActivity"/>
-        <activity android:name="com.example.knocker.controller.ManageNotificationActivity" />
-        <activity android:name="com.example.knocker.model.GroupsUsefulFunctions"/>
-        <activity android:name="com.example.knocker.controller.NotifAdapter" />
-        <activity android:name="com.example.knocker.model.ContactSync" />
-        <activity android:name="com.example.knocker.model.ContactInfo" />
-        <activity android:name="com.example.knocker.controller.NotificationHistoryActivity"/>
-        <activity android:name="com.example.knocker.model.testpinch" />
-        <activity android:name="com.example.knocker.controller.ChatActivity" />
-        <activity android:name="com.example.knocker.model.ContactsPriority" />
+        <activity android:name=".controller.EditInformationsActivity"></activity>
+        <activity android:name=".controller.ComposeMessageActivity" />
+        <activity android:name=".controller.ManageNotificationActivity" />
+        <activity android:name=".model.GroupsUsefulFunctions" />
+        <activity android:name=".controller.NotifAdapter" />
+        <activity android:name=".model.ContactSync" />
+        <activity android:name=".model.ContactInfo" />
+        <activity android:name=".controller.NotificationHistoryActivity" /> <!-- <activity android:name="com.example.knocker.model.testpinch" /> -->
+        <activity android:name=".controller.ChatActivity" />
+        <activity android:name=".model.ContactsPriority" />
         <activity
-            android:name="com.example.knocker.controller.AddNewContactActivity"
+            android:name=".controller.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.example.knocker.controller.EditContactActivity"
+            android:name=".controller.EditContactActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name="com.example.knocker.controller.SplashScreenActivity">
+        <activity android:name=".controller.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.knocker.controller.SettingsActivity" />
-        <activity android:name="com.example.knocker.controller.ContactDetailsActivity" />
+        <activity android:name=".controller.SettingsActivity" />
+        <activity android:name=".controller.ContactDetailsActivity" />
         <activity
-            android:name="com.example.knocker.controller.MainActivity"
+            android:name=".controller.MainActivity"
             android:windowSoftInputMode="stateHidden" />
 
         <service
-            android:name="com.example.knocker.model.NotificationListener"
+            android:name=".model.NotificationListener"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -60,7 +61,9 @@
             </intent-filter>
         </service>
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
     </application>
 
 </manifest>

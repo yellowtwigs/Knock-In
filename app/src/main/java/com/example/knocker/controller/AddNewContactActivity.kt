@@ -221,7 +221,7 @@ class AddNewContactActivity : AppCompatActivity() {
         return true
     }
 
-    fun isEmptyField(field: TextInputLayout?): Boolean {
+    private fun isEmptyField(field: TextInputLayout?): Boolean {
         return field!!.editText!!.text.toString().isEmpty()
     }
 

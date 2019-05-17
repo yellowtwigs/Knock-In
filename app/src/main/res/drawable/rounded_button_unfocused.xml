@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="1dp"
+        android:color="@color/rounded_button_unfocused_color" />
+    <corners android:radius="50dp" />
+    <gradient
+        android:angle="90"
+        android:centerColor="@color/rounded_button_unfocused_color"
+        android:endColor="@color/rounded_button_unfocused_color"
+        android:startColor="@color/rounded_button_unfocused_color" />
+</shape>
