@@ -1,6 +1,5 @@
 package com.example.knocker.controller;
 
-import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,13 +8,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.text.TextUtils;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.Switch;
 
 import com.example.knocker.R;
 
@@ -30,19 +29,16 @@ public class ChatActivity extends AppCompatActivity {
     private EditText phoneNumber;
     private EditText message;
 
+    private Switch changeTheme;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         messenger = findViewById(R.id.messenger);
         instagram = findViewById(R.id.instagram);
-
-        sendMessage = findViewById(R.id.smsValidate);
-        sendMessage.setEnabled(false);
-        phoneCallValidate = findViewById(R.id.phoneCallValidate);
-        phoneNumber = findViewById(R.id.phoneNumber);
-        message = findViewById(R.id.sms);
 
         messenger.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,45 +52,6 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 gotToWhatsapp();
                 gotToInstagramPage();
-            }
-        });
-
-        if (checkPermission(Manifest.permission.SEND_SMS)) {
-            sendMessage.setEnabled(true);
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS,}, SEND_SMS_PERMISSION_REQUEST_CODE);
-        }
-
-        sendMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = message.getText().toString();
-                String phoneNumb = phoneNumber.getText().toString();
-
-                if (!TextUtils.isEmpty(msg) && !TextUtils.isEmpty(phoneNumb)) {
-                    if (checkPermission(Manifest.permission.SEND_SMS)) {
-                        SmsManager smsManager = SmsManager.getDefault();
-                        smsManager.sendTextMessage(phoneNumb, null, msg, null, null);
-                    } else {
-                        Toast.makeText(ChatActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(ChatActivity.this, "Enter a message and a phone number", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        phoneCallValidate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phoneNumb = phoneNumber.getText().toString();
-
-                if(!TextUtils.isEmpty(phoneNumb)){
-                    String dial = "tel:" + phoneNumb;
-                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
-                }else {
-                    Toast.makeText(ChatActivity.this, "Enter a phone number", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
@@ -145,5 +102,12 @@ public class ChatActivity extends AppCompatActivity {
 
                 break;
         }
+    }
+
+    public void restartActivity()
+    {
+        Intent intent = new Intent(ChatActivity.this, ChatActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -5,10 +5,17 @@
         android:icon="@drawable/ic_phone_book"
         android:title="Phone Book" />
     <item
-        android:id="@+id/navigation_user"
-        android:icon="@drawable/ic_user"
-        android:title="My Informations" />
-
+        android:id="@+id/navigation_notifcations"
+        android:icon="@drawable/ic_notifications_button"
+        android:title="Notifications" />
+    <item
+        android:id="@+id/navigation_groups"
+        android:icon="@drawable/ic_multiple_users_silhouette"
+        android:title="Groups" />
+    <item
+        android:id="@+id/navigation_socials_networks"
+        android:icon="@drawable/ic_network"
+        android:title="Socials Networks" />
     <item
         android:id="@+id/navigation_phone_keyboard"
         android:icon="@drawable/ic_phone_keyboard"
