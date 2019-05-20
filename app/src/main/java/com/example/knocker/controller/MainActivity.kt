@@ -251,8 +251,18 @@ class MainActivity : AppCompatActivity() {
                             val mail = main_ContactsDatabase!!.contactDetailsDao().getMailById(contact.id!!.toInt())
                             val phone=main_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(contact.id)
                             println(contact.id.toString()+" phone and mail" +mail+ "   "+phone)
-                             intent = ContactGesture.putContactIntent(contact, phone.contactDetails,mail.contactDetails,this@MainActivity, ContactDetailsActivity::class.java)
+                            if(mail!=null && phone!=null )
+                            {
+                                intent = ContactGesture.putContactIntent(contact, phone.contactDetails,mail.contactDetails,this@MainActivity, ContactDetailsActivity::class.java)
+                            }else if(mail == null && phone!=null){
+                                intent = ContactGesture.putContactIntent(contact, phone.contactDetails," ",this@MainActivity, ContactDetailsActivity::class.java)
+                            }else if(mail!=null && phone == null){
+                                intent = ContactGesture.putContactIntent(contact, " ",mail.contactDetails,this@MainActivity, ContactDetailsActivity::class.java)
+                            }else{
+                                intent = ContactGesture.putContactIntent(contact, " "," ",this@MainActivity, ContactDetailsActivity::class.java)
+                            }//TODO: a déplacer/optimiser quand on aura une listView
                         }
+
                         startActivity(intent)
                     } else {
                         main_FloatingButtonIsOpen = false
