@@ -382,32 +382,45 @@ class MainActivity : AppCompatActivity() {
     private fun getAllContactFilter(filterList: ArrayList<String>): List<Contacts>? {
         val allFilters: MutableList<List<Contacts>> = mutableListOf()
         var filter: List<Contacts>?
+        val allContacts = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
         println(filterList)
         if (filterList.contains("sms")) {
-            println("GOOOOOD")
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()
-            if (filter != null && filter.isEmpty() == false)
+
+            if (filter != null && filter.isEmpty() == false) {
+                filter.forEach { filterElem ->
+                    allContacts.forEach {
+                        if (filterElem.firstName == it.firstName && filterElem.lastName == it.lastName && filterElem.contactPriority == it.contactPriority)
+                            filterElem.id = it.id
+                    }
+                }
                 allFilters.add(filter)
+            }
         }
         if (filterList.contains("mail")) {
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
-            println("FILTER = ! " + filter)
-            if (filter != null && filter.isEmpty() == false)
+            if (filter != null && filter.isEmpty() == false) {
+                filter.forEach { filterElem ->
+                    allContacts.forEach {
+                        if (filterElem.firstName == it.firstName && filterElem.lastName == it.lastName && filterElem.contactPriority == it.contactPriority)
+                            filterElem.id = it.id
+                    }
+                }
                 allFilters.add(filter)
-        } else
+            }
+        }
+        if (filterList.isEmpty())
             return null
         var i = 0
-        println(allFilters.size.toString() + " CODYYYYYYYYYYYYYYYYYYYYY")
         if (allFilters.size > 1) {
             while (i < allFilters.size - 1) {
-                allFilters[i + 1] = allFilters[i].intersect(allFilters[i + 1]).toList()
+                allFilters[i+1] = allFilters[i].intersect(allFilters[i + 1]).toList()
                 i++
             }
         } else if (allFilters.size == 0) {
             return null
         } else
             return allFilters[0]
-        println("all filter [i] = " + allFilters)
         return allFilters[i]
     }
 
@@ -442,13 +455,15 @@ class MainActivity : AppCompatActivity() {
                     //
                     val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
                     var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
+                    println(" STOOOOOOOOOOOOOOOO = "+ contactList)
                     println(contactFilterList)
+                    println("ALL DATA = " + main_ContactsDatabase?.contactsDao()?.getAllContacts())
                     if (contactFilterList != null) {
                         contactList = contactList!!.intersect(contactFilterList).toList()
                     }
                     //
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    val len = sharedPreferences.getInt("gridview", 3)
+                    val len = sharedPreferences.getInt("gridview", 4)
                     //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
                     println("LIIIIIIST = " + contactList)
                     val contactAdapter = ContactAdapter(this, contactList, len)

@@ -81,15 +81,6 @@ import android.content.Context
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("CREATE TABLE IF NOT EXISTS 'contact_details_table' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'id_contact' INTEGER NOT NULL, 'contact_details' TEXT NOT NULL, 'tag' TEXT NOT NULL, FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'))")
                 database.execSQL("CREATE TABLE IF NOT EXISTS 'link_contact_group_table' ('id_group' INTEGER NOT NULL, 'id_contact' INTEGER NOT NULL, PRIMARY KEY('id_group','id_contact'),  FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'), FOREIGN KEY('id_group') REFERENCES groups_table('id'))")
-                database.execSQL("CREATE TABLE  tmp_name ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'first_name' TEXT NOT NULL, 'last_name' TEXT NOT NULL, 'profile_picture' INTEGER NOT NULL, 'background_image' INTEGER NOT NULL, 'contact_priority' INTEGER DEFAULT 0 NOT NULL, 'profile_picture_str' TEXT DEFAULT '' NOT NULL)")
-                database.execSQL("INSERT INTO tmp_name ('id','first_name','last_name','profile_picture','background_image','contact_priority','profile_picture_str') SELECT 'id','first_name','last_name','profile_picture','background_image','contact_priority','profile_picture_str' FROM contacts_table")
-                database.execSQL("DROP TABLE contacts_table")
-                database.execSQL("ALTER TABLE tmp_name RENAME TO contacts_table")
-                database.execSQL("CREATE TABLE  tmp_name ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'nb_members' INTEGER NOT NULL, 'profile_picture_str' TEXT DEFAULT '' NOT NULL)")
-                database.execSQL("INSERT INTO tmp_name ('id','name','nb_members','profile_picture_str') SELECT 'id','name','nb_members','profile_picture_str' FROM groups_table")
-                database.execSQL("DROP TABLE groups_table")
-                database.execSQL("ALTER TABLE tmp_name RENAME TO groups_table")
-                database.execSQL("ALTER TABLE contact_details_table " + " ADD COLUMN field_position INTEGER NOT NULL")
             }
         }
         fun destroyInstance() {
