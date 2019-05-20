@@ -9,7 +9,6 @@ import android.util.Base64
 import java.io.ByteArrayOutputStream
 import android.content.ContentUris
 import android.graphics.BitmapFactory
-import android.view.View
 import android.widget.GridView
 import com.example.knocker.R
 import com.example.knocker.controller.ContactAdapter
@@ -108,10 +107,10 @@ object ContactSync : AppCompatActivity() {
 
 
 
-    fun getAllContacsInfo(main_contentResolver: ContentResolver,gridView: GridView?) {
+    fun getAllContacsInfo(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
         val phoneStructName = getStructuredName(main_contentResolver)
         val contactNumberAndPic = getPhoneNumber(main_contentResolver)
-        val phoneContactsList = createListContacts(phoneStructName,contactNumberAndPic,gridView)
+        val phoneContactsList = createListContacts(phoneStructName,contactNumberAndPic,gridView,applicationContext)
     }
 
     private fun isDuplicateNumber(idAndPhoneNumber: Triple<Int,String?,String?>, contactPhoneNumber:List<Triple<Int,String?,String?>>): Boolean{
@@ -150,7 +149,7 @@ object ContactSync : AppCompatActivity() {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }//TODO:redondant
 
-    fun createListContacts(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Triple<Int,String?,String?>>?,gridView: GridView?) {
+    fun createListContacts(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Triple<Int, String?, String?>>?, gridView: GridView?, applicationContext: Context) {
         val phoneContactsList = arrayListOf<Contacts>()
         var main_ContactsDatabase: ContactsRoomDatabase? = null
         lateinit var main_mDbWorkerThread: DbWorkerThread
@@ -196,12 +195,11 @@ object ContactSync : AppCompatActivity() {
                     }
                 }
                 println("liste de détail"+main_ContactsDatabase?.contactDetailsDao()?.getAllDetails())
-                //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                //val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                //val len = sharedPreferences.getInt("gridview", 4)
-                //val contactAdapter = ContactAdapter(this, syncContact, len)
-                //gridView!!.adapter = contactAdapter
-                //view!!.adapter = contactAdapter
+                val syncContact= main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                val len = sharedPreferences.getInt("gridview", 4)
+                val contactAdapter = ContactAdapter(applicationContext, syncContact, len)
+                gridView!!.adapter = contactAdapter
 
             }
         }
