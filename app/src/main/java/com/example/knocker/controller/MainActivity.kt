@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -18,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -274,6 +276,27 @@ class MainActivity : AppCompatActivity() {
 
         //region ==================================== SetOnClickListener ====================================
 
+        main_SearchBar!!.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+                main_search_bar_value = main_SearchBar!!.text.toString()
+                val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter)
+                var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value)
+                if (contactFilterList != null) {
+                    contactList = contactList!!.intersect(contactFilterList).toList()
+                }
+                val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                val len = sharedPreferences.getInt("gridview", 4)
+                val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                main_GridView!!.adapter = contactAdapter
+            }
+        })
+
         main_FloatingButtonOpen!!.setOnClickListener {
             if (main_FloatingButtonIsOpen) {
                 onFloatingClickBack()
@@ -469,9 +492,33 @@ class MainActivity : AppCompatActivity() {
                 if (item.isChecked) {
                     item.setChecked(false)
                     main_filter.remove("sms")
+                    // duplicate
+                    main_search_bar_value = main_SearchBar!!.text.toString()
+                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter)
+                    var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value)
+                    if (contactFilterList != null) {
+                        contactList = contactList!!.intersect(contactFilterList).toList()
+                    }
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    main_GridView!!.adapter = contactAdapter
+                    //
                 } else {
                     item.setChecked(true)
                     main_filter.add("sms")
+                    // duplicate
+                    main_search_bar_value = main_SearchBar!!.text.toString()
+                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter)
+                    var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value)
+                    if (contactFilterList != null) {
+                        contactList = contactList!!.intersect(contactFilterList).toList()
+                    }
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    main_GridView!!.adapter = contactAdapter
+                    //
                 }
                 return true
             }
@@ -479,9 +526,33 @@ class MainActivity : AppCompatActivity() {
                 if (item.isChecked) {
                     item.setChecked(false)
                     main_filter.remove("mail")
+                    // duplicate
+                    main_search_bar_value = main_SearchBar!!.text.toString()
+                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter)
+                    var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value)
+                    if (contactFilterList != null) {
+                        contactList = contactList!!.intersect(contactFilterList).toList()
+                    }
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    main_GridView!!.adapter = contactAdapter
+                    //
                 } else {
                     item.setChecked(true)
                     main_filter.add("mail")
+                    // duplicate
+                    main_search_bar_value = main_SearchBar!!.text.toString()
+                    val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter)
+                    var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value)
+                    if (contactFilterList != null) {
+                        contactList = contactList!!.intersect(contactFilterList).toList()
+                    }
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    main_GridView!!.adapter = contactAdapter
+                    //
                 }
                 return true
             }
