@@ -181,13 +181,11 @@ class MainActivity : AppCompatActivity() {
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
             main_GridView!!.setNumColumns(len) // permet de changer
-
-//            println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO = " + GroupsUsefulFunctions.stringIdToList("1,2000,3"))
             var contactList: List<Contacts>?
             if (main_ContactsDatabase?.contactsDao()?.getAllContacts()!!.isEmpty()) {
                 //contactList= null
-                val contact = ListContact.loadJSONFromAsset(this)
-                contactList = ListContact.buildList(contact)
+                val contact = FakeContact.loadJSONFromAsset(this)
+                contactList = FakeContact.buildList(contact)
                 println("contact list size" + contactList.size)
             } else {
                 contactList = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()

@@ -1,8 +1,9 @@
-package com.example.knocker.model
+package com.example.knocker.model.requestDB
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.knocker.model.Groups
 
 @Dao
 interface GroupsDao {

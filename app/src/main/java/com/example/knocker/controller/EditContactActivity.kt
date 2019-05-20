@@ -107,8 +107,8 @@ class EditContactActivity : AppCompatActivity() {
         if(edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt())==null)
         {
             var contactList: List<Contacts>?
-            val contact= ListContact.loadJSONFromAsset(this)
-            contactList= ListContact.buildList(contact)
+            val contact= FakeContact.loadJSONFromAsset(this)
+            contactList= FakeContact.buildList(contact)
             for(contact in contactList){
                 println("nom attendu :"+edit_contact_first_name+" "+edit_contact_last_name+" voici le nom de ce contact"+contact.firstName+" "+contact.lastName)
                 if(edit_contact_first_name.equals(contact.firstName) && edit_contact_last_name.equals(contact.lastName)){

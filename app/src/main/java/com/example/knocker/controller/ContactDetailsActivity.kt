@@ -135,8 +135,8 @@ class ContactDetailsActivity : AppCompatActivity() {
         if (contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_id!!.toInt()) == null) {
             print("it works")
             var contactList: List<Contacts>?
-            val contact = ListContact.loadJSONFromAsset(this)
-            contactList = ListContact.buildList(contact)
+            val contact = FakeContact.loadJSONFromAsset(this)
+            contactList = FakeContact.buildList(contact)
             for (contact in contactList) {
                 if (contact_details_first_name.equals(contact.firstName) && contact_details_last_name.equals(contact.lastName)) {
                     contact_details_image64 = contact.profilePicture64

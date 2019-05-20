@@ -1,17 +1,18 @@
-package com.example.knocker.model
+package com.example.knocker.model.requestDB
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.knocker.model.ContactDetails
 
 @Dao
 interface ContactDetailsDao {
 
     @Query("SELECT * FROM contact_details_table where tag='phone'AND id_contact=:id")
-    fun getPhoneNumberById(id:Int?):ContactDetails
+    fun getPhoneNumberById(id:Int?): ContactDetails
 
     @Query("SELECT * FROM contact_details_table where tag='mail'AND id_contact=:id")
-    fun getMailById(id:Int?):ContactDetails
+    fun getMailById(id:Int?): ContactDetails
 
     @Query("SELECT * FROM contact_details_table")
     fun getAllpropertiesEditContact():List<ContactDetails>
@@ -21,7 +22,7 @@ interface ContactDetailsDao {
     fun updateContactDetailById(id: Int, contactDetail: String)
 
     @Insert
-    fun insert(contactDetails:ContactDetails)
+    fun insert(contactDetails: ContactDetails)
 
     @Query("SELECT * FROM contact_details_table")
     fun getAllDetails():List<ContactDetails>

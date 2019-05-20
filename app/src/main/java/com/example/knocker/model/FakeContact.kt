@@ -5,7 +5,7 @@ import com.example.knocker.R
 import org.json.JSONArray
 import org.json.JSONObject
 
-object ListContact {
+object FakeContact {
 
     fun loadJSONFromAsset(context: Context):String{
         var json = ""

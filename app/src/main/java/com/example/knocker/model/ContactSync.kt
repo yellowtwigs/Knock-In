@@ -205,35 +205,7 @@ object ContactSync : AppCompatActivity() {
         }
         runOnUiThread(addAllContacts)
     }
-  /*  fun addContactsToView(phoneContactsList:List<Contacts>,,view: GridView) {
-         var main_ContactsDatabase: ContactsRoomDatabase? = null
-         lateinit var main_mDbWorkerThread: DbWorkerThread
-        val addAllContacts = Runnable {
-            var isDuplicate: Boolean
-            val allcontacts = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
-            //val priority = ContactsPriority.getPriorityWithName("Ryan Granet", "sms", allcontacts)
-            //println("priorité === "+priority)
-            phoneContactsList?.forEach { phoneContactList ->
-                isDuplicate = false
-                allcontacts?.forEach { contactsDB ->
-                    //println("LOOOOOOOOOOOOP "+ contactsDB)
-                    if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
-                        isDuplicate = true
-                    println("STATE = " + isDuplicate) //////////
-                }//TODO
-                if (isDuplicate == false) {
-                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    val len = sharedPreferences.getInt("gridview", 4)
-                    println("PLSSSSSSSSSSSSSS " + phoneContactList)
-                    main_ContactsDatabase?.contactsDao()?.insert(phoneContactList)
 
-
-
-                }
-            }
-        }
-        runOnUiThread(addAllContacts)
-    }*/
     private fun isDuplicate(contacts:List<Contacts>?,phoneContactList:Contacts):Boolean{
         contacts?.forEach { contactsDB ->
             //println("LOOOOOOOOOOOOP "+ contactsDB)

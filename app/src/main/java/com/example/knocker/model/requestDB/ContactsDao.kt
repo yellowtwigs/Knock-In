@@ -1,9 +1,10 @@
-package com.example.knocker.model
+package com.example.knocker.model.requestDB
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.knocker.model.ContactDetails
+import com.example.knocker.model.Contacts
 
 @Dao
 interface ContactsDao {
