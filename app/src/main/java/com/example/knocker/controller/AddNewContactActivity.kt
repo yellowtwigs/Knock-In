@@ -195,10 +195,15 @@ class AddNewContactActivity : AppCompatActivity() {
                             main_ContactsDatabase?.contactsDao()?.insert(contactData)
                             val listContacts:List<Contacts>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
                             val contact:Contacts?=getContact(contactData.firstName+" "+contactData.lastName,listContacts)
-                            var contactDetails= ContactDetails(null,contact?.id,""+add_new_contact_PhoneNumber!!.editText!!.text.toString()+spinnerChar,"phone",0)
-                            main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
-                            contactDetails= ContactDetails(null,contact?.id,""+add_new_contact_Email!!.editText!!.text.toString()+mailSpinnerChar,"mail",1)
-                            main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
+                            var contactDetails: ContactDetails
+                            if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                                contactDetails = ContactDetails(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", 0)
+                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
+                            }
+                            if (add_new_contact_Email!!.editText!!.text.toString() != "") {
+                                contactDetails = ContactDetails(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", 1)
+                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
+                            }
 
                             println("test"+main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
                             val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)

@@ -161,7 +161,6 @@ object ContactSync : AppCompatActivity() {
             phoneStructName!!.forEach { fullName ->
                 contactNumberAndPic!!.forEach { numberPic ->
                     val contactDetails=listOf(ContactDetails(null,null,numberPic.second!! + "P","phone",0))
-                    println("numberpic  "+numberPic)
                     if (fullName.first == numberPic.first) {
                         if (fullName.second.second == "") {
                             // val contact = Contacts(null, fullName.second.first, fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
