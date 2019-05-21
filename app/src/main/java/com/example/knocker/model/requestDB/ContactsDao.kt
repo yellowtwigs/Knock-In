@@ -68,11 +68,11 @@ interface ContactsDao {
     fun deleteAll()
 
     //get les contacts qui possèdent un mail
-    @Query("SELECT * FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE tag='mail'")
+    @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE tag='mail'")
     fun getContactWithMail(): List<Contacts>
 
     //get les contacts qui possède un numéro
-    @Query("SELECT * FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE tag='phone'")
+    @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE tag='phone'")
     fun getContactWithPhoneNumber(): List<Contacts>
 
 
