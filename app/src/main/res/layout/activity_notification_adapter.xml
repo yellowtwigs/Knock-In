@@ -33,9 +33,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.571"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"><![CDATA[>
-
-            ]]>
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/notification_expediteurImg"

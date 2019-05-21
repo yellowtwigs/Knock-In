@@ -23,7 +23,10 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.EditInformationsActivity"></activity>
+        <activity android:name=".controller.PhoneLogActivity"></activity>
+        <activity android:name=".controller.HelpActivity" />
+        <activity android:name=".controller.ManageScreenSizeActivity" />
+        <activity android:name=".controller.EditInformationsActivity" />
         <activity android:name=".controller.ComposeMessageActivity" />
         <activity android:name=".controller.ManageNotificationActivity" />
         <activity android:name=".model.GroupsUsefulFunctions" />
@@ -50,7 +53,21 @@
         <activity android:name=".controller.ContactDetailsActivity" />
         <activity
             android:name=".controller.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".model.NotificationListener"

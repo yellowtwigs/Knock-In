@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.ManageScreenSizeActivity"
+    tools:openDrawer="start">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginBottom="8dp"
+            android:background="@color/transparentColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/activity_settings_change_nb_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="2dp"
+            android:text="@string/settings_number_of_line"
+            android:textColor="@color/textColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings" />
+
+        <ImageView
+            android:id="@+id/activity_settings_imageView_5_contact"
+            android:layout_width="75dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:padding="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_6_contact"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
+
+        <ImageView
+            android:id="@+id/activity_settings_imageView_3_contact"
+            android:layout_width="75dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:padding="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_4_contact"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
+
+        <ImageView
+            android:id="@+id/activity_settings_imageView_4_contact"
+            android:layout_width="75dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:padding="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_5_contact"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
+
+        <ImageView
+            android:id="@+id/activity_settings_imageView_6_contact"
+            android:layout_width="75dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+</androidx.drawerlayout.widget.DrawerLayout>

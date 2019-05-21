@@ -24,18 +24,10 @@ class ManageNotificationActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar_manage_notification)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        //actionbar!!.setDisplayHomeAsUpEnabled(true)
-        //actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar!!.title = " \t \t \t \t Notifications"
-        var retour: ImageView = findViewById(R.id.imageView_notification_manager)
-        retour.setOnClickListener() {
-            this.finish()
-        }
+
         switchPopupNotif.setChecked(sharedPreferences.getBoolean("popupNotif", false))
         switchservice.setChecked(sharedPreferences.getBoolean("serviceNotif", true))
+
         switchPopupNotif.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchPopupNotif.isChecked) {
@@ -53,6 +45,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 System.out.println("pop up false" + sharedPreferences.getBoolean("popupNotif", false))
             }
         }
+
         switchservice.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchservice.isChecked) {

@@ -15,7 +15,7 @@
     <item
         android:id="@+id/navigation_socials_networks"
         android:icon="@drawable/ic_network"
-        android:title="Socials Networks" />
+        android:title="Socials" />
     <item
         android:id="@+id/navigation_phone_keyboard"
         android:icon="@drawable/ic_phone_keyboard"

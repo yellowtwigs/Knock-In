@@ -23,16 +23,28 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import com.example.knocker.*
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.example.knocker.model.*
-import com.google.android.material.textfield.TextInputLayout
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    private var main_GridView: GridView? = null
+    // Show on the Main Layout
     private var drawerLayout: DrawerLayout? = null
+
+    private var main_GridView: GridView? = null
+
+    private var my_knocker: RelativeLayout? = null
+
     private var main_FloatingButtonOpen: FloatingActionButton? = null
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonCompose: FloatingActionButton? = null
@@ -45,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     internal var main_FloatingButtonIsOpen = false
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
-    private var main_SearchBar: TextInputLayout? = null
+    private var main_SearchBar: EditText? = null
     var scaleGestureDetectore: ScaleGestureDetector? = null
 
     // Database && Thread
@@ -53,9 +65,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
     private var main_BottomNavigationView: BottomNavigationView? = null
-    private var phone_call_layout: ConstraintLayout? = null
-    private var my_informations_layout: ConstraintLayout? = null
-    private var hub_layout: ConstraintLayout? = null
 
     //endregion
 
@@ -65,14 +74,9 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            setContentView(R.layout.activity_main)
-        } else {
-            setContentView(R.layout.activity_main)
-        }
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
@@ -84,10 +88,9 @@ class MainActivity : AppCompatActivity() {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
             edit.putBoolean("serviceNotif", true)
-            edit.commit()
+            edit.apply()
         } else {
             toggleNotificationListenerService()
-
         }
 
         // on init WorkerThread
@@ -112,10 +115,6 @@ class MainActivity : AppCompatActivity() {
         main_BottomNavigationView = findViewById(R.id.navigation)
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        phone_call_layout = findViewById(R.id.phone_call_layout_id)
-        my_informations_layout = findViewById(R.id.my_informations_layout_id)
-        hub_layout = findViewById(R.id.hub_layout)
-
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
 
@@ -138,37 +137,36 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val headerView = navigationView.getHeaderView(0);
+        my_knocker = headerView.findViewById(R.id.my_knocker)
+
+        my_knocker!!.setOnClickListener {
+            startActivity(Intent(this@MainActivity, MainActivity::class.java))
+        }
+
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
 
             val id = menuItem.itemId
 
-            if (id == R.id.nav_home) {
-                startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                finish()
-            } else if (id == R.id.nav_informations) {
-
+            if (id == R.id.nav_informations) {
+                startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
             } else if (id == R.id.nav_notif_config) {
                 startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
             } else if (id == R.id.nav_screen_size) {
-                val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
-                startActivity(loginIntent)
+                startActivity(Intent(this@MainActivity, ManageScreenSizeActivity::class.java))
             } else if (id == R.id.nav_theme) {
-                val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
-                startActivity(loginIntent)
+                startActivity(Intent(this@MainActivity, ChatActivity::class.java))
             } else if (id == R.id.nav_data_access) {
-                val loginIntent = Intent(this@MainActivity, ChatActivity::class.java)
-                startActivity(loginIntent)
+                startActivity(Intent(this@MainActivity, ChatActivity::class.java))
             } else if (id == R.id.nav_knockons) {
-                val loginIntent = Intent(this@MainActivity, NotificationHistoryActivity::class.java)
-                startActivity(loginIntent)
+                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
             } else if (id == R.id.nav_statistics) {
-                val loginIntent = Intent(this@MainActivity, NotificationHistoryActivity::class.java)
-                startActivity(loginIntent)
+                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
             } else if (id == R.id.nav_help) {
-                val loginIntent = Intent(this@MainActivity, NotificationHistoryActivity::class.java)
-                startActivity(loginIntent)
+                startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -185,7 +183,7 @@ class MainActivity : AppCompatActivity() {
             ////////
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
-            main_GridView!!.setNumColumns(len) // permet de changer
+            main_GridView!!.numColumns = len // permet de changer
 
             println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO = " + GroupsUsefulFunctions.stringIdToList("1,2000,3"))
             var contactList: List<Contacts>?
@@ -207,32 +205,36 @@ class MainActivity : AppCompatActivity() {
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                 main_GridView!!.setSelection(index)
                 edit.putInt("index", 0)
-                edit.commit()
+                edit.apply()
 
-//                main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
-//                    main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
-//                    val contact = main_GridView!!.getItemAtPosition(position) as Contacts
-//                    BubbleActions.on(main_CoordinationLayout)
-//                            .addAction("Messenger", R.drawable.ic_messenger_circle_menu,
-//                                    {
-//                                        ContactGesture.openMessenger("", this@MainActivity)
-//                                    }).addAction("SMS", R.drawable.ic_sms, {
-//                                val intent = ContactGesture.putContactIntent(contact, this@MainActivity, ComposeMessageActivity::class.java)
-//                                startActivity(intent)
-//                            }).addAction("Gmail", R.drawable.ic_gmail, {
-//                                ContactGesture.openGmail(this@MainActivity)
-//                            }).addAction("whatsapp", R.drawable.ic_whatsapp_circle_menu, {
-//                                ContactGesture.openWhatsapp(contact.phoneNumber, this@MainActivity)
-//                            }).addAction("edit", R.drawable.ic_edit_floating_button, {
-//                                val intent = ContactGesture.putContactIntent(contact, this@MainActivity, EditContactActivity::class.java)
-//                                startActivity(intent)
-//                            })
-//                            .show()
-//                    false
-//                }
+                main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
+                    main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
+                    val contact = main_GridView!!.getItemAtPosition(position) as Contacts
+//                    try {
+//                        BubbleActions.on(main_CoordinationLayout)
+//                                .addAction("Messenger", R.drawable.ic_messenger_circle_menu
+//                                ) {
+//                                    ContactGesture.openMessenger("", this@MainActivity)
+//                                }.addAction("SMS", R.drawable.ic_sms) {
+//                                    startActivity(ContactGesture.putContactIntent(contact, this@MainActivity, ComposeMessageActivity::class.java))
+//                                }.addAction("Gmail", R.drawable.ic_gmail) {
+//                                    ContactGesture.openGmail(this@MainActivity)
+//                                }.addAction("whatsapp", R.drawable.ic_whatsapp_circle_menu) {
+//                                    ContactGesture.openWhatsapp(contact.phoneNumber, this@MainActivity)
+//                                }.addAction("edit", R.drawable.ic_edit_floating_button) {
+//                                    val intent = ContactGesture.putContactIntent(contact, this@MainActivity, EditContactActivity::class.java)
+//                                    startActivity(intent)
+//                                }
+//                                .show()
+//                    } catch (e: IllegalStateException) {
+//
+//                    }
+                    false
+                }
 
                 main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                    if (main_FloatingButtonIsOpen == false) {
+                    if (!main_FloatingButtonIsOpen) {
+
                         //Save position in gridview
                         //val state = main_GridView!!.onSaveInstanceState()
                         index = main_GridView!!.getFirstVisiblePosition()
@@ -245,13 +247,12 @@ class MainActivity : AppCompatActivity() {
                         val o = main_GridView!!.getItemAtPosition(position)
                         val contact = o as Contacts
 
-                        val intent = ContactGesture.putContactIntent(contact, this@MainActivity, ContactDetailsActivity::class.java)
-                        startActivity(intent)
+//                        val intent = ContactGesture.putContactIntent(contact, this@MainActivity, ContactDetailsActivity::class.java)
+//                        startActivity(intent)
                     } else {
                         main_FloatingButtonIsOpen = false
                         onFloatingClickBack()
                     }
-
                 }
                 // Drag n Drop
 
@@ -274,8 +275,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         main_FloatingButtonAdd!!.setOnClickListener {
-            val loginIntent = Intent(this@MainActivity, AddNewContactActivity::class.java)
-            startActivity(loginIntent)
+            startActivity(Intent(this@MainActivity, AddNewContactActivity::class.java))
             main_FloatingButtonIsOpen = false
         }
 
@@ -334,7 +334,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    //
     inner class MyOnScaleGestureListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             val scaleFactor = detector.scaleFactor
@@ -367,43 +366,19 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_phone_book -> {
-                phone_call_layout!!.visibility = View.GONE
-                main_GridView!!.visibility = View.VISIBLE
-                hub_layout!!.visibility = View.GONE
-                main_FloatingButtonOpen!!.visibility = View.VISIBLE
-                my_informations_layout!!.visibility = View.GONE
-                return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
-                phone_call_layout!!.visibility = View.VISIBLE
-                main_FloatingButtonOpen!!.visibility = View.GONE
-                main_GridView!!.visibility = View.GONE
-                hub_layout!!.visibility = View.GONE
-                my_informations_layout!!.visibility = View.GONE
-                return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
-                phone_call_layout!!.visibility = View.VISIBLE
-                main_FloatingButtonOpen!!.visibility = View.GONE
-                main_GridView!!.visibility = View.GONE
-                hub_layout!!.visibility = View.GONE
-                my_informations_layout!!.visibility = View.GONE
+                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_socials_networks -> {
-                phone_call_layout!!.visibility = View.GONE
-                hub_layout!!.visibility = View.VISIBLE
-                main_FloatingButtonOpen!!.visibility = View.GONE
-                main_GridView!!.visibility = View.GONE
-                my_informations_layout!!.visibility = View.GONE
+                startActivity(Intent(this@MainActivity, ChatActivity::class.java))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_phone_keyboard -> {
-                phone_call_layout!!.visibility = View.VISIBLE
-                main_FloatingButtonOpen!!.visibility = View.GONE
-                main_GridView!!.visibility = View.GONE
-                hub_layout!!.visibility = View.GONE
-                my_informations_layout!!.visibility = View.GONE
+                startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -470,9 +445,9 @@ class MainActivity : AppCompatActivity() {
                     main_SearchBar!!.visibility = View.VISIBLE
                 } else {
                     if (!isEmptyField(main_SearchBar)) {
-                        main_search_bar_value = main_SearchBar!!.editText!!.text.toString()
+                        main_search_bar_value = main_SearchBar!!.text.toString()
                         println(main_filter)
-                        println(main_SearchBar!!.editText!!.text.toString())
+                        println(main_SearchBar!!.text.toString())
                         //
                         val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
                         var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
@@ -563,8 +538,8 @@ class MainActivity : AppCompatActivity() {
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
     }
 
-    private fun isEmptyField(field: TextInputLayout?): Boolean {
-        return field!!.editText!!.text.toString().isEmpty()
+    private fun isEmptyField(field: EditText?): Boolean {
+        return field!!.text.toString().isEmpty()
     }
 
     //endregion

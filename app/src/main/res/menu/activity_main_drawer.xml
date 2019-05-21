@@ -8,10 +8,6 @@
             android:icon="@drawable/ic_avatar"
             android:title="@string/left_drawer_informations" />
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home"
-            android:title="@string/left_drawer_home" />
-        <item
             android:id="@+id/nav_notif_config"
             android:icon="@drawable/ic_notifications_button"
             android:title="@string/left_drawer_notif_config" />

@@ -30,8 +30,8 @@ class ComposeMessageActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    private var compose_message_MessageEditText: TextInputLayout? = null
-    private var compose_message_PhoneNumberEditText: TextInputLayout? = null
+    private var compose_message_MessageEditText: EditText? = null
+    private var compose_message_PhoneNumberEditText: EditText? = null
 
     private var compose_message_Attachement: ImageView? = null
     private var compose_message_Attachement_Blue: ImageView? = null
@@ -64,7 +64,6 @@ class ComposeMessageActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar.title = "Envoyer un sms"
 
         //endregion
 
@@ -90,7 +89,7 @@ class ComposeMessageActivity : AppCompatActivity() {
             compose_message_phone_property = NumberAndMailDB.extractStringFromNumber(tmp)
         }
 
-        compose_message_PhoneNumberEditText!!.editText!!.setText(compose_message_phone_number)
+        compose_message_PhoneNumberEditText!!.setText(compose_message_phone_number)
 
         if (checkPermission(Manifest.permission.SEND_SMS)) {
             compose_message_send_Button!!.isEnabled = true
@@ -125,14 +124,14 @@ class ComposeMessageActivity : AppCompatActivity() {
         })
 
         compose_message_send_Button!!.setOnClickListener(View.OnClickListener {
-            val msg = compose_message_MessageEditText!!.editText!!.text.toString()
-            val phoneNumb = compose_message_PhoneNumberEditText!!.editText!!.text.toString()
+            val msg = compose_message_MessageEditText!!.text.toString()
+            val phoneNumb = compose_message_PhoneNumberEditText!!.text.toString()
 
             if (!TextUtils.isEmpty(msg) && !TextUtils.isEmpty(phoneNumb)) {
                 if (checkPermission(Manifest.permission.SEND_SMS)) {
                     val smsManager = SmsManager.getDefault()
                     smsManager.sendTextMessage(phoneNumb, null, msg, null, null)
-                    compose_message_MessageEditText!!.editText!!.text.clear()
+                    compose_message_MessageEditText!!.text.clear()
                     Toast.makeText(this, "Message envoyé", Toast.LENGTH_SHORT).show()
                     val intent = intent
                     finish()

@@ -111,7 +111,7 @@ object ContactSync : AppCompatActivity() {
                 if (fullName.first == numberPic.first) {
                     if (fullName.second.second == "") {
                         val contact = Contacts(null, fullName.second.first, fullName.second.third,
-                                numberPic.second!! + "P", "", R.drawable.default_profile, R.drawable.aquarius, 1, numberPic.third!!)
+                                numberPic.second!! + "P", "", randomDefaultImage(), R.drawable.aquarius, 1, numberPic.third!!)
                         phoneContactsList.add(contact)
                     } else if (fullName.second.second != "") {
                         val contact = Contacts(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, numberPic.second!! + "P", "", randomDefaultImage(), R.drawable.aquarius, 1, numberPic.third!!)
@@ -131,9 +131,7 @@ object ContactSync : AppCompatActivity() {
     }
 
     private fun isDuplicateNumber(idAndPhoneNumber: Triple<Int, String?, String?>, contactPhoneNumber: List<Triple<Int, String?, String?>>): Boolean {
-        //println("/////////////////////////////  "+ contactPhoneNumber.size)
         contactPhoneNumber.forEach {
-            // println("ID = "+it.first+" NUMBER = "+it.second)
             if (it.first == idAndPhoneNumber.first || it.second == idAndPhoneNumber.second)
                 return true
         }
@@ -141,8 +139,6 @@ object ContactSync : AppCompatActivity() {
     }
 
     private fun isDuplicate(id: Int, contactPhoneNumber: List<Pair<Int, Triple<String, String, String?>>>): Boolean {
-//        println("/////////////////////////////  "+ contactPhoneNumber.size)
-//        println("TEST -> "+id+"--------->"+ contactPhoneNumber)
         contactPhoneNumber.forEach {
             if (it.first == id)
                 return true
@@ -175,11 +171,11 @@ object ContactSync : AppCompatActivity() {
         } else if (nextValues == 1) {
             return R.drawable.ic_man_user_green
         } else if (nextValues == 2) {
-            return R.drawable.ic_man_user_orange
+            return R.drawable.ic_man_user_purple
         } else if (nextValues == 3) {
             return R.drawable.ic_man_user_pink
         } else if (nextValues == 4) {
-            return R.drawable.ic_man_user_yellow
+            return R.drawable.ic_man_user_brown
         }
 
         return 0

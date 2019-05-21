@@ -56,7 +56,6 @@ class SettingsActivity : AppCompatActivity() {
         tv_three!!.setImageResource(R.drawable.contactbyline3)
 
         activity_settings_switch_Theme = findViewById(R.id.activity_settings_switch_theme)
-        edit_owner_RelativeLayout_settings = findViewById(R.id.edit_owner_RelativeLayout_settings)
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             activity_settings_switch_Theme!!.setChecked(true);
@@ -80,13 +79,6 @@ class SettingsActivity : AppCompatActivity() {
             }
         })
 
-        edit_owner_RelativeLayout_settings!!.setOnClickListener {
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_edit_owner, null)
-            val mBuilder = AlertDialog.Builder(this)
-                    .setView(mDialogView)
-                    .setTitle(R.string.settings_owner_edit)
-//            val mAlertDialog = mBuilder.show()
-        }
         if(nbGrid==3){
             tv_three!!.setBackgroundResource(R.drawable.border_imageview)
         }else if(nbGrid==4){
