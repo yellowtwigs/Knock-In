@@ -1,23 +1,41 @@
 package com.example.knocker.controller
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatEditText
 import com.example.knocker.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PhoneLogActivity : AppCompatActivity() {
 
     private var main_BottomNavigationView: BottomNavigationView? = null
+    private var phone_log_IncomingCallButton: FloatingActionButton? = null
+    private var phone_log_PhoneNumber: AppCompatEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_log)
-
-
+        
         main_BottomNavigationView = findViewById(R.id.navigation)
         main_BottomNavigationView!!.menu.getItem(4).isChecked = true
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        phone_log_IncomingCallButton = findViewById(R.id.phone_log_incoming_call_button)
+        phone_log_PhoneNumber = findViewById(R.id.phone_log_phone_number)
+
+        phone_log_IncomingCallButton!!.setOnClickListener {
+            if (!TextUtils.isEmpty(phone_log_PhoneNumber!!.text.toString())) {
+                val dial = "tel:$phone_log_PhoneNumber!!.text.toString()"
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+            } else {
+                Toast.makeText(this@PhoneLogActivity, "Enter a phone number", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

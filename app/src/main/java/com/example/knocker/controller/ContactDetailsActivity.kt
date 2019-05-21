@@ -159,6 +159,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+
         println("contact name = " + contact_details_first_name)
         println("contact last name = " + contact_details_last_name)
         println("contact image = " + contact_details_rounded_image)
@@ -268,6 +269,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+
         contact_details_phone_number_Call_RelativeLayout!!.setOnClickListener {
             if (!TextUtils.isEmpty(contact_details_phone_number)) {
                 val dial = "tel:$contact_details_phone_number"
