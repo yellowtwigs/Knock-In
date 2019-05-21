@@ -405,24 +405,12 @@ class MainActivity : AppCompatActivity() {
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()
 
             if (filter != null && filter.isEmpty() == false) {
-                filter.forEach { filterElem ->
-                    allContacts.forEach {
-                        if (filterElem.firstName == it.firstName && filterElem.lastName == it.lastName && filterElem.contactPriority == it.contactPriority)
-                            filterElem.id = it.id
-                    }
-                }
                 allFilters.add(filter)
             }
         }
         if (filterList.contains("mail")) {
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithMail()
             if (filter != null && filter.isEmpty() == false) {
-                filter.forEach { filterElem ->
-                    allContacts.forEach {
-                        if (filterElem.firstName == it.firstName && filterElem.lastName == it.lastName && filterElem.contactPriority == it.contactPriority)
-                            filterElem.id = it.id
-                    }
-                }
                 allFilters.add(filter)
             }
         }
@@ -544,12 +532,14 @@ class MainActivity : AppCompatActivity() {
                     // duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
                     val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter)
+                    println("CONTACT LIST MAIL BEFORE = "+contactFilterList)
                     var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value)
                     if (contactFilterList != null) {
                         contactList = contactList!!.intersect(contactFilterList).toList()
                     }
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
+                    println("CONTACT LIST MAIL AFTER = "+contactList)
                     val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
                     main_GridView!!.adapter = contactAdapter
                     //
