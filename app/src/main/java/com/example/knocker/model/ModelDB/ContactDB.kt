@@ -2,6 +2,7 @@ package com.example.knocker.model.ModelDB
 
 import androidx.room.*
 
+
 @Entity(tableName = "contacts_table")
 data class ContactDB(
         @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) var id: Int?,    //id du contact
