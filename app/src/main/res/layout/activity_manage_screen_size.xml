@@ -21,17 +21,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
             android:id="@+id/activity_settings_change_nb_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="35dp"
             android:padding="2dp"
             android:text="@string/settings_number_of_line"
             android:textColor="@color/textColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/theme_RelativeLayout_settings" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <ImageView
             android:id="@+id/activity_settings_imageView_5_contact"

@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/edit_contact_parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".controller.EditContactActivity">
@@ -146,15 +147,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_mail_spinner_id" />
 
-    <Button
-        android:id="@+id/edit_contact_add_field_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
-        android:text="@string/edit_contact_add_field"
-        app:layout_constraintTop_toBottomOf="@+id/edit_contact_add_field_view"
-        tools:layout_editor_absoluteX="0dp" />
-
     <Spinner
         android:id="@+id/edit_contact_priority"
         android:layout_width="122dp"
@@ -183,6 +175,15 @@
         app:layout_constraintStart_toEndOf="@+id/edit_contact_priority"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_mail_id"
         app:layout_constraintVertical_bias="0.654" />
+
+    <Button
+        android:id="@+id/edit_contact_add_field_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="196dp"
+        android:text="@string/edit_contact_add_field"
+        app:layout_constraintTop_toBottomOf="@+id/edit_contact_add_field_view"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

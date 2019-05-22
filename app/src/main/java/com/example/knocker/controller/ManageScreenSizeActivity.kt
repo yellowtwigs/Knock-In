@@ -2,6 +2,7 @@ package com.example.knocker.controller
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.RelativeLayout
 
@@ -148,4 +149,17 @@ class ManageScreenSizeActivity : AppCompatActivity() {
 
         // endregion
     }
+    //region ========================================== Functions ===========================================
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                drawerLayout!!.openDrawer(GravityCompat.START)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    //endregion
 }

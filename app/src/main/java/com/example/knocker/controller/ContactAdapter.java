@@ -1,5 +1,6 @@
 package com.example.knocker.controller;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ import com.example.knocker.model.Contacts;
 import com.example.knocker.R;
 
 import java.util.List;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class ContactAdapter extends BaseAdapter {
     private List<Contacts> listContacts;
@@ -49,6 +53,7 @@ public class ContactAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -58,40 +63,50 @@ public class ContactAdapter extends BaseAdapter {
         if (gridview == null) {
             gridview = layoutInflater.inflate(R.layout.grid_item_layout, null);
 
+
             holder = new ViewHolder();
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
+//            holder.whatsapp_click_bubbles = gridview.findViewById(R.id.whatsapp_click_bubbles);
+//            holder.messenger_click_bubbles = gridview.findViewById(R.id.messenger_click_bubbles);
+//            holder.phone_call_click_bubbles = gridview.findViewById(R.id.phone_call_click_bubbles);
+//            holder.sms_click_bubbles = gridview.findViewById(R.id.sms_click_bubbles);
+
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
-            int len = sharedPreferences.getInt("gridview",3);
+
+
+            int len = sharedPreferences.getInt("gridview", 3);
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
-            holder.contactFirstNameView =  gridview.findViewById(R.id.contactFirstName);
-            RelativeLayout.LayoutParams layoutParamsTV= (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
-            RelativeLayout.LayoutParams layoutParamsIV= (RelativeLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
+
+            holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
+            ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
+            ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
+
             if (len == 3) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height*0.05;
-                holder.contactRoundedImageView.getLayoutParams().width -= height*0.05;
-                layoutParamsTV.topMargin=30;
-                layoutParamsIV.topMargin=10;
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.05;
+                holder.contactRoundedImageView.getLayoutParams().width -= height * 0.05;
+                layoutParamsTV.topMargin = 30;
+                layoutParamsIV.topMargin = 10;
             } else if (len == 4) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height*0.15;
-                holder.contactRoundedImageView.getLayoutParams().width -= width*0.15;
-                layoutParamsTV.topMargin=10;
-                layoutParamsIV.topMargin=10;
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.15;
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.15;
+                layoutParamsTV.topMargin = 10;
+                layoutParamsIV.topMargin = 10;
             } else if (len == 5 || len == 6) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height*0.50; //175
-                holder.contactRoundedImageView.getLayoutParams().width -= width*0.50;
-                layoutParamsTV.topMargin=0;
-                layoutParamsIV.topMargin=0;
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50; //175
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
+                layoutParamsTV.topMargin = 0;
+                layoutParamsIV.topMargin = 0;
             }
             holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
 
             gridview.setTag(holder);
         } else {
-            holder = (ViewHolder)convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         Contacts contact = this.listContacts.get(position);
-        if (contact.getContactPriority() == 0){
+        if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
         } else if (contact.getContactPriority() == 1) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
@@ -105,7 +120,7 @@ public class ContactAdapter extends BaseAdapter {
         }
         if (len == 4) {
             if (contact.getFirstName().length() > 10)
-                firstname = contact.getFirstName().substring(0,10).concat("..");
+                firstname = contact.getFirstName().substring(0, 10).concat("..");
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -113,7 +128,7 @@ public class ContactAdapter extends BaseAdapter {
         }
         if (len == 5) {
             if (contact.getFirstName().length() > 9)
-                firstname = contact.getFirstName().substring(0,9).concat("..");
+                firstname = contact.getFirstName().substring(0, 9).concat("..");
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -122,7 +137,7 @@ public class ContactAdapter extends BaseAdapter {
         }
         if (len == 6) {
             if (contact.getFirstName().length() > 8)
-                firstname = contact.getFirstName().substring(0,8).concat("..");
+                firstname = contact.getFirstName().substring(0, 8).concat("..");
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.71f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -138,17 +153,20 @@ public class ContactAdapter extends BaseAdapter {
         return gridview;
     }
 
-    public Bitmap base64ToBitmap(String base64) {
+    private Bitmap base64ToBitmap(String base64) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         BitmapFactory.Options options = new BitmapFactory.Options();
         //options.inSampleSize = 2;
-        return BitmapFactory.decodeByteArray(decodedString,0, decodedString.length, options);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
     }
 
     static class ViewHolder {
         TextView contactFirstNameView;
         TextView contactLastNameView;
-        TextView contactPhoneNumberView;
         CircularImageView contactRoundedImageView;
+        ImageView whatsapp_click_bubbles;
+        ImageView messenger_click_bubbles;
+        ImageView phone_call_click_bubbles;
+        ImageView sms_click_bubbles;
     }
 }

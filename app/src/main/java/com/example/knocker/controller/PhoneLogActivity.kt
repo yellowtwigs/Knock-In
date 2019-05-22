@@ -41,23 +41,21 @@ class PhoneLogActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_phone_book -> {
-                startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java))
-                overridePendingTransition(0, 0);
+                startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
             }
             R.id.navigation_notifcations -> {
-                startActivity(Intent(this@PhoneLogActivity, NotificationHistoryActivity::class.java))
+                startActivity(Intent(this@PhoneLogActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@PhoneLogActivity, ChatActivity::class.java))
-                overridePendingTransition(0, 0);
+                startActivity(Intent(this@PhoneLogActivity, ChatActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@PhoneLogActivity, PhoneLogActivity::class.java))
+                startActivity(Intent(this@PhoneLogActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }

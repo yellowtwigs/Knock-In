@@ -21,11 +21,8 @@ class SettingsActivity : AppCompatActivity() {
     private var tv_four: ImageView? = null
     private var tv_five: ImageView? = null
     private var tv_six: ImageView? = null
-    private var activity_settings_switch_Theme: Switch? = null
     private var nbGrid: Int = 3
     private var knockerTheme: Boolean? = true
-
-    private var edit_owner_RelativeLayout_settings: RelativeLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,29 +52,6 @@ class SettingsActivity : AppCompatActivity() {
         tv_four!!.setImageResource(R.drawable.contactbyline4)
         tv_three!!.setImageResource(R.drawable.contactbyline3)
 
-        activity_settings_switch_Theme = findViewById(R.id.activity_settings_switch_theme)
-
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            activity_settings_switch_Theme!!.setChecked(true);
-        }
-
-        activity_settings_switch_Theme!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("theme", false)
-                edit.apply()
-                restartActivity()
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("theme", true)
-                edit.apply()
-                restartActivity()
-            }
-        })
 
         if(nbGrid==3){
             tv_three!!.setBackgroundResource(R.drawable.border_imageview)
@@ -145,11 +119,5 @@ class SettingsActivity : AppCompatActivity() {
         startActivity(loginIntent)
         finish()
         return super.onOptionsItemSelected(item)
-    }
-
-    fun restartActivity() {
-        val intent = Intent(this@SettingsActivity, SettingsActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

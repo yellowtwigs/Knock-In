@@ -23,7 +23,12 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.PhoneLogActivity"></activity>
+        <activity
+            android:name=".controller.ManageKnockonsActivity"
+            android:label="@string/title_activity_manage_knockons"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".controller.ManageThemeActivity" />
+        <activity android:name=".controller.PhoneLogActivity" />
         <activity android:name=".controller.HelpActivity" />
         <activity android:name=".controller.ManageScreenSizeActivity" />
         <activity android:name=".controller.EditInformationsActivity" />

@@ -34,15 +34,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
         listviews.adapter = adapter
 
         main_BottomNavigationView = findViewById(R.id.navigation)
-        main_BottomNavigationView!!.menu.getItem(4).isChecked = true
+        main_BottomNavigationView!!.menu.getItem(1).isChecked = true
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_phone_book -> {
-                startActivity(Intent(this@NotificationHistoryActivity, MainActivity::class.java))
-                overridePendingTransition(0, 0);
+                startActivity(Intent(this@NotificationHistoryActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
@@ -50,12 +49,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
             R.id.navigation_notifcations -> {
             }
             R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@NotificationHistoryActivity, ChatActivity::class.java))
-                overridePendingTransition(0, 0);
+                startActivity(Intent(this@NotificationHistoryActivity, ChatActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@NotificationHistoryActivity, PhoneLogActivity::class.java))
+                startActivity(Intent(this@NotificationHistoryActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }

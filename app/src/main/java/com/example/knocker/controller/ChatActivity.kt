@@ -49,21 +49,18 @@ class ChatActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_phone_book -> {
-                startActivity(Intent(this@ChatActivity, MainActivity::class.java))
-                overridePendingTransition(0, 0);
+                startActivity(Intent(this@ChatActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
             }
             R.id.navigation_notifcations -> {
-                startActivity(Intent(this@ChatActivity, NotificationHistoryActivity::class.java))
-                return@OnNavigationItemSelectedListener true
+                startActivity(Intent(this@ChatActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             }
             R.id.navigation_socials_networks -> {
             }
             R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@ChatActivity, PhoneLogActivity::class.java))
-                overridePendingTransition(0, 0);
+                startActivity(Intent(this@ChatActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }

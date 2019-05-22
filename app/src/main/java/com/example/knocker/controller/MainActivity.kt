@@ -21,6 +21,7 @@ import android.text.TextUtils
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.example.knocker.*
 import com.facebook.FacebookSdk;
@@ -77,6 +78,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
+
+        val isDelete = intent.getBooleanExtra("isDelete", false)
+        if (isDelete) {
+            Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
+        }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
@@ -141,7 +147,6 @@ class MainActivity : AppCompatActivity() {
         my_knocker = headerView.findViewById(R.id.my_knocker)
 
         my_knocker!!.setOnClickListener {
-            startActivity(Intent(this@MainActivity, MainActivity::class.java))
         }
 
 
@@ -158,11 +163,11 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.nav_screen_size) {
                 startActivity(Intent(this@MainActivity, ManageScreenSizeActivity::class.java))
             } else if (id == R.id.nav_theme) {
-                startActivity(Intent(this@MainActivity, ChatActivity::class.java))
+                startActivity(Intent(this@MainActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {
                 startActivity(Intent(this@MainActivity, ChatActivity::class.java))
             } else if (id == R.id.nav_knockons) {
-                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
+                startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
             } else if (id == R.id.nav_statistics) {
                 startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
             } else if (id == R.id.nav_help) {
@@ -175,6 +180,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         //endregion
+
+        //region ========================================= Runnable =========================================
 
         //affiche tout les contacts de la Database
         val printContacts = Runnable {
@@ -247,8 +254,8 @@ class MainActivity : AppCompatActivity() {
                         val o = main_GridView!!.getItemAtPosition(position)
                         val contact = o as Contacts
 
-//                        val intent = ContactGesture.putContactIntent(contact, this@MainActivity, ContactDetailsActivity::class.java)
-//                        startActivity(intent)
+                        val intent = ContactGesture.putContactIntent(contact, this@MainActivity, EditContactActivity::class.java)
+                        startActivity(intent)
                     } else {
                         main_FloatingButtonIsOpen = false
                         onFloatingClickBack()
@@ -261,6 +268,8 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread(printContacts)
 
         //main_mDbWorkerThread.postTask(printContacts)
+
+        //endregion
 
         //region ==================================== SetOnClickListener ====================================
 
@@ -321,13 +330,11 @@ class MainActivity : AppCompatActivity() {
 
         //endregion
 
-        val isDelete = intent.getBooleanExtra("isDelete", false)
-        if (isDelete) {
-            Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
-        }
         scaleGestureDetectore = ScaleGestureDetector(this,
                 MyOnScaleGestureListener())
     }
+
+    //region ========================================== Functions ===========================================
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         scaleGestureDetectore?.onTouchEvent(event)
@@ -355,8 +362,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //region ========================================== Functions ===========================================
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
@@ -370,15 +375,15 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_groups -> {
             }
             R.id.navigation_notifcations -> {
-                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
+                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@MainActivity, ChatActivity::class.java))
+                startActivity(Intent(this@MainActivity, ChatActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java))
+                startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -438,35 +443,36 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
+                hideKeyboard()
                 return true
             }
-            R.id.nav_search -> {
-                if (main_SearchBar!!.visibility != View.VISIBLE) {
-                    main_SearchBar!!.visibility = View.VISIBLE
-                } else {
-                    if (!isEmptyField(main_SearchBar)) {
-                        main_search_bar_value = main_SearchBar!!.text.toString()
-                        println(main_filter)
-                        println(main_SearchBar!!.text.toString())
-                        //
-                        val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
-                        var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
-                        println(contactFilterList)
-                        if (contactFilterList != null) {
-                            contactList = contactList!!.intersect(contactFilterList).toList()
-                        }
-                        //
-                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                        val len = sharedPreferences.getInt("gridview", 3)
-                        //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                        println("LIIIIIIST = " + contactList)
-                        val contactAdapter = ContactAdapter(this, contactList, len)
-                        main_GridView!!.adapter = contactAdapter
-                    } else {
-                        Toast.makeText(this, "Le champ est vide", Toast.LENGTH_SHORT)
-                    }
-                }
-            }
+//            R.id.nav_search -> {
+//                if (main_SearchBar!!.visibility != View.VISIBLE) {
+//                    main_SearchBar!!.visibility = View.VISIBLE
+//                } else {
+//                    if (!isEmptyField(main_SearchBar)) {
+//                        main_search_bar_value = main_SearchBar!!.text.toString()
+//                        println(main_filter)
+//                        println(main_SearchBar!!.text.toString())
+//                        //
+//                        val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
+//                        var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
+//                        println(contactFilterList)
+//                        if (contactFilterList != null) {
+//                            contactList = contactList!!.intersect(contactFilterList).toList()
+//                        }
+//                        //
+//                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+//                        val len = sharedPreferences.getInt("gridview", 3)
+//                        //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+//                        println("LIIIIIIST = " + contactList)
+//                        val contactAdapter = ContactAdapter(this, contactList, len)
+//                        main_GridView!!.adapter = contactAdapter
+//                    } else {
+//                        Toast.makeText(this, "Le champ est vide", Toast.LENGTH_SHORT)
+//                    }
+//                }
+//            }
             R.id.sms_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)
@@ -540,6 +546,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun isEmptyField(field: EditText?): Boolean {
         return field!!.text.toString().isEmpty()
+    }
+
+    private fun hideKeyboard() {
+        // Check if no view has focus:
+        val view = this.currentFocus
+
+        view?.let { v ->
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
     }
 
     //endregion

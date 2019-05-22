@@ -159,15 +159,14 @@ class AddNewContactActivity : AppCompatActivity() {
                     alertDialog.setTitle("Attention")
                     alertDialog.setMessage("Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?")
 
-                    alertDialog.setPositiveButton("Oui", { _, _ ->
+                    alertDialog.setPositiveButton("Oui") { _, _ ->
 
-                        val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-                        startActivity(intent)
+                        startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
                         finish()
-                    })
+                    }
 
-                    alertDialog.setNegativeButton("Non", { _, _ ->
-                    })
+                    alertDialog.setNegativeButton("Non") { _, _ ->
+                    }
                     alertDialog.show()
                 }
             }

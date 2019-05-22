@@ -6,7 +6,7 @@
     <color name="backgroundColor">#00bebebc</color>
     <color name="textColor">#2B2B2B</color>
     <color name="whiteColor">#FFFFFF</color>
-    <color name="transparentColor">#00FFFFFF</color>
+    <color name="transparentColor">#33d5d5d5</color>
     <color name="textColorLight">#772D2D2D</color>
     <color name="relativeLayoutPressedColor">#ececec</color>
     <color name="borderViewColor">#f3f3f3</color>

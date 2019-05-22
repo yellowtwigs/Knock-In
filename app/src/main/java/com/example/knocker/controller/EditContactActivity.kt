@@ -1,6 +1,7 @@
 package com.example.knocker.controller
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
@@ -22,20 +23,27 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Base64
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import com.example.knocker.*
 import com.example.knocker.model.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.layout_notification_pop_up.*
 import java.io.ByteArrayOutputStream
 
 
 class EditContactActivity : AppCompatActivity() {
+
+    //region ========================================== Var or Val ==========================================
+
+    private var edit_contact_ParentLayout: ConstraintLayout? = null
 
     private var edit_contact_FirstName: TextInputLayout? = null
     private var edit_contact_LastName: TextInputLayout? = null
@@ -46,14 +54,15 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Priority_explain: TextView? = null
     private var edit_contact_Phone_Property: Spinner? = null
     private var edit_contact_Mail_Property: Spinner? = null
+    private var edit_contact_AddFieldButton: Button? = null
 
     private var edit_contact_id: Long? = null
     private var edit_contact_first_name: String? = null
     private var edit_contact_last_name: String? = null
     private var edit_contact_phone_number: String? = null
     private var edit_contact_phone_property_result: String? = null
-    private var edit_contact_mail_property_result:String? = null
-    private var edit_contact_mail:String? = null
+    private var edit_contact_mail_property_result: String? = null
+    private var edit_contact_mail: String? = null
     private var edit_contact_rounded_image: Int = 0
     private var edit_contact_image64: String? = null
     private var edit_contact_priority: Int = 1
@@ -69,6 +78,9 @@ class EditContactActivity : AppCompatActivity() {
     private val IMAGE_CAPTURE_CODE = 1001
     private var edit_contact_imgString: String? = null;
 
+    //endregion
+
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_contact)
@@ -79,6 +91,8 @@ class EditContactActivity : AppCompatActivity() {
 
         //on get la base de données
         edit_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+
+        //region ========================================== Intent ==========================================
 
         // Create the Intent, and get the data from the GridView
         val intent = intent
@@ -94,7 +108,11 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_rounded_image = intent.getIntExtra("ContactImage", 1)
         edit_contact_priority = intent.getIntExtra("ContactPriority", 1)
 
-        // Find View By Id
+        //endregion
+
+        //region ======================================= FindViewByID =======================================
+
+        edit_contact_ParentLayout = findViewById(R.id.edit_contact_parent_layout)
         edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
         edit_contact_LastName = findViewById(R.id.edit_contact_last_name_id)
         edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
@@ -104,8 +122,13 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.add_new_contact_phone_number_spinner)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
+        edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
+
+        //endregion
+
+
         if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
-            var contactList: List<Contacts>?
+            val contactList: List<Contacts>?
             val contact = ListContact.loadJSONFromAsset(this)
             contactList = ListContact.buildList(contact)
             for (contact in contactList) {
@@ -132,6 +155,9 @@ class EditContactActivity : AppCompatActivity() {
             }
             edit_contact_mDbWorkerThread.postTask(getimage64)
         }
+
+        //region ========================================= Toolbar ==========================================
+
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -140,10 +166,7 @@ class EditContactActivity : AppCompatActivity() {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
         actionbar.title = "Editer le contact"
 
-        // Set Resources from MainActivity to ContactDetailsActivity
-//        edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property_result!!, edit_contact_Phone_Property!!))
-//        edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property_result!!, edit_contact_Mail_Property!!))
-//        //edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
+        //endregion
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
@@ -153,7 +176,39 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
 
         edit_contact_RoundedImageView!!.setOnClickListener {
-            SelectImage()
+            selectImage()
+        }
+
+        edit_contact_AddFieldButton!!.setOnClickListener {
+            val inflater: LayoutInflater = this.layoutInflater
+            val alertView: View = inflater.inflate(R.layout.alert_dialog_add_field, null)
+
+            val alert_dialog_AddFieldListView = alertView.findViewById<ListView>(R.id.alert_dialog_add_field_list_view)
+
+            alert_dialog_AddFieldListView.adapter = ArrayAdapter(this@EditContactActivity, R.layout.list_item_add_fields_layout, R.id.list_item_add_fields_text, getListOfFields())
+            alert_dialog_AddFieldListView.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    when (position) {
+                        0 -> {
+                        }
+                        1 -> {
+                        }
+                        2 -> {
+                        }
+                    }
+                }
+            }
+
+            MaterialAlertDialogBuilder(this)
+                    .setTitle("Ajouter un champ")
+                    .setView(alertView)
+                    .setPositiveButton("Oui") { _, _ -> addField() }
+                    .show()
         }
 
         // drop list
@@ -171,11 +226,11 @@ class EditContactActivity : AppCompatActivity() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
-                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority0))
+                    edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
                 } else if (position == 1) {
-                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority1))
+                    edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
                 } else if (position == 2) {
-                    edit_contact_Priority_explain!!.setText(getString(R.string.add_new_contact_priority2))
+                    edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
 
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (!Settings.canDrawOverlays(applicationContext)) {
@@ -187,6 +242,25 @@ class EditContactActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun getListOfFields(): ArrayList<String> {
+        val edit_contact_ListOfFields = ArrayList<String>()
+
+        edit_contact_ListOfFields.add("Phone Number")
+        edit_contact_ListOfFields.add("Email Address")
+        edit_contact_ListOfFields.add("Facebook Account")
+        edit_contact_ListOfFields.add("Whatsapp Account")
+        edit_contact_ListOfFields.add("Skype Account")
+        edit_contact_ListOfFields.add("Instagram Account")
+        edit_contact_ListOfFields.add("Telegram Account")
+        edit_contact_ListOfFields.add("Address")
+        edit_contact_ListOfFields.add("Nickname")
+        edit_contact_ListOfFields.add("Site Web")
+        edit_contact_ListOfFields.add("Anniversary")
+        edit_contact_ListOfFields.add("Relationship")
+
+        return edit_contact_ListOfFields;
     }
 
     private fun getPosItemSpinner(item: String, spinner: Spinner): Int {
@@ -246,7 +320,8 @@ class EditContactActivity : AppCompatActivity() {
                         val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())
                         val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString())
                         if (edit_contact_imgString != null) {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText.toString(), edit_contact_LastName!!.editText.toString(), edit_contact_PhoneNumber!!.editText.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText.toString(), edit_contact_LastName!!.editText.toString(),
+                                    edit_contact_PhoneNumber!!.editText.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
                         } else {
                             edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText.toString(), edit_contact_LastName!!.editText.toString(), edit_contact_PhoneNumber!!.editText.toString() + spinnerPhoneChar, "", edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
@@ -278,7 +353,7 @@ class EditContactActivity : AppCompatActivity() {
         return true
     }
 
-    fun textChanged(textInput: TextInputLayout?, txt: String?) {
+    private fun textChanged(textInput: TextInputLayout?, txt: String?) {
         textInput!!.editText!!.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
@@ -296,7 +371,7 @@ class EditContactActivity : AppCompatActivity() {
         })
     }
 
-    private fun SelectImage() {
+    private fun selectImage() {
 
         val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
         //            ActionBar.DisplayOptions[]
@@ -333,7 +408,7 @@ class EditContactActivity : AppCompatActivity() {
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
-    fun getRealPathFromUri(context: Context, contentUri: Uri): String {
+    private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
         var cursor: Cursor? = null
         try {
             val proj = arrayOf(MediaStore.Images.Media.DATA)
@@ -364,7 +439,7 @@ class EditContactActivity : AppCompatActivity() {
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
-                edit_contact_imgString = bitmapToBase64(bitmap)
+                edit_contact_imgString = bitmap.bitmapToBase64()
 
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
@@ -379,12 +454,12 @@ class EditContactActivity : AppCompatActivity() {
                 //matrix.postRotate(90f)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
-                edit_contact_imgString = bitmapToBase64(bitmap)
+                edit_contact_imgString = bitmap.bitmapToBase64()
             }
         }
     }
 
-    fun exifToDegrees(exifOrientation: Int): Int {
+    private fun exifToDegrees(exifOrientation: Int): Int {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90
         } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
@@ -395,17 +470,51 @@ class EditContactActivity : AppCompatActivity() {
         return 0
     }
 
-    fun bitmapToBase64(bitmap: Bitmap): String {
+    private fun Bitmap.bitmapToBase64(): String {
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
-    fun base64ToBitmap(base64: String): Bitmap {
+    private fun base64ToBitmap(base64: String): Bitmap {
         val imageBytes = Base64.decode(base64, 0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+    }
+
+    private fun addField() {
+        val editText = EditText(this)
+        val edit_contact_MiddleName = TextInputLayout(this@EditContactActivity)
+
+        val paramsEditText = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                R.dimen.edit_text_height)
+
+        val paramsTextLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
+        paramsTextLayout.setMargins(0, 5, 0, 0)
+
+        editText.maxLines = 1
+        editText.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+        editText.background = ContextCompat.getDrawable(this@EditContactActivity, R.drawable.custom_edit_text)
+        editText.setTextColor(ContextCompat.getColor(this@EditContactActivity, R.color.textColor))
+
+        edit_contact_MiddleName.id = R.id.edit_contact_middle_name_id
+        edit_contact_MiddleName.hint = resources.getString(R.string.edit_contact_first_name)
+        edit_contact_MiddleName.layoutParams = paramsTextLayout
+        edit_contact_MiddleName.addView(editText, paramsEditText)
+
+//        val constraintSet = ConstraintSet()
+//        constraintSet.clone(edit_contact_ParentLayout);
+//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.TOP, edit_contact_ParentLayout!!.id, ConstraintSet.TOP, 18);
+//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.LEFT, edit_contact_ParentLayout!!.id, ConstraintSet.LEFT, 18);
+//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.RIGHT, edit_contact_ParentLayout!!.id, ConstraintSet.RIGHT, 18);
+//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.BOTTOM, edit_contact_ParentLayout!!.id, ConstraintSet.BOTTOM, 18);
+//
+//        constraintSet.applyTo(edit_contact_ParentLayout);
+
+//                            edit_contact_MiddleName.requestLayout()
+        edit_contact_ParentLayout!!.addView(edit_contact_MiddleName)
     }
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.

@@ -24,11 +24,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.example.knocker.CircularImageView
-            android:id="@+id/edit_informations_rounded_image_view_id"
+            android:id="@+id/edit_informations_profile_image"
             android:layout_width="115dp"
             android:layout_height="115dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="8dp"
             android:clickable="true"
             android:focusable="true"
@@ -37,8 +37,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+        <ImageView
+            android:id="@+id/edit_informations_mode_edition_activated"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_pencil_edit_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.66"
+            app:layout_constraintStart_toEndOf="@+id/edit_informations_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <ImageView
+            android:id="@+id/edit_informations_mode_edition_desactivated"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_pencil_edit_button"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.66"
+            app:layout_constraintStart_toEndOf="@+id/edit_informations_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_name_layout_id"
+            android:id="@+id/edit_informations_name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
@@ -47,17 +74,17 @@
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_informations_rounded_image_view_id">
+            app:layout_constraintTop_toBottomOf="@+id/edit_informations_profile_image">
 
             <TextView
-                android:id="@+id/edit_name_id"
+                android:id="@+id/edit_informations_name_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
-                android:text="NAME"
+                android:text="@string/edit_informations_name"
                 android:textColor="#000"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -68,16 +95,16 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Carrie Sanders"
+                android:text="@string/edit_informations_name_fake"
                 android:textColor="#000"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_name_id" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_informations_name_id" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
@@ -87,9 +114,29 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_informations_edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_marginTop="35dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_informations_profile_image">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edit_text"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColor="@color/textColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout9"
+            android:id="@+id/edit_informations_mail_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_relative_layout"
@@ -98,17 +145,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_name_layout_id">
+            app:layout_constraintTop_toBottomOf="@+id/edit_informations_name_layout">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/edit_informations_mail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
-                android:text="EMAIL"
+                android:text="@string/edit_informations_email"
                 android:textColor="#000"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -119,16 +166,16 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="carrie_sanders@email.com"
+                android:text="@string/edit_informations_email_fake"
                 android:textColor="#000"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_informations_mail" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
@@ -138,24 +185,47 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_informations_edit_mail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_marginTop="20dp"
+            android:hint="@string/add_new_contact_first_name"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_informations_edit_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edit_text"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColor="@color/textColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_informations_phone_number_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_relative_layout"
             android:clickable="true"
             android:focusable="true"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout9"
+            app:layout_constraintTop_toBottomOf="@+id/edit_informations_mail_layout"
             tools:layout_editor_absoluteX="0dp">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/edit_informations_phone_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
-                android:text="PHONE NUMBER"
+                android:text="@string/edit_informations_email"
                 android:textColor="#000"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -166,16 +236,16 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="06 51 74 09 03"
+                android:text="@string/edit_informations_phone_number_fake"
                 android:textColor="#000"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_informations_phone_number" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
@@ -184,6 +254,30 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_informations_edit_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_marginTop="20dp"
+            android:hint="@string/add_new_contact_first_name"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_informations_edit_mail"
+            tools:layout_editor_absoluteX="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edit_text"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:textColor="@color/textColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
