@@ -41,7 +41,7 @@
 149	0	app/schemas/com.example.firsttestknocker.ContactsRoomDatabase/6.json
 8	1	app/src/main/java/com/example/firsttestknocker/ContactsRoomDatabase.kt
 6	3	app/src/main/java/com/example/firsttestknocker/NotificationListener.kt
-3	1	app/src/main/java/com/example/firsttestknocker/Notifications.kt
+3	1	app/src/main/java/com/example/firsttestknocker/NotificationDB.kt
 2	2	app/src/main/res/layout/content_contact_details.xml
 25	4	app/src/main/java/com/example/firsttestknocker/NotifAdapter.java
 4	3	app/src/main/java/com/example/firsttestknocker/NotificationListener.kt
@@ -138,7 +138,7 @@
 58	19	app/src/main/java/com/example/firsttestknocker/AddNewContactActivity.kt
 19	2	app/src/main/java/com/example/firsttestknocker/ContactAdapter.java
 41	16	app/src/main/java/com/example/firsttestknocker/ContactDetailsActivity.kt
-2	1	app/src/main/java/com/example/firsttestknocker/Contacts.kt
+2	1	app/src/main/java/com/example/firsttestknocker/ContactDB.kt
 7	1	app/src/main/java/com/example/firsttestknocker/ContactsRoomDatabase.kt
 22	11	app/src/main/java/com/example/firsttestknocker/EditContactActivity.kt
 2	2	app/src/main/java/com/example/firsttestknocker/MainActivity.kt
@@ -164,10 +164,10 @@
 22	4	app/schemas/com.example.firsttestknocker.ContactsRoomDatabase/3.json
 131	0	app/schemas/com.example.firsttestknocker.ContactsRoomDatabase/4.json
 1	1	app/src/main/java/com/example/firsttestknocker/AddNewContactActivity.kt
-2	1	app/src/main/java/com/example/firsttestknocker/Contacts.kt
+2	1	app/src/main/java/com/example/firsttestknocker/ContactDB.kt
 9	1	app/src/main/java/com/example/firsttestknocker/ContactsRoomDatabase.kt
 2	2	app/src/main/java/com/example/firsttestknocker/MainActivity.kt
-3	1	app/src/main/java/com/example/firsttestknocker/Notifications.kt
+3	1	app/src/main/java/com/example/firsttestknocker/NotificationDB.kt
 7	4	app/src/main/AndroidManifest.xml
 85	0	app/src/main/java/com/example/firsttestknocker/NotifAdapter.java
 39	0	app/src/main/java/com/example/firsttestknocker/NotificationAdapter.kt
@@ -215,14 +215,14 @@
 17	1	app/src/main/java/com/example/firsttestknocker/NotificationsDao.kt
 113	0	app/schemas/com.example.firsttestknocker.ContactsRoomDatabase/3.json
 10	3	app/src/main/java/com/example/firsttestknocker/ContactsRoomDatabase.kt
-12	0	app/src/main/java/com/example/firsttestknocker/Notifications.kt
+12	0	app/src/main/java/com/example/firsttestknocker/NotificationDB.kt
 18	0	app/src/main/java/com/example/firsttestknocker/NotificationsDao.kt
 20	4	app/src/main/java/com/example/firsttestknocker/ChatActivity.java
 34	6	app/src/main/java/com/example/firsttestknocker/ContactDetailsActivity.kt
 2	2	app/src/main/res/layout/activity_chat.xml
 3	2	app/src/main/java/com/example/firsttestknocker/AddNewContactActivity.kt
 3	2	app/src/main/java/com/example/firsttestknocker/ContactDetailsActivity.kt
-7	7	app/src/main/java/com/example/firsttestknocker/Contacts.kt
+7	7	app/src/main/java/com/example/firsttestknocker/ContactDB.kt
 1	0	app/src/main/java/com/example/firsttestknocker/DbWorkerThread.kt
 8	1	app/src/main/java/com/example/firsttestknocker/MainActivity.kt
 1	2	app/src/main/AndroidManifest.xml
@@ -315,7 +315,7 @@
 9	3	app/schemas/com.example.firsttestknocker.ContactsRoomDatabase/1.json
 69	0	app/schemas/com.example.firsttestknocker.ContactsRoomDatabase/2.json
 1	1	app/src/main/java/com/example/firsttestknocker/AddNewContactActivity.kt
-1	1	app/src/main/java/com/example/firsttestknocker/Contacts.kt
+1	1	app/src/main/java/com/example/firsttestknocker/ContactDB.kt
 2	2	app/src/main/java/com/example/firsttestknocker/ContactsDao.kt
 10	2	app/src/main/java/com/example/firsttestknocker/ContactsRoomDatabase.kt
 1	1	app/src/main/java/com/example/firsttestknocker/EditContactActivity.kt
@@ -325,7 +325,7 @@
 1	1	app/src/main/AndroidManifest.xml
 8	14	app/src/main/java/com/example/firsttestknocker/AddNewContactActivity.kt
 20	8	app/src/main/java/com/example/firsttestknocker/ContactDetailsActivity.java
-1	0	app/src/main/java/com/example/firsttestknocker/Contacts.kt
+1	0	app/src/main/java/com/example/firsttestknocker/ContactDB.kt
 4	0	app/src/main/java/com/example/firsttestknocker/EditContactActivity.kt
 2	0	app/src/main/java/com/example/firsttestknocker/MainActivity.kt
 38	15	app/src/main/res/layout/content_contact_details.xml
@@ -375,7 +375,7 @@
 2	2	app/src/main/res/layout/activity_add_new_contact.xml
 3	3	app/src/main/res/layout/activity_edit_contact.xml
 1	1	app/src/main/res/menu/menu_add_contact.xml
-0	0	app/src/main/java/com/example/firsttestknocker/{DataClass.kt => Contacts.kt}
+0	0	app/src/main/java/com/example/firsttestknocker/{DataClass.kt => ContactDB.kt}
 16	0	app/src/main/java/com/example/firsttestknocker/ContactsDao.kt
 1	1	app/src/main/java/com/example/firsttestknocker/DataClass.kt
 3	3	app/src/main/java/com/example/firsttestknocker/MainActivity.kt

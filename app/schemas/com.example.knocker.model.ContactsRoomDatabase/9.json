@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "90c01f7f2965fa94dd640e123ed5be16",
+    "identityHash": "a93bd6da75de6db53fc7d47a8a3e8f73",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -233,11 +233,71 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "link_contact_group_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_group` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL, PRIMARY KEY(`id_group`, `id_contact`), FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`id_group`) REFERENCES `groups_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idGroup",
+            "columnName": "id_group",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idContact",
+            "columnName": "id_contact",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_group",
+            "id_contact"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_link_contact_group_table_id_group_id_contact",
+            "unique": true,
+            "columnNames": [
+              "id_group",
+              "id_contact"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_link_contact_group_table_id_group_id_contact` ON `${TABLE_NAME}` (`id_group`, `id_contact`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "contacts_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id_contact"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "groups_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id_group"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"90c01f7f2965fa94dd640e123ed5be16\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a93bd6da75de6db53fc7d47a8a3e8f73\")"
     ]
   }
 }

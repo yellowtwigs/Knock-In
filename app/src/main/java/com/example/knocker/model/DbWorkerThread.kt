@@ -20,4 +20,5 @@ class DbWorkerThread(threadName: String) : HandlerThread(threadName){
             postTask(task)
         }
     }
+
 }

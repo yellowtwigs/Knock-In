@@ -1,11 +1,12 @@
 package com.example.knocker.model
 
 import androidx.appcompat.app.AppCompatActivity
+import com.example.knocker.model.ModelDB.ContactDB
 
 object ContactsPriority : AppCompatActivity() {
 
     // fonction qui recupere la priorité grâce au nom du contact et la plateforme
-    fun getPriorityWithName(name: String, platform: String, listContact: List<Contacts>?): Int {
+    fun getPriorityWithName(name: String, platform: String, listContact: List<ContactDB>?): Int {
         var priority = -2
         when (platform) {
             "message" -> {
@@ -22,7 +23,7 @@ object ContactsPriority : AppCompatActivity() {
     }
 
     // get la priorité grace à la liste
-    fun getPriority(name: String, listContact: List<Contacts>?): Int {
+    fun getPriority(name: String, listContact: List<ContactDB>?): Int {
         var priority = -1
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->
@@ -42,7 +43,7 @@ object ContactsPriority : AppCompatActivity() {
         return priority
     }
 
-    fun checkPriority2(contactList: List<Contacts>?): Boolean {
+    fun checkPriority2(contactList: List<ContactDB>?): Boolean {
         if (contactList != null) {
             for (contact in contactList){
                if(contact.contactPriority==2){

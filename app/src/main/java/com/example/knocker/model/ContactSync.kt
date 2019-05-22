@@ -12,6 +12,9 @@ import android.graphics.BitmapFactory
 import android.widget.GridView
 import com.example.knocker.R
 import com.example.knocker.controller.ContactAdapter
+import com.example.knocker.model.ModelDB.ContactDB
+import com.example.knocker.model.ModelDB.ContactDetailDB
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 
@@ -133,7 +136,7 @@ object ContactSync : AppCompatActivity() {
         return false
     }
 
-    private fun isDuplicate(contact: String, contactsList:List<Contacts>): Boolean {
+    private fun isDuplicate(contact: String, contactsList:List<ContactDB>): Boolean {
         contactsList.forEach {
             if (it.lastName == "" && it.firstName == contact || it.firstName + " " + it.lastName == contact)
                 return true
@@ -150,7 +153,7 @@ object ContactSync : AppCompatActivity() {
     }//TODO:redondant
 
     fun createListContacts(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Triple<Int, String?, String?>>?, gridView: GridView?, applicationContext: Context) {
-        val phoneContactsList = arrayListOf<Contacts>()
+        val phoneContactsList = arrayListOf<ContactDB>()
         var main_ContactsDatabase: ContactsRoomDatabase? = null
         lateinit var main_mDbWorkerThread: DbWorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -160,11 +163,11 @@ object ContactSync : AppCompatActivity() {
             val allcontacts = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             phoneStructName!!.forEach { fullName ->
                 contactNumberAndPic!!.forEach { numberPic ->
-                    val contactDetails=listOf(ContactDetails(null,null,numberPic.second!! + "P","phone",0))
+                    val contactDetails=listOf(ContactDetailDB(null, null, numberPic.second!! + "M", "phone", 0),ContactDetailDB(null, null,  "B", "phone", 0))
                     if (fullName.first == numberPic.first) {
                         if (fullName.second.second == "") {
-                            // val contact = Contacts(null, fullName.second.first, fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
-                            val contacts = Contacts(null, fullName.second.first, fullName.second.third, R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                            // val contact = ContactDB(null, fullName.second.first, fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                            val contacts = ContactDB(null, fullName.second.first, fullName.second.third, R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
                             if(!ContactSync.isDuplicate(allcontacts,contacts)){
 
                                 contacts.id=main_ContactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -179,8 +182,8 @@ object ContactSync : AppCompatActivity() {
                             }
                             phoneContactsList.add(contacts)
                         } else if (fullName.second.second != "") {
-                            //val contact = Contacts(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
-                            val contacts = Contacts(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                            //val contact = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                            val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
                             phoneContactsList.add(contacts)
                             if(!ContactSync.isDuplicate(allcontacts,contacts)){
                                 contacts.id=main_ContactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -193,20 +196,22 @@ object ContactSync : AppCompatActivity() {
                         }
                     }
                 }
-                println("liste de détail"+main_ContactsDatabase?.contactDetailsDao()?.getAllDetails())
-                val syncContact= main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                val len = sharedPreferences.getInt("gridview", 4)
-                val contactAdapter = ContactAdapter(applicationContext, syncContact, len)
-                gridView!!.adapter = contactAdapter
+
 
             }
+            println("liste de détail"+main_ContactsDatabase?.contactDetailsDao()?.getAllDetails())
+            val syncContact= main_ContactsDatabase?.contactsDao()?.getContactAllInfo()
+            val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+            val len = sharedPreferences.getInt("gridview", 4)
+            val contactAdapter = ContactAdapter(applicationContext, syncContact, len)
+            gridView!!.adapter = contactAdapter
         }
         runOnUiThread(addAllContacts)
     }
 
-    private fun isDuplicate(contacts:List<Contacts>?,phoneContactList:Contacts):Boolean{
-        contacts?.forEach { contactsDB ->
+    private fun isDuplicate(contacts:List<ContactWithAllInformation>?, phoneContactList: ContactDB):Boolean{
+        contacts?.forEach { contactsInfo ->
+            val contactsDB=contactsInfo.contactDB!!
             //println("LOOOOOOOOOOOOP "+ contactsDB)
             if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
                 return true

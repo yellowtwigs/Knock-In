@@ -19,6 +19,7 @@ import android.view.WindowManager
 import android.widget.ListView
 import com.example.knocker.R
 import com.example.knocker.model.*
+import com.example.knocker.model.ModelDB.NotificationDB
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -125,9 +126,9 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 
-    public fun saveNotfication(sbp: StatusBarParcelable): Notifications? {
+    public fun saveNotfication(sbp: StatusBarParcelable): NotificationDB? {
         if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"].toString() != null) {
-            val notif = Notifications(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, 0, false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(Calendar.getInstance().timeInMillis.toString().toLong())), Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt(), 0, "");
+            val notif = NotificationDB(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, 0, false, SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(Calendar.getInstance().timeInMillis.toString().toLong())), Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt(), 0, "");
             return notif;
         } else {
             return null

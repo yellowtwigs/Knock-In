@@ -6,11 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
+import com.example.knocker.model.ModelDB.*
 import com.example.knocker.model.requestDB.ContactDetailsDao
 import com.example.knocker.model.requestDB.ContactsDao
 import com.example.knocker.model.requestDB.NotificationsDao
 
-@Database(entities = [Contacts::class, Notifications::class,Groups::class,ContactDetails::class], version = 9)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class,LinkContactGroup::class], version = 9)
  abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
