@@ -13,12 +13,12 @@ import java.util.ArrayList
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
 import androidx.core.content.ContextCompat.checkSelfPermission
-import android.telephony.SmsManager
 import android.text.TextUtils
 import android.view.*
 import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
+import com.example.knocker.model.ModelDB.ContactDB
 
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
     private val TAG = NotificationListener::class.java.simpleName
@@ -137,7 +137,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
                     notification_adapeter_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
                     val openWhatsApp=Runnable{
-                        val contacts: List<Contacts> = notification_adapeter_ContactsDatabase!!.contactsDao().getAllContacts()
+                        val contacts: List<ContactDB> = notification_adapeter_ContactsDatabase!!.contactsDao().getAllContacts()
                         val id_contact=getContact(sbp.statusBarNotificationInfo.get("android.title").toString(),contacts)!!.id
                         val phoneNumber=notification_adapeter_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(id_contact!!.toInt()).contactDetails
                         ContactGesture.openWhatsapp(phoneNumber, context)
@@ -237,7 +237,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         }
     }
 
-    fun getContact(name: String, listContact: List<Contacts>?): Contacts? {
+    fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
 
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->

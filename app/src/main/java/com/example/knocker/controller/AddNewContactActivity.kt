@@ -23,6 +23,8 @@ import android.view.*
 import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
+import com.example.knocker.model.ModelDB.ContactDB
+import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 
@@ -127,7 +129,7 @@ class AddNewContactActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     //demmande de confirmation de la création d'un contact en double
-    private fun confirmationDuplicate(contactData: Contacts){
+    private fun confirmationDuplicate(contactData: ContactDB){
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle("CONTACT DEJA EXISTANT !")
         builder.setMessage("Un contact porte déjà ce nom. L'enregistrer quand même sous ce nom ?")
@@ -178,7 +180,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString())
                         val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString())
                         println("teeeeeeeeeessssssssssssstttttttttt2 = "+ mailSpinnerChar)
-                        val contactData = Contacts(null,
+                        val contactData = ContactDB(null,
                                 add_new_contact_FirstName!!.editText!!.text.toString(),
                                 add_new_contact_LastName!!.editText!!.text.toString(),
                                 R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(),
@@ -193,16 +195,16 @@ class AddNewContactActivity : AppCompatActivity() {
 
                         if (isDuplicate == false) {
                             main_ContactsDatabase?.contactsDao()?.insert(contactData)
-                            val listContacts:List<Contacts>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
-                            val contact:Contacts?=getContact(contactData.firstName+" "+contactData.lastName,listContacts)
-                            var contactDetails: ContactDetails
+                            val listContacts:List<ContactDB>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
+                            val contact: ContactDB?=getContact(contactData.firstName+" "+contactData.lastName,listContacts)
+                            var contactDetailDB: ContactDetailDB
                             if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                                contactDetails = ContactDetails(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", 0)
-                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
+                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", 0)
+                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                             }
                             if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                                contactDetails = ContactDetails(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", 1)
-                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetails)
+                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", 1)
+                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                             }
 
                             println("test"+main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
@@ -345,7 +347,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //endregion
 
-    fun getContact(name: String, listContact: List<Contacts>?): Contacts? {
+    fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
 
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->

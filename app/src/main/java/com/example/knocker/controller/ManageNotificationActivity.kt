@@ -27,7 +27,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         //actionbar!!.setDisplayHomeAsUpEnabled(true)
         //actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar!!.title = " \t \t \t \t Notifications"
+        actionbar!!.title = " \t \t \t \t NotificationDB"
         var retour: ImageView = findViewById(R.id.imageView_notification_manager)
         retour.setOnClickListener(){
             this.finish()

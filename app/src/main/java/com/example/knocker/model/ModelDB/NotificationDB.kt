@@ -1,9 +1,9 @@
-package com.example.knocker.model
+package com.example.knocker.model.ModelDB
 
 import androidx.room.*
 
 @Entity(tableName = "notifications_table")
-data class Notifications(
+data class NotificationDB(
         @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int?,     //id de la notification
         @ColumnInfo(name = "title") val title: String,                              //titre de la notification
         @ColumnInfo(name = "contact_name") val contactName: String,                 //nom du contact sur la notification

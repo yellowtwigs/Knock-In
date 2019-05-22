@@ -1,9 +1,9 @@
-package com.example.knocker.model
+package com.example.knocker.model.ModelDB
 
 import androidx.room.*
 
 @Entity(tableName = "groups_table")
-data class Groups(
+data class GroupDB(
         @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Long?,    //id du groupe
         @ColumnInfo(name = "name") val name: String,                                //nom du groupe
         @ColumnInfo(name = "nb_members") val nbMembers: Int,                        //nombre de membres

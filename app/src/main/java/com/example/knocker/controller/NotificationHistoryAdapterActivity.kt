@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.knocker.model.Notifications
+import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
 
-class NotificationHistoryAdapterActivity(private val context:Context ,private val notifications:ArrayList<Notifications>) : BaseAdapter() {
-    override fun getItem(position: Int): Notifications {
+class NotificationHistoryAdapterActivity(private val context:Context ,private val notifications:ArrayList<NotificationDB>) : BaseAdapter() {
+    override fun getItem(position: Int): NotificationDB {
         return notifications[position]
     }
 

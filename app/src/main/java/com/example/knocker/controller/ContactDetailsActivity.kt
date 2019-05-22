@@ -25,6 +25,11 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.example.knocker.model.ModelDB.ContactDB
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class ContactDetailsActivity : AppCompatActivity() {
 
@@ -62,7 +67,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_linkedin_RelativeLayout: RelativeLayout? = null
     private var contact_details_twitter_RelativeLayout: RelativeLayout? = null
 
-    private var contact_details_id: Long? = null
+    private var contact_details_id: Int? = null
     private var contact_details_first_name: String? = null
     private var contact_details_last_name: String? = null
     private var contact_details_phone_number: String? = null
@@ -120,34 +125,76 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         // Create the Intent, and get the data from the GridView
         val intent = intent
-        contact_details_first_name = intent.getStringExtra("ContactFirstName")
-        contact_details_last_name = intent.getStringExtra("ContactLastName")
-        var tmp = intent.getStringExtra("ContactPhoneNumber")
-        println("tmp " + tmp);
-        contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
-        contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmp)
-        tmp = intent.getStringExtra("ContactMail")
-        contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
-        contact_details_mail_property = NumberAndMailDB.extractStringFromNumber(tmp)
-        contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
-        contact_details_id = intent.getLongExtra("ContactId", 1)
-        contact_details_priority = intent.getIntExtra("ContactPriority", 1)
+        contact_details_id = intent.getIntExtra("ContactId", 1)
+
+
         if (contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_id!!.toInt()) == null) {
-            print("it works")
-            var contactList: List<Contacts>?
-            val contact = FakeContact.loadJSONFromAsset(this)
-            contactList = FakeContact.buildList(contact)
-            for (contact in contactList) {
-                if (contact_details_first_name.equals(contact.firstName) && contact_details_last_name.equals(contact.lastName)) {
-                    contact_details_image64 = contact.profilePicture64
-                    contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(contact_details_image64.toString()))
-                }
-            }
+            var contactList: List<ContactWithAllInformation>?
+            val contactString= FakeContact.loadJSONFromAsset(this)
+            contactList= FakeContact.buildList(contactString)
+
+            var contact= FakeContact.getContactId(contact_details_id!!,contactList)!!
+            contact_details_first_name = contact.contactDB!!.firstName
+            contact_details_last_name = contact.contactDB!!.lastName
+            var tmpPhone=contact.contactDetailList!!.get(0)
+            contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
+            contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
+            var tmpMail=contact.contactDetailList!!.get(1)
+            contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.contactDetails)
+            contact_details_mail_property= NumberAndMailDB.extractStringFromNumber(tmpMail.contactDetails)
+            contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
+            contactList = FakeContact.buildList(contactString)
+            contact_details_image64 = contact.contactDB!!.profilePicture64
+            contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(contact_details_image64.toString()))
+
+            val toolbar = findViewById<Toolbar>(R.id.toolbar)
+            setSupportActionBar(toolbar)
+            val actionbar = supportActionBar
+            actionbar!!.setDisplayHomeAsUpEnabled(true)
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+            println("contact name = " + contact_details_first_name)
+            println("contact last name = " + contact_details_last_name)
+            println("contact image = " + contact_details_rounded_image)
+            actionbar.setTitle("Détails du contact " + contact_details_first_name!!)
+
         } else {
-            val getimage64 = Runnable {
-                val id = contact_details_id
-                val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
-                contact_details_image64 = contact!!.profilePicture64
+                val executorService:ExecutorService = Executors.newFixedThreadPool(1)
+                val callDb= Callable { contact_details_ContactsDatabase!!.contactsDao().getContact(contact_details_id!!) }
+                val result=executorService.submit(callDb)
+                val contact:ContactWithAllInformation = result.get()
+                println("contact "+contact.contactDetailList + " taille "+contact.contactDetailList!!.size)
+                println("contact db"+contact.contactDB)
+                contact_details_first_name = contact.contactDB!!.firstName
+                contact_details_last_name = contact.contactDB!!.lastName
+
+                if(contact.contactDetailList!!.size==0){
+                    print("if 0")
+                    contact_details_phone_property=""
+                    contact_details_phone_number=""
+                    contact_details_mail=""
+                    contact_details_mail_property=""
+                }else if(contact.contactDetailList!!.size==1){
+                    print("if 1 ou 2")
+                    var tmpPhone = contact.contactDetailList!!.get(0)
+                    println(" test méthode "+tmpPhone.contactDetails)
+                    contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
+                    contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
+                    contact_details_mail=""
+                    contact_details_mail_property=""
+
+                }else if(contact.contactDetailList!!.size == 2) {
+                            print("if 2")
+
+                            var tmpPhone = contact.contactDetailList!!.get(0)
+                            var tmpMail = contact.contactDetailList!!.get(1)
+                            contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
+                            contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
+                            contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.contactDetails)
+                            contact_details_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.contactDetails)
+                        }
+
+                val contactDB = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_id!!)
+                contact_details_image64 = contactDB!!.contactDB!!.profilePicture64
                 if (contact_details_image64 == "") {
                     println(" contact detail ======= " + contact_details_rounded_image)
                     contact_details_RoundedImageView!!.setImageResource(contact_details_rounded_image)
@@ -155,20 +202,21 @@ class ContactDetailsActivity : AppCompatActivity() {
                     val image64 = contact_details_image64
                     contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
                 }
-            }
-            contact_details_mDbWorkerThread.postTask(getimage64)
+                val toolbar = findViewById<Toolbar>(R.id.toolbar)
+                setSupportActionBar(toolbar)
+                val actionbar = supportActionBar
+                actionbar!!.setDisplayHomeAsUpEnabled(true)
+                actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+                println("contact name = " + contact_details_first_name)
+                println("contact last name = " + contact_details_last_name)
+                println("contact image = " + contact_details_rounded_image)
+                actionbar.setTitle("Détails du contact " + contact_details_first_name!!)
+
+
         }
 
         // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        println("contact name = " + contact_details_first_name)
-        println("contact last name = " + contact_details_last_name)
-        println("contact image = " + contact_details_rounded_image)
-        actionbar.setTitle("Détails du contact " + contact_details_first_name!!)
+
 
         // RelativeLayout to link with other SM's apps, link between Layout and the Activity
         contact_details_phone_number_SMS_RelativeLayout = findViewById(R.id.contact_details_phone_number_sms_relative_layout_id)
@@ -214,6 +262,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
 
         // Set Resources from MainActivity to ContactDetailsActivity
+        println("ressources"+contact_details_first_name+"  "+ contact_details_last_name)
         contact_details_FirstName!!.text = contact_details_first_name
         contact_details_LastName!!.text = contact_details_last_name
         contact_details_PhoneNumberSMS!!.text = contact_details_phone_number
@@ -245,7 +294,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             val intent = Intent(this@ContactDetailsActivity, EditContactActivity::class.java)
 
             println("imaaage befor send to edit = " + contact_details_rounded_image)
-            // Creation of a intent to transfer data's contact from ContactDetails to EditContact
+            // Creation of a intent to transfer data's contact from ContactDetailDB to EditContact
             intent.putExtra("ContactFirstName", contact_details_first_name)
             intent.putExtra("ContactLastName", contact_details_last_name)
             intent.putExtra("ContactPhoneNumber", contact_details_phone_number + NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!))
@@ -262,15 +311,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
             val intent = Intent(this@ContactDetailsActivity, ComposeMessageActivity::class.java)
 
-            println("image befor send to edit = " + contact_details_rounded_image)
-            // Creation of a intent to transfer data's contact from ContactDetails to EditContact
-            intent.putExtra("ContactFirstName", contact_details_first_name)
-            intent.putExtra("ContactLastName", contact_details_last_name)
-            intent.putExtra("ContactPhoneNumber", contact_details_phone_number + NumberAndMailDB.convertSpinnerStringToChar(contact_details_phone_property!!))
-            intent.putExtra("ContactImage", contact_details_rounded_image)
             intent.putExtra("ContactId", contact_details_id!!)
-            intent.putExtra("ContactMail", contact_details_mail!! + NumberAndMailDB.convertSpinnerStringToChar(contact_details_mail_property!!))
-            intent.putExtra("ContactPriority", contact_details_priority)
 
             startActivity(intent)
         }

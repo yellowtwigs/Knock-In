@@ -1,9 +1,9 @@
-package com.example.knocker.model
+package com.example.knocker.model.ModelDB
 
 import androidx.room.*
 
 @Entity(tableName = "contacts_table")
-data class Contacts(
+data class ContactDB(
         @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) var id: Int?,    //id du contact
         @ColumnInfo(name = "first_name") val firstName: String,                     //prénom du contact
         @ColumnInfo(name = "last_name") var lastName: String,                       //nom du contact
