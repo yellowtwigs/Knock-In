@@ -25,7 +25,7 @@ object FakeContact {
     fun buildList(contacts:String):List<ContactWithAllInformation>{
         var listContacts = mutableListOf<ContactWithAllInformation>()
         try {
-                val jsArray:JSONArray = JSONArray(contacts)
+                val jsArray = JSONArray(contacts)
                 for(x in 0..(jsArray.length()-1)){
                     listContacts.add(getContactFromJSONObject(jsArray.getJSONObject(x),x))
                 }
@@ -39,13 +39,12 @@ object FakeContact {
         val lastName:String = json.getString("last_name")
 
         val profilPicture: Int = R.drawable.img_avatar
-        var backgroundImage:Int = R.drawable.aquarius
         val contactPriority :Int= json.getInt("contact_priority")
         val profilPictureStr:String = json.getString("profile_picture_str")
 
         println("contact :"+ firstName +" "+ lastName)
-        val contact: ContactDB = ContactDB(id, firstName, lastName, profilPicture, backgroundImage, contactPriority, profilPictureStr)
-        val contactInfo:ContactWithAllInformation= ContactWithAllInformation()
+        val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr)
+        val contactInfo = ContactWithAllInformation()
         contactInfo.contactDB= contact
         contactInfo.contactDetailList=getContactDeatailFromJSONObject(json,id)
         return contactInfo
@@ -53,8 +52,8 @@ object FakeContact {
    fun getContactDeatailFromJSONObject(json: JSONObject, idContact:Int): List<ContactDetailDB> {
         val phoneNumber:String = json.getString("phone_number")
         val mail:String=json.getString("mail")
-        val contactDetails: ContactDetailDB = ContactDetailDB(null,idContact,phoneNumber+"M","phone",0)
-        val contactDetails2: ContactDetailDB = ContactDetailDB(null,idContact,mail+"B","mail",1)
+        val contactDetails = ContactDetailDB(null,idContact,phoneNumber+"M","phone", "",0)
+        val contactDetails2 = ContactDetailDB(null,idContact,mail+"B","mail", "",1)
         return mutableListOf<ContactDetailDB>(contactDetails,contactDetails2)
     }
     fun getContactId(id:Int,contactList:List<ContactWithAllInformation>): ContactWithAllInformation? {

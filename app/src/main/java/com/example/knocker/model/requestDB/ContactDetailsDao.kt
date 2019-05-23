@@ -21,7 +21,7 @@ interface ContactDetailsDao {
     fun getDetailsForAContact(contactID:Int):List<ContactDetailDB>
 
     //update un contact_detail grace à son id
-    @Query("UPDATE contact_details_table SET contact_details = :contactDetail WHERE id = :id")
+    @Query("UPDATE contact_details_table SET content = :contactDetail WHERE id = :id")
     fun updateContactDetailById(id: Int, contactDetail: String)
 
     @Insert
