@@ -9,12 +9,12 @@ import com.example.knocker.R
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private val SPLASH_DISPLAY_LENGHT = 2000
+    private val SPLASH_DISPLAY_LENGHT = 0.000001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         Handler().postDelayed({
             val loginIntent = Intent(this@SplashScreenActivity, MainActivity::class.java)

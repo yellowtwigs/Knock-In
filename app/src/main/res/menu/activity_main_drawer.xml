@@ -9,7 +9,7 @@
             android:title="@string/left_drawer_informations" />
         <item
             android:id="@+id/nav_notif_config"
-            android:icon="@drawable/ic_notifications_button"
+            android:icon="@drawable/ic_notification"
             android:title="@string/left_drawer_notif_config" />
         <item
             android:id="@+id/nav_screen_size"

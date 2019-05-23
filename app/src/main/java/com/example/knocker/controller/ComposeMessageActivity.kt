@@ -1,9 +1,12 @@
 package com.example.knocker.controller
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
 import android.telephony.SmsManager
 import android.text.TextUtils
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -25,6 +29,7 @@ import android.widget.Toast
 import com.example.knocker.model.NumberAndMailDB
 import com.example.knocker.R
 import com.google.android.material.textfield.TextInputLayout
+import java.util.regex.Pattern
 
 class ComposeMessageActivity : AppCompatActivity() {
 
@@ -43,8 +48,7 @@ class ComposeMessageActivity : AppCompatActivity() {
     private var compose_message_phone_number: String? = null
     private var compose_message_phone_property: String? = null
 
-    private val SEND_SMS_PERMISSION_REQUEST_CODE = 111
-    private val MY_PERMISSIONS_REQUEST_READ_SMS = 99
+    private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
 
     //endregion
 
@@ -54,14 +58,15 @@ class ComposeMessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_compose_message)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         //region ========================================== Toolbar =========================================
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
+        supportActionBar!!.setDisplayShowTitleEnabled(false);
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
 
@@ -80,9 +85,16 @@ class ComposeMessageActivity : AppCompatActivity() {
 
         //endregion
 
+
+        val intent = intent
+        if (!intent.getStringExtra("ContactPhoneNumber").isEmpty()) {
+            compose_message_phone_number = intent.getStringExtra("ContactPhoneNumber")
+            compose_message_PhoneNumberEditText!!.setText(compose_message_phone_number)
+        }
+
         compose_message_RecyclerView!!.layoutManager = LinearLayoutManager(this)
 
-        var tmp = intent.getStringExtra("ContactPhoneNumber")
+        val tmp = intent.getStringExtra("ContactPhoneNumber")
         println("tmp " + tmp);
         if (tmp != null) {
             compose_message_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
@@ -150,14 +162,29 @@ class ComposeMessageActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     // Intent to return to the MainActivity
+    @SuppressLint("ShowToast")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true
             }
+            R.id.menu_compose_message_phone_call -> {
+                if (isValidPhone(compose_message_PhoneNumberEditText!!.text.toString())) {
+                    phoneCall(compose_message_PhoneNumberEditText!!.text.toString())
+                } else {
+                    Toast.makeText(this, "Enter a phone number valid", Toast.LENGTH_SHORT)
+                }
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_compose_message, menu)
+        return true
     }
 
     private fun checkPermission(permission: String): Boolean {
@@ -167,11 +194,31 @@ class ComposeMessageActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-
-            SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 compose_message_send_Button!!.isEnabled = true
             }
         }
+    }
+
+    @SuppressLint("ShowToast")
+    private fun phoneCall(phoneNumberEntered: String) {
+        if (!TextUtils.isEmpty(phoneNumberEntered)) {
+            if (isValidPhone(phoneNumberEntered)) {
+                val dial = "tel:$phoneNumberEntered"
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+            } else {
+                Toast.makeText(this, "Enter a phone number valid", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Enter a phone number", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun isValidPhone(phone: String): Boolean {
+        val expression = "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})\$"
+        val pattern = Pattern.compile(expression)
+        val matcher = pattern.matcher(phone)
+        return matcher.matches()
     }
 
     //endregion

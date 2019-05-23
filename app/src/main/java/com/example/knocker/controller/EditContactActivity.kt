@@ -48,13 +48,17 @@ class EditContactActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    private var edit_contact_ParentLayout: LinearLayout? = null
-//    private var edit_contact_ParentLayout: ConstraintLayout? = null
+    private var edit_contact_ParentLayout: ConstraintLayout? = null
 
     private var edit_contact_FirstName: TextInputLayout? = null
     private var edit_contact_LastName: TextInputLayout? = null
     private var edit_contact_PhoneNumber: TextInputLayout? = null
     private var edit_contact_Mail: TextInputLayout? = null
+
+
+    private var edit_contact_FirstNameEditText: EditText? = null
+
+
     private var edit_contact_RoundedImageView: ImageView? = null
     private var edit_contact_Priority: Spinner? = null
     private var edit_contact_Priority_explain: TextView? = null
@@ -62,15 +66,17 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Mail_Property: Spinner? = null
     private var edit_contact_AddFieldButton: Button? = null
 
+    private var customAdapterEditText: CustomAdapterEditText? = null
+
     private var edit_contact_id: Int? = null
-    private var edit_contact_first_name: String? = null
-    private var edit_contact_last_name: String? = null
-    private var edit_contact_phone_number: String? = null
-    private var edit_contact_phone_property: String? = null
-    private var edit_contact_mail_property: String? = null
-    private var edit_contact_mail: String? = null
+    private var edit_contact_first_name: String = ""
+    private var edit_contact_last_name: String = ""
+    private var edit_contact_phone_number: String = ""
+    private var edit_contact_phone_property: String = ""
+    private var edit_contact_mail_property: String = ""
+    private var edit_contact_mail: String = ""
     private var edit_contact_rounded_image: Int = 0
-    private var edit_contact_image64: String? = null
+    private var edit_contact_image64: String = ""
     private var edit_contact_priority: Int = 1
 
     // Database && Thread
@@ -121,69 +127,66 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
         edit_contact_AddFieldButton= findViewById(R.id.edit_contact_add_field_button)
 
+        edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
-
-        if(edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt())==null)
-        {
+        if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
             var contactList: List<ContactWithAllInformation>?
-            val contactString= FakeContact.loadJSONFromAsset(this)
-            contactList= FakeContact.buildList(contactString)
+            val contactString = FakeContact.loadJSONFromAsset(this)
+            contactList = FakeContact.buildList(contactString)
 
 
-            var contact= FakeContact.getContactId(edit_contact_id!!,contactList)!!
+            var contact = FakeContact.getContactId(edit_contact_id!!, contactList)!!
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
-            var tmpPhone=contact.contactDetailList!!.get(0)
+            var tmpPhone = contact.contactDetailList!!.get(0)
             edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
             edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
-            var tmpMail=contact.contactDetailList!!.get(1)
+            var tmpMail = contact.contactDetailList!!.get(1)
             edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
-            edit_contact_mail_property= NumberAndMailDB.extractStringFromNumber(tmpMail.content)
-            edit_contact_priority =contact.contactDB!!.contactPriority
-            edit_contact_image64= contact.contactDB!!.profilePicture64
+            edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.content)
+            edit_contact_priority = contact.contactDB!!.contactPriority
+            edit_contact_image64 = contact.contactDB!!.profilePicture64
             edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
-        }else {
+        } else {
 
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-            val callDb= Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
-            val result=executorService.submit(callDb)
-            println("result"+result.get().contactDB)
-            val contact:ContactWithAllInformation = result.get()
-                edit_contact_first_name = contact.contactDB!!.firstName
-                edit_contact_last_name = contact.contactDB!!.lastName
-                edit_contact_priority =contact.contactDB!!.contactPriority
-                //TODO :enlever code Dupliquer
+            val callDb = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
+            val result = executorService.submit(callDb)
+            val contact: ContactWithAllInformation = result.get()
+            edit_contact_first_name = contact.contactDB!!.firstName
+            edit_contact_last_name = contact.contactDB!!.lastName
+            edit_contact_priority = contact.contactDB!!.contactPriority
+            //TODO :enlever code Dupliquer
 
-                if(contact.contactDetailList!!.size==0){
-                    edit_contact_phone_property="Mobile"
-                    edit_contact_phone_number=""
-                    edit_contact_mail=""
-                    edit_contact_mail_property="Bureau"
-                }else {
-                    var tmpPhone = contact.contactDetailList!!.get(0)
-                    edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
-                    edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
-                    edit_contact_mail=""
-                    edit_contact_mail_property=""
-                    if (contact.contactDetailList!!.size == 2) {
-                        var tmpMail = contact.contactDetailList!!.get(1)
-                        edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
-                        edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.content)
-                    }
+            if (contact.contactDetailList!!.size == 0) {
+                edit_contact_phone_property = "Mobile"
+                edit_contact_phone_number = ""
+                edit_contact_mail = ""
+                edit_contact_mail_property = "Bureau"
+            } else {
+                var tmpPhone = contact.contactDetailList!!.get(0)
+                edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
+                edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
+                edit_contact_mail = ""
+                edit_contact_mail_property = ""
+                if (contact.contactDetailList!!.size == 2) {
+                    var tmpMail = contact.contactDetailList!!.get(1)
+                    edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
+                    edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.content)
                 }
+            }
 
-                val id = edit_contact_id
-                val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
-                edit_contact_image64 = contactDB!!.contactDB!!.profilePicture64
-                if (edit_contact_image64 == "") {
-                    edit_contact_rounded_image=contactDB!!.contactDB!!.profilePicture
-                    println(" contact detail ======= " + edit_contact_rounded_image)
-                    edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
-                } else {
-                    println(" contact detail ======= " + edit_contact_image64)
-                    val image64 = edit_contact_image64
-                    edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64!!))
-                }
+            val id = edit_contact_id
+            val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
+            edit_contact_image64 = contactDB!!.contactDB!!.profilePicture64
+            if (edit_contact_image64 == "") {
+                println(" contact detail ======= " + edit_contact_rounded_image)
+                edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
+            } else {
+                println(" contact detail ======= " + edit_contact_image64)
+                val image64 = edit_contact_image64
+                edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
+            }
         }
 
         //region ========================================= Toolbar ==========================================
@@ -220,31 +223,18 @@ class EditContactActivity : AppCompatActivity() {
             val alertView: View = inflater.inflate(R.layout.alert_dialog_add_field, null)
 
             val alert_dialog_AddFieldListView = alertView.findViewById<ListView>(R.id.alert_dialog_add_field_list_view)
+            val alert_dialog_FieldAdded = findViewById<ListView>(R.id.edit_contact_field_added)
 
             alert_dialog_AddFieldListView.adapter = ArrayAdapter(this@EditContactActivity, R.layout.list_item_add_fields_layout, R.id.list_item_add_fields_text, getListOfFields())
-            alert_dialog_AddFieldListView.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            alert_dialog_AddFieldListView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
-
-                
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    when (position) {
-                        0 -> {
-                        }
-                        1 -> {
-                        }
-                        2 -> {
-                        }
-                    }
-                }
+                customAdapterEditText = CustomAdapterEditText(this@EditContactActivity, getListOfEditText(position))
+                alert_dialog_FieldAdded.adapter = customAdapterEditText
             }
 
             MaterialAlertDialogBuilder(this)
                     .setTitle("Ajouter un champ")
                     .setView(alertView)
-                    .setPositiveButton("Oui") { _, _ -> addField() }
                     .show()
         }
 
@@ -300,6 +290,17 @@ class EditContactActivity : AppCompatActivity() {
         return edit_contact_ListOfFields;
     }
 
+    private fun getListOfEditText(position: Int): ArrayList<EditTextModel> {
+        val edit_contact_ListOfEditText = ArrayList<EditTextModel>()
+        val edit_contact_ListOfFields = getListOfFields()
+
+        val editModel = EditTextModel()
+        editModel.editTextValue = edit_contact_ListOfFields[position]
+        edit_contact_ListOfEditText.add(editModel)
+
+        return edit_contact_ListOfEditText;
+    }
+
     private fun getPosItemSpinner(item: String, spinner: Spinner): Int {
         val tailleSpinner: Int = spinner.adapter.count
         println("taille spinner" + tailleSpinner)
@@ -334,19 +335,15 @@ class EditContactActivity : AppCompatActivity() {
             }
             R.id.nav_validate -> {
                 val editContact = Runnable {
-                    if (edit_contact_FirstName!!.editText!!.text.toString() != "" || edit_contact_LastName!!.editText.toString() != "") {
+                    if (edit_contact_FirstName!!.editText!!.toString() != "" || edit_contact_LastName!!.editText!!.toString() != "") {
                         val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())
                         val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString())
-                        var contact= edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
-                        for(i in 0..contact!!.contactDetailList!!.size-1){
-                            if(i==0){
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(
-                                        contact!!.contactDetailList!!.get(i).id!!,
-                                        edit_contact_PhoneNumber!!.editText!!.text.toString() +spinnerPhoneChar)
-                            }else if(i==1){
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(
-                                        contact!!.contactDetailList!!.get(i).id!!,
-                                        ""+edit_contact_Mail!!.editText!!.text.toString()+spinnerMailChar)
+                        var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
+                        for (i in 0..contact!!.contactDetailList!!.size - 1) {
+                            if (i == 0) {
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.textView.text + spinnerPhoneChar)
+                            } else if (i == 1) {
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.textView.text + spinnerMailChar)
                             }
 
                         }//TODO change for the listView
@@ -357,9 +354,12 @@ class EditContactActivity : AppCompatActivity() {
                         } else {
                             edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
-                        contact= edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
-                        println("modify on contact "+ contact.contactDB)
-                        val intent = Intent(this@EditContactActivity, MainActivity::class.java)
+                        contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
+                        println("modify on contact " + contact.contactDB)
+                        val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
+
+                        intent.putExtra("ContactId", edit_contact_id!!)
+
                         startActivity(intent)
                         finish()
                     } else {

@@ -142,6 +142,10 @@
     <string name="compose_message_enter_text">Enter Message</string>
     <string name="compose_message_enter_phone_number">Phone Number</string>
 
+    <!-- PhoneLog !-->
+    <string name="phone_log_add_new_contact">Nouveau Contact</string>
+    <string name="phone_log_send_message">Envoyer un message</string>
+
     <!-- Alert Dialog Notifications !-->
     <string name="alert_dialog_notification_message">Allow push notifications to let your friends say what\'s up</string>
     <string name="alert_dialog_notification_allow_it">Allow It</string>

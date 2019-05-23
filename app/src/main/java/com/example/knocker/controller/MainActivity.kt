@@ -254,16 +254,15 @@ class MainActivity : AppCompatActivity() {
                         //
                         val o = main_GridView!!.getItemAtPosition(position)
                         val contact = o as ContactWithAllInformation
-  /*                          val mail = contact.contactDetailList!!.get(1).contactDetails
-                            val phone = contact.contactDetailList!!.get(0).contactDetails
+                        /*                          val mail = contact.contactDetailList!!.get(1).contactDetails
+                                                  val phone = contact.contactDetailList!!.get(0).contactDetails
 
-                            println(contact.contactDB!!.id.toString()+" phone and mail" +mail + "   "+phone+" \n contact list "
-                            + contact.contactDetailList!!)*/
+                                                  println(contact.contactDB!!.id.toString()+" phone and mail" +mail + "   "+phone+" \n contact list "
+                                                  + contact.contactDetailList!!)*/
 
-                            val intent = Intent( this,EditContactActivity::class.java)
-                            intent.putExtra("ContactId", contact.contactDB!!.id)
-                            startActivity(intent)
-
+                        val intent = Intent(this, EditContactActivity::class.java)
+                        intent.putExtra("ContactId", contact.contactDB!!.id)
+                        startActivity(intent)
 
 
                     } else {
@@ -272,7 +271,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 // Drag n Drop
-
             }
         }
         runOnUiThread(printContacts)
@@ -283,7 +281,7 @@ class MainActivity : AppCompatActivity() {
 
         //region ==================================== SetOnClickListener ====================================
 
-        main_SearchBar!!.addTextChangedListener(object: TextWatcher {
+        main_SearchBar!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
 
             override fun beforeTextChanged(s: CharSequence, start: Int,
@@ -328,7 +326,7 @@ class MainActivity : AppCompatActivity() {
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-            ContactSync.getAllContacsInfo(contentResolver,main_GridView,this)//ContactSync.getAllContact(contentResolver)
+            ContactSync.getAllContacsInfo(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
         })
@@ -419,7 +417,7 @@ class MainActivity : AppCompatActivity() {
         var i = 0
         if (allFilters.size > 1) {
             while (i < allFilters.size - 1) {
-                allFilters[i+1] = allFilters[i].intersect(allFilters[i + 1]).toList()
+                allFilters[i + 1] = allFilters[i].intersect(allFilters[i + 1]).toList()
                 i++
             }
         } else if (allFilters.size == 0) {
@@ -541,7 +539,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    println("CONTACT LIST MAIL AFTER = "+contactList)
+                    println("CONTACT LIST MAIL AFTER = " + contactList)
                     val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
                     main_GridView!!.adapter = contactAdapter
                     //
@@ -597,10 +595,6 @@ class MainActivity : AppCompatActivity() {
         val cmpName = ComponentName(this, NotificationListener::class.java)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-    }
-
-    private fun isEmptyField(field: EditText?): Boolean {
-        return field!!.text.toString().isEmpty()
     }
 
     private fun hideKeyboard() {
