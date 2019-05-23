@@ -16,6 +16,7 @@ class PhoneLogActivity : AppCompatActivity() {
     private var main_BottomNavigationView: BottomNavigationView? = null
     private var phone_log_IncomingCallButton: FloatingActionButton? = null
     private var phone_log_PhoneNumber: AppCompatEditText? = null
+    private var phone_log_PhoneNumberText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,8 @@ class PhoneLogActivity : AppCompatActivity() {
 
         phone_log_IncomingCallButton!!.setOnClickListener {
             if (!TextUtils.isEmpty(phone_log_PhoneNumber!!.text.toString())) {
-                val dial = "tel:$phone_log_PhoneNumber!!.text.toString()"
+                phone_log_PhoneNumberText = phone_log_PhoneNumber!!.text.toString()
+                val dial = "tel:$phone_log_PhoneNumberText"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
             } else {
                 Toast.makeText(this@PhoneLogActivity, "Enter a phone number", Toast.LENGTH_SHORT).show()

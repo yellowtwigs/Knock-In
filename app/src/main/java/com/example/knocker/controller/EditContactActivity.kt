@@ -43,7 +43,8 @@ class EditContactActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    private var edit_contact_ParentLayout: ConstraintLayout? = null
+    private var edit_contact_ParentLayout: LinearLayout? = null
+//    private var edit_contact_ParentLayout: ConstraintLayout? = null
 
     private var edit_contact_FirstName: TextInputLayout? = null
     private var edit_contact_LastName: TextInputLayout? = null
@@ -284,7 +285,7 @@ class EditContactActivity : AppCompatActivity() {
 
                     alertDialog.setPositiveButton("Oui") { _, _ ->
 
-                        val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
+                        val intent = Intent(this@EditContactActivity, MainActivity::class.java)
                         intent.putExtra("ContactId", edit_contact_id)
                         intent.putExtra("ContactFirstName", edit_contact_first_name)
                         intent.putExtra("ContactLastName", edit_contact_last_name)
@@ -301,14 +302,14 @@ class EditContactActivity : AppCompatActivity() {
                     }
                     alertDialog.show()
                 } else {
-                    val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
-                    intent.putExtra("ContactId", edit_contact_id)
-                    intent.putExtra("ContactFirstName", edit_contact_first_name)
-                    intent.putExtra("ContactLastName", edit_contact_last_name)
-                    intent.putExtra("ContactPhoneNumber", edit_contact_phone_number + NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.prompt.toString()))
-                    intent.putExtra("ContactImage", edit_contact_rounded_image)
-                    intent.putExtra("ContactMail", edit_contact_mail + NumberAndMailDB.convertSpinnerMailStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), edit_contact_mail!!))
-                    intent.putExtra("ContactPriority", edit_contact_priority)
+                    val intent = Intent(this@EditContactActivity, MainActivity::class.java)
+//                    intent.putExtra("ContactId", edit_contact_id)
+//                    intent.putExtra("ContactFirstName", edit_contact_first_name)
+//                    intent.putExtra("ContactLastName", edit_contact_last_name)
+//                    intent.putExtra("ContactPhoneNumber", edit_contact_phone_number + NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.prompt.toString()))
+//                    intent.putExtra("ContactImage", edit_contact_rounded_image)
+//                    intent.putExtra("ContactMail", edit_contact_mail + NumberAndMailDB.convertSpinnerMailStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), edit_contact_mail!!))
+//                    intent.putExtra("ContactPriority", edit_contact_priority)
 
                     startActivity(intent)
                     finish()
@@ -488,11 +489,11 @@ class EditContactActivity : AppCompatActivity() {
         val edit_contact_MiddleName = TextInputLayout(this@EditContactActivity)
 
         val paramsEditText = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                R.dimen.edit_text_height)
-
-        val paramsTextLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT)
-        paramsTextLayout.setMargins(0, 5, 0, 0)
+
+        val paramsTextLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                R.dimen.edit_text_height)
+//        paramsTextLayout.(0, 5, 0, 0)
 
         editText.maxLines = 1
         editText.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
@@ -530,7 +531,7 @@ class EditContactActivity : AppCompatActivity() {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
             edit.putBoolean("serviceNotif", false)
-            edit.commit()
+            edit.apply()
 
         }
         alertDialogBuilder.setNegativeButton("non"
