@@ -92,7 +92,7 @@
                 android:background="@drawable/selector_relative_layout"
                 android:clickable="true"
                 android:focusable="true"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/contact_details_phone_number_sms_text_id"

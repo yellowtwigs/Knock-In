@@ -1,4 +1,4 @@
-package com.example.knocker;
+package com.example.knocker.controller;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,6 +14,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
+
+import com.example.knocker.R;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static android.widget.ImageView.ScaleType.CENTER_INSIDE;

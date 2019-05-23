@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import android.widget.ListView
 import com.example.knocker.model.DbWorkerThread
-import com.example.knocker.model.Notifications
+import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
 import com.example.knocker.model.ContactsRoomDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,8 +27,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         contact_details_mDbWorkerThread.start()
         //on get la base de données
         contact_details_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
-        val list = contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<Notifications>
-        println("voici la liste" + list)
+        val list=contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>
+        println("voici la liste"+list)
         val adapter = NotificationHistoryAdapterActivity(this, list)
         val listviews = findViewById<ListView>(R.id.listView_notification_history)
         listviews.adapter = adapter

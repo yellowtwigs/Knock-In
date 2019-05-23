@@ -17,21 +17,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.knocker.CircularImageView;
-import com.example.knocker.model.Contacts;
+import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.R;
+import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class ContactAdapter extends BaseAdapter {
-    private List<Contacts> listContacts;
+    private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
 
-    public ContactAdapter(Context context, List<Contacts> listContacts, Integer len) {
+    public ContactAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
         this.listContacts = listContacts;
         this.len = len;
@@ -105,8 +105,8 @@ public class ContactAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Contacts contact = this.listContacts.get(position);
-        if (contact.getContactPriority() == 0) {
+        ContactDB contact = this.listContacts.get(position).getContactDB();
+        if (contact.getContactPriority() == 0){
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
         } else if (contact.getContactPriority() == 1) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));

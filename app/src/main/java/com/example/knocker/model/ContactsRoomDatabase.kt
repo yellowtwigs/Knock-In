@@ -6,11 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
+import com.example.knocker.model.ModelDB.*
+import com.example.knocker.model.requestDB.ContactDetailsDao
+import com.example.knocker.model.requestDB.ContactsDao
+import com.example.knocker.model.requestDB.NotificationsDao
 
-@Database(entities = [Contacts::class, Notifications::class], version = 8)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class,LinkContactGroup::class], version = 9)
  abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
+    abstract fun contactDetailsDao(): ContactDetailsDao
     companion object {
         private var INSTANCE: ContactsRoomDatabase? = null
 
@@ -31,6 +36,7 @@ import android.content.Context
                         .addMigrations(MIGRATION_5_6)
                         .addMigrations(MIGRATION_6_7)
                         .addMigrations(MIGRATION_7_8)
+                        .addMigrations(MIGRATION_8_9)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -73,6 +79,12 @@ import android.content.Context
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN is_cancellable INTEGER DEFAULT 0 NOT NULL")
                 database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN app_image TEXT DEFAULT '' NOT NULL")
+            }
+        }
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'contact_details_table' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'id_contact' INTEGER NOT NULL, 'contact_details' TEXT NOT NULL, 'tag' TEXT NOT NULL, FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'))")
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'link_contact_group_table' ('id_group' INTEGER NOT NULL, 'id_contact' INTEGER NOT NULL, PRIMARY KEY('id_group','id_contact'),  FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'), FOREIGN KEY('id_group') REFERENCES groups_table('id'))")
             }
         }
         fun destroyInstance() {

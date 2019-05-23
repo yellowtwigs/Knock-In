@@ -7,19 +7,22 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
+import com.example.knocker.model.ModelDB.ContactDB
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
 object ContactGesture {
 
-    fun putContactIntent (contact : Contacts, context: Context, classToSend : Class<*>):Intent{
+    fun putContactIntent (contact : ContactWithAllInformation, context: Context, classToSend : Class<*>):Intent{
         val intent = Intent( context,classToSend)
+        /*
         intent.putExtra("ContactFirstName", contact.firstName)
         intent.putExtra("ContactLastName", contact.lastName)
-        intent.putExtra("ContactPhoneNumber", contact.phoneNumber)
-        intent.putExtra("ContactMail", contact.mail)
+        intent.putExtra("ContactPhoneNumber",phoneNumber)
+        intent.putExtra("ContactMail",mail)
         intent.putExtra("ContactImage", contact.profilePicture)
         intent.putExtra("ContactId", contact.id)
         intent.putExtra("ContactPriority", contact.contactPriority)
-        return intent
+      */  return intent
     }
     fun openWhatsapp(contact: CharSequence,context: Context) {
         val url = "https://api.whatsapp.com/send?phone=$contact"
