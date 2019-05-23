@@ -169,11 +169,9 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.nav_theme) {
                 startActivity(Intent(this@MainActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {
-                startActivity(Intent(this@MainActivity, ChatActivity::class.java))
             } else if (id == R.id.nav_knockons) {
                 startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
             } else if (id == R.id.nav_statistics) {
-                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
             } else if (id == R.id.nav_help) {
                 startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }

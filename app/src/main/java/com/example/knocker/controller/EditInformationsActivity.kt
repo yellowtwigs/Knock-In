@@ -102,7 +102,6 @@ class EditInformationsActivity : AppCompatActivity() {
 
             if (id == R.id.nav_informations) {
             } else if (id == R.id.nav_notif_config) {
-                startActivity(Intent(this@EditInformationsActivity, ManageNotificationActivity::class.java))
             } else if (id == R.id.nav_screen_size) {
                 startActivity(Intent(this@EditInformationsActivity, ManageScreenSizeActivity::class.java))
             } else if (id == R.id.nav_theme) {
@@ -234,7 +233,7 @@ class EditInformationsActivity : AppCompatActivity() {
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
                 val selectedImageUri = data!!.data
-                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
+                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())

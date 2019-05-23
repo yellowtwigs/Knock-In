@@ -221,6 +221,7 @@ class EditContactActivity : AppCompatActivity() {
 
                 }
 
+                
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     when (position) {
                         0 -> {
