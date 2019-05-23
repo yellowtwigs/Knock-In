@@ -117,10 +117,9 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
         edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
-        edit_contact_Phone_Property = findViewById(R.id.add_new_contact_phone_number_spinner)
+        edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
-
-
+        edit_contact_AddFieldButton= findViewById(R.id.edit_contact_add_field_button)
 
 
 
@@ -148,6 +147,7 @@ class EditContactActivity : AppCompatActivity() {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
             val callDb= Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
             val result=executorService.submit(callDb)
+            println("result"+result.get().contactDB)
             val contact:ContactWithAllInformation = result.get()
                 edit_contact_first_name = contact.contactDB!!.firstName
                 edit_contact_last_name = contact.contactDB!!.lastName
@@ -176,6 +176,7 @@ class EditContactActivity : AppCompatActivity() {
                 val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
                 edit_contact_image64 = contactDB!!.contactDB!!.profilePicture64
                 if (edit_contact_image64 == "") {
+                    edit_contact_rounded_image=contactDB!!.contactDB!!.profilePicture
                     println(" contact detail ======= " + edit_contact_rounded_image)
                     edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
                 } else {
@@ -198,6 +199,12 @@ class EditContactActivity : AppCompatActivity() {
         // Set Resources from MainActivity to ContactDetailsActivity
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        edit_contact_FirstName!!.editText!!.setText(edit_contact_first_name)
+        edit_contact_LastName!!.editText!!.setText(edit_contact_last_name)
+        edit_contact_PhoneNumber!!.editText!!.setText(edit_contact_phone_number)
+        edit_contact_Mail!!.editText!!.setText(edit_contact_mail)
+        edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property!!, edit_contact_Mail_Property!!))
+        edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property!!, edit_contact_Phone_Property!!))
 
         textChanged(edit_contact_FirstName, edit_contact_FirstName!!.editText!!.text?.toString())
         textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
@@ -332,25 +339,26 @@ class EditContactActivity : AppCompatActivity() {
                         var contact= edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         for(i in 0..contact!!.contactDetailList!!.size-1){
                             if(i==0){
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!,""+edit_contact_PhoneNumber!!.textView.text+spinnerPhoneChar)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(
+                                        contact!!.contactDetailList!!.get(i).id!!,
+                                        edit_contact_PhoneNumber!!.editText!!.text.toString() +spinnerPhoneChar)
                             }else if(i==1){
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!,""+edit_contact_Mail!!.textView.text+spinnerMailChar)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(
+                                        contact!!.contactDetailList!!.get(i).id!!,
+                                        ""+edit_contact_Mail!!.editText!!.text.toString()+spinnerMailChar)
                             }
 
                         }//TODO change for the listView
 
                         if (edit_contact_imgString != null) {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.textView.text.toString(), edit_contact_LastName!!.textView.text.toString(), edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
 
                         } else {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.textView.text.toString(), edit_contact_LastName!!.textView.text.toString(), edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
                         contact= edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
                         println("modify on contact "+ contact.contactDB)
-                        val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
-
-                        intent.putExtra("ContactId", edit_contact_id!!)
-
+                        val intent = Intent(this@EditContactActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

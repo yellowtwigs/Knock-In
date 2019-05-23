@@ -262,7 +262,7 @@ class MainActivity : AppCompatActivity() {
                             println(contact.contactDB!!.id.toString()+" phone and mail" +mail + "   "+phone+" \n contact list "
                             + contact.contactDetailList!!)*/
 
-                            val intent = Intent( this,ContactDetailsActivity::class.java)
+                            val intent = Intent( this,EditContactActivity::class.java)
                             intent.putExtra("ContactId", contact.contactDB!!.id)
                             startActivity(intent)
 

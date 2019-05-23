@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp">
 
-            <com.example.knocker.CircularImageView
+            <com.example.knocker.controller.CircularImageView
                 android:id="@+id/edit_contact_rounded_image_view_id"
                 android:layout_width="@dimen/rounded_image_view_height_width"
                 android:layout_height="@dimen/rounded_image_view_height_width"
