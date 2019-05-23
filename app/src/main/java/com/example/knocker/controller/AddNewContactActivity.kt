@@ -182,7 +182,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         val contactData = ContactDB(null,
                                 add_new_contact_FirstName!!.editText!!.text.toString(),
                                 add_new_contact_LastName!!.editText!!.text.toString(),
-                                R.drawable.img_avatar, R.drawable.aquarius, add_new_contact_Priority!!.selectedItem.toString().toInt(),
+                                R.drawable.img_avatar, add_new_contact_Priority!!.selectedItem.toString().toInt(),
                                 add_new_contact_ImgString!!)
                         println(contactData)
                         var isDuplicate = false
@@ -198,11 +198,11 @@ class AddNewContactActivity : AppCompatActivity() {
                             val contact: ContactDB?=getContact(contactData.firstName+" "+contactData.lastName,listContacts)
                             var contactDetailDB: ContactDetailDB
                             if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", 0)
+                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", "", 0)
                                 main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                             }
                             if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", 1)
+                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", "", 1)
                                 main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                             }
 
@@ -309,7 +309,7 @@ class AddNewContactActivity : AppCompatActivity() {
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
                 val selectedImageUri = data!!.data
-                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri))
+                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())

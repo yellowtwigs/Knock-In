@@ -69,19 +69,16 @@ class ManageScreenSizeActivity : AppCompatActivity() {
             if (id == R.id.nav_informations) {
                 startActivity(Intent(this@ManageScreenSizeActivity, EditInformationsActivity::class.java))
             } else if (id == R.id.nav_notif_config) {
-                startActivity(Intent(this@ManageScreenSizeActivity, ManageScreenSizeActivity::class.java))
+                startActivity(Intent(this@ManageScreenSizeActivity, ManageNotificationActivity::class.java))
             } else if (id == R.id.nav_screen_size) {
-                startActivity(Intent(this@ManageScreenSizeActivity, ChatActivity::class.java))
             } else if (id == R.id.nav_theme) {
-                startActivity(Intent(this@ManageScreenSizeActivity, ChatActivity::class.java))
+                startActivity(Intent(this@ManageScreenSizeActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {
-                startActivity(Intent(this@ManageScreenSizeActivity, ChatActivity::class.java))
             } else if (id == R.id.nav_knockons) {
-                startActivity(Intent(this@ManageScreenSizeActivity, NotificationHistoryActivity::class.java))
+                startActivity(Intent(this@ManageScreenSizeActivity, ManageKnockonsActivity::class.java))
             } else if (id == R.id.nav_statistics) {
-                startActivity(Intent(this@ManageScreenSizeActivity, NotificationHistoryActivity::class.java))
             } else if (id == R.id.nav_help) {
-                startActivity(Intent(this@ManageScreenSizeActivity, NotificationHistoryActivity::class.java))
+                startActivity(Intent(this@ManageScreenSizeActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)

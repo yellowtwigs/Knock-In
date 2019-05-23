@@ -36,7 +36,7 @@ class ManageThemeActivity : AppCompatActivity() {
             manage_theme_SwitchTheme!!.isChecked = true
         }
 
-        manage_theme_SwitchTheme!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        manage_theme_SwitchTheme!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 val sharedThemePreferences: SharedPreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)

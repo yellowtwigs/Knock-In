@@ -98,7 +98,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 inputMM.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
             } else if (v.id == R.id.notification_adapter_button_send) {
                 println("click on button send")
-                val message = editText.text.toString()
+                //val message = editText.text.toString()
                 // String number= ContactInfo.
                 //val number= ContactInfo.getInfoWithName(sbp.statusBarNotificationInfo["android.title"].toString(), app)
                 if(sbp.appNotifier.equals(MESSAGE_PACKAGE )|| sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)){
@@ -113,7 +113,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     //println("whatsapp message")
                 }
                 notifications.remove(sbp)
-                val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                //val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
                 this.notifyDataSetChanged()
                 //println("message :"+message + " sendto : "+ number)
                 buttonResponse.visibility = View.VISIBLE
@@ -136,12 +136,12 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 } else if (app == "WhatsApp") {
 
                     notification_adapeter_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
-                    val openWhatsApp=Runnable{
-                        val contacts: List<ContactDB> = notification_adapeter_ContactsDatabase!!.contactsDao().getAllContacts()
-                        val id_contact=getContact(sbp.statusBarNotificationInfo.get("android.title").toString(),contacts)!!.id
-                        val phoneNumber=notification_adapeter_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(id_contact!!.toInt()).contactDetails
-                        ContactGesture.openWhatsapp(phoneNumber, context)
-                    }
+//                    val openWhatsApp=Runnable{
+//                        val contacts: List<ContactDB> = notification_adapeter_ContactsDatabase!!.contactsDao().getAllContacts()
+//                        val id_contact=getContact(sbp.statusBarNotificationInfo.get("android.title").toString(),contacts)!!.id
+//                        val phoneNumber=notification_adapeter_ContactsDatabase!!.contactDetailsDao().getPhoneNumberById(id_contact!!.toInt()).content
+//                        ContactGesture.openWhatsapp(phoneNumber, context)
+//                    }
 
 
                     closeNotification()

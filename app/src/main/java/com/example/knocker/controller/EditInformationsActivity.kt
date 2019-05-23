@@ -102,7 +102,6 @@ class EditInformationsActivity : AppCompatActivity() {
 
             if (id == R.id.nav_informations) {
             } else if (id == R.id.nav_notif_config) {
-                startActivity(Intent(this@EditInformationsActivity, ManageNotificationActivity::class.java))
             } else if (id == R.id.nav_screen_size) {
                 startActivity(Intent(this@EditInformationsActivity, ManageScreenSizeActivity::class.java))
             } else if (id == R.id.nav_theme) {

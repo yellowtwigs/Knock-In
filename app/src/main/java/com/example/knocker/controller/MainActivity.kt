@@ -169,11 +169,9 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.nav_theme) {
                 startActivity(Intent(this@MainActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {
-                startActivity(Intent(this@MainActivity, ChatActivity::class.java))
             } else if (id == R.id.nav_knockons) {
                 startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
             } else if (id == R.id.nav_statistics) {
-                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java))
             } else if (id == R.id.nav_help) {
                 startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
@@ -219,7 +217,7 @@ class MainActivity : AppCompatActivity() {
 
                 main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
                     main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
-                    val contact = main_GridView!!.getItemAtPosition(position) as ContactDB
+                    //val contact = main_GridView!!.getItemAtPosition(position) as ContactDB
 //                    try {
 //                        BubbleActions.on(main_CoordinationLayout)
 //                                .addAction("Messenger", R.drawable.ic_messenger_circle_menu
@@ -401,7 +399,7 @@ class MainActivity : AppCompatActivity() {
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
         var filter: List<ContactWithAllInformation>?
-        val allContacts = main_ContactsDatabase?.contactsDao()!!.getContactAllInfo()
+        //val allContacts = main_ContactsDatabase?.contactsDao()!!.getContactAllInfo()
         println(filterList)
         if (filterList.contains("sms")) {
             filter = main_ContactsDatabase?.contactsDao()?.getContactWithPhoneNumber()

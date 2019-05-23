@@ -131,13 +131,13 @@ class ContactDetailsActivity : AppCompatActivity() {
             contact_details_first_name = contact.contactDB!!.firstName
             contact_details_last_name = contact.contactDB!!.lastName
             var tmpPhone=contact.contactDetailList!!.get(0)
-            contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
-            contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
+            contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
+            contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
             var tmpMail=contact.contactDetailList!!.get(1)
-            contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.contactDetails)
-            contact_details_mail_property= NumberAndMailDB.extractStringFromNumber(tmpMail.contactDetails)
+            contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
+            contact_details_mail_property= NumberAndMailDB.extractStringFromNumber(tmpMail.content)
             contact_details_rounded_image = intent.getIntExtra("ContactImage", 1)
-            contactList = FakeContact.buildList(contactString)
+            //contactList = FakeContact.buildList(contactString)
             contact_details_image64 = contact.contactDB!!.profilePicture64
             contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(contact_details_image64.toString()))
 
@@ -170,9 +170,9 @@ class ContactDetailsActivity : AppCompatActivity() {
                 }else if(contact.contactDetailList!!.size==1){
                     print("if 1 ou 2")
                     var tmpPhone = contact.contactDetailList!!.get(0)
-                    println(" test méthode "+tmpPhone.contactDetails)
-                    contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
-                    contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
+                    println(" test méthode "+tmpPhone.content)
+                    contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
+                    contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
                     contact_details_mail=""
                     contact_details_mail_property=""
 
@@ -181,10 +181,10 @@ class ContactDetailsActivity : AppCompatActivity() {
 
                             var tmpPhone = contact.contactDetailList!!.get(0)
                             var tmpMail = contact.contactDetailList!!.get(1)
-                            contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
-                            contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
-                            contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.contactDetails)
-                            contact_details_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.contactDetails)
+                            contact_details_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
+                            contact_details_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
+                            contact_details_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
+                            contact_details_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.content)
                         }
 
                 val contactDB = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_id!!)

@@ -30,10 +30,10 @@ class NotificationHistoryAdapterActivity(private val context:Context ,private va
         val notif = getItem(position)
         val expTxt = convertView!!.findViewById<TextView>(R.id.history_adapter_expediteur)
         val contenu= convertView.findViewById<TextView>(R.id.history_adapter_contenu)
-        val date= convertView.findViewById<TextView>(R.id.history_adapter_time)
+        //val date= convertView.findViewById<TextView>(R.id.history_adapter_time)
         expTxt.text=notif.contactName
         contenu.text= notif.description
-        date.text=notif.dateTime
+        //date.text=notif.dateTime
         return convertView
     }
 

@@ -134,11 +134,11 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
             var tmpPhone=contact.contactDetailList!!.get(0)
-            edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
-            edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
+            edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
+            edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
             var tmpMail=contact.contactDetailList!!.get(1)
-            edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.contactDetails)
-            edit_contact_mail_property= NumberAndMailDB.extractStringFromNumber(tmpMail.contactDetails)
+            edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
+            edit_contact_mail_property= NumberAndMailDB.extractStringFromNumber(tmpMail.content)
             edit_contact_priority =contact.contactDB!!.contactPriority
             edit_contact_image64= contact.contactDB!!.profilePicture64
             edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
@@ -161,14 +161,14 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_mail_property="Bureau"
                 }else {
                     var tmpPhone = contact.contactDetailList!!.get(0)
-                    edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.contactDetails)
-                    edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.contactDetails)
+                    edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
+                    edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
                     edit_contact_mail=""
                     edit_contact_mail_property=""
                     if (contact.contactDetailList!!.size == 2) {
                         var tmpMail = contact.contactDetailList!!.get(1)
-                        edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.contactDetails)
-                        edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.contactDetails)
+                        edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
+                        edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.content)
                     }
                 }
 
@@ -228,6 +228,7 @@ class EditContactActivity : AppCompatActivity() {
 
                 }
 
+                
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     when (position) {
                         0 -> {
@@ -468,7 +469,7 @@ class EditContactActivity : AppCompatActivity() {
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
                 val selectedImageUri = data!!.data
-                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri));
+                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!));
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())
