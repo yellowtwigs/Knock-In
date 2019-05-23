@@ -4,12 +4,37 @@ import androidx.room.*
 
 @Entity(tableName = "notifications_table")
 data class NotificationDB(
-        @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int?,     //id de la notification
-        @ColumnInfo(name = "title") val title: String,                              //titre de la notification
-        @ColumnInfo(name = "contact_name") val contactName: String,                 //nom du contact sur la notification
-        @ColumnInfo(name = "description") val description: String,                  //description de la notification
-        @ColumnInfo(name = "platform") val platform: String,                        //plateforme de la notification
-        @ColumnInfo(name = "is_blacklist") val isBlacklist: Boolean,                //si la notification est blacklisté
-        @ColumnInfo(name = "timestamp") val timestamp: Int,                         //timestamp de la notification
-        @ColumnInfo(name = "is_cancellable") val isCancellable: Int                //si la notification peut etre cancel
+        /**
+         * Id de la notification.
+         */
+        @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int?,
+        /**
+         * Titre de la notification.
+         */
+        @ColumnInfo(name = "title") val title: String,
+        /**
+         * Nom du contact sur la notification.
+         */
+        @ColumnInfo(name = "contact_name") val contactName: String,
+        /**
+         * Description de la notification.
+         */
+        @ColumnInfo(name = "description") val description: String,
+        /**
+         * Plateforme de la notification.
+         */
+        @ColumnInfo(name = "platform") val platform: String,
+        /**
+         * Booléen qui indique si la notification est blacklisté.
+         */
+        @ColumnInfo(name = "is_blacklist") val isBlacklist: Boolean,
+        /**
+         * Timestamp de la notification.
+         */
+        @ColumnInfo(name = "timestamp") val timestamp: Int,
+        /**
+         * Booléen qui indique si la notification peut etre annulée
+         */
+        @ColumnInfo(name = "is_cancellable") val isCancellable: Int
+// il manque l'id du contact
 )

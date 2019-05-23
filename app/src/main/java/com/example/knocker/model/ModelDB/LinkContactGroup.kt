@@ -18,6 +18,12 @@ import com.example.knocker.model.ModelDB.GroupDB
                         onDelete = ForeignKey.CASCADE))
         ,indices = arrayOf(Index(value = arrayOf("id_group", "id_contact"), unique = true)))
 data class LinkContactGroup(
-        @ColumnInfo(name = "id_group")  val idGroup: Long,                          //id du contact
-        @ColumnInfo(name = "id_contact") val idContact: Long                      //id du contact
+        /**
+         * Id du [groupe][GroupDB] auquel appartient le contact.
+         */
+        @ColumnInfo(name = "id_group")  val idGroup: Long,
+        /**
+         * Id du [contact][ContactDB] lié au groupe.
+         */
+        @ColumnInfo(name = "id_contact") val idContact: Long
 )

@@ -8,10 +8,28 @@ import com.example.knocker.model.ModelDB.ContactDB
         childColumns = arrayOf("id_contact"),
         onDelete = ForeignKey.CASCADE)))
 data class ContactDetailDB(
-        @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int?,    //id du contact
-        @ColumnInfo(name = "id_contact") var idContact: Int?,                      //id du contact
-        @ColumnInfo(name = "content") val content: String,                         // RENAME content
-        @ColumnInfo(name = "type") val type: String,                               // RENAME type
+        /**
+         * Id du contact Detail.
+         */
+        @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int?,
+        /**
+         * Id du [contact][ContactDB].
+         */
+        @ColumnInfo(name = "id_contact") var idContact: Int?,
+        /**
+         * Contenu du contact detail exemple: "06 24 25 45 .." ou "test.test@gmail.com"
+         */
+        @ColumnInfo(name = "content") val content: String,
+        /**
+         * Type du "contenu" exemple: phoneNumber ou mail
+         */
+        @ColumnInfo(name = "type") val type: String,
+        /**
+         * Tag pour spécifier le contenu, exemple: Principal, Mobile, Bureau...
+         */
         @ColumnInfo(name = "tag") val tag: String,
-        @ColumnInfo(name = "field_position") val fieldPosition: Int                 //
+        /**
+         * La position du champ lors de l'edition d'un contact
+         */
+        @ColumnInfo(name = "field_position") val fieldPosition: Int
 )
