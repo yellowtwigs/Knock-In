@@ -20,13 +20,15 @@ interface GroupsDao {
     @Query("SELECT * FROM groups_table WHERE id = :id")
     fun getGroup(id: Int): GroupDB
 
+    //get nb of member in a group
+
     //insert le groupe dans la database
     @Insert
     fun insert(groups: GroupDB)
 
     //update un groupe grace à son id
-    @Query("UPDATE groups_table SET name = :name, members = :members, nb_members = :nbMembers, profile_picture_str = :profilePicture")
-    fun updateGroupeById(id: Int, name: String, members: String, nbMembers: Int, profilePicture: String)
+    @Query("UPDATE groups_table SET name = :name, nb_members = :nbMembers, profile_picture_str = :profilePicture")
+    fun updateGroupeById(id: Int, name: String, nbMembers: Int, profilePicture: String)
 
     //delete un groupe grace à son id
     @Query("DELETE FROM groups_table WHERE id = :id")

@@ -52,11 +52,11 @@ interface ContactsDao {
 
     @Insert
     fun insertDetails(contactDetails: List<ContactDetailDB>)
-    //update un contact grace à son id
+    //update un contact grace à son id //DELETE PP and BPP
     @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
     fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture: Int, profilePicture64: String, priority: Int)
 
-    //update un contact grace à son id
+    //update un contact grace à son id //DELETE PP and BPP
     @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, contact_priority = :priority WHERE id = :id")
     fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, profilePicture: Int, priority: Int)
 
@@ -69,7 +69,6 @@ interface ContactsDao {
     fun deleteAll()
 
     //get les contacts qui possèdent un mail
-
     @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE tag='mail'")
     fun getContactWithMail(): List<ContactWithAllInformation>
 
