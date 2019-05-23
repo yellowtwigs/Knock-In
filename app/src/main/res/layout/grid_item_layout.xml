@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!--android:background="@drawable/selector_relative_layout"-->
-    <com.example.knocker.CircularImageView
+    <com.example.knocker.controller.CircularImageView
         android:id="@+id/contactRoundedImageView"
         android:layout_width="@dimen/rounded_image_view_height_width"
         android:layout_height="@dimen/rounded_image_view_height_width"

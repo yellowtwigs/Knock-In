@@ -166,7 +166,7 @@ object ContactSync : AppCompatActivity() {
                     if (fullName.first == numberPic.first) {
                         if (fullName.second.second == "") {
                             // val contact = ContactDB(null, fullName.second.first, fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
-                            val contacts = ContactDB(null, fullName.second.first, fullName.second.third, R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                            val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(), R.drawable.aquarius, 1, numberPic.third!!)
                             if (!ContactSync.isDuplicate(allcontacts, contacts)) {
 
                                 contacts.id = main_ContactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -180,7 +180,7 @@ object ContactSync : AppCompatActivity() {
                             phoneContactsList.add(contacts)
                         } else if (fullName.second.second != "") {
                             //val contact = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
-                            val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
+                            val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(), R.drawable.aquarius, 1, numberPic.third!!)
                             phoneContactsList.add(contacts)
                             if (!ContactSync.isDuplicate(allcontacts, contacts)) {
                                 contacts.id = main_ContactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()

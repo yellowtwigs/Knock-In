@@ -37,6 +37,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.layout_notification_pop_up.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import kotlinx.android.synthetic.main.knocker_infos.view.*
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -65,8 +66,8 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_first_name: String? = null
     private var edit_contact_last_name: String? = null
     private var edit_contact_phone_number: String? = null
-    private var edit_contact_phone_property_result: String? = null
-    private var edit_contact_mail_property_result: String? = null
+    private var edit_contact_phone_property: String? = null
+    private var edit_contact_mail_property: String? = null
     private var edit_contact_mail: String? = null
     private var edit_contact_rounded_image: Int = 0
     private var edit_contact_image64: String? = null
@@ -139,19 +140,9 @@ class EditContactActivity : AppCompatActivity() {
             var tmpMail=contact.contactDetailList!!.get(1)
             edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.contactDetails)
             edit_contact_mail_property= NumberAndMailDB.extractStringFromNumber(tmpMail.contactDetails)
-            edit_contact_rounded_image = R.drawable.ryan
             edit_contact_priority =contact.contactDB!!.contactPriority
-
-                    for(info in contactList){
-                val contact=info.contactDB!!
-
-                println("nom attendu :"+edit_contact_first_name+" "+edit_contact_last_name+" voici le nom de ce contact"+contact.firstName+" "+contact.lastName)
-                if(edit_contact_id!!.equals(contact.id) ){
-                    edit_contact_image64= contact.profilePicture64
-                    edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
-                    println("image set to image view")
-                }
-            }
+            edit_contact_image64= contact.contactDB!!.profilePicture64
+            edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
         }else {
 
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -160,7 +151,6 @@ class EditContactActivity : AppCompatActivity() {
             val contact:ContactWithAllInformation = result.get()
                 edit_contact_first_name = contact.contactDB!!.firstName
                 edit_contact_last_name = contact.contactDB!!.lastName
-                edit_contact_rounded_image = R.drawable.ryan
                 edit_contact_priority =contact.contactDB!!.contactPriority
                 //TODO :enlever code Dupliquer
 
@@ -206,13 +196,6 @@ class EditContactActivity : AppCompatActivity() {
         actionbar.title = "Editer le contact"
 
         // Set Resources from MainActivity to ContactDetailsActivity
-        edit_contact_FirstName!!.text = edit_contact_first_name
-        edit_contact_LastName!!.text = edit_contact_last_name
-        edit_contact_PhoneNumber!!.text = edit_contact_phone_number
-        //edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property!!, edit_contact_Phone_Property!!))
-        edit_contact_Mail!!.text = edit_contact_mail
-        //edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property!!,edit_contact_Mail_Property!!))
-        //edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
@@ -349,18 +332,18 @@ class EditContactActivity : AppCompatActivity() {
                         var contact= edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         for(i in 0..contact!!.contactDetailList!!.size-1){
                             if(i==0){
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!,""+edit_contact_PhoneNumber!!.text+spinnerPhoneChar)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!,""+edit_contact_PhoneNumber!!.textView.text+spinnerPhoneChar)
                             }else if(i==1){
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!,""+edit_contact_Mail!!.text+spinnerMailChar)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!,""+edit_contact_Mail!!.textView.text+spinnerMailChar)
                             }
 
                         }//TODO change for the listView
 
                         if (edit_contact_imgString != null) {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.textView.text.toString(), edit_contact_LastName!!.textView.text.toString(), edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
 
                         } else {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.text.toString(), edit_contact_LastName!!.text.toString(), edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.textView.text.toString(), edit_contact_LastName!!.textView.text.toString(), edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
                         contact= edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
                         println("modify on contact "+ contact.contactDB)

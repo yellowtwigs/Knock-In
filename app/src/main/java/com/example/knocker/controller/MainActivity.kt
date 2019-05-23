@@ -29,6 +29,7 @@ import com.example.knocker.*
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.example.knocker.model.*
+import com.example.knocker.model.ModelDB.ContactDB
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -218,7 +219,7 @@ class MainActivity : AppCompatActivity() {
 
                 main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
                     main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
-                    val contact = main_GridView!!.getItemAtPosition(position) as Contacts
+                    val contact = main_GridView!!.getItemAtPosition(position) as ContactDB
 //                    try {
 //                        BubbleActions.on(main_CoordinationLayout)
 //                                .addAction("Messenger", R.drawable.ic_messenger_circle_menu
