@@ -1,12 +1,10 @@
 package com.example.knocker.controller
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -16,8 +14,6 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Base64
 import android.view.MenuItem
 import android.view.View
@@ -35,7 +31,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.knocker.controller.CircularImageView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
@@ -103,7 +98,7 @@ class EditInformationsActivity : AppCompatActivity() {
             if (id == R.id.nav_informations) {
             } else if (id == R.id.nav_notif_config) {
             } else if (id == R.id.nav_screen_size) {
-                startActivity(Intent(this@EditInformationsActivity, ManageScreenSizeActivity::class.java))
+                startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
             } else if (id == R.id.nav_theme) {
                 startActivity(Intent(this@EditInformationsActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {

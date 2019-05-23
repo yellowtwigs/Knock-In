@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,28 +73,25 @@
             android:id="@+id/main_grid_view_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:columnWidth="120dp"
             android:gravity="center"
+            android:visibility="gone"
             android:numColumns="auto_fit"
             app:layout_constraintEnd_toEndOf="@+id/navigation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
+        <ListView
+            android:id="@+id/main_list_view_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="#f0f0f0"
-            app:itemIconTint="@color/bottom_navigation_color"
-            app:itemTextColor="@color/bottom_navigation_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:columnWidth="120dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:numColumns="auto_fit"
+            app:layout_constraintEnd_toEndOf="@+id/navigation"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/main_navigation_view" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

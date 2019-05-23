@@ -11,7 +11,7 @@ import android.content.ContentUris
 import android.graphics.BitmapFactory
 import android.widget.GridView
 import com.example.knocker.R
-import com.example.knocker.controller.ContactAdapter
+import com.example.knocker.controller.ContactGridViewAdapter
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -48,7 +48,7 @@ object ContactSync : AppCompatActivity() {
             }
         }
         phonecontact?.close()
-        println("number ?= "+ contactPhoneNumber)
+        println("number ?= " + contactPhoneNumber)
         return contactPhoneNumber
     }
 
@@ -106,16 +106,15 @@ object ContactSync : AppCompatActivity() {
             }
         }
         phonecontact?.close()
-        println("ok ?= "+ phoneContactsList)
+        println("ok ?= " + phoneContactsList)
         return phoneContactsList
     }
-
 
 
     fun getAllContacsInfo(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
         val phoneStructName = getStructuredName(main_contentResolver)
         val contactNumberAndPic = getPhoneNumber(main_contentResolver)
-        createListContacts(phoneStructName,contactNumberAndPic,gridView,applicationContext)
+        createListContacts(phoneStructName, contactNumberAndPic, gridView, applicationContext)
     }
 
     private fun isDuplicateNumber(idAndPhoneNumber: Triple<Int, String?, String?>, contactPhoneNumber: List<Triple<Int, String?, String?>>): Boolean {
@@ -134,7 +133,7 @@ object ContactSync : AppCompatActivity() {
         return false
     }
 
-    private fun isDuplicate(contact: String, contactsList:List<ContactDB>): Boolean {
+    private fun isDuplicate(contact: String, contactsList: List<ContactDB>): Boolean {
         contactsList.forEach {
             if (it.lastName == "" && it.firstName == contact || it.firstName + " " + it.lastName == contact)
                 return true
@@ -165,7 +164,7 @@ object ContactSync : AppCompatActivity() {
                     if (fullName.first == numberPic.first) {
                         if (fullName.second.second == "") {
                             // val contact = ContactDB(null, fullName.second.first, fullName.second.third, numberPic.second!! + "P", "", R.drawable.ryan, R.drawable.aquarius, 1, numberPic.third!!)
-                            val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(),1, numberPic.third!!)
+                            val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(), 1, numberPic.third!!)
                             if (!ContactSync.isDuplicate(allcontacts, contacts)) {
 
                                 contacts.id = main_ContactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -194,23 +193,23 @@ object ContactSync : AppCompatActivity() {
                 }
             }
 
-            val syncContact= main_ContactsDatabase?.contactsDao()?.getContactAllInfo()
+            val syncContact = main_ContactsDatabase?.contactsDao()?.getContactAllInfo()
             val lastSyncList = getLastSync(applicationContext)
             if (lastSyncList.isEmpty()) {
-                storeLastSync(phoneContactsList, applicationContext,lastSyncList, true)
+                storeLastSync(phoneContactsList, applicationContext, lastSyncList, true)
             } else {
                 deleteDeletedContactFromPhone(lastSyncList, phoneContactsList)
-                storeLastSync(phoneContactsList, applicationContext,lastSyncList, false)
+                storeLastSync(phoneContactsList, applicationContext, lastSyncList, false)
             }
             val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
-            val contactAdapter = ContactAdapter(applicationContext, syncContact, len)
+            val contactAdapter = ContactGridViewAdapter(applicationContext, syncContact, len)
             gridView!!.adapter = contactAdapter
         }
         runOnUiThread(addAllContacts)
     }
 
-    fun storeLastSync(contactsList: List<ContactDB>, applicationContext:Context, lastSync: List<Pair<Int,String>>,isFirstTime: Boolean) {
+    fun storeLastSync(contactsList: List<ContactDB>, applicationContext: Context, lastSync: List<Pair<Int, String>>, isFirstTime: Boolean) {
         val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
         val edit: SharedPreferences.Editor = sharedPreferences.edit()
         var name = ""
@@ -220,17 +219,17 @@ object ContactSync : AppCompatActivity() {
             }
             edit.putString("last_sync", name)
             edit.apply()
-        }else{
+        } else {
             contactsList.forEach {
-                if (it.id==null) {
+                if (it.id == null) {
                     var i = 0
-                    while (i != (lastSync.size)-1 && it.firstName + " " + it.lastName != lastSync[i].second){
+                    while (i != (lastSync.size) - 1 && it.firstName + " " + it.lastName != lastSync[i].second) {
                         i++
                     }
-                    if (i != (lastSync.size) && it.firstName + " " + it.lastName == lastSync[i].second){
+                    if (i != (lastSync.size) && it.firstName + " " + it.lastName == lastSync[i].second) {
                         name += lastSync[i].first.toString() + ":" + it.firstName + " " + it.lastName + "|"
                     }
-                }else{
+                } else {
                     name += it.id.toString() + ":" + it.firstName + " " + it.lastName + "|"
                 }
             }
@@ -239,11 +238,11 @@ object ContactSync : AppCompatActivity() {
         }
     }
 
-    fun getLastSync(applicationContext: Context): List<Pair<Int,String>> {
-        val lastSyncList = arrayListOf<Pair<Int,String>>()
-        var idAndName: Pair<Int,String>
+    fun getLastSync(applicationContext: Context): List<Pair<Int, String>> {
+        val lastSyncList = arrayListOf<Pair<Int, String>>()
+        var idAndName: Pair<Int, String>
         val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
-        val lastSync = sharedPreferences.getString("last_sync","")
+        val lastSync = sharedPreferences.getString("last_sync", "")
         if (lastSync != null && lastSync != "" && lastSync.contains("|")) {
             val lastSyncSplit = lastSync.split("|")
             lastSyncSplit.forEach {
@@ -261,7 +260,7 @@ object ContactSync : AppCompatActivity() {
         return lastSyncList
     }
 
-    fun deleteDeletedContactFromPhone(lastSync: List<Pair<Int,String>>, newSync: List<ContactDB>) {
+    fun deleteDeletedContactFromPhone(lastSync: List<Pair<Int, String>>, newSync: List<ContactDB>) {
         var main_ContactsDatabase: ContactsRoomDatabase? = null
         //var id: Int? = null
         lateinit var main_mDbWorkerThread: DbWorkerThread
@@ -272,19 +271,19 @@ object ContactSync : AppCompatActivity() {
         lastSync.forEach { old ->
             isDelete = true
             newSync.forEach {
-                if (it.firstName+" "+it.lastName == old.second)
+                if (it.firstName + " " + it.lastName == old.second)
                     isDelete = false
             }
             if (isDelete == true) {
-                println("NEW = "+old.second+"   id = "+old.first)
+                println("NEW = " + old.second + "   id = " + old.first)
                 main_ContactsDatabase?.contactsDao()?.deleteContactById(old.first)
             }
         }
     }
 
-    private fun isDuplicate(contacts:List<ContactWithAllInformation>?, phoneContactList: ContactDB):Boolean{
+    private fun isDuplicate(contacts: List<ContactWithAllInformation>?, phoneContactList: ContactDB): Boolean {
         contacts?.forEach { contactsInfo ->
-            val contactsDB=contactsInfo.contactDB!!
+            val contactsDB = contactsInfo.contactDB!!
             if (contactsDB.firstName == phoneContactList.firstName && contactsDB.lastName == phoneContactList.lastName)
                 return true
         }
@@ -294,20 +293,23 @@ object ContactSync : AppCompatActivity() {
 
     private fun randomDefaultImage(): Int {
 
-        val nextValues = kotlin.random.Random.nextInt(0, 4)
+        val nextValues = kotlin.random.Random.nextInt(0, 10)
+        var randomUserImage = 0
 
-        if (nextValues == 0) {
-            return R.drawable.ic_man_user_blue
-        } else if (nextValues == 1) {
-            return R.drawable.ic_man_user_green
-        } else if (nextValues == 2) {
-            return R.drawable.ic_man_user_purple
-        } else if (nextValues == 3) {
-            return R.drawable.ic_man_user_pink
-        } else if (nextValues == 4) {
-            return R.drawable.ic_man_user_brown
+        when (nextValues) {
+            0 -> randomUserImage = R.drawable.ic_user_black
+            1 -> randomUserImage = R.drawable.ic_user_blue
+            2 -> randomUserImage = R.drawable.ic_user_brown
+            3 -> randomUserImage = R.drawable.ic_user_green
+            4 -> randomUserImage = R.drawable.ic_user_grey
+            5 -> randomUserImage = R.drawable.ic_user_om
+            6 -> randomUserImage = R.drawable.ic_user_orange
+            7 -> randomUserImage = R.drawable.ic_user_pink
+            8 -> randomUserImage = R.drawable.ic_user_purple
+            9 -> randomUserImage = R.drawable.ic_user_red
+            10 -> randomUserImage = R.drawable.ic_user_yellow
         }
 
-        return 0
+        return randomUserImage
     }
 }

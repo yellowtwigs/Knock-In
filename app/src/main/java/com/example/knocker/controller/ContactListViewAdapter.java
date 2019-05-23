@@ -14,24 +14,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.R;
+import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class ContactAdapter extends BaseAdapter {
+public class ContactListViewAdapter extends BaseAdapter {
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
 
-    public ContactAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
+    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
         this.listContacts = listContacts;
         this.len = len;
@@ -57,19 +56,15 @@ public class ContactAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View gridview = convertView;
+        View listview = convertView;
         ViewHolder holder;
 
-        if (gridview == null) {
-            gridview = layoutInflater.inflate(R.layout.grid_item_layout, null);
+        if (listview == null) {
+            listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
 
 
             holder = new ViewHolder();
-            holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
-//            holder.whatsapp_click_bubbles = gridview.findViewById(R.id.whatsapp_click_bubbles);
-//            holder.messenger_click_bubbles = gridview.findViewById(R.id.messenger_click_bubbles);
-//            holder.phone_call_click_bubbles = gridview.findViewById(R.id.phone_call_click_bubbles);
-//            holder.sms_click_bubbles = gridview.findViewById(R.id.sms_click_bubbles);
+            holder.contactRoundedImageView = listview.findViewById(R.id.contactRoundedImageView);
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
@@ -78,7 +73,7 @@ public class ContactAdapter extends BaseAdapter {
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
 
-            holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
+            holder.contactFirstNameView = listview.findViewById(R.id.contactFirstName);
             ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
             ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
@@ -98,25 +93,24 @@ public class ContactAdapter extends BaseAdapter {
                 layoutParamsTV.topMargin = 0;
                 layoutParamsIV.topMargin = 0;
             }
-            holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
+            holder.contactFirstNameView = listview.findViewById(R.id.contactFirstName);
 
-            gridview.setTag(holder);
+            listview.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         ContactDB contact = this.listContacts.get(position).getContactDB();
-        if (contact.getContactPriority() == 0){
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
+        if (contact.getContactPriority() == 0) {
+//            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
         } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
+//            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
         } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
+//            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
         }
         String firstname = contact.getFirstName();
         if (len == 3) {
             holder.contactFirstNameView.setText(firstname);
-            //holder.contactFirstNameView.;
         }
         if (len == 4) {
             if (contact.getFirstName().length() > 10)
@@ -150,7 +144,7 @@ public class ContactAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageResource(contact.getProfilePicture());
             //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
-        return gridview;
+        return listview;
     }
 
     private Bitmap base64ToBitmap(String base64) {
@@ -162,11 +156,6 @@ public class ContactAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView contactFirstNameView;
-        TextView contactLastNameView;
-        CircularImageView contactRoundedImageView;
-        ImageView whatsapp_click_bubbles;
-        ImageView messenger_click_bubbles;
-        ImageView phone_call_click_bubbles;
-        ImageView sms_click_bubbles;
+        ImageView contactRoundedImageView;
     }
 }

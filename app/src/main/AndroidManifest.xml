@@ -30,7 +30,7 @@
         <activity android:name=".controller.ManageThemeActivity" />
         <activity android:name=".controller.PhoneLogActivity" />
         <activity android:name=".controller.HelpActivity" />
-        <activity android:name=".controller.ManageScreenSizeActivity" />
+        <activity android:name=".controller.ManageMyScreenActivity" />
         <activity android:name=".controller.EditInformationsActivity" />
         <activity android:name=".controller.ComposeMessageActivity" />
         <activity android:name=".controller.ManageNotificationActivity" />

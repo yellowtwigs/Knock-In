@@ -9,8 +9,8 @@
     <!-- Left Drawer Titles !-->
     <string name="left_drawer_home">Home</string>
     <string name="left_drawer_informations">My Informations</string>
-    <string name="left_drawer_notif_config">My Config Notif</string>
-    <string name="left_drawer_screen_size">My Screen Size</string>
+    <string name="left_drawer_notif_config">My Notif Config</string>
+    <string name="left_drawer_my_screen">My Screen Config</string>
     <string name="left_drawer_theme">My Themes</string>
 
     <string name="left_drawer_data_access">My Data Access</string>
@@ -21,11 +21,10 @@
     <string name="left_drawer_notification_history">Notifications History</string>
 
     <!-- Menu Main !-->
-    <string name="main_search">Search</string>
-    <string name="main_menu">Settings</string>
     <string name="main_create_category">Sms</string>
     <string name="main_filter">Email</string>
     <string name="main_search_hint">Rechercher un contact</string>
+    <string name="main_change_format_phone_book">Changer de format</string>
 
     <!-- Add New Contact !-->
     <string name="add_new_contact_title">Ajoutez un nouveau contact</string>

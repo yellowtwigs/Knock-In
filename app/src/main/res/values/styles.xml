@@ -14,7 +14,8 @@
         <item name="relativeLayoutPressedColor">@color/relativeLayoutPressedColor</item>
         <item name="borderViewColor">@color/borderViewColor</item>
         <item name="colorSurface">@color/borderViewColor</item>
-        <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
+        <item name="android:animateLayoutChanges">true</item>
     </style>
 
     <style name="windowAnimationTransition">

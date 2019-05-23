@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_click_change_format"
+        android:icon="@drawable/ic_smartphone"
+        android:title="@string/main_change_format_phone_book" />
 
     <group android:checkableBehavior="single">
         <item

@@ -1,10 +1,12 @@
 package com.example.knocker.controller
 
 import android.Manifest
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -13,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
@@ -26,18 +27,10 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.example.knocker.*
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDB
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.util.*
+import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
 
     private var main_GridView: GridView? = null
+    private var main_Listview: ListView? = null
 
     private var my_knocker: RelativeLayout? = null
 
@@ -54,10 +48,15 @@ class MainActivity : AppCompatActivity() {
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonCompose: FloatingActionButton? = null
     private var main_FloatingButtonSync: FloatingActionButton? = null
+
     private var main_FloatingButtonOpenAnimation: Animation? = null
     private var main_FloatingButtonCloseAnimation: Animation? = null
     private var main_FloatingButtonClockWiserAnimation: Animation? = null
     private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
+
+    private var phone_call_ImageView: ImageView? = null
+    private var sms_ImageView: ImageView? = null
+
     private var main_CoordinationLayout: CoordinatorLayout? = null
     internal var main_FloatingButtonIsOpen = false
     internal var main_search_bar_value = ""
@@ -165,7 +164,7 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.nav_notif_config) {
                 startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
             } else if (id == R.id.nav_screen_size) {
-                startActivity(Intent(this@MainActivity, ManageScreenSizeActivity::class.java))
+                startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
             } else if (id == R.id.nav_theme) {
                 startActivity(Intent(this@MainActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {
@@ -189,11 +188,13 @@ class MainActivity : AppCompatActivity() {
         val printContacts = Runnable {
             // Grid View
             main_GridView = findViewById(R.id.main_grid_view_id)
+            main_Listview = findViewById(R.id.main_list_view_id)
             ////////
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
-            main_GridView!!.setNumColumns(len) // permet de changer
-            var contactList: List<ContactWithAllInformation>?
+            main_GridView!!.numColumns = len // permet de changer
+
+            val contactList: List<ContactWithAllInformation>?
             println("before contact")
             if (main_ContactsDatabase?.contactsDao()?.getAllContacts()!!.isEmpty()) {
                 //contactList= null
@@ -206,7 +207,7 @@ class MainActivity : AppCompatActivity() {
             println("contact db")
 
             if (main_GridView != null && contactList != null) {
-                val contactAdapter = ContactAdapter(this, contactList, len)
+                val contactAdapter = ContactGridViewAdapter(this, contactList, len)
                 main_GridView!!.adapter = contactAdapter
                 var index = sharedPreferences.getInt("index", 0)
                 println("okkkkkkk = " + index)
@@ -272,6 +273,51 @@ class MainActivity : AppCompatActivity() {
                 }
                 // Drag n Drop
             }
+
+            if (main_Listview != null && contactList != null) {
+                val contactAdapter = ContactListViewAdapter(this, contactList, len)
+                main_Listview!!.adapter = contactAdapter
+                var index = sharedPreferences.getInt("index", 0)
+                println("okkkkkkk = " + index)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                main_Listview!!.setSelection(index)
+                edit.putInt("index", 0)
+                edit.apply()
+
+                var listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null)
+
+                phone_call_ImageView = listview.findViewById(R.id.phone_call_image_view)
+                sms_ImageView = listview.findViewById(R.id.sms_image_view)
+
+
+//                phone_call_ImageView!!.setOnClickListener {
+//                    val intent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
+//                    intent.putExtra("ContactPhoneNumber", !!.text.toString())
+//                    startActivity(intent)
+//                }
+
+                main_Listview!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                    if (!main_FloatingButtonIsOpen) {
+
+                        //Save position in gridview
+                        index = main_Listview!!.firstVisiblePosition
+
+                        //val edit : SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putInt("index", index)
+                        edit.commit()
+                        //
+                        val o = main_Listview!!.getItemAtPosition(position)
+                        val contact = o as ContactWithAllInformation
+
+                        val intent = Intent(this, EditContactActivity::class.java)
+                        intent.putExtra("ContactId", contact.contactDB!!.id)
+                        startActivity(intent)
+                    } else {
+                        main_FloatingButtonIsOpen = false
+                        onFloatingClickBack()
+                    }
+                }
+            }
         }
         runOnUiThread(printContacts)
 
@@ -297,7 +343,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedPreferences.getInt("gridview", 4)
-                val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                val contactAdapter = ContactGridViewAdapter(this@MainActivity, contactList, len)
                 main_GridView!!.adapter = contactAdapter
             }
         })
@@ -324,12 +370,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         //bouton synchronisation des contacts du téléphone
-        main_FloatingButtonSync!!.setOnClickListener(View.OnClickListener {
+        main_FloatingButtonSync!!.setOnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
             ContactSync.getAllContacsInfo(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
-        })
+        }
 
         //endregion
 
@@ -450,6 +496,29 @@ class MainActivity : AppCompatActivity() {
                 hideKeyboard()
                 return true
             }
+            R.id.item_click_change_format -> {
+                if (main_GridView!!.visibility == View.VISIBLE) {
+                    main_Listview!!.visibility = View.VISIBLE
+                    main_GridView!!.visibility = View.GONE
+
+                    val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+
+                    main_Listview!!.startAnimation(slideUp)
+
+                    Toast.makeText(this, "Mode Liste", Toast.LENGTH_SHORT).show()
+                } else {
+                    main_Listview!!.visibility = View.GONE
+                    main_GridView!!.visibility = View.VISIBLE
+
+                    val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+                    main_GridView!!.startAnimation(slideUp)
+
+                    Toast.makeText(this, "Mode Grille", Toast.LENGTH_SHORT).show()
+                }
+
+
+                return true
+            }
 //            R.id.nav_search -> {
 //                if (main_SearchBar!!.visibility != View.VISIBLE) {
 //                    main_SearchBar!!.visibility = View.VISIBLE
@@ -470,7 +539,7 @@ class MainActivity : AppCompatActivity() {
 //                        val len = sharedPreferences.getInt("gridview", 3)
 //                        //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
 //                        println("LIIIIIIST = " + contactList)
-//                        val contactAdapter = ContactAdapter(this, contactList, len)
+//                        val contactAdapter = ContactGridViewAdapter(this, contactList, len)
 //                        main_GridView!!.adapter = contactAdapter
 //                    } else {
 //                        Toast.makeText(this, "Le champ est vide", Toast.LENGTH_SHORT)
@@ -490,7 +559,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    val contactAdapter = ContactGridViewAdapter(this@MainActivity, contactList, len)
                     main_GridView!!.adapter = contactAdapter
                     //
                 } else {
@@ -505,7 +574,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    val contactAdapter = ContactGridViewAdapter(this@MainActivity, contactList, len)
                     main_GridView!!.adapter = contactAdapter
                     //
                 }
@@ -524,7 +593,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    val contactAdapter = ContactGridViewAdapter(this@MainActivity, contactList, len)
                     main_GridView!!.adapter = contactAdapter
                     //
                 } else {
@@ -540,7 +609,7 @@ class MainActivity : AppCompatActivity() {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     println("CONTACT LIST MAIL AFTER = " + contactList)
-                    val contactAdapter = ContactAdapter(this@MainActivity, contactList, len)
+                    val contactAdapter = ContactGridViewAdapter(this@MainActivity, contactList, len)
                     main_GridView!!.adapter = contactAdapter
                     //
                 }
@@ -605,6 +674,27 @@ class MainActivity : AppCompatActivity() {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
+    }
+
+    @SuppressLint("ShowToast")
+    private fun phoneCall(phoneNumberEntered: String) {
+        if (!TextUtils.isEmpty(phoneNumberEntered)) {
+            if (isValidPhone(phoneNumberEntered)) {
+                val dial = "tel:$phoneNumberEntered"
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+            } else {
+                Toast.makeText(this, "Enter a phone number valid", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Enter a phone number", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun isValidPhone(phone: String): Boolean {
+        val expression = "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})\$"
+        val pattern = Pattern.compile(expression)
+        val matcher = pattern.matcher(phone)
+        return matcher.matches()
     }
 
     //endregion

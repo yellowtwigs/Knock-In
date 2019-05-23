@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 
-class ManageScreenSizeActivity : AppCompatActivity() {
+class ManageMyScreenActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var my_knocker: RelativeLayout? = null
@@ -26,7 +26,7 @@ class ManageScreenSizeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manage_screen_size)
+        setContentView(R.layout.activity_manage_my_screen)
 
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
         tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
@@ -58,7 +58,7 @@ class ManageScreenSizeActivity : AppCompatActivity() {
         my_knocker = headerView.findViewById(R.id.my_knocker)
 
         my_knocker!!.setOnClickListener {
-            startActivity(Intent(this@ManageScreenSizeActivity, MainActivity::class.java))
+            startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
         }
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -67,18 +67,18 @@ class ManageScreenSizeActivity : AppCompatActivity() {
             val id = menuItem.itemId
 
             if (id == R.id.nav_informations) {
-                startActivity(Intent(this@ManageScreenSizeActivity, EditInformationsActivity::class.java))
+                startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
             } else if (id == R.id.nav_notif_config) {
-                startActivity(Intent(this@ManageScreenSizeActivity, ManageNotificationActivity::class.java))
+                startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
             } else if (id == R.id.nav_screen_size) {
             } else if (id == R.id.nav_theme) {
-                startActivity(Intent(this@ManageScreenSizeActivity, ManageThemeActivity::class.java))
+                startActivity(Intent(this@ManageMyScreenActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {
             } else if (id == R.id.nav_knockons) {
-                startActivity(Intent(this@ManageScreenSizeActivity, ManageKnockonsActivity::class.java))
+                startActivity(Intent(this@ManageMyScreenActivity, ManageKnockonsActivity::class.java))
             } else if (id == R.id.nav_statistics) {
             } else if (id == R.id.nav_help) {
-                startActivity(Intent(this@ManageScreenSizeActivity, HelpActivity::class.java))
+                startActivity(Intent(this@ManageMyScreenActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -90,7 +90,7 @@ class ManageScreenSizeActivity : AppCompatActivity() {
         //region ==================================== SetOnClickListener ====================================
 
         my_knocker!!.setOnClickListener {
-            startActivity(Intent(this@ManageScreenSizeActivity, MainActivity::class.java))
+            startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
         }
 
         if (nbGrid == 3) {
