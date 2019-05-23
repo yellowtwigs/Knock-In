@@ -123,7 +123,6 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_rounded_image = R.drawable.ryan
             edit_contact_priority =contact.contactDB!!.contactPriority
 
-
                     for(info in contactList){
                 val contact=info.contactDB!!
 
@@ -142,8 +141,8 @@ class EditContactActivity : AppCompatActivity() {
             val contact:ContactWithAllInformation = result.get()
                 edit_contact_first_name = contact.contactDB!!.firstName
                 edit_contact_last_name = contact.contactDB!!.lastName
-                var tmpPhone=contact.contactDetailList!!.get(0)
-                edit_contact_rounded_image = intent.getIntExtra("ContactImage", 1)
+                edit_contact_rounded_image = R.drawable.ryan
+                edit_contact_priority =contact.contactDB!!.contactPriority
                 //TODO :enlever code Dupliquer
 
                 if(contact.contactDetailList!!.size==0){

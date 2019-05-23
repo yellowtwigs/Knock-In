@@ -43,15 +43,4 @@ object ContactsPriority : AppCompatActivity() {
         return priority
     }
 
-    fun checkPriority2(contactList: List<ContactDB>?): Boolean {
-        if (contactList != null) {
-            for (contact in contactList){
-               if(contact.contactPriority==2){
-                   return true
-               }
-            }
-        }
-        return false
-    }
-
 }

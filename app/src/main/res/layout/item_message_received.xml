@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp">
 
-        <com.example.knocker.CircularImageView
+        <com.example.knocker.controller.CircularImageView
             android:id="@+id/image_profile_message_received"
             android:layout_width="32dp"
             android:layout_height="32dp"

@@ -52,7 +52,7 @@
             android:windowSoftInputMode="stateHidden" />
 
         <service
-            android:name="com.example.knocker.model.NotificationListener"
+            android:name="com.example.knocker.controller.NotificationListener"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>

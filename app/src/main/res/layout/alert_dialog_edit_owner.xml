@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="176dp">
 
-    <com.example.knocker.CircularImageView
+    <com.example.knocker.controller.CircularImageView
         android:id="@+id/my_profile_user_image"
         android:layout_width="90dp"
         android:layout_height="90dp"

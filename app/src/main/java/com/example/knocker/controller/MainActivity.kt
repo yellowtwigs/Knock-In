@@ -26,7 +26,6 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.util.*
 

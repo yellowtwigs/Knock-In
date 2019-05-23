@@ -15,7 +15,6 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.knocker.CircularImageView;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
