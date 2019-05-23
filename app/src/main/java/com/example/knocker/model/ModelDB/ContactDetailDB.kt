@@ -10,7 +10,8 @@ import com.example.knocker.model.ModelDB.ContactDB
 data class ContactDetailDB(
         @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int?,    //id du contact
         @ColumnInfo(name = "id_contact") var idContact: Int?,                      //id du contact
-        @ColumnInfo(name = "contact_details") val contactDetails: String,           //
-        @ColumnInfo(name = "tag") val tag: String,                                  //
+        @ColumnInfo(name = "contact_details") val contactDetails: String,           // RENAME content
+        @ColumnInfo(name = "tag") val tag: String,                                  // RENAME type
+                                                                                    // ADD tag
         @ColumnInfo(name = "field_position") val fieldPosition: Int                 //
 )
