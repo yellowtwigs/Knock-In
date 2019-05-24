@@ -12,6 +12,7 @@ import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
+import android.telephony.SmsManager
 import androidx.core.content.ContextCompat.checkSelfPermission
 import android.text.TextUtils
 import android.view.*
@@ -19,6 +20,9 @@ import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
     private val TAG = NotificationListener::class.java.simpleName
@@ -98,13 +102,21 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 inputMM.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
             } else if (v.id == R.id.notification_adapter_button_send) {
                 println("click on button send")
-                //val message = editText.text.toString()
-                // String number= ContactInfo.
-                //val number= ContactInfo.getInfoWithName(sbp.statusBarNotificationInfo["android.title"].toString(), app)
+                val message = editText.text.toString()
+
+
+                val main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+                main_mDbWorkerThread.start()
+
+                //on get la base de données
+                val main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
+                val contacts=ContactList(this.context)
+                val number= contacts.getInfoWithName(sbp.statusBarNotificationInfo["android.title"].toString(), app)
                 if(sbp.appNotifier.equals(MESSAGE_PACKAGE )|| sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)){
-                   /*
+
                     val smsManager= SmsManager.getDefault()
-                    smsManager.sendTextMessage(number,null, message,null,null)*/
+
+                    smsManager.sendTextMessage(number,null, message,null,null)
                 }else if(sbp.appNotifier.equals(WATHSAPP_SERVICE)){
                     /*context.startActivity( Intent(Intent.ACTION_VIEW,
                             Uri.parse(

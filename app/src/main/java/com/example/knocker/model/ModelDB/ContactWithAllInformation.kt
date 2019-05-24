@@ -13,7 +13,11 @@ class ContactWithAllInformation {
     @Relation(parentColumn = "id", entityColumn = "id_contact", entity = ContactDetailDB::class)
     var contactDetailList: List<ContactDetailDB>? = null
 
-
+    fun getContactId():Int{
+        return contactDB!!.id!!
+    }
     /*@Relation(parentColumn = "id",entityColumn = "id_contact",entity = Notification.class)
     public List<Notification> NotificationList;*/
+
+
 }

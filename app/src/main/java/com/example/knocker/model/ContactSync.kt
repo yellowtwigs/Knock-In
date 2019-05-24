@@ -111,10 +111,11 @@ object ContactSync : AppCompatActivity() {
     }
 
 
-    fun getAllContacsInfo(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
+
+    fun getAllContacsInfo(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context, gestionnaireContacts: ContactList) {
         val phoneStructName = getStructuredName(main_contentResolver)
         val contactNumberAndPic = getPhoneNumber(main_contentResolver)
-        createListContacts(phoneStructName, contactNumberAndPic, gridView, applicationContext)
+        createListContacts(phoneStructName,contactNumberAndPic,gridView,applicationContext,gestionnaireContacts)
     }
 
     private fun isDuplicateNumber(idAndPhoneNumber: Triple<Int, String?, String?>, contactPhoneNumber: List<Triple<Int, String?, String?>>): Boolean {
@@ -149,7 +150,7 @@ object ContactSync : AppCompatActivity() {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }//TODO:redondant
 
-    fun createListContacts(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Triple<Int, String?, String?>>?, gridView: GridView?, applicationContext: Context) {
+    fun createListContacts(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Triple<Int, String?, String?>>?, gridView: GridView?, applicationContext: Context, gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
         var main_ContactsDatabase: ContactsRoomDatabase? = null
         lateinit var main_mDbWorkerThread: DbWorkerThread
@@ -205,6 +206,7 @@ object ContactSync : AppCompatActivity() {
             val len = sharedPreferences.getInt("gridview", 4)
             val contactAdapter = ContactGridViewAdapter(applicationContext, syncContact, len)
             gridView!!.adapter = contactAdapter
+            gestionnaireContacts.contacts=syncContact!!
         }
         runOnUiThread(addAllContacts)
     }
