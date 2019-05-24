@@ -95,18 +95,18 @@ class EditInformationsActivity : AppCompatActivity() {
 
             val id = menuItem.itemId
 
-            if (id == R.id.nav_informations) {
-            } else if (id == R.id.nav_notif_config) {
-            } else if (id == R.id.nav_screen_size) {
-                startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
-            } else if (id == R.id.nav_theme) {
-                startActivity(Intent(this@EditInformationsActivity, ManageThemeActivity::class.java))
-            } else if (id == R.id.nav_data_access) {
-            } else if (id == R.id.nav_knockons) {
-                startActivity(Intent(this@EditInformationsActivity, ManageKnockonsActivity::class.java))
-            } else if (id == R.id.nav_statistics) {
-            } else if (id == R.id.nav_help) {
-                startActivity(Intent(this@EditInformationsActivity, HelpActivity::class.java))
+            when (id) {
+                R.id.nav_informations -> {
+                }
+                R.id.nav_notif_config -> {
+                }
+                R.id.nav_screen_config -> startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_data_access -> {
+                }
+                R.id.nav_knockons -> startActivity(Intent(this@EditInformationsActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_statistics -> {
+                }
+                R.id.nav_help -> startActivity(Intent(this@EditInformationsActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)

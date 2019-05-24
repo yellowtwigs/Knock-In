@@ -39,7 +39,7 @@
         <activity android:name=".model.ContactSync" />
         <activity android:name=".model.ContactInfo" />
         <activity android:name=".controller.NotificationHistoryActivity" /> <!-- <activity android:name="com.example.knocker.model.testpinch" /> -->
-        <activity android:name=".controller.ChatActivity" />
+        <activity android:name=".controller.SocialsNetworksLinksActivity" />
         <activity android:name=".model.ContactsPriority" />
         <activity
             android:name=".controller.AddNewContactActivity"

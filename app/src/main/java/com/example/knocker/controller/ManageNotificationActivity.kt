@@ -9,24 +9,84 @@ import android.provider.Settings
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationView
 
 class ManageNotificationActivity : AppCompatActivity() {
+
+    //region ========================================== Var or Val ==========================================
+
+    // Show on the Main Layout
+    private var drawerLayout: DrawerLayout? = null
+
+    private var my_knocker: RelativeLayout? = null
+
+    //endregion
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_notification)
+
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
 
-        switchPopupNotif.setChecked(sharedPreferences.getBoolean("popupNotif", false))
-        switchservice.setChecked(sharedPreferences.getBoolean("serviceNotif", true))
+        switchPopupNotif.isChecked = sharedPreferences.getBoolean("popupNotif", false)
+        switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", true)
+
+        //region ========================================== Toolbar =========================================
+
+        // Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val actionbar = supportActionBar
+        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+        actionbar.title = "Manage Notification"
+
+        //endregion
+
+        //region ======================================= DrawerLayout =======================================
+
+        // Drawerlayout
+        drawerLayout = findViewById(R.id.drawer_layout)
+
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val headerView = navigationView.getHeaderView(0);
+        my_knocker = headerView.findViewById(R.id.my_knocker)
+
+        my_knocker!!.setOnClickListener {
+        }
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            drawerLayout!!.closeDrawers()
+
+            val id = menuItem.itemId
+
+            when (id) {
+                R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
+                R.id.nav_screen_config -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_data_access -> {
+                }
+                R.id.nav_knockons -> startActivity(Intent(this@ManageNotificationActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_statistics -> {
+                }
+                R.id.nav_help -> startActivity(Intent(this@ManageNotificationActivity, HelpActivity::class.java))
+            }
+
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            drawer.closeDrawer(GravityCompat.START)
+            true
+        }
+
+        //endregion
 
         switchPopupNotif.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -66,6 +126,21 @@ class ManageNotificationActivity : AppCompatActivity() {
                 System.out.println("service economy false " + sharedPreferences.getBoolean("serviceNotif", true))
             }
         }
+    }
+
+    //region ========================================== Functions =========================================
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                drawerLayout!!.openDrawer(GravityCompat.START)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
     }
 
     @SuppressLint("InflateParams")
@@ -111,4 +186,6 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
             return false
         }
+
+    //endregion
 }

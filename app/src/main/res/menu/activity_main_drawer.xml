@@ -12,13 +12,9 @@
             android:icon="@drawable/ic_notification"
             android:title="@string/left_drawer_notif_config" />
         <item
-            android:id="@+id/nav_screen_size"
-            android:icon="@drawable/ic_smartphone"
-            android:title="@string/left_drawer_my_screen" />
-        <item
-            android:id="@+id/nav_theme"
+            android:id="@+id/nav_screen_config"
             android:icon="@drawable/ic_web_design"
-            android:title="@string/left_drawer_theme" />
+            android:title="@string/left_drawer_my_screen" />
     </group>
 
     <group

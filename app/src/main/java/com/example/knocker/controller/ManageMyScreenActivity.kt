@@ -1,15 +1,20 @@
 package com.example.knocker.controller
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.Switch
 
 import com.example.knocker.R
 import com.google.android.material.navigation.NavigationView
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -24,9 +29,15 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private var tv_six: ImageView? = null
     private var nbGrid: Int = 3
 
+    private var manage_theme_SwitchTheme: Switch? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_my_screen)
+
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        nbGrid = sharedPreferences.getInt("gridview", 3)
 
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
         tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
@@ -36,6 +47,13 @@ class ManageMyScreenActivity : AppCompatActivity() {
         tv_five!!.setImageResource(R.drawable.contactbyline5)
         tv_four!!.setImageResource(R.drawable.contactbyline4)
         tv_three!!.setImageResource(R.drawable.contactbyline3)
+
+
+        manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            manage_theme_SwitchTheme!!.isChecked = true
+        }
 
         //region ========================================== Toolbar =========================================
 
@@ -66,19 +84,17 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
             val id = menuItem.itemId
 
-            if (id == R.id.nav_informations) {
-                startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
-            } else if (id == R.id.nav_notif_config) {
-                startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
-            } else if (id == R.id.nav_screen_size) {
-            } else if (id == R.id.nav_theme) {
-                startActivity(Intent(this@ManageMyScreenActivity, ManageThemeActivity::class.java))
-            } else if (id == R.id.nav_data_access) {
-            } else if (id == R.id.nav_knockons) {
-                startActivity(Intent(this@ManageMyScreenActivity, ManageKnockonsActivity::class.java))
-            } else if (id == R.id.nav_statistics) {
-            } else if (id == R.id.nav_help) {
-                startActivity(Intent(this@ManageMyScreenActivity, HelpActivity::class.java))
+            when (id) {
+                R.id.nav_informations -> startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
+                R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
+                R.id.nav_screen_config -> {
+                }
+                R.id.nav_data_access -> {
+                }
+                R.id.nav_knockons -> startActivity(Intent(this@ManageMyScreenActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_statistics -> {
+                }
+                R.id.nav_help -> startActivity(Intent(this@ManageMyScreenActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -142,6 +158,22 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_five!!.background = null
             tv_six!!.setBackgroundResource(R.drawable.border_imageview)
         }
+
+        manage_theme_SwitchTheme!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("theme", false)
+                edit.apply()
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("theme", true)
+                edit.apply()
+            }
+        })
 
 
         // endregion

@@ -3,21 +3,21 @@
     <item
         android:id="@+id/navigation_phone_book"
         android:icon="@drawable/ic_phone_book"
-        android:title="Phone Book" />
+        android:title="@string/bottom_navigation_view_phone_book" />
     <item
         android:id="@+id/navigation_notifcations"
         android:icon="@drawable/ic_notification"
-        android:title="Notifications" />
+        android:title="@string/bottom_navigation_view_notify_history" />
     <item
         android:id="@+id/navigation_groups"
         android:icon="@drawable/ic_groups"
-        android:title="Groups" />
+        android:title="@string/bottom_navigation_view_groups" />
     <item
         android:id="@+id/navigation_socials_networks"
-        android:icon="@drawable/ic_network"
-        android:title="Socials" />
+        android:icon="@drawable/ic_social_media"
+        android:title="@string/bottom_navigation_view_social_media" />
     <item
         android:id="@+id/navigation_phone_keyboard"
         android:icon="@drawable/ic_phone_call"
-        android:title="Phone Keyboard" />
+        android:title="@string/bottom_navigation_view_phone_log" />
 </menu>

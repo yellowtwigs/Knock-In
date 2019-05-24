@@ -1,7 +1,6 @@
 package com.example.knocker.controller
 
 import android.Manifest
-import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
@@ -29,7 +28,6 @@ import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import java.util.*
 import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
@@ -71,6 +69,28 @@ class MainActivity : AppCompatActivity() {
     private var main_BottomNavigationView: BottomNavigationView? = null
 
     private var gestionnaireContacts: ContactList? = null
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_phone_book -> {
+            }
+            R.id.navigation_groups -> {
+            }
+            R.id.navigation_notifcations -> {
+                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_socials_networks -> {
+                startActivity(Intent(this@MainActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_phone_keyboard -> {
+                startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
     //endregion
 
     /**
@@ -162,10 +182,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
             } else if (id == R.id.nav_notif_config) {
                 startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
-            } else if (id == R.id.nav_screen_size) {
+            } else if (id == R.id.nav_screen_config) {
                 startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
-            } else if (id == R.id.nav_theme) {
-                startActivity(Intent(this@MainActivity, ManageThemeActivity::class.java))
             } else if (id == R.id.nav_data_access) {
             } else if (id == R.id.nav_knockons) {
                 startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
@@ -398,30 +416,6 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.menu_main, menu)
         return true
     }
-
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_phone_book -> {
-            }
-            R.id.navigation_groups -> {
-            }
-            R.id.navigation_notifcations -> {
-                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@MainActivity, ChatActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
-
-    // fonction qui filtre
 
 
     //check les checkbox si elle ont été check apres une recherche

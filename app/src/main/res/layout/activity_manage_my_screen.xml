@@ -39,45 +39,101 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/activity_settings_imageView_3_contact"
+                android:layout_width="75dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:padding="2dp" />
+
+            <ImageView
+                android:id="@+id/activity_settings_imageView_4_contact"
+                android:layout_width="75dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:padding="2dp" />
+
             <ImageView
                 android:id="@+id/activity_settings_imageView_5_contact"
                 android:layout_width="75dp"
                 android:layout_height="65dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
-                android:padding="2dp"
-                app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_6_contact"
-                app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
-
-            <ImageView
-                android:id="@+id/activity_settings_imageView_3_contact"
-                android:layout_width="75dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="20dp"
-                android:padding="2dp"
-                app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_4_contact"
-                app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
-
-            <ImageView
-                android:id="@+id/activity_settings_imageView_4_contact"
-                android:layout_width="75dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="20dp"
-                android:padding="2dp"
-                app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_5_contact"
-                app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
+                android:padding="2dp" />
 
             <ImageView
                 android:id="@+id/activity_settings_imageView_6_contact"
                 android:layout_width="75dp"
                 android:layout_height="65dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_settings_change_nb_contact" />
+                android:layout_marginEnd="20dp" />
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/manage_theme_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/settings_theme"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/settings_title_size"
+            android:textStyle="bold" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/manage_theme"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="47dp"
+            android:background="@drawable/selector_relative_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
+
+            <TextView
+                android:id="@+id/manage_theme_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings_theme"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/settings_subtitle_size"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/manage_theme_long_text"
+                android:layout_width="333dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/manage_theme_subtitle"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/settings_theme_long_text"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/settings_long_text_size"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <Switch
+                android:id="@+id/manage_theme_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

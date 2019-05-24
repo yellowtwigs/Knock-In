@@ -3,7 +3,6 @@ package com.example.knocker.controller
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import android.widget.ListView
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.NotificationDB
@@ -25,10 +24,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         contact_details_mDbWorkerThread.start()
+
         //on get la base de données
         contact_details_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
-        val list=contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>
-        println("voici la liste"+list)
+
+        val list = contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>
+        println("voici la liste" + list)
         val adapter = NotificationHistoryAdapterActivity(this, list)
         val listviews = findViewById<ListView>(R.id.listView_notification_history)
         listviews.adapter = adapter
@@ -49,7 +50,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             R.id.navigation_notifcations -> {
             }
             R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@NotificationHistoryActivity, ChatActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                startActivity(Intent(this@NotificationHistoryActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_phone_keyboard -> {
