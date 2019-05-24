@@ -14,7 +14,7 @@
         android:title="@string/bottom_navigation_view_groups" />
     <item
         android:id="@+id/navigation_socials_networks"
-        android:icon="@drawable/ic_social_media"
+        android:icon="@drawable/ic_network"
         android:title="@string/bottom_navigation_view_social_media" />
     <item
         android:id="@+id/navigation_phone_keyboard"
