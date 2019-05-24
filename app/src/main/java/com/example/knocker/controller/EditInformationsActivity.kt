@@ -20,6 +20,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
@@ -55,6 +56,10 @@ class EditInformationsActivity : AppCompatActivity() {
     private var edit_informations_EditName: TextInputLayout? = null
     private var edit_informations_EditMail: TextInputLayout? = null
     private var edit_informations_EditPhoneNumber: TextInputLayout? = null
+
+    private var edit_informations_NameText:TextView?=null
+    private var edit_informations_MailText: TextView? = null
+    private var edit_informations_PhoneNumberText: TextView? = null
 
     //private var REQUEST_CAMERA: Int? = 1
     private var SELECT_FILE: Int? = 0
@@ -129,6 +134,8 @@ class EditInformationsActivity : AppCompatActivity() {
         edit_informations_EditMail = findViewById(R.id.edit_informations_edit_mail)
         edit_informations_EditPhoneNumber = findViewById(R.id.edit_informations_edit_phone_number)
 
+        edit_informations_MailText=findViewById(R.id.edit_informations_mail)
+        edit_informations_NameText=findViewById(R.id.edit_informations_name_id)
         //endregion
 
         //region ========================================= Listener =========================================
@@ -287,6 +294,7 @@ class EditInformationsActivity : AppCompatActivity() {
         edit_informations_EditPhoneNumber!!.visibility = View.VISIBLE
         edit_informations_ModeEditionDesactivated!!.visibility = View.VISIBLE
         edit_informations_ModeEditionActivated!!.visibility = View.GONE
+
 
         hideKeyboard()
         Toast.makeText(this@EditInformationsActivity, "Mode Edition Activé", Toast.LENGTH_SHORT).show()

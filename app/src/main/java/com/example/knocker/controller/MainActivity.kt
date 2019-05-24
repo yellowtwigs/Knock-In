@@ -344,6 +344,7 @@ class MainActivity : AppCompatActivity() {
                 val len = sharedPreferences.getInt("gridview", 4)
                 var filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                 val contactAdapter = ContactGridViewAdapter(this@MainActivity, filteredList, len)
+                gestionnaireContacts!!.contacts=filteredList
                 main_GridView!!.adapter = contactAdapter
             }
         })
