@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
     private var main_BottomNavigationView: BottomNavigationView? = null
 
-    private var gestionnaireContacts:ContactList?=null
+    private var gestionnaireContacts: ContactList? = null
     //endregion
 
     /**
@@ -152,8 +152,6 @@ class MainActivity : AppCompatActivity() {
 
         my_knocker!!.setOnClickListener {
         }
-
-
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
@@ -187,28 +185,28 @@ class MainActivity : AppCompatActivity() {
 
         //affiche tout les contacts de la Database
 
-            // Grid View
-            main_GridView = findViewById(R.id.main_grid_view_id)
-            main_Listview = findViewById(R.id.main_list_view_id)
-            ////////
-            val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-            val len = sharedPreferences.getInt("gridview", 4)
-            main_GridView!!.setNumColumns(len) // permet de changer
-            gestionnaireContacts= ContactList(this.applicationContext)
+        // Grid View
+        main_GridView = findViewById(R.id.main_grid_view_id)
+        main_Listview = findViewById(R.id.main_list_view_id)
+        ////////
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 4)
+        main_GridView!!.numColumns = len // permet de changer
+        gestionnaireContacts = ContactList(this.applicationContext)
 
-            println("contact db")
+        println("contact db")
 
-            if (main_GridView != null &&  gestionnaireContacts!!.contacts != null) {
-                val contactAdapter = ContactAdapter(this,  gestionnaireContacts!!.contacts, len)
-                main_GridView!!.adapter = contactAdapter
-                var index = sharedPreferences.getInt("index", 0)
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                main_GridView!!.setSelection(index)
-                edit.apply()
+        if (main_GridView != null) {
+            val contactAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!.contacts, len)
+            main_GridView!!.adapter = contactAdapter
+            var index = sharedPreferences.getInt("index", 0)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            main_GridView!!.setSelection(index)
+            edit.apply()
 
-                main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
-                    main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
-                    //val contact = main_GridView!!.getItemAtPosition(position) as ContactDB
+            main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
+                main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
+                //val contact = main_GridView!!.getItemAtPosition(position) as ContactDB
 //                    try {
 //                        BubbleActions.on(main_CoordinationLayout)
 //                                .addAction("Messenger", R.drawable.ic_messenger_circle_menu
@@ -228,55 +226,55 @@ class MainActivity : AppCompatActivity() {
 //                    } catch (e: IllegalStateException) {
 //
 //                    }
-                    false
-                }
-
-                main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                    if (!main_FloatingButtonIsOpen) {
-
-                        //Save position in gridview
-                        //val state = main_GridView!!.onSaveInstanceState()
-                        index = main_GridView!!.getFirstVisiblePosition()
-                        println("wheeeeeeee = " + index)
-
-                        //val edit : SharedPreferences.Editor = sharedPreferences.edit()
-                        edit.putInt("index", index)
-                        edit.commit()
-                        //
-                        val contact = gestionnaireContacts!!.contacts.get(position)
-  /*                          val mail = contact.contactDetailList!!.get(1).contactDetails
-                            val phone = contact.contactDetailList!!.get(0).contactDetails
-*/
-                            println(contact.contactDB!!.id.toString()+"\n contact detail list "
-                            + contact.contactDetailList!!+"contact name"+contact.contactDB!!.firstName)
-
-                            val intent = Intent( this,EditContactActivity::class.java)
-                            intent.putExtra("ContactId", contact.getContactId())
-                            startActivity(intent)
-
-
-                    } else {
-                        main_FloatingButtonIsOpen = false
-                        onFloatingClickBack()
-                    }
-                }
-                // Drag n Drop
+                false
             }
 
-            if (main_Listview != null && contactList != null) {
-                val contactAdapter = ContactListViewAdapter(this, contactList, len)
-                main_Listview!!.adapter = contactAdapter
-                var index = sharedPreferences.getInt("index", 0)
-                println("okkkkkkk = " + index)
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                main_Listview!!.setSelection(index)
-                edit.putInt("index", 0)
-                edit.apply()
+            main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                if (!main_FloatingButtonIsOpen) {
 
-                var listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null)
+                    //Save position in gridview
+                    //val state = main_GridView!!.onSaveInstanceState()
+                    index = main_GridView!!.getFirstVisiblePosition()
+                    println("wheeeeeeee = " + index)
 
-                phone_call_ImageView = listview.findViewById(R.id.phone_call_image_view)
-                sms_ImageView = listview.findViewById(R.id.sms_image_view)
+                    //val edit : SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putInt("index", index)
+                    edit.commit()
+                    //
+                    val contact = gestionnaireContacts!!.contacts.get(position)
+                    /*                          val mail = contact.contactDetailList!!.get(1).contactDetails
+                                              val phone = contact.contactDetailList!!.get(0).contactDetails
+                  */
+                    println(contact.contactDB!!.id.toString() + "\n contact detail list "
+                            + contact.contactDetailList!! + "contact name" + contact.contactDB!!.firstName)
+
+                    val intent = Intent(this, EditContactActivity::class.java)
+                    intent.putExtra("ContactId", contact.getContactId())
+                    startActivity(intent)
+
+
+                } else {
+                    main_FloatingButtonIsOpen = false
+                    onFloatingClickBack()
+                }
+            }
+            // Drag n Drop
+        }
+
+        if (main_Listview != null) {
+            val contactAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
+            main_Listview!!.adapter = contactAdapter
+            var index = sharedPreferences.getInt("index", 0)
+            println("okkkkkkk = " + index)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            main_Listview!!.setSelection(index)
+            edit.putInt("index", 0)
+            edit.apply()
+
+            var listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null)
+
+            phone_call_ImageView = listview.findViewById(R.id.phone_call_image_view)
+            sms_ImageView = listview.findViewById(R.id.sms_image_view)
 
 
 //                phone_call_ImageView!!.setOnClickListener {
@@ -285,28 +283,28 @@ class MainActivity : AppCompatActivity() {
 //                    startActivity(intent)
 //                }
 
-                main_Listview!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                    if (!main_FloatingButtonIsOpen) {
+            main_Listview!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                if (!main_FloatingButtonIsOpen) {
 
-                        //Save position in gridview
-                        index = main_Listview!!.firstVisiblePosition
+                    //Save position in gridview
+                    index = main_Listview!!.firstVisiblePosition
 
-                        //val edit : SharedPreferences.Editor = sharedPreferences.edit()
-                        edit.putInt("index", index)
-                        edit.commit()
-                        //
-                        val o = main_Listview!!.getItemAtPosition(position)
-                        val contact = o as ContactWithAllInformation
+                    //val edit : SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putInt("index", index)
+                    edit.commit()
+                    //
+                    val o = main_Listview!!.getItemAtPosition(position)
+                    val contact = o as ContactWithAllInformation
 
-                        val intent = Intent(this, EditContactActivity::class.java)
-                        intent.putExtra("ContactId", contact.contactDB!!.id)
-                        startActivity(intent)
-                    } else {
-                        main_FloatingButtonIsOpen = false
-                        onFloatingClickBack()
-                    }
+                    val intent = Intent(this, EditContactActivity::class.java)
+                    intent.putExtra("ContactId", contact.contactDB!!.id)
+                    startActivity(intent)
+                } else {
+                    main_FloatingButtonIsOpen = false
+                    onFloatingClickBack()
                 }
             }
+        }
 
 
         //main_mDbWorkerThread.postTask(printContacts)
@@ -326,7 +324,7 @@ class MainActivity : AppCompatActivity() {
                 main_search_bar_value = main_SearchBar!!.text.toString()
                 val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedPreferences.getInt("gridview", 4)
-                var filteredList=gestionnaireContacts!!.getContactConcernByFilter(main_filter,main_search_bar_value)
+                var filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                 val contactAdapter = ContactAdapter(this@MainActivity, filteredList, len)
                 main_GridView!!.adapter = contactAdapter
             }
@@ -356,7 +354,7 @@ class MainActivity : AppCompatActivity() {
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-             ContactSync.getAllContacsInfo(contentResolver,main_GridView,this,gestionnaireContacts!!)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+            ContactSync.getAllContacsInfo(contentResolver, main_GridView, this, gestionnaireContacts!!)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
         }
@@ -424,8 +422,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // fonction qui filtre
-
-
 
 
     //check les checkbox si elle ont été check apres une recherche
@@ -510,7 +506,7 @@ class MainActivity : AppCompatActivity() {
 
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    val filteredContact =gestionnaireContacts!!.getContactConcernByFilter(main_filter,main_search_bar_value)
+                    val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     val contactAdapter = ContactAdapter(this@MainActivity, filteredContact, len)
                     main_GridView!!.adapter = contactAdapter
                     //
@@ -522,7 +518,7 @@ class MainActivity : AppCompatActivity() {
 
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    val filteredContact =gestionnaireContacts!!.getContactConcernByFilter(main_filter,main_search_bar_value)
+                    val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     val contactAdapter = ContactAdapter(this@MainActivity, filteredContact, len)
                     main_GridView!!.adapter = contactAdapter
                     //
@@ -538,7 +534,7 @@ class MainActivity : AppCompatActivity() {
 
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    val filteredContact =gestionnaireContacts!!.getContactConcernByFilter(main_filter,main_search_bar_value)
+                    val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     val contactAdapter = ContactAdapter(this@MainActivity, filteredContact, len)
                     main_GridView!!.adapter = contactAdapter
                     //
@@ -549,7 +545,7 @@ class MainActivity : AppCompatActivity() {
                     main_search_bar_value = main_SearchBar!!.text.toString()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    val filteredContact =gestionnaireContacts!!.getContactConcernByFilter(main_filter,main_search_bar_value)
+                    val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     val contactAdapter = ContactAdapter(this@MainActivity, filteredContact, len)
                     main_GridView!!.adapter = contactAdapter
                     //

@@ -59,7 +59,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_FirstNameEditText: EditText? = null
 
 
-    private var edit_contact_RoundedImageView: ImageView? = null
+    private var edit_contact_RoundedImageView: CircularImageView? = null
     private var edit_contact_Priority: Spinner? = null
     private var edit_contact_Priority_explain: TextView? = null
     private var edit_contact_Phone_Property: Spinner? = null

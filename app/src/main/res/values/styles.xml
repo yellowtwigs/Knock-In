@@ -15,7 +15,6 @@
         <item name="borderViewColor">@color/borderViewColor</item>
         <item name="colorSurface">@color/borderViewColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
-        <item name="android:animateLayoutChanges">true</item>
     </style>
 
     <style name="windowAnimationTransition">

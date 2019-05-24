@@ -156,6 +156,6 @@ public class ContactListViewAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView contactFirstNameView;
-        ImageView contactRoundedImageView;
+        CircularImageView contactRoundedImageView;
     }
 }

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.example.knocker.controller.CircularImageView
         android:id="@+id/contactRoundedImageView"
         android:layout_width="45dp"
         android:layout_height="45dp"
