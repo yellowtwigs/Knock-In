@@ -5,11 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NotificationHistoryAdapterActivity(private val context:Context ,private val notifications:ArrayList<NotificationDB>) : BaseAdapter() {
+    var notification_history_adapter_expediteur:TextView?=null
+    var notification_history_adapter_contenue:TextView?=null
+    var notification_history_adapter_Date:TextView?=null
+    var notification_history_adapter_App: ImageView?=null
     override fun getItem(position: Int): NotificationDB {
         return notifications[position]
     }
@@ -24,16 +33,24 @@ class NotificationHistoryAdapterActivity(private val context:Context ,private va
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertView = convertView
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.activity_notification_history_adapter, parent, false)
-        }
+
         val notif = getItem(position)
-        val expTxt = convertView!!.findViewById<TextView>(R.id.history_adapter_expediteur)
-        val contenu= convertView.findViewById<TextView>(R.id.history_adapter_contenu)
-        //val date= convertView.findViewById<TextView>(R.id.history_adapter_time)
-        expTxt.text=notif.contactName
-        contenu.text= notif.description
-        //date.text=notif.dateTime
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.activity_notification_history_adapter, parent, false)
+            }
+            notification_history_adapter_expediteur = convertView!!.findViewById<TextView>(R.id.history_adapter_expediteur)
+            notification_history_adapter_contenue = convertView.findViewById<TextView>(R.id.history_adapter_contenu)
+            notification_history_adapter_Date = convertView.findViewById<TextView>(R.id.history_adapter_time)
+            notification_history_adapter_App=convertView.findViewById(R.id.history_adapter_imageView)
+            notification_history_adapter_expediteur!!.text = notif.contactName
+            notification_history_adapter_contenue!!.text = notif.description
+            notification_history_adapter_Date!!.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notif.timestamp))
+            println("Date(notif.timestamp.toLong()).toString()"+Date(notif.timestamp.toLong()).toString())
+            val pckManager = context.packageManager
+            val icon = pckManager.getApplicationIcon(notif.platform)
+            notification_history_adapter_App!!.setImageDrawable(icon)
+
         return convertView
     }
 

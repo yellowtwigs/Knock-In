@@ -23,6 +23,9 @@ import com.example.knocker.model.ModelDB.NotificationDB
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Service qui nous permet de traiter les notification
+ */
 
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
@@ -34,7 +37,9 @@ class NotificationListener : NotificationListenerService() {
     var windowManager: WindowManager? = null
     var priority: Int? = null
 
-
+    /**
+     * La première fois que le service est crée nous définnissons les valeurs pour les threads
+     */
     override fun onCreate() {
         super.onCreate()
 
@@ -50,6 +55,9 @@ class NotificationListener : NotificationListenerService() {
         //pour empêcher le listener de s'arreter
     }
 
+    /**
+     * Permet de relance le service
+     */
     fun toggleNotificationListenerService() {
         val pm = getPackageManager()
         val cmpName = ComponentName(this, NotificationListener::class.java)
@@ -57,6 +65,9 @@ class NotificationListener : NotificationListenerService() {
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
     }
 
+    /**
+     * Si le service à été déconnecté on demande d'être reconnecter
+     */
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
         println("isDisconnect")
@@ -66,14 +77,10 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        println("start command")
-        return Service.START_STICKY //dire qu'on doit relancer quand il se stop
-        //println("lancement du service")
-    }
-//trouver une solution au probleme de notification stop when screen is lock
-
-
+    /**
+     *Lors de la réception d'un message celle-ci effectue le traitement de la notification selon sa priorité
+     * @param sbn StatusBarNotification élément de la statusbar qui vient d'être publié
+     */
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         if (!sharedPreferences.getBoolean("serviceNotif", true)) {
@@ -118,7 +125,7 @@ class NotificationListener : NotificationListenerService() {
 
                 } else if (prioriteContact == 0) {
                     println("priority 0")
-                    //this.cancelNotification(sbn.key)
+                    this.cancelNotification(sbn.key)
                 }
 
             }
@@ -126,9 +133,13 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 //SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(Calendar.getInstance().timeInMillis.toString().toLong()))    /// timestamp to date
+    /**
+     * Crée une notification qui sera sauvegardé
+     *
+     */
     public fun saveNotfication(sbp: StatusBarParcelable): NotificationDB? {
         if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"].toString() != null) {
-            val notif = NotificationDB(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, false, Calendar.getInstance().timeInMillis.toString().dropLast(3).toInt(), 0, 0);
+            val notif = NotificationDB(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, false, Calendar.getInstance().timeInMillis.toString().toLong(), 0, 0);
             return notif;
         } else {
             return null

@@ -31,7 +31,7 @@ data class NotificationDB(
         /**
          * Timestamp de la notification.
          */
-        @ColumnInfo(name = "timestamp") val timestamp: Int,
+        @ColumnInfo(name = "timestamp") val timestamp: Long,
         /**
          * Booléen qui indique si la notification peut etre annulée
          */

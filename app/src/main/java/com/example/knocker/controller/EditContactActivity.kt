@@ -156,6 +156,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
             edit_contact_priority = contact.contactDB!!.contactPriority
+            edit_contact_rounded_image=contact.contactDB!!.profilePicture
             //TODO :enlever code Dupliquer
 
             if (contact.contactDetailList!!.size == 0) {
@@ -341,9 +342,9 @@ class EditContactActivity : AppCompatActivity() {
                         var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         for (i in 0..contact!!.contactDetailList!!.size - 1) {
                             if (i == 0) {
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.textView.text + spinnerPhoneChar)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text + spinnerPhoneChar)
                             } else if (i == 1) {
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.textView.text + spinnerMailChar)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text + spinnerMailChar)
                             }
 
                         }//TODO change for the listView
