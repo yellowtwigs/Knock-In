@@ -7,6 +7,9 @@ import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
+/**
+ * Interface réunissent les différentes requêtes d'interaction avec la table contact
+ */
 @Dao
 interface ContactsDao {
 

@@ -2,6 +2,9 @@ package com.example.knocker.model.ModelDB
 
 import androidx.room.*
 
+/**
+ * Data class qui représente un groupe
+ */
 @Entity(tableName = "groups_table")
 data class GroupDB(
         /**

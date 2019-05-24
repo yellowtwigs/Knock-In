@@ -5,6 +5,9 @@ import androidx.room.*
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.GroupDB
 
+/**
+ * Data class qui représente un lien entre un contact et un groupe
+ */
 @Entity(tableName = "link_contact_group_table",
         primaryKeys = arrayOf("id_group","id_contact"),
         foreignKeys = arrayOf(

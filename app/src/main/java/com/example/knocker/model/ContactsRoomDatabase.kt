@@ -11,7 +11,7 @@ import com.example.knocker.model.requestDB.ContactDetailsDao
 import com.example.knocker.model.requestDB.ContactsDao
 import com.example.knocker.model.requestDB.NotificationsDao
 
-@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class,LinkContactGroup::class], version = 9)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class,LinkContactGroup::class], version = 10)
  abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -37,6 +37,7 @@ import com.example.knocker.model.requestDB.NotificationsDao
                         .addMigrations(MIGRATION_6_7)
                         .addMigrations(MIGRATION_7_8)
                         .addMigrations(MIGRATION_8_9)
+                        .addMigrations(MIGRATION_9_10)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -85,6 +86,11 @@ import com.example.knocker.model.requestDB.NotificationsDao
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("CREATE TABLE IF NOT EXISTS 'contact_details_table' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'id_contact' INTEGER NOT NULL, 'contact_details' TEXT NOT NULL, 'tag' TEXT NOT NULL, FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'))")
                 database.execSQL("CREATE TABLE IF NOT EXISTS 'link_contact_group_table' ('id_group' INTEGER NOT NULL, 'id_contact' INTEGER NOT NULL, PRIMARY KEY('id_group','id_contact'),  FOREIGN KEY('id_contact') REFERENCES contact_details_table('id'), FOREIGN KEY('id_group') REFERENCES groups_table('id'))")
+            }
+        }
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN id_contact INTEGER DEFAULT 0 NOT NULL")
             }
         }
         fun destroyInstance() {

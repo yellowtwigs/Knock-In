@@ -3,6 +3,9 @@ package com.example.knocker.model.ModelDB
 import androidx.room.*
 import com.example.knocker.model.ModelDB.ContactDB
 
+/**
+ * Data class qui représente un détails d'un contact par exemple un mail, numero de téléphone, etc...
+ */
 @Entity(tableName = "contact_details_table", foreignKeys = arrayOf(ForeignKey(entity = ContactDB::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("id_contact"),

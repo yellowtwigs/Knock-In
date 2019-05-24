@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "90c01f7f2965fa94dd640e123ed5be16",
+    "identityHash": "ceefbde968c735942265363362e248f4",
     "entities": [
       {
         "tableName": "contacts_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `background_image` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -29,12 +29,6 @@
           {
             "fieldPath": "profilePicture",
             "columnName": "profile_picture",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "backgroundImage",
-            "columnName": "background_image",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -62,7 +56,7 @@
       },
       {
         "tableName": "notifications_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `contact_priority` INTEGER NOT NULL, `is_blacklist` INTEGER NOT NULL, `date_time` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `is_cancellable` INTEGER NOT NULL, `app_image` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `is_blacklist` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, `is_cancellable` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -95,21 +89,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "contactPriority",
-            "columnName": "contact_priority",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "isBlacklist",
             "columnName": "is_blacklist",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "dateTime",
-            "columnName": "date_time",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -125,9 +107,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "appImage",
-            "columnName": "app_image",
-            "affinity": "TEXT",
+            "fieldPath": "idContact",
+            "columnName": "id_contact",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -142,7 +124,7 @@
       },
       {
         "tableName": "groups_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `nb_members` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `profile_picture_str` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -154,12 +136,6 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "nbMembers",
-            "columnName": "nb_members",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -180,7 +156,7 @@
       },
       {
         "tableName": "contact_details_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `contact_details` TEXT NOT NULL, `tag` TEXT NOT NULL, `field_position` INTEGER NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `content` TEXT NOT NULL, `type` TEXT NOT NULL, `tag` TEXT NOT NULL, `field_position` INTEGER NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -195,8 +171,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "contactDetails",
-            "columnName": "contact_details",
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -233,11 +215,72 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "link_contact_group_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_group` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL, PRIMARY KEY(`id_group`, `id_contact`), FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`id_group`) REFERENCES `groups_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idGroup",
+            "columnName": "id_group",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idContact",
+            "columnName": "id_contact",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_group",
+            "id_contact"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_link_contact_group_table_id_group_id_contact",
+            "unique": true,
+            "columnNames": [
+              "id_group",
+              "id_contact"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_link_contact_group_table_id_group_id_contact` ON `${TABLE_NAME}` (`id_group`, `id_contact`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "contacts_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id_contact"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "groups_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id_group"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
+    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"90c01f7f2965fa94dd640e123ed5be16\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ceefbde968c735942265363362e248f4\")"
     ]
   }
 }

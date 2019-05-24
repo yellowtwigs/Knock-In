@@ -5,31 +5,53 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.knocker.model.ModelDB.NotificationDB
 
+/**
+ * Interface réunissent les différentes requêtes d'interaction avec la table notification
+ */
 @Dao
 interface NotificationsDao {
-
-    //get toutes les notification de la database
+    /**
+     * Récupère toutes les [notifications][NotificationDB] de la database
+     * @return List&lt[NotificationDB]&gt
+     */
     @Query("SELECT * FROM notifications_table ORDER BY timestamp DESC")
     fun getAllnotifications(): List<NotificationDB>
 
-    //get les notifications grace à une platform
+    /**
+     * Récupère toutes les [notifications][NotificationDB] lié à une plateforme
+     * @param platform String   La plateforme sélectionnée
+     * @return List&lt[NotificationDB]&gt
+     */
     @Query("SELECT * FROM notifications_table WHERE platform = :platform")
     fun getNotificationByPlatform(platform: String): List<NotificationDB>
 
-    //get une notification grace à son id
+    /**
+     * Récupère une [notification][NotificationDB] grâce à son id
+     * @param id Int   L'id de la [notification][NotificationDB] voulu
+     * @return List&lt[NotificationDB]&gt
+     */
     @Query("SELECT * FROM notifications_table WHERE id = :id")
     fun getNotification(id: Int): List<NotificationDB>
 
-    //insert la notification dans la database
+    /**
+     * Sauvegarde une [notification][NotificationDB] dans la Base de données
+     * @param notifications NotificationDB  Objet [notification][NotificationDB]
+     * @return Int  L'id de la [notification][NotificationDB] sauvegardé
+     */
     @Insert
     fun insert(notifications: NotificationDB)
 
-    //delete une notification grace à son id
+    /**
+     * Supprime une [notification][NotificationDB] de la Base de donnée grâce à son id
+     * @param id Int    Id de la [notification][NotificationDB] qui doit être supprimé
+     */
     @Query("DELETE FROM notifications_table WHERE id = :id")
     fun deleteNotificationById(id: Int)
 
-    //delete toute les notification d'une plateforme
+    /**
+     * Supprime les [notifications][NotificationDB] de la Base de donnée lié à une plateforme
+     * @param platform String    Plateforme choisie
+     */
     @Query("DELETE FROM notifications_table WHERE platform = :platform")
     fun deleteNotificationByPlatform(platform: String)
-
 }

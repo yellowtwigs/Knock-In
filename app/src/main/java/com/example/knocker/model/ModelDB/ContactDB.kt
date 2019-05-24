@@ -2,6 +2,9 @@ package com.example.knocker.model.ModelDB
 
 import androidx.room.*
 
+/**
+ * Data class qui représente un contact
+ */
 @Entity(tableName = "contacts_table")
 data class ContactDB(
         /**

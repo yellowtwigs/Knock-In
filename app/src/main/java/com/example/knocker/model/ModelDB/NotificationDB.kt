@@ -35,6 +35,9 @@ data class NotificationDB(
         /**
          * Booléen qui indique si la notification peut etre annulée
          */
-        @ColumnInfo(name = "is_cancellable") val isCancellable: Int
-// il manque l'id du contact
+        @ColumnInfo(name = "is_cancellable") val isCancellable: Int,
+        /**
+         * Id du contact lié à la notification
+         */
+        @ColumnInfo(name = "id_contact") val idContact: Int
 )
