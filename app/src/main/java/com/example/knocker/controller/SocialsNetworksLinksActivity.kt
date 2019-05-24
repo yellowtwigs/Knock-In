@@ -3,6 +3,7 @@ package com.example.knocker.controller
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -159,7 +160,6 @@ class SocialsNetworksLinksActivity : AppCompatActivity() {
         //endregion
 
     }
-
     //region ========================================== Functions =========================================
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -205,5 +205,4 @@ class SocialsNetworksLinksActivity : AppCompatActivity() {
     }
 
     //endregion
-
 }

@@ -27,6 +27,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -125,7 +126,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
-        edit_contact_AddFieldButton= findViewById(R.id.edit_contact_add_field_button)
+        edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
@@ -156,7 +157,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
             edit_contact_priority = contact.contactDB!!.contactPriority
-            edit_contact_rounded_image=contact.contactDB!!.profilePicture
+            edit_contact_rounded_image = contact.contactDB!!.profilePicture
             //TODO :enlever code Dupliquer
 
             if (contact.contactDetailList!!.size == 0) {
@@ -272,6 +273,16 @@ class EditContactActivity : AppCompatActivity() {
         }
     }
 
+    private fun hideKeyboard() {
+        // Check if no view has focus:
+        val view = this.currentFocus
+
+        view?.let { v ->
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+    }
+
     private fun getListOfFields(): ArrayList<String> {
         val edit_contact_ListOfFields = ArrayList<String>()
 
@@ -317,13 +328,11 @@ class EditContactActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (isChanged) {
-                    var alertDialog = AlertDialog.Builder(this)
+                    val alertDialog = AlertDialog.Builder(this)
                     alertDialog.setTitle("Attention")
                     alertDialog.setMessage("Vous risquez de perdre toutes vos modifications, voulez vous vraiment continuer ?")
 
                     alertDialog.setPositiveButton("Oui") { _, _ ->
-
-
                         finish()
                     }
 
@@ -333,8 +342,10 @@ class EditContactActivity : AppCompatActivity() {
                 } else {
                     finish()
                 }
+                hideKeyboard()
             }
             R.id.nav_validate -> {
+                hideKeyboard()
                 val editContact = Runnable {
                     if (edit_contact_FirstName!!.editText!!.toString() != "" || edit_contact_LastName!!.editText!!.toString() != "") {
                         val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())

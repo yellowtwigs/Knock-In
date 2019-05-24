@@ -126,7 +126,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_five!!.background = null
             tv_six!!.background = null
             tv_three!!.setBackgroundResource(R.drawable.border_imageview)
-
+            changeGridColumn()
         }
 
         tv_four?.setOnClickListener {
@@ -137,6 +137,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_five!!.background = null
             tv_six!!.background = null
             tv_four!!.setBackgroundResource(R.drawable.border_imageview)
+            changeGridColumn()
         }
 
         tv_five?.setOnClickListener {
@@ -147,6 +148,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_four!!.background = null
             tv_six!!.background = null
             tv_five!!.setBackgroundResource(R.drawable.border_imageview)
+            changeGridColumn()
         }
 
         tv_six?.setOnClickListener {
@@ -157,6 +159,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_four!!.background = null
             tv_five!!.background = null
             tv_six!!.setBackgroundResource(R.drawable.border_imageview)
+            changeGridColumn()
         }
 
         manage_theme_SwitchTheme!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
@@ -188,6 +191,16 @@ class ManageMyScreenActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun changeGridColumn() {
+        val loginIntent = Intent(this@ManageMyScreenActivity, MainActivity::class.java)
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+        edit.putInt("gridview", nbGrid)
+        edit.apply()
+        startActivity(loginIntent)
+        finish()
     }
 
     //endregion
