@@ -10,7 +10,10 @@ import com.example.knocker.model.ModelDB.*
 import com.example.knocker.model.requestDB.ContactDetailsDao
 import com.example.knocker.model.requestDB.ContactsDao
 import com.example.knocker.model.requestDB.NotificationsDao
-
+/**
+ * La Classe qui permet de créer la base de données et de la garder à jour
+ * @author Ryan Granet
+ */
 @Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class,LinkContactGroup::class], version = 10)
  abstract  class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao

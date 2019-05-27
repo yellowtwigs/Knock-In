@@ -20,7 +20,10 @@ import com.example.knocker.R;
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
 
-
+/**
+ * TO DELETE ???
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 public class CircularImageView extends AppCompatImageView {
 
     // Default Values

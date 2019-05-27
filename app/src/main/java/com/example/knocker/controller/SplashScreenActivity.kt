@@ -7,6 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.knocker.R
 
+/**
+ * La Classe qui permet d'afficher le splashscreen lors du lancement de l'application
+ * @author Kenzy Suon
+ */
 class SplashScreenActivity : AppCompatActivity() {
 
     private val SPLASH_DISPLAY_LENGHT = 0.1

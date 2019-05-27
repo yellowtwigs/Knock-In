@@ -28,6 +28,10 @@ import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 
+/**
+ * La Classe qui permet la création d'un nouveau contact
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 class AddNewContactActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================

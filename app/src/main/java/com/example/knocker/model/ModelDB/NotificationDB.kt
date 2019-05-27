@@ -2,6 +2,10 @@ package com.example.knocker.model.ModelDB
 
 import androidx.room.*
 
+/**
+ * Data class qui représente les notifications reçu
+ * @author Ryan Granet
+ */
 @Entity(tableName = "notifications_table")
 data class NotificationDB(
         /**

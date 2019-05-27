@@ -36,6 +36,10 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 
+/**
+ * La Classe qui permet d'éditer son propre profil
+ * @author Kenzy Suon
+ */
 class EditInformationsActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================

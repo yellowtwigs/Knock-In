@@ -4,6 +4,7 @@ import androidx.room.*
 
 /**
  * Data class qui représente un groupe
+ * @author Ryan Granet
  */
 @Entity(tableName = "groups_table")
 data class GroupDB(

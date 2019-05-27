@@ -1,5 +1,9 @@
 package com.example.knocker.model
 
+/**
+ * TO DELETE ???
+ * @author Florian Striebel
+ */
 object NumberAndMailDB {
    public fun convertSpinnerStringToChar(type :String ):Char{ //récupère la valeur du spinner pour en sortir un caractère
 

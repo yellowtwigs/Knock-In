@@ -44,7 +44,10 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
+/**
+ * La Classe qui permet d'éditer un contact choisi
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 class EditContactActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================

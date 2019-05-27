@@ -9,6 +9,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.knocker.R
 
+/**
+ * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de knocker
+ * @author Kenzy Suon
+ */
 class HelpActivity : AppCompatActivity() {
 
     var help_activity_QandA: ConstraintLayout? = null

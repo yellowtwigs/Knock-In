@@ -22,6 +22,10 @@ import com.example.knocker.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
+/**
+ * La Classe qui permet d'éditer un contact choisi
+ * @author Kenzy Suon
+ */
 class SocialsNetworksLinksActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================

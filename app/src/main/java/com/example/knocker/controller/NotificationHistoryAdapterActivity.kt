@@ -14,6 +14,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * La Classe qui permet de remplir l'historique des notifications
+ * @author Florian Striebel
+ */
 class NotificationHistoryAdapterActivity(private val context:Context ,private val notifications:ArrayList<NotificationDB>) : BaseAdapter() {
     var notification_history_adapter_expediteur:TextView?=null
     var notification_history_adapter_contenue:TextView?=null

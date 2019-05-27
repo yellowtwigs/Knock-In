@@ -4,6 +4,7 @@ import androidx.room.*
 
 /**
  * Data class qui représente un contact
+ * @author Ryan Granet
  */
 @Entity(tableName = "contacts_table")
 data class ContactDB(

@@ -11,7 +11,10 @@ import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 
 import kotlinx.android.synthetic.main.activity_manage_knockons.*
-
+/**
+ * La Classe qui permet la gestion des Knockons
+ * @author Kenzy Suon
+ */
 class ManageKnockonsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

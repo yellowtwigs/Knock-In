@@ -31,6 +31,10 @@ import com.example.knocker.R
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 
+/**
+ * La Classe qui permet de composer un message à un numero rentré
+ * @author Florian Striebel, Kenzy Suon
+ */
 class ComposeMessageActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================

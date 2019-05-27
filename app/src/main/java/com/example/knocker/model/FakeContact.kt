@@ -8,6 +8,10 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * L'objet qui permet de gérer les faux Contacts
+ * @author Florian Striebel
+ */
 object FakeContact {
 
     fun loadJSONFromAsset(context: Context):String{

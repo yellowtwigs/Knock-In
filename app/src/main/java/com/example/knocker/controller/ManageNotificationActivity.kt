@@ -18,6 +18,10 @@ import com.example.knocker.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
+/**
+ * La Classe qui permet d'activer ou desactiver les notifications de knocker
+ * @author Florian Striebel
+ */
 class ManageNotificationActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================

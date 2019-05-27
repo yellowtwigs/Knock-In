@@ -24,7 +24,10 @@ import java.util.ArrayList
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-
+/**
+ * La Classe qui contient toute les fonctions qui touche à la synchronisation des contacts, les filtre et searchbar
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 class ContactList(var contacts: List<ContactWithAllInformation>,var context:Context){
     constructor(context: Context):this(mutableListOf<ContactWithAllInformation>()
             ,context)

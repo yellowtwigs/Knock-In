@@ -10,6 +10,10 @@ import android.widget.Toast
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
+/**
+ * L'objet qui permet d'ouvrir messenger, whatsapp et gmail
+ * @author Florian Striebel, Kenzy Suon
+ */
 object ContactGesture {
 
     fun putContactIntent (contact : ContactWithAllInformation, context: Context, classToSend : Class<*>):Intent{

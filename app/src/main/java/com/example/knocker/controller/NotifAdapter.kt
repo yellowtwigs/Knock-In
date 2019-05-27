@@ -24,6 +24,10 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+/**
+ * La Classe qui permet d'afficher les notifications prioritaires au milieu de l'écran
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
     private val TAG = NotificationListener::class.java.simpleName
     private var notification_adapeter_ContactsDatabase: ContactsRoomDatabase? = null

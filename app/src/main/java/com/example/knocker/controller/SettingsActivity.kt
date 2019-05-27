@@ -14,7 +14,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.example.knocker.R
-
+/**
+ * TO DELETE ???
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 class SettingsActivity : AppCompatActivity() {
 
     private var tv_three: ImageView? = null

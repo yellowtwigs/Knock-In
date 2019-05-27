@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Service qui nous permet de traiter les notification
+ * Service qui nous permet de traiter les notifications
  */
 
 @SuppressLint("OverrideAbstract")

@@ -19,6 +19,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 
+/**
+ * La Classe qui permet de changer le theme de l'application et de changer le nombre de contact par ligne
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 class ManageMyScreenActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null

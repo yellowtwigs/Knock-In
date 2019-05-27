@@ -30,6 +30,10 @@ import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.util.regex.Pattern
 
+/**
+ * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 class MainActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================

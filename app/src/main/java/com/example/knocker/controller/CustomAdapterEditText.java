@@ -16,6 +16,10 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
+/**
+ * La Classe qui permet de générer la list des différents champs disponible lors de l'edition d'un contact
+ * @author Kenzy Suon
+ */
 public class CustomAdapterEditText extends BaseAdapter {
 
     private Context context;

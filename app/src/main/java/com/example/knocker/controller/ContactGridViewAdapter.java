@@ -24,6 +24,10 @@ import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+/**
+ * La Classe qui permet de remplir la gridview avec les bon éléments
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
+ */
 public class ContactGridViewAdapter extends BaseAdapter {
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;

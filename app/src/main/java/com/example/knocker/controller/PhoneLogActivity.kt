@@ -17,6 +17,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
 
+/**
+ * La Classe qui permet d'afficher la liste des appels reçu
+ * @author Kenzy Suon
+ */
 class PhoneLogActivity : AppCompatActivity() {
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1

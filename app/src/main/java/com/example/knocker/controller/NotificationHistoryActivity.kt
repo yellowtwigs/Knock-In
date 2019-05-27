@@ -10,6 +10,10 @@ import com.example.knocker.R
 import com.example.knocker.model.ContactsRoomDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+/**
+ * La Classe qui permet d'afficher l'historique des notifications
+ * @author Florian Striebel
+ */
 class NotificationHistoryActivity : AppCompatActivity() {
 
     private var contact_details_NotificationsDatabase: ContactsRoomDatabase? = null

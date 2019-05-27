@@ -7,10 +7,14 @@ import com.example.knocker.model.ModelDB.GroupDB
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table groups
+ * @author Ryan Granet
  */
 @Dao
 interface GroupsDao {
-
+    /**
+     * Récupère touts les [groupes][GroupDB] trier par prénom A->Z
+     * @return List&lt[ContactWithAllInformation]&gt
+     */
     //get touts les groupes de la database trié par nom de A à Z
     @Query("SELECT * FROM groups_table ORDER BY name ASC")
     fun getAllGroupsByNameAZ(): List<GroupDB>
@@ -30,8 +34,8 @@ interface GroupsDao {
     fun insert(groups: GroupDB)
 
     //update un groupe grace à son id
-    @Query("UPDATE groups_table SET name = :name, nb_members = :nbMembers, profile_picture_str = :profilePicture")
-    fun updateGroupeById(id: Int, name: String, nbMembers: Int, profilePicture: String)
+    @Query("UPDATE groups_table SET name = :name, profile_picture_str = :profilePicture")
+    fun updateGroupeById(id: Int, name: String, profilePicture: String)
 
     //delete un groupe grace à son id
     @Query("DELETE FROM groups_table WHERE id = :id")

@@ -7,6 +7,7 @@ import com.example.knocker.model.ModelDB.NotificationDB
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table notification
+ * @author Florian Striebel, Ryan Granet
  */
 @Dao
 interface NotificationsDao {
@@ -36,7 +37,7 @@ interface NotificationsDao {
     /**
      * Sauvegarde une [notification][NotificationDB] dans la Base de données
      * @param notifications NotificationDB  Objet [notification][NotificationDB]
-     * @return Int  L'id de la [notification][NotificationDB] sauvegardé
+     * @return Int  L'id de la [notification][NotificationDB] sauvegardée
      */
     @Insert
     fun insert(notifications: NotificationDB)
