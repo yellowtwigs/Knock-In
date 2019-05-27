@@ -85,11 +85,6 @@ class NotificationListener : NotificationListenerService() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         if (!sharedPreferences.getBoolean("serviceNotif", true)) {
             val sbp = StatusBarParcelable(sbn)
-            //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            Log.i(TAG, "application context " + applicationContext.toString());
-            Log.i(TAG, "application notifier:" + sbp.appNotifier)
-            //val i = Log.i(TAG, "tickerText:" + sbp.tickerText)
-            //sbn.notification.smallIcon
 
             for (key in sbn.notification.extras.keySet()) {
                 Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))

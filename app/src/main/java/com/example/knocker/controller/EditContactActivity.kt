@@ -368,7 +368,7 @@ class EditContactActivity : AppCompatActivity() {
                         }
                         contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
                         println("modify on contact " + contact.contactDB)
-                        val intent = Intent(this@EditContactActivity, ContactDetailsActivity::class.java)
+                        val intent = Intent(this@EditContactActivity, MainActivity::class.java)
 
                         intent.putExtra("ContactId", edit_contact_id!!)
 

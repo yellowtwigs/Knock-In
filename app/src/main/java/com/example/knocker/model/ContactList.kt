@@ -102,7 +102,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
         var filter: List<ContactWithAllInformation>?
-        //val allContacts = main_ContactsDatabase?.contactsDao()!!.getContactAllInfo()
+        //val allContacts = contactsDatabase?.contactsDao()!!.getContactAllInfo()
         println(filterList)
         if (filterList.contains("sms")) {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -413,12 +413,8 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     }
 
     fun deleteDeletedContactFromPhone(lastSync: List<Pair<Int, String>>, newSync: List<ContactDB>) {
-        var main_ContactsDatabase: ContactsRoomDatabase? = null
+        var contactsDatabase: ContactsRoomDatabase? = null
         //var id: Int? = null
-        lateinit var main_mDbWorkerThread: DbWorkerThread
-        main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        main_mDbWorkerThread.start()
-        main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
         var isDelete: Boolean
         lastSync.forEach { old ->
             isDelete = true
@@ -428,20 +424,16 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             }
             if (isDelete == true) {
                 println("NEW = " + old.second + "   id = " + old.first)
-                main_ContactsDatabase?.contactsDao()?.deleteContactById(old.first)
+                contactsDatabase?.contactsDao()?.deleteContactById(old.first)
             }
         }
     }
 
     fun createListContacts(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Triple<Int, String?, String?>>?, gridView: GridView?, applicationContext: Context, gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
-        var main_ContactsDatabase: ContactsRoomDatabase? = null
-        lateinit var main_mDbWorkerThread: DbWorkerThread
-        main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        main_mDbWorkerThread.start()
-        main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
-        val addAllContacts = Runnable {
-            val allcontacts = main_ContactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDb = Callable {
+            val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             phoneStructName!!.forEach { fullName ->
                 contactNumberAndPic!!.forEach { numberPic ->
                     val contactDetails = listOf(ContactDetailDB(null, null, numberPic.second!! + "M", "phone", "", 0), ContactDetailDB(null, null, "B", "phone", "", 0))
@@ -451,13 +443,13 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                             val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(), 1, numberPic.third!!)
                             if (!isDuplicate(allcontacts, contacts)) {
 
-                                contacts.id = main_ContactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
+                                contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
                                 for (details in contactDetails) {
                                     details.idContact = contacts.id
                                 }
-                                main_ContactsDatabase.contactsDao().insertDetails(contactDetails)
-                                //main_ContactsDatabase?.contactsDao()?.insertDetailsForContact(contacts,contactDetails)
-                                //   main_ContactsDatabase?.contactsDao()?.insertContactDetailSync(numberPic.second!! + "P","phone")
+                                contactsDatabase!!.contactsDao().insertDetails(contactDetails)
+                                //contactsDatabase?.contactsDao()?.insertDetailsForContact(contacts,contactDetails)
+                                //   contactsDatabase?.contactsDao()?.insertContactDetailSync(numberPic.second!! + "P","phone")
                             }
                             phoneContactsList.add(contacts)
                         } else if (fullName.second.second != "") {
@@ -465,19 +457,20 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                             val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(), 1, numberPic.third!!)
                             phoneContactsList.add(contacts)
                             if (!isDuplicate(allcontacts, contacts)) {
-                                contacts.id = main_ContactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
+                                contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
                                 for (details in contactDetails) {
                                     details.idContact = contacts.id
                                 }
-                                main_ContactsDatabase.contactsDao().insertDetails(contactDetails)
+                                contactsDatabase!!.contactsDao().insertDetails(contactDetails)
                             }
                         } else {
                         }
                     }
                 }
             }
-
-            val syncContact = main_ContactsDatabase?.contactsDao()?.getContactAllInfo()
+            contactsDatabase?.contactsDao()?.getContactAllInfo()
+        }
+            val syncContact=executorService.submit(callDb).get()
             val lastSyncList = getLastSync(applicationContext)
             if (lastSyncList.isEmpty()) {
                 storeLastSync(phoneContactsList, applicationContext, lastSyncList, true)
@@ -486,8 +479,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                 storeLastSync(phoneContactsList, applicationContext, lastSyncList, false)
             }
             gestionnaireContacts.contacts=syncContact!!
-        }
-        main_mDbWorkerThread.postTask(addAllContacts)
+
     }
 
     fun getAllContacsInfo(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
