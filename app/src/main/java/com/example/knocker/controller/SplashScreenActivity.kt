@@ -9,7 +9,7 @@ import com.example.knocker.R
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private val SPLASH_DISPLAY_LENGHT = 0.000001
+    private val SPLASH_DISPLAY_LENGHT = 0.1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
