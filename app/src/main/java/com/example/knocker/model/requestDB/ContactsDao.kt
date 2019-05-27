@@ -117,13 +117,13 @@ interface ContactsDao {
      * Récupere les [contacts][ContactWithAllInformation] qui possèdent un mail
      * @return List&lt[ContactWithAllInformation]&gt
      */
-    @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE tag='mail'")
+    @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE type='mail'")
     fun getContactWithMail(): List<ContactWithAllInformation>
     /**
      * Récupere les [contacts][ContactWithAllInformation] qui possèdent un numéro de téléphone
      * @return List&lt[ContactWithAllInformation]&gt
      */
-    @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE tag='phone'")
+    @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE type='phone'")
     fun getContactWithPhoneNumber(): List<ContactWithAllInformation>
     /**
      * Récupere les [contacts][ContactDB]

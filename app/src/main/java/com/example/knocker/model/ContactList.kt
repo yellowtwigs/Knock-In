@@ -112,7 +112,6 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             val callDb= Callable { contactsDatabase?.contactsDao()?.getContactWithPhoneNumber()}
             val result=executorService.submit(callDb)
             filter = result.get()
-
             if (filter != null && filter.isEmpty() == false) {
                 allFilters.add(filter)
             }
@@ -149,11 +148,23 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return result.get()!!
     }
 
+    private fun intersectContactWithAllInformation(contactList: List<ContactWithAllInformation>, contactFilterList: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
+        val listContacts = mutableListOf<ContactWithAllInformation>()
+        contactFilterList.forEach {type ->
+            contactList.forEach {
+                if (type.getContactId() == it.getContactId())
+                    listContacts.add(type)
+            }
+        }
+        return listContacts
+    }
+
     fun getContactConcernByFilter(filterList: ArrayList<String>,name:String):List<ContactWithAllInformation>{
         val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
+
         val contactList=getContactByName(name)
         if (contactFilterList != null) {
-           return contactList!!.intersect(contactFilterList).toList()
+            return intersectContactWithAllInformation(contactList,contactFilterList)
         }
         return contactList
     }
