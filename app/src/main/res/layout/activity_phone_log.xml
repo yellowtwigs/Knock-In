@@ -1,141 +1,419 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/phone_call_layout_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".controller.PhoneLogActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginBottom="8dp"
-        android:background="@color/transparentColor"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/phone_log_phone_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:background="@android:color/transparent"
-            android:hint="@string/compose_message_enter_phone_number"
-            android:inputType="phone" />
-    </androidx.appcompat.widget.Toolbar>
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/phone_log_add_new_contact"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginTop="84dp"
         android:background="@drawable/selector_relative_layout"
-        android:clickable="true"
-        android:focusable="true"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_plus"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/phone_log_add_new_contact"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.099"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/phone_log_add_send_message"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@drawable/selector_relative_layout"
-        android:clickable="true"
-        android:focusable="true"
+    <!--app:layout_constraintTop_toBottomOf="@+id/phone_log_add_send_message"-->
+    <ListView
+        android:id="@+id/phone_log_calls_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone_log_add_new_contact">
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/phone_log_call_edit_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_above="@+id/phone_log_call_keyboard_view"
+        android:background="@drawable/keyboard_selector_relative_layout"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:background="@color/borderViewColorDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/phone_log_send_message"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_sms"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_sms_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <EditText
+            android:id="@+id/phone_log_call_phone_number_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/phone_log_send_message"
+            android:layout_margin="10dp"
+            android:inputType="phone"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.099"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/phone_log_call_back_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_back_space_button_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout6"
+    <TableLayout
+        android:id="@+id/phone_log_call_keyboard_view"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        android:layout_height="230dp"
+        android:layout_above="@+id/phone_log_call_layout_id"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="106.5dp"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/phone_log_call_layout_id"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:background="@color/borderViewColorDark" />
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_1"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="1"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_2"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="2"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_3"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="3"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_4"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="4"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_5"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="5"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_6"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="6"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_7"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="7"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_8"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="8"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_9"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="9"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_star"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="*"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_0"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_sharp"
+                android:layout_width="@dimen/phone_log_keyboard_height_width"
+                android:layout_height="@dimen/phone_log_keyboard_height_width"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="#"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </TableRow>
+    </TableLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/phone_log_call_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_above="@+id/navigation"
+        android:background="@drawable/custom_keyboard_shape"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/borderViewColorDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/phone_log_button_add_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_plus_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/phone_log_incoming_call_button"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_incoming_call"
+            app:backgroundTint="#27b769"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_incoming_call" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/phone_log_button_close_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_phone_keypad_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/phone_log_button_open_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/navigation"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="visible"
+        app:backgroundTint="#27b769"
+        app:srcCompat="@drawable/ic_phone_keypad" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="#f0f0f0"
         app:itemIconTint="@color/bottom_navigation_color"
@@ -144,4 +422,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/main_navigation_view" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

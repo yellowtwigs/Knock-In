@@ -1,32 +1,34 @@
 package com.example.knocker.controller
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.view.animation.AnimationUtils
-
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-
 import com.example.knocker.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import java.lang.Math.abs
 
 /**
  * La Classe qui permet d'éditer un contact choisi
  * @author Kenzy Suon
  */
-class SocialsNetworksLinksActivity : AppCompatActivity() {
+class SocialsNetworksLinksActivity : AppCompatActivity(), SensorEventListener {
 
     //region ========================================== Var or Val ==========================================
 
@@ -47,8 +49,16 @@ class SocialsNetworksLinksActivity : AppCompatActivity() {
     private var link_socials_networks_Linkedin: ImageView? = null
     private var link_socials_networks_Twitter: ImageView? = null
 
-
     private var my_knocker: RelativeLayout? = null
+
+    private var lastUpdate: Long = 0
+    private var last_x: Float = 0F
+    private var last_y: Float = 0F
+    private var last_z: Float = 0F
+    private val SHAKE_TRESHOLD = 600
+
+    private var senSensorManager: SensorManager? = null
+    private var senAccelerometer: Sensor? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -77,6 +87,7 @@ class SocialsNetworksLinksActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_socials_networks_links)
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         //region ======================================= FindViewById =======================================
 
@@ -164,6 +175,28 @@ class SocialsNetworksLinksActivity : AppCompatActivity() {
         //endregion
 
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        senSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        senAccelerometer = senSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        senSensorManager!!.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+    }
+
+    override fun onPause() {
+        senSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        senSensorManager!!.unregisterListener(this, senAccelerometer)
+        super.onPause()
+    }
+
+    override fun onStop() {
+        senSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        senSensorManager!!.unregisterListener(this, senAccelerometer)
+        super.onStop()
+
+    }
+
     //region ========================================== Functions =========================================
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -206,6 +239,43 @@ class SocialsNetworksLinksActivity : AppCompatActivity() {
                     Uri.parse("http://instagram.com/")))
         }
 
+    }
+
+    //endregion
+
+    //region ====================================== SensorEventListener =====================================
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        val mySensor = event!!.sensor
+
+        if (mySensor.type == Sensor.TYPE_ACCELEROMETER) {
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            val curTime = System.currentTimeMillis()
+
+            if ((curTime - lastUpdate) > 100) {
+                val diffTime = (curTime - lastUpdate)
+                lastUpdate = curTime
+
+                var speed = abs(x + y + z - last_x - last_y - last_z)
+                speed = speed / diffTime * 10000
+
+                if (speed > SHAKE_TRESHOLD) {
+
+                }
+
+                last_x = x
+                last_y = y
+                last_z = z
+
+                Toast.makeText(this, "Shaked", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
 
     //endregion

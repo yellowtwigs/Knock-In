@@ -8,7 +8,7 @@
 
     <!-- Left Drawer Titles !-->
     <string name="left_drawer_home">Home</string>
-    <string name="left_drawer_informations">My Informations</string>
+    <string name="left_drawer_information">My Information</string>
     <string name="left_drawer_notif_config">My Notif Config</string>
     <string name="left_drawer_my_screen">My Screen Config</string>
     <string name="left_drawer_theme">My Themes</string>
@@ -21,10 +21,10 @@
     <string name="left_drawer_notification_history">Notifications History</string>
 
     <!-- Menu Main !-->
-    <string name="main_create_category">Sms</string>
-    <string name="main_filter">Email</string>
-    <string name="main_search_hint">Rechercher un contact</string>
-    <string name="main_change_format_phone_book">Changer de format</string>
+    <string name="main_create_category">Filter SMS</string>
+    <string name="main_filter">Filter Email</string>
+    <string name="main_search_hint">Search a contact</string>
+    <string name="main_change_format_phone_book">Change the display</string>
 
     <!-- Bottom Navigation View !-->
     <string name="bottom_navigation_view_phone_book">Phone Book</string>
@@ -90,10 +90,10 @@
 
 
     <!-- Edit my informations !-->
-            <!-- Fake !-->
-            <string name="edit_informations_name_fake">Carrie Sanders</string>
-            <string name="edit_informations_phone_number_fake">255 - 165 - 0056</string>
-            <string name="edit_informations_email_fake">carrie_sanders@email.com</string>
+    <!-- Fake !-->
+    <string name="edit_informations_name_fake">Carrie Sanders</string>
+    <string name="edit_informations_phone_number_fake">255 - 165 - 0056</string>
+    <string name="edit_informations_email_fake">carrie_sanders@email.com</string>
 
     <string name="edit_informations_name">Name</string>
     <string name="edit_informations_phone_number">Phone Number</string>

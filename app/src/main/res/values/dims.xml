@@ -10,6 +10,9 @@
     <dimen name="contact_details_relative_layout_height">74dp</dimen>
     <dimen name="contact_details_logo_size">30dp</dimen>
 
+    <!-- Keyboard in Phone Log !-->
+    <dimen name="phone_log_keyboard_height_width">50dp</dimen>
+
     <!-- Settings !-->
     <dimen name="settings_title_size">23sp</dimen>
     <dimen name="settings_subtitle_size">20sp</dimen>

@@ -105,12 +105,13 @@ public class ContactListViewAdapter extends BaseAdapter {
         }
 
         ContactDB contact = this.listContacts.get(position).getContactDB();
+        assert contact != null;
         if (contact.getContactPriority() == 0) {
-//            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
         } else if (contact.getContactPriority() == 1) {
-//            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
         } else if (contact.getContactPriority() == 2) {
-//            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
         }
         String firstname = contact.getFirstName();
         if (len == 3) {

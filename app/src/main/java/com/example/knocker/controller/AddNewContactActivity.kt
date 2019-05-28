@@ -42,9 +42,12 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_Email: TextInputLayout? = null
     private var add_new_contact_RoundedImageView: ImageView? = null
     private var add_new_contact_Priority: Spinner? = null
-    private var add_new_contact_PhoneProperty :Spinner? =null
-    private var add_new_contact_MailProperty :Spinner?= null
+    private var add_new_contact_PhoneProperty: Spinner? = null
+    private var add_new_contact_MailProperty: Spinner? = null
     private var add_new_contact_PriorityExplain: TextView? = null
+
+    private var add_new_contact_phone_number: String? = null
+
     var imageUri: Uri? = null
     private val IMAGE_CAPTURE_CODE = 1001
 
@@ -99,6 +102,12 @@ class AddNewContactActivity : AppCompatActivity() {
 
         //endregion
 
+        val intent = intent
+        if (!intent.getStringExtra("ContactPhoneNumber").isEmpty()) {
+            add_new_contact_phone_number = intent.getStringExtra("ContactPhoneNumber")
+            add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
+        }
+
         //region ==================================== SetOnClickListener ====================================
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
@@ -108,8 +117,8 @@ class AddNewContactActivity : AppCompatActivity() {
         //endregion
 
         // drop list
-        val priority_list = arrayOf(0,1,2)
-        val array_adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, priority_list)
+        val priority_list = arrayOf(0, 1, 2)
+        val array_adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priority_list)
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         add_new_contact_Priority!!.adapter = array_adapter
@@ -118,6 +127,7 @@ class AddNewContactActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
+
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
                     add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
@@ -133,7 +143,7 @@ class AddNewContactActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     //demmande de confirmation de la création d'un contact en double
-    private fun confirmationDuplicate(contactData: ContactDB){
+    private fun confirmationDuplicate(contactData: ContactDB) {
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle("CONTACT DEJA EXISTANT !")
         builder.setMessage("Un contact porte déjà ce nom. L'enregistrer quand même sous ce nom ?")
@@ -177,50 +187,50 @@ class AddNewContactActivity : AppCompatActivity() {
                 Toast.makeText(this, "Le champ prénom ne peut pas être vide !", Toast.LENGTH_SHORT).show()
             } else {
                 //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
-                    val printContacts = Runnable {
-                        //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                        println("teeeeeeeeeessssssssssssstttttttttt = "+ add_new_contact_MailProperty!!.selectedItem.toString())
-                        val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString())
-                        val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString())
-                        println("teeeeeeeeeessssssssssssstttttttttt2 = "+ mailSpinnerChar)
-                        val contactData = ContactDB(null,
-                                add_new_contact_FirstName!!.editText!!.text.toString(),
-                                add_new_contact_LastName!!.editText!!.text.toString(),
-                                R.drawable.img_avatar, add_new_contact_Priority!!.selectedItem.toString().toInt(),
-                                add_new_contact_ImgString!!)
-                        println(contactData)
-                        var isDuplicate = false
-                        val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-                        allcontacts?.forEach { contactsDB ->
-                            if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
-                                isDuplicate = true
-                        }
-
-                        if (isDuplicate == false) {
-                            main_ContactsDatabase?.contactsDao()?.insert(contactData)
-                            val listContacts:List<ContactDB>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
-                            val contact: ContactDB?=getContact(contactData.firstName+" "+contactData.lastName,listContacts)
-                            var contactDetailDB: ContactDetailDB
-                            if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", "", 0)
-                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
-                            }
-                            if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                                contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", "", 1)
-                                main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
-                            }
-
-                            println("test"+main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
-                            val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            confirmationDuplicate(contactData)
-                        }
+                val printContacts = Runnable {
+                    //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
+                    println("teeeeeeeeeessssssssssssstttttttttt = " + add_new_contact_MailProperty!!.selectedItem.toString())
+                    val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString())
+                    val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString())
+                    println("teeeeeeeeeessssssssssssstttttttttt2 = " + mailSpinnerChar)
+                    val contactData = ContactDB(null,
+                            add_new_contact_FirstName!!.editText!!.text.toString(),
+                            add_new_contact_LastName!!.editText!!.text.toString(),
+                            R.drawable.img_avatar, add_new_contact_Priority!!.selectedItem.toString().toInt(),
+                            add_new_contact_ImgString!!)
+                    println(contactData)
+                    var isDuplicate = false
+                    val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                    allcontacts?.forEach { contactsDB ->
+                        if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
+                            isDuplicate = true
                     }
-                    main_mDbWorkerThread.postTask(printContacts)
+
+                    if (isDuplicate == false) {
+                        main_ContactsDatabase?.contactsDao()?.insert(contactData)
+                        val listContacts: List<ContactDB>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
+                        val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
+                        var contactDetailDB: ContactDetailDB
+                        if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", "", 0)
+                            main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                        }
+                        if (add_new_contact_Email!!.editText!!.text.toString() != "") {
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", "", 1)
+                            main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                        }
+
+                        println("test" + main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
+                        val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        confirmationDuplicate(contactData)
+                    }
+                }
+                main_mDbWorkerThread.postTask(printContacts)
                 //} else {
-                 //   Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
+                //   Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
                 //}
             }
 
@@ -298,13 +308,13 @@ class AddNewContactActivity : AppCompatActivity() {
             if (requestCode == IMAGE_CAPTURE_CODE) {
 
                 val matrix = Matrix()
-                val exif = ExifInterface(getRealPathFromUri(this,imageUri!!));
+                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!));
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
-                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 add_new_contact_ImgString = bitmapToBase64(bitmap)
                 println("convert to = " + base64ToBitmap(bitmapToBase64(bitmap)))
@@ -318,10 +328,10 @@ class AddNewContactActivity : AppCompatActivity() {
                 val rotationInDegrees = exifToDegrees(rotation);
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.width/10,bitmap.height/10,true)
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
 //                var matrix = Matrix()
 //                matrix.postRotate(90f)
-                bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix, true )
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 add_new_contact_ImgString = bitmapToBase64(bitmap)
             }
@@ -329,13 +339,17 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     fun exifToDegrees(exifOrientation: Int): Int {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90}
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) { return 180}
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) { return 270}
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270
+        }
         return 0
     }
 
-    fun bitmapToBase64(bitmap: Bitmap) : String {
+    fun bitmapToBase64(bitmap: Bitmap): String {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
@@ -343,8 +357,8 @@ class AddNewContactActivity : AppCompatActivity() {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
-    fun base64ToBitmap(base64: String) : Bitmap {
-        val imageBytes = Base64.decode(base64,0)
+    fun base64ToBitmap(base64: String): Bitmap {
+        val imageBytes = Base64.decode(base64, 0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
@@ -356,7 +370,7 @@ class AddNewContactActivity : AppCompatActivity() {
             listContact!!.forEach { dbContact ->
 
                 //                println("contact "+dbContact+ "différent de name"+name)
-                if (dbContact.firstName+" "+dbContact.lastName == name) {
+                if (dbContact.firstName + " " + dbContact.lastName == name) {
                     return dbContact
                 }
             }
