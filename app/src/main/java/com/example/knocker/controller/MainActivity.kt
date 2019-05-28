@@ -275,7 +275,7 @@ class MainActivity : AppCompatActivity() {
 
                     //val intent = Intent(this, EditContactActivity::class.java)
                     //intent.putExtra("ContactId", contact.getContactId())
-                   // startActivity(intent)
+                    // startActivity(intent)
 
 
                 } else {
@@ -630,6 +630,16 @@ class MainActivity : AppCompatActivity() {
         val matcher = pattern.matcher(phone)
         return matcher.matches()
     }
+
+//    if (main_Listview != null && gestionnaireContacts!!.contacts != null) {
+//        val contactAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
+//        main_Listview!!.adapter = contactAdapter
+//        var index = sharedPreferences.getInt("index", 0)
+//        println("okkkkkkk = " + index)a
+//        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+//        main_Listview!!.setSelection(index)
+//        edit.putInt("index", 0)
+//        edit.apply()
 
     //endregion
 
