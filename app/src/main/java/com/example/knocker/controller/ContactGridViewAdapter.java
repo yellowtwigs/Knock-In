@@ -192,11 +192,25 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonCall.setImageResource( R.drawable.ic_phone_call);
         buttonWhatsApp.setImageResource(R.drawable.ic_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms);
-        int distanceToCenter=120-(12*len);
-        System.out.println("distance to center"+distanceToCenter);
+
+        int startAngle;
+        int endAngle;
+        if(position%len==0){
+            System.out.println("position vaut "+ position+" modulo vaut" +position%len);
+            startAngle=-90;
+            endAngle=90;
+        }else if(position%len==len-1){
+            System.out.println("position vaut "+ position+" modulo vaut" +position%len);
+            startAngle=270;
+            endAngle=90;
+        }else{
+            System.out.println("position vaut "+ position+" modulo vaut" +position%len);
+            startAngle=-0;
+            endAngle=-180;
+        }
         FloatingActionMenu quickMenu = new FloatingActionMenu.Builder((MainActivity) context)
-                .setStartAngle(10)
-                .setEndAngle(-180)
+                .setStartAngle(startAngle)
+                .setEndAngle(endAngle)
                 .setRadius(110)
                 .addSubActionView(buttonMessenger)
                 .addSubActionView(buttonCall)
