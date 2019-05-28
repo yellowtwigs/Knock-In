@@ -393,7 +393,7 @@ class MainActivity : AppCompatActivity() {
         //bouton synchronisation des contacts du téléphone
         main_FloatingButtonSync!!.setOnClickListener {
             //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-            gestionnaireContacts!!.getAllContacsInfo(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+            gestionnaireContacts!!.getAllContacsInfoSync(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
             val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
             gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)

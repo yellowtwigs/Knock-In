@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.UserManager
 import android.provider.ContactsContract
 import android.util.Base64
 import android.widget.GridView
@@ -241,7 +242,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return false
     }
 
-    private fun getStructuredName(main_contentResolver: ContentResolver): List<Pair<Int, Triple<String, String, String>>>? {
+    private fun getStructuredNameSync(main_contentResolver: ContentResolver): List<Pair<Int, Triple<String, String, String>>>? {
         val phoneContactsList = arrayListOf<Pair<Int, Triple<String, String, String>>>()
         var idAndName: Pair<Int, Triple<String, String, String>>
         var StructName: Triple<String, String, String>
@@ -315,7 +316,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return null
     }
 
-    private fun getContactMail(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
+    private fun getContactMailSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactDetails = arrayListOf<Map<Int, Any>>()
         var idAndMail = mapOf<Int, Any>()
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC")
@@ -335,7 +336,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return contactDetails
     }
 
-    private fun getPhoneNumber(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
+    private fun getPhoneNumberSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactPhoneNumber = arrayListOf<Map<Int, Any>>()
         var idAndPhoneNumber = mapOf<Int, Any>()
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
@@ -497,7 +498,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return contactDetails
     }
 
-    fun createListContacts(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, gridView: GridView?, applicationContext: Context, gestionnaireContacts: ContactList) {
+    fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, gridView: GridView?, applicationContext: Context, gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
         val lastId = arrayListOf<Int>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -551,13 +552,12 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
 
     }
 
-    fun getAllContacsInfo(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
-        val phoneStructName = getStructuredName(main_contentResolver)
-        val contactNumberAndPic = getPhoneNumber(main_contentResolver)
-        val contactMail = getContactMail(main_contentResolver)
+    fun getAllContacsInfoSync(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
+        val phoneStructName = getStructuredNameSync(main_contentResolver)
+        val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
+        val contactMail = getContactMailSync(main_contentResolver)
         val contactDetail = contactNumberAndPic.union(contactMail)
-        //add dans contactNumberAndPic les mail (fusion) & la rename en contactDetail
-        createListContacts(phoneStructName, contactDetail.toList(), gridView, applicationContext, this)
+        createListContactsSync(phoneStructName, contactDetail.toList(), gridView, applicationContext, this)
     }
 //endregion
 }
