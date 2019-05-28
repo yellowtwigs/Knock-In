@@ -15,6 +15,7 @@ import com.example.knocker.model.EditTextModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * La Classe qui permet de générer la list des différents champs disponible lors de l'edition d'un contact
@@ -79,7 +80,7 @@ public class CustomAdapterEditText extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.textInputLayout.getEditText().setText(edit_model_ArrayList.get(position).getEditTextValue());
+        Objects.requireNonNull(holder.textInputLayout.getEditText()).setText(edit_model_ArrayList.get(position).getEditTextValue());
         holder.textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

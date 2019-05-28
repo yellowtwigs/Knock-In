@@ -490,33 +490,6 @@ class MainActivity : AppCompatActivity() {
 
                 return true
             }
-//            R.id.nav_search -> {
-//                if (main_SearchBar!!.visibility != View.VISIBLE) {
-//                    main_SearchBar!!.visibility = View.VISIBLE
-//                } else {
-//                    if (!isEmptyField(main_SearchBar)) {
-//                        main_search_bar_value = main_SearchBar!!.text.toString()
-//                        println(main_filter)
-//                        println(main_SearchBar!!.text.toString())
-//                        //
-//                        val contactFilterList: List<Contacts>? = getAllContactFilter(main_filter) //main filter value [sms,mail]
-//                        var contactList = main_ContactsDatabase?.contactsDao()?.getContactByName(main_search_bar_value) //" test "
-//                        println(contactFilterList)
-//                        if (contactFilterList != null) {
-//                            contactList = contactList!!.intersect(contactFilterList).toList()
-//                        }
-//                        //
-//                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-//                        val len = sharedPreferences.getInt("gridview", 3)
-//                        //val syncContact = main_ContactsDatabase?.contactsDao()?.getAllContacts()
-//                        println("LIIIIIIST = " + contactList)
-//                        val contactAdapter = ContactGridViewAdapter(this, contactList, len)
-//                        main_GridView!!.adapter = contactAdapter
-//                    } else {
-//                        Toast.makeText(this, "Le champ est vide", Toast.LENGTH_SHORT)
-//                    }
-//                }
-//            }
             R.id.sms_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)

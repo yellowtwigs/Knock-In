@@ -6,7 +6,7 @@
         <item
             android:id="@+id/nav_informations"
             android:icon="@drawable/ic_avatar"
-            android:title="@string/left_drawer_informations" />
+            android:title="@string/left_drawer_information" />
         <item
             android:id="@+id/nav_notif_config"
             android:icon="@drawable/ic_notification"

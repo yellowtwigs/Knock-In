@@ -26,8 +26,8 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/compose_message_recyclerview_message_list"
+    <ListView
+        android:id="@+id/compose_message_list_view_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
