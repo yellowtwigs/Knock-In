@@ -36,6 +36,7 @@ import java.util.regex.Pattern
  */
 class MainActivity : AppCompatActivity() {
 
+
     //region ========================================== Var or Val ==========================================
 
     // Show on the Main Layout
@@ -65,6 +66,8 @@ class MainActivity : AppCompatActivity() {
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
     var scaleGestureDetectore: ScaleGestureDetector? = null
+
+    private var gridViewAdapter: ContactGridViewAdapter?=null
 
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
@@ -219,13 +222,13 @@ class MainActivity : AppCompatActivity() {
         println("contact db")
 
         if (main_GridView != null) {
-            val contactAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!.contacts, len)
-            main_GridView!!.adapter = contactAdapter
+            gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!.contacts, len)
+
+            main_GridView!!.adapter = gridViewAdapter
             var index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_GridView!!.setSelection(index)
             edit.apply()
-
             main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
                 main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
                 //val contact = main_GridView!!.getItemAtPosition(position) as ContactDB
@@ -270,9 +273,9 @@ class MainActivity : AppCompatActivity() {
                     println(contact.contactDB!!.id.toString() + "\n contact detail list "
                             + contact.contactDetailList!! + "contact name" + contact.contactDB!!.firstName)
 
-                    val intent = Intent(this, EditContactActivity::class.java)
-                    intent.putExtra("ContactId", contact.getContactId())
-                    startActivity(intent)
+                    //val intent = Intent(this, EditContactActivity::class.java)
+                    //intent.putExtra("ContactId", contact.getContactId())
+                   // startActivity(intent)
 
 
                 } else {
@@ -280,6 +283,19 @@ class MainActivity : AppCompatActivity() {
                     onFloatingClickBack()
                 }
             }
+            main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
+                override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
+
+                }
+
+                override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                    if(gridViewAdapter!=null) {
+                        gridViewAdapter!!.onScroll();
+                        gridViewAdapter!!.closeMenu()
+                    }
+                }
+            })
+
             // Drag n Drop
         }
 
@@ -347,9 +363,9 @@ class MainActivity : AppCompatActivity() {
                 val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedPreferences.getInt("gridview", 4)
                 var filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                val contactAdapter = ContactGridViewAdapter(this@MainActivity, filteredList, len)
+                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, filteredList, len)
                 gestionnaireContacts!!.contacts=filteredList
-                main_GridView!!.adapter = contactAdapter
+                main_GridView!!.adapter = gridViewAdapter
             }
         })
 
@@ -380,8 +396,8 @@ class MainActivity : AppCompatActivity() {
             gestionnaireContacts!!.getAllContacsInfo(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
             val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
-            val contactAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!.contacts, len)
-            main_GridView!!.adapter = contactAdapter
+            gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!.contacts, len)
+            main_GridView!!.adapter = gridViewAdapter
 
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
@@ -511,8 +527,8 @@ class MainActivity : AppCompatActivity() {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    val contactAdapter = ContactGridViewAdapter(this@MainActivity, filteredContact, len)
-                    main_GridView!!.adapter = contactAdapter
+                    gridViewAdapter= ContactGridViewAdapter(this@MainActivity, filteredContact, len)
+                    main_GridView!!.adapter = gridViewAdapter
                     //
                 } else {
                     item.setChecked(true)
@@ -523,8 +539,8 @@ class MainActivity : AppCompatActivity() {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    val contactAdapter = ContactGridViewAdapter(this@MainActivity, filteredContact, len)
-                    main_GridView!!.adapter = contactAdapter
+                    val gridViewAdapter = ContactGridViewAdapter(this@MainActivity, filteredContact, len)
+                    main_GridView!!.adapter = gridViewAdapter
                     //
                 }
                 return true
@@ -639,5 +655,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     //endregion
+
 }
 
