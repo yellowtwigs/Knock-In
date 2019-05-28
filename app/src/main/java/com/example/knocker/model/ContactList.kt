@@ -11,7 +11,6 @@ import android.provider.ContactsContract
 import android.util.Base64
 import android.widget.GridView
 import com.example.knocker.R
-import com.example.knocker.controller.ContactGridViewAdapter
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -48,7 +47,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         val tmp:List<ContactWithAllInformation>?
                 =result.get()
         if(tmp!!.isEmpty()){
-            contacts=buildContactList(context)
+            contacts=buildContactListFromJson(context)
         }else{
             contacts=tmp
         }
@@ -168,7 +167,9 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         }
         return contactList
     }
-   //region region Creation FakeContact
+
+
+    //region region Creation FakeContact
 
 
 
@@ -184,7 +185,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         }
         return json
     }
-    fun buildContactList(context: Context):List<ContactWithAllInformation>{
+    fun buildContactListFromJson(context: Context):List<ContactWithAllInformation>{
         var listContacts = mutableListOf<ContactWithAllInformation>()
         var contactString=loadJSONFromAsset(context)
         try {
@@ -219,17 +220,18 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         val contactDetails2 = ContactDetailDB(null,idContact,mail+"B","mail", "",1)
         return mutableListOf<ContactDetailDB>(contactDetails,contactDetails2)
     }
-    fun getContactId(id:Int): ContactWithAllInformation? {
+ /*   fun getContactId(id:Int): ContactWithAllInformation? {
         for (contactJSON in contacts){
             if(contactJSON.contactDB!!.id==id){
                 return contactJSON
             }
         }
         return null
-    }
+    }*/
 
     //endregion
-//region region ContactSync
+
+    //region region ContactSync
 
     private fun isDuplicate(id: Int, contactPhoneNumber: List<Pair<Int, Triple<String, String, String?>>>): Boolean {
         contactPhoneNumber.forEach {
