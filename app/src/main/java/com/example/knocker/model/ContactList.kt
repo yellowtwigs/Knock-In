@@ -556,10 +556,53 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
 
     }
 
+    private fun getContactGroupSync(main_contentResolver: ContentResolver): List<Triple<Int, String?, String?>> {
+        val phoneContact = main_contentResolver.query(ContactsContract.Groups.CONTENT_URI, null, null, null, ContactsContract.Groups.TITLE + " ASC")
+        var allGroupMembers = listOf<Triple<Int, String?, String?>>()
+        while (phoneContact.moveToNext()) {
+            val groupId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups._ID))
+            val groupName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups.TITLE))
+            val groupMembers = getMemberOfGroup(main_contentResolver, groupId.toString(), groupName)
+            if (!groupMembers.isEmpty() && !allGroupMembers.isEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {
+                allGroupMembers = allGroupMembers.union(groupMembers).toList()
+            } else if (allGroupMembers.isEmpty())
+                allGroupMembers = groupMembers
+        }
+        phoneContact?.close()
+        return allGroupMembers
+    }
+
+    private fun getMemberOfGroup(main_contentResolver: ContentResolver, groupId: String, groupeName: String?): List<Triple<Int,String?,String?>> {
+        val where = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupId
+        val phoneContact = main_contentResolver.query(ContactsContract.Data.CONTENT_URI, null, where, null, ContactsContract.Data.DISPLAY_NAME + " ASC")
+        var member: Triple<Int, String?, String?>
+        val groupMembers = arrayListOf<Triple<Int, String?, String?>>()
+        while (phoneContact.moveToNext()) {
+            val contactId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Data.CONTACT_ID))
+            val contactName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Data.DISPLAY_NAME))
+            member = Triple(contactId!!.toInt(), contactName, groupeName)
+            if (!groupMembers.contains(member)) {
+                groupMembers.add(member)
+            }
+        }
+        phoneContact?.close()
+        return groupMembers
+    }
+
+    private fun isDuplicateGroup(member: List<Triple<Int, String?, String?>>, groupMembers: List<Triple<Int, String?, String?>>): Boolean{
+        groupMembers.forEach {
+            if (it.third == member[1].third)
+                return true
+        }
+        return false
+    }
+
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
         val phoneStructName = getStructuredNameSync(main_contentResolver)
+        println("PHONE STRUCT = "+phoneStructName)
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
         val contactMail = getContactMailSync(main_contentResolver)
+//        val contactGroup = getContactGroupSync(main_contentResolver)
         val contactDetail = contactNumberAndPic.union(contactMail)
         createListContactsSync(phoneStructName, contactDetail.toList(), gridView, applicationContext, this)
     }
