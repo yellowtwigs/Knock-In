@@ -19,6 +19,9 @@ interface GroupsDao {
     @Query("SELECT * FROM groups_table ORDER BY name ASC")
     fun getAllGroupsByNameAZ(): List<GroupDB>
 
+    @Query("SELECT * FROM groups_table WHERE name = :groupName")
+    fun getGroupWhithName(groupName: String): GroupDB
+
     //get touts les groupes de la database trié par nom de Z à A
     @Query("SELECT * FROM groups_table ORDER BY name DESC")
     fun getAllGroupsByNameZA(): List<GroupDB>
@@ -31,11 +34,11 @@ interface GroupsDao {
 
     //insert le groupe dans la database
     @Insert
-    fun insert(groups: GroupDB)
+    fun insert(groups: GroupDB):Long?
 
     //update un groupe grace à son id
     @Query("UPDATE groups_table SET name = :name, profile_picture_str = :profilePicture")
-    fun updateGroupeById(id: Int, name: String, profilePicture: String)
+    fun updateGroupeById(name: String, profilePicture: String)
 
     //delete un groupe grace à son id
     @Query("DELETE FROM groups_table WHERE id = :id")

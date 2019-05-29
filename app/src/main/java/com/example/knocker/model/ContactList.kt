@@ -12,9 +12,7 @@ import android.provider.ContactsContract
 import android.util.Base64
 import android.widget.GridView
 import com.example.knocker.R
-import com.example.knocker.model.ModelDB.ContactDB
-import com.example.knocker.model.ModelDB.ContactDetailDB
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.example.knocker.model.ModelDB.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
@@ -339,7 +337,6 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             if (phoneEmail == null)
                 phoneEmail = ""
             idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag!!.toInt()), 4 to "")
-            println("FINALU STRAIKE ! = " + idAndMail)
             if (contactDetails.isEmpty() || !isDuplicateNumber(idAndMail, contactDetails)) {
                 contactDetails.add(idAndMail)
             }
@@ -357,26 +354,22 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             var phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             var phonePic = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
             val phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
-            println("phone numberrrr = " + phoneNumber)
             if (phoneNumber == null)
                 phoneNumber = ""
             if (phonePic == null || phonePic.contains("content://com.android.contacts/contacts/", ignoreCase = true)) {
                 phonePic = ""
             } else {
-                println("phone pic" + phonePic)
-                println("openPhoto " + phoneId!!.toLong() + " main content resolver " + main_contentResolver) // huwei content://com.android.contacts/contacts/1600/photo
-                phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId.toLong(), main_contentResolver)))
+                phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(), main_contentResolver)))
             }
             //idAndPhoneNumber = Triple(phoneId!!.toInt(), phoneNumber, phonePic)
             idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag!!.toInt()), 4 to phonePic)
-            println("FINAL STRIKE = " + idAndPhoneNumber)
             if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(idAndPhoneNumber, contactPhoneNumber)) {
                 //println("1er = "+idAndPhoneNumber)
                 contactPhoneNumber.add(idAndPhoneNumber)
             }
         }
         phonecontact?.close()
-        println("number ?= " + contactPhoneNumber)
+        //println("number ?= " + contactPhoneNumber)
         return contactPhoneNumber
     }
 
@@ -510,17 +503,18 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return contactDetails
     }
 
-    fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, gridView: GridView?, applicationContext: Context, gestionnaireContacts: ContactList) {
+    fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, applicationContext: Context, gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
         val lastId = arrayListOf<Int>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable {
             val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             phoneStructName!!.forEach { fullName ->
-                contactNumberAndPic.forEach { numberPic ->
+                contactNumberAndPic.forEach { numberPic ->///////////////////////////////////////
                     val id = numberPic[1].toString().toInt()
                     if (!lastId.contains(id)) {
                         val contactDetails = getDetailsById(id, contactNumberAndPic)
+                        //addGroupInDatabase(contactGroup, id)
                         if (fullName.first == numberPic[1]) {
                             lastId.add(id)
                             if (fullName.second.second == "") {
@@ -605,14 +599,39 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return false
     }
 
+    private fun addGroupInDatabase(contactGroup: List<Triple<Int,String?,String?>>, contactId: Int) {
+        println("THE ID IS => "+contactId)
+        var group = GroupDB (null, "", "")
+        contactGroup.forEach {
+            if (it.first == contactId)
+                group = GroupDB (null, it.third!!, "")
+        }
+        if (group.name != "") {
+            println("GROUP OMG = " + group)
+            val groupId: Int?
+            val dbGroup = contactsDatabase?.GroupsDao()!!.getGroupWhithName(group.name)
+            println("DB GROUP ="+ dbGroup)
+            if (dbGroup == null) {
+                groupId = contactsDatabase?.GroupsDao()!!.insert(group)!!.toInt()
+                println("GROUP INSERT BECAUSE NULL")
+            } else {
+                groupId = dbGroup.id!!.toInt()
+            }
+            val link = LinkContactGroup(groupId, contactId)
+            println("LINK CONTACT = " + link)
+            contactsDatabase?.LinkContactGroupDao()!!.insert(link)
+        }
+    }
+
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
         val phoneStructName = getStructuredNameSync(main_contentResolver)
         println("PHONE STRUCT = "+phoneStructName)
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
         val contactMail = getContactMailSync(main_contentResolver)
-//        val contactGroup = getContactGroupSync(main_contentResolver)
+        val contactGroup = getContactGroupSync(main_contentResolver)
         val contactDetail = contactNumberAndPic.union(contactMail)
-        createListContactsSync(phoneStructName, contactDetail.toList(), gridView, applicationContext, this)
+        println("PHONE GROUP = "+contactGroup)
+        createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, applicationContext, this)
     }
 //endregion
 

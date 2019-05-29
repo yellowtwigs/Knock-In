@@ -7,9 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
 import com.example.knocker.model.ModelDB.*
-import com.example.knocker.model.requestDB.ContactDetailsDao
-import com.example.knocker.model.requestDB.ContactsDao
-import com.example.knocker.model.requestDB.NotificationsDao
+import com.example.knocker.model.requestDB.*
+
 /**
  * La Classe qui permet de créer la base de données et de la garder à jour
  * @author Ryan Granet
@@ -19,6 +18,8 @@ import com.example.knocker.model.requestDB.NotificationsDao
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
     abstract fun contactDetailsDao(): ContactDetailsDao
+    abstract fun GroupsDao(): GroupsDao
+    abstract fun LinkContactGroupDao(): LinkContactGroupDao
     companion object {
         private var INSTANCE: ContactsRoomDatabase? = null
 
