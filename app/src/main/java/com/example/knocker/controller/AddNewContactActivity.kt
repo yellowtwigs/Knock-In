@@ -102,11 +102,11 @@ class AddNewContactActivity : AppCompatActivity() {
 
         //endregion
 
-        val intent = intent
-        if (!intent.getStringExtra("ContactPhoneNumber").isEmpty()) {
-            add_new_contact_phone_number = intent.getStringExtra("ContactPhoneNumber")
-            add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
-        }
+//        val intent = intent
+//        if (!intent.getStringExtra("ContactPhoneNumber").isEmpty()) {
+//            add_new_contact_phone_number = intent.getStringExtra("ContactPhoneNumber")
+//            add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
+//        }
 
         //region ==================================== SetOnClickListener ====================================
 
