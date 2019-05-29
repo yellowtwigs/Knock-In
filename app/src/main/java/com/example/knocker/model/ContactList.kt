@@ -96,6 +96,14 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return info
     }
 
+    fun getContactById(id:Int):ContactWithAllInformation?{
+       for( contact in this.contacts){
+           if(contact.contactDB!!.id==id){
+               return contact
+           }
+       }
+        return null;
+    }
 
     fun sortContactByFirstNameAZ() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)

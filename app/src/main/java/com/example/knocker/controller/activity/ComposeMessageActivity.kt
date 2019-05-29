@@ -1,4 +1,4 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -12,9 +12,6 @@ import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
 import android.telephony.SmsManager
 import android.text.TextUtils
@@ -29,8 +26,8 @@ import android.widget.ListView
 import android.widget.Toast
 import com.example.knocker.model.NumberAndMailDB
 import com.example.knocker.R
+import com.example.knocker.controller.MessageListAdapter
 import com.example.knocker.model.Message
-import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -117,8 +114,8 @@ class ComposeMessageActivity : AppCompatActivity() {
         val tmp = intent.getStringExtra("ContactPhoneNumber")
         println("tmp " + tmp);
         if (tmp != null) {
-            compose_message_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmp)
-            compose_message_phone_property = NumberAndMailDB.extractStringFromNumber(tmp)
+            compose_message_phone_number =tmp
+            compose_message_phone_property = " "
         }
 
         compose_message_PhoneNumberEditText!!.setText(compose_message_phone_number)

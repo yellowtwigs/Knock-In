@@ -25,36 +25,36 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".controller.ManageKnockonsActivity"
+            android:name=".controller.activity.ManageKnockonsActivity"
             android:label="@string/title_activity_manage_knockons"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".controller.PhoneLogActivity" />
-        <activity android:name=".controller.HelpActivity" />
-        <activity android:name=".controller.ManageMyScreenActivity" />
-        <activity android:name=".controller.EditInformationsActivity" />
-        <activity android:name=".controller.ComposeMessageActivity" />
-        <activity android:name=".controller.ManageNotificationActivity" />
+        <activity android:name=".controller.activity.PhoneLogActivity" />
+        <activity android:name=".controller.activity.HelpActivity" />
+        <activity android:name=".controller.activity.ManageMyScreenActivity" />
+        <activity android:name=".controller.activity.EditInformationsActivity" />
+        <activity android:name=".controller.activity.ComposeMessageActivity" />
+        <activity android:name=".controller.activity.ManageNotificationActivity" />
         <activity android:name=".controller.NotifAdapter" />
-        <activity android:name=".controller.NotificationHistoryActivity" /> <!-- <activity android:name="com.example.knocker.model.testpinch" /> -->
-        <activity android:name=".controller.SocialsNetworksLinksActivity" />
+        <activity android:name=".controller.activity.NotificationHistoryActivity" /> <!-- <activity android:name="com.example.knocker.model.testpinch" /> -->
+        <activity android:name=".controller.activity.SocialsNetworksLinksActivity" />
         <activity android:name=".model.ContactsPriority" />
         <activity
-            android:name=".controller.AddNewContactActivity"
+            android:name=".controller.activity.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".controller.EditContactActivity"
+            android:name=".controller.activity.EditContactActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".controller.SplashScreenActivity">
+        <activity android:name=".controller.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.SettingsActivity" />
+        <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.ContactDetailsActivity" />
         <activity
-            android:name=".controller.MainActivity"
+            android:name=".controller.activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden" />

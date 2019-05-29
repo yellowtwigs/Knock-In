@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".controller.AddNewContactActivity">
+        tools:context=".controller.activity.AddNewContactActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

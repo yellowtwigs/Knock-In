@@ -1,4 +1,4 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint

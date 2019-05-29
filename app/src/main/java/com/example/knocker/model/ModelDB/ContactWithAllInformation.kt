@@ -1,7 +1,13 @@
 package com.example.knocker.model.ModelDB
 
+import android.content.Context
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.example.knocker.model.ContactsRoomDatabase
+import com.example.knocker.model.DbWorkerThread
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class ContactWithAllInformation {
     @Embedded
@@ -18,6 +24,14 @@ class ContactWithAllInformation {
     }
     /*@Relation(parentColumn = "id",entityColumn = "id_contact",entity = Notification.class)
     public List<Notification> NotificationList;*/
+    fun getPhoneNumber():String?{
+       for(detail in contactDetailList!!){
+           if(detail.type.equals("phone")){
 
+               return detail.content.dropLast(1)
+           }
+       }
+        return null
+    }
 
 }

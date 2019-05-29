@@ -1,4 +1,4 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +33,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
         contact_details_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         val list = contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>
-        println("voici la liste" + list)
         val adapter = NotificationHistoryAdapterActivity(this, list)
         val listviews = findViewById<ListView>(R.id.listView_notification_history)
         listviews.adapter = adapter

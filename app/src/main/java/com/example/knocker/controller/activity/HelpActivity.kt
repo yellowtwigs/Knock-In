@@ -1,9 +1,8 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout

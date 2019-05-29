@@ -1,4 +1,4 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.app.Activity
@@ -32,6 +32,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.knocker.controller.CircularImageView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream

@@ -1,11 +1,13 @@
 package com.example.knocker.controller;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -21,21 +23,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.knocker.controller.activity.ComposeMessageActivity;
+import com.example.knocker.controller.activity.EditContactActivity;
+import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+import com.google.android.material.button.MaterialButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import static java.sql.DriverManager.println;
 
@@ -44,7 +54,7 @@ import static java.sql.DriverManager.println;
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class ContactGridViewAdapter extends BaseAdapter implements FloatingActionMenu.MenuStateChangeListener {
-    private List<ContactWithAllInformation> listContacts;
+    private ContactList gestionnaireContact;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
@@ -53,21 +63,21 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     public ContactGridViewAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
-        this.listContacts = contactList.getContacts();
+        this.gestionnaireContact= contactList;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
     public void setGestionnairecontact(ContactList gestionnaireContact){
-        listContacts=gestionnaireContact.getContacts();
+        gestionnaireContact= gestionnaireContact;
     }
     @Override
     public int getCount() {
-        return listContacts.size();
+        return gestionnaireContact.getContacts().size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return listContacts.get(position);
+    public ContactWithAllInformation getItem(int position) {
+        return gestionnaireContact.getContacts().get(position);
     }
 
     @Override
@@ -128,7 +138,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final ContactDB contact = this.listContacts.get(position).getContactDB();
+        final ContactDB contact = this.gestionnaireContact.getContacts().get(position).getContactDB();
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
         } else if (contact.getContactPriority() == 1) {
@@ -175,26 +185,34 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         //region circular menu
-        final ImageView buttonMessenger= new ImageView(context);
-        final ImageView buttonCall= new ImageView(context);
-        final ImageView buttonWhatsApp = new ImageView(context);
-        final ImageView buttonSMS= new ImageView(context);
+        final ImageButton buttonMessenger= new ImageButton(context);
+        final ImageButton buttonCall= new ImageButton(context);
+        final ImageButton buttonWhatsApp = new ImageButton(context);
+        final ImageButton buttonSMS= new ImageButton(context);
+        final ImageButton buttonEdit = new ImageButton(context);
 
         buttonMessenger.setId(0);
         buttonCall.setId(1);
         buttonSMS.setId(2);
         buttonWhatsApp.setId(3);
+        buttonEdit.setId(4);
         LinearLayout.LayoutParams layoutParams= new LinearLayout.LayoutParams(60,60);
 
         buttonMessenger.setLayoutParams(layoutParams);
         buttonCall.setLayoutParams(layoutParams);
         buttonSMS.setLayoutParams(layoutParams);
         buttonWhatsApp.setLayoutParams(layoutParams);
+        buttonEdit.setLayoutParams(layoutParams);
+
+        //buttonMessenger.setBackgroundColor(android.R.color.holo_orange_light);
+        buttonMessenger.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         buttonMessenger.setImageResource(R.drawable.ic_messenger);
         buttonCall.setImageResource( R.drawable.ic_phone_call);
         buttonWhatsApp.setImageResource(R.drawable.ic_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms);
+        buttonEdit.setImageResource(R.drawable.ic_edit_floating_button);
+
 
         int startAngle;
         int endAngle;
@@ -219,6 +237,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 .addSubActionView(buttonCall)
                 .addSubActionView(buttonSMS)
                 .addSubActionView(buttonWhatsApp)
+                .addSubActionView(buttonEdit)
                 .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
                 .disableAnimations()
@@ -241,6 +260,18 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }else if (v.getId()==buttonWhatsApp.getId()){
                     System.out.println("================whatsapp=============");
                     ContactWithAllInformation contactphone=(ContactWithAllInformation) getItem(position);
+                }else if(v.getId()==buttonEdit.getId()){
+                    Intent intent = new Intent(context, EditContactActivity.class);
+                    intent.putExtra("ContactId",position+1);
+                    context.startActivity(intent);
+                }else if(v.getId()==buttonCall.getId()){
+
+                    callPhone(getItem(position).getPhoneNumber());
+
+                }else if(v.getId()==buttonSMS.getId()){
+                    Intent intent =new Intent(context, ComposeMessageActivity.class);
+                    intent.putExtra("ContactPhoneNumber", getItem(position).getPhoneNumber() );
+                    context.startActivity(intent);
                 }
             }
         };
@@ -248,10 +279,22 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonWhatsApp.setOnClickListener(buttonListener);
         buttonCall.setOnClickListener(buttonListener);
         buttonSMS.setOnClickListener(buttonListener);
+        buttonEdit.setOnClickListener(buttonListener);
         //endregion
         return gridview;
 
     }
+
+    private void callPhone(String phoneNumber) {
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.CALL_PHONE},1);
+        }else{
+            //Intent intent=new Intent(Intent.ACTION_CALL);
+            //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
+            context.startActivity(new Intent(Intent.ACTION_CALL ,Uri.fromParts("tel",phoneNumber,null)));
+        }
+    }
+
 
     private Bitmap base64ToBitmap(String base64) {
 

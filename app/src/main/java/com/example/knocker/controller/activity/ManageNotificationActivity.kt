@@ -1,7 +1,6 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

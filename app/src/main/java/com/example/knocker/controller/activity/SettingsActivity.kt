@@ -1,19 +1,17 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.example.knocker.R
+
 /**
  * TO DELETE ???
  * @author Florian Striebel, Kenzy Suon, Ryan Granet

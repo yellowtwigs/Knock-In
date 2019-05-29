@@ -1,36 +1,26 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.inputmethodservice.Keyboard
-import android.inputmethodservice.KeyboardView
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
-import android.telecom.Call
 import android.text.TextUtils
-import android.view.KeyEvent
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
 import com.example.knocker.model.PhoneLog
-import java.util.jar.Manifest
 
 /**
  * La Classe qui permet d'afficher la liste des appels reçu

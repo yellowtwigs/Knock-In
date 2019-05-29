@@ -1,4 +1,4 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -26,6 +26,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.example.knocker.*
+import com.example.knocker.controller.*
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.util.regex.Pattern

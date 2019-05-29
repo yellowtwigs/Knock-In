@@ -1,4 +1,4 @@
-package com.example.knocker.controller
+package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -30,15 +30,14 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import com.example.knocker.*
+import com.example.knocker.controller.CircularImageView
+import com.example.knocker.controller.CustomAdapterEditText
 import com.example.knocker.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.layout_notification_pop_up.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import kotlinx.android.synthetic.main.knocker_infos.view.*
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -134,12 +133,9 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
         if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
-            var contactList: List<ContactWithAllInformation>?
-            val contactString = FakeContact.loadJSONFromAsset(this)
-            contactList = FakeContact.buildList(contactString)
 
-
-            var contact = FakeContact.getContactId(edit_contact_id!!, contactList)!!
+            val contactList= ContactList(this)
+            var contact =contactList.getContactById(edit_contact_id!!)!!
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
             var tmpPhone = contact.contactDetailList!!.get(0)
