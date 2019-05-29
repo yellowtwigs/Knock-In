@@ -396,9 +396,10 @@ class MainActivity : AppCompatActivity() {
             gestionnaireContacts!!.getAllContacsInfoSync(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
             val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
-            gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
+          /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
-
+*/          gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!);
+            gridViewAdapter!!.notifyDataSetChanged();
             //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
 
         }

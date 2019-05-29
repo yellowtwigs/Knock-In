@@ -57,7 +57,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
-
+    public void setGestionnairecontact(ContactList gestionnaireContact){
+        listContacts=gestionnaireContact.getContacts();
+    }
     @Override
     public int getCount() {
         return listContacts.size();
@@ -166,6 +168,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             holder.contactRoundedImageView.setImageResource(contact.getProfilePicture());
@@ -208,7 +211,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             startAngle=-0;
             endAngle=-180;
         }
-        FloatingActionMenu quickMenu = new FloatingActionMenu.Builder((MainActivity) context)
+        FloatingActionMenu quickMenu = new FloatingActionMenu.Builder((Activity) context)
                 .setStartAngle(startAngle)
                 .setEndAngle(endAngle)
                 .setRadius(110)
