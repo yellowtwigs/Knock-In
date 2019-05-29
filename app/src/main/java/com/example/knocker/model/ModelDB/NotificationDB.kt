@@ -1,6 +1,7 @@
 package com.example.knocker.model.ModelDB
 
 import androidx.room.*
+import com.example.knocker.model.ContactsRoomDatabase
 
 /**
  * Data class qui représente les notifications reçu
@@ -44,4 +45,8 @@ data class NotificationDB(
          * Id du contact lié à la notification
          */
         @ColumnInfo(name = "id_contact") val idContact: Int
-)
+){
+        fun insert(database: ContactsRoomDatabase){
+                database.notificationsDao().insert(this)
+        }
+}

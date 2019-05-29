@@ -28,42 +28,44 @@ import java.util.concurrent.Executors
  * La Classe qui contient toute les fonctions qui touche à la synchronisation des contacts, les filtre et searchbar
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class ContactList(var contacts: List<ContactWithAllInformation>,var context:Context){
-    constructor(context: Context):this(mutableListOf<ContactWithAllInformation>()
-            ,context)
+class ContactList(var contacts: List<ContactWithAllInformation>,var context:Context) {
+    constructor(context: Context) : this(mutableListOf<ContactWithAllInformation>()
+            , context)
 
-    private lateinit var  mDbWorkerThread: DbWorkerThread
+    private lateinit var mDbWorkerThread: DbWorkerThread
     private var contactsDatabase: ContactsRoomDatabase? = null
-    init{
-        mDbWorkerThread= DbWorkerThread("dbWorkerThread")
+
+    init {
+        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
-        contactsDatabase= ContactsRoomDatabase.getDatabase(context)
+        contactsDatabase = ContactsRoomDatabase.getDatabase(context)
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb= Callable {
-            contactsDatabase!!.
-                contactsDao()
-                .getContactAllInfo()}
-        val result=executorService.submit(callDb)
-        println("result knocker"+ result?.get())
-        val tmp:List<ContactWithAllInformation>?
-                =result.get()
-        if(tmp!!.isEmpty()){
-            contacts=buildContactListFromJson(context)
-        }else{
-            contacts=tmp
+        val callDb = Callable {
+            contactsDatabase!!.contactsDao()
+                    .getContactAllInfo()
+        }
+        val result = executorService.submit(callDb)
+        println("result knocker" + result?.get())
+        val tmp: List<ContactWithAllInformation>? = result.get()
+        if (tmp!!.isEmpty()) {
+            contacts = buildContactListFromJson(context)
+        } else {
+            contacts = tmp
         }
     }
-    fun synchronizedList(){
 
-            val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-            val callDb = Callable { contactsDatabase!!.contactsDao().getContactAllInfo() }
-            val result = executorService.submit(callDb)
-            println("result knocker" + result.get())
-            contacts = result.get()
+    fun synchronizedList() {
+
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDb = Callable { contactsDatabase!!.contactsDao().getContactAllInfo() }
+        val result = executorService.submit(callDb)
+        println("result knocker" + result.get())
+        contacts = result.get()
         //TODO verifiy with Ryan
 
     }
-    fun getInfoWithName(name: String, platform: String): String {
+
+    fun getDetailsOfPlatform(name: String, platform: String): String {
         // on init WorkerThread
 
 
@@ -80,7 +82,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         var info = "Name Error"
         if (name.contains(" ")) {
             contacts!!.forEach { dbContact ->
-                if (dbContact.contactDB!!.firstName+" "+dbContact.contactDB!!.lastName == name) {
+                if (dbContact.contactDB!!.firstName + " " + dbContact.contactDB!!.lastName == name) {
                     info = dbContact.contactDetailList!!.get(0).content.dropLast(1)
                 }
             }
@@ -95,11 +97,11 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     }
 
 
-    fun sortContactByFirstNameAZ(){
+    fun sortContactByFirstNameAZ() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb= Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
-        val result=executorService.submit(callDb)
-        contacts=result.get()
+        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
+        val result = executorService.submit(callDb)
+        contacts = result.get()
     }
 
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
@@ -109,8 +111,8 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         println(filterList)
         if (filterList.contains("sms")) {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-            val callDb= Callable { contactsDatabase?.contactsDao()?.getContactWithPhoneNumber()}
-            val result=executorService.submit(callDb)
+            val callDb = Callable { contactsDatabase?.contactsDao()?.getContactWithPhoneNumber() }
+            val result = executorService.submit(callDb)
             filter = result.get()
             if (filter != null && filter.isEmpty() == false) {
                 allFilters.add(filter)
@@ -118,8 +120,8 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         }
         if (filterList.contains("mail")) {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-            val callDb= Callable { contactsDatabase?.contactsDao()?.getContactWithMail()}
-            val result=executorService.submit(callDb)
+            val callDb = Callable { contactsDatabase?.contactsDao()?.getContactWithMail() }
+            val result = executorService.submit(callDb)
             filter = result.get()
             if (filter != null && filter.isEmpty() == false) {
                 allFilters.add(filter)
@@ -130,7 +132,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         var i = 0
         if (allFilters.size > 1) {
             while (i < allFilters.size - 1) {
-                allFilters[i+1] = allFilters[i].intersect(allFilters[i + 1]).toList()
+                allFilters[i + 1] = allFilters[i].intersect(allFilters[i + 1]).toList()
                 i++
             }
         } else if (allFilters.size == 0) {
@@ -141,16 +143,16 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     }
 
 
-    fun getContactByName(name:String):List<ContactWithAllInformation>{
+    fun getContactByName(name: String): List<ContactWithAllInformation> {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb= Callable { contactsDatabase?.contactsDao()?.getContactByName(name)}
-        val result=executorService.submit(callDb)
+        val callDb = Callable { contactsDatabase?.contactsDao()?.getContactByName(name) }
+        val result = executorService.submit(callDb)
         return result.get()!!
     }
 
     private fun intersectContactWithAllInformation(contactList: List<ContactWithAllInformation>, contactFilterList: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
         val listContacts = mutableListOf<ContactWithAllInformation>()
-        contactFilterList.forEach {type ->
+        contactFilterList.forEach { type ->
             contactList.forEach {
                 if (type.getContactId() == it.getContactId())
                     listContacts.add(type)
@@ -159,12 +161,12 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return listContacts
     }
 
-    fun getContactConcernByFilter(filterList: ArrayList<String>,name:String):List<ContactWithAllInformation>{
+    fun getContactConcernByFilter(filterList: ArrayList<String>, name: String): List<ContactWithAllInformation> {
         val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
 
-        val contactList=getContactByName(name)
+        val contactList = getContactByName(name)
         if (contactFilterList != null) {
-            return intersectContactWithAllInformation(contactList,contactFilterList)
+            return intersectContactWithAllInformation(contactList, contactFilterList)
         }
         return contactList
     }
@@ -173,55 +175,57 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     //region region Creation FakeContact
 
 
-
-    fun loadJSONFromAsset(context: Context):String{
+    fun loadJSONFromAsset(context: Context): String {
         var json = ""
-        try{
-            json= context.assets.open("premiers_contacts.json").bufferedReader().use{
+        try {
+            json = context.assets.open("premiers_contacts.json").bufferedReader().use {
                 it.readText()
             }
-        }catch (e :Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             return ""
         }
         return json
     }
-    fun buildContactListFromJson(context: Context):List<ContactWithAllInformation>{
+
+    fun buildContactListFromJson(context: Context): List<ContactWithAllInformation> {
         var listContacts = mutableListOf<ContactWithAllInformation>()
-        var contactString=loadJSONFromAsset(context)
+        var contactString = loadJSONFromAsset(context)
         try {
             val jsArray = JSONArray(contactString)
-            for(x in 0..(jsArray.length()-1)){
-                listContacts.add(getContactFromJSONObject(jsArray.getJSONObject(x),x))
+            for (x in 0..(jsArray.length() - 1)) {
+                listContacts.add(getContactFromJSONObject(jsArray.getJSONObject(x), x))
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return listContacts
     }
-    fun getContactFromJSONObject(json: JSONObject, id:Int): ContactWithAllInformation {
-        val firstName:String = json.getString("first_name")
-        val lastName:String = json.getString("last_name")
+
+    fun getContactFromJSONObject(json: JSONObject, id: Int): ContactWithAllInformation {
+        val firstName: String = json.getString("first_name")
+        val lastName: String = json.getString("last_name")
 
         val profilPicture: Int = R.drawable.img_avatar
-        val contactPriority :Int= json.getInt("contact_priority")
-        val profilPictureStr:String = json.getString("profile_picture_str")
+        val contactPriority: Int = json.getInt("contact_priority")
+        val profilPictureStr: String = json.getString("profile_picture_str")
 
-        println("contact :"+ firstName +" "+ lastName)
+        println("contact :" + firstName + " " + lastName)
         val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr)
         val contactInfo = ContactWithAllInformation()
-        contactInfo.contactDB= contact
-        contactInfo.contactDetailList=getContactDeatailFromJSONObject(json,id)
+        contactInfo.contactDB = contact
+        contactInfo.contactDetailList = getContactDeatailFromJSONObject(json, id)
         return contactInfo
     }
-    fun getContactDeatailFromJSONObject(json: JSONObject, idContact:Int): List<ContactDetailDB> {
-        val phoneNumber:String = json.getString("phone_number")
-        val mail:String=json.getString("mail")
-        val contactDetails = ContactDetailDB(null,idContact,phoneNumber+"M","phone", "",0)
-        val contactDetails2 = ContactDetailDB(null,idContact,mail+"B","mail", "",1)
-        return mutableListOf<ContactDetailDB>(contactDetails,contactDetails2)
+
+    fun getContactDeatailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
+        val phoneNumber: String = json.getString("phone_number")
+        val mail: String = json.getString("mail")
+        val contactDetails = ContactDetailDB(null, idContact, phoneNumber + "M", "phone", "", 0)
+        val contactDetails2 = ContactDetailDB(null, idContact, mail + "B", "mail", "", 1)
+        return mutableListOf<ContactDetailDB>(contactDetails, contactDetails2)
     }
- /*   fun getContactId(id:Int): ContactWithAllInformation? {
+    /*   fun getContactId(id:Int): ContactWithAllInformation? {
         for (contactJSON in contacts){
             if(contactJSON.contactDB!!.id==id){
                 return contactJSON
@@ -327,7 +331,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             if (phoneEmail == null)
                 phoneEmail = ""
             idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag!!.toInt()), 4 to "")
-            println("FINALU STRAIKE ! = "+idAndMail)
+            println("FINALU STRAIKE ! = " + idAndMail)
             if (contactDetails.isEmpty() || !isDuplicateNumber(idAndMail, contactDetails)) {
                 contactDetails.add(idAndMail)
             }
@@ -345,7 +349,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             var phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             var phonePic = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
             val phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
-            println("phone numberrrr = "+phoneNumber)
+            println("phone numberrrr = " + phoneNumber)
             if (phoneNumber == null)
                 phoneNumber = ""
             if (phonePic == null || phonePic.contains("content://com.android.contacts/contacts/", ignoreCase = true)) {
@@ -357,7 +361,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             }
             //idAndPhoneNumber = Triple(phoneId!!.toInt(), phoneNumber, phonePic)
             idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag!!.toInt()), 4 to phonePic)
-            println("FINAL STRIKE = "+ idAndPhoneNumber)
+            println("FINAL STRIKE = " + idAndPhoneNumber)
             if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(idAndPhoneNumber, contactPhoneNumber)) {
                 //println("1er = "+idAndPhoneNumber)
                 contactPhoneNumber.add(idAndPhoneNumber)
@@ -540,15 +544,15 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             }
             contactsDatabase?.contactsDao()?.getContactAllInfo()
         }
-            val syncContact=executorService.submit(callDb).get()
-            val lastSyncList = getLastSync(applicationContext)
-            if (lastSyncList.isEmpty()) {
-                storeLastSync(phoneContactsList, applicationContext, lastSyncList, true)
-            } else {
-                deleteDeletedContactFromPhone(lastSyncList, phoneContactsList)
-                storeLastSync(phoneContactsList, applicationContext, lastSyncList, false)
-            }
-            gestionnaireContacts.contacts=syncContact!!
+        val syncContact = executorService.submit(callDb).get()
+        val lastSyncList = getLastSync(applicationContext)
+        if (lastSyncList.isEmpty()) {
+            storeLastSync(phoneContactsList, applicationContext, lastSyncList, true)
+        } else {
+            deleteDeletedContactFromPhone(lastSyncList, phoneContactsList)
+            storeLastSync(phoneContactsList, applicationContext, lastSyncList, false)
+        }
+        gestionnaireContacts.contacts = syncContact!!
 
     }
 
@@ -560,4 +564,62 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         createListContactsSync(phoneStructName, contactDetail.toList(), gridView, applicationContext, this)
     }
 //endregion
+
+
+    fun getPriorityWithName(name: String, platform: String): Int {
+        var priority = -2
+        when (platform) {
+            "message" -> {
+                priority = getPriority(name)
+            }
+            "WhatsApp" -> {
+                priority = getPriority(name)
+            }
+            "gmail" -> {
+                priority = getPriority(name)
+            }
+        }
+        return priority
+    }
+
+    // get la priorité grace à la liste
+    fun getPriority(name: String): Int {
+        if (name.contains(" ")) {
+            this.contacts!!.forEach { dbContact ->
+                val contactInfo = dbContact.contactDB!!
+                //                println("contact "+dbContact+ "différent de name"+name)
+                if (contactInfo.firstName + " " + contactInfo.lastName == name) {
+                    return contactInfo.contactPriority
+                }
+            }
+        } else {
+            this.contacts!!.forEach { dbContact ->
+                val contactInfo = dbContact.contactDB!!
+                if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
+                    return contactInfo.contactPriority
+                }
+            }
+        }
+        return -1
+    }
+
+    fun getContactId(name: String): Int {
+        if (name.contains(" ")) {
+            this.contacts!!.forEach { dbContact ->
+                val contactInfo = dbContact.contactDB!!
+                //                println("contact "+dbContact+ "différent de name"+name)
+                if (contactInfo.firstName + " " + contactInfo.lastName == name) {
+                    return contactInfo.contactPriority
+                }
+            }
+        } else {
+            this.contacts!!.forEach { dbContact ->
+                val contactInfo = dbContact.contactDB!!
+                if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
+                    return contactInfo.contactPriority
+                }
+            }
+        }
+        return 0
+    }
 }

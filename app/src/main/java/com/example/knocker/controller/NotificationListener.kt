@@ -2,7 +2,6 @@ package com.example.knocker.controller
 
 
 import android.annotation.SuppressLint
-import android.app.*
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.PixelFormat
@@ -10,7 +9,6 @@ import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.constraintlayout.widget.ConstraintLayout
-import android.text.TextUtils.lastIndexOf
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -20,8 +18,8 @@ import android.widget.ListView
 import com.example.knocker.R
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.NotificationDB
-import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Service qui nous permet de traiter les notifications
@@ -86,26 +84,25 @@ class NotificationListener : NotificationListenerService() {
         if (!sharedPreferences.getBoolean("serviceNotif", true)) {
             val sbp = StatusBarParcelable(sbn)
 
-            for (key in sbn.notification.extras.keySet()) {
-                Log.i(TAG, key + "=" + sbp.statusBarNotificationInfo.get(key))
-            }
+            sbp.castName()//permet de récupérer le vrai nom du contact
+
+            val name= sbp.statusBarNotificationInfo.get("android.title").toString()
+            val app =this.convertPackageToString(sbp.appNotifier)
+
+            val gestionnaireContact:ContactList= ContactList(this)
             val addNotification = Runnable {
-                val save = saveNotfication(sbp)
-                if (save != null) {
-                    notification_listener_ContactsDatabase?.notificationsDao()?.insert(save)//ajouter notification a la database
+                val notification = saveNotfication(sbp,
+                        gestionnaireContact.getContactId(name))
+                if (notification != null) {
+                    notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                 }
-                sbp.statusBarNotificationInfo.put("android.title", getContactNameFromString(sbp.statusBarNotificationInfo.get("android.title").toString()))//permet de récupérer le vrai nom du contact
-                val prioriteContact = ContactsPriority.getPriorityWithName(sbp.statusBarNotificationInfo.get("android.title").toString()
-                        , this.convertPackageToString(sbp.appNotifier)
-                        , notification_listener_ContactsDatabase?.contactsDao()?.getAllContacts())
-                println("priorité " + prioriteContact)
+                val prioriteContact = gestionnaireContact.getPriorityWithName(name, app)
                 if (prioriteContact == 2) {
                     if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
                         //this.cancelNotification(sbn.key)
 
                         if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
                             popupView = null
-                            listNotif.clear();
                             val edit: SharedPreferences.Editor = sharedPreferences.edit()
                             edit.putBoolean("view", true)
                             edit.commit()
@@ -132,9 +129,9 @@ class NotificationListener : NotificationListenerService() {
      * Crée une notification qui sera sauvegardé
      *
      */
-    public fun saveNotfication(sbp: StatusBarParcelable): NotificationDB? {
+    public fun saveNotfication(sbp: StatusBarParcelable, contactId: Int): NotificationDB? {
         if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"].toString() != null) {
-            val notif = NotificationDB(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, false, Calendar.getInstance().timeInMillis.toString().toLong(), 0, 0);
+            val notif = NotificationDB(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, false, Calendar.getInstance().timeInMillis.toString().toLong(), 0, contactId);
             return notif;
         } else {
             return null
@@ -162,12 +159,9 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun notifLayout(sbp: StatusBarParcelable, view: View?) {
-        listNotif.add(sbp)
-        val listInverse: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
-        for (i in listNotif.size - 1 downTo 0) {
-            listInverse.add(listNotif.get(i))
-        }//affiche du plus récent au plus ancien toutes les notifications
-        adapterNotification = NotifAdapter(applicationContext, listInverse as ArrayList<StatusBarParcelable>, windowManager!!, view!!)
+        val notifications:ArrayList<StatusBarParcelable> = ArrayList<StatusBarParcelable>()
+        notifications.add(sbp)
+        adapterNotification = NotifAdapter(applicationContext, notifications, windowManager!!, view!!)
         val listViews = view.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification
         val layout = view.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
@@ -175,8 +169,6 @@ class NotificationListener : NotificationListenerService() {
             //System.exit(0)
             windowManager?.removeView(view)
             popupView = null
-            listNotif.clear()
-            listInverse.clear()
             //effacer le window manager en rendre popup-view null pour lui réaffecter de nouvelle valeur
         }
 
@@ -190,17 +182,6 @@ class NotificationListener : NotificationListenerService() {
                 convertPackageToString(sbp.appNotifier) != ""
     }
 
-    /* private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
-
-         if (sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE) {
-             return R.drawable.facebook
-         } else if (sbp.appNotifier == GMAIL_PACKAGE) {
-             return R.drawable.gmail
-         } else if (sbp.appNotifier == WATHSAPP_SERVICE) {
-             return R.drawable.download
-         }
-         return R.drawable.sms
-     }*/
     private fun convertPackageToString(packageName: String): String {
         if (packageName.equals(FACEBOOK_PACKAGE)) {
             return "Facebook";
@@ -232,19 +213,10 @@ class NotificationListener : NotificationListenerService() {
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
         val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
-        var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
+       // var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
         var adapterNotification: NotifAdapter? = null
     }
 
-    private fun getContactNameFromString(NameFromSbp: String): String {
-        val pregMatchString: String = ".*\\([0-9]*\\)"
-        if (NameFromSbp.matches(pregMatchString.toRegex())) {
-            return NameFromSbp.substring(0, lastIndexOf(NameFromSbp, '(')).dropLast(1)
-        } else {
-            println("pregmatch fail" + NameFromSbp)
-            return NameFromSbp
-        }
-    }
 
 
 }

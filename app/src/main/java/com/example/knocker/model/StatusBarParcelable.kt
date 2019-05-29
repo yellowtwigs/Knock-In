@@ -3,6 +3,7 @@ package com.example.knocker.model
 import android.os.Parcel
 import android.os.Parcelable
 import android.service.notification.StatusBarNotification
+import android.text.TextUtils
 import android.util.Log
 
 import java.util.ArrayList
@@ -85,7 +86,21 @@ class StatusBarParcelable : Parcelable {
             }
         }
     }
+    private fun getContactNameFromString(): String {
+        val pregMatchString: String = ".*\\([0-9]*\\)"
+        val NameFromNotif= this.statusBarNotificationInfo.get("android.title") as String
+        if (NameFromNotif.matches(pregMatchString.toRegex())) {
+            return NameFromNotif.substring(0, TextUtils.lastIndexOf(NameFromNotif, '(')).dropLast(1)
+        } else {
+            println("pregmatch fail" + NameFromNotif)
+            return NameFromNotif
+        }
+    }
 
+    fun castName(){
+
+        statusBarNotificationInfo.put("android.title",getContactNameFromString())
+    }
     companion object CREATOR: Parcelable.Creator<StatusBarParcelable> {
         override fun createFromParcel(source: Parcel): StatusBarParcelable {
             return StatusBarParcelable(source)
@@ -98,5 +113,4 @@ class StatusBarParcelable : Parcelable {
     }
         var TAG = StatusBarParcelable::class.java.simpleName
 
-
-    }
+}

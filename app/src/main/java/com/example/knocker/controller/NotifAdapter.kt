@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.content.SharedPreferences
 import android.telephony.SmsManager
 import androidx.core.content.ContextCompat.checkSelfPermission
 import android.text.TextUtils
@@ -20,9 +19,6 @@ import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 /**
  * La Classe qui permet d'afficher les notifications prioritaires au milieu de l'écran
@@ -115,7 +111,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 //on get la base de données
                 val main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
                 val contacts=ContactList(this.context)
-                val number= contacts.getInfoWithName(sbp.statusBarNotificationInfo["android.title"].toString(), app)
+                val number= contacts.getDetailsOfPlatform(sbp.statusBarNotificationInfo["android.title"].toString(), app)
                 if(sbp.appNotifier.equals(MESSAGE_PACKAGE )|| sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)){
 
                     val smsManager= SmsManager.getDefault()
