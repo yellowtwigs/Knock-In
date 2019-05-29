@@ -106,10 +106,10 @@ class ComposeMessageActivity : AppCompatActivity() {
 
 
         val intent = intent
-//        if (intent.getStringExtra("ContactPhoneNumber").isNotEmpty()) {
-//            compose_message_phone_number = intent.getStringExtra("ContactPhoneNumber")
-//            compose_message_PhoneNumberEditText!!.setText(compose_message_phone_number)
-//        }
+        if (intent.getStringExtra("ContactPhoneNumber").isNotEmpty()) {
+            compose_message_phone_number = intent.getStringExtra("ContactPhoneNumber")
+            compose_message_PhoneNumberEditText!!.setText(compose_message_phone_number)
+        }
 
         val tmp = intent.getStringExtra("ContactPhoneNumber")
         println("tmp " + tmp);

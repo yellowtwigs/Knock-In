@@ -14,6 +14,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -95,6 +96,17 @@ class PhoneLogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_log)
         hideKeyboard()
+
+        //region ========================================== Toolbar =========================================
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+//        setSupportActionBar(toolbar)
+//        val actionbar = supportActionBar
+//        supportActionBar!!.setDisplayShowTitleEnabled(false);
+//        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.title = "Phone Log"
+
+        //endregion
 
         //region ======================================= FindViewById =======================================
 
@@ -289,7 +301,7 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     private fun showPhoneLog() {
-        phone_log_CallsListView!!.adapter = PhoneLogListAdapter(this@PhoneLogActivity, getListPhoneCalls())
+//        phone_log_CallsListView!!.adapter = PhoneLogListAdapter(this@PhoneLogActivity, getListPhoneCalls())
     }
 
     private fun showListPhoneCalls() {
@@ -301,6 +313,7 @@ class PhoneLogActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("Recycle")
     private fun getListPhoneCalls(): MutableList<PhoneLog> {
         checkPermission()
         val listOfPhoneCallDetails: MutableList<PhoneLog> = mutableListOf()
@@ -308,7 +321,6 @@ class PhoneLogActivity : AppCompatActivity() {
         val contentUri = Uri.parse("content://call_log/calls")
         val cursor = this.contentResolver.query(contentUri, null, null, null, null)
 
-//        cursor!!.moveToNext()
         cursor!!.moveToFirst()
 
         val num = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER))
@@ -340,7 +352,6 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private fun checkPermission() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CALL_LOG) == PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, String[]{ android.Manifest.permission.READ_CONTACTS }, 50)
         }
     }
 

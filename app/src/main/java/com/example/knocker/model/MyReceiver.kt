@@ -66,20 +66,20 @@ class MyReceiver : BroadcastReceiver() {
             Toast.makeText(context, msg + " from : " + phoneNumber, Toast.LENGTH_LONG).show();
 
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            composeMessageView = inflater.inflate(R.layout.activity_compose_message, null)
-
-            val c = Calendar.getInstance().time
-
-            val date = SimpleDateFormat("dd-MMM-yyyy")
-            val hour = SimpleDateFormat("hh:mm:ss")
-            val currentDate = date.format(c)
-            val currentHour = hour.format(c)
-
-            val messageClass = Message(msg, false, phoneNumber, 0, currentDate, currentHour)
-
-            compose_message_listOfMessage.add(messageClass)
-
-            callComposeMessageLayout(context, composeMessageView)
+//            composeMessageView = inflater.inflate(R.layout.activity_compose_message, null)
+//
+//            val c = Calendar.getInstance().time
+//
+//            val date = SimpleDateFormat("dd-MMM-yyyy")
+//            val hour = SimpleDateFormat("hh:mm:ss")
+//            val currentDate = date.format(c)
+//            val currentHour = hour.format(c)
+//
+//            val messageClass = Message(msg, false, phoneNumber, 0, currentDate, currentHour)
+//
+//            compose_message_listOfMessage.add(messageClass)
+//
+//            callComposeMessageLayout(context, composeMessageView)
         }
     }
 

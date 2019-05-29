@@ -15,21 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <!--android:layout_height="?attr/actionBarSize"-->
-
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:background="@android:color/transparent"-->
-        <!--android:hint="@string/compose_message_enter_phone_number"-->
-
+        <EditText
+            android:id="@+id/compose_message_phone_number_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/compose_message_enter_phone_number"
+            android:inputType="phone" />
     </androidx.appcompat.widget.Toolbar>
-
-
-    <EditText
-        android:id="@+id/compose_message_phone_number_edittext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/compose_message_list_view_message"
