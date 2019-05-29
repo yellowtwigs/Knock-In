@@ -21,8 +21,8 @@
     <string name="left_drawer_notification_history">Notifications History</string>
 
     <!-- Menu Main !-->
-    <string name="main_create_category">Filter SMS</string>
-    <string name="main_filter">Filter Email</string>
+    <string name="main_filter_sms">Filter SMS</string>
+    <string name="main_filter_mail">Filter Email</string>
     <string name="main_search_hint">Search a contact</string>
     <string name="main_change_format_phone_book">Change the display</string>
 
@@ -147,6 +147,7 @@
     <!-- ComposeMessage !-->
     <string name="compose_message_enter_text">Enter Message</string>
     <string name="compose_message_enter_phone_number">Phone Number</string>
+    <string name="compose_message_calling">Phone Call</string>
 
     <!-- PhoneLog !-->
     <string name="phone_log_add_new_contact">Nouveau Contact</string>

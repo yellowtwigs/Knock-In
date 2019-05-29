@@ -3,17 +3,18 @@ package com.example.knocker.model;
 public class Message {
     private String messageContent;
     private boolean fromMe;
-    private String nameSender;
+    private String number;
     private int profilePicture;
     private String date;
     private String hour;
 
-    public Message(String messageContent, boolean fromMe, int profilePicture, String date, String hour) {
+    public Message(String messageContent, boolean fromMe, String number, int profilePicture, String date, String hour) {
         this.messageContent = messageContent;
         this.fromMe = fromMe;
         this.profilePicture = profilePicture;
         this.date = date;
         this.hour = hour;
+        this.number = number;
     }
 
     public String getMessageContent() {
@@ -36,7 +37,7 @@ public class Message {
         return hour;
     }
 
-    public String getNameSender() {
-        return nameSender;
+    public String getNumber() {
+        return number;
     }
 }

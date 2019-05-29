@@ -166,7 +166,7 @@ class ComposeMessageActivity : AppCompatActivity() {
                     val smsManager = SmsManager.getDefault()
                     smsManager.sendTextMessage(phoneNumb, null, msg, null, null)
 
-                    val msg = Message(msg, true, 0, currentDate, currentHour)
+                    val msg = Message(msg, true, "", 0, currentDate, currentHour)
 
                     compose_message_listOfMessage.add(msg)
 
@@ -174,9 +174,6 @@ class ComposeMessageActivity : AppCompatActivity() {
 
                     compose_message_MessageEditText!!.text.clear()
                     Toast.makeText(this, "Message envoyé", Toast.LENGTH_SHORT).show()
-//                    val intent = intent
-//                    finish()
-//                    startActivity(intent)
                 } else {
                     Toast.makeText(this@ComposeMessageActivity, "Permission denied", Toast.LENGTH_SHORT).show()
                 }

@@ -112,7 +112,8 @@ public class MessageListAdapter extends BaseAdapter {
 
             convertView.setTag(holder);
 
-            holder.nameSender.setText(msg.getNameSender());
+            // Condition if the number is existing in the data base
+            holder.nameSender.setText(msg.getNumber());
             holder.messageContent.setText(msg.getMessageContent());
             holder.date.setText(msg.getDate());
             holder.hour.setText(msg.getHour());

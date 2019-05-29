@@ -198,6 +198,9 @@ class SocialsNetworksLinksActivity : AppCompatActivity(), SensorEventListener {
 
     //region ========================================== Functions =========================================
 
+    override fun onBackPressed() {
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -247,31 +250,31 @@ class SocialsNetworksLinksActivity : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         val mySensor = event!!.sensor
 
-        if (mySensor.type == Sensor.TYPE_ACCELEROMETER) {
-            val x = event.values[0]
-            val y = event.values[1]
-            val z = event.values[2]
-
-            val curTime = System.currentTimeMillis()
-
-            if ((curTime - lastUpdate) > 100) {
-                val diffTime = (curTime - lastUpdate)
-                lastUpdate = curTime
-
-                var speed = abs(x + y + z - last_x - last_y - last_z)
-                speed = speed / diffTime * 10000
-
-                if (speed > SHAKE_TRESHOLD) {
-
-                }
-
-                last_x = x
-                last_y = y
-                last_z = z
-
-                Toast.makeText(this, "Shaked", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        if (mySensor.type == Sensor.TYPE_ACCELEROMETER) {
+//            val x = event.values[0]
+//            val y = event.values[1]
+//            val z = event.values[2]
+//
+//            val curTime = System.currentTimeMillis()
+//
+//            if ((curTime - lastUpdate) > 100) {
+//                val diffTime = (curTime - lastUpdate)
+//                lastUpdate = curTime
+//
+//                var speed = abs(x + y + z - last_x - last_y - last_z)
+//                speed = speed / diffTime * 10000
+//
+//                if (speed > SHAKE_TRESHOLD) {
+//
+//                }
+//
+//                last_x = x
+//                last_y = y
+//                last_z = z
+//
+//                Toast.makeText(this, "Shaked", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {

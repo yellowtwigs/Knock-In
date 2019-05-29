@@ -4,7 +4,7 @@
 
     <!-- View background color -->
     <solid
-        android:color="@color/knockerColorPrimary" >
+        android:color="@color/browser_actions_title_color" >
     </solid>
 
     <!-- The radius makes the corners rounded -->
