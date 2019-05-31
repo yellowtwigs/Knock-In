@@ -17,8 +17,8 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="2dp"
             android:background="@color/transparentColor"
             app:layout_constraintBottom_toTopOf="@+id/main_grid_view_id"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +63,7 @@
             android:numColumns="auto_fit"
             app:layout_constraintEnd_toEndOf="@+id/navigation"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
         <ListView
             android:id="@+id/main_list_view_id"
             android:layout_width="match_parent"

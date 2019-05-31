@@ -2,10 +2,15 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -110,7 +115,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
-
+        if(android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            window.navigationBarColor = getResources().getColor(R.color.whiteColor)
+        }
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
@@ -152,7 +159,6 @@ class MainActivity : AppCompatActivity() {
 
         main_BottomNavigationView = findViewById(R.id.navigation)
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
 
@@ -166,7 +172,7 @@ class MainActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-
+        actionbar.setBackgroundDrawable( ColorDrawable(Color.parseColor("#ffffff")))
         //endregion
 
         //region ======================================= DrawerLayout =======================================
@@ -230,30 +236,6 @@ class MainActivity : AppCompatActivity() {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_GridView!!.setSelection(index)
             edit.apply()
-            main_GridView!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
-                main_CoordinationLayout = findViewById<CoordinatorLayout>(R.id.main_coordinatorLayout)
-                //val contact = main_GridView!!.getItemAtPosition(position) as ContactDB
-//                    try {
-//                        BubbleActions.on(main_CoordinationLayout)
-//                                .addAction("Messenger", R.drawable.ic_messenger_circle_menu
-//                                ) {
-//                                    ContactGesture.openMessenger("", this@MainActivity)
-//                                }.addAction("SMS", R.drawable.ic_sms) {
-//                                    startActivity(ContactGesture.putContactIntent(contact, this@MainActivity, ComposeMessageActivity::class.java))
-//                                }.addAction("Gmail", R.drawable.ic_gmail) {
-//                                    ContactGesture.openGmail(this@MainActivity)
-//                                }.addAction("whatsapp", R.drawable.ic_whatsapp_circle_menu) {
-//                                    ContactGesture.openWhatsapp(contact.phoneNumber, this@MainActivity)
-//                                }.addAction("edit", R.drawable.ic_edit_floating_button) {
-//                                    val intent = ContactGesture.putContactIntent(contact, this@MainActivity, EditContactActivity::class.java)
-//                                    startActivity(intent)
-//                                }
-//                                .show()
-//                    } catch (e: IllegalStateException) {
-//
-//                    }
-                false
-            }
 
             main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                 if (!main_FloatingButtonIsOpen) {
@@ -291,8 +273,9 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
                     if(gridViewAdapter!=null) {
-                        gridViewAdapter!!.onScroll();
-                        gridViewAdapter!!.closeMenu()
+                        if(gridViewAdapter!!.selectMenu!=null) {
+                            gridViewAdapter!!.closeMenu()
+                        }
                     }
                 }
             })

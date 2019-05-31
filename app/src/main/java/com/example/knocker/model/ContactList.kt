@@ -200,7 +200,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         try {
             val jsArray = JSONArray(contactString)
             for (x in 0..(jsArray.length() - 1)) {
-                listContacts.add(getContactFromJSONObject(jsArray.getJSONObject(x), x))
+                listContacts.add(getContactFromJSONObject(jsArray.getJSONObject(x), x+1))
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -398,11 +398,11 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         var randomUserImage = 0
 
         when (nextValues) {
-            0 -> randomUserImage = R.drawable.ic_user_black
+            0 -> randomUserImage = R.drawable.ic_user_yellow
             1 -> randomUserImage = R.drawable.ic_user_blue
             2 -> randomUserImage = R.drawable.ic_user_brown
             3 -> randomUserImage = R.drawable.ic_user_green
-            4 -> randomUserImage = R.drawable.ic_user_grey
+            4 -> randomUserImage = R.drawable.ic_user_om
             5 -> randomUserImage = R.drawable.ic_user_om
             6 -> randomUserImage = R.drawable.ic_user_orange
             7 -> randomUserImage = R.drawable.ic_user_pink
