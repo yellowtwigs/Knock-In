@@ -238,7 +238,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         int diametreBoutton =(int) (0.30*metrics.densityDpi);
         int radiusMenu = (int) (0.40*metrics.densityDpi);
         int border =  (int) (0.0625*metrics.densityDpi);
-        
+
         FrameLayout.LayoutParams layoutParams= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(border,border,border,border);
 
@@ -275,7 +275,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     ContactWithAllInformation contactphone=(ContactWithAllInformation) getItem(position);
                 }else if(v.getId()==buttonEdit.getId()){
                     Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId",position+1);
+                    intent.putExtra("ContactId",contact.getId());
                     context.startActivity(intent);
                 }else if(v.getId()==buttonCall.getId()){
 
