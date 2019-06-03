@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION_CODES.M
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -40,7 +41,8 @@ import java.util.regex.Pattern
  * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
+
 
 
     //region ========================================== Var or Val ==========================================
@@ -73,8 +75,6 @@ class MainActivity : AppCompatActivity() {
     private var main_SearchBar: EditText? = null
     var scaleGestureDetectore: ScaleGestureDetector? = null
 
-    private var gridViewAdapter: ContactGridViewAdapter?=null
-
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
     private var main_BottomNavigationView: BottomNavigationView? = null
 
     private var gestionnaireContacts: ContactList? = null
+    private var gridViewAdapter:ContactGridViewAdapter?=null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -179,7 +180,7 @@ class MainActivity : AppCompatActivity() {
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
-
+        drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val headerView = navigationView.getHeaderView(0);
         my_knocker = headerView.findViewById(R.id.my_knocker)
@@ -282,9 +283,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
                     if(gridViewAdapter!=null) {
-                        if(gridViewAdapter!!.selectMenu!=null) {
                             gridViewAdapter!!.closeMenu()
-                        }
                     }
                 }
             })
@@ -401,6 +400,8 @@ class MainActivity : AppCompatActivity() {
 
         scaleGestureDetectore = ScaleGestureDetector(this,
                 MyOnScaleGestureListener())
+
+
     }
 
     //region ========================================== Functions ===========================================
@@ -637,6 +638,21 @@ class MainActivity : AppCompatActivity() {
 //        edit.apply()
 
     //endregion
+
+    override fun onDrawerStateChanged(newState: Int) {
+
+    }
+
+    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+        gridViewAdapter!!.closeMenu()
+    }
+
+    override fun onDrawerClosed(drawerView: View) {
+    }
+
+    override fun onDrawerOpened(drawerView: View) {
+        gridViewAdapter!!.closeMenu()
+    }
 
 }
 

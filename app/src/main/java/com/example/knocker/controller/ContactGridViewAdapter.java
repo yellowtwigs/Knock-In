@@ -334,7 +334,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
 
     public void closeMenu(){
-
+        if(selectMenu!=null)
            selectMenu.close(true);
 
     }
