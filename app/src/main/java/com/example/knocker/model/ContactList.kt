@@ -637,7 +637,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
 //endregion
 
 
-    fun getPriorityWithName(name: String, platform: String): ContactWithAllInformation? {
+    fun getContactWithName(name: String, platform: String): ContactWithAllInformation? {
 
         when (platform) {
             "message" -> {

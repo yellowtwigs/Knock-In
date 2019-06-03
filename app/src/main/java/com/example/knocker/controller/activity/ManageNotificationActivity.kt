@@ -66,6 +66,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         my_knocker = headerView.findViewById(R.id.my_knocker)
 
         my_knocker!!.setOnClickListener {
+            startActivity(Intent(this@ManageNotificationActivity,MainActivity::class.java))
         }
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true

@@ -106,7 +106,7 @@ class NotificationListener : NotificationListenerService() {
                         sbp.changeToContactName(contact)
                 }else{
                     println("not a phone number")
-                     contact = gestionnaireContact.getPriorityWithName(name, app)
+                     contact = gestionnaireContact.getContactWithName(name, app)
                 }
                 if(contact!=null) {
 
