@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import android.util.Log
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
 import java.util.ArrayList
 import java.util.HashMap
@@ -96,9 +97,10 @@ class StatusBarParcelable : Parcelable {
             return NameFromNotif
         }
     }
-
+    fun changeToContactName(contact:ContactWithAllInformation){
+        statusBarNotificationInfo.put("android.title",contact.contactDB!!.firstName+" "+ contact.contactDB!!.lastName)
+    }
     fun castName(){
-
         statusBarNotificationInfo.put("android.title",getContactNameFromString())
     }
     companion object CREATOR: Parcelable.Creator<StatusBarParcelable> {

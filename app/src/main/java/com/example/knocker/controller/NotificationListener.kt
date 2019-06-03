@@ -17,6 +17,7 @@ import android.view.WindowManager
 import android.widget.ListView
 import com.example.knocker.R
 import com.example.knocker.model.*
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.NotificationDB
 import java.util.*
 import kotlin.collections.ArrayList
@@ -83,9 +84,7 @@ class NotificationListener : NotificationListenerService() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         if (!sharedPreferences.getBoolean("serviceNotif", true)) {
             val sbp = StatusBarParcelable(sbn)
-
-            sbp.castName()//permet de récupérer le vrai nom du contact
-
+            sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
             val name= sbp.statusBarNotificationInfo.get("android.title").toString()
             val app =this.convertPackageToString(sbp.appNotifier)
 
@@ -93,31 +92,46 @@ class NotificationListener : NotificationListenerService() {
             val addNotification = Runnable {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
+                var contact:ContactWithAllInformation?
                 if (notification != null) {
                     notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                 }
-                val prioriteContact = gestionnaireContact.getPriorityWithName(name, app)
-                if (prioriteContact == 2) {
-                    if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
-                        //this.cancelNotification(sbn.key)
 
-                        if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
-                            popupView = null
-                            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                            edit.putBoolean("view", true)
-                            edit.commit()
-                            displayLayout(sbp)
-                        } else {
-                            Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
-                            //notifLayout(sbp, popupView)
-                            adapterNotification!!.addNotification(sbp)
+
+                if(isPhoneNumber(name)) {
+
+                    println("is a phone number")
+                    contact = gestionnaireContact.getContactFromNumber(name)
+                    if (contact!=null)
+                        sbp.changeToContactName(contact)
+                }else{
+                    println("not a phone number")
+                     contact = gestionnaireContact.getPriorityWithName(name, app)
+                }
+                if(contact!=null) {
+
+                    if (contact!!.contactDB!!.contactPriority == 2) {
+                        if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
+                            //this.cancelNotification(sbn.key)
+
+                            if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
+                                popupView = null
+                                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                                edit.putBoolean("view", true)
+                                edit.commit()
+                                displayLayout(sbp)
+                            } else {
+                                Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
+                                //notifLayout(sbp, popupView)
+                                adapterNotification!!.addNotification(sbp)
+                            }
                         }
-                    }
-                } else if (prioriteContact == 1) {
+                    } else if (contact.contactDB!!.contactPriority == 1) {
 
-                } else if (prioriteContact == 0) {
-                    println("priority 0")
-                    this.cancelNotification(sbn.key)
+                    } else if (contact.contactDB!!.contactPriority == 0) {
+                        println("priority 0")
+                        this.cancelNotification(sbn.key)
+                    }
                 }
 
             }
@@ -195,6 +209,10 @@ class NotificationListener : NotificationListenerService() {
             return "message"
         }
         return ""
+    }
+    private fun  isPhoneNumber(title:String):Boolean{
+        val pregMatchString = "((\\+33|0)[0-9]{9})|(0[0-9]\\s([0-9]{2}\\s){3}[0-9]{2})"
+        return title.matches(pregMatchString.toRegex())
     }
 
     private fun afficherNotif() {

@@ -7,8 +7,8 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.UserManager
 import android.provider.ContactsContract
+import android.telephony.PhoneNumberUtils
 import android.util.Base64
 import android.widget.GridView
 import com.example.knocker.R
@@ -637,41 +637,41 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
 //endregion
 
 
-    fun getPriorityWithName(name: String, platform: String): Int {
-        var priority = -2
+    fun getPriorityWithName(name: String, platform: String): ContactWithAllInformation? {
+
         when (platform) {
             "message" -> {
-                priority = getPriority(name)
+                return getContact(name)
             }
             "WhatsApp" -> {
-                priority = getPriority(name)
+                return  getContact(name)
             }
             "gmail" -> {
-                priority = getPriority(name)
+                return  getContact(name)
             }
         }
-        return priority
+        return null
     }
 
     // get la priorité grace à la liste
-    fun getPriority(name: String): Int {
+    fun getContact(name: String): ContactWithAllInformation? {
         if (name.contains(" ")) {
             this.contacts!!.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
                 //                println("contact "+dbContact+ "différent de name"+name)
                 if (contactInfo.firstName + " " + contactInfo.lastName == name) {
-                    return contactInfo.contactPriority
+                    return dbContact
                 }
             }
         } else {
             this.contacts!!.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
-                    return contactInfo.contactPriority
+                    return dbContact
                 }
             }
         }
-        return -1
+        return null
     }
 
     fun getContactId(name: String): Int {
@@ -692,5 +692,14 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             }
         }
         return 0
+    }
+
+    fun getContactFromNumber(phoneNumber: String):ContactWithAllInformation?{
+        for (contact in this.contacts){
+            if(PhoneNumberUtils.compare(contact.getPhoneNumber(),phoneNumber)){
+                return contact
+            }
+        }
+        return null
     }
 }

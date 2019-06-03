@@ -1,8 +1,10 @@
 package com.example.knocker.controller.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +16,7 @@ import com.example.knocker.R
  */
 class HelpActivity : AppCompatActivity() {
 
-    var help_activity_QandA: ConstraintLayout? = null
+    var help_activity_FAQ: ConstraintLayout? = null
     var help_activity_ContactUs: ConstraintLayout? = null
     var help_activity_Terms: ConstraintLayout? = null
     var help_activity_Infos: ConstraintLayout? = null
@@ -36,7 +38,7 @@ class HelpActivity : AppCompatActivity() {
 
         //region ======================================= FindViewById =======================================
 
-        help_activity_QandA = findViewById(R.id.help_activity_q_and_r_id)
+        help_activity_FAQ = findViewById(R.id.help_activity_q_and_r_id)
         help_activity_ContactUs = findViewById(R.id.help_activity_contact_us_id)
         help_activity_Terms = findViewById(R.id.help_activity_terms_id)
         help_activity_Infos = findViewById(R.id.help_activity_infos_id)
@@ -44,10 +46,24 @@ class HelpActivity : AppCompatActivity() {
         //endregion
 
         //region ==================================== SetOnClickListener ====================================
-
-        help_activity_Infos!!.setOnClickListener {
-
+        val onClick = View.OnClickListener {
+            if(it.id==help_activity_FAQ!!.id){
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/forum?utm_campaign=65c6b065-06db-4383-9240-d877a178ea3b&utm_source=so")))
+            }
+            if(it.id==help_activity_ContactUs!!.id){
+                val intent= Intent(Intent.ACTION_SEND)
+                intent.setData(Uri.parse("mailto:"))
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("contacts@yellowtwigs.com"))
+                intent.putExtra(Intent.EXTRA_SUBJECT, "")
+                intent.putExtra(Intent.EXTRA_TEXT,"")
+                println("intent "+ intent.extras.toString())
+                startActivity(Intent.createChooser(intent,"contactez-nous"))
+            }
         }
+        help_activity_ContactUs!!.setOnClickListener(onClick)
+        help_activity_Infos!!.setOnClickListener(onClick)
+        help_activity_FAQ!!.setOnClickListener(onClick)
 
         //endregion
     }
