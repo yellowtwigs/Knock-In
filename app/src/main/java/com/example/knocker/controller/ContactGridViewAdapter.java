@@ -19,6 +19,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -202,29 +203,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonSMS.setId(2);
         buttonWhatsApp.setId(3);
         buttonEdit.setId(4);
-        FrameLayout.LayoutParams layoutParams= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.setMargins(30,30,30,30);
 
 
-        //buttonMessenger.setLayoutParams(layoutParams);
-      //  buttonCall.setLayoutParams(layoutParams);
-        //buttonSMS.setLayoutParams(layoutParams);
-        //buttonWhatsApp.setLayoutParams(layoutParams);
-        //buttonEdit.setLayoutParams(layoutParams);
 
-
-        //buttonEdit.setScaleType(ImageView.ScaleType.CENTER);
-        //buttonMessenger.setScaleType(ImageView.ScaleType.CENTER);
-        //buttonWhatsApp.setScaleType(ImageView.ScaleType.CENTER);
-        //buttonSMS.setScaleType(ImageView.ScaleType.CENTER);
-
-
-        //buttonMessenger.setBackgroundTintList(ColorStateList.valueOf(R.color.knockerColorPrimaryDark));
-        //buttonEdit.setBackgroundTintList(ColorStateList.valueOf(R.color.knockerColorPrimary));
-        //buttonWhatsApp.setBackgroundTintList(ColorStateList.valueOf(R.color.knockerColorPrimaryDark));
-        //buttonSMS.setBackgroundTintList(ColorStateList.valueOf(R.color.knockerColorPrimaryDark));
-        //buttonMessenger.setBackgroundColor(android.R.color.holo_orange_light);
-       // buttonMessenger.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         buttonMessenger.setImageResource(R.drawable.ic_messenger);
         buttonCall.setImageResource( R.drawable.ic_phone_call);
@@ -252,15 +233,25 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             startAngle=0;
             endAngle=-180;
         }
+        DisplayMetrics metrics = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        System.out.println("densité change test "+metrics.densityDpi);
+        int diametreBoutton =(int) (0.30*metrics.densityDpi);
+        int radiusMenu = (int) (0.40*metrics.densityDpi);
+        int border =  (int) (0.0625*metrics.densityDpi);
+        FrameLayout.LayoutParams layoutParams= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(border,border,border,border);
+
         FloatingActionMenu quickMenu = new FloatingActionMenu.Builder((Activity) context)
                 .setStartAngle(startAngle)
                 .setEndAngle(endAngle)
-                .setRadius(200)
-                .addSubActionView(builderIcon.setContentView(buttonCall,layoutParams).build(),150,150)
-                .addSubActionView(builderIcon.setContentView(buttonWhatsApp,layoutParams).build(),150,150)
-                .addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),150,150)
-                .addSubActionView(builderIcon.setContentView(buttonEdit,layoutParams).build(),150,150)
-                .addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),150,150)
+                .setRadius(radiusMenu)
+                .addSubActionView(builderIcon.setContentView(buttonCall,layoutParams).build(),diametreBoutton,diametreBoutton)
+                .addSubActionView(builderIcon.setContentView(buttonWhatsApp,layoutParams).build(),diametreBoutton,diametreBoutton)
+                .addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton)
+                .addSubActionView(builderIcon.setContentView(buttonEdit,layoutParams).build(),diametreBoutton,diametreBoutton)
+                .addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
                 .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
                 .disableAnimations()

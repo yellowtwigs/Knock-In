@@ -106,10 +106,10 @@ class EditInformationsActivity : AppCompatActivity() {
             val id = menuItem.itemId
 
             when (id) {
+
                 R.id.nav_informations -> {
                 }
-                R.id.nav_notif_config -> {
-                }
+                R.id.nav_notif_config -> startActivity(Intent(this@EditInformationsActivity,ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
