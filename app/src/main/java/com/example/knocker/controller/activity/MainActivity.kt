@@ -221,6 +221,15 @@ class MainActivity : AppCompatActivity() {
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_Listview = findViewById(R.id.main_list_view_id)
         ////////
+        val gridOrList = getSharedPreferences("GridOrList", Context.MODE_PRIVATE)
+        val state = gridOrList.getInt("state", 0)
+        if (state == 1) {
+            main_GridView!!.visibility = View.GONE
+            main_Listview!!.visibility = View.VISIBLE
+        } else if (state == 0) {
+            main_Listview!!.visibility = View.GONE
+            main_GridView!!.visibility = View.VISIBLE
+        }
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
         main_GridView!!.numColumns = len // permet de changer
@@ -453,6 +462,8 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_click_change_format -> {
+                val sharedPreferences = getSharedPreferences("GridOrList", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
                 if (main_GridView!!.visibility == View.VISIBLE) {
                     main_Listview!!.visibility = View.VISIBLE
                     main_GridView!!.visibility = View.GONE
@@ -460,7 +471,7 @@ class MainActivity : AppCompatActivity() {
                     val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
 
                     main_Listview!!.startAnimation(slideUp)
-
+                    edit.putInt("state", 1)
                     Toast.makeText(this, "Mode Liste", Toast.LENGTH_SHORT).show()
                 } else {
                     main_Listview!!.visibility = View.GONE
@@ -468,11 +479,10 @@ class MainActivity : AppCompatActivity() {
 
                     val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
                     main_GridView!!.startAnimation(slideUp)
-
+                    edit.putInt("state", 0)
                     Toast.makeText(this, "Mode Grille", Toast.LENGTH_SHORT).show()
                 }
-
-
+                edit.apply()
                 return true
             }
             R.id.sms_filter -> {
