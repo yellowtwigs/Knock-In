@@ -79,7 +79,6 @@ public class CircularImageView extends AppCompatImageView {
             setBorderWidth(attributes.getDimension(R.styleable.CircularImageView_civ_border_width, defaultBorderSize));
             setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
         }
-
         setBackgroundColor(attributes.getColor(R.styleable.CircularImageView_civ_background_color, Color.WHITE));
 
         // Init Shadow
@@ -296,6 +295,7 @@ public class CircularImageView extends AppCompatImageView {
         try {
             // Create Bitmap object out of the drawable
             Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(1000, 1000, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
