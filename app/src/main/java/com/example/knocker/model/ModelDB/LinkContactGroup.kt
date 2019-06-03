@@ -15,11 +15,13 @@ import com.example.knocker.model.ModelDB.GroupDB
                 ForeignKey(entity = GroupDB::class,
                         parentColumns = arrayOf("id"),
                         childColumns = arrayOf("id_group"),
-                        onDelete = ForeignKey.CASCADE),
+                        onDelete = ForeignKey.CASCADE
+                ),
                 ForeignKey(entity = ContactDB::class,
                         parentColumns = arrayOf("id"),
                         childColumns = arrayOf("id_contact"),
-                        onDelete = ForeignKey.CASCADE))
+                        onDelete = ForeignKey.CASCADE
+                ))
         ,indices = arrayOf(Index(value = arrayOf("id_group", "id_contact"), unique = true)))
 data class LinkContactGroup(
         /**

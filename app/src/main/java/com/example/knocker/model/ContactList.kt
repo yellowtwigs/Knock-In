@@ -619,6 +619,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             }
             val link = LinkContactGroup(groupId, contactId)
             println("LINK CONTACT = " + link)
+            println("RESULT = "+contactsDatabase?.LinkContactGroupDao()!!.getAllLinkContactGroup())
             contactsDatabase?.LinkContactGroupDao()!!.insert(link)
         }
     }

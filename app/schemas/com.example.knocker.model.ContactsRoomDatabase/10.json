@@ -218,7 +218,7 @@
       },
       {
         "tableName": "link_contact_group_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_group` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL, PRIMARY KEY(`id_group`, `id_contact`), FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`id_group`) REFERENCES `groups_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_group` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL, PRIMARY KEY(`id_group`, `id_contact`), FOREIGN KEY(`id_group`) REFERENCES `groups_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idGroup",
@@ -253,22 +253,22 @@
         ],
         "foreignKeys": [
           {
-            "table": "contacts_table",
+            "table": "groups_table",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "id_contact"
+              "id_group"
             ],
             "referencedColumns": [
               "id"
             ]
           },
           {
-            "table": "groups_table",
+            "table": "contacts_table",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "id_group"
+              "id_contact"
             ],
             "referencedColumns": [
               "id"
