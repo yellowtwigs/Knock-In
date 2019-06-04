@@ -144,8 +144,16 @@ class NotificationListener : NotificationListenerService() {
      *
      */
     public fun saveNotfication(sbp: StatusBarParcelable, contactId: Int): NotificationDB? {
-        if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"].toString() != null) {
-            val notif = NotificationDB(null, sbp.tickerText.toString(), sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), sbp.appNotifier, false, Calendar.getInstance().timeInMillis.toString().toLong(), 0, contactId);
+        if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"] != null ) {
+
+            val notif =
+                    NotificationDB(null,
+                    sbp.tickerText.toString(),
+                    sbp.statusBarNotificationInfo["android.title"]!!.toString(),
+                    sbp.statusBarNotificationInfo["android.text"]!!.toString(),
+                    sbp.appNotifier, false,
+                    Calendar.getInstance().timeInMillis.toString().toLong(), 0,
+                    contactId);
             return notif;
         } else {
             return null
