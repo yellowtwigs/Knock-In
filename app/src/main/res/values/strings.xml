@@ -8,30 +8,30 @@
 
     <!-- Left Drawer Titles !-->
     <string name="left_drawer_home">Home</string>
-    <string name="left_drawer_information">My Information</string>
-    <string name="left_drawer_notif_config">My Notif Config</string>
-    <string name="left_drawer_my_screen">My Screen Config</string>
-    <string name="left_drawer_theme">My Themes</string>
+    <string name="left_drawer_information">Mes informations</string>
+    <string name="left_drawer_notif_config">Paramètres notifications</string>
+    <string name="left_drawer_my_screen">Affichage</string>
+    <string name="left_drawer_theme">Thèmes</string>
 
-    <string name="left_drawer_data_access">My Data Access</string>
-    <string name="left_drawer_knockons">My Knockons</string>
-    <string name="left_drawer_statistics">My Statistics</string>
-    <string name="left_drawer_help">Help</string>
+    <string name="left_drawer_data_access">Accèes données</string>
+    <string name="left_drawer_knockons">Knockons</string>
+    <string name="left_drawer_statistics">Mes statistiques</string>
+    <string name="left_drawer_help">Aide</string>
 
-    <string name="left_drawer_notification_history">Notifications History</string>
+    <string name="left_drawer_notification_history">Historique Notifications</string>
 
     <!-- Menu Main !-->
-    <string name="main_filter_sms">Filter SMS</string>
-    <string name="main_filter_mail">Filter Email</string>
-    <string name="main_search_hint">Search a contact</string>
-    <string name="main_change_format_phone_book">Change the display</string>
+    <string name="main_filter_sms">Filtre SMS</string>
+    <string name="main_filter_mail">Filtre Email</string>
+    <string name="main_search_hint">Rechercher</string>
+    <string name="main_change_format_phone_book">Changer le format</string>
 
     <!-- Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">Phone Book</string>
-    <string name="bottom_navigation_view_notify_history">Notify History</string>
-    <string name="bottom_navigation_view_groups">Groups</string>
-    <string name="bottom_navigation_view_social_media">Socials</string>
-    <string name="bottom_navigation_view_phone_log">Phone Keyboard</string>
+    <string name="bottom_navigation_view_phone_book">Carnet d\'adresse</string>
+    <string name="bottom_navigation_view_notify_history">Historique Notifications</string>
+    <string name="bottom_navigation_view_groups">Groupe</string>
+    <string name="bottom_navigation_view_social_media">Réseaux Sociaux</string>
+    <string name="bottom_navigation_view_phone_log">Numérotation</string>
 
     <!-- Add New Contact !-->
     <string name="add_new_contact_title">Ajoutez un nouveau contact</string>
@@ -95,8 +95,8 @@
     <string name="edit_informations_phone_number_fake">255 - 165 - 0056</string>
     <string name="edit_informations_email_fake">carrie_sanders@email.com</string>
 
-    <string name="edit_informations_name">Name</string>
-    <string name="edit_informations_phone_number">Phone Number</string>
+    <string name="edit_informations_name">Nom</string>
+    <string name="edit_informations_phone_number">Numéro de téléphone</string>
     <string name="edit_informations_email">Email</string>
 
     <!-- Content description !-->
@@ -137,25 +137,25 @@
     <string name="settings_toast">vous avez séléctionner %1$d contacts par lignes</string>
 
     <!-- Custom Popup !-->
-    <string name="custom_popup_yes_btn">Yes</string>
-    <string name="custom_popup_no_btn">No</string>
+    <string name="custom_popup_yes_btn">Oui</string>
+    <string name="custom_popup_no_btn">Non</string>
 
     <!-- Service !-->
     <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
     <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
 
     <!-- ComposeMessage !-->
-    <string name="compose_message_enter_text">Enter Message</string>
-    <string name="compose_message_enter_phone_number">Phone Number</string>
-    <string name="compose_message_calling">Phone Call</string>
+    <string name="compose_message_enter_text">Écrire un message</string>
+    <string name="compose_message_enter_phone_number">Numéro de téléphone</string>
+    <string name="compose_message_calling">Appeller</string>
 
     <!-- PhoneLog !-->
     <string name="phone_log_add_new_contact">Nouveau Contact</string>
     <string name="phone_log_send_message">Envoyer un message</string>
 
     <!-- Alert Dialog Notifications !-->
-    <string name="alert_dialog_notification_message">Allow push notifications to let your friends say what\'s up</string>
-    <string name="alert_dialog_notification_allow_it">Allow It</string>
-    <string name="alert_dialog_notification_dismiss">DISMISS</string>
+    <string name="alert_dialog_notification_message">Autoriser knocker à accéder a vos notification pour ne plus être déranger par des messages inutile</string>
+    <string name="alert_dialog_notification_allow_it">Gérer</string>
+    <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
     <string name="title_activity_manage_knockons">ManageKnockonsActivity</string>
 </resources>
