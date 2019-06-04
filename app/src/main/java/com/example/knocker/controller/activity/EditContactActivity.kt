@@ -35,6 +35,7 @@ import com.example.knocker.*
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.CustomAdapterEditText
 import com.example.knocker.model.*
+import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -93,6 +94,9 @@ class EditContactActivity : AppCompatActivity() {
     private val IMAGE_CAPTURE_CODE = 1001
     private var edit_contact_imgString: String? = null;
 
+
+    private var havePhone: Boolean= false
+    private var haveMail:Boolean= false
     //endregion
 
     @SuppressLint("InflateParams")
@@ -159,7 +163,6 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture,"Get")
             //TODO :enlever code Dupliquer
 
-
             edit_contact_phone_property = "Mobile"
             edit_contact_phone_number = ""
             edit_contact_mail = ""
@@ -171,8 +174,11 @@ class EditContactActivity : AppCompatActivity() {
             var tmpMail = contact.getFirstMail()
             edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail)
             edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail)
-
-
+            if(tmpPhone!=""){
+                havePhone=true
+            }else if(tmpMail !=""){
+                haveMail=true
+            }
 
             val id = edit_contact_id
             val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
@@ -349,7 +355,23 @@ class EditContactActivity : AppCompatActivity() {
                         var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         for (i in 0..contact!!.contactDetailList!!.size - 1) {
                             if (i == 0) {
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text + spinnerPhoneChar)
+                                if(havePhone) {
+                                    println("------------il a un numéro ------")
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text + spinnerPhoneChar)
+                                    if(!edit_contact_Mail!!.editText!!.text.equals("")){
+                                        println("------------et à ajouter un mail------")
+                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString()+spinnerMailChar,"mail",spinnerMailChar.toString(),2)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                                    }
+                                }else{
+                                    println("------------il a un seulement un mail ------")
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text + spinnerMailChar)
+                                    if(! edit_contact_PhoneNumber!!.editText!!.text.equals("")){
+                                        println("------------et à ajouter un numéro------")
+                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString()+spinnerPhoneChar,"mail",spinnerPhoneChar.toString(),1)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                                    }
+                                }
                             } else if (i == 1) {
                                 edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text + spinnerMailChar)
                             }
