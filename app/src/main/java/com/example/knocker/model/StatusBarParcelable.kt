@@ -89,7 +89,7 @@ class StatusBarParcelable : Parcelable {
     }
     private fun getContactNameFromString(): String {
         val pregMatchString: String = ".*\\([0-9]*\\)"
-        val NameFromNotif= this.statusBarNotificationInfo.get("android.title") as String
+        val NameFromNotif:String= " "+this.statusBarNotificationInfo.get("android.title")
         if (NameFromNotif.matches(pregMatchString.toRegex())) {
             return NameFromNotif.substring(0, TextUtils.lastIndexOf(NameFromNotif, '(')).dropLast(1)
         } else {
