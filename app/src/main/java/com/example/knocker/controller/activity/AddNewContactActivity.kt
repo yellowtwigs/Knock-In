@@ -45,6 +45,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_PhoneProperty: Spinner? = null
     private var add_new_contact_MailProperty: Spinner? = null
     private var add_new_contact_PriorityExplain: TextView? = null
+    private var gestionnaireContacts: ContactList? = null
 
     private var add_new_contact_phone_number: String? = null
 
@@ -61,6 +62,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //endregion
 
+
     @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +77,8 @@ class AddNewContactActivity : AppCompatActivity() {
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         //region ========================================== Toolbar =========================================
+
+        gestionnaireContacts = ContactList(this.applicationContext)
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -196,7 +200,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
-                            R.drawable.img_avatar, add_new_contact_Priority!!.selectedItem.toString().toInt(),
+                            gestionnaireContacts!!.randomDefaultImage(), add_new_contact_Priority!!.selectedItem.toString().toInt(),
                             add_new_contact_ImgString!!)
                     println(contactData)
                     var isDuplicate = false

@@ -151,9 +151,47 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
 
     fun getContactByName(name: String): List<ContactWithAllInformation> {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase?.contactsDao()?.getContactByName(name) }
-        val result = executorService.submit(callDb)
-        return result.get()!!
+        var callDb = Callable { contactsDatabase?.contactsDao()?.getContactByName(name) }
+        var result = executorService.submit(callDb)
+        var listContact = result.get()!!
+        if (listContact.isEmpty()) {
+            callDb = Callable { contactsDatabase?.contactsDao()?.getContactAllInfo() }
+            result = executorService.submit(callDb)
+            listContact = result.get()!!
+            listContact = searchInPhoneNumber(name, listContact)
+        }
+        return listContact
+    }
+
+    private fun searchInPhoneNumber(name: String, listContact: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
+        val finalList = arrayListOf<ContactWithAllInformation>()
+        listContact.forEach { contact ->
+            if (contact.contactDetailList != null) {
+                contact.contactDetailList!!.forEach {
+                    if (it.type == "phone" && isSameNumber(name, it.content)) {
+                        println("contact name ="+contact.contactDB!!.firstName+" Number = "+it.content)
+                        finalList.add(contact)
+                    }
+                }
+            }
+        }
+        return finalList
+    }
+
+    private fun isSameNumber(phoneNumberSB: String, phoneNumber: String): Boolean {
+        var epurePhoneNumberSB = phoneNumberSB.replace("\\s".toRegex(), "")
+        var epurePhoneNumber = phoneNumber.replace("\\s".toRegex(), "")
+        if (epurePhoneNumberSB.contains("+33")) {
+            epurePhoneNumberSB = epurePhoneNumberSB.removePrefix("+33")
+            epurePhoneNumberSB = "0$epurePhoneNumberSB"
+        }
+        if (epurePhoneNumber.contains("+33")) {
+            epurePhoneNumber = epurePhoneNumber.removePrefix("+33")
+            epurePhoneNumber = "0$epurePhoneNumber"
+        }
+        if (epurePhoneNumber.contains(epurePhoneNumberSB))
+            return true
+        return false
     }
 
     private fun intersectContactWithAllInformation(contactList: List<ContactWithAllInformation>, contactFilterList: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
@@ -302,8 +340,12 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
 
     private fun isDuplicateNumber(idAndPhoneNumber: Map<Int, Any>, contactPhoneNumber: List<Map<Int, Any>>): Boolean {
         contactPhoneNumber.forEach {
-            if (it[1] == idAndPhoneNumber[1] && it[2] == idAndPhoneNumber[2])
+            //println("IT = "+it[2]+" IDANDPHONE = "+idAndPhoneNumber[2])
+            //println("SAME IT = "+it[2].toString().replace("\\s".toRegex(), "")+" IDANDPHONE = "+idAndPhoneNumber[2].toString().replace("\\s".toRegex(), ""))
+            if (it[1] == idAndPhoneNumber[1] && it[2].toString().replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString().replace("\\s".toRegex(), "")) {
+                println("IT = "+it[2]+" IDANDPHONE = "+idAndPhoneNumber[2])
                 return true
+            }
         }
         return false
     }
@@ -336,7 +378,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             val phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
             if (phoneEmail == null)
                 phoneEmail = ""
-            idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag!!.toInt()), 4 to "")
+            idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag!!.toInt()), 4 to "", 5 to "mail")
             if (contactDetails.isEmpty() || !isDuplicateNumber(idAndMail, contactDetails)) {
                 contactDetails.add(idAndMail)
             }
@@ -362,9 +404,10 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                 phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(), main_contentResolver)))
             }
             //idAndPhoneNumber = Triple(phoneId!!.toInt(), phoneNumber, phonePic)
-            idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag!!.toInt()), 4 to phonePic)
+            idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag!!.toInt()), 4 to phonePic, 5 to "phone")
             if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(idAndPhoneNumber, contactPhoneNumber)) {
                 //println("1er = "+idAndPhoneNumber)
+                /////////////////////
                 contactPhoneNumber.add(idAndPhoneNumber)
             }
         }
@@ -392,7 +435,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return tag
     }
 
-    private fun randomDefaultImage(): Int {
+    fun randomDefaultImage(): Int {
 
         val nextValues = kotlin.random.Random.nextInt(0, 10)
         var randomUserImage = 0
@@ -496,7 +539,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         var fieldPosition = 0
         contactNumberAndPic.forEach {
             if (it[1] == id) {
-                contactDetails.add(ContactDetailDB(null, null, it[2].toString() + "M", "phone", it[3].toString(), fieldPosition))
+                contactDetails.add(ContactDetailDB(null, null, it[2].toString() + "M", it[5].toString(), it[3].toString(), fieldPosition))
                 fieldPosition++
             }
         }
