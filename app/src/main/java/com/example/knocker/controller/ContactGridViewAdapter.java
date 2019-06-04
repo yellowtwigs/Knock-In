@@ -198,12 +198,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         final ImageView buttonWhatsApp = new ImageView(context);
         final ImageView buttonSMS= new ImageView(context);
         final ImageView buttonEdit = new ImageView(context);
+        final ImageView buttonMail = new ImageView(context);
 
         buttonMessenger.setId(0);
         buttonCall.setId(1);
         buttonSMS.setId(2);
         buttonWhatsApp.setId(3);
         buttonEdit.setId(4);
+        buttonMail.setId(5);
 
 
 
@@ -213,6 +215,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonWhatsApp.setImageResource(R.drawable.ic_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms);
         buttonEdit.setImageResource(R.drawable.ic_edit_floating_button);
+        buttonMail.setImageResource(R.drawable.ic_gmail);
 
 
 
@@ -243,22 +246,30 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         FrameLayout.LayoutParams layoutParams= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(border,border,border,border);
 
-        FloatingActionMenu quickMenu = new FloatingActionMenu.Builder((Activity) context)
+        FloatingActionMenu.Builder builder = new FloatingActionMenu.Builder((Activity) context)
                 .setStartAngle(startAngle)
                 .setEndAngle(endAngle)
                 .setRadius(radiusMenu)
-                .addSubActionView(builderIcon.setContentView(buttonCall,layoutParams).build(),diametreBoutton,diametreBoutton)
-                .addSubActionView(builderIcon.setContentView(buttonWhatsApp,layoutParams).build(),diametreBoutton,diametreBoutton)
-                .addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton)
                 .addSubActionView(builderIcon.setContentView(buttonEdit,layoutParams).build(),diametreBoutton,diametreBoutton)
-                .addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
                 .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
-                .disableAnimations()
-                .build();
+                .disableAnimations();
+        if(getItem(position).getPhoneNumber()!=""){
+            builder.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
+                .addSubActionView(builderIcon.setContentView(buttonCall,layoutParams).build(),diametreBoutton,diametreBoutton);
+            if(appIsInstalled("com.whatsapp")){
+                builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp,layoutParams).build(),diametreBoutton,diametreBoutton);
+            }
+        }
+       /* if( appIsInstalled( "com.facebook.orca")){
+            builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton);
+        }*/
+        if(getItem(position).getFirstMail()!=""){
+            builder.addSubActionView(builderIcon.setContentView(buttonMail,layoutParams).build(),diametreBoutton,diametreBoutton);
+        }
+        FloatingActionMenu quickMenu=builder.build();
         listCircularMenu.add(quickMenu);
-
-
+              //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
         View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,6 +285,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }else if (v.getId()==buttonWhatsApp.getId()){
                     System.out.println("================whatsapp=============");
                     ContactWithAllInformation contactphone=(ContactWithAllInformation) getItem(position);
+                    ContactGesture.INSTANCE.openWhatsapp(contactphone.getPhoneNumber(),context);
                 }else if(v.getId()==buttonEdit.getId()){
                     Intent intent = new Intent(context, EditContactActivity.class);
                     intent.putExtra("ContactId",contact.getId());
@@ -286,6 +298,16 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     String phone = getItem(position).getPhoneNumber();
                     Intent i = new Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null));
                     context.startActivity(i);
+                }else if(v.getId()==buttonMail.getId()){
+                    String mail = getItem(position).getFirstMail();
+                    Intent intent=new Intent(Intent.ACTION_SEND);
+                    intent.setData(Uri.parse("mailto:"));
+                    intent.setType("text/html");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length()-1)});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "");
+                    intent.putExtra(Intent.EXTRA_TEXT,"");
+                    println("intent "+ intent.getExtras().toString());
+                    context.startActivity(Intent.createChooser(intent,"envoyer un mail à "+ mail.substring(0, mail.length()-1)));
                 }
                 selectMenu.close(true);
             }
@@ -295,6 +317,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonCall.setOnClickListener(buttonListener);
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
+        buttonMail.setOnClickListener(buttonListener);
         //endregion
         return gridview;
 
@@ -394,5 +417,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     }
     public FloatingActionMenu getSelectMenu(){
         return selectMenu;
+    }
+    private boolean appIsInstalled(String appPackage){
+        PackageManager pm =context.getPackageManager();
+        try{
+            pm.getApplicationInfo(appPackage,0);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }
