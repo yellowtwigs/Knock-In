@@ -159,23 +159,20 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_rounded_image = contact.contactDB!!.profilePicture
             //TODO :enlever code Dupliquer
 
-            if (contact.contactDetailList!!.size == 0) {
-                edit_contact_phone_property = "Mobile"
-                edit_contact_phone_number = ""
-                edit_contact_mail = ""
-                edit_contact_mail_property = "Bureau"
-            } else {
-                var tmpPhone = contact.contactDetailList!!.get(0)
-                edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
-                edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
-                edit_contact_mail = ""
-                edit_contact_mail_property = ""
-                if (contact.contactDetailList!!.size == 2) {
-                    var tmpMail = contact.contactDetailList!!.get(1)
-                    edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
-                    edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.content)
-                }
-            }
+
+            edit_contact_phone_property = "Mobile"
+            edit_contact_phone_number = ""
+            edit_contact_mail = ""
+            edit_contact_mail_property = "Bureau"
+
+            var tmpPhone = contact.getPhoneNumber()
+            edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone)
+            edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone)
+            var tmpMail = contact.getFirstMail()
+            edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail)
+            edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail)
+
+
 
             val id = edit_contact_id
             val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())

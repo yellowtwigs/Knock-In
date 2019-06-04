@@ -24,14 +24,25 @@ class ContactWithAllInformation {
     }
     /*@Relation(parentColumn = "id",entityColumn = "id_contact",entity = Notification.class)
     public List<Notification> NotificationList;*/
-    fun getPhoneNumber():String?{
+    fun getPhoneNumber():String{
        for(detail in contactDetailList!!){
            if(detail.type.equals("phone")){
 
                return detail.content.dropLast(1)
            }
        }
-        return null
+        return ""
     }
+
+    fun getFirstMail():String{
+        for (detail in contactDetailList!!){
+            if(detail.type.equals("mail")){
+                return detail.content
+            }
+        }
+        return ""
+    }
+
+
 
 }
