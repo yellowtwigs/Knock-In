@@ -283,9 +283,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     callPhone(getItem(position).getPhoneNumber());
 
                 }else if(v.getId()==buttonSMS.getId()){
-                    Intent intent =new Intent(context, ComposeMessageActivity.class);
-                    intent.putExtra("ContactPhoneNumber", getItem(position).getPhoneNumber() );
-                    context.startActivity(intent);
+                    String phone = getItem(position).getPhoneNumber();
+                    Intent i = new Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null));
+                    context.startActivity(i);
                 }
                 selectMenu.close(true);
             }

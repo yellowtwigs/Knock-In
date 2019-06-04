@@ -165,9 +165,9 @@ class PhoneLogActivity : AppCompatActivity() {
 
         phone_log_SendMessage!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text.isNotEmpty()) {
-                val intent = Intent(this@PhoneLogActivity, ComposeMessageActivity::class.java)
-                intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
-                startActivity(intent)
+                val phone = phone_log_PhoneNumberEditText!!.text.toString()
+                val i = Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null));
+                startActivity(i)
             } else {
                 Toast.makeText(this, "Enter a phone number please", Toast.LENGTH_SHORT).show()
             }
