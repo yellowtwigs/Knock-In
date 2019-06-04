@@ -46,7 +46,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_MailProperty: Spinner? = null
     private var add_new_contact_PriorityExplain: TextView? = null
     private var gestionnaireContacts: ContactList? = null
-
+    private var avatar: Int = 0
     private var add_new_contact_phone_number: String? = null
 
     var imageUri: Uri? = null
@@ -112,6 +112,8 @@ class AddNewContactActivity : AppCompatActivity() {
 //            add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
 //        }
 
+        avatar = gestionnaireContacts!!.randomDefaultImage(0,"Create")
+        add_new_contact_RoundedImageView!!.setImageResource(gestionnaireContacts!!.randomDefaultImage(avatar,"Get"))
         //region ==================================== SetOnClickListener ====================================
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
@@ -200,7 +202,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
-                            gestionnaireContacts!!.randomDefaultImage(), add_new_contact_Priority!!.selectedItem.toString().toInt(),
+                            avatar, add_new_contact_Priority!!.selectedItem.toString().toInt(),
                             add_new_contact_ImgString!!)
                     println(contactData)
                     var isDuplicate = false

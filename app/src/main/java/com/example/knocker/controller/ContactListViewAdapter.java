@@ -17,10 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.knocker.R;
+import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.List;
+import java.util.Random;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -33,6 +35,7 @@ public class ContactListViewAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
+    private ContactList gestionnaireContacts;
 
     public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
@@ -146,10 +149,29 @@ public class ContactListViewAdapter extends BaseAdapter {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            holder.contactRoundedImageView.setImageResource(contact.getProfilePicture());
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get"));
             //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         return listview;
+    }
+
+    public int randomDefaultImage(int avatarId, String createOrGet) {
+        if (createOrGet.equals("Create")) {
+            return new Random().nextInt(9);
+        } else if (createOrGet.equals("Get")) {
+            switch(avatarId) {
+                case 0: return R.drawable.ic_user_yellow;
+                case 1: return R.drawable.ic_user_blue;
+                case 2: return R.drawable.ic_user_brown;
+                case 3: return R.drawable.ic_user_green;
+                case 4: return R.drawable.ic_user_om;
+                case 5: return R.drawable.ic_user_orange;
+                case 6: return R.drawable.ic_user_pink;
+                case 7: return R.drawable.ic_user_purple;
+                case 8: return R.drawable.ic_user_red;
+            }
+        }
+        return -1;
     }
 
     private Bitmap base64ToBitmap(String base64) {

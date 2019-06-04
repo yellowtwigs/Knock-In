@@ -58,7 +58,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_PhoneNumber: TextInputLayout? = null
     private var edit_contact_Mail: TextInputLayout? = null
 
-
+    private var gestionnaireContacts: ContactList? = null
     private var edit_contact_FirstNameEditText: EditText? = null
 
 
@@ -113,7 +113,7 @@ class EditContactActivity : AppCompatActivity() {
 
         val intent = intent
         edit_contact_id = intent.getIntExtra("ContactId", 1)
-
+        gestionnaireContacts = ContactList(this.applicationContext)
         //endregion
 
         //region ======================================= FindViewByID =======================================
@@ -156,7 +156,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
             edit_contact_priority = contact.contactDB!!.contactPriority
-            edit_contact_rounded_image = contact.contactDB!!.profilePicture
+            edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture,"Get")
             //TODO :enlever code Dupliquer
 
 

@@ -47,6 +47,7 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -187,7 +188,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            holder.contactRoundedImageView.setImageResource(contact.getProfilePicture());
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
             //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         //region circular menu
@@ -298,6 +299,49 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         return gridview;
 
     }
+
+    public int randomDefaultImage(int avatarId, String createOrGet) {
+        if (createOrGet.equals("Create")) {
+            return new Random().nextInt(9);
+        } else if (createOrGet.equals("Get")) {
+            switch(avatarId) {
+                case 0: return R.drawable.ic_user_yellow;
+                case 1: return R.drawable.ic_user_blue;
+                case 2: return R.drawable.ic_user_brown;
+                case 3: return R.drawable.ic_user_green;
+                case 4: return R.drawable.ic_user_om;
+                case 5: return R.drawable.ic_user_orange;
+                case 6: return R.drawable.ic_user_pink;
+                case 7: return R.drawable.ic_user_purple;
+                case 8: return R.drawable.ic_user_red;
+            }
+        }
+        return -1;
+    }
+//    fun randomDefaultImage(avatarId:Int, createOrGet:String): Int {
+//
+//        if (createOrGet == "Create") {
+//            return kotlin.random.Random.nextInt(0, 11)
+//        } else if (createOrGet == "Get") {
+//            when (avatarId) {
+//                0 -> return R.drawable.ic_user_yellow
+//                1 -> return R.drawable.ic_user_blue
+//                2 -> return R.drawable.ic_user_brown
+//                3 -> return R.drawable.ic_user_green
+//                4 -> return R.drawable.ic_user_om
+//                5 -> return R.drawable.ic_user_om
+//                6 -> return R.drawable.ic_user_orange
+//                7 -> return R.drawable.ic_user_pink
+//                8 -> return R.drawable.ic_user_purple
+//                9 -> return R.drawable.ic_user_red
+//                10 -> return R.drawable.ic_user_yellow
+//            }
+//        } else if (createOrGet == "Both") {
+//            val avatar = kotlin.random.Random.nextInt(0, 11)
+//            return randomDefaultImage(avatar, "Get")
+//        }
+//        return -1
+//    }
 
     private void callPhone(String phoneNumber) {
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){

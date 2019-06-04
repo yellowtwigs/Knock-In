@@ -155,6 +155,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         var result = executorService.submit(callDb)
         var listContact = result.get()!!
         if (listContact.isEmpty()) {
+            println("noooooooooooooooooon")
             callDb = Callable { contactsDatabase?.contactsDao()?.getContactAllInfo() }
             result = executorService.submit(callDb)
             listContact = result.get()!!
@@ -175,6 +176,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                 }
             }
         }
+        println("NUMBERRRRRR !!!! = "+ finalList)
         return finalList
     }
 
@@ -435,26 +437,28 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return tag
     }
 
-    fun randomDefaultImage(): Int {
+    fun randomDefaultImage(avatarId:Int, createOrGet:String): Int {
 
-        val nextValues = kotlin.random.Random.nextInt(0, 10)
-        var randomUserImage = 0
+        if (createOrGet == "Create") {
+            return kotlin.random.Random.nextInt(0, 9)
+        } else if (createOrGet == "Get") {
+            when (avatarId) {
+                0 -> return R.drawable.ic_user_yellow
+                1 -> return R.drawable.ic_user_blue
+                2 -> return R.drawable.ic_user_brown
+                3 -> return R.drawable.ic_user_green
+                4 -> return R.drawable.ic_user_om
+                5 -> return R.drawable.ic_user_orange
+                6 -> return R.drawable.ic_user_pink
+                7 -> return R.drawable.ic_user_purple
+                8 -> return R.drawable.ic_user_red
 
-        when (nextValues) {
-            0 -> randomUserImage = R.drawable.ic_user_yellow
-            1 -> randomUserImage = R.drawable.ic_user_blue
-            2 -> randomUserImage = R.drawable.ic_user_brown
-            3 -> randomUserImage = R.drawable.ic_user_green
-            4 -> randomUserImage = R.drawable.ic_user_om
-            5 -> randomUserImage = R.drawable.ic_user_om
-            6 -> randomUserImage = R.drawable.ic_user_orange
-            7 -> randomUserImage = R.drawable.ic_user_pink
-            8 -> randomUserImage = R.drawable.ic_user_purple
-            9 -> randomUserImage = R.drawable.ic_user_red
-            10 -> randomUserImage = R.drawable.ic_user_yellow
+            }
+        } else if (createOrGet == "Both") {
+            val avatar = kotlin.random.Random.nextInt(0, 9)
+            return randomDefaultImage(avatar, "Get")
         }
-
-        return randomUserImage
+        return -1
     }
 
     private fun isDuplicate(contacts: List<ContactWithAllInformation>?, phoneContactList: ContactDB): Boolean {
@@ -561,7 +565,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                         if (fullName.first == numberPic[1]) {
                             lastId.add(id)
                             if (fullName.second.second == "") {
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(), 1, numberPic[4]!!.toString())
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
                                 if (!isDuplicate(allcontacts, contacts)) {
 
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -572,7 +576,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                                 }
                                 phoneContactsList.add(contacts)
                             } else if (fullName.second.second != "") {
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(), 1, numberPic[4]!!.toString())
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
                                 phoneContactsList.add(contacts)
                                 if (!isDuplicate(allcontacts, contacts)) {
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
