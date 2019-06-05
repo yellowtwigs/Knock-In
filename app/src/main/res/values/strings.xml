@@ -86,6 +86,7 @@
         <item>Personnalisé</item>
     </string-array>
     <string name="edit_contact_add_field">Ajouter un champ</string>
+    <string name="edit_contact_delete_contact">Supprimer Contact</string>
     <string name="edit_contact_validate">Valider</string>
 
 

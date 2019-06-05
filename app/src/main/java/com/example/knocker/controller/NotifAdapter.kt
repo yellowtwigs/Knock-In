@@ -235,7 +235,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         i.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
     }
-    public fun addNotification(sbp: StatusBarParcelable){
+    fun addNotification(sbp: StatusBarParcelable){
         notifications.add(0,sbp)
         this.notifyDataSetChanged()
     }

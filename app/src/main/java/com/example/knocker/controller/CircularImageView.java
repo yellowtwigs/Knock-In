@@ -21,7 +21,7 @@ import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
 
 /**
- * TO DELETE ???
+ * La Classe qui permet d'arrondir les images
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class CircularImageView extends AppCompatImageView {
@@ -294,7 +294,7 @@ public class CircularImageView extends AppCompatImageView {
 
         try {
             // Create Bitmap object out of the drawable
-            Bitmap bitmap = Bitmap.createBitmap(1000, 1000, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);

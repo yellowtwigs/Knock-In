@@ -69,6 +69,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Phone_Property: Spinner? = null
     private var edit_contact_Mail_Property: Spinner? = null
     private var edit_contact_AddFieldButton: Button? = null
+    private var edit_contact_DeleteContact: Button? = null
 
     private var customAdapterEditText: CustomAdapterEditText? = null
 
@@ -133,8 +134,9 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
+        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete_contact)
 
-        edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
+        //edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
         if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
 
@@ -220,6 +222,16 @@ class EditContactActivity : AppCompatActivity() {
 
         edit_contact_RoundedImageView!!.setOnClickListener {
             selectImage()
+        }
+
+        edit_contact_DeleteContact!!.setOnClickListener {
+            val delete = Runnable {
+                edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
+                val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
+                startActivity(mainIntent)
+                finish()
+            }
+            edit_contact_mDbWorkerThread.postTask(delete)
         }
 
         edit_contact_AddFieldButton!!.setOnClickListener {
