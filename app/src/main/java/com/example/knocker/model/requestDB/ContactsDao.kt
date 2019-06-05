@@ -91,8 +91,8 @@ interface ContactsDao {
      * @param profilePicture64 String   image du contact
      * @param priority Int  priorité du contact
      */
-    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
-    fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture: Int, profilePicture64: String, priority: Int)
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
+    fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture64: String, priority: Int)
     /**
      * Update un [contact][ContactDB] sans image de profil grace à son id
      * @param id Int     Id du contact sélectionné
@@ -100,8 +100,8 @@ interface ContactsDao {
      * @param lastName String   Nom du contact
      * @param profilePicture Int    avatar du contact
      */
-    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture = :profilePicture, contact_priority = :priority WHERE id = :id")
-    fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, profilePicture: Int, priority: Int)
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, contact_priority = :priority WHERE id = :id")
+    fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, priority: Int)
     /**
      * Supprime un [contacts][ContactDB] grâce à son id
      * @param id Int     Id du contact sélectionné

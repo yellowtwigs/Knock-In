@@ -379,10 +379,13 @@ class EditContactActivity : AppCompatActivity() {
                         }//TODO change for the listView
 
                         if (edit_contact_imgString != null) {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_rounded_image, edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+
+                            println("edit contact rounded != null "+edit_contact_rounded_image )
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(),  edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
 
                         } else {
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_rounded_image, edit_contact_Priority!!.selectedItem.toString().toInt())
+                            println("edit contact rounded == null "+edit_contact_rounded_image )
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
                         contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
                         println("modify on contact " + contact.contactDB)
