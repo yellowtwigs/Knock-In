@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.knocker.R;
@@ -66,85 +65,14 @@ public class ContactListViewAdapter extends BaseAdapter {
         View listview = convertView;
         ViewHolder holder;
 
+        holder = new ViewHolder();
+        ContactDB contact= ((ContactWithAllInformation) getItem(position)).getContactDB();
         if (listview == null) {
             listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
 
-
-            holder = new ViewHolder();
-            holder.contactRoundedImageView = listview.findViewById(R.id.contactRoundedImageView);
-
-            SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
-
-
-            int len = sharedPreferences.getInt("gridview", 3);
-            int height = holder.contactRoundedImageView.getLayoutParams().height;
-            int width = holder.contactRoundedImageView.getLayoutParams().width;
-
-            holder.contactFirstNameView = listview.findViewById(R.id.contactFirstName);
-            ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
-            ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
-
-            if (len == 3) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.05;
-                holder.contactRoundedImageView.getLayoutParams().width -= height * 0.05;
-                layoutParamsTV.topMargin = 30;
-                layoutParamsIV.topMargin = 10;
-            } else if (len == 4) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.15;
-                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.15;
-                layoutParamsTV.topMargin = 10;
-                layoutParamsIV.topMargin = 10;
-            } else if (len == 5 || len == 6) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50; //175
-                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
-                layoutParamsTV.topMargin = 0;
-                layoutParamsIV.topMargin = 0;
-            }
-            holder.contactFirstNameView = listview.findViewById(R.id.contactFirstName);
-
-            listview.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
         }
-
-        ContactDB contact = this.listContacts.get(position).getContactDB();
-        assert contact != null;
-        if (contact.getContactPriority() == 0) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
-        } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
-        } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
-        }
-        String firstname = contact.getFirstName();
-        if (len == 3) {
-            holder.contactFirstNameView.setText(firstname);
-        }
-        if (len == 4) {
-            if (contact.getFirstName().length() > 10)
-                firstname = contact.getFirstName().substring(0, 10).concat("..");
-            holder.contactFirstNameView.setText(firstname);
-            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(span);
-        }
-        if (len == 5) {
-            if (contact.getFirstName().length() > 9)
-                firstname = contact.getFirstName().substring(0, 9).concat("..");
-            holder.contactFirstNameView.setText(firstname);
-            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(span);
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.knockerColorPrimary));
-        }
-        if (len == 6) {
-            if (contact.getFirstName().length() > 8)
-                firstname = contact.getFirstName().substring(0, 8).concat("..");
-            holder.contactFirstNameView.setText(firstname);
-            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.71f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(span);
-        }
+        holder.contactRoundedImageView = listview.findViewById(R.id.list_adapter_contactRoundedImageView);
+        holder.contactFirstNameView= listview.findViewById(R.id.list_adapter_contactFirstName);
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -152,6 +80,13 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get"));
             //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
+        String contactName=contact.getFirstName()+" "+contact.getLastName();
+        if(contactName.length()>19){
+        contactName=contact.getFirstName()+" "+contact.getLastName();
+        contactName=contactName.substring(0,17)+"..";
+        }
+
+        holder.contactFirstNameView.setText(contactName);
         return listview;
     }
 
@@ -183,6 +118,7 @@ public class ContactListViewAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView contactFirstNameView;
+
         CircularImageView contactRoundedImageView;
     }
 }

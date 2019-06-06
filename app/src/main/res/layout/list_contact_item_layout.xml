@@ -8,7 +8,7 @@
     android:layout_height="wrap_content">
 
     <com.example.knocker.controller.CircularImageView
-        android:id="@+id/contactRoundedImageView"
+        android:id="@+id/list_adapter_contactRoundedImageView"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/contactFirstName"
+        android:id="@+id/list_adapter_contactFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -29,9 +29,8 @@
         android:text="bla bla"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/contactRoundedImageView"
+        app:layout_constraintStart_toEndOf="@+id/list_adapter_contactRoundedImageView"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:id="@+id/phone_call_image_view"

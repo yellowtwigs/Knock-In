@@ -47,8 +47,8 @@ interface ContactsDao {
      * Récupere les [contacts][ContactDB] trier par priorité 2->0
      * @return List&lt[ContactDB]&gt
      */
-    @Query("SELECT * FROM contacts_table ORDER BY contact_priority DESC")
-    fun sortContactByPriority20(): List<ContactDB>
+    @Query("SELECT * FROM contacts_table ORDER BY contact_priority DESC,first_name COLLATE NOCASE ASC")
+    fun sortContactByPriority20(): List<ContactWithAllInformation>
     /**
      * Récupere tout les [contacts][ContactDB] de la base de données
      * @return List&lt[ContactDB]&gt

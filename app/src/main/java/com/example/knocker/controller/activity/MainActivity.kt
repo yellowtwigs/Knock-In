@@ -239,6 +239,12 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         println("contact db")
 
         if (main_GridView != null) {
+            if(sharedPreferences.getString("tri","nom").equals("nom")){
+                gestionnaireContacts!!.sortContactByFirstNameAZ()
+            }else{
+                gestionnaireContacts!!.sortContactByPriority()
+            }
+
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
 
             main_GridView!!.adapter = gridViewAdapter
@@ -435,6 +441,15 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
+        val triNom = menu.findItem(R.id.tri_par_nom)
+        val triPrio = menu.findItem(R.id.tri_par_priorite)
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val tri = sharedPreferences.getString("tri", "nom")
+        if(tri.equals("nom")){
+            triNom.setChecked(true)
+        }else{
+            triPrio.setChecked(true)
+        }
         return true
     }
 
@@ -544,6 +559,34 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     //
                 }
                 return true
+            }
+            R.id.tri_par_nom ->{
+                if(!item.isChecked){
+                    item.setChecked(true);
+                    gestionnaireContacts!!.sortContactByFirstNameAZ()
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    main_GridView!!.adapter = gridViewAdapter
+
+                    val edit:SharedPreferences.Editor=sharedPreferences.edit()
+                    edit.putString("tri","nom")
+                    edit.commit()
+                }
+            }
+            R.id.tri_par_priorite ->{
+                if(!item.isChecked){
+                    item.setChecked(true);
+                    gestionnaireContacts!!.sortContactByPriority()
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    main_GridView!!.adapter = gridViewAdapter
+
+                    val edit:SharedPreferences.Editor=sharedPreferences.edit()
+                    edit.putString("tri","priorite")
+                    edit.commit()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
