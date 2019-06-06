@@ -136,6 +136,17 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
         edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete_contact)
 
+        //disable keyboard
+
+        edit_contact_ParentLayout!!.setOnTouchListener( object: View.OnTouchListener {
+            override fun onTouch(v:View , event: MotionEvent): Boolean {
+                val view = this@EditContactActivity.currentFocus
+                val imm = this@EditContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
+                return true
+            }
+        })
+
         //edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
         if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {

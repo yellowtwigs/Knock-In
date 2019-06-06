@@ -11,6 +11,9 @@
         android:id="@+id/my_informations_layout_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:background="#f7f7f7">
 
         <androidx.appcompat.widget.Toolbar

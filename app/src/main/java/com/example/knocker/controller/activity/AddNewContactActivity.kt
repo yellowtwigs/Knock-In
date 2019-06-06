@@ -20,7 +20,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import android.util.Base64
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.knocker.*
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
@@ -102,6 +104,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_PhoneProperty = findViewById(R.id.add_new_contact_phone_number_spinner)
         add_new_contact_MailProperty = findViewById(R.id.add_new_contact_mail_spinner_id)
         add_new_contact_PriorityExplain = findViewById(R.id.add_new_contact_priority_explain)
+        val add_new_contact_layout: ConstraintLayout = findViewById(R.id.add_new_contact_layout)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         //endregion
@@ -127,6 +130,16 @@ class AddNewContactActivity : AppCompatActivity() {
         val array_adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priority_list)
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
+        //disable keyboard window
+        add_new_contact_layout.setOnTouchListener( object: View.OnTouchListener {
+            override fun onTouch(v:View , event: MotionEvent): Boolean {
+                val view = this@AddNewContactActivity.currentFocus
+                val imm = this@AddNewContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
+                return true
+            }
+        })
+        //
         add_new_contact_Priority!!.adapter = array_adapter
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 

@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -26,6 +27,7 @@ import androidx.core.app.ActivityCompat
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -34,6 +36,7 @@ import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.controller.*
 import com.example.knocker.model.*
+import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.util.regex.Pattern
 
@@ -83,6 +86,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
 
     private var gestionnaireContacts: ContactList? = null
     private var gridViewAdapter:ContactGridViewAdapter?=null
+    private var main_layout: LinearLayout? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -159,10 +163,11 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         main_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
 
         main_BottomNavigationView = findViewById(R.id.navigation)
+
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
-
+        main_layout = findViewById(R.id.content_frame)
         //endregion
 
         //region ========================================== Toolbar =========================================
@@ -183,6 +188,14 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val headerView = navigationView.getHeaderView(0);
+        main_layout!!.setOnTouchListener( object: View.OnTouchListener {
+            override fun onTouch(v:View , event: MotionEvent): Boolean {
+                val view = this@MainActivity.currentFocus
+                val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
+                return true
+            }
+        })
         my_knocker = headerView.findViewById(R.id.my_knocker)
 
         my_knocker!!.setOnClickListener {
@@ -219,8 +232,40 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         //affiche tout les contacts de la Database
 
         // Grid View
+//        println("Status bar ???????????? = "+getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android")))
+//        var point: Point = Point(0,0)
+//        val decorrView = window.decorView
+//        decorrView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+//        println("action bar ???????????? = "+point.toString())
+//        val ressulkt = windowManager.defaultDisplay.getRealSize(point)
+//        println("action bar ???????????? = "+ point.toString())
+//        println("Nav bar ??????????????? = "+resources.getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")))
+
+//        val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+//        val hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey()
+//        println("PRIIIIIIIINTTTTTTTTT = "+hasBackKey+"  "+hasMenuKey)
+//        val displayMetrics = DisplayMetrics()
+//        windowManager.defaultDisplay.getMetrics(displayMetrics)
+//        var height = displayMetrics.heightPixels
+//        main_BottomNavigationView!!.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+//        println("HEIGHT !!!! = "+main_BottomNavigationView!!.getMeasuredHeight()+" "+main_BottomNavigationView!!.width+ " TOTAL HEIGHT = "+height)
         main_GridView = findViewById(R.id.main_grid_view_id)
+//        val gridParams = main_GridView!!.layoutParams
+//        if (!hasMenuKey && !hasBackKey) {
+//            gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - resources.getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")) - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
+//        } else {
+ //           gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
+//        }
+//        main_GridView!!.layoutParams = gridParams
+       // main_GridView.height ////////////////////////////////////////////
         main_Listview = findViewById(R.id.main_list_view_id)
+//        val listParams = main_GridView!!.layoutParams
+//        if (!hasMenuKey && !hasBackKey) {
+//            listParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - resources.getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")) - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
+//        } else {
+//            listParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
+//        }
+//        main_Listview!!.layoutParams = listParams
         ////////
         val gridOrList = getSharedPreferences("GridOrList", Context.MODE_PRIVATE)
         val state = gridOrList.getInt("state", 0)
@@ -301,7 +346,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
             val contactAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
             main_Listview!!.adapter = contactAdapter
             var index = sharedPreferences.getInt("index", 0)
-            println("okkkkkkk = " + index)
+            //println("okkkkkkk = " + index+"    +"+len)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_Listview!!.setSelection(index)
             edit.putInt("index", 0)

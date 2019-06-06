@@ -8,6 +8,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/add_new_contact_layout"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         tools:context=".controller.activity.AddNewContactActivity">
 
         <androidx.appcompat.widget.Toolbar

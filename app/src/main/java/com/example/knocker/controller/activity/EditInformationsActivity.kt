@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -47,6 +48,7 @@ class EditInformationsActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var my_knocker: RelativeLayout? = null
+    private var edit_information_layout: ConstraintLayout? = null
 
     private var edit_informations_ProfileImage: CircularImageView? = null
     private var edit_informations_NameLayout: ConstraintLayout? = null
@@ -94,7 +96,6 @@ class EditInformationsActivity : AppCompatActivity() {
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
-
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val headerView = navigationView.getHeaderView(0);
         my_knocker = headerView.findViewById(R.id.my_knocker)
@@ -141,6 +142,7 @@ class EditInformationsActivity : AppCompatActivity() {
 
         edit_informations_MailText=findViewById(R.id.edit_informations_mail)
         edit_informations_NameText=findViewById(R.id.edit_informations_name_id)
+        edit_information_layout = findViewById(R.id.my_informations_layout_id)
         //endregion
 
         //region ========================================= Listener =========================================
@@ -162,6 +164,16 @@ class EditInformationsActivity : AppCompatActivity() {
         }
 
         // endregion
+        // disable keyboard
+        edit_information_layout!!.setOnTouchListener( object: View.OnTouchListener {
+            override fun onTouch(v:View , event: MotionEvent): Boolean {
+                val view = this@EditInformationsActivity.currentFocus
+                val imm = this@EditInformationsActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
+                return true
+            }
+        })
+        //
     }
     //region ========================================== Functions ===========================================
 
