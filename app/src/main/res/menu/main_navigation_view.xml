@@ -11,7 +11,8 @@
     <item
         android:id="@+id/navigation_groups"
         android:icon="@drawable/ic_groups"
-        android:title="@string/bottom_navigation_view_groups" />
+        android:title="@string/bottom_navigation_view_groups"
+        android:enabled="false"/>
     <item
         android:id="@+id/navigation_socials_networks"
         android:icon="@drawable/ic_network"
