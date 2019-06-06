@@ -13,12 +13,14 @@ import com.example.knocker.model.ModelDB.NotificationDB
 interface NotificationsDao {
     /**
      * Récupère toutes les [notifications][NotificationDB] de la database
-     * @return List&lt[NotificationDB]&gt
+     * @return List&lt[NotificationDB]&gt trié par date
      */
     @Query("SELECT * FROM notifications_table ORDER BY timestamp DESC")
     fun getAllnotifications(): List<NotificationDB>
-    @Query("SELECT * FROM notifications_table INNER JOIN contacts_table ON contacts_table.id=notifications_table.id_contact ORDER BY contacts_table.contact_priority DESC,timestamp DESC ")
+
+    @Query("SELECT * FROM notifications_table INNER JOIN contacts_table ON contacts_table.id=notifications_table.id_contact where contact_priority!=1 ORDER BY contacts_table.contact_priority DESC,timestamp DESC ")
     fun testPriority():List<NotificationDB>
+
     /**
      * Récupère toutes les [notifications][NotificationDB] lié à une plateforme
      * @param platform String   La plateforme sélectionnée

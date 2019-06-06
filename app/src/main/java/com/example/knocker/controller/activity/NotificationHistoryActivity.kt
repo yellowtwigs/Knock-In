@@ -54,6 +54,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
             println("taille list "+list.size+" content "+list.toString())
         }else if(sharedPreferences.getString("tri","date").equals("priorite")){
             val list = contact_details_NotificationsDatabase?.notificationsDao()?.testPriority() as ArrayList<NotificationDB>
+            val list2 = contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>
+            list2.removeAll(list)
+            list.addAll(firstContactPrio0(list)-1,list2)
             val adapter = NotificationHistoryAdapterActivity(this, list)
             val listviews = findViewById<ListView>(R.id.listView_notification_history)
             listviews.adapter = adapter
@@ -65,7 +68,15 @@ class NotificationHistoryActivity : AppCompatActivity() {
         main_BottomNavigationView!!.menu.getItem(1).isChecked = true
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
-
+    fun firstContactPrio0(notifList:ArrayList<NotificationDB>):Int{
+        for (i in 0..notifList.size-1){
+            val contact= contact_details_NotificationsDatabase!!.contactsDao().getContact(notifList.get(i).idContact)
+            if(contact.contactDB!!.contactPriority==0){
+                return i
+            }
+        }
+        return notifList.size
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater=menuInflater
         inflater.inflate(R.menu.menu_notification,menu);
