@@ -132,6 +132,8 @@ class NotificationListener : NotificationListenerService() {
                         println("priority 0")
                         this.cancelNotification(sbn.key)
                     }
+                }else{
+                    println("contact is null ")
                 }
 
             }

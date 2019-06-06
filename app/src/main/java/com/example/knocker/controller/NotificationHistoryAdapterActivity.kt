@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.example.knocker.controller
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -54,6 +54,8 @@ class NotificationHistoryAdapterActivity(private val context:Context ,private va
             val pckManager = context.packageManager
             val icon = pckManager.getApplicationIcon(notif.platform)
             notification_history_adapter_App!!.setImageDrawable(icon)
+
+            println("notification "+position+" "+notif.platform)
 
         return convertView
     }

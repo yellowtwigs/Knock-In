@@ -8,12 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -21,35 +17,25 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.knocker.controller.activity.ComposeMessageActivity;
 import com.example.knocker.controller.activity.EditContactActivity;
-import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -114,11 +100,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
 
-            int len = sharedPreferences.getInt("gridview", 3);
+            int len = sharedPreferences.getInt("gridview", 4);
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
 
-            holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
+            holder.contactFirstNameView = gridview.findViewById(R.id.grid_adapter_contactFirstName);
             ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
             ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
@@ -138,8 +124,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 layoutParamsTV.topMargin = 0;
                 layoutParamsIV.topMargin = 0;
             }
-            holder.contactFirstNameView = gridview.findViewById(R.id.contactFirstName);
-
+            holder.contactLastNameView = gridview.findViewById(R.id.grid_adapter_contactLastName);
+            
             gridview.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -154,34 +140,56 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
         }
         String firstname = contact.getFirstName();
+        String lastName = contact.getLastName();
         if (len == 3) {
             holder.contactFirstNameView.setText(firstname);
+            holder.contactLastNameView.setText(lastName);
             //holder.contactFirstNameView.;
         }
         if (len == 4) {
-            if (contact.getFirstName().length() > 10)
+            if (contact.getFirstName().length() > 12)
                 firstname = contact.getFirstName().substring(0, 10).concat("..");
-            holder.contactFirstNameView.setText(firstname);
-            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(span);
+
+            Spannable spanFistName = new SpannableString(firstname);
+            spanFistName.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(spanFistName);
+            if(contact.getLastName().length()>12)
+                lastName =contact.getLastName().substring(0,10).concat("..");
+
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.9f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 5) {
-            if (contact.getFirstName().length() > 9)
+            if (contact.getFirstName().length() > 11)
                 firstname = contact.getFirstName().substring(0, 9).concat("..");
+
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
             //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.knockerColorPrimary));
+            if(contact.getLastName().length()>11)
+                lastName =contact.getLastName().substring(0,9).concat("..");
+
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.8f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 6) {
-            if (contact.getFirstName().length() > 8)
+            if (contact.getFirstName().length() > 10)
                 firstname = contact.getFirstName().substring(0, 8).concat("..");
+
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.71f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
+            if(contact.getLastName().length()>10)
+                lastName =contact.getLastName().substring(0,8).concat("..");
+
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.71f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
         }
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -226,8 +234,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         int endAngle;
         if(position%len==0){
             System.out.println("position vaut "+ position+" modulo vaut" +position%len);
-            startAngle=-90;
-            endAngle=90;
+            startAngle=90;
+            endAngle=-90;
         }else if(position%len==len-1){
             System.out.println("position vaut "+ position+" modulo vaut" +position%len);
             startAngle=90;
@@ -254,19 +262,23 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
                 .disableAnimations();
+        if(appIsInstalled("com.whatsapp")&& getItem(position).getPhoneNumber()!=""){
+            builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp,layoutParams).build(),diametreBoutton,diametreBoutton);
+        }
+        if(getItem(position).getFirstMail()!=""){
+            builder.addSubActionView(builderIcon.setContentView(buttonMail,layoutParams).build(),diametreBoutton,diametreBoutton);
+        }
         if(getItem(position).getPhoneNumber()!=""){
             builder.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
-                .addSubActionView(builderIcon.setContentView(buttonCall,layoutParams).build(),diametreBoutton,diametreBoutton);
-            if(appIsInstalled("com.whatsapp")){
-                builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp,layoutParams).build(),diametreBoutton,diametreBoutton);
-            }
+                    .addSubActionView(builderIcon.setContentView(buttonCall,layoutParams).build(),diametreBoutton,diametreBoutton);
         }
        /* if( appIsInstalled( "com.facebook.orca")){
             builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton);
         }*/
-        if(getItem(position).getFirstMail()!=""){
-            builder.addSubActionView(builderIcon.setContentView(buttonMail,layoutParams).build(),diametreBoutton,diametreBoutton);
-        }
+
+
+
+
         FloatingActionMenu quickMenu=builder.build();
         listCircularMenu.add(quickMenu);
               //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)

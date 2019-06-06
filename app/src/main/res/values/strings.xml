@@ -21,14 +21,22 @@
     <string name="left_drawer_notification_history">Historique Notifications</string>
 
     <!-- Menu Main !-->
-    <string name="main_filter_sms">Filtre SMS</string>
-    <string name="main_filter_mail">Filtre Email</string>
+    <string name="main_filter_sms">SMS</string>
+    <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Rechercher</string>
     <string name="main_change_format_phone_book">Changer le format</string>
+    <string name="main_tri_title">Trier par :</string>
+    <string name="main_tri_par_nom">Prénom</string>
+    <string name="main_tri_par_priorite">Priorité</string>
+    <string name="main_filtre_title">Filtrer par :</string>
+    <string name="notif_filtre_app">Notification d\'application</string>
+    <string name="notif_filtre_message">Notification de Message</string>
+    <string name="notif_filtre_systeme">Notification du Système</string>
+    <string name="notif_tri_date">Date et heure</string>
 
     <!-- Bottom Navigation View !-->
     <string name="bottom_navigation_view_phone_book">Carnet d\'adresse</string>
-    <string name="bottom_navigation_view_notify_history">Historique Notifications</string>
+    <string name="bottom_navigation_view_notify_history">Historique de notifications</string>
     <string name="bottom_navigation_view_groups">Groupe</string>
     <string name="bottom_navigation_view_social_media">Réseaux Sociaux</string>
     <string name="bottom_navigation_view_phone_log">Numérotation</string>

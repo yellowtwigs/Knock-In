@@ -109,7 +109,12 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         val result = executorService.submit(callDb)
         contacts = result.get()
     }
-
+    fun sortContactByPriority() {
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByPriority20() }
+        val result = executorService.submit(callDb)
+        contacts = result.get()
+    }
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
         var filter: List<ContactWithAllInformation>?
@@ -676,16 +681,17 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         println("PHONE STRUCT = "+phoneStructName)
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
         val contactMail = getContactMailSync(main_contentResolver)
-        val contactGroup = getContactGroupSync(main_contentResolver)
+//        val contactGroup = getContactGroupSync(main_contentResolver)
+        val contactGroup= listOf<Triple<Int,String,String>>()
         val contactDetail = contactNumberAndPic.union(contactMail)
-        println("PHONE GROUP = "+contactGroup)
+ //       println("PHONE GROUP = "+contactGroup)
         createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, applicationContext, this)
     }
 //endregion
 
 
     fun getContactWithName(name: String, platform: String): ContactWithAllInformation? {
-
+        println("test platform"+platform+" test name "+name)
         when (platform) {
             "message" -> {
                 return getContact(name)
@@ -703,10 +709,11 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     // get la priorité grace à la liste
     fun getContact(name: String): ContactWithAllInformation? {
         if (name.contains(" ")) {
+            println("test in space")
             this.contacts!!.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
-                //                println("contact "+dbContact+ "différent de name"+name)
-                if (contactInfo.firstName + " " + contactInfo.lastName == name) {
+
+                if (contactInfo.firstName + " " + contactInfo.lastName == name|| contactInfo.firstName==name || contactInfo.lastName==name) {
                     return dbContact
                 }
             }
@@ -725,20 +732,27 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         if (name.contains(" ")) {
             this.contacts!!.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
-                //                println("contact "+dbContact+ "différent de name"+name)
+                println("contact "+dbContact+ "différent de name"+name)
                 if (contactInfo.firstName + " " + contactInfo.lastName == name) {
-                    return contactInfo.contactPriority
+                    println("return int "+contactInfo.id )
+                    return contactInfo.id!!
                 }
             }
         } else {
             this.contacts!!.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
+
+                println("contact "+dbContact.contactDB.toString()+" name of contact ="+name)
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
-                    return contactInfo.contactPriority
+
+                    println("return int "+contactInfo.id )
+                    return contactInfo.id!!
                 }
             }
         }
-        return 0
+
+        println("return int 0 " )
+        return -1
     }
 
     fun getContactFromNumber(phoneNumber: String):ContactWithAllInformation?{

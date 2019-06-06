@@ -1,9 +1,13 @@
 package com.example.knocker.controller.activity
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.ListView
+import androidx.appcompat.widget.Toolbar
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
@@ -25,6 +29,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_history)
         // on init WorkerThread
+        setSupportActionBar(Toolbar(this))
+        val actionbar = supportActionBar
+        actionbar!!.title=this.resources.getString(R.string.bottom_navigation_view_notify_history)
+        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+        actionbar.setBackgroundDrawable( ColorDrawable(Color.parseColor("#ffffff")))
 
         contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         contact_details_mDbWorkerThread.start()
@@ -42,6 +52,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater=menuInflater
+        inflater.inflate(R.menu.menu_notification,menu);
+        return super.onCreateOptionsMenu(menu)
+    }
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_phone_book -> {

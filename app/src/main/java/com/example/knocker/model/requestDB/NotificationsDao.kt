@@ -17,7 +17,8 @@ interface NotificationsDao {
      */
     @Query("SELECT * FROM notifications_table ORDER BY timestamp DESC")
     fun getAllnotifications(): List<NotificationDB>
-
+    @Query("SELECT * FROM notifications_table INNER JOIN contacts_table ON contacts_table.id=notifications_table.id_contact ORDER BY contacts_table.contact_priority DESC,timestamp DESC ")
+    fun testPriority():List<NotificationDB>
     /**
      * Récupère toutes les [notifications][NotificationDB] lié à une plateforme
      * @param platform String   La plateforme sélectionnée
