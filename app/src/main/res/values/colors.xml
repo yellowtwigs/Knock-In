@@ -25,7 +25,7 @@
     <color name="textColor_lightDark">#77c8c8c8</color>
     <color name="relativeLayoutPressedColorDark">#777777</color>
     <color name="borderViewColorDark">#646464</color>
-
+    <color name="borderBottomView">#dddddd</color>
     <color name="priorityZero">#b20000 </color>
     <color name="priorityOne">#FFFFFF </color>
     <color name="priorityTwo">#DAA520 </color>
