@@ -58,15 +58,9 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
 
     private var my_knocker: RelativeLayout? = null
 
-    private var main_FloatingButtonOpen: FloatingActionButton? = null
     private var main_FloatingButtonAdd: FloatingActionButton? = null
-    private var main_FloatingButtonCompose: FloatingActionButton? = null
     private var main_FloatingButtonSync: FloatingActionButton? = null
 
-    private var main_FloatingButtonOpenAnimation: Animation? = null
-    private var main_FloatingButtonCloseAnimation: Animation? = null
-    private var main_FloatingButtonClockWiserAnimation: Animation? = null
-    private var main_FloatingButtonAntiClockWiserAnimation: Animation? = null
 
     private var phone_call_ImageView: ImageView? = null
     private var sms_ImageView: ImageView? = null
@@ -112,9 +106,9 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
     //endregion
 
     /**
-     *
      * @param Bundle @type
      */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -153,14 +147,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         //region ====================================== FindViewById() ======================================
 
         // Floating Button
-        main_FloatingButtonOpen = findViewById(R.id.main_floating_button_open_id)
-        main_FloatingButtonAdd = findViewById(R.id.main_floating_button_add_id)
-        main_FloatingButtonCompose = findViewById(R.id.main_floating_button_compose_id)
-        main_FloatingButtonSync = findViewById(R.id.main_floating_button_sync_id)
-        main_FloatingButtonOpenAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
-        main_FloatingButtonCloseAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
-        main_FloatingButtonClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwiser)
-        main_FloatingButtonAntiClockWiserAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_anticlockwiser)
+        main_FloatingButtonAdd = findViewById(R.id.main_floating_button_open_id)
 
         main_BottomNavigationView = findViewById(R.id.navigation)
 
@@ -188,7 +175,22 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        val headerView = navigationView.getHeaderView(0);
+        val headerView = navigationView.getHeaderView(0)
+        val menu = navigationView.getMenu()
+        val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
+        nav_sync_contact.setVisible(true)
+
+        //Sync contact
+        nav_sync_contact.setOnMenuItemClickListener {
+            gestionnaireContacts!!.getAllContacsInfoSync(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+            val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+            val len = sharedPreferences.getInt("gridview", 4)
+            /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
+              main_GridView!!.adapter = gridViewAdapter
+  */          gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+            gridViewAdapter!!.notifyDataSetChanged()
+            true
+        }
         main_layout!!.setOnTouchListener( object: View.OnTouchListener {
             override fun onTouch(v:View , event: MotionEvent): Boolean {
                 val view = this@MainActivity.currentFocus
@@ -258,7 +260,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
  //           gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
 //        }
 //        main_GridView!!.layoutParams = gridParams
-       // main_GridView.height ////////////////////////////////////////////
+       // main_GridView.height
         main_Listview = findViewById(R.id.main_list_view_id)
 //        val listParams = main_GridView!!.layoutParams
 //        if (!hasMenuKey && !hasBackKey) {
@@ -282,8 +284,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         main_GridView!!.numColumns = len // permet de changer
         gestionnaireContacts = ContactList(this.applicationContext)
 
-        println("contact db")
-
         if (main_GridView != null) {
             if(sharedPreferences.getString("tri","nom").equals("nom")){
                 gestionnaireContacts!!.sortContactByFirstNameAZ()
@@ -305,8 +305,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     //Save position in gridview
                     //val state = main_GridView!!.onSaveInstanceState()
                     index = main_GridView!!.getFirstVisiblePosition()
-                    println("wheeeeeeee = " + index)
-
                     //val edit : SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putInt("index", index)
                     edit.commit()
@@ -315,9 +313,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     /*                          val mail = contact.contactDetailList!!.get(1).contactDetails
                                               val phone = contact.contactDetailList!!.get(0).contactDetails
                   */
-                    println(contact.contactDB!!.id.toString() + "\n contact detail list "
-                            + contact.contactDetailList!! + "contact name" + contact.contactDB!!.firstName)
-
                     //val intent = Intent(this, EditContactActivity::class.java)
                     //intent.putExtra("ContactId", contact.getContactId())
                     // startActivity(intent)
@@ -325,7 +320,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
 
                 } else {
                     main_FloatingButtonIsOpen = false
-                    onFloatingClickBack()
                 }
             }
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
@@ -383,7 +377,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     startActivity(intent)
                 } else {
                     main_FloatingButtonIsOpen = false
-                    onFloatingClickBack()
                 }
             }
         }
@@ -413,39 +406,9 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
             }
         })
 
-        main_FloatingButtonOpen!!.setOnClickListener {
-            if (main_FloatingButtonIsOpen) {
-                onFloatingClickBack()
-                main_FloatingButtonIsOpen = false
-            } else {
-                onFloatingClick()
-                main_FloatingButtonIsOpen = true
-            }
-        }
-
         main_FloatingButtonAdd!!.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddNewContactActivity::class.java))
             main_FloatingButtonIsOpen = false
-        }
-
-        main_FloatingButtonCompose!!.setOnClickListener {
-            val loginIntent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
-            startActivity(loginIntent)
-            main_FloatingButtonIsOpen = false
-        }
-
-        //bouton synchronisation des contacts du téléphone
-        main_FloatingButtonSync!!.setOnClickListener {
-            //récupère tout les contacts du téléphone et les stock dans phoneContactsList et supprime les doublons
-            gestionnaireContacts!!.getAllContacsInfoSync(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
-            val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-            val len = sharedPreferences.getInt("gridview", 4)
-          /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
-            main_GridView!!.adapter = gridViewAdapter
-*/          gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!);
-            gridViewAdapter!!.notifyDataSetChanged();
-            //Ajoute tout les contacts dans la base de données en vérifiant si il existe pas avant
-
         }
 
         //endregion
@@ -638,28 +601,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         return super.onOptionsItemSelected(item)
     }
 
-    private fun onFloatingClickBack() {
-        main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonCloseAnimation)
-        main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonCloseAnimation)
-        main_FloatingButtonSync!!.startAnimation(main_FloatingButtonCloseAnimation)
-        main_FloatingButtonOpen!!.startAnimation(main_FloatingButtonAntiClockWiserAnimation)
-
-        main_FloatingButtonAdd!!.isClickable = false
-        main_FloatingButtonCompose!!.isClickable = false
-        main_FloatingButtonSync!!.isClickable = false
-    }
-
-    private fun onFloatingClick() {
-        main_FloatingButtonAdd!!.startAnimation(main_FloatingButtonOpenAnimation)
-        main_FloatingButtonCompose!!.startAnimation(main_FloatingButtonOpenAnimation)
-        main_FloatingButtonSync!!.startAnimation(main_FloatingButtonOpenAnimation)
-        main_FloatingButtonOpen!!.startAnimation(main_FloatingButtonClockWiserAnimation)
-
-        main_FloatingButtonAdd!!.isClickable = true
-        main_FloatingButtonCompose!!.isClickable = true
-        main_FloatingButtonSync!!.isClickable = true
-    }
-
     private val isNotificationServiceEnabled: Boolean
         get() {
             val pkgName = packageName
@@ -699,13 +640,14 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
     private fun phoneCall(phoneNumberEntered: String) {
         if (!TextUtils.isEmpty(phoneNumberEntered)) {
             if (isValidPhone(phoneNumberEntered)) {
+
                 val dial = "tel:$phoneNumberEntered"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
             } else {
-                Toast.makeText(this, "Enter a phone number valid", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Entrer un numéro valide", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(this, "Enter a phone number", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Entrer un numéro de téléphone", Toast.LENGTH_SHORT).show()
         }
     }
 

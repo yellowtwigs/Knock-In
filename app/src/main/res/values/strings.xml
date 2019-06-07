@@ -17,6 +17,7 @@
     <string name="left_drawer_knockons">Knockons</string>
     <string name="left_drawer_statistics">Mes statistiques</string>
     <string name="left_drawer_help">Aide</string>
+    <string name="left_drawer_sync">Syncronisation des contacts</string>
 
     <string name="left_drawer_notification_history">Historique Notifications</string>
 

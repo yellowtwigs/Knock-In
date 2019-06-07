@@ -39,5 +39,10 @@
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
             android:title="@string/left_drawer_help" />
+        <item
+            android:id="@+id/nav_sync_contact"
+            android:icon="@drawable/ic_synchronization_arrows"
+            android:title="@string/left_drawer_sync"
+            android:visible="false"/>
     </group>
 </menu>

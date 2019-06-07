@@ -10,44 +10,6 @@
     <include layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_sync_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginBottom="324dp"
-        android:backgroundTint="@color/knockerColorPrimary"
-        android:elevation="6dp"
-        android:visibility="invisible"
-        app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/ic_synchronization_arrows" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_compose_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginBottom="244dp"
-        android:backgroundTint="@color/knockerColorPrimary"
-        android:elevation="6dp"
-        android:visibility="invisible"
-        app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/ic_edit_floating_button" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_add_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginBottom="164dp"
-        android:backgroundTint="@color/knockerColorPrimary"
-        android:elevation="6dp"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_add" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_floating_button_open_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +19,7 @@
         android:backgroundTint="@color/knockerColorPrimary"
         android:elevation="6dp"
         android:visibility="visible"
-        app:srcCompat="@drawable/ic_list" />
+        app:srcCompat="@drawable/ic_add" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
