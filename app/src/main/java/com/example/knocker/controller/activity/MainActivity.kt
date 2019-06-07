@@ -189,6 +189,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
               main_GridView!!.adapter = gridViewAdapter
   */          gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
             gridViewAdapter!!.notifyDataSetChanged()
+            drawerLayout!!.closeDrawers()
             true
         }
         main_layout!!.setOnTouchListener( object: View.OnTouchListener {
