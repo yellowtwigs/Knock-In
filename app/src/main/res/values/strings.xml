@@ -37,7 +37,7 @@
 
     <!-- Bottom Navigation View !-->
     <string name="bottom_navigation_view_phone_book">Carnet d\'adresse</string>
-    <string name="bottom_navigation_view_notify_history">Historique de notifications</string>
+    <string name="bottom_navigation_view_notify_history">Historique</string>
     <string name="bottom_navigation_view_groups">Groupe</string>
     <string name="bottom_navigation_view_social_media">Réseaux Sociaux</string>
     <string name="bottom_navigation_view_phone_log">Numérotation</string>
