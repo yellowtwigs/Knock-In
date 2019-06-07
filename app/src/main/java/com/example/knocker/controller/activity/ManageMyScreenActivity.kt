@@ -33,9 +33,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private var tv_six: ImageView? = null
     private var nbGrid: Int = 3
     private var callPopup: Boolean = true
+    private var searchbarPos: Boolean = false
 
     private var manage_theme_SwitchTheme: Switch? = null
     private var manage_call_popup_switch: Switch? = null
+    private var manage_searchbar_pos: Switch? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +48,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
         nbGrid = sharedPreferences.getInt("gridview", 3)
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
         callPopup = sharedPreferencePopup.getBoolean("popup", true)
+        searchbarPos = sharedPreferencePopup.getBoolean("searchbarPos", false)
 
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
         tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
@@ -59,6 +62,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
         manage_call_popup_switch = findViewById(R.id.manage_call_popup_switch)
+        manage_searchbar_pos = findViewById(R.id.manage_searchbar_pos_switch)
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             manage_theme_SwitchTheme!!.isChecked = true
@@ -66,7 +70,9 @@ class ManageMyScreenActivity : AppCompatActivity() {
         if (callPopup) {
             manage_call_popup_switch!!.isChecked = true
         }
-
+        if (searchbarPos) {
+            manage_searchbar_pos!!.isChecked = true
+        }
         //region ========================================== Toolbar =========================================
 
         // Toolbar
@@ -204,6 +210,19 @@ class ManageMyScreenActivity : AppCompatActivity() {
             }
         })
 
+        manage_searchbar_pos!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("searchbarPos", true)
+                edit.apply()
+            } else {
+                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("searchbarPos", false)
+                edit.apply()
+            }
+        })
         // endregion
     }
     //region ========================================== Functions ===========================================

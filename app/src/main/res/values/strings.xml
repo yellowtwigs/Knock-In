@@ -147,6 +147,8 @@
     <string name="settings_toast">vous avez séléctionner %1$d contacts par lignes</string>
     <string name="settings_call_popup">Popup contact</string>
     <string name="settings_call_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
+    <string name="settings_searchbar_pos">Position de la Barre de recherche</string>
+    <string name="settings_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
 
     <!-- Custom Popup !-->
     <string name="custom_popup_yes_btn">Oui</string>
