@@ -225,7 +225,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonWhatsApp.setImageResource(R.drawable.ic_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms);
         buttonEdit.setImageResource(R.drawable.ic_edit_floating_button);
-        buttonMail.setImageResource(R.drawable.ic_gmail);
+        buttonMail.setImageResource(android.R.drawable.ic_dialog_email);
 
 
 
@@ -303,6 +303,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     ContactWithAllInformation contactphone=(ContactWithAllInformation) getItem(position);
                     ContactGesture.INSTANCE.openWhatsapp(contactphone.getPhoneNumber(),context);
                 }else if(v.getId()==buttonEdit.getId()){
+
                     Intent intent = new Intent(context, EditContactActivity.class);
                     intent.putExtra("ContactId",contact.getId());
                     context.startActivity(intent);

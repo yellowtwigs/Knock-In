@@ -170,4 +170,12 @@
     <string name="alert_dialog_notification_allow_it">Gérer</string>
     <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
     <string name="title_activity_manage_knockons">ManageKnockonsActivity</string>
+
+    <!-- List Adapter !-->
+    <string name="list_adapter_call">appel</string>
+    <string name="list_adapter_sms">message</string>
+    <string name="list_adapter_wathsapp">whatsapp</string>
+    <string name="list_adapter_mail">mail</string>
+    <string name="list_adapter_edit">modifier</string>
+
 </resources>

@@ -115,7 +115,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         if(android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-            window.navigationBarColor = getResources().getColor(R.color.whiteColor)
+           // window.navigationBarColor = getResources().getColor(R.color.whiteColor)
         }
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
@@ -350,8 +350,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
 
             var listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null)
 
-            phone_call_ImageView = listview.findViewById(R.id.phone_call_image_view)
-            sms_ImageView = listview.findViewById(R.id.sms_image_view)
+
 
 
 //                phone_call_ImageView!!.setOnClickListener {
