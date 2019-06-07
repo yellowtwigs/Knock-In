@@ -177,8 +177,10 @@
             app:itemTextColor="@color/bottom_navigation_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:labelVisibilityMode="labeled"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/main_navigation_view" />
+            app:menu="@menu/main_navigation_view"
+            style="@style/BottomNavigationView"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -35,6 +35,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/main_navigation_view" />
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/main_navigation_view"
+        style="@style/BottomNavigationView"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
