@@ -32,8 +32,10 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private var tv_five: ImageView? = null
     private var tv_six: ImageView? = null
     private var nbGrid: Int = 3
+    private var callPopup: Boolean = true
 
     private var manage_theme_SwitchTheme: Switch? = null
+    private var manage_call_popup_switch: Switch? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         nbGrid = sharedPreferences.getInt("gridview", 3)
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        callPopup = sharedPreferencePopup.getBoolean("popup", true)
 
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
         tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
@@ -54,9 +58,13 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
 
         manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
+        manage_call_popup_switch = findViewById(R.id.manage_call_popup_switch)
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             manage_theme_SwitchTheme!!.isChecked = true
+        }
+        if (callPopup) {
+            manage_call_popup_switch!!.isChecked = true
         }
 
         //region ========================================== Toolbar =========================================
@@ -182,6 +190,19 @@ class ManageMyScreenActivity : AppCompatActivity() {
             }
         })
 
+        manage_call_popup_switch!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("popup", true)
+                edit.apply()
+            } else {
+                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("popup", false)
+                edit.apply()
+            }
+        })
 
         // endregion
     }

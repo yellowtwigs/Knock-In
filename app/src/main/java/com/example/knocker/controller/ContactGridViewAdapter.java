@@ -3,8 +3,10 @@ package com.example.knocker.controller;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -380,13 +382,28 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 //        return -1
 //    }
 
-    private void callPhone(String phoneNumber) {
+    private void callPhone(final String phoneNumber) {
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.CALL_PHONE},1);
         }else{
             //Intent intent=new Intent(Intent.ACTION_CALL);
             //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
-            context.startActivity(new Intent(Intent.ACTION_CALL ,Uri.fromParts("tel",phoneNumber,null)));
+            SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
+            Boolean popup = sharedPreferences.getBoolean("popup", true);
+            if (popup) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Voulez vous appeler ce contact ?")
+                        .setMessage("Vous pouvez désactiver cette validiation depuis les options")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+            } else {
+                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
+            }
         }
     }
 
