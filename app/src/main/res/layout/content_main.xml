@@ -6,80 +6,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
-
-    <LinearLayout
-        android:id="@+id/content_frame"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:background="#00bebebc"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
+            android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="2dp"
-            android:background="@color/transparentColor"
-            app:layout_constraintBottom_toTopOf="@+id/main_grid_view_id"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="643dp"
+            android:background="#00bebebc"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/compose_message_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="3dp"
-                android:layout_marginBottom="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/compose_message_layout_attachement"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/transparentColor"
+                app:layout_constraintBottom_toTopOf="@+id/main_grid_view_id"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/main_search_bar"
-                    android:layout_width="300dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/main_search_hint"
-                    android:inputType="text"
-                    android:textColor="@color/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.Toolbar>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/compose_message_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/compose_message_layout_attachement"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-        <GridView
-            android:id="@+id/main_grid_view_id"
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/main_search_bar"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="13dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/main_search_hint"
+                        android:inputType="text"
+                        android:textColor="@color/textColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+            <GridView
+                android:id="@+id/main_grid_view_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="120dp"
+                android:gravity="center"
+                android:numColumns="auto_fit"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/navigation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <ListView
+                android:id="@+id/main_list_view_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnWidth="120dp"
+                android:gravity="center"
+                android:numColumns="auto_fit"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/navigation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
+        </LinearLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnWidth="120dp"
-            android:gravity="center"
-            android:visibility="visible"
-            android:numColumns="auto_fit"
-            app:layout_constraintEnd_toEndOf="@+id/navigation"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
-        <ListView
-            android:id="@+id/main_list_view_id"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnWidth="120dp"
-            android:gravity="center"
-            android:visibility="gone"
-            android:numColumns="auto_fit"
-            app:layout_constraintEnd_toEndOf="@+id/navigation"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-    </LinearLayout>
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="20dp"
+            android:alpha="0.95"
+            app:backgroundTint="#ffffff"
+            app:itemIconTint="@color/bottom_navigation_color"
+            app:itemTextColor="@color/bottom_navigation_color"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/main_navigation_view"
+            style="@style/BottomNavigationView"
+            android:layout_gravity="bottom"/>
 
+    </FrameLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -87,4 +109,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
+
+
 </androidx.drawerlayout.widget.DrawerLayout>

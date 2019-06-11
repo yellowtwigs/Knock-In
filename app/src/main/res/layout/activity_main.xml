@@ -21,22 +21,5 @@
         android:visibility="visible"
         app:srcCompat="@drawable/ic_add" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:fadingEdge="horizontal"
-        android:fadingEdgeLength="20dp"
-        android:alpha="0.95"
-        app:backgroundTint="#ffffff"
-        app:itemIconTint="@color/bottom_navigation_color"
-        app:itemTextColor="@color/bottom_navigation_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/main_navigation_view"
-        style="@style/BottomNavigationView"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
