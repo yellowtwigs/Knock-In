@@ -358,30 +358,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
         return -1;
     }
-//    fun randomDefaultImage(avatarId:Int, createOrGet:String): Int {
-//
-//        if (createOrGet == "Create") {
-//            return kotlin.random.Random.nextInt(0, 11)
-//        } else if (createOrGet == "Get") {
-//            when (avatarId) {
-//                0 -> return R.drawable.ic_user_yellow
-//                1 -> return R.drawable.ic_user_blue
-//                2 -> return R.drawable.ic_user_brown
-//                3 -> return R.drawable.ic_user_green
-//                4 -> return R.drawable.ic_user_om
-//                5 -> return R.drawable.ic_user_om
-//                6 -> return R.drawable.ic_user_orange
-//                7 -> return R.drawable.ic_user_pink
-//                8 -> return R.drawable.ic_user_purple
-//                9 -> return R.drawable.ic_user_red
-//                10 -> return R.drawable.ic_user_yellow
-//            }
-//        } else if (createOrGet == "Both") {
-//            val avatar = kotlin.random.Random.nextInt(0, 11)
-//            return randomDefaultImage(avatar, "Get")
-//        }
-//        return -1
-//    }
 
     private void callPhone(final String phoneNumber) {
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
