@@ -15,7 +15,8 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:background="#00bebebc"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/navigation">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

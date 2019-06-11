@@ -13,6 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
         android:background="@color/transparentColor"
+        app:title="@string/phone_log_toolbar_title"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
