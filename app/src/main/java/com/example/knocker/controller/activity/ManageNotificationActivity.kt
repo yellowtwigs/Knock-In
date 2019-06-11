@@ -52,7 +52,6 @@ class ManageNotificationActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-        actionbar.title = "Manage Notification"
 
         //endregion
 

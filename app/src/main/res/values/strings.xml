@@ -100,6 +100,7 @@
 
 
     <!-- Edit my informations !-->
+    <string name="edit_info_toolbar_title">Mes informations</string>
     <!-- Fake !-->
     <string name="edit_informations_name_fake">Carrie Sanders</string>
     <string name="edit_informations_phone_number_fake">255 - 165 - 0056</string>
@@ -135,6 +136,7 @@
     <string name="contact_details_telegram">Telegram</string>
 
     <!-- Settings !-->
+    <string name="settings_toolbar_title">Affichage</string>
     <string name="settings_owner_edit">Modifier vos informations</string>
     <string name="settings_owner_edit_long_text">Changer votre numéro de téléphone, ainsi que vos nom(s) et/ou prénom(s)</string>
     <string name="settings_notification">Notifications</string>
@@ -155,6 +157,7 @@
     <string name="custom_popup_no_btn">Non</string>
 
     <!-- Service !-->
+    <string name="notification_manager_toolbar_title">Paramètres notifications</string>
     <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
     <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
 
@@ -164,8 +167,13 @@
     <string name="compose_message_calling">Appeller</string>
 
     <!-- PhoneLog !-->
+    <string name="phone_log_toolbar_title">Cockpit</string>
     <string name="phone_log_add_new_contact">Nouveau Contact</string>
     <string name="phone_log_send_message">Envoyer un message</string>
+
+    <!-- Notification History !-->
+    <string name="notification_history_toolbar_title">Historique</string>
+
 
     <!-- Alert Dialog Notifications !-->
     <string name="alert_dialog_notification_message">Autoriser knocker à accéder a vos notification pour ne plus être déranger par des messages inutile</string>

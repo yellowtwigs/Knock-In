@@ -42,7 +42,6 @@ class SettingsActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar.title = "Settings"
 
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
         tv_four = findViewById(R.id.activity_settings_imageView_4_contact)

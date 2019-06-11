@@ -104,7 +104,7 @@ class PhoneLogActivity : AppCompatActivity() {
 //        val actionbar = supportActionBar
 //        supportActionBar!!.setDisplayShowTitleEnabled(false);
 //        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar.title = "Phone Log"
+        //toolbar.title = "Phone Log" //////////////
 
         //endregion
 

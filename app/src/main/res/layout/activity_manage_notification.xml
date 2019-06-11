@@ -20,6 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_marginBottom="8dp"
             android:background="@color/transparentColor"
+            app:title="@string/notification_manager_toolbar_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

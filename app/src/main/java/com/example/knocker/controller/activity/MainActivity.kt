@@ -153,7 +153,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         main_BottomNavigationView = findViewById(R.id.navigation)
 
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        main_BottomNavigationView!!.background= this.getDrawable(R.drawable.border_bottom_nav_view)
+        //main_BottomNavigationView!!.background= this.getDrawable(R.drawable.border_bottom_nav_view)
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
         main_layout = findViewById(R.id.content_frame)
