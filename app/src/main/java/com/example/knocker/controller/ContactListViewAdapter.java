@@ -86,6 +86,15 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         }
         holder.contactRoundedImageView = listview.findViewById(R.id.list_adapter_contactRoundedImageView);
+
+        if (contact.getContactPriority() == 0) {
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
+        } else if (contact.getContactPriority() == 1) {
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
+        } else if (contact.getContactPriority() == 2) {
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
+        }
+
         holder.contactFirstNameView= listview.findViewById(R.id.list_adapter_contactFirstName);
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
