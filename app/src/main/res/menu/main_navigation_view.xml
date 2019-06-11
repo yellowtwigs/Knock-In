@@ -14,10 +14,6 @@
         android:title="@string/bottom_navigation_view_groups"
         android:enabled="false"/>
     <item
-        android:id="@+id/navigation_socials_networks"
-        android:icon="@drawable/ic_network"
-        android:title="@string/bottom_navigation_view_social_media" />
-    <item
         android:id="@+id/navigation_phone_keyboard"
         android:icon="@drawable/ic_phone_call"
         android:title="@string/bottom_navigation_view_phone_log" />

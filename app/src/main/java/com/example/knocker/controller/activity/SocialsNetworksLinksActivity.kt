@@ -70,8 +70,8 @@ class SocialsNetworksLinksActivity : AppCompatActivity(), SensorEventListener {
             R.id.navigation_notifcations -> {
                 startActivity(Intent(this@SocialsNetworksLinksActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             }
-            R.id.navigation_socials_networks -> {
-            }
+//            R.id.navigation_socials_networks -> {
+//            }
             R.id.navigation_phone_keyboard -> {
                 startActivity(Intent(this@SocialsNetworksLinksActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true

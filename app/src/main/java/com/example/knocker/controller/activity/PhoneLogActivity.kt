@@ -77,10 +77,10 @@ class PhoneLogActivity : AppCompatActivity() {
                 startActivity(Intent(this@PhoneLogActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@PhoneLogActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
+//            R.id.navigation_socials_networks -> {
+//                startActivity(Intent(this@PhoneLogActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+//                return@OnNavigationItemSelectedListener true
+//            }
             R.id.navigation_phone_keyboard -> {
                 startActivity(Intent(this@PhoneLogActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
@@ -142,7 +142,7 @@ class PhoneLogActivity : AppCompatActivity() {
 
         //endregion
 
-        main_BottomNavigationView!!.menu.getItem(4).isChecked = true
+        main_BottomNavigationView!!.menu.getItem(3).isChecked = true
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         if (phone_log_PhoneNumberEditText!!.text.isEmpty()) {

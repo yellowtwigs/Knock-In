@@ -7,14 +7,170 @@
     android:orientation="vertical"
     tools:context=".controller.activity.PhoneLogActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_hub_layout_id"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:background="@color/transparentColor"
-        app:title="@string/phone_log_toolbar_title"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginBottom="8dp"
+            android:background="@color/transparentColor"
+            app:title="@string/phone_log_toolbar_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/facebook_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:srcCompat="@drawable/ic_facebook" />
+
+        <ImageView
+            android:id="@+id/messenger_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:srcCompat="@drawable/ic_messenger" />
+
+        <ImageView
+            android:id="@+id/spotify_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/facebook_link_socials_networks"
+            app:srcCompat="@drawable/ic_spotify" />
+
+        <ImageView
+            android:id="@+id/youtube_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/messenger_link_socials_networks"
+            app:srcCompat="@drawable/ic_youtube" />
+
+        <ImageView
+            android:id="@+id/instagram_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/youtube_link_socials_networks"
+            app:srcCompat="@drawable/ic_instagram" />
+
+        <ImageView
+            android:id="@+id/whatsapp_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spotify_link_socials_networks"
+            app:srcCompat="@drawable/ic_whatsapp" />
+
+        <ImageView
+            android:id="@+id/telegram_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/twitter_link_socials_networks"
+            app:srcCompat="@drawable/ic_telegram"
+            tools:ignore="DuplicateIds" />
+
+        <ImageView
+            android:id="@+id/twitter_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instagram_link_socials_networks"
+            app:srcCompat="@drawable/ic_twitter" />
+
+        <ImageView
+            android:id="@+id/linkedin_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/skype_link_socials_networks"
+            app:srcCompat="@drawable/ic_linkedin" />
+
+        <ImageView
+            android:id="@+id/skype_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/whatsapp_link_socials_networks"
+            app:srcCompat="@drawable/ic_skype" />
+
+        <ImageView
+            android:id="@+id/gmail_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linkedin_link_socials_networks"
+            app:srcCompat="@drawable/ic_gmail" />
+
+        <ImageView
+            android:id="@+id/outlook_link_socials_networks"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/telegram_link_socials_networks"
+            app:srcCompat="@drawable/ic_outlook" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

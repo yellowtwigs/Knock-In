@@ -125,10 +125,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             R.id.navigation_notifcations -> {
             }
-            R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@NotificationHistoryActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
+//            R.id.navigation_socials_networks -> {
+//                startActivity(Intent(this@NotificationHistoryActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+//                return@OnNavigationItemSelectedListener true
+//            }
             R.id.navigation_phone_keyboard -> {
                 startActivity(Intent(this@NotificationHistoryActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true

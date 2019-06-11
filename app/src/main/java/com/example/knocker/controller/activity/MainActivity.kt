@@ -93,10 +93,10 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                 startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_socials_networks -> {
-                startActivity(Intent(this@MainActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
+//            R.id.navigation_socials_networks -> {
+//                startActivity(Intent(this@MainActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+//                return@OnNavigationItemSelectedListener true
+//            }
             R.id.navigation_phone_keyboard -> {
                 startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
