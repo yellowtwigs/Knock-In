@@ -1,6 +1,7 @@
 package com.example.knocker.controller.activity
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -22,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
 import com.example.knocker.model.PhoneLog
+import java.security.AccessController.getContext
 
 /**
  * La Classe qui permet d'afficher la liste des appels reçu
@@ -58,6 +60,20 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_CallKeyboard_Star: RelativeLayout? = null
     private var phone_log_CallKeyboard_0: RelativeLayout? = null
     private var phone_log_CallKeyboard_Sharp: RelativeLayout? = null
+
+    //social network
+    private var link_socials_networks_Messenger: ImageView? = null
+    private var link_socials_networks_Instagram: ImageView? = null
+    private var link_socials_networks_Facebook: ImageView? = null
+    private var link_socials_networks_Whatsapp: ImageView? = null
+    private var link_socials_networks_Youtube: ImageView? = null
+    private var link_socials_networks_Gmail: ImageView? = null
+    private var link_socials_networks_Spotify: ImageView? = null
+    private var link_socials_networks_Telegram: ImageView? = null
+    private var link_socials_networks_Outlook: ImageView? = null
+    private var link_socials_networks_Skype: ImageView? = null
+    private var link_socials_networks_Linkedin: ImageView? = null
+    private var link_socials_networks_Twitter: ImageView? = null
 
     private var phone_log_CallBackSpace: ImageView? = null
     private var phone_log_ButtonAddContact: ImageView? = null
@@ -137,6 +153,19 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_CallKeyboard_0 = findViewById(R.id.phone_log_call_keyboard_0)
         phone_log_CallKeyboard_Sharp = findViewById(R.id.phone_log_call_keyboard_sharp)
 
+        link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
+        link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
+        link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
+        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
+        link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
+        link_socials_networks_Spotify = findViewById(R.id.spotify_link_socials_networks)
+        link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
+        link_socials_networks_Outlook = findViewById(R.id.outlook_link_socials_networks)
+        link_socials_networks_Skype = findViewById(R.id.skype_link_socials_networks)
+        link_socials_networks_Linkedin = findViewById(R.id.linkedin_link_socials_networks)
+        link_socials_networks_Twitter = findViewById(R.id.twitter_link_socials_networks)
+        link_socials_networks_Whatsapp = findViewById(R.id.whatsapp_link_socials_networks)
+
         phone_log_CallBackSpace = findViewById(R.id.phone_log_call_back_space)
         phone_log_ButtonAddContact = findViewById(R.id.phone_log_button_add_contact)
 
@@ -158,6 +187,31 @@ class PhoneLogActivity : AppCompatActivity() {
         //endregion
 
         //region ========================================== Listener ========================================
+
+        link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
+
+        link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
+
+        link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
+
+        link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
+
+        link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
+
+        link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
+
+        link_socials_networks_Spotify!!.setOnClickListener { goToSpotify() }
+
+        link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
+
+        link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
+
+        link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
+
+        link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
+
+        link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
+
 
         phone_log_IncomingCallButton!!.setOnClickListener {
             phoneCall(phone_log_PhoneNumberEditText!!.text.toString())
@@ -286,6 +340,132 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    private fun gotToFacebookPage(id: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
+            startActivity(intent)
+        }
+    }
+
+    private fun goToWhatsapp() {
+        val uri = Uri.parse("smsto: " + "12345")
+        val i = Intent(Intent.ACTION_SENDTO, uri)
+        i.setPackage("com.whatsapp")
+        startActivity(i)
+    }
+
+    private fun goToInstagramPage() {
+        val uri = Uri.parse("http://instagram.com/_u/therock/")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+
+        likeIng.setPackage("com.instagram.android")
+
+        try {
+            startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://instagram.com/")))
+        }
+
+    }
+
+    private fun goToFacebook() {
+        val uri = Uri.parse("facebook:/newsfeed")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        try {
+            startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://facebook.com/")))
+        }
+    }
+
+    private fun goToGmail() {
+        val appIntent = Intent(Intent.ACTION_VIEW);
+        appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://gmail.com/")))
+        }
+    }
+
+    private fun goToLinkedin() {
+        /// don't work
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://linkedin"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://linkedin.com/")))
+        }
+    }
+
+    private fun goToOutlook() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("ms-outlook://emails"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://outlook.com/")))
+        }
+    }
+
+    private fun goToSkype() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://skype.com/")))
+        }
+    }
+
+    private fun goToSpotify() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("spotify://spotify"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://spotify.com/")))
+        }
+    }
+
+    private fun goToTelegram() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://web.telegram.org/")))
+        }
+    }
+
+    private fun goToTwitter() {
+        val appIntent = Intent(Intent.ACTION_VIEW)
+        appIntent.setClassName("com.twitter.android", "com.twitter.android")
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/")))
+        }
+    }
+
+    private fun goToYoutube() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://youtube.com/")))
+        }
+    }
 
     override fun onBackPressed() {
     }
