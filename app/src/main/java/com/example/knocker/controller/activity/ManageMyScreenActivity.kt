@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.CompoundButton
 import android.widget.ImageView
@@ -243,11 +244,22 @@ class ManageMyScreenActivity : AppCompatActivity() {
     }
     //region ========================================== Functions ===========================================
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater=menuInflater
+        inflater.inflate(R.menu.menu_help,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
                 return true
+            }
+            R.id.item_help ->{
+                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_screen_manager))
+                alertDialogBuilder.show()
             }
         }
         return super.onOptionsItemSelected(item)

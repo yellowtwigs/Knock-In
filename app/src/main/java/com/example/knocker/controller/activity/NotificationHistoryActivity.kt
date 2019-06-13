@@ -36,7 +36,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.title=this.resources.getString(R.string.bottom_navigation_view_notify_history)
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
         actionbar.setBackgroundDrawable( ColorDrawable(Color.parseColor("#ffffff")))
 
@@ -79,7 +79,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater=menuInflater
-        inflater.inflate(R.menu.menu_notification,menu);
+        inflater.inflate(R.menu.menu_notification,menu)////////////////////////////////////////////////////
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if(sharedPreferences.getString("tri","date").equals("date")){
             menu!!.findItem(R.id.notif_tri_par_date).setChecked(true)
@@ -109,6 +109,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.commit()
                 item.setChecked(true)
                 this.recreate()
+            }
+            R.id.item_help ->{
+                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_history))
+                alertDialogBuilder.show()
             }
         }
         return super.onOptionsItemSelected(item)

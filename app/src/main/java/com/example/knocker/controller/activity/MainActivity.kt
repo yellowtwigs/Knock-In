@@ -506,31 +506,12 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                 hideKeyboard()
                 return true
             }
-/*            R.id.item_click_change_format -> {
-                val sharedPreferences = getSharedPreferences("GridOrList", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                if (main_GridView!!.visibility == View.VISIBLE) {
-                    main_Listview!!.visibility = View.VISIBLE
-                    main_GridView!!.visibility = View.GONE
-
-                    val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-
-                    main_Listview!!.startAnimation(slideUp)
-                    edit.putInt("state", 1)
-                    Toast.makeText(this, "Mode Liste", Toast.LENGTH_SHORT).show()
-                } else {
-                    main_Listview!!.visibility = View.GONE
-                    main_GridView!!.visibility = View.VISIBLE
-
-                    val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-                    main_GridView!!.startAnimation(slideUp)
-                    edit.putInt("state", 0)
-                    Toast.makeText(this, "Mode Grille", Toast.LENGTH_SHORT).show()
-                }
-                edit.apply()
+            R.id.item_help -> {
+                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_homepage))
+                alertDialogBuilder.show()
                 return true
             }
-  */
             R.id.sms_filter -> {
                 if (item.isChecked) {
                     item.setChecked(false)

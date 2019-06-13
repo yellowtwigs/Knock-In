@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -133,11 +134,22 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     //region ========================================== Functions =========================================
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater=menuInflater
+        inflater.inflate(R.menu.menu_help,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
                 return true
+            }
+            R.id.item_help ->{
+                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_notification_manager))
+                alertDialogBuilder.show()
             }
         }
         return super.onOptionsItemSelected(item)

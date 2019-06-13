@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -177,6 +178,12 @@ class EditInformationsActivity : AppCompatActivity() {
     }
     //region ========================================== Functions ===========================================
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater=menuInflater
+        inflater.inflate(R.menu.menu_help,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     private fun SelectImage() {
 
         val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
@@ -297,6 +304,11 @@ class EditInformationsActivity : AppCompatActivity() {
                 drawerLayout!!.openDrawer(GravityCompat.START)
                 hideKeyboard()
                 return true
+            }
+            R.id.item_help ->{
+                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_my_information))
+                alertDialogBuilder.show()
             }
         }
         return super.onOptionsItemSelected(item)

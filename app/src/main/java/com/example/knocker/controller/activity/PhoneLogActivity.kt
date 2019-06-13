@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
@@ -116,7 +118,7 @@ class PhoneLogActivity : AppCompatActivity() {
         //region ========================================== Toolbar =========================================
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-//        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)
 //        val actionbar = supportActionBar
 //        supportActionBar!!.setDisplayShowTitleEnabled(false);
 //        actionbar!!.setDisplayHomeAsUpEnabled(true)
@@ -340,6 +342,23 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater=menuInflater
+        inflater.inflate(R.menu.menu_help,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_help ->{
+                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_cockpit))
+                alertDialogBuilder.show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun gotToFacebookPage(id: String) {
         try {
