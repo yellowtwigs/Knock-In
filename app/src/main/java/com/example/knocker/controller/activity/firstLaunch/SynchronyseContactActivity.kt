@@ -35,6 +35,7 @@ class SynchronyseContactActivity : AppCompatActivity() {
                 Toast.makeText(this,"contact synchroniser",Toast.LENGTH_LONG).show()
                 ContactList(this).getAllContacsInfoSync(contentResolver)
                 startActivity(Intent(this@SynchronyseContactActivity,AcceptNotificationtActivity::class.java))
+                finish()
             }else{
                 overlayAlertDialog().show()
             }
@@ -51,6 +52,9 @@ class SynchronyseContactActivity : AppCompatActivity() {
         }
 
         return alertDialogBuilder.create()
+    }
+    override fun onBackPressed(){
+
     }
 
     companion object{

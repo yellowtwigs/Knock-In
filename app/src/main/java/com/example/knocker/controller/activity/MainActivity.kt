@@ -119,6 +119,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         if(sharedFirstLaunch.getBoolean("first_launch",true)){
             startActivity(Intent(this@MainActivity,FirstLaunchActivity::class.java))
+            finish()
         }
         if(android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
            // window.navigationBarColor = getResources().getColor(R.color.whiteColor)

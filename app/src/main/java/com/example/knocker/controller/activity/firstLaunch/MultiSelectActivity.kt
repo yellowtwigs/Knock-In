@@ -92,8 +92,9 @@ class MultiSelectActivity : AppCompatActivity() {
         alertDialogBuilder.setPositiveButton("oui"
         ) { _, _ ->
             val gestionnaireContact= ContactList(contactList,this)
-
-            gestionnaireContact.setToContactInListPriority2()
+            if(!contactList.isEmpty()) {
+                gestionnaireContact.setToContactInListPriority2()
+            }
             startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
         }
         alertDialogBuilder.setNegativeButton("non"
@@ -120,43 +121,7 @@ class MultiSelectActivity : AppCompatActivity() {
         activityVisible= true
         println("test start")
     }
-}/*
-gridview.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        System.out.println("test click");
-        if (holder.isSelect=false) {
-            holder.isSelect = true;
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.com_facebook_blue));
-            notifyDataSetChanged();
-        }else {
-            holder.isSelect=false;
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.whiteColor));
-            notifyDataSetChanged();
-        }
-    }
-});*/
+    override fun onBackPressed(){
 
-/*
-*
-*
-    private fun overlayAlertDialog(contactList: List<ContactWithAllInformation>): android.app.AlertDialog {
-        val alertDialogBuilder = android.app.AlertDialog.Builder(this.applicationContext)
-        alertDialogBuilder.setTitle("Knocker")
-        var message= "vous venez de séléctionner "+contactList.size
-        for(contact in contactList){
-            message+= "\n- "+contact.contactDB!!.firstName+ " "+ contact.contactDB!!.lastName
-        }
-        alertDialogBuilder.setMessage(message+"\n voulez-vous valider votre séléction")
-        alertDialogBuilder.setPositiveButton("oui"
-        ) { _, _ ->
-          /*  val intentPermission = Intent()*/
-            startActivity(Intent(this@MultiSelectActivity,MainActivity::class.java))
-        }
-        alertDialogBuilder.setNegativeButton("non"
-        ) { _, _ ->
-        }
-        return alertDialogBuilder.create()
     }
-
-* */
+}

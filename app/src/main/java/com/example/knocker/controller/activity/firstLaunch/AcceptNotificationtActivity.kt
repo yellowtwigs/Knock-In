@@ -37,6 +37,7 @@ class AcceptNotificationtActivity : AppCompatActivity() {
         ButtonUnAuthorized.setOnClickListener({
 
             startActivity(Intent(this@AcceptNotificationtActivity,MultiSelectActivity::class.java))
+            finish()
         })
 
     }
@@ -83,7 +84,11 @@ class AcceptNotificationtActivity : AppCompatActivity() {
                 println("activity is visible "+ activityVisible)
             }
             startActivity(Intent(this@AcceptNotificationtActivity,MultiSelectActivity::class.java))
+            finish()
         }
         thread.start()
+    }
+    override fun onBackPressed(){
+
     }
 }

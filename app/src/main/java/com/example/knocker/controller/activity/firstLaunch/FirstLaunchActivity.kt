@@ -20,6 +20,10 @@ class FirstLaunchActivity : AppCompatActivity() {
             edit.commit()
 
             startActivity(Intent(this@FirstLaunchActivity,SynchronyseContactActivity::class.java))
+            finish()
         })
+    }
+    override fun onBackPressed(){
+
     }
 }
