@@ -342,18 +342,16 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     public int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
-            return new Random().nextInt(9);
+            return new Random().nextInt(7);
         } else if (createOrGet.equals("Get")) {
             switch(avatarId) {
-                case 0: return R.drawable.ic_user_yellow;
+                case 0: return R.drawable.ic_user_purple;
                 case 1: return R.drawable.ic_user_blue;
                 case 2: return R.drawable.ic_user_brown;
                 case 3: return R.drawable.ic_user_green;
                 case 4: return R.drawable.ic_user_om;
                 case 5: return R.drawable.ic_user_orange;
                 case 6: return R.drawable.ic_user_pink;
-                case 7: return R.drawable.ic_user_purple;
-                case 8: return R.drawable.ic_user_red;
             }
         }
         return -1;

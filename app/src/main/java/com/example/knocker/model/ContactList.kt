@@ -445,18 +445,17 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     fun randomDefaultImage(avatarId:Int, createOrGet:String): Int {
 
         if (createOrGet == "Create") {
-            return kotlin.random.Random.nextInt(0, 9)
+            return kotlin.random.Random.nextInt(0, 7)
         } else if (createOrGet == "Get") {
             when (avatarId) {
-                0 -> return R.drawable.ic_user_yellow
+                0 -> return R.drawable.ic_user_purple
                 1 -> return R.drawable.ic_user_blue
                 2 -> return R.drawable.ic_user_brown
                 3 -> return R.drawable.ic_user_green
                 4 -> return R.drawable.ic_user_om
                 5 -> return R.drawable.ic_user_orange
                 6 -> return R.drawable.ic_user_pink
-                7 -> return R.drawable.ic_user_purple
-                8 -> return R.drawable.ic_user_red
+
 
             }
         } else if (createOrGet == "Both") {
