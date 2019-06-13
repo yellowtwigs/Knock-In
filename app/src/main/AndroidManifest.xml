@@ -24,10 +24,16 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity"></activity>
+        <activity android:name=".controller.activity.firstLaunch.SynchronyseContactActivity" />
+        <activity android:name=".controller.activity.firstLaunch.AcceptNotificationtActivity" />
+        <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity" />
+        <activity android:name=".controller.activity.FirstLaunchActivity" />
+        <activity android:name=".controller.activity.FirstOpenKnocker.FirstLaunchActivity" />
         <activity
             android:name=".controller.activity.ManageKnockonsActivity"
             android:label="@string/title_activity_manage_knockons"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".controller.activity.PhoneLogActivity" />
         <activity android:name=".controller.activity.HelpActivity" />
         <activity android:name=".controller.activity.ManageMyScreenActivity" />
@@ -72,7 +78,7 @@
         </activity>
 
         <service
-            android:name="com.example.knocker.controller.NotificationListener"
+            android:name=".controller.NotificationListener"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -83,6 +89,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <receiver
             android:name=".model.MyReceiver"
             android:enabled="true"
@@ -91,7 +98,6 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

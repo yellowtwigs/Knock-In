@@ -106,6 +106,14 @@ interface ContactsDao {
      * Supprime un [contacts][ContactDB] grâce à son id
      * @param id Int     Id du contact sélectionné
      */
+
+    @Query("UPDATE contacts_table SET contact_priority=2 WHERE id= :id ")
+    fun setPriority2(id:Int)
+    /**
+     * UPDATE la priorité d'un contact en priorité 2
+     * @param id Int    Id du contact sélectionné
+     */
+
     @Query("DELETE FROM contacts_table WHERE id = :id")
     fun deleteContactById(id: Int)
     /**

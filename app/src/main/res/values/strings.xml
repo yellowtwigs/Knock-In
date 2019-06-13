@@ -188,4 +188,12 @@
     <string name="list_adapter_mail">mail</string>
     <string name="list_adapter_edit">modifier</string>
 
+
+    <!-- !-->
+    <string name="first_launch_politique_confidentialite">Veuillez lire notre <a href="">Politiques de confidentialité</a> ainsi que nos
+        <a href="https://www.yellowtwigs.com/">conditions d\'utilisations</a> pour accepter ceux-ci appuyez sur \"accepter et continuer\" </string>
+
+
+    <!-- !-->
+    <string name="Nbcontact">Nombre de contact sélectionnés : %1s </string>
 </resources>

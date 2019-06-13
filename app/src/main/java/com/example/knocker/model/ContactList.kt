@@ -10,7 +10,6 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.telephony.PhoneNumberUtils
 import android.util.Base64
-import android.widget.GridView
 import com.example.knocker.R
 import com.example.knocker.model.ModelDB.*
 import org.json.JSONArray
@@ -27,8 +26,7 @@ import java.util.concurrent.Executors
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 class ContactList(var contacts: List<ContactWithAllInformation>,var context:Context) {
-    constructor(context: Context) : this(mutableListOf<ContactWithAllInformation>()
-            , context)
+    constructor(context: Context) : this(mutableListOf<ContactWithAllInformation>(), context)
 
     private lateinit var mDbWorkerThread: DbWorkerThread
     private var contactsDatabase: ContactsRoomDatabase? = null
@@ -37,18 +35,20 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
         contactsDatabase = ContactsRoomDatabase.getDatabase(context)
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable {
-            contactsDatabase!!.contactsDao()
-                    .getContactAllInfo()
-        }
-        val result = executorService.submit(callDb)
-        println("result knocker" + result?.get())
-        val tmp: List<ContactWithAllInformation>? = result.get()
-        if (tmp!!.isEmpty()) {
-            contacts = buildContactListFromJson(context)
-        } else {
-            contacts = tmp
+        if (contacts.isEmpty()) {
+            val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+            val callDb = Callable {
+                contactsDatabase!!.contactsDao()
+                        .getContactAllInfo()
+            }
+            val result = executorService.submit(callDb)
+            println("result knocker" + result?.get())
+            val tmp: List<ContactWithAllInformation>? = result.get()
+            if (tmp!!.isEmpty()) {
+                contacts = buildContactListFromJson(context)
+            } else {
+                contacts = tmp
+            }
         }
     }
 
@@ -555,10 +555,11 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         return contactDetails
     }
 
-    fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, applicationContext: Context, gestionnaireContacts: ContactList) {
+    fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>,gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
         val lastId = arrayListOf<Int>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val applicationContext = this.context
         val callDb = Callable {
             val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             phoneStructName!!.forEach { fullName ->
@@ -676,7 +677,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         }
     }
 
-    fun getAllContacsInfoSync(main_contentResolver: ContentResolver, gridView: GridView?, applicationContext: Context) {
+    fun getAllContacsInfoSync(main_contentResolver: ContentResolver) {
         val phoneStructName = getStructuredNameSync(main_contentResolver)
         println("PHONE STRUCT = "+phoneStructName)
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
@@ -685,7 +686,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         val contactGroup= listOf<Triple<Int,String,String>>()
         val contactDetail = contactNumberAndPic.union(contactMail)
  //       println("PHONE GROUP = "+contactGroup)
-        createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, applicationContext, this)
+        createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup,this)
     }
 //endregion
 
@@ -763,4 +764,18 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         }
         return null
     }
+
+    fun setToContactInListPriority2(){
+        for(contact in this.contacts){
+            val callDb = Callable {
+                //contactsDatabase!!.contactsDao().setPriority2(contact.getContactId())
+                contact.setPriority2(contactsDatabase)
+            }
+            val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+            val result = executorService.submit(callDb)
+            result.get()
+        }
+    }
+
+
 }

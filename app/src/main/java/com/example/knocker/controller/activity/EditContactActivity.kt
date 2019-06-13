@@ -353,7 +353,7 @@ class EditContactActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (isChanged) {
-                    val alertDialog = AlertDialog.Builder(this)
+                    val alertDialog = AlertDialog.Builder(this.applicationContext)
                     alertDialog.setTitle("Attention")
                     alertDialog.setMessage("Vous risquez de perdre toutes vos modifications, voulez vous vraiment continuer ?")
 
@@ -602,7 +602,7 @@ class EditContactActivity : AppCompatActivity() {
     private fun OverlayAlertDialog(): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
-        alertDialogBuilder.setMessage("vous voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
+        alertDialogBuilder.setMessage("voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
         alertDialogBuilder.setPositiveButton("oui"
         ) { _, _ ->
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))

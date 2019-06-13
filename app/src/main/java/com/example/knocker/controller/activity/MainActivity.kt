@@ -35,6 +35,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.controller.*
+import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -115,6 +116,10 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
+        val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
+        if(sharedFirstLaunch.getBoolean("first_launch",true)){
+            startActivity(Intent(this@MainActivity,FirstLaunchActivity::class.java))
+        }
         if(android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
            // window.navigationBarColor = getResources().getColor(R.color.whiteColor)
         }
@@ -123,9 +128,9 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
         }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+      /*  if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
-        }
+        }*/
         if (!isNotificationServiceEnabled) {
             //val alertDialog = buildNotificationServiceAlertDialog()
             // alertDialog.show()
@@ -183,7 +188,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
 
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
-            gestionnaireContacts!!.getAllContacsInfoSync(contentResolver, main_GridView, this)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+            gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
             val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
             /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)

@@ -1,13 +1,8 @@
 package com.example.knocker.model.ModelDB
 
-import android.content.Context
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.knocker.model.ContactsRoomDatabase
-import com.example.knocker.model.DbWorkerThread
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class ContactWithAllInformation {
     @Embedded
@@ -43,6 +38,10 @@ class ContactWithAllInformation {
         return ""
     }
 
+    fun setPriority2(contactsDatabase: ContactsRoomDatabase?) {
+        val test=contactsDatabase!!.contactsDao().setPriority2(this.getContactId())
+        println("test getContactID "+test)
+    }
 
 
 }
