@@ -352,10 +352,16 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     private fun goToWhatsapp() {
-        val uri = Uri.parse("smsto: " + "12345")
-        val i = Intent(Intent.ACTION_SENDTO, uri)
-        i.setPackage("com.whatsapp")
-        startActivity(i)
+        //val uri = Uri.parse("smsto: " + "12345")
+        //val i = Intent(Intent.ACTION_SENDTO, uri)
+        //i.setPackage("com.whatsapp")
+        val i = getPackageManager().getLaunchIntentForPackage("com.whatsapp")
+        try {
+            startActivity(i)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://whatsapp.com/")))
+        }
     }
 
     private fun goToInstagramPage() {
@@ -397,7 +403,7 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private fun goToLinkedin() {
         /// don't work
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://linkedin"))
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://you"))
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
