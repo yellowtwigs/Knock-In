@@ -210,10 +210,8 @@ class AddNewContactActivity : AppCompatActivity() {
                 //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                 val printContacts = Runnable {
                     //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                    println("teeeeeeeeeessssssssssssstttttttttt = " + add_new_contact_MailProperty!!.selectedItem.toString())
                     val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString())
                     val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString())
-                    println("teeeeeeeeeessssssssssssstttttttttt2 = " + mailSpinnerChar)
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
@@ -233,11 +231,11 @@ class AddNewContactActivity : AppCompatActivity() {
                         val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
                         var contactDetailDB: ContactDetailDB
                         if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString() + spinnerChar, "phone", "", 0)
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
                         if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString() + mailSpinnerChar, "mail", "", 1)
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 1)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
 

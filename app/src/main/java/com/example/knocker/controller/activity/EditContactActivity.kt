@@ -158,11 +158,11 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
             var tmpPhone = contact.contactDetailList!!.get(0)
-            edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone.content)
-            edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone.content)
+            edit_contact_phone_number = tmpPhone.content
+            edit_contact_phone_property = tmpPhone.tag
             var tmpMail = contact.contactDetailList!!.get(1)
-            edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail.content)
-            edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail.content)
+            edit_contact_mail = tmpMail.content
+            edit_contact_mail_property = tmpMail.tag
             edit_contact_priority = contact.contactDB!!.contactPriority
             edit_contact_image64 = contact.contactDB!!.profilePicture64
             edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
@@ -183,15 +183,17 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_mail = ""
             edit_contact_mail_property = "Bureau"
 
-            var tmpPhone = contact.getPhoneNumber()
-            edit_contact_phone_number = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpPhone)
-            edit_contact_phone_property = NumberAndMailDB.extractStringFromNumber(tmpPhone)
-            var tmpMail = contact.getFirstMail()
-            edit_contact_mail = NumberAndMailDB.numDBAndMailDBtoDisplay(tmpMail)
-            edit_contact_mail_property = NumberAndMailDB.extractStringFromNumber(tmpMail)
-            if(tmpPhone!=""){
+            val tagPhone = contact.getPhoneNumberTag()
+            val phoneNumber = contact.getPhoneNumber()
+            edit_contact_phone_number = phoneNumber
+            edit_contact_phone_property = tagPhone
+            val tagMail = contact.getMailTag()
+            val mail = contact.getFirstMail()
+            edit_contact_mail = mail
+            edit_contact_mail_property = tagMail
+            if(phoneNumber!=""){
                 havePhone=true
-            }else if(tmpMail !=""){
+            }else if(mail !=""){
                 haveMail=true
             }
 
@@ -382,23 +384,23 @@ class EditContactActivity : AppCompatActivity() {
                             if (i == 0) {
                                 if(havePhone) {
                                     println("------------il a un numéro ------")
-                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text + spinnerPhoneChar)
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
                                     if(!edit_contact_Mail!!.editText!!.text.equals("")){
                                         println("------------et à ajouter un mail------")
-                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString()+spinnerMailChar,"mail",spinnerMailChar.toString(),2)
+                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString(),"mail",spinnerMailChar,2)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }else{
                                     println("------------il a un seulement un mail ------")
-                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text + spinnerMailChar)
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
                                     if(! edit_contact_PhoneNumber!!.editText!!.text.equals("")){
                                         println("------------et à ajouter un numéro------")
-                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString()+spinnerPhoneChar,"mail",spinnerPhoneChar.toString(),1)
+                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString(),"phone",spinnerPhoneChar,1)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }
                             } else if (i == 1) {
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text + spinnerMailChar)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
                             }
 
                         }//TODO change for the listView

@@ -17,7 +17,7 @@
     <!-- Left Drawer Titles !-->
     <string name="left_drawer_home">Home</string>
     <string name="left_drawer_information">Mes informations</string>
-    <string name="left_drawer_notif_config">Paramètres notifications</string>
+    <string name="left_drawer_notif_config">Paramètres de notification</string>
     <string name="left_drawer_my_screen">Affichage</string>
     <string name="left_drawer_theme">Thèmes</string>
 
@@ -165,7 +165,7 @@
     <string name="custom_popup_no_btn">Non</string>
 
     <!-- Service !-->
-    <string name="notification_manager_toolbar_title">Paramètres notifications</string>
+    <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
     <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
     <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
 

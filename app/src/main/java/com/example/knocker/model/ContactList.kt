@@ -79,13 +79,13 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     fun getPhoneNumberWithName(name: String): String {
         var info = "Name Error"
         if (name.contains(" ")) {
-            contacts!!.forEach { dbContact ->
+            contacts.forEach { dbContact ->
                 if (dbContact.contactDB!!.firstName + " " + dbContact.contactDB!!.lastName == name) {
                     info = dbContact.contactDetailList!!.get(0).content.dropLast(1)
                 }
             }
         } else {
-            contacts!!.forEach { dbContact ->
+            contacts.forEach { dbContact ->
                 if (dbContact.contactDB!!.firstName == name && dbContact.contactDB!!.lastName == "" || dbContact.contactDB!!.firstName == "" && dbContact.contactDB!!.lastName == name) {
                     info = dbContact.contactDetailList!!.get(0).content.dropLast(1)
                 }
@@ -160,7 +160,6 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         var result = executorService.submit(callDb)
         var listContact = result.get()!!
         if (listContact.isEmpty()) {
-            println("noooooooooooooooooon")
             callDb = Callable { contactsDatabase?.contactsDao()?.getContactAllInfo() }
             result = executorService.submit(callDb)
             listContact = result.get()!!
@@ -272,8 +271,8 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     fun getContactDeatailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
         val phoneNumber: String = json.getString("phone_number")
         val mail: String = json.getString("mail")
-        val contactDetails = ContactDetailDB(null, idContact, phoneNumber + "M", "phone", "", 0)
-        val contactDetails2 = ContactDetailDB(null, idContact, mail + "B", "mail", "", 1)
+        val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0)
+        val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1)
         return mutableListOf<ContactDetailDB>(contactDetails, contactDetails2)
     }
     /*   fun getContactId(id:Int): ContactWithAllInformation? {
@@ -551,7 +550,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         var fieldPosition = 0
         contactNumberAndPic.forEach {
             if (it[1] == id) {
-                contactDetails.add(ContactDetailDB(null, null, it[2].toString() + "M", it[5].toString(), it[3].toString(), fieldPosition))
+                contactDetails.add(ContactDetailDB(null, null, it[2].toString(), it[5].toString(), it[3].toString(), fieldPosition))
                 fieldPosition++
             }
         }
@@ -713,8 +712,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
     // get la priorité grace à la liste
     fun getContact(name: String): ContactWithAllInformation? {
         if (name.contains(" ")) {
-            println("test in space")
-            this.contacts!!.forEach { dbContact ->
+            this.contacts.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
                 if (contactInfo.firstName + " " + contactInfo.lastName == name|| contactInfo.firstName==name || contactInfo.lastName==name) {
@@ -722,7 +720,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
                 }
             }
         } else {
-            this.contacts!!.forEach { dbContact ->
+            this.contacts.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
                     return dbContact
@@ -734,28 +732,22 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
 
     fun getContactId(name: String): Int {
         if (name.contains(" ")) {
-            this.contacts!!.forEach { dbContact ->
+            this.contacts.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
-                println("contact "+dbContact+ "différent de name"+name)
                 if (contactInfo.firstName + " " + contactInfo.lastName == name) {
-                    println("return int "+contactInfo.id )
                     return contactInfo.id!!
                 }
             }
         } else {
-            this.contacts!!.forEach { dbContact ->
+            this.contacts.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
                 println("contact "+dbContact.contactDB.toString()+" name of contact ="+name)
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
-
-                    println("return int "+contactInfo.id )
                     return contactInfo.id!!
                 }
             }
         }
-
-        println("return int 0 " )
         return -1
     }
 

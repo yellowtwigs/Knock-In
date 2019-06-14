@@ -23,7 +23,7 @@ class ContactWithAllInformation {
        for(detail in contactDetailList!!){
            if(detail.type.equals("phone")){
 
-               return detail.content.dropLast(1)
+               return detail.content
            }
        }
         return ""
@@ -33,6 +33,24 @@ class ContactWithAllInformation {
         for (detail in contactDetailList!!){
             if(detail.type.equals("mail")){
                 return detail.content
+            }
+        }
+        return ""
+    }
+
+    fun getPhoneNumberTag():String {
+        for(detail in contactDetailList!!){
+            if(detail.type.equals("phone")){
+                return detail.tag
+            }
+        }
+        return ""
+    }
+
+    fun getMailTag():String {
+        for(detail in contactDetailList!!){
+            if(detail.type.equals("mail")){
+                return detail.tag
             }
         }
         return ""
