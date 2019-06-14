@@ -135,7 +135,9 @@ class AddNewContactActivity : AppCompatActivity() {
             override fun onTouch(v:View , event: MotionEvent): Boolean {
                 val view = this@AddNewContactActivity.currentFocus
                 val imm = this@AddNewContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
+                if (view != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
+                }
                 return true
             }
         })
