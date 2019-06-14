@@ -191,6 +191,10 @@ class EditInformationsActivity : AppCompatActivity() {
         edit_informations_NameText!!.setText(sharedPreferenceInfo.getString("name", "Nom"))
         edit_informations_MailText!!.setText(sharedPreferenceInfo.getString("email", "Email"))
         edit_informations_PhoneNumberText!!.setText(sharedPreferenceInfo.getString("number", "Numéro de téléphone"))
+        val photo = sharedPreferenceInfo.getString("photo", "")
+        if (photo != null && photo != "") {
+            edit_informations_ProfileImage!!.setImageBitmap(base64ToBitmap(photo))
+        }
     }
     //region ========================================== Functions ===========================================
 
@@ -269,8 +273,10 @@ class EditInformationsActivity : AppCompatActivity() {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 edit_informations_ProfileImage!!.setImageBitmap(bitmap)
                 add_new_contact_ImgString = bitmapToBase64(bitmap)
-                println("convert to = " + base64ToBitmap(bitmapToBase64(bitmap)))
-                println("is the same ? result: " + bitmap.sameAs(base64ToBitmap(bitmapToBase64(bitmap))))
+                val sharedPreferenceInfo = getSharedPreferences("My_info", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedPreferenceInfo.edit()
+                edit.putString("photo", add_new_contact_ImgString)
+                edit.apply()
 
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
@@ -286,6 +292,10 @@ class EditInformationsActivity : AppCompatActivity() {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 edit_informations_ProfileImage!!.setImageBitmap(bitmap)
                 add_new_contact_ImgString = bitmapToBase64(bitmap)
+                val sharedPreferenceInfo = getSharedPreferences("My_info", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedPreferenceInfo.edit()
+                edit.putString("photo", add_new_contact_ImgString)
+                edit.apply()
             }
         }
     }
