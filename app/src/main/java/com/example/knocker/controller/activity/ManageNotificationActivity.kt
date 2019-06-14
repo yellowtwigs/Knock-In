@@ -1,6 +1,9 @@
 package com.example.knocker.controller.activity
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,11 +15,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
+import com.example.knocker.controller.NotificationSender
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 /**
  * La Classe qui permet d'activer ou desactiver les notifications de knocker
@@ -41,10 +47,17 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
+        val remindHour= this.findViewById<TextView>(R.id.textView_heure)
+        val viewHour= this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
         switchPopupNotif.isChecked = sharedPreferences.getBoolean("popupNotif", false)
         switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", true)
 
+        var hour=sharedPreferences.getInt("remindHour",18)
+        var minute = sharedPreferences.getInt("remindMinute",0)
+
+        remindHour.setText(hourGetstring(hour,minute))
+        setReminderAlarm(hour, minute)
         //region ========================================== Toolbar =========================================
 
         // Toolbar
@@ -95,6 +108,9 @@ class ManageNotificationActivity : AppCompatActivity() {
         switchPopupNotif.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchPopupNotif.isChecked) {
+                if (!isNotificationServiceEnabled) {
+                    buildNotificationServiceAlertDialog().show()
+                }
                 switchservice.setChecked(false)
                 edit.remove("popupNotif")
                 edit.remove("serviceNotif")
@@ -121,15 +137,32 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.apply()
                 System.out.println("service economy true " + sharedPreferences.getBoolean("serviceNotif", true))
             } else {
-                if (!isNotificationServiceEnabled) {
-                    buildNotificationServiceAlertDialog().show()
-                }
                 edit.remove("serviceNotif")
                 edit.putBoolean("serviceNotif", false)
                 edit.commit()
                 System.out.println("service economy false " + sharedPreferences.getBoolean("serviceNotif", true))
             }
         }
+
+
+
+
+        viewHour.setOnClickListener({
+            val timePickerDialog= TimePickerDialog(this, TimePickerDialog.OnTimeSetListener(
+                    function = {view,h,m->
+                        val editor=sharedPreferences.edit()
+                        editor.putInt("remindHour",h)
+                        editor.putInt("remindMinute",m)
+                        editor.commit()
+                        remindHour.setText(hourGetstring(h,m))
+                        hour=h
+                        minute=m
+                        setReminderAlarm(hour, minute)
+                    }
+            ),hour,minute,true)
+            timePickerDialog.show()
+        })
+
     }
 
     //region ========================================== Functions =========================================
@@ -156,6 +189,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+
     }
 
     @SuppressLint("InflateParams")
@@ -201,6 +235,36 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
             return false
         }
+    private fun hourGetstring(hour:Int,minute:Int):String{
+        var textRemind:String=""
+        if(hour<10){
+            textRemind+="0"+hour
+        }else{
+            textRemind+=hour
+        }
+        textRemind+=":"
+        if(minute<10){
+            textRemind+="0"+minute
+        }else{
+            textRemind+=minute
+        }
+        println(textRemind)
+        return textRemind
+    }
+    private fun setReminderAlarm(hour:Int,minute:Int){
+        val calendar=Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hour)
+        calendar.set(Calendar.MINUTE,minute)
+        calendar.set(Calendar.SECOND,0)
+        val intent=Intent(applicationContext,NotificationSender::class.java)
+        intent.setAction("NOTIFICAION_TIME")
+        val pendingIntent=PendingIntent.getBroadcast(applicationContext,100,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,AlarmManager.INTERVAL_DAY,pendingIntent)
+
+        //cancel previous app
+
+    }
 
     //endregion
 }

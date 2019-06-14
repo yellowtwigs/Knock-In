@@ -1,9 +1,7 @@
 package com.example.knocker.controller.activity.firstLaunch
 
 import android.Manifest
-import android.content.ComponentName
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -83,6 +81,10 @@ class AcceptNotificationtActivity : AppCompatActivity() {
             while( !activityVisible && !isNotificationServiceEnabled){
                 println("activity is visible "+ activityVisible)
             }
+            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("serviceNotif", false)
+            edit.apply()
             startActivity(Intent(this@AcceptNotificationtActivity,MultiSelectActivity::class.java))
             finish()
         }

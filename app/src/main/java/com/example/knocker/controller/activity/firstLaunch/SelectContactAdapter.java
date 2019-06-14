@@ -178,7 +178,7 @@ public class SelectContactAdapter extends BaseAdapter {
             //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         if(hashMapSelectedItem.get(getItem(position))){
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.com_facebook_blue));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
         }else{
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.whiteColor));
         }

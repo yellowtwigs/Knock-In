@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.knocker.model.ModelDB.NotificationDB
+import java.sql.Date
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table notification
@@ -29,6 +30,10 @@ interface NotificationsDao {
     @Query("SELECT * FROM notifications_table WHERE platform = :platform")
     fun getNotificationByPlatform(platform: String): List<NotificationDB>
 
+    @Query("SELECT COUNT(*) FROM notifications_table WHERE JulianDay(datetime('now'))- JulianDay(datetime(timestamp))<1")
+    fun getNotificationSinceYesterday():Int
+    @Query("SELECT  timestamp FROM notifications_table" )
+    fun getIntTime():List<Long>
     /**
      * Récupère une [notification][NotificationDB] grâce à son id
      * @param id Int   L'id de la [notification][NotificationDB] voulu

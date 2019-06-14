@@ -56,9 +56,9 @@
     <string name="add_new_contact_first_name">Prénom</string>
     <string name="add_new_contact_phone_number">Numéro de téléphone</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
-    <string name="add_new_contact_priority0">Toutes les notificationDB de ce contact seront désactivées </string>
-    <string name="add_new_contact_priority1">Toutes les notificationDB de ce contact s\'afficheront comme avant</string>
-    <string name="add_new_contact_priority2">Toutes les notificationDB de ce contact seront affiché au milieu de l\'écran</string>
+    <string name="add_new_contact_priority0">Toutes les notifications de ce contact seront désactivées </string>
+    <string name="add_new_contact_priority1">Toutes les notifications de ce contact s\'afficheront comme avant</string>
+    <string name="add_new_contact_priority2">Toutes les notifications de ce contact seront affichées au milieu de l\'écran</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
         <item>Bureau</item>
@@ -148,7 +148,7 @@
     <string name="settings_owner_edit">Modifier vos informations</string>
     <string name="settings_owner_edit_long_text">Changer votre numéro de téléphone, ainsi que vos nom(s) et/ou prénom(s)</string>
     <string name="settings_notification">Notifications</string>
-    <string name="settings_notification_long_text">Personnalisez les notificationDB que vous souhaitez recevoir.</string>
+    <string name="settings_notification_long_text">Personnalisez les notifications que vous souhaitez recevoir.</string>
     <string name="settings_knockons">Knockons</string>
     <string name="settings_knockons_long_text">Personnalisez vos Knockons à votre guise.</string>
     <string name="settings_theme">Changer le thème</string>
@@ -168,6 +168,7 @@
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
     <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
     <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
+    <string name="notification_manager_horraire">Choisissez votre horraire de rappel pour voir les notifications raté</string>
 
     <!-- ComposeMessage !-->
     <string name="compose_message_enter_text">Écrire un message</string>
@@ -185,7 +186,7 @@
 
     <!-- Alert Dialog Notifications !-->
     <string name="alert_dialog_notification_message">Autoriser knocker à accéder a vos notification pour ne plus être déranger par des messages inutile</string>
-    <string name="alert_dialog_notification_allow_it">Gérer</string>
+    <string name="alert_dialog_notification_allow_it">Autoriser</string>
     <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
     <string name="title_activity_manage_knockons">ManageKnockonsActivity</string>
 
@@ -199,9 +200,14 @@
 
     <!-- !-->
     <string name="first_launch_politique_confidentialite">Veuillez lire notre <a href="">Politiques de confidentialité</a> ainsi que nos
-        <a href="https://www.yellowtwigs.com/">conditions d\'utilisations</a> pour accepter ceux-ci appuyez sur \"accepter et continuer\" </string>
+        <a href="https://www.yellowtwigs.com/">conditions d\'utilisations</a> pour accepter ceux-ci appuyez sur "accepter et continuer" </string>
 
 
     <!-- !-->
     <string name="Nbcontact">Nombre de contact sélectionnés : %1s </string>
+
+    <!-- NotificationReminder!-->
+    <string name="notification_sender_content_tittle">résmé intéraction</string>
+    <string name="notification_sender_content_text">knocker à traiter %1s messages depuis hier...</string>
+    <string name="notification_sender_big_text">knocker à traiter %1s messages depuis hier \n vous pouvez les consulter depuis l\'application dans "Historique"</string>
 </resources>

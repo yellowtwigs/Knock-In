@@ -132,7 +132,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
       /*  if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
         }*/
-        if (!isNotificationServiceEnabled) {
+        if (!isNotificationServiceEnabled()) {
             //val alertDialog = buildNotificationServiceAlertDialog()
             // alertDialog.show()
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
@@ -641,8 +641,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         return super.onOptionsItemSelected(item)
     }
 
-    private val isNotificationServiceEnabled: Boolean
-        get() {
+    private fun isNotificationServiceEnabled():Boolean {
             val pkgName = packageName
             val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
             if (!TextUtils.isEmpty(str)) {

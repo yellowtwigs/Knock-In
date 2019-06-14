@@ -65,6 +65,10 @@ class MultiSelectActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= 23) {
                     while( !Settings.canDrawOverlays(applicationContext) && !activityVisible){}
                     finish()
+                    val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+                    edit.commit()
                     startActivity(Intent(this@MultiSelectActivity,MultiSelectActivity::class.java))
                 }
             }
