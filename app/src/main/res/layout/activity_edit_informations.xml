@@ -61,7 +61,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_pencil_edit_button"
+            android:src="@drawable/ic_validate"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.66"
@@ -94,6 +94,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/edit_informations_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
@@ -123,6 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="35dp"
+            android:hint="@string/add_new_contact_last_name"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -130,6 +132,7 @@
             app:layout_constraintTop_toBottomOf="@+id/edit_informations_profile_image">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_informations_input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edit_text"
@@ -165,6 +168,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/edit_informations_email_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
@@ -194,7 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="20dp"
-            android:hint="@string/add_new_contact_first_name"
+            android:hint="@string/add_new_contact_mail"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -202,6 +206,7 @@
             app:layout_constraintTop_toBottomOf="@+id/edit_informations_edit_name">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_informations_input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edit_text"
@@ -227,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/edit_informations_email"
+                android:text="@string/edit_informations_phone_number"
                 android:textColor="#000"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -235,6 +240,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/edit_informations_number_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
@@ -264,7 +270,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="20dp"
-            android:hint="@string/add_new_contact_first_name"
+            android:hint="@string/add_new_contact_phone_number"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -273,6 +279,7 @@
             tools:layout_editor_absoluteX="0dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_informations_input_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edit_text"

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -36,7 +37,9 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.controller.CircularImageView
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_edit_informations.*
 import java.io.ByteArrayOutputStream
 
 /**
@@ -64,6 +67,10 @@ class EditInformationsActivity : AppCompatActivity() {
     private var edit_informations_EditName: TextInputLayout? = null
     private var edit_informations_EditMail: TextInputLayout? = null
     private var edit_informations_EditPhoneNumber: TextInputLayout? = null
+
+    private var edit_informations_InputNumber: TextInputEditText? = null
+    private var edit_informations_InputEmail: TextInputEditText? = null
+    private var edit_informations_InputName: TextInputEditText? = null
 
     private var edit_informations_NameText:TextView?=null
     private var edit_informations_MailText: TextView? = null
@@ -141,8 +148,13 @@ class EditInformationsActivity : AppCompatActivity() {
         edit_informations_EditMail = findViewById(R.id.edit_informations_edit_mail)
         edit_informations_EditPhoneNumber = findViewById(R.id.edit_informations_edit_phone_number)
 
-        edit_informations_MailText=findViewById(R.id.edit_informations_mail)
-        edit_informations_NameText=findViewById(R.id.edit_informations_name_id)
+        edit_informations_InputNumber = findViewById(R.id.edit_informations_input_number)
+        edit_informations_InputEmail = findViewById(R.id.edit_informations_input_email)
+        edit_informations_InputName = findViewById(R.id.edit_informations_input_name)
+
+        edit_informations_MailText=findViewById(R.id.edit_informations_email_text)
+        edit_informations_NameText=findViewById(R.id.edit_informations_name_text)
+        edit_informations_PhoneNumberText=findViewById(R.id.edit_informations_number_text)
         edit_information_layout = findViewById(R.id.my_informations_layout_id)
         //endregion
 
@@ -175,6 +187,10 @@ class EditInformationsActivity : AppCompatActivity() {
             }
         })
         //
+        val sharedPreferenceInfo = getSharedPreferences("My_info", Context.MODE_PRIVATE)
+        edit_informations_NameText!!.setText(sharedPreferenceInfo.getString("name", "Nom"))
+        edit_informations_MailText!!.setText(sharedPreferenceInfo.getString("email", "Email"))
+        edit_informations_PhoneNumberText!!.setText(sharedPreferenceInfo.getString("number", "Numéro de téléphone"))
     }
     //region ========================================== Functions ===========================================
 
@@ -315,10 +331,14 @@ class EditInformationsActivity : AppCompatActivity() {
     }
 
     private fun modeEditionActivated() {
+        val sharedPreferenceInfo = getSharedPreferences("My_info", Context.MODE_PRIVATE)
+        edit_informations_InputName!!.setText(sharedPreferenceInfo.getString("name", ""))
         edit_informations_NameLayout!!.visibility = View.GONE
         edit_informations_EditName!!.visibility = View.VISIBLE
+        edit_informations_InputEmail!!.setText(sharedPreferenceInfo.getString("email", ""))
         edit_informations_MailLayout!!.visibility = View.GONE
         edit_informations_EditMail!!.visibility = View.VISIBLE
+        edit_informations_InputNumber!!.setText(sharedPreferenceInfo.getString("number", ""))
         edit_informations_PhoneNumberLayout!!.visibility = View.GONE
         edit_informations_EditPhoneNumber!!.visibility = View.VISIBLE
         edit_informations_ModeEditionDesactivated!!.visibility = View.VISIBLE
@@ -330,10 +350,23 @@ class EditInformationsActivity : AppCompatActivity() {
     }
 
     private fun modeEditionDesactivated() {
+        val sharedPreferenceInfo = getSharedPreferences("My_info", Context.MODE_PRIVATE)
+        val edit: SharedPreferences.Editor = sharedPreferenceInfo.edit()
+        edit.putString("name", edit_informations_InputName!!.text.toString())
+        edit.putString("email", edit_informations_InputEmail!!.text.toString())
+        edit.putString("number", edit_informations_InputNumber!!.text.toString())
+        edit.apply()
+
+        val name = sharedPreferenceInfo.getString("name", "Nom")
+        val email = sharedPreferenceInfo.getString("email", "Email")
+        val number = sharedPreferenceInfo.getString("number", "Numéro de téléphone")
+        edit_informations_NameText!!.setText(name)
         edit_informations_NameLayout!!.visibility = View.VISIBLE
         edit_informations_EditName!!.visibility = View.GONE
+        edit_informations_MailText!!.setText(email)
         edit_informations_MailLayout!!.visibility = View.VISIBLE
         edit_informations_EditMail!!.visibility = View.GONE
+        edit_informations_PhoneNumberText!!.setText(number)
         edit_informations_PhoneNumberLayout!!.visibility = View.VISIBLE
         edit_informations_EditPhoneNumber!!.visibility = View.GONE
         edit_informations_ModeEditionActivated!!.visibility = View.VISIBLE
