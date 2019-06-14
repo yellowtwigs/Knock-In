@@ -382,10 +382,14 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
         while (phonecontact.moveToNext()) {
             val phoneId = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
             var phoneEmail = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
-            val phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
+            var phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
             if (phoneEmail == null)
                 phoneEmail = ""
-            idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag!!.toInt()), 4 to "", 5 to "mail")
+            println(phoneId+"=id email = "+phoneEmail+" tag=\""+phoneTag+"\"")
+            if (phoneTag == null) {
+                phoneTag = "0"
+            }
+            idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag.toInt()), 4 to "", 5 to "mail")
             if (contactDetails.isEmpty() || !isDuplicateNumber(idAndMail, contactDetails)) {
                 contactDetails.add(idAndMail)
             }
@@ -402,7 +406,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             val phoneId = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
             var phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             var phonePic = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
-            val phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
+            var phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
             if (phoneNumber == null)
                 phoneNumber = ""
             if (phonePic == null || phonePic.contains("content://com.android.contacts/contacts/", ignoreCase = true)) {
@@ -410,11 +414,11 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             } else {
                 phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(), main_contentResolver)))
             }
-            //idAndPhoneNumber = Triple(phoneId!!.toInt(), phoneNumber, phonePic)
-            idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag!!.toInt()), 4 to phonePic, 5 to "phone")
+            if (phoneTag == null) {
+                phoneTag = "0"
+            }
+            idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag.toInt()), 4 to phonePic, 5 to "phone")
             if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(idAndPhoneNumber, contactPhoneNumber)) {
-                //println("1er = "+idAndPhoneNumber)
-                /////////////////////
                 contactPhoneNumber.add(idAndPhoneNumber)
             }
         }
