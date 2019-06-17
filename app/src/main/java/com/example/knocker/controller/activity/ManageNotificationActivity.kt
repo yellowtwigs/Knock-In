@@ -188,10 +188,6 @@ class ManageNotificationActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-
-    }
-
     @SuppressLint("InflateParams")
     private fun buildNotificationServiceAlertDialog(): androidx.appcompat.app.AlertDialog {
         val inflater: LayoutInflater = this.layoutInflater
