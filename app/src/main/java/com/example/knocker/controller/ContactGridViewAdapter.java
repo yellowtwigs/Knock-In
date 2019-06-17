@@ -367,8 +367,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup) {
                 new AlertDialog.Builder(context)
-                        .setTitle("Voulez vous appeler ce contact ?")
-                        .setMessage("Vous pouvez désactiver cette validiation depuis les options")
+                        .setTitle("Voulez-vous appeler ce contact ?")
+                        .setMessage("Vous pouvez désactiver cette validation depuis les options")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
