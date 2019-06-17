@@ -13,30 +13,29 @@ import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
 import kotlin.concurrent.thread
 
-class AcceptNotificationtActivity : AppCompatActivity() {
-    var activityVisible:Boolean=true
+class AcceptNotificationActivity : AppCompatActivity() {
+    var activityVisible: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accept_notification)
 
-        val ButtonManage:Button=findViewById(R.id.accept_notification_allow_it_button)
-        val ButtonUnAuthorized:Button=findViewById(R.id.accept_notification_dismiss_button)
+        val ButtonManage: Button = findViewById(R.id.accept_notification_allow_it_button)
+        val ButtonUnAuthorized: Button = findViewById(R.id.accept_notification_dismiss_button)
 
-        ButtonManage.setOnClickListener({
+        ButtonManage.setOnClickListener {
             println("test")
             startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
             val intentFilter = IntentFilter()
             intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
-            activityVisible=false
+            activityVisible = false
             screenGesture()
-            })
+        }
 
 
-        ButtonUnAuthorized.setOnClickListener({
-
-            startActivity(Intent(this@AcceptNotificationtActivity,MultiSelectActivity::class.java))
+        ButtonUnAuthorized.setOnClickListener {
+            startActivity(Intent(this@AcceptNotificationActivity, MultiSelectActivity::class.java))
             finish()
-        })
+        }
 
     }
 
@@ -60,37 +59,39 @@ class AcceptNotificationtActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        activityVisible =true
+        activityVisible = true
         println("test resume")
     }
 
     override fun onPause() {
         super.onPause()
-        activityVisible= false
+        activityVisible = false
         println("test pause")
     }
 
     override fun onStart() {
         super.onStart()
-        activityVisible= true
+        activityVisible = true
         println("test start")
     }
-    fun screenGesture(){
-        val thread= Thread {
 
-            while( !activityVisible && !isNotificationServiceEnabled){
-                println("activity is visible "+ activityVisible)
+    fun screenGesture() {
+        val thread = Thread {
+
+            while (!activityVisible && !isNotificationServiceEnabled) {
+                println("activity is visible " + activityVisible)
             }
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("serviceNotif", false)
             edit.apply()
-            startActivity(Intent(this@AcceptNotificationtActivity,MultiSelectActivity::class.java))
+            startActivity(Intent(this@AcceptNotificationActivity, MultiSelectActivity::class.java))
             finish()
         }
         thread.start()
     }
-    override fun onBackPressed(){
+
+    override fun onBackPressed() {
 
     }
 }

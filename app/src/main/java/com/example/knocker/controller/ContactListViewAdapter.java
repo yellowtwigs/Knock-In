@@ -85,7 +85,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
 
         }
-        holder.contactRoundedImageView = listview.findViewById(R.id.list_adapter_contactRoundedImageView);
+        holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
 
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
@@ -95,7 +95,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
         }
 
-        holder.contactFirstNameView= listview.findViewById(R.id.list_adapter_contactFirstName);
+        holder.contactFirstNameView= listview.findViewById(R.id.list_contact_item_contactFirstName);
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -110,13 +110,13 @@ public class ContactListViewAdapter extends BaseAdapter {
         }
 
         holder.contactFirstNameView.setText(contactName);
-        holder.constraintLayout= listview.findViewById(R.id.list_adapter_constraint_layout);
-        holder.constraintLayoutMenu=listview.findViewById(R.id.list_adapter_constraint_menu);
-        holder.callCl=listview.findViewById(R.id.list_adapter_constraint_call);
-        holder.smsCl=listview.findViewById(R.id.list_adapter_constraint_sms);
-        holder.whatsappCl=listview.findViewById(R.id.list_adapter_constraint_whatsapp);
-        holder.mailCl=listview.findViewById(R.id.list_adapter_constraint_mail);
-        holder.editCl=listview.findViewById(R.id.list_adapter_constraint_edit);
+        holder.constraintLayout= listview.findViewById(R.id.list_contact_item_layout);
+        holder.constraintLayoutMenu=listview.findViewById(R.id.list_contact_item_menu);
+        holder.callCl=listview.findViewById(R.id.list_contact_item_constraint_call);
+        holder.smsCl=listview.findViewById(R.id.list_contact_item_constraint_sms);
+        holder.whatsappCl=listview.findViewById(R.id.list_contact_item_constraint_whatsapp);
+        holder.mailCl=listview.findViewById(R.id.list_contact_item_constraint_mail);
+        holder.editCl=listview.findViewById(R.id.list_contact_item_constraint_edit);
 
         View.OnClickListener listener= new View.OnClickListener() {
             @Override
@@ -188,7 +188,6 @@ public class ContactListViewAdapter extends BaseAdapter {
             switch(avatarId) {
                 case 0: return R.drawable.ic_user_purple;
                 case 1: return R.drawable.ic_user_blue;
-                case 2: return R.drawable.ic_user_brown;
                 case 3: return R.drawable.ic_user_green;
                 case 4: return R.drawable.ic_user_om;
                 case 5: return R.drawable.ic_user_orange;

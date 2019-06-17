@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:background="@android:color/transparent"
-            android:hint="@string/compose_message_enter_phone_number"
             android:inputType="phone" />
     </androidx.appcompat.widget.Toolbar>
 
@@ -93,7 +92,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:background="@android:color/transparent"
-            android:hint="@string/compose_message_enter_text"
             android:inputType="textLongMessage"
             android:textColor="@color/textColor"
             app:layout_constraintBottom_toBottomOf="parent"

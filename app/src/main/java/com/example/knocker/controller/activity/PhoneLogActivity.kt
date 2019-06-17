@@ -5,12 +5,15 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,10 +23,13 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
+import com.example.knocker.controller.HorizontalViewAdapter
 import com.example.knocker.model.PhoneLog
 import java.security.AccessController.getContext
 
@@ -37,6 +43,8 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private val PERMISSIONS_REQUEST_READ_CALL_LOG = 100
+
+    private val TAG = "PhoneLogActivity"
 
     private var main_BottomNavigationView: BottomNavigationView? = null
     private var phone_log_IncomingCallButton: FloatingActionButton? = null
@@ -80,6 +88,9 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_CallBackSpace: ImageView? = null
     private var phone_log_ButtonAddContact: ImageView? = null
 
+
+    private var phone_log_RecyclerView: RecyclerView? = null
+
     //    private var phone_log_Calls: TextView? = null
     private var phone_log_CallsListView: ListView? = null
 
@@ -119,10 +130,6 @@ class PhoneLogActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-//        val actionbar = supportActionBar
-//        supportActionBar!!.setDisplayShowTitleEnabled(false);
-//        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        //toolbar.title = "Phone Log" //////////////
 
         //endregion
 
@@ -133,7 +140,7 @@ class PhoneLogActivity : AppCompatActivity() {
         main_BottomNavigationView = findViewById(R.id.navigation)
 
 //        phone_log_Calls = findViewById(R.id.phone_log_calls)
-        phone_log_CallsListView = findViewById(R.id.phone_log_calls_list_view)
+//        phone_log_CallsListView = findViewById(R.id.phone_log_calls_list_view)
 
         phone_log_ButtonOpen = findViewById(R.id.phone_log_button_open_id)
         phone_log_CallLayout = findViewById(R.id.phone_log_call_layout_id)
@@ -155,18 +162,18 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_CallKeyboard_0 = findViewById(R.id.phone_log_call_keyboard_0)
         phone_log_CallKeyboard_Sharp = findViewById(R.id.phone_log_call_keyboard_sharp)
 
-        link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
-        link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
-        link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
-        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
-        link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
-        link_socials_networks_Spotify = findViewById(R.id.spotify_link_socials_networks)
-        link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
-        link_socials_networks_Outlook = findViewById(R.id.outlook_link_socials_networks)
-        link_socials_networks_Skype = findViewById(R.id.skype_link_socials_networks)
-        link_socials_networks_Linkedin = findViewById(R.id.linkedin_link_socials_networks)
-        link_socials_networks_Twitter = findViewById(R.id.twitter_link_socials_networks)
-        link_socials_networks_Whatsapp = findViewById(R.id.whatsapp_link_socials_networks)
+//        link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
+//        link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
+//        link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
+//        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
+//        link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
+//        link_socials_networks_Spotify = findViewById(R.id.spotify_link_socials_networks)
+//        link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
+//        link_socials_networks_Outlook = findViewById(R.id.outlook_link_socials_networks)
+//        link_socials_networks_Skype = findViewById(R.id.skype_link_socials_networks)
+//        link_socials_networks_Linkedin = findViewById(R.id.linkedin_link_socials_networks)
+//        link_socials_networks_Twitter = findViewById(R.id.twitter_link_socials_networks)
+//        link_socials_networks_Whatsapp = findViewById(R.id.whatsapp_link_socials_networks)
 
         phone_log_CallBackSpace = findViewById(R.id.phone_log_call_back_space)
         phone_log_ButtonAddContact = findViewById(R.id.phone_log_button_add_contact)
@@ -184,35 +191,35 @@ class PhoneLogActivity : AppCompatActivity() {
 
         //region ========================================= Phone Log ========================================
 
-        showPhoneLog()
+//        showPhoneLog()
 
         //endregion
 
         //region ========================================== Listener ========================================
 
-        link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
-
-        link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
-
-        link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
-
-        link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
-
-        link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
-
-        link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
-
-        link_socials_networks_Spotify!!.setOnClickListener { goToSpotify() }
-
-        link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
-
-        link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
-
-        link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
-
-        link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
-
-        link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
+//        link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
+//
+//        link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
+//
+//        link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
+//
+//        link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
+//
+//        link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
+//
+//        link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
+//
+//        link_socials_networks_Spotify!!.setOnClickListener { goToSpotify() }
+//
+//        link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
+//
+//        link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
+//
+//        link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
+//
+//        link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
+//
+//        link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
 
 
         phone_log_IncomingCallButton!!.setOnClickListener {
@@ -222,8 +229,7 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_SendMessage!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text.isNotEmpty()) {
                 val phone = phone_log_PhoneNumberEditText!!.text.toString()
-                val i = Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null));
-                startActivity(i)
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null)))
             } else {
                 Toast.makeText(this, "Enter a phone number please", Toast.LENGTH_SHORT).show()
             }
@@ -339,19 +345,21 @@ class PhoneLogActivity : AppCompatActivity() {
         //endregion
 
         //endregion
+
+        initHorizontalViewAdapter()
     }
 
     //region ========================================== Functions ===========================================
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater=menuInflater
-        inflater.inflate(R.menu.menu_help,menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_help, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_help ->{
+            R.id.item_help -> {
                 val alertDialogBuilder = android.app.AlertDialog.Builder(this)
                 alertDialogBuilder.setMessage(this.resources.getString(R.string.help_cockpit))
                 alertDialogBuilder.show()
@@ -506,7 +514,7 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     private fun showPhoneLog() {
-//        phone_log_CallsListView!!.adapter = PhoneLogListAdapter(this@PhoneLogActivity, getListPhoneCalls())
+        phone_log_CallsListView!!.adapter = PhoneLogListAdapter(this@PhoneLogActivity, getListPhoneCalls())
     }
 
     private fun showListPhoneCalls() {
@@ -592,6 +600,35 @@ class PhoneLogActivity : AppCompatActivity() {
         val pattern = Pattern.compile(expression)
         val matcher = pattern.matcher(phone)
         return matcher.matches()
+    }
+
+    private fun initHorizontalViewAdapter() {
+        Log.d(TAG, "initHorizontalViewAdapter: init HorizontalViewAdapter")
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        phone_log_RecyclerView = findViewById(R.id.phone_log_recyclerview)
+        phone_log_RecyclerView!!.layoutManager = layoutManager
+
+        val adapter = HorizontalViewAdapter(this@PhoneLogActivity, initHorizontalListImages())
+        phone_log_RecyclerView!!.adapter = adapter
+    }
+
+    private fun initHorizontalListImages(): ArrayList<Int> {
+        val list = ArrayList<Int>()
+
+        list.add(R.drawable.ic_facebook)
+        list.add(R.drawable.ic_messenger)
+        list.add(R.drawable.ic_instagram)
+        list.add(R.drawable.ic_whatsapp)
+        list.add(R.drawable.ic_gmail)
+        list.add(R.drawable.ic_outlook)
+        list.add(R.drawable.ic_spotify)
+        list.add(R.drawable.ic_linkedin)
+        list.add(R.drawable.ic_telegram)
+        list.add(R.drawable.ic_youtube)
+        list.add(R.drawable.ic_twitter)
+        list.add(R.drawable.ic_skype)
+
+        return list
     }
 
     //endregion

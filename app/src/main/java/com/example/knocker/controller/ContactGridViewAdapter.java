@@ -46,6 +46,7 @@ import static java.sql.DriverManager.println;
 
 /**
  * La Classe qui permet de remplir la gridview avec les bon éléments
+ *
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class ContactGridViewAdapter extends BaseAdapter implements FloatingActionMenu.MenuStateChangeListener {
@@ -53,18 +54,20 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
-    private ArrayList<FloatingActionMenu> listCircularMenu= new ArrayList<FloatingActionMenu>();
+    private ArrayList<FloatingActionMenu> listCircularMenu = new ArrayList<FloatingActionMenu>();
     private FloatingActionMenu selectMenu;
 
     public ContactGridViewAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
-        this.gestionnaireContact= contactList;
+        this.gestionnaireContact = contactList;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
-    public void setGestionnairecontact(ContactList gestionnaireContact){
-        gestionnaireContact= gestionnaireContact;
+
+    public void setGestionnairecontact(ContactList gestionnaireContact) {
+        gestionnaireContact = gestionnaireContact;
     }
+
     @Override
     public int getCount() {
         return gestionnaireContact.getContacts().size();
@@ -89,15 +92,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         if (gridview == null) {
             gridview = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
-//            gridview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
-
 
             holder = new ViewHolder();
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
-//            holder.whatsapp_click_bubbles = gridview.findViewById(R.id.whatsapp_click_bubbles);
-//            holder.messenger_click_bubbles = gridview.findViewById(R.id.messenger_click_bubbles);
-//            holder.phone_call_click_bubbles = gridview.findViewById(R.id.phone_call_click_bubbles);
-//            holder.sms_click_bubbles = gridview.findViewById(R.id.sms_click_bubbles);
+            holder.gridContactItemLayout = gridview.findViewById(R.id.grid_contact_item_layout);
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
@@ -127,7 +125,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 layoutParamsIV.topMargin = 0;
             }
             holder.contactLastNameView = gridview.findViewById(R.id.grid_adapter_contactLastName);
-            
+
             gridview.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -155,11 +153,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable spanFistName = new SpannableString(firstname);
             spanFistName.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(spanFistName);
-            if(contact.getLastName().length()>12)
-                lastName =contact.getLastName().substring(0,10).concat("..");
+            if (contact.getLastName().length() > 12)
+                lastName = contact.getLastName().substring(0, 10).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.9f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 5) {
@@ -171,11 +169,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
             //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.knockerColorPrimary));
-            if(contact.getLastName().length()>11)
-                lastName =contact.getLastName().substring(0,9).concat("..");
+            if (contact.getLastName().length() > 11)
+                lastName = contact.getLastName().substring(0, 9).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.8f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.8f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 6) {
@@ -186,11 +184,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.71f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            if(contact.getLastName().length()>10)
-                lastName =contact.getLastName().substring(0,8).concat("..");
+            if (contact.getLastName().length() > 10)
+                lastName = contact.getLastName().substring(0, 8).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.71f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.71f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (!contact.getProfilePicture64().equals("")) {
@@ -199,14 +197,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
-            //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         //region circular menu
 
-        final ImageView buttonMessenger= new ImageView(context);
-        final ImageView buttonCall= new ImageView(context);
+        final ImageView buttonMessenger = new ImageView(context);
+        final ImageView buttonCall = new ImageView(context);
         final ImageView buttonWhatsApp = new ImageView(context);
-        final ImageView buttonSMS= new ImageView(context);
+        final ImageView buttonSMS = new ImageView(context);
         final ImageView buttonEdit = new ImageView(context);
         final ImageView buttonMail = new ImageView(context);
 
@@ -217,62 +214,58 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonEdit.setId(4);
         buttonMail.setId(5);
 
-
-
-
         buttonMessenger.setImageResource(R.drawable.ic_messenger);
-        buttonCall.setImageResource( R.drawable.ic_phone_call);
+        buttonCall.setImageResource(R.drawable.ic_phone_call);
         buttonWhatsApp.setImageResource(R.drawable.ic_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms);
         buttonEdit.setImageResource(R.drawable.ic_edit_floating_button);
         buttonMail.setImageResource(android.R.drawable.ic_dialog_email);
 
 
-
-        SubActionButton.Builder builderIcon= new SubActionButton.Builder((Activity) context);
-        builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.knocker_circle));
+        SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
+        builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
         builderIcon.setContentView(buttonCall);
         int startAngle;
         int endAngle;
-        if(position%len==0){
-            System.out.println("position vaut "+ position+" modulo vaut" +position%len);
-            startAngle=90;
-            endAngle=-90;
-        }else if(position%len==len-1){
-            System.out.println("position vaut "+ position+" modulo vaut" +position%len);
-            startAngle=90;
-            endAngle=270;
-        }else{
-            System.out.println("position vaut "+ position+" modulo vaut" +position%len);
-            startAngle=0;
-            endAngle=-180;
+        if (position % len == 0) {
+            System.out.println("position vaut " + position + " modulo vaut" + position % len);
+            startAngle = 90;
+            endAngle = -90;
+        } else if (position % len == len - 1) {
+            System.out.println("position vaut " + position + " modulo vaut" + position % len);
+            startAngle = 90;
+            endAngle = 270;
+        } else {
+            System.out.println("position vaut " + position + " modulo vaut" + position % len);
+            startAngle = 0;
+            endAngle = -180;
         }
         DisplayMetrics metrics = new DisplayMetrics();
-        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int diametreBoutton =(int) (0.30*metrics.densityDpi);
-        int radiusMenu = (int) (0.40*metrics.densityDpi);
-        int border =  (int) (0.0625*metrics.densityDpi);
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int diametreBoutton = (int) (0.30 * metrics.densityDpi);
+        int radiusMenu = (int) (0.40 * metrics.densityDpi);
+        int border = (int) (0.0625 * metrics.densityDpi);
 
-        FrameLayout.LayoutParams layoutParams= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.setMargins(border,border,border,border);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(border, border, border, border);
 
         FloatingActionMenu.Builder builder = new FloatingActionMenu.Builder((Activity) context)
                 .setStartAngle(startAngle)
                 .setEndAngle(endAngle)
                 .setRadius(radiusMenu)
-                .addSubActionView(builderIcon.setContentView(buttonEdit,layoutParams).build(),diametreBoutton,diametreBoutton)
-                .attachTo(holder.contactRoundedImageView)
+                .addSubActionView(builderIcon.setContentView(buttonEdit, layoutParams).build(), diametreBoutton, diametreBoutton)
+                .attachTo(holder.gridContactItemLayout)
                 .setStateChangeListener(this)
                 .disableAnimations();
-        if(appIsInstalled("com.whatsapp")&& getItem(position).getPhoneNumber()!=""){
-            builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp,layoutParams).build(),diametreBoutton,diametreBoutton);
+        if (appIsInstalled("com.whatsapp") && !getItem(position).getPhoneNumber().equals("")) {
+            builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
-        if(getItem(position).getFirstMail()!=""){
-            builder.addSubActionView(builderIcon.setContentView(buttonMail,layoutParams).build(),diametreBoutton,diametreBoutton);
+        if (!getItem(position).getFirstMail().equals("")) {
+            builder.addSubActionView(builderIcon.setContentView(buttonMail, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
-        if(getItem(position).getPhoneNumber()!=""){
-            builder.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
-                    .addSubActionView(builderIcon.setContentView(buttonCall,layoutParams).build(),diametreBoutton,diametreBoutton);
+        if (!getItem(position).getPhoneNumber().equals("")) {
+            builder.addSubActionView(builderIcon.setContentView(buttonSMS, layoutParams).build(), diametreBoutton, diametreBoutton)
+                    .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
 
 
@@ -281,50 +274,48 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }*/
 
 
-
-
-        FloatingActionMenu quickMenu=builder.build();
+        FloatingActionMenu quickMenu = builder.build();
         listCircularMenu.add(quickMenu);
-              //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
+        //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
         View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(v.getId()==buttonMessenger.getId()) {
+                if (v.getId() == buttonMessenger.getId()) {
                     try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" +""));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + ""));
                         context.startActivity(intent);
                     } catch (ActivityNotFoundException e) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + ""));//id facebook into double quote
                         context.startActivity(intent);
                     }
-                }else if (v.getId()==buttonWhatsApp.getId()){
+                } else if (v.getId() == buttonWhatsApp.getId()) {
                     System.out.println("================whatsapp=============");
-                    ContactWithAllInformation contactphone=(ContactWithAllInformation) getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(contactphone.getPhoneNumber(),context);
-                }else if(v.getId()==buttonEdit.getId()){
+                    ContactWithAllInformation contactphone = (ContactWithAllInformation) getItem(position);
+                    ContactGesture.INSTANCE.openWhatsapp(contactphone.getPhoneNumber(), context);
+                } else if (v.getId() == buttonEdit.getId()) {
 
                     Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId",contact.getId());
+                    intent.putExtra("ContactId", contact.getId());
                     context.startActivity(intent);
-                }else if(v.getId()==buttonCall.getId()){
+                } else if (v.getId() == buttonCall.getId()) {
 
                     callPhone(getItem(position).getPhoneNumber());
 
-                }else if(v.getId()==buttonSMS.getId()){
+                } else if (v.getId() == buttonSMS.getId()) {
                     String phone = getItem(position).getPhoneNumber();
-                    Intent i = new Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null));
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null));
                     context.startActivity(i);
-                }else if(v.getId()==buttonMail.getId()){
+                } else if (v.getId() == buttonMail.getId()) {
                     String mail = getItem(position).getFirstMail();
-                    Intent intent=new Intent(Intent.ACTION_SEND);
+                    Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setData(Uri.parse("mailto:"));
                     intent.setType("text/html");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length()-1)});
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
                     intent.putExtra(Intent.EXTRA_SUBJECT, "");
-                    intent.putExtra(Intent.EXTRA_TEXT,"");
-                    println("intent "+ intent.getExtras().toString());
-                    context.startActivity(Intent.createChooser(intent,"envoyer un mail à "+ mail.substring(0, mail.length()-1)));
+                    intent.putExtra(Intent.EXTRA_TEXT, "");
+                    println("intent " + intent.getExtras().toString());
+                    context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
                 selectMenu.close(true);
             }
@@ -342,25 +333,30 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     public int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
+            return new Random().nextInt(6);
         } else if (createOrGet.equals("Get")) {
-            switch(avatarId) {
-                case 0: return R.drawable.ic_user_purple;
-                case 1: return R.drawable.ic_user_blue;
-                case 2: return R.drawable.ic_user_brown;
-                case 3: return R.drawable.ic_user_green;
-                case 4: return R.drawable.ic_user_om;
-                case 5: return R.drawable.ic_user_orange;
-                case 6: return R.drawable.ic_user_pink;
+            switch (avatarId) {
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_orange;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_pink;
             }
         }
         return -1;
     }
 
     private void callPhone(final String phoneNumber) {
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.CALL_PHONE},1);
-        }else{
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
+        } else {
             //Intent intent=new Intent(Intent.ACTION_CALL);
             //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
@@ -393,26 +389,27 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     @Override
     public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
-        if(selectMenu!=null) {
+        if (selectMenu != null) {
             selectMenu.close(true);
         }
-        selectMenu=floatingActionMenu;
+        selectMenu = floatingActionMenu;
 
     }
 
     @Override
     public void onMenuClosed(FloatingActionMenu floatingActionMenu) {
-        selectMenu=null;
+        selectMenu = null;
     }
 
 
-    public void closeMenu(){
-        if(selectMenu!=null)
-           selectMenu.close(true);
+    public void closeMenu() {
+        if (selectMenu != null)
+            selectMenu.close(true);
 
     }
-    public void onScroll(){
-        if(selectMenu!=null)
+
+    public void onScroll() {
+        if (selectMenu != null)
             selectMenu.updateItemPositions();
     }
 
@@ -420,16 +417,19 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         TextView contactFirstNameView;
         TextView contactLastNameView;
         CircularImageView contactRoundedImageView;
+        ConstraintLayout gridContactItemLayout;
     }
-    public FloatingActionMenu getSelectMenu(){
+
+    public FloatingActionMenu getSelectMenu() {
         return selectMenu;
     }
-    private boolean appIsInstalled(String appPackage){
-        PackageManager pm =context.getPackageManager();
-        try{
-            pm.getApplicationInfo(appPackage,0);
+
+    private boolean appIsInstalled(String appPackage) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getApplicationInfo(appPackage, 0);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

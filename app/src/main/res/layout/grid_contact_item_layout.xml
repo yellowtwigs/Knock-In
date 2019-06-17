@@ -2,9 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/grid_contact_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!--android:background="@drawable/selector_relative_layout"-->
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_relative_layout">
+
     <com.example.knocker.controller.CircularImageView
         android:id="@+id/contactRoundedImageView"
         android:layout_width="@dimen/rounded_image_view_height_width"
@@ -34,6 +36,6 @@
         android:layout_marginTop="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grid_adapter_contactFirstName"/>
+        app:layout_constraintTop_toBottomOf="@+id/grid_adapter_contactFirstName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

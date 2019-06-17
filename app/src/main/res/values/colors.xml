@@ -9,7 +9,7 @@
     <color name="transparentColor">#33d5d5d5</color>
     <color name="textColorLight">#772D2D2D</color>
     <color name="relativeLayoutPressedColor">#ececec</color>
-    <color name="borderViewColor">#f3f3f3</color>
+    <color name="whiteGreyColor">#f9f9f9</color>
 
     <color name="nav_header_textColor">#2B2B2B</color>
 
@@ -24,7 +24,7 @@
     <color name="black">#000000</color>
     <color name="textColor_lightDark">#77c8c8c8</color>
     <color name="relativeLayoutPressedColorDark">#777777</color>
-    <color name="borderViewColorDark">#646464</color>
+    <color name="whiteGreyColorDark">#646464</color>
     <color name="borderBottomView">#dddddd</color>
     <color name="priorityZero">#b20000 </color>
     <color name="priorityOne">#FFFFFF </color>

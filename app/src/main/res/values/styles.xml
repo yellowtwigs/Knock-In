@@ -12,8 +12,8 @@
         <item name="textColor">@color/textColor</item>
         <item name="textColorLight">@color/textColorLight</item>
         <item name="relativeLayoutPressedColor">@color/relativeLayoutPressedColor</item>
-        <item name="borderViewColor">@color/borderViewColor</item>
-        <item name="colorSurface">@color/borderViewColor</item>
+        <item name="whiteGreyColor">@color/whiteGreyColor</item>
+        <item name="colorSurface">@color/whiteGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
     </style>
 

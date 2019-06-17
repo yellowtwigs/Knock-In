@@ -175,7 +175,6 @@ public class SelectContactAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
-            //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         if(hashMapSelectedItem.get(getItem(position))){
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
@@ -218,20 +217,19 @@ public class SelectContactAdapter extends BaseAdapter {
         return contactList;
     }
 
-    public int randomDefaultImage(int avatarId, String createOrGet) {
+    private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
-            return new Random().nextInt(9);
+            return new Random().nextInt(8);
         } else if (createOrGet.equals("Get")) {
             switch(avatarId) {
                 case 0: return R.drawable.ic_user_yellow;
                 case 1: return R.drawable.ic_user_blue;
-                case 2: return R.drawable.ic_user_brown;
-                case 3: return R.drawable.ic_user_green;
-                case 4: return R.drawable.ic_user_om;
-                case 5: return R.drawable.ic_user_orange;
-                case 6: return R.drawable.ic_user_pink;
-                case 7: return R.drawable.ic_user_purple;
-                case 8: return R.drawable.ic_user_red;
+                case 2: return R.drawable.ic_user_green;
+                case 3: return R.drawable.ic_user_om;
+                case 4: return R.drawable.ic_user_orange;
+                case 5: return R.drawable.ic_user_pink;
+                case 6: return R.drawable.ic_user_purple;
+                case 7: return R.drawable.ic_user_red;
             }
         }
         return -1;

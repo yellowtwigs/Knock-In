@@ -45,9 +45,7 @@ import java.util.regex.Pattern
  * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
-
-
+class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     //region ========================================== Var or Val ==========================================
 
@@ -60,13 +58,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
     private var my_knocker: RelativeLayout? = null
 
     private var main_FloatingButtonAdd: FloatingActionButton? = null
-    private var main_FloatingButtonSync: FloatingActionButton? = null
 
-
-    private var phone_call_ImageView: ImageView? = null
-    private var sms_ImageView: ImageView? = null
-
-    private var main_CoordinationLayout: CoordinatorLayout? = null
     internal var main_FloatingButtonIsOpen = false
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
@@ -80,8 +72,8 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
     private var main_BottomNavigationView: BottomNavigationView? = null
 
     private var gestionnaireContacts: ContactList? = null
-    private var gridViewAdapter:ContactGridViewAdapter?=null
-    private var listViewAdapter:ContactListViewAdapter?=null
+    private var gridViewAdapter: ContactGridViewAdapter? = null
+    private var listViewAdapter: ContactListViewAdapter? = null
     private var main_layout: LinearLayout? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -94,10 +86,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                 startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-//            R.id.navigation_socials_networks -> {
-//                startActivity(Intent(this@MainActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-//                return@OnNavigationItemSelectedListener true
-//            }
             R.id.navigation_phone_keyboard -> {
                 startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
@@ -117,24 +105,19 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
-        if(sharedFirstLaunch.getBoolean("first_launch",true)){
-            startActivity(Intent(this@MainActivity,FirstLaunchActivity::class.java))
+        if (sharedFirstLaunch.getBoolean("first_launch", true)) {
+            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
-        if(android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-           // window.navigationBarColor = getResources().getColor(R.color.whiteColor)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // window.navigationBarColor = getResources().getColor(R.color.whiteColor)
         }
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
         }
 
-      /*  if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
-        }*/
         if (!isNotificationServiceEnabled()) {
-            //val alertDialog = buildNotificationServiceAlertDialog()
-            // alertDialog.show()
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
@@ -173,7 +156,7 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-        actionbar.setBackgroundDrawable( ColorDrawable(Color.parseColor("#ffffff")))
+        actionbar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
         //endregion
 
         //region ======================================= DrawerLayout =======================================
@@ -200,8 +183,8 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
             drawerLayout!!.closeDrawers()
             true
         }
-        main_layout!!.setOnTouchListener( object: View.OnTouchListener {
-            override fun onTouch(v:View , event: MotionEvent): Boolean {
+        main_layout!!.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
                 val view = this@MainActivity.currentFocus
                 val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 if (view != null) {
@@ -272,10 +255,10 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
 //        if (!hasMenuKey && !hasBackKey) {
 //            gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - resources.getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")) - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
 //        } else {
- //           gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
+        //           gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
 //        }
 //        main_GridView!!.layoutParams = gridParams
-       // main_GridView.height
+        // main_GridView.height
         //endregion
 
         main_Listview = findViewById(R.id.main_list_view_id)
@@ -302,9 +285,9 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         gestionnaireContacts = ContactList(this.applicationContext)
 
         if (main_GridView != null) {
-            if(sharedPreferences.getString("tri","nom").equals("nom")){
+            if (sharedPreferences.getString("tri", "nom").equals("nom")) {
                 gestionnaireContacts!!.sortContactByFirstNameAZ()
-            }else{
+            } else {
                 gestionnaireContacts!!.sortContactByPriority()
             }
 
@@ -345,8 +328,8 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                 }
 
                 override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-                    if(gridViewAdapter!=null) {
-                            gridViewAdapter!!.closeMenu()
+                    if (gridViewAdapter != null) {
+                        gridViewAdapter!!.closeMenu()
                     }
                 }
             })
@@ -365,8 +348,6 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
             edit.apply()
 
             var listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null)
-
-
 
 
 //                phone_call_ImageView!!.setOnClickListener {
@@ -416,13 +397,13 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                 val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedPreferences.getInt("gridview", 4)
                 var filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                gestionnaireContacts!!.contacts=filteredList
-                if(len>1){
+                gestionnaireContacts!!.contacts = filteredList
+                if (len > 1) {
                     gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                     main_GridView!!.adapter = gridViewAdapter
-                }else{
-                    listViewAdapter=ContactListViewAdapter(this@MainActivity,gestionnaireContacts!!.contacts,len)
-                    main_Listview!!.adapter=listViewAdapter
+                } else {
+                    listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                    main_Listview!!.adapter = listViewAdapter
                     listViewAdapter!!.notifyDataSetChanged()
                 }
             }
@@ -476,9 +457,9 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         val triPrio = menu.findItem(R.id.tri_par_priorite)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
-        if(tri.equals("nom")){
+        if (tri.equals("nom")) {
             triNom.setChecked(true)
-        }else{
+        } else {
             triPrio.setChecked(true)
         }
         return true
@@ -524,13 +505,13 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    gestionnaireContacts!!.contacts=filteredContact
-                    if (len>1){
-                        gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    gestionnaireContacts!!.contacts = filteredContact
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
-                    }else{
-                        listViewAdapter= ContactListViewAdapter(this@MainActivity,gestionnaireContacts!!.contacts,len)
-                        main_Listview!!.adapter=listViewAdapter
+                    } else {
+                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_Listview!!.adapter = listViewAdapter
                     }
                     //
                 } else {
@@ -542,13 +523,13 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    gestionnaireContacts!!.contacts=filteredContact
-                    if (len>1){
-                        gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    gestionnaireContacts!!.contacts = filteredContact
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
-                    }else{
-                        listViewAdapter=ContactListViewAdapter(this@MainActivity,gestionnaireContacts!!.contacts,len)
-                        main_Listview!!.adapter=listViewAdapter
+                    } else {
+                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_Listview!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
                     //
@@ -565,13 +546,13 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    gestionnaireContacts!!.contacts=filteredContact
-                    if (len>1){
-                        gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    gestionnaireContacts!!.contacts = filteredContact
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
-                    }else{
-                        listViewAdapter=ContactListViewAdapter(this@MainActivity,gestionnaireContacts!!.contacts,len)
-                        main_Listview!!.adapter=listViewAdapter
+                    } else {
+                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_Listview!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
                     //
@@ -583,13 +564,13 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    gestionnaireContacts!!.contacts=filteredContact
-                    if (len>1){
-                        gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    gestionnaireContacts!!.contacts = filteredContact
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
-                    }else{
-                        listViewAdapter=ContactListViewAdapter(this@MainActivity,gestionnaireContacts!!.contacts,len)
-                        main_Listview!!.adapter=listViewAdapter
+                    } else {
+                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_Listview!!.adapter = listViewAdapter
 
                         listViewAdapter!!.notifyDataSetChanged()
                     }
@@ -597,43 +578,43 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
                 }
                 return true
             }
-            R.id.tri_par_nom ->{
-                if(!item.isChecked){
+            R.id.tri_par_nom -> {
+                if (!item.isChecked) {
                     item.setChecked(true);
                     gestionnaireContacts!!.sortContactByFirstNameAZ()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    if (len>1){
-                        gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
-                    }else{
-                        listViewAdapter=ContactListViewAdapter(this@MainActivity,gestionnaireContacts!!.contacts,len)
-                        main_Listview!!.adapter=listViewAdapter
+                    } else {
+                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_Listview!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
 
-                    val edit:SharedPreferences.Editor=sharedPreferences.edit()
-                    edit.putString("tri","nom")
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putString("tri", "nom")
                     edit.commit()
                 }
             }
-            R.id.tri_par_priorite ->{
-                if(!item.isChecked){
+            R.id.tri_par_priorite -> {
+                if (!item.isChecked) {
                     item.setChecked(true);
                     gestionnaireContacts!!.sortContactByPriority()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    if (len>1){
-                        gridViewAdapter= ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
-                    }else{
-                        listViewAdapter=ContactListViewAdapter(this@MainActivity,gestionnaireContacts!!.contacts,len)
-                        main_Listview!!.adapter=listViewAdapter
+                    } else {
+                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_Listview!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
 
-                    val edit:SharedPreferences.Editor=sharedPreferences.edit()
-                    edit.putString("tri","priorite")
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putString("tri", "priorite")
                     edit.commit()
                 }
             }
@@ -641,22 +622,22 @@ class MainActivity: AppCompatActivity(),DrawerLayout.DrawerListener{
         return super.onOptionsItemSelected(item)
     }
 
-    private fun isNotificationServiceEnabled():Boolean {
-            val pkgName = packageName
-            val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-            if (!TextUtils.isEmpty(str)) {
-                val names = str.split(":")
-                for (i in names.indices) {
-                    val cn = ComponentName.unflattenFromString(names[i])
-                    if (cn != null) {
-                        if (TextUtils.equals(pkgName, cn.packageName)) {
-                            return true
-                        }
+    private fun isNotificationServiceEnabled(): Boolean {
+        val pkgName = packageName
+        val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        if (!TextUtils.isEmpty(str)) {
+            val names = str.split(":")
+            for (i in names.indices) {
+                val cn = ComponentName.unflattenFromString(names[i])
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.packageName)) {
+                        return true
                     }
                 }
             }
-            return false
-        }//TODO: enlever code duplicate
+        }
+        return false
+    }//TODO: enlever code duplicate
 
     private fun toggleNotificationListenerService() {
         val pm = getPackageManager()
