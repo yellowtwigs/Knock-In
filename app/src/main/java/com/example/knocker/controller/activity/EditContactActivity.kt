@@ -193,7 +193,8 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_mail_property = tagMail
             if(phoneNumber!=""){
                 havePhone=true
-            }else if(mail !=""){
+            }
+            if(mail !=""){ ///// havemail toujour false
                 haveMail=true
             }
 
@@ -378,7 +379,16 @@ class EditContactActivity : AppCompatActivity() {
                         val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())
                         val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString())
                         var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
-                        for (i in 0..contact!!.contactDetailList!!.size - 1) {
+                        val nbDetail = contact!!.contactDetailList!!.size - 1
+                        if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
+                            val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString(),"mail",spinnerMailChar,1)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        }
+                        if (nbDetail == -1 && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                            val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString(),"phone",spinnerPhoneChar,0)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        }
+                        for (i in 0..nbDetail) {
                             if (i == 0) {
                                 if(havePhone) {
                                     //println("------------il a un numéro ------")
@@ -386,9 +396,10 @@ class EditContactActivity : AppCompatActivity() {
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
                                     } else
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
-                                    if(edit_contact_Mail!!.editText!!.text.toString() != ""){
+                                    //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
+                                    if(!haveMail && edit_contact_Mail!!.editText!!.text.toString() != ""){
                                         //println("------------et à ajouter un mail------")
-                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString(),"mail",spinnerMailChar,2)
+                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString(),"mail",spinnerMailChar,1)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }else{
@@ -397,9 +408,9 @@ class EditContactActivity : AppCompatActivity() {
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
                                     else
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
-                                    if(edit_contact_PhoneNumber!!.editText!!.text.toString() != ""){
+                                    if(!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != ""){
                                         //println("------------et à ajouter un numéro------")
-                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString(),"phone",spinnerPhoneChar,1)
+                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString(),"phone",spinnerPhoneChar,0)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }
