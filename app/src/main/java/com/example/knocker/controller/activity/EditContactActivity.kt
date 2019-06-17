@@ -201,10 +201,8 @@ class EditContactActivity : AppCompatActivity() {
             val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
             edit_contact_image64 = contactDB!!.contactDB!!.profilePicture64
             if (edit_contact_image64 == "") {
-                println(" contact detail ======= " + edit_contact_rounded_image)
                 edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
             } else {
-                println(" contact detail ======= " + edit_contact_image64)
                 val image64 = edit_contact_image64
                 edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
             }
@@ -274,7 +272,7 @@ class EditContactActivity : AppCompatActivity() {
         val array_adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priority_list)
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         edit_contact_Priority!!.adapter = array_adapter
-        println("edit contact prio === " + edit_contact_priority)
+        //println("edit contact prio === " + edit_contact_priority)
         edit_contact_Priority!!.setSelection(edit_contact_priority)
         edit_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
@@ -344,7 +342,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun getPosItemSpinner(item: String, spinner: Spinner): Int {
         val tailleSpinner: Int = spinner.adapter.count
-        println("taille spinner" + tailleSpinner)
+        //println("taille spinner" + tailleSpinner)
         for (x in 0 until tailleSpinner) {
             if (spinner.getItemAtPosition(x).equals(item)) {
                 return x
@@ -383,23 +381,32 @@ class EditContactActivity : AppCompatActivity() {
                         for (i in 0..contact!!.contactDetailList!!.size - 1) {
                             if (i == 0) {
                                 if(havePhone) {
-                                    println("------------il a un numéro ------")
-                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
-                                    if(!edit_contact_Mail!!.editText!!.text.equals("")){
-                                        println("------------et à ajouter un mail------")
+                                    //println("------------il a un numéro ------")
+                                    if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
+                                    } else
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
+                                    if(edit_contact_Mail!!.editText!!.text.toString() != ""){
+                                        //println("------------et à ajouter un mail------")
                                         val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString(),"mail",spinnerMailChar,2)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }else{
-                                    println("------------il a un seulement un mail ------")
-                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
-                                    if(! edit_contact_PhoneNumber!!.editText!!.text.equals("")){
-                                        println("------------et à ajouter un numéro------")
+                                    //println("------------il a un seulement un mail ------")
+                                    if (haveMail && edit_contact_Mail!!.editText!!.text.toString() == "")
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
+                                    else
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
+                                    if(edit_contact_PhoneNumber!!.editText!!.text.toString() != ""){
+                                        //println("------------et à ajouter un numéro------")
                                         val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString(),"phone",spinnerPhoneChar,1)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }
                             } else if (i == 1) {
+                                if (edit_contact_Mail!!.editText!!.text.toString() == "") {
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
+                                }
                                 edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
                             }
 
@@ -407,15 +414,15 @@ class EditContactActivity : AppCompatActivity() {
 
                         if (edit_contact_imgString != null) {
 
-                            println("edit contact rounded != null "+edit_contact_rounded_image )
+                            //println("edit contact rounded != null "+edit_contact_rounded_image )
                             edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(),  edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
 
                         } else {
-                            println("edit contact rounded == null "+edit_contact_rounded_image )
+                            //println("edit contact rounded == null "+edit_contact_rounded_image )
                             edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
                         contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
-                        println("modify on contact " + contact.contactDB)
+                        //println("modify on contact " + contact.contactDB)
                         val intent = Intent(this@EditContactActivity, MainActivity::class.java)
 
                         intent.putExtra("ContactId", edit_contact_id!!)
@@ -513,7 +520,7 @@ class EditContactActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMAGE_CAPTURE_CODE) {
-                println("image URI = " + imageUri)
+                //println("image URI = " + imageUri)
 
                 val matrix = Matrix()
                 val exif = ExifInterface(getRealPathFromUri(this, imageUri!!));

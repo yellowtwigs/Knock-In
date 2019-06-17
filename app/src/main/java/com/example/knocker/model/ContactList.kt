@@ -384,19 +384,11 @@ class ContactList(var contacts: List<ContactWithAllInformation>,var context:Cont
             var phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
             if (phoneEmail == null)
                 phoneEmail = ""
-<<<<<<< Updated upstream
             println(phoneId+"=id email = "+phoneEmail+" tag=\""+phoneTag+"\"")
             if (phoneTag == null) {
                 phoneTag = "0"
             }
             idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag.toInt()), 4 to "", 5 to "mail")
-=======
-            idAndMail = mapOf(1 to phoneId!!.toInt(),
-                    2 to phoneEmail,
-                    3 to assignTagEmail(phoneTag!!.toInt()),
-                    4 to "",
-                    5 to "mail")
->>>>>>> Stashed changes
             if (contactDetails.isEmpty() || !isDuplicateNumber(idAndMail, contactDetails)) {
                 contactDetails.add(idAndMail)
             }

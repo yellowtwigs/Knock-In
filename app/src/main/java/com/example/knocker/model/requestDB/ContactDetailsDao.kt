@@ -51,4 +51,10 @@ interface ContactDetailsDao {
      */
     @Insert
     fun insert(contactDetailDB: ContactDetailDB)
+    /**
+     * Supprime un [contact detail][ContactDetailDB] dans la base de données.
+     * @param id Int    id du detail
+     */
+    @Query("DELETE FROM contact_details_table WHERE id = :id")
+    fun deleteDetailById(id: Int)
 }

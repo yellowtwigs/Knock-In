@@ -90,7 +90,10 @@
             android:text="@string/settings_theme"
             android:textColor="@color/textColor"
             android:textSize="@dimen/settings_title_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/manage_theme"
