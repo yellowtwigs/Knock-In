@@ -43,7 +43,7 @@
         android:id="@+id/list_contact_item_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/whiteGreyColor"
+        android:background="@color/lightGreyColor"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

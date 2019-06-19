@@ -27,6 +27,7 @@ import com.example.knocker.*
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 
@@ -115,8 +116,8 @@ class AddNewContactActivity : AppCompatActivity() {
 //            add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
 //        }
 
-        avatar = gestionnaireContacts!!.randomDefaultImage(0,"Create")
-        add_new_contact_RoundedImageView!!.setImageResource(gestionnaireContacts!!.randomDefaultImage(avatar,"Get"))
+        avatar = gestionnaireContacts!!.randomDefaultImage(0, "Create")
+        add_new_contact_RoundedImageView!!.setImageResource(gestionnaireContacts!!.randomDefaultImage(avatar, "Get"))
         //region ==================================== SetOnClickListener ====================================
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
@@ -131,16 +132,14 @@ class AddNewContactActivity : AppCompatActivity() {
         array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         //disable keyboard window
-        add_new_contact_layout.setOnTouchListener( object: View.OnTouchListener {
-            override fun onTouch(v:View , event: MotionEvent): Boolean {
-                val view = this@AddNewContactActivity.currentFocus
-                val imm = this@AddNewContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                if (view != null) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
-                }
-                return true
+        add_new_contact_layout.setOnTouchListener { v, event ->
+            val view = this@AddNewContactActivity.currentFocus
+            val imm = this@AddNewContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (view != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
             }
-        })
+            true
+        }
         //
         add_new_contact_Priority!!.adapter = array_adapter
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -165,20 +164,19 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //demmande de confirmation de la création d'un contact en double
     private fun confirmationDuplicate(contactData: ContactDB) {
-        val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("CONTACT DEJA EXISTANT !")
-        builder.setMessage("Un contact porte déjà ce nom. L'enregistrer quand même sous ce nom ?")
-        builder.setPositiveButton("OUI") { _, _ ->
-            main_ContactsDatabase?.contactsDao()?.insert(contactData)
-            val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        builder.setNegativeButton("NON") { _, _ ->
-            //NON
-        }
-        val dialog: android.app.AlertDialog = builder.create()
-        dialog.show()
+
+        MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.add_new_contact_alert_dialog_title)
+                .setMessage(R.string.add_new_contact_alert_dialog_message)
+                .setPositiveButton("Oui") { _, _ ->
+                    main_ContactsDatabase?.contactsDao()?.insert(contactData)
+                    val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .setNegativeButton("Non") { _, _ ->
+                }
+                .show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -189,7 +187,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    var alertDialog = AlertDialog.Builder(this)
+                    val alertDialog = AlertDialog.Builder(this)
                     alertDialog.setTitle("Attention")
                     alertDialog.setMessage("Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?")
 
@@ -205,6 +203,17 @@ class AddNewContactActivity : AppCompatActivity() {
                 }
             }
             R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName)) {
+
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.add_new_contact_alert_dialog_title)
+                        .setMessage(R.string.add_new_contact_alert_dialog_message)
+                        .setPositiveButton("Oui") { _, _ ->
+                        }
+                        .setNegativeButton("Non") { _, _ ->
+                        }
+                        .show()
+
+
                 Toast.makeText(this, "Le champ prénom ne peut pas être vide !", Toast.LENGTH_SHORT).show()
             } else {
                 //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
@@ -259,7 +268,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_add_contact, menu)
+        inflater.inflate(R.menu.menu_add_contact_validate, menu)
         return true
     }
 

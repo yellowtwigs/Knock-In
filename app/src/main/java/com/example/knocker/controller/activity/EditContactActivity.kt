@@ -23,14 +23,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.example.knocker.*
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.CustomAdapterEditText
@@ -60,8 +58,6 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Mail: TextInputLayout? = null
 
     private var gestionnaireContacts: ContactList? = null
-    private var edit_contact_FirstNameEditText: EditText? = null
-
 
     private var edit_contact_RoundedImageView: CircularImageView? = null
     private var edit_contact_Priority: Spinner? = null
@@ -96,8 +92,8 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_imgString: String? = null;
 
 
-    private var havePhone: Boolean= false
-    private var haveMail:Boolean= false
+    private var havePhone: Boolean = false
+    private var haveMail: Boolean = false
     //endregion
 
     @SuppressLint("InflateParams")
@@ -121,7 +117,7 @@ class EditContactActivity : AppCompatActivity() {
         gestionnaireContacts = ContactList(this.applicationContext)
         //endregion
 
-        //region ======================================= FindViewByID =======================================
+        //region ======================================= FindViewById =======================================
 
         edit_contact_ParentLayout = findViewById(R.id.edit_contact_parent_layout)
         edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
@@ -136,31 +132,32 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
         edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete_contact)
 
+        //endregion
+
         //disable keyboard
 
-        edit_contact_ParentLayout!!.setOnTouchListener( object: View.OnTouchListener {
-            override fun onTouch(v:View , event: MotionEvent): Boolean {
-                val view = this@EditContactActivity.currentFocus
-                val imm = this@EditContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                if (view != null) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
-                }
-                return true
+        edit_contact_ParentLayout!!.setOnTouchListener { _, event ->
+            val view = this@EditContactActivity.currentFocus
+            val imm = this@EditContactActivity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (view != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
             }
-        })
+            true
+        }
 
         //edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
         if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
 
-            val contactList= ContactList(this)
-            var contact =contactList.getContactById(edit_contact_id!!)!!
+            val contactList = ContactList(this)
+            val contact = contactList.getContactById(edit_contact_id!!)!!
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
-            var tmpPhone = contact.contactDetailList!!.get(0)
+            val tmpPhone = contact.contactDetailList!!.get(0)
             edit_contact_phone_number = tmpPhone.content
             edit_contact_phone_property = tmpPhone.tag
-            var tmpMail = contact.contactDetailList!!.get(1)
+            val tmpMail = contact.contactDetailList!!.get(1)
             edit_contact_mail = tmpMail.content
             edit_contact_mail_property = tmpMail.tag
             edit_contact_priority = contact.contactDB!!.contactPriority
@@ -175,7 +172,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
             edit_contact_priority = contact.contactDB!!.contactPriority
-            edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture,"Get")
+            edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
             //TODO :enlever code Dupliquer
 
             edit_contact_phone_property = "Mobile"
@@ -191,11 +188,11 @@ class EditContactActivity : AppCompatActivity() {
             val mail = contact.getFirstMail()
             edit_contact_mail = mail
             edit_contact_mail_property = tagMail
-            if(phoneNumber!=""){
-                havePhone=true
+            if (phoneNumber != "") {
+                havePhone = true
             }
-            if(mail !=""){ ///// havemail toujour false
-                haveMail=true
+            if (mail != "") { ///// havemail toujour false
+                haveMail = true
             }
 
             val id = edit_contact_id
@@ -226,8 +223,8 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_LastName!!.editText!!.setText(edit_contact_last_name)
         edit_contact_PhoneNumber!!.editText!!.setText(edit_contact_phone_number)
         edit_contact_Mail!!.editText!!.setText(edit_contact_mail)
-        edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property!!, edit_contact_Mail_Property!!))
-        edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property!!, edit_contact_Phone_Property!!))
+        edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property, edit_contact_Mail_Property!!))
+        edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property, edit_contact_Phone_Property!!))
 
         textChanged(edit_contact_FirstName, edit_contact_FirstName!!.editText!!.text?.toString())
         textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
@@ -381,36 +378,36 @@ class EditContactActivity : AppCompatActivity() {
                         var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         val nbDetail = contact!!.contactDetailList!!.size - 1
                         if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString(),"mail",spinnerMailChar,1)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 1)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (nbDetail == -1 && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString(),"phone",spinnerPhoneChar,0)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         for (i in 0..nbDetail) {
                             if (i == 0) {
-                                if(havePhone) {
+                                if (havePhone) {
                                     //println("------------il a un numéro ------")
                                     if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
                                     } else
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
                                     //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
-                                    if(!haveMail && edit_contact_Mail!!.editText!!.text.toString() != ""){
+                                    if (!haveMail && edit_contact_Mail!!.editText!!.text.toString() != "") {
                                         //println("------------et à ajouter un mail------")
-                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_Mail!!.editText!!.text.toString(),"mail",spinnerMailChar,1)
+                                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 1)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
-                                }else{
+                                } else {
                                     //println("------------il a un seulement un mail ------")
                                     if (haveMail && edit_contact_Mail!!.editText!!.text.toString() == "")
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
                                     else
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
-                                    if(!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != ""){
+                                    if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
                                         //println("------------et à ajouter un numéro------")
-                                        val detail = ContactDetailDB(null,contact.getContactId(),edit_contact_PhoneNumber!!.editText!!.text.toString(),"phone",spinnerPhoneChar,0)
+                                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }
@@ -426,7 +423,7 @@ class EditContactActivity : AppCompatActivity() {
                         if (edit_contact_imgString != null) {
 
                             //println("edit contact rounded != null "+edit_contact_rounded_image )
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(),  edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
+                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_imgString!!, edit_contact_Priority!!.selectedItem.toString().toInt()) //edit contact rounded maybe not work
 
                         } else {
                             //println("edit contact rounded == null "+edit_contact_rounded_image )
@@ -452,7 +449,7 @@ class EditContactActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_add_contact, menu)
+        inflater.inflate(R.menu.menu_add_contact_validate, menu)
         return true
     }
 
@@ -586,39 +583,39 @@ class EditContactActivity : AppCompatActivity() {
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
-    private fun addField() {
-        val editText = EditText(this)
-        val edit_contact_MiddleName = TextInputLayout(this@EditContactActivity)
-
-        val paramsEditText = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
-
-        val paramsTextLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                R.dimen.edit_text_height)
-//        paramsTextLayout.(0, 5, 0, 0)
-
-        editText.maxLines = 1
-        editText.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-        editText.background = ContextCompat.getDrawable(this@EditContactActivity, R.drawable.custom_edit_text)
-        editText.setTextColor(ContextCompat.getColor(this@EditContactActivity, R.color.textColor))
-
-        edit_contact_MiddleName.id = R.id.edit_contact_middle_name_id
-        edit_contact_MiddleName.hint = resources.getString(R.string.edit_contact_first_name)
-        edit_contact_MiddleName.layoutParams = paramsTextLayout
-        edit_contact_MiddleName.addView(editText, paramsEditText)
-
-//        val constraintSet = ConstraintSet()
-//        constraintSet.clone(edit_contact_ParentLayout);
-//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.TOP, edit_contact_ParentLayout!!.id, ConstraintSet.TOP, 18);
-//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.LEFT, edit_contact_ParentLayout!!.id, ConstraintSet.LEFT, 18);
-//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.RIGHT, edit_contact_ParentLayout!!.id, ConstraintSet.RIGHT, 18);
-//        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.BOTTOM, edit_contact_ParentLayout!!.id, ConstraintSet.BOTTOM, 18);
+//    private fun addField() {
+//        val editText = EditText(this)
+//        val edit_contact_MiddleName = TextInputLayout(this@EditContactActivity)
 //
-//        constraintSet.applyTo(edit_contact_ParentLayout);
-
-//                            edit_contact_MiddleName.requestLayout()
-        edit_contact_ParentLayout!!.addView(edit_contact_MiddleName)
-    }
+//        val paramsEditText = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT)
+//
+//        val paramsTextLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                R.dimen.edit_text_height)
+////        paramsTextLayout.(0, 5, 0, 0)
+//
+//        editText.maxLines = 1
+//        editText.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+//        editText.background = ContextCompat.getDrawable(this@EditContactActivity, R.drawable.custom_edit_text)
+//        editText.setTextColor(ContextCompat.getColor(this@EditContactActivity, R.color.textColorDark))
+//
+//        edit_contact_MiddleName.id = R.id.edit_contact_middle_name_id
+//        edit_contact_MiddleName.hint = resources.getString(R.string.edit_contact_first_name)
+//        edit_contact_MiddleName.layoutParams = paramsTextLayout
+//        edit_contact_MiddleName.addView(editText, paramsEditText)
+//
+////        val constraintSet = ConstraintSet()
+////        constraintSet.clone(edit_contact_ParentLayout);
+////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.TOP, edit_contact_ParentLayout!!.id, ConstraintSet.TOP, 18);
+////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.LEFT, edit_contact_ParentLayout!!.id, ConstraintSet.LEFT, 18);
+////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.RIGHT, edit_contact_ParentLayout!!.id, ConstraintSet.RIGHT, 18);
+////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.BOTTOM, edit_contact_ParentLayout!!.id, ConstraintSet.BOTTOM, 18);
+////
+////        constraintSet.applyTo(edit_contact_ParentLayout);
+//
+////                            edit_contact_MiddleName.requestLayout()
+//        edit_contact_ParentLayout!!.addView(edit_contact_MiddleName)
+//    }
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): android.app.AlertDialog {

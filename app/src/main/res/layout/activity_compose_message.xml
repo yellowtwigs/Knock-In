@@ -93,7 +93,7 @@
             android:layout_marginBottom="8dp"
             android:background="@android:color/transparent"
             android:inputType="textLongMessage"
-            android:textColor="@color/textColor"
+            android:textColor="@color/textColorDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/compose_message_chatbox_send"
             app:layout_constraintStart_toEndOf="@+id/compose_message_attachement"

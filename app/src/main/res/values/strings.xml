@@ -21,6 +21,7 @@
 
     <string name="left_drawer_knockons">Knockons</string>
 
+    <string name="left_drawer_address_book">Mon carnet d\'adresse</string>
     <string name="left_drawer_information">Mes informations</string>
     <string name="left_drawer_notif_config">Paramètres de notification</string>
     <string name="left_drawer_my_screen">Affichage</string>
@@ -91,6 +92,9 @@
 
     <string name="add_new_contact_add_field">Ajouter un champ</string>
     <string name="add_new_contact_validate">Valider</string>
+
+    <string name="add_new_contact_alert_dialog_title">Contact déjà existant</string>
+    <string name="add_new_contact_alert_dialog_message">Un contact porte déjà ce nom. Voulez-vous tout de même l\'enregistrer sous ce nom ?</string>
 
     <!-- endregion !-->
 
@@ -171,7 +175,7 @@
 
     <!-- region Alert Dialog Notifications -->
 
-    <string name="alert_dialog_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être déranger par des messages inutile</string>
+    <string name="alert_dialog_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être déranger par des messages inutiles</string>
     <string name="alert_dialog_notification_allow_it">Autoriser</string>
     <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
 
@@ -199,12 +203,6 @@
 
     <!-- endregion -->
 
-    <!-- region Synchronize Contact -->
-
-    <string name="accept_activity_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être dérangé par des messages inutiles</string>
-
-    <!-- endregion -->
-
     <!-- region First Launch -->
 
     <string name="first_launch_welcome">Bienvenue sur Knocker</string>
@@ -229,4 +227,16 @@
 
     <!-- endregion -->
 
+    <!-- region Multi Select -->
+
+        <!-- region Alert Dialog -->
+
+        <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
+        <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
+        <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
+        <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
+
+        <!-- endregion -->
+
+    <!-- endregion -->
 </resources>

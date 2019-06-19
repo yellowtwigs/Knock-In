@@ -36,7 +36,6 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:alpha="0.95"
-        app:background="@drawable/border_bottom_nav_view"
         app:itemIconTint="@color/bottom_navigation_color"
         app:itemTextColor="@color/bottom_navigation_color"
         app:layout_constraintBottom_toBottomOf="parent"

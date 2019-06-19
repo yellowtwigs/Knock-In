@@ -25,7 +25,7 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity"/>
+        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
         <activity android:name=".controller.activity.firstLaunch.SynchronizeContactActivity" />
         <activity android:name=".controller.activity.firstLaunch.AcceptNotificationActivity" />
         <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity" />

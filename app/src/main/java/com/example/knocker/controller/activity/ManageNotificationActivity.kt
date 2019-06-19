@@ -47,16 +47,16 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
-        val remindHour= this.findViewById<TextView>(R.id.textView_heure)
-        val viewHour= this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
+        val remindHour = this.findViewById<TextView>(R.id.textView_heure)
+        val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
         switchPopupNotif.isChecked = sharedPreferences.getBoolean("popupNotif", false)
         switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", true)
 
-        var hour=sharedPreferences.getInt("remindHour",18)
-        var minute = sharedPreferences.getInt("remindMinute",0)
+        var hour = sharedPreferences.getInt("remindHour", 18)
+        var minute = sharedPreferences.getInt("remindMinute", 0)
 
-        remindHour.setText(hourGetstring(hour,minute))
+        remindHour.setText(hourGetstring(hour, minute))
         setReminderAlarm(hour, minute)
         //region ========================================== Toolbar =========================================
 
@@ -75,19 +75,19 @@ class ManageNotificationActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        val headerView = navigationView.getHeaderView(0);
-        my_knocker = headerView.findViewById(R.id.my_knocker)
+        val menu = navigationView.menu
+        val nav_item = menu.findItem(R.id.nav_notif_config)
+        nav_item.isChecked = true
 
-        my_knocker!!.setOnClickListener {
-            startActivity(Intent(this@ManageNotificationActivity,MainActivity::class.java))
-        }
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
 
-            val id = menuItem.itemId
+            when (menuItem.itemId) {
+                R.id.nav_address_book -> {
+                    startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
+                }
 
-            when (id) {
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
@@ -148,18 +148,18 @@ class ManageNotificationActivity : AppCompatActivity() {
 
 
         viewHour.setOnClickListener({
-            val timePickerDialog= TimePickerDialog(this, TimePickerDialog.OnTimeSetListener(
-                    function = {view,h,m->
-                        val editor=sharedPreferences.edit()
-                        editor.putInt("remindHour",h)
-                        editor.putInt("remindMinute",m)
+            val timePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener(
+                    function = { view, h, m ->
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("remindHour", h)
+                        editor.putInt("remindMinute", m)
                         editor.commit()
-                        remindHour.setText(hourGetstring(h,m))
-                        hour=h
-                        minute=m
+                        remindHour.setText(hourGetstring(h, m))
+                        hour = h
+                        minute = m
                         setReminderAlarm(hour, minute)
                     }
-            ),hour,minute,true)
+            ), hour, minute, true)
             timePickerDialog.show()
         })
 
@@ -168,8 +168,8 @@ class ManageNotificationActivity : AppCompatActivity() {
     //region ========================================== Functions =========================================
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater=menuInflater
-        inflater.inflate(R.menu.menu_help,menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_help, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -179,7 +179,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 drawerLayout!!.openDrawer(GravityCompat.START)
                 return true
             }
-            R.id.item_help ->{
+            R.id.item_help -> {
                 val alertDialogBuilder = android.app.AlertDialog.Builder(this)
                 alertDialogBuilder.setMessage(this.resources.getString(R.string.help_notification_manager))
                 alertDialogBuilder.show()
@@ -191,26 +191,26 @@ class ManageNotificationActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun buildNotificationServiceAlertDialog(): androidx.appcompat.app.AlertDialog {
         val inflater: LayoutInflater = this.layoutInflater
-        val alertView: View = inflater.inflate(R.layout.alert_dialog_notification, null)
+        val alertView: View = inflater.inflate(R.layout.alert_dialog_catch_notification, null)
 
-        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.button_alert_dialog_allow_it)
-        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveFloatingDeleteButtonClick() }
+        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_allow_it)
+        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick() }
 
-        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.tv_alert_dialog_dismiss)
-        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeFloatingDeleteButtonClick() }
+        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_dismiss)
+        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick() }
 
         return MaterialAlertDialogBuilder(this)
                 .setView(alertView)
                 .show()
     }
 
-    private fun positiveFloatingDeleteButtonClick() {
+    private fun positiveAlertDialogButtonClick() {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
-        intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
+        intentFilter.addAction("com.example.knocker.notificationExemple")
     }
 
-    private fun negativeFloatingDeleteButtonClick() {
+    private fun negativeAlertDialogButtonClick() {
 
     }
 
@@ -231,32 +231,34 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
             return false
         }
-    private fun hourGetstring(hour:Int,minute:Int):String{
-        var textRemind:String=""
-        if(hour<10){
-            textRemind+="0"+hour
-        }else{
-            textRemind+=hour
+
+    private fun hourGetstring(hour: Int, minute: Int): String {
+        var textRemind: String = ""
+        if (hour < 10) {
+            textRemind += "0" + hour
+        } else {
+            textRemind += hour
         }
-        textRemind+=":"
-        if(minute<10){
-            textRemind+="0"+minute
-        }else{
-            textRemind+=minute
+        textRemind += ":"
+        if (minute < 10) {
+            textRemind += "0" + minute
+        } else {
+            textRemind += minute
         }
         println(textRemind)
         return textRemind
     }
-    private fun setReminderAlarm(hour:Int,minute:Int){
-        val calendar=Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,hour)
-        calendar.set(Calendar.MINUTE,minute)
-        calendar.set(Calendar.SECOND,0)
-        val intent=Intent(applicationContext,NotificationSender::class.java)
+
+    private fun setReminderAlarm(hour: Int, minute: Int) {
+        val calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        calendar.set(Calendar.SECOND, 0)
+        val intent = Intent(applicationContext, NotificationSender::class.java)
         intent.setAction("NOTIFICAION_TIME")
-        val pendingIntent=PendingIntent.getBroadcast(applicationContext,100,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,AlarmManager.INTERVAL_DAY,pendingIntent)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
         //cancel previous app
 

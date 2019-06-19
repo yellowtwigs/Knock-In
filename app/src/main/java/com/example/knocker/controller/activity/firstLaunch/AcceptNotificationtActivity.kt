@@ -26,7 +26,7 @@ class AcceptNotificationActivity : AppCompatActivity() {
             println("test")
             startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
             val intentFilter = IntentFilter()
-            intentFilter.addAction("com.example.firsttestknocker.notificationExemple")
+            intentFilter.addAction("com.example.knocker.notificationExemple")
             activityVisible = false
             screenGesture()
         }

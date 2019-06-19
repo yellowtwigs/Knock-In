@@ -4,6 +4,10 @@
         android:id="@+id/menu_top"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_address_book"
+            android:icon="@drawable/ic_phone_book"
+            android:title="@string/left_drawer_address_book" />
+        <item
             android:id="@+id/nav_informations"
             android:icon="@drawable/ic_avatar"
             android:title="@string/left_drawer_information" />

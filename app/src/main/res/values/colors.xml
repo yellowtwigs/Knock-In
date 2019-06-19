@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="knockerColorPrimary">#ffd71e</color>
-    <color name="knockerColorPrimaryDark">#eca700</color>
+    <!-- region Universal Color -->
 
-    <color name="backgroundColor">#00bebebc</color>
-    <color name="textColor">#2B2B2B</color>
+    <color name="colorPrimary">#f0c02a</color>
+    <color name="colorPrimaryDark">#e4b41e</color>
+
+    <color name="backgroundColor">#fafafa</color>
+    <color name="backgroundPressedColor">@color/lightGreyColor</color>
+
+    <color name="textColorDark">#2c2c2c</color>
+    <color name="textColorLight">@color/lightGreyColor</color>
+    <color name="textColorDarkGrey">@color/darkGreyColor</color>
+
     <color name="whiteColor">#FFFFFF</color>
-    <color name="transparentColor">#33d5d5d5</color>
-    <color name="textColorLight">#772D2D2D</color>
-    <color name="relativeLayoutPressedColor">#ececec</color>
-    <color name="whiteGreyColor">#f9f9f9</color>
+    <color name="blackColor">#000000</color>
+    <color name="greyColor">#e6e6e6</color>
 
-    <color name="nav_header_textColor">#2B2B2B</color>
+    <color name="transparentColor">#33ffffff</color>
 
-    <color name="rounded_button_focused_color">#649bc8</color>
-    <color name="rounded_button_unfocused_color">#71a3e1</color>
-    <color name="rounded_button_pressed_color">#5a91be</color>
+    <color name="lightGreyColor">#f0f0f0</color>
+    <color name="darkGreyColor">#646464</color>
 
-    <color name="editTextBackgroundColor">#eeeeee</color>
+    <!-- endregion -->
 
-    <color name="backgroundColorDark">#282828</color>
-    <color name="textColorDark">#f3f3f3</color>
-    <color name="black">#000000</color>
-    <color name="textColor_lightDark">#77c8c8c8</color>
-    <color name="relativeLayoutPressedColorDark">#777777</color>
-    <color name="whiteGreyColorDark">#646464</color>
-    <color name="borderBottomView">#dddddd</color>
-    <color name="priorityZero">#b20000 </color>
-    <color name="priorityOne">#FFFFFF </color>
-    <color name="priorityTwo">#DAA520 </color>
+    <!-- region Rounded Button Colors -->
+
+    <color name="rounded_button_focused_blue">#649bc8</color>
+    <color name="rounded_button_color_blue">#3baae6</color>
+    <color name="rounded_button_pressed_blue">#5a91be</color>
+
+    <color name="rounded_button_focused_white">#AAf6f6f6</color>
+    <color name="rounded_button_color_white">@color/backgroundColor</color>
+    <color name="rounded_button_pressed_white">#ebebeb</color>
+
+    <!-- endregion -->
+
+    <!-- region priority Colors -->
+
+    <color name="priorityZeroColor">#b20000</color>
+    <color name="priorityOneColor">#FFFFFF</color>
+    <color name="priorityTwoColor">#DAA520</color>
+
+    <!-- endregion -->
 </resources>

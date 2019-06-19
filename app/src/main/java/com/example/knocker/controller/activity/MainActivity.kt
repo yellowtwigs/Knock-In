@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-        //region ====================================== FindViewById() ======================================
+        //region ======================================= FindViewById =======================================
 
         // Floating Button
         main_FloatingButtonAdd = findViewById(R.id.main_floating_button_open_id)
@@ -165,10 +165,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        val headerView = navigationView.getHeaderView(0)
-        val menu = navigationView.getMenu()
+        val menu = navigationView.menu
+        val nav_item = menu.findItem(R.id.nav_address_book)
+        nav_item.isChecked = true
         val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
-        nav_sync_contact.setVisible(true)
+        nav_sync_contact.isVisible = true
 
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
@@ -188,38 +189,33 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             true
         }
-        main_layout!!.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-                val view = this@MainActivity.currentFocus
-                val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                if (view != null) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
-                }
-                return true
-            }
-        })
-        my_knocker = headerView.findViewById(R.id.my_knocker)
 
-        my_knocker!!.setOnClickListener {
+        main_layout!!.setOnTouchListener { v, event ->
+            val view = this@MainActivity.currentFocus
+            val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (view != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
+            }
+            true
         }
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
 
-            val id = menuItem.itemId
-
-            if (id == R.id.nav_informations) {
-                startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
-            } else if (id == R.id.nav_notif_config) {
-                startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
-            } else if (id == R.id.nav_screen_config) {
-                startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
-            } else if (id == R.id.nav_data_access) {
-            } else if (id == R.id.nav_knockons) {
-                startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
-            } else if (id == R.id.nav_statistics) {
-            } else if (id == R.id.nav_help) {
-                startActivity(Intent(this@MainActivity, HelpActivity::class.java))
+            when (menuItem.itemId) {
+                R.id.nav_address_book -> {
+                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+                }
+                R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
+                R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
+                R.id.nav_screen_config -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_data_access -> {
+                }
+                R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_statistics -> {
+                }
+                R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)

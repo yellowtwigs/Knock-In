@@ -3,17 +3,14 @@
     <!-- Base application theme. -->
     <!-- Light/Day Mode theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/knockerColorPrimary</item>
-        <item name="colorPrimaryDark">@color/knockerColorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="backgroundColor">@color/backgroundColor</item>
-        <item name="textColor">@color/textColor</item>
+        <item name="textColor">@color/textColorDark</item>
         <item name="textColorLight">@color/textColorLight</item>
-        <item name="relativeLayoutPressedColor">@color/relativeLayoutPressedColor</item>
-        <item name="whiteGreyColor">@color/whiteGreyColor</item>
-        <item name="colorSurface">@color/whiteGreyColor</item>
+        <item name="lightGreyColor">@color/lightGreyColor</item>
+        <item name="colorSurface">@color/lightGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
     </style>
 

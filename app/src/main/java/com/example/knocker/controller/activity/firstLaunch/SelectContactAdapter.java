@@ -29,18 +29,20 @@ import java.util.List;
 import java.util.Random;
 
 public class SelectContactAdapter extends BaseAdapter {
+
     private ContactList gestionnaireContact;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
-    private HashMap<ContactWithAllInformation,Boolean> hashMapSelectedItem;
+    private HashMap<ContactWithAllInformation, Boolean> hashMapSelectedItem;
+
     public SelectContactAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
-        this.gestionnaireContact= contactList;
+        this.gestionnaireContact = contactList;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
-        hashMapSelectedItem= new HashMap<ContactWithAllInformation,Boolean>();
-        for (ContactWithAllInformation contact :gestionnaireContact.getContacts()) {
+        hashMapSelectedItem = new HashMap<ContactWithAllInformation, Boolean>();
+        for (ContactWithAllInformation contact : gestionnaireContact.getContacts()) {
             hashMapSelectedItem.put(contact, false);
         }
     }
@@ -62,7 +64,7 @@ public class SelectContactAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        System.out.println("into view position "+position);
+        System.out.println("into view position " + position);
         View gridview = convertView;
         final ViewHolder holder;
 
@@ -113,7 +115,7 @@ public class SelectContactAdapter extends BaseAdapter {
             System.out.println("convert is  not null");
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.isSelect=false;
+        holder.isSelect = false;
 
         final ContactDB contact = getItem(position).getContactDB();
 
@@ -131,11 +133,11 @@ public class SelectContactAdapter extends BaseAdapter {
             Spannable spanFistName = new SpannableString(firstname);
             spanFistName.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(spanFistName);
-            if(contact.getLastName().length()>12)
-                lastName =contact.getLastName().substring(0,10).concat("..");
+            if (contact.getLastName().length() > 12)
+                lastName = contact.getLastName().substring(0, 10).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.9f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 5) {
@@ -146,12 +148,12 @@ public class SelectContactAdapter extends BaseAdapter {
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.knockerColorPrimary));
-            if(contact.getLastName().length()>11)
-                lastName =contact.getLastName().substring(0,9).concat("..");
+            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            if (contact.getLastName().length() > 11)
+                lastName = contact.getLastName().substring(0, 9).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.8f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.8f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 6) {
@@ -162,11 +164,11 @@ public class SelectContactAdapter extends BaseAdapter {
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.71f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            if(contact.getLastName().length()>10)
-                lastName =contact.getLastName().substring(0,8).concat("..");
+            if (contact.getLastName().length() > 10)
+                lastName = contact.getLastName().substring(0, 8).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.71f),0,lastName.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.71f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (!contact.getProfilePicture64().equals("")) {
@@ -176,13 +178,14 @@ public class SelectContactAdapter extends BaseAdapter {
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
         }
-        if(hashMapSelectedItem.get(getItem(position))){
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
-        }else{
+        if (hashMapSelectedItem.get(getItem(position))) {
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+        } else {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.whiteColor));
         }
         return gridview;
     }
+
     static class ViewHolder {
         TextView contactFirstNameView;
         TextView contactLastNameView;
@@ -198,19 +201,21 @@ public class SelectContactAdapter extends BaseAdapter {
         //options.inSampleSize = 2;
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
     }
-    public void itemSelected(int position){
 
-        ContactWithAllInformation contact=getItem(position);
-        if(hashMapSelectedItem.get(contact)){
-            hashMapSelectedItem.put(contact,false);
-        }else{
-            hashMapSelectedItem.put(contact,true);
+    public void itemSelected(int position) {
+
+        ContactWithAllInformation contact = getItem(position);
+        if (hashMapSelectedItem.get(contact)) {
+            hashMapSelectedItem.put(contact, false);
+        } else {
+            hashMapSelectedItem.put(contact, true);
         }
     }
-    public ArrayList<ContactWithAllInformation> listContactSelect(){
-        ArrayList<ContactWithAllInformation> contactList=new ArrayList<>();
-        for(int i=0; i< getCount();i++){
-            if(hashMapSelectedItem.get(getItem(i))){
+
+    public ArrayList<ContactWithAllInformation> listContactSelect() {
+        ArrayList<ContactWithAllInformation> contactList = new ArrayList<>();
+        for (int i = 0; i < getCount(); i++) {
+            if (hashMapSelectedItem.get(getItem(i))) {
                 contactList.add(getItem(i));
             }
         }

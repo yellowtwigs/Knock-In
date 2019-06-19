@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/knockerColorPrimary"
+            android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +55,7 @@
                 android:maxLines="1"
                 android:inputType="textPersonName"
                 android:background="@drawable/custom_edit_text"
-                android:textColor="@color/textColor" />
+                android:textColor="@color/textColorDark" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +75,7 @@
                 android:maxLines="1"
                 android:inputType="textPersonName"
                 android:background="@drawable/custom_edit_text"
-                android:textColor="@color/textColor" />
+                android:textColor="@color/textColorDark" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +107,7 @@
                 android:maxLines="1"
                 android:inputType="phone"
                 android:background="@drawable/custom_edit_text"
-                android:textColor="@color/textColor" />
+                android:textColor="@color/textColorDark" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,7 +138,7 @@
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
                 android:background="@drawable/custom_edit_text"
-                android:textColor="@color/textColor" />
+                android:textColor="@color/textColorDark" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

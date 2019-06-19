@@ -18,7 +18,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/knockerColorPrimary"
+        android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
             android:background="@drawable/custom_edit_text"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColorDark" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@
             android:background="@drawable/custom_edit_text"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColorDark" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,7 +103,7 @@
             android:background="@drawable/custom_edit_text"
             android:inputType="phone"
             android:maxLines="1"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColorDark" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,7 +134,7 @@
             android:background="@drawable/custom_edit_text"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColorDark" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ListView

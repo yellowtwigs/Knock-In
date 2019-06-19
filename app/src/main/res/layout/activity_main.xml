@@ -16,7 +16,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/floating_button_margin"
         android:layout_marginBottom="80dp"
-        android:backgroundTint="@color/knockerColorPrimary"
+        android:background="@drawable/ic_floating_button_add"
         android:elevation="6dp"
         android:visibility="visible"
         app:srcCompat="@drawable/ic_add" />

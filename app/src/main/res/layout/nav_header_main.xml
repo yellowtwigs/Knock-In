@@ -5,7 +5,7 @@
     android:layout_height="75dp"
     android:clickable="true"
     android:focusable="true"
-    android:background="@drawable/selector_relative_layout_with_border">
+    android:background="@drawable/selector_relative_layout">
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
     android:layout_centerVertical="true"
     android:text="@string/app_name"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-    android:textColor="@color/nav_header_textColor"
+    android:textColor="@color/colorPrimary"
     android:textSize="21sp" />
     <View
         android:layout_width="match_parent"

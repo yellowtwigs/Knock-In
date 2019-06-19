@@ -72,7 +72,7 @@ class EditInformationsActivity : AppCompatActivity() {
     private var edit_informations_InputEmail: TextInputEditText? = null
     private var edit_informations_InputName: TextInputEditText? = null
 
-    private var edit_informations_NameText:TextView?=null
+    private var edit_informations_NameText: TextView? = null
     private var edit_informations_MailText: TextView? = null
     private var edit_informations_PhoneNumberText: TextView? = null
 
@@ -104,21 +104,22 @@ class EditInformationsActivity : AppCompatActivity() {
 
         // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
+
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        val headerView = navigationView.getHeaderView(0);
-        my_knocker = headerView.findViewById(R.id.my_knocker)
+        val menu = navigationView.menu
+        val nav_item = menu.findItem(R.id.nav_informations)
+        nav_item.isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
 
-            val id = menuItem.itemId
+            when (menuItem.itemId) {
 
-            when (id) {
-
-                R.id.nav_informations -> {
+                R.id.nav_address_book -> {
+                    startActivity(Intent(this@EditInformationsActivity, MainActivity::class.java))
                 }
-                R.id.nav_notif_config -> startActivity(Intent(this@EditInformationsActivity,ManageNotificationActivity::class.java))
+                R.id.nav_notif_config -> startActivity(Intent(this@EditInformationsActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
@@ -152,17 +153,13 @@ class EditInformationsActivity : AppCompatActivity() {
         edit_informations_InputEmail = findViewById(R.id.edit_informations_input_email)
         edit_informations_InputName = findViewById(R.id.edit_informations_input_name)
 
-        edit_informations_MailText=findViewById(R.id.edit_informations_email_text)
-        edit_informations_NameText=findViewById(R.id.edit_informations_name_text)
-        edit_informations_PhoneNumberText=findViewById(R.id.edit_informations_number_text)
+        edit_informations_MailText = findViewById(R.id.edit_informations_email_text)
+        edit_informations_NameText = findViewById(R.id.edit_informations_name_text)
+        edit_informations_PhoneNumberText = findViewById(R.id.edit_informations_number_text)
         edit_information_layout = findViewById(R.id.my_informations_layout_id)
         //endregion
 
         //region ========================================= Listener =========================================
-
-        my_knocker!!.setOnClickListener {
-            startActivity(Intent(this@EditInformationsActivity, MainActivity::class.java))
-        }
 
         edit_informations_ProfileImage!!.setOnClickListener {
             SelectImage()
@@ -178,8 +175,8 @@ class EditInformationsActivity : AppCompatActivity() {
 
         // endregion
         // disable keyboard
-        edit_information_layout!!.setOnTouchListener( object: View.OnTouchListener {
-            override fun onTouch(v:View , event: MotionEvent): Boolean {
+        edit_information_layout!!.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
                 val view = this@EditInformationsActivity.currentFocus
                 val imm = this@EditInformationsActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 if (view != null) {
@@ -201,8 +198,8 @@ class EditInformationsActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater=menuInflater
-        inflater.inflate(R.menu.menu_help,menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_help, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -333,7 +330,7 @@ class EditInformationsActivity : AppCompatActivity() {
                 hideKeyboard()
                 return true
             }
-            R.id.item_help ->{
+            R.id.item_help -> {
                 val alertDialogBuilder = android.app.AlertDialog.Builder(this)
                 alertDialogBuilder.setMessage(this.resources.getString(R.string.help_my_information))
                 alertDialogBuilder.show()

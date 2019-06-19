@@ -10,9 +10,9 @@
         android:id="@+id/first_launch_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/first_launch_welcome"
-        android:textColor="@color/knockerColorPrimary"
         android:layout_marginTop="50dp"
+        android:text="@string/first_launch_welcome"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/first_launch_welcome_long_text"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/textColorDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/first_launch_welcome" />
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/first_launch_welcome_long_text"
         app:srcCompat="@drawable/ic_letter_k" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/first_launch_accept_politique"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,10 +56,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
+        android:autoLink="web"
         android:text="@string/first_launch_confidentiality"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textColorLink="@color/knockerColorPrimary"
+        android:textColor="@color/textColorDark"
+        android:textColorLink="@color/text_link_selector"
         app:layout_constraintBottom_toTopOf="@+id/first_launch_accept_politique"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

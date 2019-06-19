@@ -18,6 +18,6 @@
         android:layout_margin="20dp"
         android:layout_centerVertical="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/nav_header_textColor"
+        android:textColor="@color/textColorDark"
         android:textSize="15sp" />
 </RelativeLayout>

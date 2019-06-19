@@ -91,19 +91,18 @@ class ManageMyScreenActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        val headerView = navigationView.getHeaderView(0);
-        my_knocker = headerView.findViewById(R.id.my_knocker)
+        val menu = navigationView.menu
+        val nav_item = menu.findItem(R.id.nav_screen_config)
+        nav_item.isChecked = true
 
-        my_knocker!!.setOnClickListener {
-            startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
-        }
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
 
-            val id = menuItem.itemId
-
-            when (id) {
+            when (menuItem.itemId) {
+                R.id.nav_address_book -> {
+                    startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
+                }
                 R.id.nav_informations -> startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> {
@@ -124,23 +123,20 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         //region ==================================== SetOnClickListener ====================================
 
-        my_knocker!!.setOnClickListener {
-            startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
-        }
-        if(nbGrid==1){
-            tv_one!!.setBackgroundResource(R.drawable.border_imageview)
-        }else if (nbGrid == 3) {
-            tv_three!!.setBackgroundResource(R.drawable.border_imageview)
+        if (nbGrid == 1) {
+            tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
+        } else if (nbGrid == 3) {
+            tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
         } else if (nbGrid == 4) {
-            tv_four!!.setBackgroundResource(R.drawable.border_imageview)
+            tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
         } else if (nbGrid == 5) {
-            tv_five!!.setBackgroundResource(R.drawable.border_imageview)
+            tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
         } else if (nbGrid == 6) {
-            tv_six!!.setBackgroundResource(R.drawable.border_imageview)
+            tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
         }
-        tv_one?.setOnClickListener{
-            nbGrid=1
-            tv_three!!.background=null
+        tv_one?.setOnClickListener {
+            nbGrid = 1
+            tv_three!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
             tv_six!!.background = null
@@ -148,49 +144,49 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
         tv_three?.setOnClickListener {
             nbGrid = 3
-             val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
-             Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
-            tv_one!!.background=null
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_one!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
             tv_six!!.background = null
-            tv_three!!.setBackgroundResource(R.drawable.border_imageview)
+            tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
             changeGridColumn()
         }
 
         tv_four?.setOnClickListener {
             nbGrid = 4
-             val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
-             Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
-            tv_one!!.background=null
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_one!!.background = null
             tv_three!!.background = null
             tv_five!!.background = null
             tv_six!!.background = null
-            tv_four!!.setBackgroundResource(R.drawable.border_imageview)
+            tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
             changeGridColumn()
         }
 
         tv_five?.setOnClickListener {
             nbGrid = 5
-             val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
-             Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
-            tv_one!!.background=null
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_one!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null
             tv_six!!.background = null
-            tv_five!!.setBackgroundResource(R.drawable.border_imageview)
+            tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
             changeGridColumn()
         }
 
         tv_six?.setOnClickListener {
             nbGrid = 6
-            val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
-            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
-            tv_one!!.background=null
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_one!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
-            tv_six!!.setBackgroundResource(R.drawable.border_imageview)
+            tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
             changeGridColumn()
         }
 
@@ -242,8 +238,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater=menuInflater
-        inflater.inflate(R.menu.menu_help,menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_help, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -253,7 +249,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 drawerLayout!!.openDrawer(GravityCompat.START)
                 return true
             }
-            R.id.item_help ->{
+            R.id.item_help -> {
                 val alertDialogBuilder = android.app.AlertDialog.Builder(this)
                 alertDialogBuilder.setMessage(this.resources.getString(R.string.help_screen_manager))
                 alertDialogBuilder.show()

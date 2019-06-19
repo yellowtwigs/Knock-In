@@ -125,6 +125,7 @@ class PhoneLogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_log)
         hideKeyboard()
+        initHorizontalViewAdapter()
 
         //region ========================================== Toolbar =========================================
 
@@ -276,6 +277,7 @@ class PhoneLogActivity : AppCompatActivity() {
             }
         }
 
+
         //region ========================================== Keyboard ========================================
 
         phone_log_CallKeyboard_1!!.setOnClickListener {
@@ -345,8 +347,6 @@ class PhoneLogActivity : AppCompatActivity() {
         //endregion
 
         //endregion
-
-        initHorizontalViewAdapter()
     }
 
     //region ========================================== Functions ===========================================
@@ -366,138 +366,6 @@ class PhoneLogActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun gotToFacebookPage(id: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
-            startActivity(intent)
-        }
-    }
-
-    private fun goToWhatsapp() {
-        //val uri = Uri.parse("smsto: " + "12345")
-        //val i = Intent(Intent.ACTION_SENDTO, uri)
-        //i.setPackage("com.whatsapp")
-        val i = getPackageManager().getLaunchIntentForPackage("com.whatsapp")
-        try {
-            startActivity(i)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://whatsapp.com/")))
-        }
-    }
-
-    private fun goToInstagramPage() {
-        val uri = Uri.parse("http://instagram.com/_u/therock/")
-        val likeIng = Intent(Intent.ACTION_VIEW, uri)
-
-        likeIng.setPackage("com.instagram.android")
-
-        try {
-            startActivity(likeIng)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://instagram.com/")))
-        }
-
-    }
-
-    private fun goToFacebook() {
-        val uri = Uri.parse("facebook:/newsfeed")
-        val likeIng = Intent(Intent.ACTION_VIEW, uri)
-        try {
-            startActivity(likeIng)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://facebook.com/")))
-        }
-    }
-
-    private fun goToGmail() {
-        val appIntent = Intent(Intent.ACTION_VIEW);
-        appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://gmail.com/")))
-        }
-    }
-
-    private fun goToLinkedin() {
-        /// don't work
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://you"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://linkedin.com/")))
-        }
-    }
-
-    private fun goToOutlook() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("ms-outlook://emails"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://outlook.com/")))
-        }
-    }
-
-    private fun goToSkype() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://skype.com/")))
-        }
-    }
-
-    private fun goToSpotify() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("spotify://spotify"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://spotify.com/")))
-        }
-    }
-
-    private fun goToTelegram() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://web.telegram.org/")))
-        }
-    }
-
-    private fun goToTwitter() {
-        val appIntent = Intent(Intent.ACTION_VIEW)
-        appIntent.setClassName("com.twitter.android", "com.twitter.android")
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://twitter.com/")))
-        }
-    }
-
-    private fun goToYoutube() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://youtube.com/")))
-        }
     }
 
     override fun onBackPressed() {
@@ -604,6 +472,7 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private fun initHorizontalViewAdapter() {
         Log.d(TAG, "initHorizontalViewAdapter: init HorizontalViewAdapter")
+
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         phone_log_RecyclerView = findViewById(R.id.phone_log_recyclerview)
         phone_log_RecyclerView!!.layoutManager = layoutManager

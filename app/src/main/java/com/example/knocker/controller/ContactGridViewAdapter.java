@@ -133,14 +133,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         final ContactDB contact = this.gestionnaireContact.getContacts().get(position).getContactDB();
         if (contact.getContactPriority() == 0) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
         } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
         } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         }
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
@@ -171,7 +171,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.knockerColorPrimary));
+            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             if (contact.getLastName().length() > 11)
                 lastName = contact.getLastName().substring(0, 9).concat("..");
 
@@ -260,7 +260,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 .attachTo(holder.gridContactItemLayout)
                 .setStateChangeListener(this)
                 .disableAnimations();
-        if (appIsInstalled("com.whatsapp") && !getItem(position).getPhoneNumber().equals("")) {
+        if (appIsInstalled() && !getItem(position).getPhoneNumber().equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
         if (!getItem(position).getFirstMail().equals("")) {
@@ -335,21 +335,16 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     public int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
-            return new Random().nextInt(6);
+            return new Random().nextInt(7);
         } else if (createOrGet.equals("Get")) {
-            switch (avatarId) {
-                case 0:
-                    return R.drawable.ic_user_purple;
-                case 1:
-                    return R.drawable.ic_user_blue;
-                case 2:
-                    return R.drawable.ic_user_orange;
-                case 3:
-                    return R.drawable.ic_user_green;
-                case 4:
-                    return R.drawable.ic_user_om;
-                case 5:
-                    return R.drawable.ic_user_pink;
+            switch(avatarId) {
+                case 0: return R.drawable.ic_user_purple;
+                case 1: return R.drawable.ic_user_blue;
+                case 2: return R.drawable.ic_user_brown;
+                case 3: return R.drawable.ic_user_green;
+                case 4: return R.drawable.ic_user_om;
+                case 5: return R.drawable.ic_user_orange;
+                case 6: return R.drawable.ic_user_pink;
             }
         }
         return -1;
@@ -426,10 +421,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         return selectMenu;
     }
 
-    private boolean appIsInstalled(String appPackage) {
+    private boolean appIsInstalled() {
         PackageManager pm = context.getPackageManager();
         try {
-            pm.getApplicationInfo(appPackage, 0);
+            pm.getApplicationInfo("com.whatsapp", 0);
             return true;
         } catch (Exception e) {
             return false;
