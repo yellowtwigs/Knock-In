@@ -88,10 +88,13 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
 
         if (contact.getContactPriority() == 0) {
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
         } else if (contact.getContactPriority() == 1) {
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
         } else if (contact.getContactPriority() == 2) {
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
         }
 

@@ -43,6 +43,7 @@ public class CircularImageView extends AppCompatImageView {
     private Drawable drawable;
     private Paint paint;
     private Paint paintBorder;
+    private Paint paintBetween;
     private Paint paintBackground;
 
     //region Constructor & Init Method
@@ -66,6 +67,9 @@ public class CircularImageView extends AppCompatImageView {
 
         paintBorder = new Paint();
         paintBorder.setAntiAlias(true);
+
+        paintBetween = new Paint();
+        paintBetween.setAntiAlias(true);
 
         paintBackground = new Paint();
         paintBackground.setAntiAlias(true);
@@ -107,6 +111,11 @@ public class CircularImageView extends AppCompatImageView {
         invalidate();
     }
 
+    public void setBetweenBorderColor(int borderColor) {
+        if (paintBetween != null)
+            paintBetween.setColor(borderColor);
+        invalidate();
+    }
     public void setBackgroundColor(int backgroundColor) {
         if (paintBackground != null)
             paintBackground.setColor(backgroundColor);
@@ -181,8 +190,11 @@ public class CircularImageView extends AppCompatImageView {
         int circleCenter = (int) (canvasSize - (borderWidth * 2)) / 2;
         float margeWithShadowRadius = shadowRadius * 2;
 
+
         // Draw Border
         canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter + borderWidth - margeWithShadowRadius, paintBorder);
+        // Draw Border
+        canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter + borderWidth/2-1 - margeWithShadowRadius, paintBetween);
         // Draw Circle background
         canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter - margeWithShadowRadius, paintBackground);
         // Draw CircularImageView

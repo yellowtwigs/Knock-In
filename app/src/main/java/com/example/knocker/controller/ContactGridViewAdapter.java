@@ -133,10 +133,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         final ContactDB contact = this.gestionnaireContact.getContacts().get(position).getContactDB();
         if (contact.getContactPriority() == 0) {
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZero));
         } else if (contact.getContactPriority() == 1) {
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOne));
         } else if (contact.getContactPriority() == 2) {
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOne));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwo));
         }
         String firstname = contact.getFirstName();
