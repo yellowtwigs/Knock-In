@@ -205,7 +205,7 @@
         <!--app:srcCompat="@drawable/ic_outlook" />-->
         <!--</LinearLayout>-->
         <!--</GridLayout>-->
-        <!--</HorizontalScrollView>-->
+        <!--&lt;!&ndash;</HorizontalScrollView>&ndash;&gt;-->
     </LinearLayout>
 
 

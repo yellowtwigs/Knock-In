@@ -5,9 +5,11 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.content.pm.ResolveInfo
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -87,7 +89,7 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private var phone_log_CallBackSpace: ImageView? = null
     private var phone_log_ButtonAddContact: ImageView? = null
-
+    private val packageNameList = arrayListOf<String>() //contient all package name
 
     private var phone_log_RecyclerView: RecyclerView? = null
 
@@ -163,19 +165,6 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_CallKeyboard_0 = findViewById(R.id.phone_log_call_keyboard_0)
         phone_log_CallKeyboard_Sharp = findViewById(R.id.phone_log_call_keyboard_sharp)
 
-//        link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
-//        link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
-//        link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
-//        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
-//        link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
-//        link_socials_networks_Spotify = findViewById(R.id.spotify_link_socials_networks)
-//        link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
-//        link_socials_networks_Outlook = findViewById(R.id.outlook_link_socials_networks)
-//        link_socials_networks_Skype = findViewById(R.id.skype_link_socials_networks)
-//        link_socials_networks_Linkedin = findViewById(R.id.linkedin_link_socials_networks)
-//        link_socials_networks_Twitter = findViewById(R.id.twitter_link_socials_networks)
-//        link_socials_networks_Whatsapp = findViewById(R.id.whatsapp_link_socials_networks)
-
         phone_log_CallBackSpace = findViewById(R.id.phone_log_call_back_space)
         phone_log_ButtonAddContact = findViewById(R.id.phone_log_button_add_contact)
 
@@ -197,30 +186,6 @@ class PhoneLogActivity : AppCompatActivity() {
         //endregion
 
         //region ========================================== Listener ========================================
-
-//        link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
-//
-//        link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
-//
-//        link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
-//
-//        link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
-//
-//        link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
-//
-//        link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
-//
-//        link_socials_networks_Spotify!!.setOnClickListener { goToSpotify() }
-//
-//        link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
-//
-//        link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
-//
-//        link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
-//
-//        link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
-//
-//        link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
 
 
         phone_log_IncomingCallButton!!.setOnClickListener {
@@ -343,7 +308,6 @@ class PhoneLogActivity : AppCompatActivity() {
             }
             true
         }
-
         //endregion
 
         //endregion
@@ -479,6 +443,7 @@ class PhoneLogActivity : AppCompatActivity() {
 
         val adapter = HorizontalViewAdapter(this@PhoneLogActivity, initHorizontalListImages())
         phone_log_RecyclerView!!.adapter = adapter
+        adapter.setPackageNameList(this)
     }
 
     private fun initHorizontalListImages(): ArrayList<Int> {

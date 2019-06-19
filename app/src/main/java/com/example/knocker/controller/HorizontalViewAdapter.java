@@ -3,6 +3,8 @@ package com.example.knocker.controller;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.knocker.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAdapter.ViewHolder> {
 
@@ -28,6 +31,19 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
     //vars
     private ArrayList<Integer> list;
     private Context context;
+    private List<String> packageNameList;
+
+    public void setPackageNameList(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN,null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(intent,0);
+        this.packageNameList = new ArrayList<>();
+        for(ResolveInfo resolveInfo: resolveInfoList){
+            ActivityInfo activityInfo = resolveInfo.activityInfo;
+            this.packageNameList.add(activityInfo.applicationInfo.packageName);
+        }
+    }
 
     public HorizontalViewAdapter(Context context, ArrayList<Integer> list) {
         this.context = context;
@@ -51,6 +67,43 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
                 .into(holder.image);
 
         holder.image.setImageResource(list.get(position));
+
+        if (position == 0 && !packageNameList.contains("com.facebook.katana")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 1 && !packageNameList.contains("com.facebook.orca")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 2 && !packageNameList.contains("com.instagram.android")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 3 && !packageNameList.contains("com.whatsapp")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 4 && !packageNameList.contains("com.google.android.gm")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 5 && !packageNameList.contains("com.microsoft.office.outlook")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 6 && !packageNameList.contains("com.spotify.music")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 7 && !packageNameList.contains("com.linkedin.android")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 8 && !packageNameList.contains("org.telegram.messenger")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 9 && !packageNameList.contains("com.google.android.youtube")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 10 && !packageNameList.contains("com.twitter.android")) {
+            holder.image.setVisibility(View.GONE);
+        }
+        else if (position == 11 && !packageNameList.contains("com.skype.raider")) {
+            holder.image.setVisibility(View.GONE);
+        }
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
