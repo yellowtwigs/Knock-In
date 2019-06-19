@@ -3,8 +3,8 @@
     <string name="app_name_by">by YellowTwigs</string>
 
     <!-- Helps Strings !-->
-    <string name="help_homepage">Sur cette page vous pouvez voir tout les contacts enregistrés sur Knocker</string>
-    <string name="help_history">Sur cette page vous pouvez voir toutes les notifications reçu</string>
+    <string name="help_homepage">Sur cette page vous pouvez voir tous les contacts enregistrés sur Knocker</string>
+    <string name="help_history">Sur cette page vous pouvez voir toutes les notifications reçues</string>
     <string name="help_cockpit">Sur cette page vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
     <string name="help_screen_manager">Sur cette page vous pouvez choisir comment afficher vos contacts ou désactiver les popups avant d\'appeler un contact</string>
     <string name="help_notification_manager">Sur cette page vous pouvez choisir d\'activer oui ou non les notifications prioritaires</string>
@@ -166,9 +166,9 @@
 
     <!-- Service !-->
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
-    <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
-    <string name="notification_manager_horraire">Choisissez votre horraire de rappel pour voir les notifications raté</string>
+    <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications au-dessus d\'autres applications ?</string>
+    <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser la batterie</string>
+    <string name="notification_manager_horraire">Choisissez votre horaire de rappel pour voir les notifications ratées</string>
 
     <!-- ComposeMessage !-->
     <string name="compose_message_enter_text">Écrire un message</string>
