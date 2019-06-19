@@ -172,15 +172,20 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
-            gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
-            val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-            val len = sharedPreferences.getInt("gridview", 4)
-            /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
+            }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                val len = sharedPreferences.getInt("gridview", 4)
+                /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
               main_GridView!!.adapter = gridViewAdapter
   */
-            gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
-            gridViewAdapter!!.notifyDataSetChanged()
-            drawerLayout!!.closeDrawers()
+                gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                gridViewAdapter!!.notifyDataSetChanged()
+                drawerLayout!!.closeDrawers()
+            }
             true
         }
         main_layout!!.setOnTouchListener(object : View.OnTouchListener {

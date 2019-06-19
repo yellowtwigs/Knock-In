@@ -290,7 +290,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                         context.startActivity(intent);
                     }
                 } else if (v.getId() == buttonWhatsApp.getId()) {
-                    System.out.println("================whatsapp=============");
                     ContactWithAllInformation contactphone = (ContactWithAllInformation) getItem(position);
                     ContactGesture.INSTANCE.openWhatsapp(contactphone.getPhoneNumber(), context);
                 } else if (v.getId() == buttonEdit.getId()) {
