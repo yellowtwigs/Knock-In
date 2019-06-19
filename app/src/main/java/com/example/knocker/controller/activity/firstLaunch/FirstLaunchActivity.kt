@@ -19,7 +19,7 @@ class FirstLaunchActivity : AppCompatActivity() {
             edit.putBoolean("first_launch",false)
             edit.commit()
 
-            startActivity(Intent(this@FirstLaunchActivity,SynchronyseContactActivity::class.java))
+            startActivity(Intent(this@FirstLaunchActivity,SynchronizeContactActivity::class.java))
             finish()
         })
     }

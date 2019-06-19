@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="75dp"
-    android:background="@drawable/selector_relative_layout"
+    android:background="@drawable/selector_relative_layout_with_border"
     android:clickable="true"
     android:focusable="true">
 
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.75dp"
         android:layout_marginTop="2dp"
-        android:background="@color/borderViewColorDark" />
+        android:background="@color/whiteGreyColorDark" />
 
     <ImageView
         android:id="@+id/phone_log_calls_image_view"

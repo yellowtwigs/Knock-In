@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout"
+        android:background="@drawable/selector_relative_layout_with_border"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout"
+        android:background="@drawable/selector_relative_layout_with_border"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/help_activity_q_and_r_id">
@@ -93,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout"
+        android:background="@drawable/selector_relative_layout_with_border"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/help_activity_contact_us_id">
@@ -130,7 +130,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout"
+        android:background="@drawable/selector_relative_layout_with_border"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/help_activity_terms_id">

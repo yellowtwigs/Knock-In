@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.Switch
+import android.widget.*
 
 import com.example.knocker.R
 import com.google.android.material.navigation.NavigationView
@@ -151,8 +148,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
         tv_three?.setOnClickListener {
             nbGrid = 3
-            // val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            // Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+             val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
+             Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
             tv_one!!.background=null
             tv_four!!.background = null
             tv_five!!.background = null
@@ -163,8 +160,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         tv_four?.setOnClickListener {
             nbGrid = 4
-            // val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            // Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+             val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
+             Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
             tv_one!!.background=null
             tv_three!!.background = null
             tv_five!!.background = null
@@ -175,8 +172,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         tv_five?.setOnClickListener {
             nbGrid = 5
-            // val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            // Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+             val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
+             Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
             tv_one!!.background=null
             tv_three!!.background = null
             tv_four!!.background = null
@@ -187,8 +184,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         tv_six?.setOnClickListener {
             nbGrid = 6
-            //val mes= String.format(resources.getString(R.string.settings_toast),nbGrid)
-            //Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
+            val mes= String.format(resources.getString(R.string.manage_my_screen_toast),nbGrid)
+            Toast.makeText(applicationContext,mes,Toast.LENGTH_SHORT).show()
             tv_one!!.background=null
             tv_three!!.background = null
             tv_four!!.background = null

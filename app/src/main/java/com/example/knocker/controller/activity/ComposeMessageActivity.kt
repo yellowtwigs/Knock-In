@@ -62,9 +62,6 @@ class ComposeMessageActivity : AppCompatActivity() {
 
     //endregion
 
-    //region
-
-    //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_compose_message)
@@ -114,7 +111,7 @@ class ComposeMessageActivity : AppCompatActivity() {
         val tmp = intent.getStringExtra("ContactPhoneNumber")
         println("tmp " + tmp);
         if (tmp != null) {
-            compose_message_phone_number =tmp
+            compose_message_phone_number = tmp
             compose_message_phone_property = " "
         }
 
@@ -166,9 +163,9 @@ class ComposeMessageActivity : AppCompatActivity() {
                     val smsManager = SmsManager.getDefault()
                     smsManager.sendTextMessage(phoneNumb, null, msg, null, null)
 
-                    val msg = Message(msg, true, "", 0, currentDate, currentHour)
+                    val message = Message(msg, true, "", 0, currentDate, currentHour)
 
-                    compose_message_listOfMessage.add(msg)
+                    compose_message_listOfMessage.add(message)
 
                     compose_message_ListViewMessage!!.adapter = MessageListAdapter(this, compose_message_listOfMessage)
 

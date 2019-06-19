@@ -5,7 +5,7 @@
     android:layout_height="75dp"
     android:clickable="true"
     android:focusable="true"
-    android:background="@drawable/selector_relative_layout">
+    android:background="@drawable/selector_relative_layout_with_border">
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

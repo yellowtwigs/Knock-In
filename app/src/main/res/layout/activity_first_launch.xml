@@ -4,46 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activity.firstLaunch.FirstLaunchActivity"
-    >
+    tools:context=".controller.activity.firstLaunch.FirstLaunchActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/first_launch_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bienvenue sur Knocker "
+        android:text="@string/first_launch_welcome"
+        android:textColor="@color/knockerColorPrimary"
+        android:layout_marginTop="50dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102"
-        android:textColor="@color/knockerColorPrimary"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/first_launch_welcome_long_text"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginTop="20dp"
-        android:text="Décrouvez une nouvelle façon de gérer vos contact et de communiquez avec eux"
+        android:text="@string/first_launch_welcome_long_text"
         android:textAlignment="center"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:textColor="@color/black"/>
+        app:layout_constraintTop_toBottomOf="@+id/first_launch_welcome" />
 
     <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="190dp"
-        android:layout_height="177dp"
-        android:layout_marginTop="8dp"
+        android:id="@+id/first_launch_logo"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="25dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/first_launch_welcome_long_text"
         app:srcCompat="@drawable/ic_letter_k" />
 
     <Button
@@ -51,10 +46,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:text="Accepter et continuer"
+        android:text="@string/first_launch_welcome_accept"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -62,11 +56,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
-        android:text="@string/first_launch_politique_confidentialite"
+        android:text="@string/first_launch_confidentiality"
         android:textAlignment="center"
         android:textColor="@color/black"
+        android:textColorLink="@color/knockerColorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/first_launch_accept_politique"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

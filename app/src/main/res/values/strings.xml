@@ -2,7 +2,7 @@
     <string name="app_name">Knocker</string>
     <string name="app_name_by">by YellowTwigs</string>
 
-    <!-- Helps Strings !-->
+    <!-- region HelpActivity -->
     <string name="help_homepage">Sur cette page vous pouvez voir tous les contacts enregistrés sur Knocker</string>
     <string name="help_history">Sur cette page vous pouvez voir toutes les notifications reçues</string>
     <string name="help_cockpit">Sur cette page vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
@@ -10,26 +10,32 @@
     <string name="help_notification_manager">Sur cette page vous pouvez choisir d\'activer oui ou non les notifications prioritaires</string>
     <string name="help_my_information">Sur cette page vous pouvez modifier vos informations personnelles</string>
 
-    <!-- Faceboook Strings !-->
+    <!-- endregion-->
+
+    <!-- region Faceboook Strings-->
     <string name="facebook_app_id">338926936767251</string>
     <string name="fb_login_protocol_scheme">fb338926936767251</string>
+    <!-- endregion-->
 
-    <!-- Left Drawer Titles !-->
-    <string name="left_drawer_home">Home</string>
+    <!-- region Left Drawer Titles -->
+
+    <string name="left_drawer_knockons">Knockons</string>
+
     <string name="left_drawer_information">Mes informations</string>
     <string name="left_drawer_notif_config">Paramètres de notification</string>
     <string name="left_drawer_my_screen">Affichage</string>
-    <string name="left_drawer_theme">Thèmes</string>
 
-    <string name="left_drawer_data_access">Accèes données</string>
-    <string name="left_drawer_knockons">Knockons</string>
+    <string name="left_drawer_data_access">Accès aux données</string>
     <string name="left_drawer_statistics">Mes statistiques</string>
     <string name="left_drawer_help">Aide</string>
-    <string name="left_drawer_sync">Syncronisation des contacts</string>
+    <string name="left_drawer_sync">Synchronisation des contacts</string>
 
     <string name="left_drawer_notification_history">Historique Notifications</string>
 
-    <!-- Menu Main !-->
+    <!-- endregion-->
+
+    <!-- region Toolbar Main Filtre et Tri !-->
+
     <string name="main_filter_sms">SMS</string>
     <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Rechercher</string>
@@ -43,15 +49,17 @@
     <string name="notif_filtre_systeme">Notification du Système</string>
     <string name="notif_tri_date">Date et heure</string>
 
-    <!-- Bottom Navigation View !-->
+    <!-- endregion -->
+
+    <!--region Bottom Navigation View !-->
     <string name="bottom_navigation_view_phone_book">Carnet d\'adresse</string>
     <string name="bottom_navigation_view_notify_history">Historique</string>
-    <string name="bottom_navigation_view_groups">Groupe</string>
-    <string name="bottom_navigation_view_social_media">Réseaux Sociaux</string>
+    <string name="bottom_navigation_view_groups">Groupes</string>
     <string name="bottom_navigation_view_phone_log">Cockpit</string>
+    <!-- endregion !-->
 
-    <!-- Add New Contact !-->
-    <string name="add_new_contact_title">Ajoutez un nouveau contact</string>
+    <!-- region Add New Contact !-->
+    <string name="add_new_contact_title">Ajouter un nouveau contact</string>
     <string name="add_new_contact_last_name">Nom</string>
     <string name="add_new_contact_first_name">Prénom</string>
     <string name="add_new_contact_phone_number">Numéro de téléphone</string>
@@ -59,6 +67,7 @@
     <string name="add_new_contact_priority0">Toutes les notifications de ce contact seront désactivées </string>
     <string name="add_new_contact_priority1">Toutes les notifications de ce contact s\'afficheront comme avant</string>
     <string name="add_new_contact_priority2">Toutes les notifications de ce contact seront affichées au milieu de l\'écran</string>
+
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
         <item>Bureau</item>
@@ -67,20 +76,27 @@
         <item>Autre</item>
         <item>Personnalisé</item>
     </string-array>
+
     <string name="add_new_contact_mail">E-mail</string>
     <string name="add_new_contact_mail_mobile">Bureau</string>
+
     <string-array name="add_new_contact_mail_arrays">
         <item>Bureau</item>
         <item>Domicile</item>
         <item>Ecole</item>
         <item>Autre</item>
         <item>Personnalisé</item>
+
     </string-array>
+
     <string name="add_new_contact_add_field">Ajouter un champ</string>
     <string name="add_new_contact_validate">Valider</string>
 
-    <!-- Edit Contact !-->
-    <string name="edit_contact_title">Ajoutez un nouveau contact</string>
+    <!-- endregion !-->
+
+    <!-- region Edit Contact !-->
+
+    <string name="edit_contact_title">Ajouter un nouveau contact</string>
     <string name="edit_contact_last_name">Nom</string>
     <string name="edit_contact_first_name">Prénom</string>
     <string name="edit_contact_phone_number">Numéro de téléphone</string>
@@ -98,7 +114,7 @@
     <string-array name="edit_contact_mail_arrays">
         <item>Bureau</item>
         <item>Domicile</item>
-        <item>Ecole</item>
+        <item>École</item>
         <item>Autre</item>
         <item>Personnalisé</item>
     </string-array>
@@ -106,108 +122,111 @@
     <string name="edit_contact_delete_contact">Supprimer Contact</string>
     <string name="edit_contact_validate">Valider</string>
 
+    <!-- endregion !-->
 
-    <!-- Edit my informations !-->
+    <!-- region Edit My Informations !-->
+
     <string name="edit_info_toolbar_title">Mes informations</string>
-    <!-- Fake !-->
-    <string name="edit_informations_name_fake">Carrie Sanders</string>
-    <string name="edit_informations_phone_number_fake">255 - 165 - 0056</string>
-    <string name="edit_informations_email_fake">carrie_sanders@email.com</string>
 
     <string name="edit_informations_name">Nom</string>
     <string name="edit_informations_phone_number">Numéro de téléphone</string>
     <string name="edit_informations_email">Email</string>
 
-    <!-- Content description !-->
-    <string name="content_description_contact_details_background_image">Background Image</string>
-    <string name="content_description_instagram_link">Lien vers l\'Instagram du contact</string>
-    <string name="content_description_linkedin_link">Lien vers le Linkedin du contact</string>
-    <string name="content_description_messenger_link">Lien vers le Messenger du contact</string>
-    <string name="content_description_whatsapp_link">Lien vers le Whatsapp du contact</string>
-    <string name="content_description_sms_link">Lien pour envoyer un sms au contact</string>
-    <string name="content_description_phone_call_link">Lien pour appeler un contact</string>
-    <string name="content_description_mail_link">Lien pour appeler un contact</string>
-    <string name="content_description_skype_link">Lien pour appeler un contact via Skype</string>
-    <string name="content_description_twitter_link">Lien vers Twitter</string>
-    <string name="content_description_snapchat_link">Lien vers Snapchat</string>
-    <string name="content_description_telegram_link">Lien vers Telegram</string>
+    <!-- endregion -->
 
-    <!-- ContactDetailDB !-->
-    <string name="contact_details_mail">Mail</string>
-    <string name="contact_details_messenger">Messenger</string>
-    <string name="contact_details_whatsapp">Whatsapp</string>
-    <string name="contact_details_instagram">Instagram</string>
-    <string name="contact_details_linkedin">Linkedin</string>
-    <string name="contact_details_skype">Skype</string>
-    <string name="contact_details_twitter">Twitter</string>
-    <string name="contact_details_snapchat">Snapchat</string>
-    <string name="contact_details_telegram">Telegram</string>
+    <!-- region Manage My Screen !-->
 
-    <!-- Settings !-->
-    <string name="settings_toolbar_title">Affichage</string>
-    <string name="settings_owner_edit">Modifier vos informations</string>
-    <string name="settings_owner_edit_long_text">Changer votre numéro de téléphone, ainsi que vos nom(s) et/ou prénom(s)</string>
-    <string name="settings_notification">Notifications</string>
-    <string name="settings_notification_long_text">Personnalisez les notifications que vous souhaitez recevoir.</string>
-    <string name="settings_knockons">Knockons</string>
-    <string name="settings_knockons_long_text">Personnalisez vos Knockons à votre guise.</string>
-    <string name="settings_theme">Changer le thème</string>
-    <string name="settings_theme_long_text">Personnalisez le thème de l\'application pour vivre une meilleure expérience.</string>
-    <string name="settings_number_of_line">Nombre de contacts par ligne :</string>
-    <string name="settings_toast">vous avez séléctionner %1$d contacts par lignes</string>
-    <string name="settings_call_popup">Popup contact</string>
-    <string name="settings_call_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
-    <string name="settings_searchbar_pos">Position de la Barre de recherche</string>
-    <string name="settings_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
+    <string name="manage_my_screen_toolbar_title">Affichage</string>
+    <string name="manage_my_screen_theme">Changer le thème</string>
+    <string name="manage_my_screen_theme_long_text">Personnaliser le thème de l\'application pour vivre une meilleure expérience.</string>
+    <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne :</string>
+    <string name="manage_my_screen_toast">Vous avez sélectionné %1$d contacts par ligne</string>
+    <string name="manage_my_screen_contact_popup">Popup contact</string>
+    <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
+    <string name="manage_my_screen_searchbar_pos">Position de la Barre de recherche</string>
+    <string name="manage_my_screen_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
 
-    <!-- Custom Popup !-->
-    <string name="custom_popup_yes_btn">Oui</string>
-    <string name="custom_popup_no_btn">Non</string>
+    <!-- endregion -->
 
-    <!-- Service !-->
+    <!-- region Notification Manager -->
+
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications au-dessus d\'autres applications ?</string>
-    <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser la batterie</string>
-    <string name="notification_manager_horraire">Choisissez votre horaire de rappel pour voir les notifications ratées</string>
+    <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
+    <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
+    <string name="notification_manager_horaire">Choisissez votre horaire de rappel pour voir les notifications ratées</string>
 
-    <!-- ComposeMessage !-->
-    <string name="compose_message_enter_text">Écrire un message</string>
-    <string name="compose_message_enter_phone_number">Numéro de téléphone</string>
-    <string name="compose_message_calling">Appeller</string>
+    <!-- endregion -->
 
-    <!-- PhoneLog !-->
+    <!-- region Phone Log -->
+
     <string name="phone_log_toolbar_title">Cockpit</string>
-    <string name="phone_log_add_new_contact">Nouveau Contact</string>
-    <string name="phone_log_send_message">Envoyer un message</string>
 
-    <!-- Notification History !-->
+    <!-- endregion -->
+
+    <!-- region Notification History -->
+
     <string name="notification_history_toolbar_title">Historique</string>
 
+    <!-- endregion -->
 
-    <!-- Alert Dialog Notifications !-->
-    <string name="alert_dialog_notification_message">Autoriser knocker à accéder a vos notification pour ne plus être déranger par des messages inutile</string>
+    <!-- region Alert Dialog Notifications -->
+
+    <string name="alert_dialog_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être déranger par des messages inutile</string>
     <string name="alert_dialog_notification_allow_it">Autoriser</string>
     <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
-    <string name="title_activity_manage_knockons">ManageKnockonsActivity</string>
 
-    <!-- List Adapter !-->
-    <string name="list_adapter_call">appel</string>
-    <string name="list_adapter_sms">message</string>
-    <string name="list_adapter_wathsapp">whatsapp</string>
-    <string name="list_adapter_mail">mail</string>
-    <string name="list_adapter_edit">modifier</string>
+    <!-- endregion -->
 
+    <!-- region List Contact Item -->
 
-    <!-- !-->
-    <string name="first_launch_politique_confidentialite">Veuillez lire notre <a href="">Politiques de confidentialité</a> ainsi que nos
-        <a href="https://www.yellowtwigs.com/">conditions d\'utilisations</a> pour accepter ceux-ci appuyez sur "accepter et continuer" </string>
+    <string name="list_contact_item_call">Appel</string>
+    <string name="list_contact_item_sms">Message</string>
+    <string name="list_contact_item_whatsapp">Whatsapp</string>
+    <string name="list_contact_item_mail">Mail</string>
+    <string name="list_contact_item_edit">Modifier</string>
+    <string name="list_contact_item_messenger">Messenger</string>
 
+    <!-- endregion -->
 
-    <!-- !-->
-    <string name="Nbcontact">Nombre de contact sélectionnés : %1s </string>
+    <!-- region Synchronize Contact -->
 
-    <!-- NotificationReminder!-->
-    <string name="notification_sender_content_tittle">résmé intéraction</string>
-    <string name="notification_sender_content_text">knocker à traiter %1s messages depuis hier...</string>
-    <string name="notification_sender_big_text">knocker à traiter %1s messages depuis hier \n vous pouvez les consulter depuis l\'application dans "Historique"</string>
+    <string name="synchronise_contact_title">Synchroniser les contacts</string>
+    <string name="synchronise_contact_synchronise_long_text">Synchroniser les contacts de votre téléphone et récupérer leurs informations dans l\'application Knocker,
+        vous pourrez alors les contacter facilement ainsi que leur affecter des priorités</string>
+    <string name="synchronise_contact_synchronise_button_yes">Synchroniser</string>
+    <string name="synchronise_contact_synchronise_button_no">Ne pas synchroniser</string>
+    <string name="synchronise_contact_synchronise_toast">Contacts synchronisés</string>
+
+    <!-- endregion -->
+
+    <!-- region Synchronize Contact -->
+
+    <string name="accept_activity_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être dérangé par des messages inutiles</string>
+
+    <!-- endregion -->
+
+    <!-- region First Launch -->
+
+    <string name="first_launch_welcome">Bienvenue sur Knocker</string>
+    <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquez avec eux</string>
+    <string name="first_launch_welcome_accept">Accepter et continuer</string>
+    <string name="first_launch_confidentiality">Veuillez lire notre <a href="http://www.politiquedeconfidentialite.ca/questionnaire.php?action=commencer">politique de confidentialité</a> ainsi que nos
+        <a href="https://www.yellowtwigs.com/">conditions d\'utilisations</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
+
+    <!-- endregion -->
+
+    <!-- region Multi Select-->
+
+    <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
+
+    <!-- endregion -->
+
+    <!-- region Notification Sender -->
+
+    <string name="notification_sender_content_title">Résumé des interactions</string>
+    <string name="notification_sender_content_text">Knocker a traité %1s messages depuis hier…</string>
+    <string name="notification_sender_big_text">Knocker a traité %1s messages depuis hier \n vous pouvez les consulter depuis l\'application dans "Historique"</string>
+
+    <!-- endregion -->
+
 </resources>

@@ -10,9 +10,9 @@
         android:title="@string/bottom_navigation_view_notify_history" />
     <item
         android:id="@+id/navigation_groups"
+        android:enabled="false"
         android:icon="@drawable/ic_groups"
-        android:title="@string/bottom_navigation_view_groups"
-        android:enabled="false"/>
+        android:title="@string/bottom_navigation_view_groups" />
     <item
         android:id="@+id/navigation_phone_keyboard"
         android:icon="@drawable/ic_phone_call"
