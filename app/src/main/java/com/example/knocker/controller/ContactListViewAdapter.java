@@ -183,15 +183,21 @@ public class ContactListViewAdapter extends BaseAdapter {
 
     public int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
+            return new Random().nextInt(6);
         } else if (createOrGet.equals("Get")) {
             switch(avatarId) {
-                case 0: return R.drawable.ic_user_purple;
-                case 1: return R.drawable.ic_user_blue;
-                case 3: return R.drawable.ic_user_green;
-                case 4: return R.drawable.ic_user_om;
-                case 5: return R.drawable.ic_user_orange;
-                case 6: return R.drawable.ic_user_pink;
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_orange;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_pink;
             }
         }
         return -1;

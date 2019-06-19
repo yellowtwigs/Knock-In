@@ -456,10 +456,10 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
             when (avatarId) {
                 0 -> return R.drawable.ic_user_purple
                 1 -> return R.drawable.ic_user_blue
+                2 -> return R.drawable.ic_user_orange
                 3 -> return R.drawable.ic_user_green
                 4 -> return R.drawable.ic_user_om
-                5 -> return R.drawable.ic_user_orange
-                6 -> return R.drawable.ic_user_pink
+                5 -> return R.drawable.ic_user_pink
 
 
             }
