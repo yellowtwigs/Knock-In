@@ -18,14 +18,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.CircularImageView;
-import com.example.knocker.controller.ContactGridViewAdapter;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 public class SelectContactAdapter extends BaseAdapter {
@@ -34,17 +31,14 @@ public class SelectContactAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
-    private HashMap<ContactWithAllInformation, Boolean> hashMapSelectedItem;
+    private ArrayList<ContactWithAllInformation> listSelectedItem;
 
     public SelectContactAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
         this.gestionnaireContact = contactList;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
-        hashMapSelectedItem = new HashMap<ContactWithAllInformation, Boolean>();
-        for (ContactWithAllInformation contact : gestionnaireContact.getContacts()) {
-            hashMapSelectedItem.put(contact, false);
-        }
+        listSelectedItem = new ArrayList<ContactWithAllInformation>();
     }
 
     @Override
@@ -178,7 +172,7 @@ public class SelectContactAdapter extends BaseAdapter {
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
         }
-        if (hashMapSelectedItem.get(getItem(position))) {
+        if (listSelectedItem.contains(getItem(position))) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         } else {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.whiteColor));
@@ -205,21 +199,16 @@ public class SelectContactAdapter extends BaseAdapter {
     public void itemSelected(int position) {
 
         ContactWithAllInformation contact = getItem(position);
-        if (hashMapSelectedItem.get(contact)) {
-            hashMapSelectedItem.put(contact, false);
+        if (listSelectedItem.contains(contact)) {
+            listSelectedItem.remove(contact);
         } else {
-            hashMapSelectedItem.put(contact, true);
+            listSelectedItem.add(contact);
         }
     }
 
     public ArrayList<ContactWithAllInformation> listContactSelect() {
-        ArrayList<ContactWithAllInformation> contactList = new ArrayList<>();
-        for (int i = 0; i < getCount(); i++) {
-            if (hashMapSelectedItem.get(getItem(i))) {
-                contactList.add(getItem(i));
-            }
-        }
-        return contactList;
+
+        return listSelectedItem;
     }
 
     public int randomDefaultImage(int avatarId, String createOrGet) {
