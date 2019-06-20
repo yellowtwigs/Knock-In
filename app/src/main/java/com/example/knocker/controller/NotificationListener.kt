@@ -119,7 +119,7 @@ class NotificationListener : NotificationListenerService() {
                         this.cancelNotification(sbn.key)
                     }
                 }else{
-                    if(appNotifiable(sbp)){
+                    if(packageName.equals(MESSAGE_PACKAGE) || packageName.equals(MESSAGE_SAMSUNG_PACKAGE)){
                         displayLayout(sbp,sharedPreferences)
                     }
                 }
