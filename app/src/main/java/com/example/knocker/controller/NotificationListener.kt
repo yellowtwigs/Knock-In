@@ -111,21 +111,7 @@ class NotificationListener : NotificationListenerService() {
                 if(contact!=null) {
 
                     if (contact!!.contactDB!!.contactPriority == 2) {
-                        if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
-                            //this.cancelNotification(sbn.key)
-
-                            if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
-                                popupView = null
-                                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                                edit.putBoolean("view", true)
-                                edit.commit()
-                                displayLayout(sbp)
-                            } else {
-                                Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
-                                //notifLayout(sbp, popupView)
-                                adapterNotification!!.addNotification(sbp)
-                            }
-                        }
+                        displayLayout(sbp,sharedPreferences)
                     } else if (contact.contactDB!!.contactPriority == 1) {
 
                     } else if (contact.contactDB!!.contactPriority == 0) {
@@ -133,7 +119,9 @@ class NotificationListener : NotificationListenerService() {
                         this.cancelNotification(sbn.key)
                     }
                 }else{
-                    println("contact is null ")
+                    if(appNotifiable(sbp)){
+                        displayLayout(sbp,sharedPreferences)
+                    }
                 }
 
             }
@@ -161,7 +149,23 @@ class NotificationListener : NotificationListenerService() {
             return null
         }
     }
+    public fun displayLayout(sbp:StatusBarParcelable,sharedPreferences:SharedPreferences){
+        if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
+            //this.cancelNotification(sbn.key)
 
+            if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
+                popupView = null
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("view", true)
+                edit.commit()
+                displayLayout(sbp)
+            } else {
+                Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
+                //notifLayout(sbp, popupView)
+                adapterNotification!!.addNotification(sbp)
+            }
+        }
+    }
     public fun displayLayout(sbp: StatusBarParcelable) {
         var flag : Int
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
