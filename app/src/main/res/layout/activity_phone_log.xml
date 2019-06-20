@@ -8,10 +8,10 @@
     tools:context=".controller.activity.PhoneLogActivity">
 
     <LinearLayout
-        android:id="@+id/phone_log_top_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/phone_log_call_edit_text_layout">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -24,200 +24,200 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/phone_log_toolbar_title" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/phone_log_recyclerview"
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:id="@+id/side_scroll"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:visibility="visible"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/toolbar"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <!--<HorizontalScrollView-->
-        <!--android:id="@+id/side_scroll"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:visibility="visible"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/toolbar"-->
-        <!--app:layout_constraintStart_toStartOf="parent">-->
+            <GridLayout
+                android:id="@+id/grid_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
-        <!--<GridLayout-->
-        <!--android:id="@+id/grid_layout"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center">-->
+                <LinearLayout
+                    android:id="@+id/first_row_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/grid_layout">
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/first_row_id"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_row="0"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/grid_layout">-->
+                    <ImageView
+                        android:id="@+id/facebook_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/first_row_id"
+                        app:srcCompat="@drawable/ic_facebook" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/facebook_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/first_row_id"-->
-        <!--app:srcCompat="@drawable/ic_facebook" />-->
+                    <ImageView
+                        android:id="@+id/messenger_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/first_row_id"
+                        app:srcCompat="@drawable/ic_messenger" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/messenger_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/first_row_id"-->
-        <!--app:srcCompat="@drawable/ic_messenger" />-->
+                    <ImageView
+                        android:id="@+id/spotify_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/facebook_link_socials_networks"
+                        app:srcCompat="@drawable/ic_spotify" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/spotify_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/facebook_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_spotify" />-->
+                    <ImageView
+                        android:id="@+id/youtube_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/messenger_link_socials_networks"
+                        app:srcCompat="@drawable/ic_youtube" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/second_row_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/first_row_id">
+                    <ImageView
+                        android:id="@+id/instagram_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/youtube_link_socials_networks"
+                        app:srcCompat="@drawable/ic_instagram" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/youtube_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/messenger_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_youtube" />-->
-        <!--</LinearLayout>-->
+                    <ImageView
+                        android:id="@+id/whatsapp_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spotify_link_socials_networks"
+                        app:srcCompat="@drawable/ic_whatsapp" />
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/second_row_id"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_row="1"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/first_row_id">-->
+                    <ImageView
+                        android:id="@+id/telegram_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/twitter_link_socials_networks"
+                        app:srcCompat="@drawable/ic_telegram"
+                        tools:ignore="DuplicateIds" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/instagram_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/youtube_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_instagram" />-->
+                    <ImageView
+                        android:id="@+id/twitter_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/instagram_link_socials_networks"
+                        app:srcCompat="@drawable/ic_twitter" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/third_row_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="2"
+                    android:layout_column="0"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/second_row_id">
+                    <ImageView
+                        android:id="@+id/linkedin_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/skype_link_socials_networks"
+                        app:srcCompat="@drawable/ic_linkedin" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/whatsapp_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/spotify_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_whatsapp" />-->
+                    <ImageView
+                        android:id="@+id/skype_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/whatsapp_link_socials_networks"
+                        app:srcCompat="@drawable/ic_skype" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/telegram_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/twitter_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_telegram"-->
-        <!--tools:ignore="DuplicateIds" />-->
+                    <ImageView
+                        android:id="@+id/gmail_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linkedin_link_socials_networks"
+                        app:srcCompat="@drawable/ic_gmail" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/twitter_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/instagram_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_twitter" />-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:id="@+id/third_row_id"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_row="2"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/second_row_id">-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/linkedin_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/skype_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_linkedin" />-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/skype_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/whatsapp_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_skype" />-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/gmail_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/linkedin_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_gmail" />-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/outlook_link_socials_networks"-->
-        <!--android:layout_width="55dp"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/telegram_link_socials_networks"-->
-        <!--app:srcCompat="@drawable/ic_outlook" />-->
-        <!--</LinearLayout>-->
-        <!--</GridLayout>-->
-        <!--&lt;!&ndash;</HorizontalScrollView>&ndash;&gt;-->
+                    <ImageView
+                        android:id="@+id/outlook_link_socials_networks"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/telegram_link_socials_networks"
+                        app:srcCompat="@drawable/ic_outlook" />
+                </LinearLayout>
+            </GridLayout>
+        </HorizontalScrollView>
     </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/selector_relative_layout"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <!--<ListView-->
-    <!--android:id="@+id/phone_log_calls_list_view"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/phone_log_top_layout"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginBottom="8dp" />-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/phone_log_add_send_message"-->
+    <ListView
+        android:id="@+id/phone_log_calls_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/phone_log_call_edit_text_layout"
@@ -250,7 +250,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <EditText
             android:id="@+id/phone_log_call_phone_number_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -601,7 +601,6 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
-        style="@style/BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -609,9 +608,10 @@
         android:background="#f0f0f0"
         app:itemIconTint="@color/bottom_navigation_color"
         app:itemTextColor="@color/bottom_navigation_color"
-        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/main_navigation_view" />
+        app:menu="@menu/main_navigation_view"
+        style="@style/BottomNavigationView"/>
 </RelativeLayout>

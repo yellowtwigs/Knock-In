@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.knocker.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAdapter.ViewHolder> {
@@ -30,6 +31,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     //vars
     private ArrayList<Integer> list;
+    private ArrayList<Boolean> alreadyGone;
     private Context context;
     private List<String> packageNameList;
 
@@ -43,6 +45,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
             ActivityInfo activityInfo = resolveInfo.activityInfo;
             this.packageNameList.add(activityInfo.applicationInfo.packageName);
         }
+        alreadyGone = new ArrayList<>(Arrays.asList(false, false, false, false, false, false, false, false, false, false, false, false));
     }
 
     public HorizontalViewAdapter(Context context, ArrayList<Integer> list) {
@@ -59,50 +62,72 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
+        Log.d(TAG, "onBindViewHolder: called."+position);
 
         Glide.with(context)
                 .asBitmap()
                 .load(list.get(position))
                 .into(holder.image);
 
-        holder.image.setImageResource(list.get(position));
+        //holder.image.setImageResource(list.get(position));
+        holder.image.setId(position);
+        Log.d(TAG, "onBindViewHolder: called. "+list);
+        Log.d(TAG, "onBindViewHolder: called. "+list.get(position));
+        System.out.print(packageNameList);
+        //System.out.print(holder.image.getDrawable());
+        System.out.print(list);
 
         if (position == 0 && !packageNameList.contains("com.facebook.katana")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "FACEBOOK");
+            alreadyGone.set(0,true);
         }
-        else if (position == 1 && !packageNameList.contains("com.facebook.orca")) {
+        if (position == 1 && !packageNameList.contains("com.facebook.orca")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "ORCA");
+            alreadyGone.set(1,true);
         }
-        else if (position == 2 && !packageNameList.contains("com.instagram.android")) {
+        if (position == 2 && !packageNameList.contains("com.instagram.android") && !alreadyGone.get(2)) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "Insta");
+            //newlist.remove(2);
+            alreadyGone.set(2,true);
         }
-        else if (position == 3 && !packageNameList.contains("com.whatsapp")) {
+        if (position == 3 && !packageNameList.contains("com.whatsapp")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "WHATSAPP");
         }
-        else if (position == 4 && !packageNameList.contains("com.google.android.gm")) {
+        if (position == 4 && !packageNameList.contains("com.google.android.gm")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "ANDROID");
         }
-        else if (position == 5 && !packageNameList.contains("com.microsoft.office.outlook")) {
+        if (position == 5 && !packageNameList.contains("com.microsoft.office.outlook")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "OUTLOOK");
         }
-        else if (position == 6 && !packageNameList.contains("com.spotify.music")) {
+        if (position == 6 && !packageNameList.contains("com.spotify.music")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "MUSIC");
         }
-        else if (position == 7 && !packageNameList.contains("com.linkedin.android")) {
+        if (position == 7 && !packageNameList.contains("com.linkedin.android")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "LINKDIN");
         }
-        else if (position == 8 && !packageNameList.contains("org.telegram.messenger")) {
+        if (position == 8 && !packageNameList.contains("org.telegram.messenger")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "TELEGRAM");
         }
-        else if (position == 9 && !packageNameList.contains("com.google.android.youtube")) {
+        if (position == 9 && !packageNameList.contains("com.google.android.youtube")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "YOUTUBE");
         }
-        else if (position == 10 && !packageNameList.contains("com.twitter.android")) {
+        if (position == 10 && !packageNameList.contains("com.twitter.android")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "TWITTER");
         }
-        else if (position == 11 && !packageNameList.contains("com.skype.raider")) {
+        if (position == 11 && !packageNameList.contains("com.skype.raider")) {
             holder.image.setVisibility(View.GONE);
+            Log.d(TAG, "FACEBOOK");
         }
 
         holder.image.setOnClickListener(new View.OnClickListener() {
