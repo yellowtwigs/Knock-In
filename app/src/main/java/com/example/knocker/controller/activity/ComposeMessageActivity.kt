@@ -109,7 +109,6 @@ class ComposeMessageActivity : AppCompatActivity() {
         }
 
         val tmp = intent.getStringExtra("ContactPhoneNumber")
-        println("tmp " + tmp);
         if (tmp != null) {
             compose_message_phone_number = tmp
             compose_message_phone_property = " "

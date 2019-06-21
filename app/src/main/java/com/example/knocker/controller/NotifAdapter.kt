@@ -55,7 +55,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_notification_adapter, parent, false)
         }
-        System.out.println("notifications taile"+notifications.size)
+        //System.out.println("notifications taile"+notifications.size)
         val sbp = getItem(position)
         val app = convertView!!.findViewById<View>(R.id.notification_plateformeTv) as TextView
         val contenue = convertView.findViewById<View>(R.id.notification_contenu) as TextView

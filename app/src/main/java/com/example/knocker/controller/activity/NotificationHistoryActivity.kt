@@ -16,6 +16,7 @@ import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationHistoryAdapterActivity
+import com.example.knocker.controller.NotificationListener
 import com.example.knocker.model.ContactsRoomDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -29,6 +30,7 @@ class  NotificationHistoryActivity : AppCompatActivity() {
     private var contact_details_NotificationsDatabase: ContactsRoomDatabase? = null
     private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
     private var drawerLayout: DrawerLayout? = null
+    private val list = mutableListOf<NotificationDB>()
 
     private var main_BottomNavigationView: BottomNavigationView? = null
 
@@ -79,19 +81,36 @@ class  NotificationHistoryActivity : AppCompatActivity() {
         //on get la base de données
         contact_details_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean("filtre_message", true)) {
+            list.addAll(contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+            println("BALISE = "+list)
+            val listTmp = mutableListOf<NotificationDB>()
+            listTmp.addAll(list)
+            listTmp.forEach {
+                if(!isMessagingApp(it.platform)) {
+                    list.remove(it)
+                }
+            }
+        } else {
+            list.addAll(contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
 
+        }
         if(sharedPreferences.getString("tri","date").equals("date")){
-            val list = contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>
+
             val adapter = NotificationHistoryAdapterActivity(this, list)
             val listviews = findViewById<ListView>(R.id.listView_notification_history)
             listviews.adapter = adapter
             println("taille list "+list.size+" content "+list.toString())
         }else if(sharedPreferences.getString("tri","date").equals("priorite")){
-            val list = contact_details_NotificationsDatabase?.notificationsDao()?.testPriority() as ArrayList<NotificationDB>
-            val list2 = contact_details_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>
-            list2.removeAll(list)
-            list.addAll(firstContactPrio0(list)-1,list2)
-            val adapter = NotificationHistoryAdapterActivity(this, list)
+
+            var listTmp = contact_details_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
+            var listTmp2 = mutableListOf<NotificationDB>()
+            listTmp2.addAll(list)
+            listTmp= contact_details_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
+            listTmp2.removeAll(listTmp)
+            println("TEEEEEEEST = "+listTmp2.size)
+            listTmp.addAll(Math.max(firstContactPrio0(listTmp)-1,0),listTmp2)
+            val adapter = NotificationHistoryAdapterActivity(this, listTmp)
             val listviews = findViewById<ListView>(R.id.listView_notification_history)
             listviews.adapter = adapter
         }else{
@@ -102,7 +121,7 @@ class  NotificationHistoryActivity : AppCompatActivity() {
         main_BottomNavigationView!!.menu.getItem(1).isChecked = true
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
-    fun firstContactPrio0(notifList:ArrayList<NotificationDB>):Int{
+    fun firstContactPrio0(notifList:List<NotificationDB>):Int{
         for (i in 0..notifList.size-1){
             val contact= contact_details_NotificationsDatabase!!.contactsDao().getContact(notifList.get(i).idContact)
             if(contact.contactDB!!.contactPriority==0){
@@ -120,6 +139,9 @@ class  NotificationHistoryActivity : AppCompatActivity() {
         }else if(sharedPreferences.getString("tri","date").equals("priorite")){
 
             menu!!.findItem(R.id.notif_tri_par_priorite).setChecked(true)
+        }
+        if (!sharedPreferences.getBoolean("filtre_message", true)){
+            menu!!.findItem(R.id.messagefilter).setChecked(false)
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -153,6 +175,19 @@ class  NotificationHistoryActivity : AppCompatActivity() {
                 alertDialogBuilder.setMessage(this.resources.getString(R.string.help_history))
                 alertDialogBuilder.show()
             }
+            R.id.messagefilter -> {
+                val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                if (item.isChecked){
+                    editor.putBoolean("filtre_message", false)
+                    item.setChecked(false)
+                } else {
+                    editor.putBoolean("filtre_message",true)
+                    item.setChecked(true)
+                }
+                editor.apply()
+                this.recreate()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -179,5 +214,20 @@ class  NotificationHistoryActivity : AppCompatActivity() {
 
         }
         false
+    }
+    private fun isMessagingApp(packageName: String): Boolean {
+        if (packageName.equals(NotificationListener.FACEBOOK_PACKAGE)) {
+            return true;
+        } else if (packageName.equals(NotificationListener.MESSENGER_PACKAGE)) {
+            return true;
+        } else if (packageName.equals(NotificationListener.WATHSAPP_SERVICE)) {
+            return true
+        } else if (packageName.equals(NotificationListener.GMAIL_PACKAGE)) {
+            return true
+        } else if (packageName.equals(NotificationListener.MESSAGE_PACKAGE) || packageName.equals(NotificationListener.MESSAGE_SAMSUNG_PACKAGE)) {
+            return true
+        } else if (packageName.equals(NotificationListener.TELEGRAM_PACKAGE))
+            return true
+        return false
     }
 }

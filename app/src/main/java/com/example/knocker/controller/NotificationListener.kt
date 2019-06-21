@@ -245,6 +245,8 @@ class NotificationListener : NotificationListenerService() {
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
         val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+        val TELEGRAM_PACKAGE = "org.telegram.messenger"
+
        // var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
         var adapterNotification: NotifAdapter? = null
     }
