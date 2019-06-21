@@ -175,7 +175,7 @@
 
     <!-- region Alert Dialog Notifications -->
 
-    <string name="alert_dialog_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être déranger par des messages inutiles</string>
+    <string name="alert_dialog_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être dérangé par des messages inutiles</string>
     <string name="alert_dialog_notification_allow_it">Autoriser</string>
     <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
 
@@ -206,7 +206,7 @@
     <!-- region First Launch -->
 
     <string name="first_launch_welcome">Bienvenue sur Knocker</string>
-    <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquez avec eux</string>
+    <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquer avec eux</string>
     <string name="first_launch_welcome_accept">Accepter et continuer</string>
     <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com">www.yellowtwigs.com</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
 
