@@ -37,16 +37,7 @@
         android:checkable="true"
         android:title="@string/notif_filtre_message" />
     </group>
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/systeme_filter"
-            android:checkable="true"
-            android:title="@string/notif_filtre_systeme"
-            app:showAsAction="collapseActionView" />
-    </group>
 
-    <item
-        android:id="@+id/appfilter"
-        android:checkable="true"
-        android:title="@string/notif_filtre_app" />
+
+
 </menu>
