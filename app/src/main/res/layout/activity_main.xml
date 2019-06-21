@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id = "@+id/main_coordinatorLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controller.activity.MainActivity">
@@ -16,10 +16,8 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/floating_button_margin"
         android:layout_marginBottom="80dp"
-        android:background="@drawable/ic_floating_button_add"
-        android:elevation="6dp"
-        android:visibility="visible"
+        android:background="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
