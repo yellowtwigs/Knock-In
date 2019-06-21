@@ -119,8 +119,11 @@ class NotificationListener : NotificationListenerService() {
                         this.cancelNotification(sbn.key)
                     }
                 }else{
-                    if(packageName.equals(MESSAGE_PACKAGE) || packageName.equals(MESSAGE_SAMSUNG_PACKAGE)){
+                    println("I don't know this contact")
+                    if(sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)){
                         displayLayout(sbp,sharedPreferences)
+                    }else{
+                        println("bad package "+ sbn.packageName)
                     }
                 }
 
