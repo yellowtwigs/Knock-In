@@ -82,6 +82,7 @@ public class CircularImageView extends AppCompatImageView {
             float defaultBorderSize = DEFAULT_BORDER_WIDTH * getContext().getResources().getDisplayMetrics().density;
             setBorderWidth(attributes.getDimension(R.styleable.CircularImageView_civ_border_width, defaultBorderSize));
             setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
+            setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
         }
         setBackgroundColor(attributes.getColor(R.styleable.CircularImageView_civ_background_color, Color.WHITE));
 
