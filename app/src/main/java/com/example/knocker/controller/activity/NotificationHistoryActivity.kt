@@ -10,12 +10,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationHistoryAdapterActivity
 import com.example.knocker.model.ContactsRoomDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 
 /**
  * La Classe qui permet d'afficher l'historique des notifications
@@ -25,6 +28,7 @@ class  NotificationHistoryActivity : AppCompatActivity() {
 
     private var contact_details_NotificationsDatabase: ContactsRoomDatabase? = null
     private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
+    private var drawerLayout: DrawerLayout? = null
 
     private var main_BottomNavigationView: BottomNavigationView? = null
 
@@ -39,6 +43,36 @@ class  NotificationHistoryActivity : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
         actionbar.setBackgroundDrawable( ColorDrawable(Color.parseColor("#ffffff")))
+
+        drawerLayout = findViewById(R.id.notif_log_layout_id)
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val menu = navigationView.menu
+        val nav_item = menu.findItem(R.id.nav_screen_config)
+        nav_item.isChecked = true
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            drawerLayout!!.closeDrawers()
+
+            when (menuItem.itemId) {
+                R.id.nav_address_book -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+                R.id.nav_informations -> startActivity(Intent(this, EditInformationsActivity::class.java))
+                R.id.nav_notif_config -> startActivity(Intent(this, ManageNotificationActivity::class.java))
+                R.id.nav_screen_config -> startActivity(Intent(this, ManageMyScreenActivity::class.java))
+                R.id.nav_data_access -> {
+                }
+                R.id.nav_knockons -> startActivity(Intent(this, ManageKnockonsActivity::class.java))
+                R.id.nav_statistics -> {
+                }
+                R.id.nav_help -> startActivity(Intent(this, HelpActivity::class.java))
+            }
+
+            val drawer = findViewById<DrawerLayout>(R.id.notif_log_layout_id)
+            drawer.closeDrawer(GravityCompat.START)
+            true
+        }
 
         contact_details_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         contact_details_mDbWorkerThread.start()
@@ -92,6 +126,10 @@ class  NotificationHistoryActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
+            android.R.id.home -> {
+                drawerLayout!!.openDrawer(GravityCompat.START)
+                return true
+            }
             R.id.notif_tri_par_date ->{
                 println("tri par priorité checked")
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
