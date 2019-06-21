@@ -246,7 +246,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         DisplayMetrics metrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int diametreBoutton = (int) (0.30 * metrics.densityDpi);
-        int radiusMenu = (int) (0.40 * metrics.densityDpi);
+        int radiusMenu = (int) (0.45 * metrics.densityDpi);
         int border = (int) (0.0625 * metrics.densityDpi);
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
@@ -257,7 +257,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 .setEndAngle(endAngle)
                 .setRadius(radiusMenu)
                 .addSubActionView(builderIcon.setContentView(buttonEdit, layoutParams).build(), diametreBoutton, diametreBoutton)
-                .attachTo(holder.gridContactItemLayout)
+                .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
                 .disableAnimations();
         if (appIsInstalled() && !getItem(position).getPhoneNumber().equals("")) {
@@ -277,7 +277,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }*/
 
 
-        FloatingActionMenu quickMenu = builder.build();
+        final FloatingActionMenu quickMenu = builder.build();
         listCircularMenu.add(quickMenu);
         //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
         View.OnClickListener buttonListener = new View.OnClickListener() {
@@ -328,6 +328,16 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);
+        holder.gridContactItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(quickMenu.isOpen()){
+                    quickMenu.close(true);
+                }else{
+                    quickMenu.open(true);
+                }
+            }
+        });
         //endregion
         return gridview;
 
@@ -386,6 +396,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     @Override
     public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
+        println("menu select");
         if (selectMenu != null) {
             selectMenu.close(true);
         }
@@ -395,11 +406,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     @Override
     public void onMenuClosed(FloatingActionMenu floatingActionMenu) {
+        println("menu close");
         selectMenu = null;
     }
 
 
     public void closeMenu() {
+
         if (selectMenu != null)
             selectMenu.close(true);
 

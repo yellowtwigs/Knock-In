@@ -18,11 +18,11 @@ class FirstLaunchActivity : AppCompatActivity() {
         buttonAccept.setOnClickListener({
             edit.putBoolean("first_launch",false)
             edit.commit()
-
             startActivity(Intent(this@FirstLaunchActivity,SynchronizeContactActivity::class.java))
             finish()
         })
     }
+
     override fun onBackPressed(){
 
     }
