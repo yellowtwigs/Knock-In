@@ -394,6 +394,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
 
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+                gridViewAdapter!!.closeMenu()
                 main_search_bar_value = main_SearchBar!!.text.toString()
                 val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedPreferences.getInt("gridview", 4)
