@@ -4,7 +4,10 @@
     android:id="@+id/grid_contact_item_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_relative_layout">
+    android:background="@drawable/selector_relative_layout"
+    android:clickable="true"
+    android:focusable="true">
+
     <com.example.knocker.controller.CircularImageView
         android:id="@+id/contactRoundedImageView"
         android:layout_width="@dimen/rounded_image_view_height_width"
@@ -14,7 +17,6 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_letter_k"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

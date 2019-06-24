@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/history_adapter_contenu"
-            android:layout_width="325dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"

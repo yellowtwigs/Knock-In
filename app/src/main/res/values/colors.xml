@@ -37,9 +37,9 @@
 
     <!-- region priority Colors -->
 
-    <color name="priorityZeroColor">#b20000</color>
-    <color name="priorityOneColor">#FFFFFF</color>
-    <color name="priorityTwoColor">#DAA520</color>
+    <color name="priorityZeroColor">@color/darkGreyColor</color>
+    <color name="priorityOneColor">@color/lightGreyColor</color>
+    <color name="priorityTwoColor">@color/colorPrimary</color>
 
     <!-- endregion -->
 </resources>

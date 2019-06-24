@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         false
     }
+
     //endregion
 
     /**
@@ -227,39 +228,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //affiche tout les contacts de la Database
 
-        // Grid View
-        //region commentaire
-////        println("Status bar ???????????? = "+getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android")))
-////        var point: Point = Point(0,0)
-////        val decorrView = window.decorView
-////        decorrView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-////        println("action bar ???????????? = "+point.toString())
-////        val ressulkt = windowManager.defaultDisplay.getRealSize(point)
-////        println("action bar ???????????? = "+ point.toString())
-////        println("Nav bar ??????????????? = "+resources.getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")))
-//
-////        val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
-////        val hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey()
-////        println("PRIIIIIIIINTTTTTTTTT = "+hasBackKey+"  "+hasMenuKey)
-////        val displayMetrics = DisplayMetrics()
-////        windowManager.defaultDisplay.getMetrics(displayMetrics)
-////        var height = displayMetrics.heightPixels
-////        main_BottomNavigationView!!.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-////        println("HEIGHT !!!! = "+main_BottomNavigationView!!.getMeasuredHeight()+" "+main_BottomNavigationView!!.width+ " TOTAL HEIGHT = "+height)
-        //endregion
-
         main_GridView = findViewById(R.id.main_grid_view_id)
-        //region commentaire
-//        val gridParams = main_GridView!!.layoutParams
-//        if (!hasMenuKey && !hasBackKey) {
-//            gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - resources.getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")) - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
-//        } else {
-        //           gridParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
-//        }
-//        main_GridView!!.layoutParams = gridParams
-        // main_GridView.height
-        //endregion
-
         main_Listview = findViewById(R.id.main_list_view_id)
 
         //region commentaire
