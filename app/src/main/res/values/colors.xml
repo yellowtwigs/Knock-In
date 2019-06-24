@@ -2,7 +2,7 @@
 <resources>
     <!-- region Universal Color -->
 
-    <color name="colorPrimary">#f0c02a</color>
+    <color name="colorPrimary">#fcd74c</color>
     <color name="colorPrimaryDark">#e4b41e</color>
 
     <color name="backgroundColor">#fafafa</color>
