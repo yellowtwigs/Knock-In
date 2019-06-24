@@ -279,7 +279,7 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_SendMessage!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text.isNotEmpty()) {
                 val phone = phone_log_PhoneNumberEditText!!.text.toString()
-                val i = Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null));
+                val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null));
                 startActivity(i)
             } else {
                 Toast.makeText(this, "Enter a phone number please", Toast.LENGTH_SHORT).show()
@@ -432,12 +432,12 @@ class PhoneLogActivity : AppCompatActivity() {
             startActivity(i)
         } catch (e: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://whatsapp.com/")))
+                    Uri.parse("https://whatsapp.com/")))
         }
     }
 
     private fun goToInstagramPage() {
-        val uri = Uri.parse("http://instagram.com/_u/")
+        val uri = Uri.parse("https://www.instagram.com/")
         val likeIng = Intent(Intent.ACTION_VIEW, uri)
 
         likeIng.setPackage("com.instagram.android")
@@ -446,7 +446,7 @@ class PhoneLogActivity : AppCompatActivity() {
             startActivity(likeIng)
         } catch (e: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://instagram.com/")))
+                    Uri.parse("https://instagram.com/")))
         }
 
     }
