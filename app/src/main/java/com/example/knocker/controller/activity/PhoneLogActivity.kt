@@ -132,7 +132,6 @@ class PhoneLogActivity : AppCompatActivity() {
         main_BottomNavigationView = findViewById(R.id.navigation)
 
 //        phone_log_Calls = findViewById(R.id.phone_log_calls)
-        phone_log_CallsListView = findViewById(R.id.phone_log_calls_list_view)
 
         phone_log_ButtonOpen = findViewById(R.id.phone_log_button_open_id)
         phone_log_CallLayout = findViewById(R.id.phone_log_call_layout_id)
@@ -438,7 +437,7 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     private fun goToInstagramPage() {
-        val uri = Uri.parse("http://instagram.com/_u/therock/")
+        val uri = Uri.parse("http://instagram.com/_u/")
         val likeIng = Intent(Intent.ACTION_VIEW, uri)
 
         likeIng.setPackage("com.instagram.android")

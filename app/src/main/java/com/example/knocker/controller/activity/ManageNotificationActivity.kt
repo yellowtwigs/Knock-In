@@ -35,8 +35,6 @@ class ManageNotificationActivity : AppCompatActivity() {
     // Show on the Main Layout
     private var drawerLayout: DrawerLayout? = null
 
-    private var my_knocker: RelativeLayout? = null
-
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {

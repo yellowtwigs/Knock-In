@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_GridView: GridView? = null
     private var main_Listview: ListView? = null
 
-    private var my_knocker: RelativeLayout? = null
-
     private var main_FloatingButtonAdd: FloatingActionButton? = null
 
     internal var main_FloatingButtonIsOpen = false

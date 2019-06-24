@@ -352,7 +352,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 case 1:
                     return R.drawable.ic_user_blue;
                 case 2:
-                    return R.drawable.ic_user_brown;
+                    return R.drawable.ic_user_knocker;
                 case 3:
                     return R.drawable.ic_user_green;
                 case 4:
