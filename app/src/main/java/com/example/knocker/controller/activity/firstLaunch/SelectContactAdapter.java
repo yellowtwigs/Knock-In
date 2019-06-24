@@ -211,7 +211,7 @@ public class SelectContactAdapter extends BaseAdapter {
         return listSelectedItem;
     }
 
-    public int randomDefaultImage(int avatarId, String createOrGet) {
+    private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
             return new Random().nextInt(7);
         } else if (createOrGet.equals("Get")) {
@@ -228,4 +228,3 @@ public class SelectContactAdapter extends BaseAdapter {
         return -1;
     }
 }
-
