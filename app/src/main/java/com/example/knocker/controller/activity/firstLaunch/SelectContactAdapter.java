@@ -64,7 +64,7 @@ public class SelectContactAdapter extends BaseAdapter {
 
         if (gridview == null) {
             System.out.println("convert is null");
-            gridview = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
+            gridview = layoutInflater.inflate(R.layout.grid_multi_select_item_layout, null);
 //            gridview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
 
 

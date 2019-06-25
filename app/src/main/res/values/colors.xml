@@ -15,6 +15,7 @@
     <color name="whiteColor">#FFFFFF</color>
     <color name="blackColor">#000000</color>
     <color name="greyColor">#e6e6e6</color>
+    <color name="redColorDark">#ba3224</color>
 
     <color name="transparentColor">#33ffffff</color>
 
@@ -37,7 +38,7 @@
 
     <!-- region priority Colors -->
 
-    <color name="priorityZeroColor">@color/darkGreyColor</color>
+    <color name="priorityZeroColor">@color/redColorDark</color>
     <color name="priorityOneColor">@color/lightGreyColor</color>
     <color name="priorityTwoColor">@color/colorPrimary</color>
 

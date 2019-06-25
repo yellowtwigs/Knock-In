@@ -35,12 +35,13 @@ class MultiSelectActivity : AppCompatActivity() {
 
             }
         }
-        multi_select_textView.setText(String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.listContactSelect().size))
+        multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.listContactSelect().size)
         multi_select_gridView.numColumns += 4
         multi_select_gridView.adapter = adapter
         for (contact in ContactList(this).contacts) {
             println("contact is " + contact.contactDB!!.lastName + " " + contact.contactDB!!.firstName)
         }
+
         multi_select_gridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             adapter.itemSelected(position)
             adapter.notifyDataSetChanged()
