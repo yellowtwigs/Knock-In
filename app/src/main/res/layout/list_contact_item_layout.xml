@@ -32,8 +32,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="bla bla"
-            android:textSize="16sp"
+            android:text="Bla bla"
+            android:textColor="@color/textColorDark"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/list_contact_item_contactRoundedImageView"
             app:layout_constraintStart_toEndOf="@+id/list_contact_item_contactRoundedImageView"
             app:layout_constraintTop_toTopOf="@+id/list_contact_item_contactRoundedImageView" />
@@ -44,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lightGreyColor"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_contact_item_layout">
@@ -284,3 +285,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

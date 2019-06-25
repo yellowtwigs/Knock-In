@@ -24,7 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 class ManageMyScreenActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
-    private var my_knocker: RelativeLayout? = null
     private var tv_one: ImageView? = null
     private var tv_three: ImageView? = null
     private var tv_four: ImageView? = null

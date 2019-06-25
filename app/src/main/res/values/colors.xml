@@ -2,7 +2,7 @@
 <resources>
     <!-- region Universal Color -->
 
-    <color name="colorPrimary">#f0c02a</color>
+    <color name="colorPrimary">#fcd74c</color>
     <color name="colorPrimaryDark">#e4b41e</color>
 
     <color name="backgroundColor">#fafafa</color>
@@ -37,9 +37,9 @@
 
     <!-- region priority Colors -->
 
-    <color name="priorityZeroColor">#b20000</color>
-    <color name="priorityOneColor">#FFFFFF</color>
-    <color name="priorityTwoColor">#DAA520</color>
+    <color name="priorityZeroColor">@color/darkGreyColor</color>
+    <color name="priorityOneColor">@color/lightGreyColor</color>
+    <color name="priorityTwoColor">@color/colorPrimary</color>
 
     <!-- endregion -->
 </resources>

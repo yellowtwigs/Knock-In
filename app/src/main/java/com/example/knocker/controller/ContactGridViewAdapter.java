@@ -224,7 +224,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonEdit.setImageResource(R.drawable.ic_edit_floating_button);
         buttonMail.setImageResource(android.R.drawable.ic_dialog_email);
 
-
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
         builderIcon.setContentView(buttonCall);
@@ -331,9 +330,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         holder.gridContactItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quickMenu.isOpen()){
+                if (quickMenu.isOpen()) {
                     quickMenu.close(true);
-                }else{
+                } else {
                     quickMenu.open(true);
                 }
             }
@@ -343,18 +342,25 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     }
 
-    public int randomDefaultImage(int avatarId, String createOrGet) {
+    private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
             return new Random().nextInt(7);
         } else if (createOrGet.equals("Get")) {
-            switch(avatarId) {
-                case 0: return R.drawable.ic_user_purple;
-                case 1: return R.drawable.ic_user_blue;
-                case 2: return R.drawable.ic_user_brown;
-                case 3: return R.drawable.ic_user_green;
-                case 4: return R.drawable.ic_user_om;
-                case 5: return R.drawable.ic_user_orange;
-                case 6: return R.drawable.ic_user_pink;
+            switch (avatarId) {
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_knocker;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_orange;
+                case 6:
+                    return R.drawable.ic_user_pink;
             }
         }
         return -1;

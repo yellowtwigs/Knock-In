@@ -51,7 +51,6 @@ class EditInformationsActivity : AppCompatActivity() {
     //region ========================================== Var or Val ==========================================
 
     private var drawerLayout: DrawerLayout? = null
-    private var my_knocker: RelativeLayout? = null
     private var edit_information_layout: ConstraintLayout? = null
 
     private var edit_informations_ProfileImage: CircularImageView? = null

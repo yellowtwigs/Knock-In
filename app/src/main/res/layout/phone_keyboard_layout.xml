@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/phone_log_call_edit_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@drawable/keyboard_selector_relative_layout"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:background="@color/darkGreyColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/phone_log_send_message"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_sms_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/phone_log_call_phone_number_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_edit_text"
+            android:inputType="phone"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/phone_log_call_back_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_back_space_button_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TableLayout
+        android:id="@+id/phone_log_call_keyboard_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="106.5dp"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone_log_call_edit_text_layout">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:background="@color/darkGreyColor" />
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_1"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="1"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_2"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="2"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_3"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="3"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_4"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="4"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_5"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="5"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_6"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="6"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_7"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="7"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_8"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="8"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_9"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="9"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_star"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="0"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="*"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_0"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="1"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/phone_log_call_keyboard_sharp"
+                android:layout_width="@dimen/phone_log_keyboard_width"
+                android:layout_height="@dimen/phone_log_keyboard_height"
+                android:layout_column="2"
+                android:background="@drawable/keyboard_selector_relative_layout"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="#"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+        </TableRow>
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

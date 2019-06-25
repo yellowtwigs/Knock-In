@@ -18,6 +18,8 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -160,6 +162,7 @@ public class ContactListViewAdapter extends BaseAdapter {
                     }
                 }
                 System.out.println("click");
+
                 if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
                     holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
                     if (activeMenu != null) {
@@ -170,9 +173,25 @@ public class ContactListViewAdapter extends BaseAdapter {
                 } else {
                     holder.constraintLayoutMenu.setVisibility(View.GONE);
                     activeMenu = null;
+
+                    Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+                    holder.constraintLayoutMenu.startAnimation(slideDown);
                 }
             }
         };
+
+        if (!whatsappIsInstalled()) {
+            holder.whatsappCl.setVisibility(View.GONE);
+        } else {
+            holder.whatsappCl.setVisibility(View.VISIBLE);
+        }
+
+        if (getItem(position).getFirstMail().isEmpty() ) {
+            holder.mailCl.setVisibility(View.GONE);
+        } else {
+            holder.mailCl.setVisibility(View.VISIBLE);
+        }
+
         holder.mailCl.setOnClickListener(listener);
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);
@@ -184,9 +203,9 @@ public class ContactListViewAdapter extends BaseAdapter {
         return listview;
     }
 
-    public int randomDefaultImage(int avatarId, String createOrGet) {
+    private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
+            return new Random().nextInt(6);
         } else if (createOrGet.equals("Get")) {
             switch (avatarId) {
                 case 0:
@@ -194,14 +213,12 @@ public class ContactListViewAdapter extends BaseAdapter {
                 case 1:
                     return R.drawable.ic_user_blue;
                 case 2:
-                    return R.drawable.ic_user_brown;
-                case 3:
                     return R.drawable.ic_user_green;
-                case 4:
+                case 3:
                     return R.drawable.ic_user_om;
-                case 5:
+                case 4:
                     return R.drawable.ic_user_orange;
-                case 6:
+                case 5:
                     return R.drawable.ic_user_pink;
             }
         }
@@ -225,6 +242,16 @@ public class ContactListViewAdapter extends BaseAdapter {
         }
     }//code duplicate à mettre dans contactAllInfo
 
+    private boolean whatsappIsInstalled() {
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getApplicationInfo("com.whatsapp", 0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     static class ViewHolder {
         TextView contactFirstNameView;
         ConstraintLayout constraintLayout;
@@ -236,6 +263,5 @@ public class ContactListViewAdapter extends BaseAdapter {
         ConstraintLayout whatsappCl;
         ConstraintLayout mailCl;
         ConstraintLayout editCl;
-
     }
 }

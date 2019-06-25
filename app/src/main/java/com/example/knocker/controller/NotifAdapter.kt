@@ -27,13 +27,13 @@ import com.example.knocker.model.ModelDB.ContactDB
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
     private val TAG = NotificationListener::class.java.simpleName
     private var notification_adapeter_ContactsDatabase: ContactsRoomDatabase? = null
-    private lateinit var  notification_adapeter_mDbWorkerThread: DbWorkerThread
+    private lateinit var notification_adapeter_mDbWorkerThread: DbWorkerThread
     private val FACEBOOK_PACKAGE = "com.facebook.katana"
     private val MESSENGER_PACKAGE = "com.facebook.orca"
     private val WATHSAPP_SERVICE = "com.whatsapp"
     private val GMAIL_PACKAGE = "com.google.android.gm"
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
-    val MESSAGE_SAMSUNG_PACKAGE= "com.samsung.android.messaging"
+    val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
 
 
     override fun getCount(): Int {
@@ -86,8 +86,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
             expImg.setImageBitmap(bitmap)
         }
-        if(canResponse(sbp.appNotifier)){
-            buttonResponse.visibility= View.VISIBLE
+        if (canResponse(sbp.appNotifier)) {
+            buttonResponse.visibility = View.VISIBLE
         }
         val listener = View.OnClickListener { v ->
             println("click on constraint layout")
@@ -110,14 +110,14 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
                 //on get la base de données
                 val main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
-                val contacts=ContactList(this.context)
-                val number= contacts.getDetailsOfPlatform(sbp.statusBarNotificationInfo["android.title"].toString(), app)
-                if(sbp.appNotifier.equals(MESSAGE_PACKAGE )|| sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)){
+                val contacts = ContactList(this.context)
+                val number = contacts.getDetailsOfPlatform(sbp.statusBarNotificationInfo["android.title"].toString(), app)
+                if (sbp.appNotifier.equals(MESSAGE_PACKAGE) || sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)) {
 
-                    val smsManager= SmsManager.getDefault()
+                    val smsManager = SmsManager.getDefault()
 
-                    smsManager.sendTextMessage(number,null, message,null,null)
-                }else if(sbp.appNotifier.equals(WATHSAPP_SERVICE)){
+                    smsManager.sendTextMessage(number, null, message, null, null)
+                } else if (sbp.appNotifier.equals(WATHSAPP_SERVICE)) {
                     /*context.startActivity( Intent(Intent.ACTION_VIEW,
                             Uri.parse(
                                     "https://api.whatsapp.com/send?phone="+number+"&text="+message)));
@@ -131,8 +131,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 buttonResponse.visibility = View.VISIBLE
                 buttonSend.visibility = View.GONE
                 editText.visibility = View.GONE
-                editText.text=null
-                if(this.notifications.size==0){
+                editText.text = null
+                if (this.notifications.size == 0) {
                     closeNotification()
                 }
                 //closeNotification()
@@ -192,20 +192,22 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             return "WhatsApp"
         } else if (packageName == GMAIL_PACKAGE) {
             return "gmail"
-        } else if (packageName == MESSAGE_PACKAGE || packageName==
+        } else if (packageName == MESSAGE_PACKAGE || packageName ==
 
 
-                  MESSAGE_SAMSUNG_PACKAGE) {
+                MESSAGE_SAMSUNG_PACKAGE) {
             return "message"
         }
         return ""
     }
-    private fun canResponse(packageName: String):Boolean{
-        if((checkSelfPermission(context,Manifest.permission.SEND_SMS)==PackageManager.PERMISSION_GRANTED)&&(packageName== MESSAGE_PACKAGE || packageName==WATHSAPP_SERVICE|| packageName==MESSAGE_SAMSUNG_PACKAGE )){
+
+    private fun canResponse(packageName: String): Boolean {
+        if ((checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) && (packageName == MESSAGE_PACKAGE || packageName == WATHSAPP_SERVICE || packageName == MESSAGE_SAMSUNG_PACKAGE)) {
             return true
         }
         return false
     }
+
     private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
 
         if ((sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE)) {
@@ -222,23 +224,22 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     /////****** code dupliqué faire attention trouvé un moyen de ne plus en avoir *******//////
 
 
-
-
-
     private fun openSms(sbp: StatusBarParcelable) {
         val i: Intent
-        if (sbp.appNotifier.equals(MESSAGE_PACKAGE)){
+        if (sbp.appNotifier.equals(MESSAGE_PACKAGE)) {
             i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")
-        }else {
+        } else {
             i = context.packageManager.getLaunchIntentForPackage("com.samsung.android.messaging")
         }
         i.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
     }
-    fun addNotification(sbp: StatusBarParcelable){
-        notifications.add(0,sbp)
+
+    fun addNotification(sbp: StatusBarParcelable) {
+        notifications.add(0, sbp)
         this.notifyDataSetChanged()
     }
+
     private fun getContactNameFromString(NameFromSbp: String): String {
         val pregMatchString: String = ".*\\([0-9]*\\)"
         if (NameFromSbp.matches(pregMatchString.toRegex())) {
@@ -255,7 +256,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             listContact!!.forEach { dbContact ->
 
                 //                println("contact "+dbContact+ "différent de name"+name)
-                if (dbContact.firstName+" "+dbContact.lastName == name) {
+                if (dbContact.firstName + " " + dbContact.lastName == name) {
                     return dbContact
                 }
             }

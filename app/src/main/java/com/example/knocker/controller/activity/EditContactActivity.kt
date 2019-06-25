@@ -239,6 +239,7 @@ class EditContactActivity : AppCompatActivity() {
             val delete = Runnable {
                 edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
                 val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
+                mainIntent.putExtra("isDelete", true)
                 startActivity(mainIntent)
                 finish()
             }
@@ -449,7 +450,7 @@ class EditContactActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_add_contact_validate, menu)
+        inflater.inflate(R.menu.menu_toolbar_validate, menu)
         return true
     }
 
