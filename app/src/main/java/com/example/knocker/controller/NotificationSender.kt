@@ -42,7 +42,29 @@ class NotificationSender : BroadcastReceiver() {
             main_mDbWorkerThread.start()
             main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
             val runnableSendNotif = Runnable {
-                val nbOfnotif = main_ContactsDatabase!!.notificationsDao().getNotificationSinceYesterday()
+                val list = main_ContactsDatabase!!.notificationsDao().getAllnotifications()
+                val calendar = GregorianCalendar()
+                calendar.add(Calendar.DATE,-1)
+                var nbOfnotif =0
+                val sharedPreferences = context.getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+                if(!sharedPreferences.getBoolean("filtre_message",true)){
+
+                    while( nbOfnotif<=list.size-1 && calendar.time.before(Date(list.get(nbOfnotif).timestamp) )){
+                        nbOfnotif++
+
+                    }
+                }else{
+                    var i=0
+                    while( i<=list.size-1 && calendar.time.before(Date(list.get(i).timestamp) )){
+                        if(isMessagingApp(list.get(i).platform)){
+                            nbOfnotif++
+                        }
+                        i++
+                        println("before test nb"+nbOfnotif)
+                    }
+                }
+                println("after")
+                        // calendar.time.after(Date(notificationDB.timestamp))
                 println("size of notif" + main_ContactsDatabase!!.notificationsDao().getIntTime().toString())
                 val intentSender = Intent(context, MainActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -86,5 +108,21 @@ class NotificationSender : BroadcastReceiver() {
             }
             return false
         }//TODO: enlever code duplicate
+
+    private fun isMessagingApp(packageName: String): Boolean {
+        if (packageName.equals(NotificationListener.FACEBOOK_PACKAGE)) {
+            return true;
+        } else if (packageName.equals(NotificationListener.MESSENGER_PACKAGE)) {
+            return true;
+        } else if (packageName.equals(NotificationListener.WATHSAPP_SERVICE)) {
+            return true
+        } else if (packageName.equals(NotificationListener.GMAIL_PACKAGE)) {
+            return true
+        } else if (packageName.equals(NotificationListener.MESSAGE_PACKAGE) || packageName.equals(NotificationListener.MESSAGE_SAMSUNG_PACKAGE)) {
+            return true
+        } else if (packageName.equals(NotificationListener.TELEGRAM_PACKAGE))
+            return true
+        return false
+    }
 
 }

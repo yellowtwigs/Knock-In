@@ -30,10 +30,10 @@ interface NotificationsDao {
     @Query("SELECT * FROM notifications_table WHERE platform = :platform")
     fun getNotificationByPlatform(platform: String): List<NotificationDB>
 
-    @Query("SELECT COUNT(*) FROM notifications_table WHERE JulianDay(datetime('now'))- JulianDay(datetime(timestamp))<1")
+    @Query("SELECT COUNT(*) FROM notifications_table WHERE datetime('now')- datetime(timestamp)<1")
     fun getNotificationSinceYesterday():Int
-    @Query("SELECT  timestamp FROM notifications_table" )
-    fun getIntTime():List<Long>
+    @Query("SELECT datetime(timestamp) FROM notifications_table" )
+    fun getIntTime():List<String>
     /**
      * Récupère une [notification][NotificationDB] grâce à son id
      * @param id Int   L'id de la [notification][NotificationDB] voulu
