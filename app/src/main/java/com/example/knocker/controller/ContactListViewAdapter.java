@@ -186,7 +186,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.whatsappCl.setVisibility(View.VISIBLE);
         }
 
-        if (getItem(position).getFirstMail().isEmpty() ) {
+        if (getItem(position).getFirstMail().isEmpty()) {
             holder.mailCl.setVisibility(View.GONE);
         } else {
             holder.mailCl.setVisibility(View.VISIBLE);
@@ -205,7 +205,7 @@ public class ContactListViewAdapter extends BaseAdapter {
 
     private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
-            return new Random().nextInt(6);
+            return new Random().nextInt(7);
         } else if (createOrGet.equals("Get")) {
             switch (avatarId) {
                 case 0:
@@ -213,12 +213,14 @@ public class ContactListViewAdapter extends BaseAdapter {
                 case 1:
                     return R.drawable.ic_user_blue;
                 case 2:
-                    return R.drawable.ic_user_green;
+                    return R.drawable.ic_user_knocker;
                 case 3:
-                    return R.drawable.ic_user_om;
+                    return R.drawable.ic_user_green;
                 case 4:
-                    return R.drawable.ic_user_orange;
+                    return R.drawable.ic_user_om;
                 case 5:
+                    return R.drawable.ic_user_orange;
+                case 6:
                     return R.drawable.ic_user_pink;
             }
         }
