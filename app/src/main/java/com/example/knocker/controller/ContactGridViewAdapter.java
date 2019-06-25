@@ -305,7 +305,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
                 } else if (v.getId() == buttonSMS.getId()) {
                     String phone = getItem(position).getPhoneNumber();
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null));
+                    Intent i = new Intent(Intent.ACTION_SEND, Uri.fromParts("sms", phone, null));
                     context.startActivity(i);
                 } else if (v.getId() == buttonMail.getId()) {
                     String mail = getItem(position).getFirstMail();
