@@ -331,9 +331,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             @Override
             public void onClick(View v) {
                 if (quickMenu.isOpen()) {
-                    quickMenu.close(true);
+                    quickMenu.close(false);
                 } else {
-                    quickMenu.open(true);
+                    quickMenu.open(false);
                 }
             }
         });
