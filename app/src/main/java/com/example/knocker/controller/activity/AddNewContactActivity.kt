@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.knocker.*
+import com.example.knocker.controller.CircularImageView
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
@@ -43,14 +44,13 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_LastName: TextInputLayout? = null
     private var add_new_contact_PhoneNumber: TextInputLayout? = null
     private var add_new_contact_Email: TextInputLayout? = null
-    private var add_new_contact_RoundedImageView: ImageView? = null
+    private var add_new_contact_RoundedImageView: CircularImageView? = null
     private var add_new_contact_Priority: Spinner? = null
     private var add_new_contact_PhoneProperty: Spinner? = null
     private var add_new_contact_MailProperty: Spinner? = null
     private var add_new_contact_PriorityExplain: TextView? = null
     private var gestionnaireContacts: ContactList? = null
     private var avatar: Int = 0
-    private var add_new_contact_phone_number: String? = null
 
     var imageUri: Uri? = null
     private val IMAGE_CAPTURE_CODE = 1001
@@ -151,10 +151,13 @@ class AddNewContactActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
                     add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
+                    add_new_contact_RoundedImageView!!.setBorderColor(R.color.priorityZeroColor)
                 } else if (position == 1) {
                     add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority1))
+                    add_new_contact_RoundedImageView!!.setBorderColor(R.color.priorityOneColor)
                 } else if (position == 2) {
                     add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority2))
+                    add_new_contact_RoundedImageView!!.setBorderColor(R.color.priorityTwoColor)
                 }
             }
         }

@@ -77,6 +77,8 @@ class ManageNotificationActivity : AppCompatActivity() {
         val nav_item = menu.findItem(R.id.nav_notif_config)
         nav_item.isChecked = true
 
+        navigationView!!.menu.getItem(2).isChecked = true
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()

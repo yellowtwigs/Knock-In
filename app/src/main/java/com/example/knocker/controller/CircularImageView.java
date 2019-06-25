@@ -12,7 +12,9 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+
 import androidx.appcompat.widget.AppCompatImageView;
+
 import android.util.AttributeSet;
 
 import com.example.knocker.R;
@@ -22,6 +24,7 @@ import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
 
 /**
  * La Classe qui permet d'arrondir les images
+ *
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class CircularImageView extends AppCompatImageView {
@@ -117,6 +120,7 @@ public class CircularImageView extends AppCompatImageView {
             paintBetween.setColor(borderColor);
         invalidate();
     }
+
     public void setBackgroundColor(int backgroundColor) {
         if (paintBackground != null)
             paintBackground.setColor(backgroundColor);
@@ -195,7 +199,7 @@ public class CircularImageView extends AppCompatImageView {
         // Draw Border
         canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter + borderWidth - margeWithShadowRadius, paintBorder);
         // Draw Border
-        canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter + borderWidth/2-1 - margeWithShadowRadius, paintBetween);
+        canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter + borderWidth / 2 - 1 - margeWithShadowRadius, paintBetween);
         // Draw Circle background
         canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter - margeWithShadowRadius, paintBackground);
         // Draw CircularImageView
@@ -308,7 +312,7 @@ public class CircularImageView extends AppCompatImageView {
         try {
             // Create Bitmap object out of the drawable
             Bitmap bitmap = Bitmap.createBitmap(100
-                    ., 100, Bitmap.Config.ARGB_8888);
+                    , 100, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);

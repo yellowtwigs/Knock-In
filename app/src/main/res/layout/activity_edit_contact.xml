@@ -8,6 +8,7 @@
         android:id="@+id/edit_contact_parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/backgroundColor"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -80,13 +81,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_last_name_id">
 
             <Spinner
                 android:id="@+id/edit_contact_phone_number_spinner"
-                android:layout_width="140dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/spinner_width"
+                android:layout_height="@dimen/spinner_height"
                 android:layout_centerVertical="true"
                 android:entries="@array/edit_contact_phone_number_arrays"
                 android:prompt="@string/edit_contact_phone_number_mobile" />
@@ -94,14 +96,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit_contact_phone_number_id"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edit_text_height"
+                android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/edit_contact_phone_number_spinner"
                 android:hint="@string/edit_contact_phone_number"
                 app:layout_constraintStart_toEndOf="@+id/edit_contact_phone_number_spinner">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/custom_edit_text"
                     android:inputType="phone"
                     android:maxLines="1"
@@ -114,14 +116,15 @@
             android:id="@+id/edit_contact_phone_mail_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_layout">
 
             <Spinner
                 android:id="@+id/edit_contact_mail_spinner_id"
-                android:layout_width="140dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/spinner_width"
+                android:layout_height="@dimen/spinner_height"
                 android:layout_centerVertical="true"
                 android:entries="@array/edit_contact_mail_arrays"
                 android:prompt="@string/edit_contact_mail_mobile" />
@@ -129,15 +132,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit_contact_mail_id"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edit_text_height"
+                android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/edit_contact_mail_spinner_id"
 
-                android:layout_marginTop="15dp"
                 android:hint="@string/edit_contact_mail">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/custom_edit_text"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"

@@ -14,8 +14,12 @@
     <dimen name="phone_log_keyboard_height">60dp</dimen>
     <dimen name="phone_log_keyboard_width">65dp</dimen>
 
-    <!-- Settings !-->
+    <!-- Manage My Screen !-->
     <dimen name="settings_title_size">23sp</dimen>
     <dimen name="settings_subtitle_size">20sp</dimen>
     <dimen name="settings_long_text_size">15.5sp</dimen>
+
+    <!-- Manage My Screen !-->
+    <dimen name="spinner_height">55dp</dimen>
+    <dimen name="spinner_width">140dp</dimen>
 </resources>

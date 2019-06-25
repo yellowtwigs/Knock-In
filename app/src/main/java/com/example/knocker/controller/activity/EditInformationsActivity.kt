@@ -109,6 +109,8 @@ class EditInformationsActivity : AppCompatActivity() {
         val nav_item = menu.findItem(R.id.nav_informations)
         nav_item.isChecked = true
 
+        navigationView!!.menu.getItem(1).isChecked = true
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()

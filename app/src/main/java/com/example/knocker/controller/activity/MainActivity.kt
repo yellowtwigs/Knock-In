@@ -170,6 +170,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
         nav_sync_contact.isVisible = true
 
+        navigationView!!.menu.getItem(0).isChecked = true
+
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {

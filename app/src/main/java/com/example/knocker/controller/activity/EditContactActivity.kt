@@ -282,10 +282,13 @@ class EditContactActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
+                    edit_contact_RoundedImageView!!.setBorderColor(R.color.priorityZeroColor)
                 } else if (position == 1) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
+                    edit_contact_RoundedImageView!!.setBorderColor(R.color.priorityOneColor)
                 } else if (position == 2) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
+                    edit_contact_RoundedImageView!!.setBorderColor(R.color.priorityTwoColor)
 
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (!Settings.canDrawOverlays(applicationContext)) {
