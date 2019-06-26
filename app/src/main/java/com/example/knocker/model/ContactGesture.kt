@@ -7,7 +7,6 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
-import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
 /**
@@ -17,7 +16,6 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 object ContactGesture {
 
     fun putContactIntent(contact: ContactWithAllInformation, context: Context, classToSend: Class<*>): Intent {
-        val intent = Intent(context, classToSend)
         /*
         intent.putExtra("ContactFirstName", contact.firstName)
         intent.putExtra("ContactLastName", contact.lastName)
@@ -26,7 +24,7 @@ object ContactGesture {
         intent.putExtra("ContactImage", contact.profilePicture)
         intent.putExtra("ContactId", contact.id)
         intent.putExtra("ContactPriority", contact.contactPriority)
-      */  return intent
+      */  return Intent(context, classToSend)
     }
 
     fun openWhatsapp(contact: CharSequence, context: Context) {

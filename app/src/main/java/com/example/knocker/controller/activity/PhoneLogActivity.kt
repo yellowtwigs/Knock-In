@@ -185,8 +185,11 @@ class PhoneLogActivity : AppCompatActivity() {
         showPhoneLog()
 
         //endregion
+
         val listApp = getAppOnPhone()
+
         //region ========================================== Listener ========================================
+
         if (!listApp.contains("com.facebook.katana")) {
             link_socials_networks_Messenger!!.setImageResource(R.drawable.ic_facebook_disable)
             link_socials_networks_Messenger!!.setOnClickListener { Toast.makeText(this, "Facebook n\'est pas installé", Toast.LENGTH_SHORT).show() }
@@ -445,7 +448,6 @@ class PhoneLogActivity : AppCompatActivity() {
             startActivity(Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://instagram.com/")))
         }
-
     }
 
     private fun goToFacebook() {

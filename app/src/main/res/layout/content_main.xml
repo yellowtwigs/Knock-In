@@ -83,7 +83,6 @@
                 android:numColumns="auto_fit"
                 android:visibility="gone" />
 
-
         </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -92,9 +91,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.95"
+            android:background="@color/transparentColor"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="20dp"
-            app:backgroundTint="#ffffff"
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"

@@ -37,7 +37,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
-    private var drawerLayout: DrawerLayout? = null
+    private var notification_history_DrawerLayout: DrawerLayout? = null
     private var main_BottomNavigationView: BottomNavigationView? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -99,7 +99,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         //region ====================================== Drawer Layout =======================================
 
-        drawerLayout = findViewById(R.id.drawer_layout)
+        notification_history_DrawerLayout = findViewById(R.id.notification_history_drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
         val nav_item = menu.findItem(R.id.nav_screen_config)
@@ -108,7 +108,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            drawerLayout!!.closeDrawers()
+            notification_history_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_address_book -> {
@@ -197,14 +197,74 @@ class NotificationHistoryActivity : AppCompatActivity() {
                         openWhatsapp(converter06To33(gestionnaireContacts.contacts[iterator.nextInt()].getPhoneNumber()), baseContext)
                     }
                 }
-                notification_history_ListOfNotificationDB[position].platform == "com.google.android.gm" -> iterator.forEach {
+                notification_history_ListOfNotificationDB[position].platform == "com.google.android.gm" -> iterator.forEach { _ ->
                     openGmail(this)
+                }
+                notification_history_ListOfNotificationDB[position].platform == "com.facebook.katana" -> iterator.forEach { _ ->
+                    goToFacebook()
+                }
+                notification_history_ListOfNotificationDB[position].platform == "com.facebook.orca" -> iterator.forEach { _ ->
+                    openMessenger("", this)
+                }
+                notification_history_ListOfNotificationDB[position].platform == "com.google.android.apps.messaging" -> iterator.forEach { _ ->
+                }
+                notification_history_ListOfNotificationDB[position].platform == "com.instagram.android" -> iterator.forEach { _ ->
+                    goToInstagramPage()
+                }
+                notification_history_ListOfNotificationDB[position].platform == "com.twitter.android" -> iterator.forEach { _ ->
+                    goToTwitter()
                 }
             }
         }
     }
 
     //region ========================================== Functions ==========================================
+
+    private fun goToTwitter() {
+        val appIntent = Intent(Intent.ACTION_VIEW)
+        appIntent.setClassName("com.twitter.android", "com.twitter.android")
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/")))
+        }
+    }
+
+    private fun goToFacebook() {
+        val uri = Uri.parse("facebook:/newsfeed")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        try {
+            startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://facebook.com/")))
+        }
+    }
+
+    private fun goToInstagramPage() {
+        val uri = Uri.parse("https://www.instagram.com/")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+
+        likeIng.setPackage("com.instagram.android")
+
+        try {
+            startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://instagram.com/")))
+        }
+    }
+
+    fun openMessenger(id: String, context: Context) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
+            context.startActivity(intent);
+        } catch (e: ActivityNotFoundException) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
+            context.startActivity(intent);
+        }
+    }
 
     fun openGmail(context: Context) {
         val i = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
@@ -265,7 +325,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                drawerLayout!!.openDrawer(GravityCompat.START)
+                notification_history_DrawerLayout!!.openDrawer(GravityCompat.START)
                 return true
             }
             R.id.notif_tri_par_date -> {
