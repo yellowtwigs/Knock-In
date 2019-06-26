@@ -185,8 +185,11 @@ class PhoneLogActivity : AppCompatActivity() {
         showPhoneLog()
 
         //endregion
+
         val listApp = getAppOnPhone()
+
         //region ========================================== Listener ========================================
+
         if (!listApp.contains("com.facebook.katana")) {
             link_socials_networks_Messenger!!.setImageResource(R.drawable.ic_facebook_disable)
             link_socials_networks_Messenger!!.setOnClickListener { Toast.makeText(this, "Facebook n\'est pas installé", Toast.LENGTH_SHORT).show() }
@@ -404,7 +407,7 @@ class PhoneLogActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-        val resolveInfoList = getPackageManager().queryIntentActivities(intent, 0)
+        val resolveInfoList = packageManager.queryIntentActivities(intent, 0)
         val packageNameList = ArrayList<String>()
         for (resolveInfo in resolveInfoList) {
             val activityInfo = resolveInfo.activityInfo
@@ -424,10 +427,7 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     private fun goToWhatsapp() {
-        //val uri = Uri.parse("smsto: " + "12345")
-        //val i = Intent(Intent.ACTION_SENDTO, uri)
-        //i.setPackage("com.whatsapp")
-        val i = getPackageManager().getLaunchIntentForPackage("com.whatsapp")
+        val i = packageManager.getLaunchIntentForPackage("com.whatsapp")
         try {
             startActivity(i)
         } catch (e: ActivityNotFoundException) {
@@ -448,7 +448,6 @@ class PhoneLogActivity : AppCompatActivity() {
             startActivity(Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://instagram.com/")))
         }
-
     }
 
     private fun goToFacebook() {

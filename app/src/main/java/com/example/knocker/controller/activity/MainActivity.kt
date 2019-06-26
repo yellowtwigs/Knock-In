@@ -45,6 +45,7 @@ import java.util.regex.Pattern
  * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     //region ========================================== Var or Val ==========================================
@@ -98,6 +99,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param Bundle @type
      */
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -111,6 +113,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // window.navigationBarColor = getResources().getColor(R.color.whiteColor)
         }
+
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
@@ -126,9 +129,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             toggleNotificationListenerService()
         }
 
+        //region ====================================== Worker Thread =======================================
+
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
+
+        //endregion
 
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
@@ -142,6 +149,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         //main_BottomNavigationView!!.background= this.getDrawable(R.drawable.border_bottom_nav_view)
+
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
         main_layout = findViewById(R.id.content_frame)
@@ -149,13 +157,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ========================================== Toolbar =========================================
 
-        // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
         actionbar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
+
         //endregion
 
         //region ======================================= DrawerLayout =======================================
@@ -178,7 +186,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
             }
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)//ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
                 val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedPreferences.getInt("gridview", 4)
                 /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
@@ -611,7 +620,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }//TODO: enlever code duplicate
 
     private fun toggleNotificationListenerService() {
-        val pm = getPackageManager()
+        val pm = packageManager
         val cmpName = ComponentName(this, NotificationListener::class.java)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)

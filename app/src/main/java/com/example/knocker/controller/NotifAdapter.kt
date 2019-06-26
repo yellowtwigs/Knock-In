@@ -30,7 +30,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private lateinit var notification_adapeter_mDbWorkerThread: DbWorkerThread
     private val FACEBOOK_PACKAGE = "com.facebook.katana"
     private val MESSENGER_PACKAGE = "com.facebook.orca"
-    private val WATHSAPP_SERVICE = "com.whatsapp"
+    private val WHATSAPP_SERVICE = "com.whatsapp"
     private val GMAIL_PACKAGE = "com.google.android.gm"
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
     val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
@@ -117,7 +117,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     val smsManager = SmsManager.getDefault()
 
                     smsManager.sendTextMessage(number, null, message, null, null)
-                } else if (sbp.appNotifier.equals(WATHSAPP_SERVICE)) {
+                } else if (sbp.appNotifier.equals(WHATSAPP_SERVICE)) {
                     /*context.startActivity( Intent(Intent.ACTION_VIEW,
                             Uri.parse(
                                     "https://api.whatsapp.com/send?phone="+number+"&text="+message)));
@@ -188,7 +188,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             return "Facebook"
         } else if (packageName == MESSENGER_PACKAGE) {
             return "Messenger"
-        } else if (packageName == WATHSAPP_SERVICE) {
+        } else if (packageName == WHATSAPP_SERVICE) {
             return "WhatsApp"
         } else if (packageName == GMAIL_PACKAGE) {
             return "gmail"
@@ -202,7 +202,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     }
 
     private fun canResponse(packageName: String): Boolean {
-        if ((checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) && (packageName == MESSAGE_PACKAGE || packageName == WATHSAPP_SERVICE || packageName == MESSAGE_SAMSUNG_PACKAGE)) {
+        if ((checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) && (packageName == MESSAGE_PACKAGE || packageName == WHATSAPP_SERVICE || packageName == MESSAGE_SAMSUNG_PACKAGE)) {
             return true
         }
         return false
@@ -214,7 +214,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             return R.drawable.ic_facebook
         } else if (sbp.appNotifier == GMAIL_PACKAGE) {
             return R.drawable.ic_gmail
-        } else if (sbp.appNotifier == WATHSAPP_SERVICE) {
+        } else if (sbp.appNotifier == WHATSAPP_SERVICE) {
             return R.drawable.ic_whatsapp_circle_menu
         }
         return R.drawable.ic_sms
