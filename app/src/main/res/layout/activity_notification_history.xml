@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/notif_log_layout_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controller.activity.NotificationHistoryActivity"
@@ -13,42 +13,41 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/notif_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/transparentColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/notification_history_toolbar_title" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/notification_history_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparentColor"
+        app:title="@string/notification_history_toolbar_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ListView
-            android:id="@+id/listView_notification_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notif_toolbar" />
+    <ListView
+        android:id="@+id/listView_notification_history"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_history_toolbar" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
-            style="@style/BottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="bottom"
-            android:alpha="0.95"
-            app:itemIconTint="@color/bottom_navigation_color"
-            app:itemTextColor="@color/bottom_navigation_color"
-            app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/main_navigation_view" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:alpha="0.95"
+        app:itemIconTint="@color/bottom_navigation_color"
+        app:itemTextColor="@color/bottom_navigation_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/main_navigation_view"
+        style="@style/BottomNavigationView"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

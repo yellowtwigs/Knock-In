@@ -36,6 +36,7 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -132,6 +133,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
 
         final ContactDB contact = this.gestionnaireContact.getContacts().get(position).getContactDB();
+        assert contact != null;
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
@@ -280,34 +282,38 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         listCircularMenu.add(quickMenu);
         //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
         View.OnClickListener buttonListener = new View.OnClickListener() {
+            @SuppressLint("IntentReset")
             @Override
             public void onClick(View v) {
 
                 if (v.getId() == buttonMessenger.getId()) {
                     try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + ""));
-                        context.startActivity(intent);
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
                     } catch (ActivityNotFoundException e) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + ""));//id facebook into double quote
-                        context.startActivity(intent);
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
                     }
                 } else if (v.getId() == buttonWhatsApp.getId()) {
-                    ContactWithAllInformation contactphone = (ContactWithAllInformation) getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(contactphone.getPhoneNumber(), context);
+
+                    ContactWithAllInformation contactWithAllInformation = getItem(position);
+                    ContactGesture.INSTANCE.openWhatsapp(contactWithAllInformation.getPhoneNumber(), context);
                 } else if (v.getId() == buttonEdit.getId()) {
 
                     Intent intent = new Intent(context, EditContactActivity.class);
                     intent.putExtra("ContactId", contact.getId());
                     context.startActivity(intent);
+
                 } else if (v.getId() == buttonCall.getId()) {
 
                     callPhone(getItem(position).getPhoneNumber());
 
                 } else if (v.getId() == buttonSMS.getId()) {
+
                     String phone = getItem(position).getPhoneNumber();
                     Intent i = new Intent(Intent.ACTION_SEND, Uri.fromParts("sms", phone, null));
                     context.startActivity(i);
+
                 } else if (v.getId() == buttonMail.getId()) {
+
                     String mail = getItem(position).getFirstMail();
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setData(Uri.parse("mailto:"));
@@ -315,7 +321,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
                     intent.putExtra(Intent.EXTRA_SUBJECT, "");
                     intent.putExtra(Intent.EXTRA_TEXT, "");
-                    println("intent " + intent.getExtras().toString());
+                    println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
                 selectMenu.close(true);

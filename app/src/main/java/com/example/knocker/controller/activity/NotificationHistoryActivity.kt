@@ -1,14 +1,20 @@
 package com.example.knocker.controller.activity
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,7 +23,9 @@ import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationHistoryAdapterActivity
 import com.example.knocker.controller.NotificationListener
+import com.example.knocker.model.ContactList
 import com.example.knocker.model.ContactsRoomDatabase
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
@@ -58,7 +66,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
-    
+
     private val notification_history_ListOfNotificationDB = mutableListOf<NotificationDB>()
 
     private var notification_history_ListView: ListView? = null
@@ -76,7 +84,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         //region ========================================= Toolbar ==========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.notif_toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.notification_history_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.title = this.resources.getString(R.string.bottom_navigation_view_notify_history)
@@ -136,8 +144,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("filtre_message", true)) {
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
-            println("BALISE = " + notification_history_ListOfNotificationDB)
+
+            println("BALISE = $notification_history_ListOfNotificationDB")
+
             val listTmp = mutableListOf<NotificationDB>()
+
             listTmp.addAll(notification_history_ListOfNotificationDB)
             listTmp.forEach {
                 if (!isMessagingApp(it.platform)) {
@@ -153,9 +164,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
             val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
             notification_history_ListView = findViewById(R.id.listView_notification_history)
             notification_history_ListView!!.adapter = adapter
-            
+
             println("taille list " + notification_history_ListOfNotificationDB.size + " content " + notification_history_ListOfNotificationDB.toString())
-            
+
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
 
             val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
@@ -164,19 +175,66 @@ class NotificationHistoryActivity : AppCompatActivity() {
             listTmp2.addAll(notification_history_ListOfNotificationDB)
             listTmp2.removeAll(listTmp)
             println("TEEEEEEEST = " + listTmp2.size)
-            
+
             listTmp.addAll(Math.max(firstContactPrio0(listTmp) - 1, 0), listTmp2)
-            
+
             val adapter = NotificationHistoryAdapterActivity(this, listTmp)
             notification_history_ListView = findViewById(R.id.listView_notification_history)
             notification_history_ListView!!.adapter = adapter
-            
+
         } else {
             println("thats a problem")
+        }
+
+        notification_history_ListView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val gestionnaireContacts = ContactList(this.applicationContext)
+            val iterator = (1 until gestionnaireContacts.contacts.size).iterator()
+
+
+            when {
+                notification_history_ListOfNotificationDB[position].platform == "com.whatsapp" -> iterator.forEach {
+                    if (notification_history_ListOfNotificationDB[position].contactName == gestionnaireContacts.contacts[iterator.nextInt()].contactDB!!.firstName) {
+                        openWhatsapp(converter06To33(gestionnaireContacts.contacts[iterator.nextInt()].getPhoneNumber()), baseContext)
+                    }
+                }
+                notification_history_ListOfNotificationDB[position].platform == "com.google.android.gm" -> iterator.forEach {
+                    openGmail(this)
+                }
+            }
         }
     }
 
     //region ========================================== Functions ==========================================
+
+    fun openGmail(context: Context) {
+        val i = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
+        i!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(i)
+    }
+
+    private fun converter06To33(phoneNumber: String): String {
+        return if (phoneNumber[0].toString() == "0") {
+            val phoneNumberConvert = "+33" + phoneNumber.substring(0)
+            phoneNumberConvert
+        } else {
+            phoneNumber
+        }
+    }
+
+    fun openWhatsapp(contact: CharSequence, context: Context) {
+        val url = "https://api.whatsapp.com/send?phone=$contact"
+        try {
+            val pm = context.packageManager
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            val i = Intent(Intent.ACTION_VIEW)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+            i.data = Uri.parse(url)
+            context.startActivity(i)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
+    }
 
     fun firstContactPrio0(notifList: List<NotificationDB>): Int {
         for (i in 0..notifList.size - 1) {
@@ -251,19 +309,15 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     private fun isMessagingApp(packageName: String): Boolean {
-        if (packageName.equals(NotificationListener.FACEBOOK_PACKAGE)) {
-            return true;
-        } else if (packageName.equals(NotificationListener.MESSENGER_PACKAGE)) {
-            return true;
-        } else if (packageName.equals(NotificationListener.WATHSAPP_SERVICE)) {
-            return true
-        } else if (packageName.equals(NotificationListener.GMAIL_PACKAGE)) {
-            return true
-        } else if (packageName.equals(NotificationListener.MESSAGE_PACKAGE) || packageName.equals(NotificationListener.MESSAGE_SAMSUNG_PACKAGE)) {
-            return true
-        } else if (packageName.equals(NotificationListener.TELEGRAM_PACKAGE))
-            return true
-        return false
+        return when (packageName) {
+            NotificationListener.FACEBOOK_PACKAGE -> true
+            NotificationListener.MESSENGER_PACKAGE -> true
+            NotificationListener.WHATSAPP_SERVICE -> true
+            NotificationListener.GMAIL_PACKAGE -> true
+            NotificationListener.MESSAGE_PACKAGE, NotificationListener.MESSAGE_SAMSUNG_PACKAGE -> true
+            NotificationListener.TELEGRAM_PACKAGE -> true
+            else -> false
+        }
     }
 
     //endregion

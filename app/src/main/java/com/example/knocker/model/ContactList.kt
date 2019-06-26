@@ -29,11 +29,10 @@ import java.util.concurrent.Executors
 class ContactList(var contacts: List<ContactWithAllInformation>, var context: Context) {
     constructor(context: Context) : this(mutableListOf<ContactWithAllInformation>(), context)
 
-    private lateinit var mDbWorkerThread: DbWorkerThread
+    private var mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
     private var contactsDatabase: ContactsRoomDatabase? = null
 
     init {
-        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
         contactsDatabase = ContactsRoomDatabase.getDatabase(context)
         if (contacts.isEmpty()) {

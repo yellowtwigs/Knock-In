@@ -16,8 +16,8 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
  */
 object ContactGesture {
 
-    fun putContactIntent (contact : ContactWithAllInformation, context: Context, classToSend : Class<*>):Intent{
-        val intent = Intent( context,classToSend)
+    fun putContactIntent(contact: ContactWithAllInformation, context: Context, classToSend: Class<*>): Intent {
+        val intent = Intent(context, classToSend)
         /*
         intent.putExtra("ContactFirstName", contact.firstName)
         intent.putExtra("ContactLastName", contact.lastName)
@@ -28,10 +28,11 @@ object ContactGesture {
         intent.putExtra("ContactPriority", contact.contactPriority)
       */  return intent
     }
-    fun openWhatsapp(contact: CharSequence,context: Context) {
+
+    fun openWhatsapp(contact: CharSequence, context: Context) {
         val url = "https://api.whatsapp.com/send?phone=$contact"
         try {
-            val pm = context.getPackageManager()
+            val pm = context.packageManager
             pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(url)
@@ -42,15 +43,17 @@ object ContactGesture {
         }
 
     }
-    fun openMessenger(id:String, context: Context) {
+
+    fun openMessenger(id: String, context: Context) {
         try {
-            val intent =Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
             context.startActivity(intent);
         } catch (e: ActivityNotFoundException) {
-            val intent =Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
             context.startActivity(intent);
         }
     }
+
     fun openGmail(context: Context) {
         val i = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
         i!!.flags = FLAG_ACTIVITY_NEW_TASK

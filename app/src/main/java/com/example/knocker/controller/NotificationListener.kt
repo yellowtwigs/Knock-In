@@ -34,7 +34,6 @@ class NotificationListener : NotificationListenerService() {
 
     var popupView: View? = null
     var windowManager: WindowManager? = null
-    var priority: Int? = null
 
     /**
      * La première fois que le service est crée nous définnissons les valeurs pour les threads
@@ -58,7 +57,7 @@ class NotificationListener : NotificationListenerService() {
      * Permet de relance le service
      */
     fun toggleNotificationListenerService() {
-        val pm = getPackageManager()
+        val pm = packageManager
         val cmpName = ComponentName(this, NotificationListener::class.java)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
@@ -118,12 +117,12 @@ class NotificationListener : NotificationListenerService() {
                         println("priority 0")
                         this.cancelNotification(sbn.key)
                     }
-                }else{
+                } else {
                     println("I don't know this contact")
-                    if(sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)){
-                        displayLayout(sbp,sharedPreferences)
-                    }else{
-                        println("bad package "+ sbn.packageName)
+                    if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)) {
+                        displayLayout(sbp, sharedPreferences)
+                    } else {
+                        println("bad package " + sbn.packageName)
                     }
                 }
 
@@ -221,7 +220,7 @@ class NotificationListener : NotificationListenerService() {
             return "Facebook";
         } else if (packageName.equals(MESSENGER_PACKAGE)) {
             return "Messenger";
-        } else if (packageName.equals(WATHSAPP_SERVICE)) {
+        } else if (packageName.equals(WHATSAPP_SERVICE)) {
             return "WhatsApp"
         } else if (packageName.equals(GMAIL_PACKAGE)) {
             return "gmail"
@@ -240,13 +239,14 @@ class NotificationListener : NotificationListenerService() {
         var TAG = NotificationListener::class.java.simpleName
         val FACEBOOK_PACKAGE = "com.facebook.katana"
         val MESSENGER_PACKAGE = "com.facebook.orca"
-        val WATHSAPP_SERVICE = "com.whatsapp"
+        val WHATSAPP_SERVICE = "com.whatsapp"
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
         val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
         val TELEGRAM_PACKAGE = "org.telegram.messenger"
 
         // var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
+        @SuppressLint("StaticFieldLeak")
         var adapterNotification: NotifAdapter? = null
     }
 

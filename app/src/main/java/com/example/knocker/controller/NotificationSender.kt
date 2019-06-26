@@ -22,9 +22,9 @@ import java.util.*
 class NotificationSender : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         println("received")
-        val CHANNEL_ID="my_channel"
+        val CHANNEL_ID = "my_channel"
 
-        println("extras test"+intent.extras.toString())
+        println("extras test" + intent.extras.toString())
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -34,7 +34,7 @@ class NotificationSender : BroadcastReceiver() {
                     NotificationManager.IMPORTANCE_DEFAULT)
             manager.createNotificationChannel(channel)
         }
-        if(!isNotificationServiceEnabled(context)) {
+        if (!isNotificationServiceEnabled(context)) {
 
             var main_ContactsDatabase: ContactsRoomDatabase? = null
             lateinit var main_mDbWorkerThread: DbWorkerThread
@@ -44,27 +44,27 @@ class NotificationSender : BroadcastReceiver() {
             val runnableSendNotif = Runnable {
                 val list = main_ContactsDatabase!!.notificationsDao().getAllnotifications()
                 val calendar = GregorianCalendar()
-                calendar.add(Calendar.DATE,-1)
-                var nbOfnotif =0
+                calendar.add(Calendar.DATE, -1)
+                var nbOfnotif = 0
                 val sharedPreferences = context.getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
-                if(!sharedPreferences.getBoolean("filtre_message",true)){
+                if (!sharedPreferences.getBoolean("filtre_message", true)) {
 
-                    while( nbOfnotif<=list.size-1 && calendar.time.before(Date(list.get(nbOfnotif).timestamp) )){
+                    while (nbOfnotif <= list.size - 1 && calendar.time.before(Date(list.get(nbOfnotif).timestamp))) {
                         nbOfnotif++
 
                     }
-                }else{
-                    var i=0
-                    while( i<=list.size-1 && calendar.time.before(Date(list.get(i).timestamp) )){
-                        if(isMessagingApp(list.get(i).platform)){
+                } else {
+                    var i = 0
+                    while (i <= list.size - 1 && calendar.time.before(Date(list.get(i).timestamp))) {
+                        if (isMessagingApp(list.get(i).platform)) {
                             nbOfnotif++
                         }
                         i++
-                        println("before test nb"+nbOfnotif)
+                        println("before test nb" + nbOfnotif)
                     }
                 }
                 println("after")
-                        // calendar.time.after(Date(notificationDB.timestamp))
+                // calendar.time.after(Date(notificationDB.timestamp))
                 println("size of notif" + main_ContactsDatabase!!.notificationsDao().getIntTime().toString())
                 val intentSender = Intent(context, MainActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -82,39 +82,40 @@ class NotificationSender : BroadcastReceiver() {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
 
-            if (intent.action.equals("NOTIFICAION_TIME"))
-                manager.notify(0, notification.build())
+                if (intent.action.equals("NOTIFICAION_TIME"))
+                    manager.notify(0, notification.build())
             }
             main_mDbWorkerThread.postTask(runnableSendNotif)
 
-        }else{
+        } else {
             println("in else")
         }
 
     }
-    private fun isNotificationServiceEnabled(context:Context): Boolean {
-            val pkgName = MainActivity::class.java.`package`.name
-            val str = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
-            if (!TextUtils.isEmpty(str)) {
-                val names = str.split(":")
-                for (i in names.indices) {
-                    val cn = ComponentName.unflattenFromString(names[i])
-                    if (cn != null) {
-                        if (TextUtils.equals(pkgName, cn.packageName)) {
-                            return true
-                        }
+
+    private fun isNotificationServiceEnabled(context: Context): Boolean {
+        val pkgName = MainActivity::class.java.`package`.name
+        val str = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
+        if (!TextUtils.isEmpty(str)) {
+            val names = str.split(":")
+            for (i in names.indices) {
+                val cn = ComponentName.unflattenFromString(names[i])
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.packageName)) {
+                        return true
                     }
                 }
             }
-            return false
-        }//TODO: enlever code duplicate
+        }
+        return false
+    }//TODO: enlever code duplicate
 
     private fun isMessagingApp(packageName: String): Boolean {
         if (packageName.equals(NotificationListener.FACEBOOK_PACKAGE)) {
             return true;
         } else if (packageName.equals(NotificationListener.MESSENGER_PACKAGE)) {
             return true;
-        } else if (packageName.equals(NotificationListener.WATHSAPP_SERVICE)) {
+        } else if (packageName.equals(NotificationListener.WHATSAPP_SERVICE)) {
             return true
         } else if (packageName.equals(NotificationListener.GMAIL_PACKAGE)) {
             return true
