@@ -40,7 +40,7 @@ interface NotificationsDao {
      * @return List&lt[NotificationDB]&gt
      */
     @Query("SELECT * FROM notifications_table WHERE id = :id")
-    fun getNotification(id: Int): List<NotificationDB>
+    fun getNotification(id: Int): NotificationDB
 
     /**
      * Sauvegarde une [notification][NotificationDB] dans la Base de données
@@ -63,4 +63,7 @@ interface NotificationsDao {
      */
     @Query("DELETE FROM notifications_table WHERE platform = :platform")
     fun deleteNotificationByPlatform(platform: String)
+
+    @Query("SELECT max(id) from notifications_table ")
+    fun lastInsert():Int
 }
