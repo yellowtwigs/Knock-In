@@ -92,43 +92,58 @@ class NotificationListener : NotificationListenerService() {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
-                if (notification != null && notification.platform.equals(this.packageName)) {
-                    notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
-                }
-
-
-                if (isPhoneNumber(name)) {
-
-                    println("is a phone number")
-                    contact = gestionnaireContact.getContactFromNumber(name)
-                    if (contact != null)
-                        sbp.changeToContactName(contact)
-                } else {
-                    println("not a phone number")
-                    contact = gestionnaireContact.getContactWithName(name, app)
-                }
-                if (contact != null) {
-
-                    if (contact.contactDB!!.contactPriority == 2) {
-                        displayLayout(sbp, sharedPreferences)
-                    } else if (contact.contactDB!!.contactPriority == 1) {
-
-                    } else if (contact.contactDB!!.contactPriority == 0) {
-                        println("priority 0")
-                        this.cancelNotification(sbn.key)
+                if (notification != null && notification_not_double(notification)) {
+                    if (!notification.platform.equals(this.packageName)) {
+                        notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                     }
-                } else {
-                    println("I don't know this contact")
-                    if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)) {
-                        displayLayout(sbp, sharedPreferences)
+
+
+                    if (isPhoneNumber(name)) {
+
+                        println("is a phone number")
+                        contact = gestionnaireContact.getContactFromNumber(name)
+                        if (contact != null)
+                            sbp.changeToContactName(contact)
                     } else {
-                        println("bad package " + sbn.packageName)
+                        println("not a phone number")
+                        contact = gestionnaireContact.getContactWithName(name, app)
                     }
-                }
+                    if (contact != null && notification_not_double(notification!!)) {
 
+                        if (contact.contactDB!!.contactPriority == 2) {
+                            displayLayout(sbp, sharedPreferences)
+                        } else if (contact.contactDB!!.contactPriority == 1) {
+
+                        } else if (contact.contactDB!!.contactPriority == 0) {
+                            println("priority 0")
+                            this.cancelNotification(sbn.key)
+                        }
+                    } else {
+                        println("I don't know this contact")
+                        if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)) {
+                            displayLayout(sbp, sharedPreferences)
+                        } else {
+                            println("bad package " + sbn.packageName)
+                        }
+                    }
+
+                }
             }
             notification_listener_mDbWorkerThread.postTask(addNotification)
         }
+    }
+
+    private fun notification_not_double(notification: NotificationDB): Boolean {
+
+        val lastInsertId=notification_listener_ContactsDatabase!!.notificationsDao().lastInsert()
+        println("dernière insertion "+lastInsertId)
+        val lastInsert=notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
+        if(lastInsert!=null) {
+            if (lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description) {
+                return false
+            }
+        }
+        return true
     }
     //SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(Calendar.getInstance().timeInMillis.toString().toLong()))    /// timestamp to date
     /**
