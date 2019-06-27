@@ -48,7 +48,7 @@ class HelpActivity : AppCompatActivity() {
         //region ==================================== SetOnClickListener ====================================
         val onClick = View.OnClickListener {
             if(it.id==help_activity_FAQ!!.id){
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/tutorial")))
             }
             if(it.id==help_activity_ContactUs!!.id){
                 val intent= Intent(Intent.ACTION_SEND)
