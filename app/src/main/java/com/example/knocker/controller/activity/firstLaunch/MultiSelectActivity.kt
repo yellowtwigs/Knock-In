@@ -97,9 +97,18 @@ class MultiSelectActivity : AppCompatActivity() {
     private fun overlayAlertDialog(contactList: List<ContactWithAllInformation>): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
-        var message = "vous venez de séléctionner " + contactList.size
-        for (contact in contactList) {
-            message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
+        var message = "vous venez de séléctionner "+contactList.size
+        if (contactList.size<=1){
+             message += " contact :"
+            if(contactList.size==1){
+                val contact=contactList.get(0)
+                message+="\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
+            }
+        }else {
+             message += " contacts :"
+            for (contact in contactList) {
+                message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
+            }
         }
         alertDialogBuilder.setMessage(message + "\n voulez-vous valider votre séléction")
         alertDialogBuilder.setPositiveButton("oui"

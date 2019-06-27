@@ -30,7 +30,7 @@ import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
 public class CircularImageView extends AppCompatImageView {
 
     // Default Values
-    private static final float DEFAULT_BORDER_WIDTH = 4;
+    private static final float DEFAULT_BORDER_WIDTH = 6;
     private static final float DEFAULT_SHADOW_RADIUS = 8.0f;
 
     // Properties
@@ -311,7 +311,7 @@ public class CircularImageView extends AppCompatImageView {
 
         try {
             // Create Bitmap object out of the drawable
-            Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
