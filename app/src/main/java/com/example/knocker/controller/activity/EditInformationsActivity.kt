@@ -366,7 +366,7 @@ class EditInformationsActivity : AppCompatActivity() {
         edit.putString("email", edit_informations_InputEmail!!.text.toString())
         edit.putString("number", edit_informations_InputNumber!!.text.toString())
         edit.apply()
-
+/*
         val name = sharedPreferenceInfo.getString("name", "Nom")
         val email = sharedPreferenceInfo.getString("email", "Email")
         val number = sharedPreferenceInfo.getString("number", "Numéro de téléphone")
@@ -381,9 +381,10 @@ class EditInformationsActivity : AppCompatActivity() {
         edit_informations_EditPhoneNumber!!.visibility = View.GONE
         edit_informations_ModeEditionActivated!!.visibility = View.VISIBLE
         edit_informations_ModeEditionDesactivated!!.visibility = View.GONE
-
+*/
         hideKeyboard()
         Toast.makeText(this@EditInformationsActivity, "Mode Edition Désactivé", Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     private fun hideKeyboard() {
