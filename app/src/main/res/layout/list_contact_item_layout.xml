@@ -219,7 +219,7 @@
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_mail"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_edit_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -229,7 +229,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/list_contact_item_edit_tv"
                     app:layout_constraintStart_toStartOf="@+id/list_contact_item_edit_tv"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_pencil_edit_button" />
+                    app:srcCompat="@drawable/ic_edit" />
 
                 <TextView
                     android:id="@+id/list_contact_item_edit_tv"

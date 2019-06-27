@@ -33,13 +33,11 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
-            style="@style/BottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="bottom"
-            android:alpha="0.95"
-            android:background="@color/transparentColor"
-            app:backgroundTint="@color/transparentColor"
+            style="@style/BottomNavigationView"
+            android:alpha="0.70"
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"

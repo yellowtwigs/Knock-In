@@ -11,10 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -45,7 +49,7 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_CallLayout: ConstraintLayout? = null
     private var phone_log_KeyboardView: TableLayout? = null
     private var phone_log_EditTextLayout: ConstraintLayout? = null
-    private var phone_log_PhoneNumberEditText: EditText? = null
+    private var phone_log_PhoneNumberEditText: AppCompatEditText? = null
     private var phone_log_ButtonClose: ImageView? = null
 
     // Keyboard Pad
@@ -63,18 +67,18 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_CallKeyboard_Sharp: RelativeLayout? = null
 
     //social network
-    private var link_socials_networks_Messenger: ImageView? = null
-    private var link_socials_networks_Instagram: ImageView? = null
-    private var link_socials_networks_Facebook: ImageView? = null
-    private var link_socials_networks_Whatsapp: ImageView? = null
-    private var link_socials_networks_Youtube: ImageView? = null
-    private var link_socials_networks_Gmail: ImageView? = null
-    private var link_socials_networks_Spotify: ImageView? = null
-    private var link_socials_networks_Telegram: ImageView? = null
-    private var link_socials_networks_Outlook: ImageView? = null
-    private var link_socials_networks_Skype: ImageView? = null
-    private var link_socials_networks_Linkedin: ImageView? = null
-    private var link_socials_networks_Twitter: ImageView? = null
+    private var link_socials_networks_Messenger: AppCompatImageView? = null
+    private var link_socials_networks_Instagram: AppCompatImageView? = null
+    private var link_socials_networks_Facebook: AppCompatImageView? = null
+    private var link_socials_networks_Whatsapp: AppCompatImageView? = null
+    //    private var link_socials_networks_Youtube: AppCompatImageView? = null
+    private var link_socials_networks_Gmail: AppCompatImageView? = null
+    //    private var link_socials_networks_Spotify: AppCompatImageView? = null
+    private var link_socials_networks_Telegram: AppCompatImageView? = null
+    private var link_socials_networks_Outlook: AppCompatImageView? = null
+    private var link_socials_networks_Skype: AppCompatImageView? = null
+    private var link_socials_networks_Linkedin: AppCompatImageView? = null
+    private var link_socials_networks_Twitter: AppCompatImageView? = null
 
     private var phone_log_CallBackSpace: ImageView? = null
     private var phone_log_ButtonAddContact: ImageView? = null
@@ -128,17 +132,19 @@ class PhoneLogActivity : AppCompatActivity() {
         //region ======================================= FindViewById =======================================
 
         phone_log_IncomingCallButton = findViewById(R.id.phone_log_incoming_call_button)
-        phone_log_SendMessage = findViewById(R.id.phone_log_send_message)
         main_BottomNavigationView = findViewById(R.id.navigation)
 
 //        phone_log_Calls = findViewById(R.id.phone_log_calls)
 
         phone_log_ButtonOpen = findViewById(R.id.phone_log_button_open_id)
         phone_log_CallLayout = findViewById(R.id.phone_log_call_layout_id)
+        phone_log_ButtonClose = findViewById(R.id.phone_log_button_close_id)
+
+
+        phone_log_SendMessage = findViewById(R.id.phone_log_send_message)
         phone_log_KeyboardView = findViewById(R.id.phone_log_call_keyboard_view)
         phone_log_EditTextLayout = findViewById(R.id.phone_log_call_edit_text_layout)
         phone_log_PhoneNumberEditText = findViewById(R.id.phone_log_call_phone_number_edit_text)
-        phone_log_ButtonClose = findViewById(R.id.phone_log_button_close_id)
 
         phone_log_CallKeyboard_1 = findViewById(R.id.phone_log_call_keyboard_1)
         phone_log_CallKeyboard_2 = findViewById(R.id.phone_log_call_keyboard_2)
@@ -156,9 +162,9 @@ class PhoneLogActivity : AppCompatActivity() {
         link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
         link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
         link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
-        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
+//        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
         link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
-        link_socials_networks_Spotify = findViewById(R.id.spotify_link_socials_networks)
+//        link_socials_networks_Spotify = findViewById(R.id.spotify_link_socials_networks)
         link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
         link_socials_networks_Outlook = findViewById(R.id.outlook_link_socials_networks)
         link_socials_networks_Skype = findViewById(R.id.skype_link_socials_networks)
@@ -174,7 +180,7 @@ class PhoneLogActivity : AppCompatActivity() {
         main_BottomNavigationView!!.menu.getItem(3).isChecked = true
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        if (phone_log_PhoneNumberEditText!!.text.isEmpty()) {
+        if (phone_log_PhoneNumberEditText!!.text!!.isEmpty()) {
             phone_log_EditTextLayout!!.visibility = View.GONE
         } else {
             phone_log_EditTextLayout!!.visibility = View.VISIBLE
@@ -218,12 +224,12 @@ class PhoneLogActivity : AppCompatActivity() {
             link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
         }
 
-        if (!listApp.contains("com.google.android.youtube")) {
-            link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
-            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, "Youtube n\'est pas installé", Toast.LENGTH_SHORT).show() }
-        } else {
-            link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
-        }
+//        if (!listApp.contains("com.google.android.youtube")) {
+//            link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
+//            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, "Youtube n\'est pas installé", Toast.LENGTH_SHORT).show() }
+//        } else {
+//            link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
+//        }
 
         if (!listApp.contains("com.google.android.gm")) {
             link_socials_networks_Gmail!!.setImageResource(R.drawable.ic_gmail_disable)
@@ -232,12 +238,12 @@ class PhoneLogActivity : AppCompatActivity() {
             link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
         }
 
-        if (!listApp.contains("com.spotify.music")) {
-            link_socials_networks_Spotify!!.setImageResource(R.drawable.ic_spotify_disable)
-            link_socials_networks_Spotify!!.setOnClickListener { Toast.makeText(this, "Spotify n\'est pas installé", Toast.LENGTH_SHORT).show() }
-        } else {
-            link_socials_networks_Spotify!!.setOnClickListener { goToSpotify() }
-        }
+//        if (!listApp.contains("com.spotify.music")) {
+//            link_socials_networks_Spotify!!.setImageResource(R.drawable.ic_spotify_disable)
+//            link_socials_networks_Spotify!!.setOnClickListener { Toast.makeText(this, "Spotify n\'est pas installé", Toast.LENGTH_SHORT).show() }
+//        } else {
+//            link_socials_networks_Spotify!!.setOnClickListener { goToSpotify() }
+//        }
 
         if (!listApp.contains("org.telegram.messenger")) {
             link_socials_networks_Telegram!!.setImageResource(R.drawable.ic_telegram_disable)
@@ -280,7 +286,7 @@ class PhoneLogActivity : AppCompatActivity() {
         }
 
         phone_log_SendMessage!!.setOnClickListener {
-            if (phone_log_PhoneNumberEditText!!.text.isNotEmpty()) {
+            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
                 val phone = phone_log_PhoneNumberEditText!!.text.toString()
                 val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null));
                 startActivity(i)
@@ -291,37 +297,36 @@ class PhoneLogActivity : AppCompatActivity() {
 
         phone_log_ButtonOpen!!.setOnClickListener {
 
+            val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
+
+            slideUp(phone_log_EditTextLayout!!)
+            slideUp(phone_log_KeyboardView!!)
+            slideUp(phone_log_CallLayout!!)
+            phone_log_ButtonOpen!!.startAnimation(slideLeft)
+
             phone_log_CallLayout!!.visibility = View.VISIBLE
             phone_log_KeyboardView!!.visibility = View.VISIBLE
             phone_log_ButtonOpen!!.visibility = View.GONE
-
-            val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-            val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
-
-            phone_log_EditTextLayout!!.startAnimation(slideUp)
-            phone_log_KeyboardView!!.startAnimation(slideUp)
-            phone_log_CallLayout!!.startAnimation(slideUp)
-            phone_log_ButtonOpen!!.startAnimation(slideLeft)
         }
 
         phone_log_ButtonClose!!.setOnClickListener {
 
-            phone_log_CallLayout!!.visibility = View.GONE
-            phone_log_KeyboardView!!.visibility = View.GONE
-            phone_log_EditTextLayout!!.visibility = View.GONE
-            phone_log_ButtonOpen!!.visibility = View.VISIBLE
-
-            val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
             val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
+            val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
 
             phone_log_EditTextLayout!!.startAnimation(slideDown)
             phone_log_KeyboardView!!.startAnimation(slideDown)
             phone_log_CallLayout!!.startAnimation(slideDown)
             phone_log_ButtonOpen!!.startAnimation(slideRight)
+
+            phone_log_CallLayout!!.visibility = View.GONE
+            phone_log_KeyboardView!!.visibility = View.GONE
+            phone_log_EditTextLayout!!.visibility = View.GONE
+            phone_log_ButtonOpen!!.visibility = View.VISIBLE
         }
 
         phone_log_ButtonAddContact!!.setOnClickListener {
-            if (phone_log_PhoneNumberEditText!!.text.isNotEmpty()) {
+            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
                 val intent = Intent(this@PhoneLogActivity, AddNewContactActivity::class.java)
                 intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
                 startActivity(intent)
@@ -382,15 +387,15 @@ class PhoneLogActivity : AppCompatActivity() {
         }
 
         phone_log_CallBackSpace!!.setOnClickListener {
-            if (phone_log_PhoneNumberEditText!!.text.isNotEmpty()) {
-                phone_log_PhoneNumberEditText!!.text.delete(
+            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
+                phone_log_PhoneNumberEditText!!.text!!.delete(
                         phone_log_PhoneNumberEditText!!.length() - 1,
                         phone_log_PhoneNumberEditText!!.length())
             }
         }
 
         phone_log_CallBackSpace!!.setOnLongClickListener {
-            if (phone_log_PhoneNumberEditText!!.text.isNotEmpty()) {
+            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
                 phone_log_PhoneNumberEditText!!.setText("")
             }
             true
@@ -402,6 +407,19 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    // slide the view from below itself to the current position
+    private fun slideUp(view: View) {
+        val height = view.height.toFloat()
+        val animate = TranslateAnimation(
+                0F,                 // fromXDelta
+                0F,                 // toXDelta
+                height,  // fromYDelta
+                0F)               // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        view.startAnimation(animate)
+    }
 
     private fun getAppOnPhone(): ArrayList<String> {
         val intent = Intent(Intent.ACTION_MAIN, null)

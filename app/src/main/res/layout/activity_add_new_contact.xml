@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/add_new_contact_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -162,8 +162,8 @@
 
         <Spinner
             android:id="@+id/add_new_contact_priority"
-            android:layout_width="122dp"
-            android:layout_height="37dp"
+            android:layout_width="125dp"
+            android:layout_height="40dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
@@ -175,14 +175,11 @@
 
         <TextView
             android:id="@+id/add_new_contact_priority_explain"
-            android:layout_width="160dp"
-            android:layout_height="87dp"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toStartOf="@+id/add_new_contact_priority"
-            android:text="TextView"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/add_new_contact_priority"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />

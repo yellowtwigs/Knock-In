@@ -223,7 +223,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonCall.setImageResource(R.drawable.ic_phone_call);
         buttonWhatsApp.setImageResource(R.drawable.ic_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms);
-        buttonEdit.setImageResource(R.drawable.ic_edit_floating_button);
+        buttonEdit.setImageResource(R.drawable.ic_edit);
         buttonMail.setImageResource(android.R.drawable.ic_dialog_email);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);

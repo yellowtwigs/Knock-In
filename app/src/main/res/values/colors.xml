@@ -3,6 +3,8 @@
     <!-- region Universal Color -->
 
     <color name="colorPrimary">#fcd74c</color>
+    <color name="colorSecondary">#2D53C0</color>
+
     <color name="colorPrimaryDark">#e4b41e</color>
 
     <color name="backgroundColor">#fafafa</color>
