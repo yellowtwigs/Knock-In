@@ -49,7 +49,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
         switchPopupNotif.isChecked = sharedPreferences.getBoolean("popupNotif", false)
-        switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", true)
+        switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
 
         var hour = sharedPreferences.getInt("remindHour", 18)
         var minute = sharedPreferences.getInt("remindMinute", 0)
@@ -111,36 +111,28 @@ class ManageNotificationActivity : AppCompatActivity() {
                 if (!isNotificationServiceEnabled) {
                     buildNotificationServiceAlertDialog().show()
                 }
-                switchservice.setChecked(false)
-                edit.remove("popupNotif")
-                edit.remove("serviceNotif")
-                edit.putBoolean("serviceNotif", false)
+                switchservice.setChecked(true)
+                edit.putBoolean("serviceNotif", true)
                 edit.putBoolean("popupNotif", true)
                 edit.apply()
-                System.out.println("pop up true " + sharedPreferences.getBoolean("popupNotif", false))
             } else {
-                edit.remove("popupNotif")
+
                 edit.putBoolean("popupNotif", false)
                 edit.apply()
-                System.out.println("pop up false" + sharedPreferences.getBoolean("popupNotif", false))
             }
         }
 
         switchservice.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchservice.isChecked) {
-                switchPopupNotif.setChecked(false)
-                edit.remove("popupNotif")
-                edit.remove("serviceNotif")
                 edit.putBoolean("serviceNotif", true)
-                edit.putBoolean("popupNotif", false)
                 edit.apply()
-                System.out.println("service economy true " + sharedPreferences.getBoolean("serviceNotif", true))
             } else {
-                edit.remove("serviceNotif")
+
+                switchPopupNotif.setChecked(false)
                 edit.putBoolean("serviceNotif", false)
+                edit.putBoolean("popupNotif", false)
                 edit.commit()
-                System.out.println("service economy false " + sharedPreferences.getBoolean("serviceNotif", true))
             }
         }
 

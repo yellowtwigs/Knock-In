@@ -83,7 +83,7 @@ class AcceptNotificationActivity : AppCompatActivity() {
             }
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            edit.putBoolean("serviceNotif", false)
+            edit.putBoolean("serviceNotif", true)
             edit.apply()
             startActivity(Intent(this@AcceptNotificationActivity, MultiSelectActivity::class.java))
             finish()

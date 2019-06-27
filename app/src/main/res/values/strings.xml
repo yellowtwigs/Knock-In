@@ -156,7 +156,7 @@
 
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
     <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
-    <string name="notification_manager_stop_service">Arrêter le service de notifications pour économiser de la batterie</string>
+    <string name="notification_manager_stop_service">activer le service de notification</string>
     <string name="notification_manager_horaire">Choisissez votre horaire de rappel pour voir les notifications ratées</string>
 
     <!-- endregion -->

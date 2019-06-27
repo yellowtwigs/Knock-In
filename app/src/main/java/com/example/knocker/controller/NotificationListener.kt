@@ -81,7 +81,7 @@ class NotificationListener : NotificationListenerService() {
      */
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-        if (!sharedPreferences.getBoolean("serviceNotif", true)) {
+        if (sharedPreferences.getBoolean("serviceNotif", false)) {
             val sbp = StatusBarParcelable(sbn)
             sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
             val name = sbp.statusBarNotificationInfo.get("android.title").toString()
