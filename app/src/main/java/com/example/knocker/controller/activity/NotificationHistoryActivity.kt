@@ -125,7 +125,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_help -> startActivity(Intent(this, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.notification_history_drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
         }
