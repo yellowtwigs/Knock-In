@@ -208,7 +208,7 @@
     <string name="first_launch_welcome">Bienvenue sur Knocker</string>
     <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquer avec eux</string>
     <string name="first_launch_welcome_accept">Accepter et continuer</string>
-    <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com">www.yellowtwigs.com</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
+    <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
 
     <!-- endregion -->
 
