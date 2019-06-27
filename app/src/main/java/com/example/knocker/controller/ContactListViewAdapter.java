@@ -111,9 +111,9 @@ public class ContactListViewAdapter extends BaseAdapter {
             //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
-        if (contactName.length() > 19) {
+        if (contactName.length() > 27) {
             contactName = contact.getFirstName() + " " + contact.getLastName();
-            contactName = contactName.substring(0, 17) + "..";
+            contactName = contactName.substring(0, 25) + "..";
         }
 
         holder.contactFirstNameView.setText(contactName);
@@ -128,7 +128,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         if(activeMenu!=null) {
             if (holder.position == activeMenu.position) {
                 holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-            } 
+            }
         }
 
 
