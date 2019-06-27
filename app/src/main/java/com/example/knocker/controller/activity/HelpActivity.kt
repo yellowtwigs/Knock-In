@@ -48,7 +48,7 @@ class HelpActivity : AppCompatActivity() {
         //region ==================================== SetOnClickListener ====================================
         val onClick = View.OnClickListener {
             if(it.id==help_activity_FAQ!!.id){
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/forum?utm_campaign=65c6b065-06db-4383-9240-d877a178ea3b&utm_source=so")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/")))
             }
             if(it.id==help_activity_ContactUs!!.id){
                 val intent= Intent(Intent.ACTION_SEND)
@@ -59,6 +59,9 @@ class HelpActivity : AppCompatActivity() {
                 intent.putExtra(Intent.EXTRA_TEXT,"")
                 println("intent "+ intent.extras.toString())
                 startActivity(Intent.createChooser(intent,"contactez-nous"))
+            }
+            if(it.id==help_activity_Terms!!.id){
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina")))
             }
         }
         help_activity_ContactUs!!.setOnClickListener(onClick)
