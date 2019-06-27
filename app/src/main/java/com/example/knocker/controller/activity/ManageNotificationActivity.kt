@@ -184,26 +184,28 @@ class ManageNotificationActivity : AppCompatActivity() {
     private fun buildNotificationServiceAlertDialog(): androidx.appcompat.app.AlertDialog {
         val inflater: LayoutInflater = this.layoutInflater
         val alertView: View = inflater.inflate(R.layout.alert_dialog_catch_notification, null)
-
-        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_allow_it)
-        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick() }
-
-        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_dismiss)
-        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick() }
-
-        return MaterialAlertDialogBuilder(this)
+        val AlertDialog=MaterialAlertDialogBuilder(this)
                 .setView(alertView)
                 .show()
+
+        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_allow_it)
+        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick(AlertDialog)}
+
+        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_dismiss)
+        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick(AlertDialog) }
+
+        return AlertDialog
     }
 
-    private fun positiveAlertDialogButtonClick() {
+    private fun positiveAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.example.knocker.notificationExemple")
+        alertDialog.cancel()
     }
 
-    private fun negativeAlertDialogButtonClick() {
-
+    private fun negativeAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
+        alertDialog.cancel()
     }
 
     private val isNotificationServiceEnabled: Boolean

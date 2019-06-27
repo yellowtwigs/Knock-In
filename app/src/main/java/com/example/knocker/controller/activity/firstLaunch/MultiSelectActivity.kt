@@ -2,7 +2,6 @@ package com.example.knocker.controller.activity.firstLaunch
 
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
@@ -12,6 +11,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
@@ -58,19 +58,19 @@ class MultiSelectActivity : AppCompatActivity() {
     private fun overlayAlertDialogPermission(): androidx.appcompat.app.AlertDialog {
         val inflater: LayoutInflater = this.layoutInflater
         val alertView: View = inflater.inflate(R.layout.alert_dialog_multi_select, null)
-
-        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_multi_select_button_allow_it)
-        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick() }
-
-        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_multi_select_button_dismiss)
-        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick() }
-
-        return MaterialAlertDialogBuilder(this)
+        val alertDialog = MaterialAlertDialogBuilder(this)
                 .setView(alertView)
                 .show()
+        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_multi_select_button_allow_it)
+        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick(alertDialog) }
+
+        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_multi_select_button_dismiss)
+        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick(alertDialog) }
+
+        return alertDialog
     }
 
-    private fun positiveAlertDialogButtonClick() {
+    private fun positiveAlertDialogButtonClick(alertDialog: AlertDialog) {
         val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
         startActivity(intentPermission)
         val thread = Thread {
@@ -87,14 +87,11 @@ class MultiSelectActivity : AppCompatActivity() {
             }
         }
         thread.start()
+        alertDialog.cancel()
     }
 
-    private fun negativeAlertDialogButtonClick() {
-        val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-        edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-        edit.putBoolean("serviceNotif", true)
-        edit.commit()
+    private fun negativeAlertDialogButtonClick(alertDialog: AlertDialog) {
+        alertDialog.cancel()
     }
 
     private fun overlayAlertDialog(contactList: List<ContactWithAllInformation>): android.app.AlertDialog {
