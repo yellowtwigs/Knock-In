@@ -33,6 +33,8 @@
             android:padding="2dp"
             android:text="@string/manage_my_screen_number_of_line"
             android:textColor="@color/textColorDark"
+            android:textSize="@dimen/settings_subtitle_size"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -252,13 +254,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

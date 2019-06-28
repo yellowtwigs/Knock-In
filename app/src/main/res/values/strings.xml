@@ -7,7 +7,7 @@
     <string name="help_history">Sur cette page vous pouvez voir toutes les notifications reçues</string>
     <string name="help_cockpit">Sur cette page vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
     <string name="help_screen_manager">Sur cette page vous pouvez choisir comment afficher vos contacts ou désactiver les popups avant d\'appeler un contact</string>
-    <string name="help_notification_manager">Sur cette page vous pouvez choisir d\'activer oui ou non les notifications prioritaires</string>
+    <string name="help_notification_manager">Sur cette page vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
     <string name="help_my_information">Sur cette page vous pouvez modifier vos informations personnelles</string>
 
     <!-- endregion-->
@@ -143,7 +143,7 @@
     <string name="manage_my_screen_toolbar_title">Affichage</string>
     <string name="manage_my_screen_theme">Changer le thème</string>
     <string name="manage_my_screen_theme_long_text">Personnaliser le thème de l\'application pour vivre une meilleure expérience.</string>
-    <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne :</string>
+    <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne </string>
     <string name="manage_my_screen_toast">Vous avez sélectionné %1$d contacts par ligne</string>
     <string name="manage_my_screen_contact_popup">Popup contact</string>
     <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
@@ -155,8 +155,8 @@
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
-    <string name="notification_manager_stop_service">activer le service de notification</string>
+    <string name="notification_manager_stop_popup">Voulez-vous autoriser Knocker à afficher des notifications au dessus d\'autres applications ?</string>
+    <string name="notification_manager_stop_service">Activer le service de notification</string>
     <string name="notification_manager_horaire">Choisissez votre horaire de rappel pour voir les notifications ratées</string>
 
     <!-- endregion -->
