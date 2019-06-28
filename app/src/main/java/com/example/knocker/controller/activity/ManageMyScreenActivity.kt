@@ -87,9 +87,9 @@ class ManageMyScreenActivity : AppCompatActivity() {
         //region ======================================= DrawerLayout =======================================
 
         // Drawerlayout
-        drawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.manage_my_screen_drawer_layout)
 
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val navigationView = findViewById<NavigationView>(R.id.manage_my_screen_nav_view)
         val menu = navigationView.menu
         val nav_item = menu.findItem(R.id.nav_screen_config)
         nav_item.isChecked = true
@@ -116,7 +116,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_help -> startActivity(Intent(this@ManageMyScreenActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.manage_my_screen_drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
         }

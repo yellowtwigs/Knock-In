@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.ListView
+import androidx.appcompat.widget.AppCompatImageView
 import com.example.knocker.R
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -92,14 +93,12 @@ class NotificationListener : NotificationListenerService() {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
-                if (notification != null && notification_not_double(notification) && appNotifiable(sbp)) {
+                if (notification != null && notificationNotDouble(notification) && appNotifiable(sbp)) {
                     if (!notification.platform.equals(this.packageName)) {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                     }
 
-
                     if (isPhoneNumber(name)) {
-
                         println("is a phone number")
                         contact = gestionnaireContact.getContactFromNumber(name)
                         if (contact != null)
@@ -110,13 +109,17 @@ class NotificationListener : NotificationListenerService() {
                     }
                     if (contact != null) {
 
-                        if (contact.contactDB!!.contactPriority == 2) {
-                            displayLayout(sbp, sharedPreferences)
-                        } else if (contact.contactDB!!.contactPriority == 1) {
+                    if (contact != null) {
 
-                        } else if (contact.contactDB!!.contactPriority == 0) {
-                            println("priority 0")
-                            this.cancelNotification(sbn.key)
+                        when {
+                            contact.contactDB!!.contactPriority == 2 -> displayLayout(sbp, sharedPreferences)
+                            contact.contactDB!!.contactPriority == 1 -> {
+
+                            }
+                            contact.contactDB!!.contactPriority == 0 -> {
+                                println("priority 0")
+                                this.cancelNotification(sbn.key)
+                            }
                         }
                     } else {
                         println("I don't know this contact"+contact)
@@ -133,15 +136,14 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 
-    private fun notification_not_double(notification: NotificationDB): Boolean {
+    private fun notificationNotDouble(notification: NotificationDB): Boolean {
 
-        val lastInsertId=notification_listener_ContactsDatabase!!.notificationsDao().lastInsert()
-        println("dernière insertion "+lastInsertId)
-        val lastInsert=notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
-        if(lastInsert!=null) {
-            if (lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description) {
-                return false
-            }
+        val lastInsertId = notification_listener_ContactsDatabase!!.notificationsDao().lastInsert()
+        println("dernière insertion " + lastInsertId)
+        val lastInsert = notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
+
+        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description) {
+            return false
         }
         return true
     }
@@ -186,8 +188,7 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun displayLayout(sbp: StatusBarParcelable) {
-        val flag: Int
-        flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val flag: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
             WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
@@ -212,8 +213,9 @@ class NotificationListener : NotificationListenerService() {
         adapterNotification = NotifAdapter(applicationContext, notifications, windowManager!!, view!!)
         val listViews = view.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification
-        val layout = view.findViewById<View>(R.id.constraintLayout) as ConstraintLayout
-        layout.setOnClickListener {
+        val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
+
+        imgClose.setOnClickListener {
             //System.exit(0)
             windowManager?.removeView(view)
             popupView = null
@@ -224,11 +226,10 @@ class NotificationListener : NotificationListenerService() {
 
 
     fun appNotifiable(sbp: StatusBarParcelable): Boolean {
-        val regexNewMessage = "[0-9]+ nouveaux messages".toRegex()
         return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
-                convertPackageToString(sbp.appNotifier) != "" && !sbp.statusBarNotificationInfo["android.title"].toString().matches(regexNewMessage)
+                convertPackageToString(sbp.appNotifier) != ""
     }
 
     private fun convertPackageToString(packageName: String): String {
@@ -266,6 +267,4 @@ class NotificationListener : NotificationListenerService() {
         @SuppressLint("StaticFieldLeak")
         var adapterNotification: NotifAdapter? = null
     }
-
-
 }

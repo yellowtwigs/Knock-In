@@ -309,7 +309,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 } else if (v.getId() == buttonSMS.getId()) {
 
                     String phone = getItem(position).getPhoneNumber();
-                    Intent i = new Intent(Intent.ACTION_SEND, Uri.fromParts("sms", phone, null));
+                    Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                     context.startActivity(i);
 
                 } else if (v.getId() == buttonMail.getId()) {
@@ -374,6 +374,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     return R.drawable.ic_user_orange;
                 case 6:
                     return R.drawable.ic_user_pink;
+                default:
+                    return R.drawable.ic_user_blue;
             }
         }
         return -1;

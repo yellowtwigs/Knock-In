@@ -2,63 +2,71 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/notification_popup_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#88000000">
+    android:background="#33666666">
 
     <LinearLayout
-        android:layout_width="260dp"
-        android:layout_height="296dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="35dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_corner_dark_grey"
+        android:background="@drawable/custom_shape_popup_with_border"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="360dp"
-            android:layout_height="48dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            android:width="3dp">
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/custom_shape_top_bar_popup"
+            app:layout_constraintBottom_toTopOf="@+id/notification_popup_main_layout">
 
-            <TextView
-                android:id="@+id/txtView2"
-                android:layout_width="150dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="76dp"
-                android:radius="25dp"
-                android:text="@string/app_name"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_popup_knocker_logo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_letter_k"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="34dp"
-                android:layout_height="33dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_letter_k"
+            <TextView
+                android:id="@+id/notification_popup_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:layout_marginStart="15dp"
+                android:textSize="20sp"
+                android:textColor="@color/textColorDark"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/notification_popup_knocker_logo"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_popup_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.533" />
+                app:srcCompat="@drawable/ic_cross" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ListView
             android:id="@+id/notification_pop_up_listView"
             android:layout_width="match_parent"
-            android:layout_height="233dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -159,7 +159,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         if (sharedPreferences.getString("tri", "date") == "date") {
 
             val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
-            notification_history_ListView = findViewById(R.id.listView_notification_history)
+            notification_history_ListView = findViewById<ListView>(R.id.listView_notification_history)
             notification_history_ListView!!.adapter = adapter
 
 //            println("taille list " + notification_history_ListOfNotificationDB.size + " content " + notification_history_ListOfNotificationDB.toString())
@@ -185,7 +185,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         notification_history_ListView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val gestionnaireContacts = ContactList(this.applicationContext)
-            val iterator = (1 until gestionnaireContacts.contacts.size).iterator()
+            val iterator = (0 until gestionnaireContacts.contacts.size).iterator()
 
             when (notification_history_ListOfNotificationDB[position].platform) {
                 "com.whatsapp" -> {
@@ -206,7 +206,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
                     for (i in iterator) {
                         if (notification_history_ListOfNotificationDB[position].contactName == gestionnaireContacts.contacts[i].contactDB!!.firstName) {
-                            val intent = Intent(Intent.ACTION_SEND, Uri.fromParts("sms", gestionnaireContacts.contacts[i].getPhoneNumber(), null))
+                            val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", gestionnaireContacts.contacts[i].getPhoneNumber(), null))
                             startActivity(intent)
                         }
                     }
