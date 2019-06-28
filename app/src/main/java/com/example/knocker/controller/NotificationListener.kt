@@ -108,7 +108,7 @@ class NotificationListener : NotificationListenerService() {
                         println("not a phone number")
                         contact = gestionnaireContact.getContactWithName(name, app)
                     }
-                    if (contact != null && notification_not_double(notification!!)) {
+                    if (contact != null) {
 
                         if (contact.contactDB!!.contactPriority == 2) {
                             displayLayout(sbp, sharedPreferences)
@@ -119,7 +119,7 @@ class NotificationListener : NotificationListenerService() {
                             this.cancelNotification(sbn.key)
                         }
                     } else {
-                        println("I don't know this contact")
+                        println("I don't know this contact"+contact)
                         if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)|| sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
                             displayLayout(sbp, sharedPreferences)
                         } else {
