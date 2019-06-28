@@ -39,7 +39,6 @@ object ContactGesture {
             Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
-
     }
 
     fun openMessenger(id: String, context: Context) {

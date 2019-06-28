@@ -34,6 +34,7 @@ import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -61,7 +62,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
-    
+
     @Override
     public int getCount() {
         return listContacts.size();
@@ -81,14 +82,15 @@ public class ContactListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        View listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
+        @SuppressLint("ViewHolder") View listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
         final ViewHolder holder;
         holder = new ViewHolder();
-        holder.position=position;
+        holder.position = position;
         ContactDB contact = getItem(position).getContactDB();
 
         holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
 
+        assert contact != null;
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
@@ -124,7 +126,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder.mailCl = listview.findViewById(R.id.list_contact_item_constraint_mail);
         holder.editCl = listview.findViewById(R.id.list_contact_item_constraint_edit);
 
-        if(activeMenu!=null) {
+        if (activeMenu != null) {
             if (holder.position == activeMenu.position) {
                 holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
             }
@@ -138,15 +140,15 @@ public class ContactListViewAdapter extends BaseAdapter {
                 if (v.getId() == holder.smsCl.getId()) {
 
                     String phone = getItem(position).getPhoneNumber();
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null));
+                    Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                     context.startActivity(i);
                 }
                 if (v.getId() == holder.callCl.getId()) {
                     callPhone(getItem(position).getPhoneNumber());
                 }
                 if (v.getId() == holder.whatsappCl.getId()) {
-                    ContactWithAllInformation contactphone = (ContactWithAllInformation) getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(contactphone.getPhoneNumber(), context);
+                    ContactWithAllInformation contactWithAllInformation = getItem(position);
+                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
                 }
                 if (v.getId() == holder.editCl.getId()) {
 
@@ -157,26 +159,24 @@ public class ContactListViewAdapter extends BaseAdapter {
                 }
                 if (v.getId() == holder.mailCl.getId()) {
                     String mail = getItem(position).getFirstMail();
-                    if (mail != null) {
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setData(Uri.parse("mailto:"));
-                        intent.setType("text/html");
-                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "");
-                        intent.putExtra(Intent.EXTRA_TEXT, "");
-                        println("intent " + intent.getExtras().toString());
-                        context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
-                    }
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setData(Uri.parse("mailto:"));
+                    intent.setType("text/html");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "");
+                    intent.putExtra(Intent.EXTRA_TEXT, "");
+                    println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
+                    context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
-                System.out.println("click position "+position);
+                System.out.println("click position " + position);
 
-                if (holder.constraintLayoutMenu.getVisibility() == View.GONE ) {
+                if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
                     holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
                     if (activeMenu != null) {
                         activeMenu.constraintLayoutMenu.setVisibility(View.GONE);
                     }
                     activeMenu = holder;
-                    println("active menu"+activeMenu.toString());
+                    println("active menu" + activeMenu.toString());
                 } else {
                     println("menu active");
                     holder.constraintLayoutMenu.setVisibility(View.GONE);
@@ -209,6 +209,13 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder.constraintLayout.setOnClickListener(listener);
 
         return listview;
+    }
+
+    private String converter06To33(String phoneNumber) {
+        if (phoneNumber.charAt(0) == '0') {
+            return "+33" + phoneNumber;
+        }
+        return phoneNumber;
     }
 
     private int randomDefaultImage(int avatarId, String createOrGet) {

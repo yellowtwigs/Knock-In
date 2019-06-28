@@ -227,6 +227,8 @@ public class SelectContactAdapter extends BaseAdapter {
                     return R.drawable.ic_user_orange;
                 case 6:
                     return R.drawable.ic_user_pink;
+                default:
+                    return R.drawable.ic_user_blue;
             }
         }
         return -1;
