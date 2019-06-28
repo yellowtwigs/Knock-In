@@ -120,7 +120,7 @@ class NotificationListener : NotificationListenerService() {
                         }
                     } else {
                         println("I don't know this contact")
-                        if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)) {
+                        if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE)|| sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
                             displayLayout(sbp, sharedPreferences)
                         } else {
                             println("bad package " + sbn.packageName)
@@ -240,7 +240,7 @@ class NotificationListener : NotificationListenerService() {
             return "WhatsApp"
         } else if (packageName.equals(GMAIL_PACKAGE)) {
             return "gmail"
-        } else if (packageName.equals(MESSAGE_PACKAGE) || packageName.equals(MESSAGE_SAMSUNG_PACKAGE)) {
+        } else if (packageName.equals(MESSAGE_PACKAGE) || packageName.equals(MESSAGE_SAMSUNG_PACKAGE)||  packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
             return "message"
         }
         return ""
@@ -258,6 +258,7 @@ class NotificationListener : NotificationListenerService() {
         val WHATSAPP_SERVICE = "com.whatsapp"
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
+        val XIAOMI_MESSAGE_PACKAGE= "com.android.mms"
         val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
         val TELEGRAM_PACKAGE = "org.telegram.messenger"
 

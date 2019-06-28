@@ -32,6 +32,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private val MESSENGER_PACKAGE = "com.facebook.orca"
     private val WHATSAPP_SERVICE = "com.whatsapp"
     private val GMAIL_PACKAGE = "com.google.android.gm"
+    val XIAOMI_MESSAGE_PACKAGE= "com.android.mms"
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
     val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
 
@@ -112,7 +113,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 val main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
                 val contacts = ContactList(this.context)
                 val number = contacts.getDetailsOfPlatform(sbp.statusBarNotificationInfo["android.title"].toString(), app)
-                if (sbp.appNotifier.equals(MESSAGE_PACKAGE) || sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)) {
+                if (sbp.appNotifier.equals(MESSAGE_PACKAGE) || sbp.appNotifier.equals(MESSAGE_SAMSUNG_PACKAGE)|| sbp.appNotifier.equals(XIAOMI_MESSAGE_PACKAGE)) {
 
                     val smsManager = SmsManager.getDefault()
 
@@ -192,10 +193,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             return "WhatsApp"
         } else if (packageName == GMAIL_PACKAGE) {
             return "gmail"
-        } else if (packageName == MESSAGE_PACKAGE || packageName ==
-
-
-                MESSAGE_SAMSUNG_PACKAGE) {
+        } else if (packageName == MESSAGE_PACKAGE || packageName == MESSAGE_SAMSUNG_PACKAGE || packageName ==XIAOMI_MESSAGE_PACKAGE) {
             return "message"
         }
         return ""
