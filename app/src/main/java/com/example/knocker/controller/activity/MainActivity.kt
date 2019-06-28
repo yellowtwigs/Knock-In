@@ -116,16 +116,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
-            Toast.makeText(this, "Vous venez de supprimer un contact !", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
         }
 
-        if (!isNotificationServiceEnabled()) {
-            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-            edit.putBoolean("serviceNotif", true)
-            edit.apply()
-        } else {
+        if (isNotificationServiceEnabled()) {
             toggleNotificationListenerService()
         }
 
@@ -635,7 +629,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
-
+/*
     @SuppressLint("ShowToast")
     private fun phoneCall(phoneNumberEntered: String) {
         if (!TextUtils.isEmpty(phoneNumberEntered)) {
@@ -657,7 +651,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val matcher = pattern.matcher(phone)
         return matcher.matches()
     }
-
+*/
 //    if (main_Listview != null && gestionnaireContacts!!.contacts != null) {
 //        val contactAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
 //        main_Listview!!.adapter = contactAdapter

@@ -38,9 +38,6 @@ class MultiSelectActivity : AppCompatActivity() {
         multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.listContactSelect().size)
         multi_select_gridView.numColumns += 4
         multi_select_gridView.adapter = adapter
-        for (contact in ContactList(this).contacts) {
-            println("contact is " + contact.contactDB!!.lastName + " " + contact.contactDB!!.firstName)
-        }
 
         multi_select_gridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             adapter.itemSelected(position)
@@ -97,20 +94,22 @@ class MultiSelectActivity : AppCompatActivity() {
     private fun overlayAlertDialog(contactList: List<ContactWithAllInformation>): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
-        var message = "vous venez de séléctionner "+contactList.size
-        if (contactList.size<=1){
-             message += " contact :"
+        var message = ""
+        if(contactList.size==0){
+            message= applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
+        }else if (contactList.size==1){
+             message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),contactList.size,"contact :")
             if(contactList.size==1){
                 val contact=contactList.get(0)
                 message+="\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
         }else {
-             message += " contacts :"
+            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),contactList.size,"contacts :")
             for (contact in contactList) {
                 message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
         }
-        alertDialogBuilder.setMessage(message + "\n voulez-vous valider votre séléction")
+        alertDialogBuilder.setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
         alertDialogBuilder.setPositiveButton("oui"
         ) { _, _ ->
             val gestionnaireContact = ContactList(contactList, this)
@@ -129,19 +128,16 @@ class MultiSelectActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         activityVisible = true
-        println("test resume")
     }
 
     override fun onPause() {
         super.onPause()
         activityVisible = false
-        println("test pause")
     }
 
     override fun onStart() {
         super.onStart()
         activityVisible = true
-        println("test start")
     }
 
     override fun onBackPressed() {

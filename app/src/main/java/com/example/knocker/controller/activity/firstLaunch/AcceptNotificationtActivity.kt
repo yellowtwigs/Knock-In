@@ -23,7 +23,6 @@ class AcceptNotificationActivity : AppCompatActivity() {
         val ButtonUnAuthorized: Button = findViewById(R.id.accept_notification_dismiss_button)
 
         ButtonManage.setOnClickListener {
-            println("test")
             startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
             val intentFilter = IntentFilter()
             intentFilter.addAction("com.example.knocker.notificationExemple")
@@ -60,19 +59,16 @@ class AcceptNotificationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         activityVisible = true
-        println("test resume")
     }
 
     override fun onPause() {
         super.onPause()
         activityVisible = false
-        println("test pause")
     }
 
     override fun onStart() {
         super.onStart()
         activityVisible = true
-        println("test start")
     }
 
     fun screenGesture() {

@@ -58,12 +58,10 @@ public class SelectContactAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        System.out.println("into view position " + position);
         View gridview = convertView;
         final ViewHolder holder;
 
         if (gridview == null) {
-            System.out.println("convert is null");
             gridview = layoutInflater.inflate(R.layout.grid_multi_select_item_layout, null);
 //            gridview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
 
@@ -106,7 +104,6 @@ public class SelectContactAdapter extends BaseAdapter {
 
             gridview.setTag(holder);
         } else {
-            System.out.println("convert is  not null");
             holder = (ViewHolder) convertView.getTag();
         }
         holder.isSelect = false;

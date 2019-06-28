@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Knocker</string>
     <string name="app_name_by">by YellowTwigs</string>
-
+    <string name="contact_mail">contacts@yellowtwigs.com</string>
     <!-- region HelpActivity -->
     <string name="help_homepage">Sur cette page vous pouvez voir tous les contacts enregistrés sur Knocker</string>
     <string name="help_history">Sur cette page vous pouvez voir toutes les notifications reçues</string>
@@ -9,7 +9,7 @@
     <string name="help_screen_manager">Sur cette page vous pouvez choisir comment afficher vos contacts ou désactiver les popups avant d\'appeler un contact</string>
     <string name="help_notification_manager">Sur cette page vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
     <string name="help_my_information">Sur cette page vous pouvez modifier vos informations personnelles</string>
-
+    <string name="help_contact_us_intent">contactez-nous</string>
     <!-- endregion-->
 
     <!-- region Faceboook Strings-->
@@ -35,7 +35,7 @@
 
     <!-- endregion-->
 
-    <!-- region Toolbar Main Filtre et Tri !-->
+    <!-- region Toolbar, Main, Filtre et Tri !-->
 
     <string name="main_filter_sms">SMS</string>
     <string name="main_filter_mail">Email</string>
@@ -49,6 +49,7 @@
     <string name="notif_filtre_message">Notification de Message</string>
     <string name="notif_filtre_systeme">Notification du Système</string>
     <string name="notif_tri_date">Date et heure</string>
+    <string name="main_toast_delete_contact">Vous venez de supprimer un contact !</string>
 
     <!-- endregion -->
 
@@ -68,7 +69,7 @@
     <string name="add_new_contact_priority0">Toutes les notifications de ce contact seront désactivées </string>
     <string name="add_new_contact_priority1">Toutes les notifications de ce contact s\'afficheront comme avant</string>
     <string name="add_new_contact_priority2">Toutes les notifications de ce contact seront affichées au milieu de l\'écran</string>
-
+    <string name="add_new_contact_toast">"Le champ prénom ne peut pas être vide !"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
         <item>Bureau</item>
@@ -95,7 +96,15 @@
 
     <string name="add_new_contact_alert_dialog_title">Contact déjà existant</string>
     <string name="add_new_contact_alert_dialog_message">Un contact porte déjà ce nom. Voulez-vous tout de même l\'enregistrer sous ce nom ?</string>
-
+    <string name="add_new_contact_alert_dialog_cancel_title">Attention</string>
+    <string name="add_new_contact_alert_dialog_cancel_message">Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?</string>
+    <string name="add_new_contact_alert_dialog_photo_title">ajouter une image</string>
+    <string name="add_new_contact_alert_dialog_photo_camera">caméra</string>
+    <string name="add_new_contact_alert_dialog_photo_galery">galerie</string>
+    <string name="add_new_contact_alert_dialog_photo_cancel">annuler</string>
+    <string name="add_new_contact_intent_title">Select File</string>
+    <string name="add_new_contact_camera_open_title">Nouvelle photo</string>
+    <string name="add_new_contact_camera_open_description">Depuis votre appareil photo</string>
     <!-- endregion !-->
 
     <!-- region Edit Contact !-->
@@ -125,7 +134,17 @@
     <string name="edit_contact_add_field">Ajouter un champ</string>
     <string name="edit_contact_delete_contact">Supprimer Contact</string>
     <string name="edit_contact_validate">Valider</string>
+    <string name="edit_contact_toast">Nom ou prénom requis</string>
 
+    <string name="edit_contact_alert_dialog_cancel_title">Attention</string>
+    <string name="edit_contact_alert_dialog_cancel_message">Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?</string>
+    <string name="edit_contact_alert_dialog_photo_title">ajouter une image</string>
+    <string name="edit_contact_alert_dialog_photo_camera">caméra</string>
+    <string name="edit_contact_alert_dialog_photo_galery">galerie</string>
+    <string name="edit_contact_alert_dialog_photo_cancel">annuler</string>
+    <string name="edit_contact_intent_title">Select File</string>
+    <string name="edit_contact_camera_open_title">Nouvelle photo</string>
+    <string name="edit_contact_camera_open_description">Depuis votre appareil photo</string>
     <!-- endregion !-->
 
     <!-- region Edit My Informations !-->
@@ -135,6 +154,8 @@
     <string name="edit_informations_name">Nom</string>
     <string name="edit_informations_phone_number">Numéro de téléphone</string>
     <string name="edit_informations_email">Email</string>
+    <string name="edit_information_toast_enable">Mode Edition Activé</string>
+    <string name="edit_information_toast_disable">Mode Edition Désactivé</string>
 
     <!-- endregion -->
 
@@ -164,7 +185,8 @@
     <!-- region Phone Log -->
 
     <string name="phone_log_toolbar_title">Cockpit</string>
-
+    <string name="phone_log_toast_number_missing">Entrez un numéro de téléphone</string>
+    <string name="phone_log_toast_wait_permission">Tant que vous n\'acceptez pas la permission, nous ne pourrons afficher le nom</string>
     <!-- endregion -->
 
     <!-- region Notification History -->
@@ -200,7 +222,7 @@
     <string name="synchronise_contact_synchronise_button_yes">Synchroniser</string>
     <string name="synchronise_contact_synchronise_button_no">Ne pas synchroniser</string>
     <string name="synchronise_contact_synchronise_toast">Contacts synchronisés</string>
-
+    <string name="synchronise_contact_alert_dialog">Vous pourrez toujours synchroniser vos contact dans la bar de navigation latéral avec l\'onglet "Synchroniser vos contact"</string>
     <!-- endregion -->
 
     <!-- region First Launch -->
@@ -211,13 +233,19 @@
     <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
 
     <!-- endregion -->
-
     <!-- region Multi Select-->
 
     <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
-
+        <!-- region Alert Dialog -->
+        <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
+        <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
+        <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
+        <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
+        <string name="multi_select_alert_dialog_nb_contact">vous venez de séléctionner %1s %2s </string>
+        <string name="multi_select_alert_dialog_0_contact">vous avez sélectionner 0 contact </string>
+        <string name="multi_select_validate_selection">\n voulez-vous valider votre séléction</string>
+        <!-- endregion -->
     <!-- endregion -->
-
     <!-- region Notification Sender -->
 
     <string name="notification_sender_content_title">Résumé des interactions</string>
@@ -225,17 +253,13 @@
     <string name="notification_sender_big_text">Knocker a traité %1s messages depuis hier \n vous pouvez les consulter depuis l\'application dans "Historique"</string>
 
     <!-- endregion -->
+    <!-- region alert Dialog button !-->
+        <string name="alert_dialog_yes">oui</string>
+        <string name="alert_dialog_no">no</string>
+    <!-- endregion !-->
 
-    <!-- region Multi Select -->
-
-        <!-- region Alert Dialog -->
-
-        <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
-        <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
-        <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
-        <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
-
-        <!-- endregion -->
-
-    <!-- endregion -->
+    <!-- region AlertDialog permission overlay !-->
+        <string name="alert_dialog_overlay_title">Knocker</string>
+        <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
+    <!-- endregion !-->
 </resources>

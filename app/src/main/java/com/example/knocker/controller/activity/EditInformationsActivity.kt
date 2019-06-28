@@ -206,36 +206,37 @@ class EditInformationsActivity : AppCompatActivity() {
 
     private fun SelectImage() {
 
-        val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
+        val items = arrayOf<CharSequence>(getString(R.string.edit_contact_alert_dialog_photo_camera)
+                , getString(R.string.edit_contact_alert_dialog_photo_galery)
+                , getString(R.string.edit_contact_alert_dialog_photo_cancel))
         //            ActionBar.DisplayOptions[]
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Add Image")
+        builder.setTitle( R.string.edit_contact_alert_dialog_photo_title)
         builder.setItems(items) { dialog, i ->
-            if (items[i] == "Camera") {
+            if (items[i] == getString(R.string.edit_contact_alert_dialog_photo_camera)) {
                 openCamera()
 
-            } else if (items[i] == "Gallery") {
+            } else if (items[i] ==getString(R.string.edit_contact_alert_dialog_photo_galery)) {
 
                 val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 intent.type = "image/*"
-                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE!!)
+                startActivityForResult(Intent.createChooser(intent,  getString(R.string.edit_contact_intent_title)), SELECT_FILE!!)
 
-            } else if (items[i] == "Cancel") {
+            } else if (items[i] == getString(R.string.edit_contact_alert_dialog_photo_cancel)) {
                 dialog.dismiss()
             }
         }
         builder.show()
-    }
+    }//TODO : enlever code duplicate avec edit et add new contact
 
     private fun openCamera() {
         val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        values.put(MediaStore.Images.Media.TITLE, R.string.edit_contact_camera_open_title)
+        values.put(MediaStore.Images.Media.DESCRIPTION, R.string.edit_contact_camera_open_description)
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
@@ -356,7 +357,7 @@ class EditInformationsActivity : AppCompatActivity() {
 
 
         hideKeyboard()
-        Toast.makeText(this@EditInformationsActivity, "Mode Edition Activé", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@EditInformationsActivity, R.string.edit_information_toast_enable, Toast.LENGTH_SHORT).show()
     }
 
     private fun modeEditionDesactivated() {
@@ -383,7 +384,7 @@ class EditInformationsActivity : AppCompatActivity() {
         edit_informations_ModeEditionDesactivated!!.visibility = View.GONE
 */
         hideKeyboard()
-        Toast.makeText(this@EditInformationsActivity, "Mode Edition Désactivé", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@EditInformationsActivity, R.string.edit_information_toast_disable, Toast.LENGTH_SHORT).show()
         finish()
     }
 

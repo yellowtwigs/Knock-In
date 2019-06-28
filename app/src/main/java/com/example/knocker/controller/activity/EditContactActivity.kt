@@ -357,15 +357,14 @@ class EditContactActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (isChanged) {
-                    val alertDialog = AlertDialog.Builder(this.applicationContext)
-                    alertDialog.setTitle("Attention")
-                    alertDialog.setMessage("Vous risquez de perdre toutes vos modifications, voulez vous vraiment continuer ?")
+                        val alertDialog = AlertDialog.Builder(this.applicationContext)
+                        alertDialog.setTitle(R.string.edit_contact_alert_dialog_cancel_title)
+                        alertDialog.setMessage(R.string.edit_contact_alert_dialog_cancel_message)
 
-                    alertDialog.setPositiveButton("Oui") { _, _ ->
+                        alertDialog.setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
                         finish()
                     }
-
-                    alertDialog.setNegativeButton("Non") { _, _ ->
+                        alertDialog.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
                     }
                     alertDialog.show()
                 } else {
@@ -442,7 +441,7 @@ class EditContactActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this, "Nom ou Prénom requis", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, R.string.edit_contact_toast, Toast.LENGTH_LONG).show()
                     }
                 }
                 edit_contact_mDbWorkerThread.postTask(editContact)
@@ -477,25 +476,27 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun selectImage() {
 
-        val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
+        val items = arrayOf<CharSequence>(getString(R.string.edit_contact_alert_dialog_photo_camera)
+                , getString(R.string.edit_contact_alert_dialog_photo_galery)
+                , getString(R.string.edit_contact_alert_dialog_photo_cancel))
         //            ActionBar.DisplayOptions[]
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Add Image")
+        builder.setTitle( R.string.edit_contact_alert_dialog_photo_title)
         builder.setItems(items) { dialog, i ->
-            if (items[i] == "Camera") {
+            if (items[i] == getString(R.string.edit_contact_alert_dialog_photo_camera)) {
                 openCamera()
 
-            } else if (items[i] == "Gallery") {
+            } else if (items[i] ==getString(R.string.edit_contact_alert_dialog_photo_galery)) {
 
                 val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 intent.type = "image/*"
-                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE!!)
+                startActivityForResult(Intent.createChooser(intent,  getString(R.string.edit_contact_intent_title)), SELECT_FILE!!)
 
-            } else if (items[i] == "Cancel") {
+            } else if (items[i] == getString(R.string.edit_contact_alert_dialog_photo_cancel)) {
                 dialog.dismiss()
             }
         }
@@ -504,8 +505,8 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun openCamera() {
         val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        values.put(MediaStore.Images.Media.TITLE, R.string.edit_contact_camera_open_title)
+        values.put(MediaStore.Images.Media.DESCRIPTION, R.string.edit_contact_camera_open_description)
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
@@ -624,9 +625,9 @@ class EditContactActivity : AppCompatActivity() {
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Knocker")
-        alertDialogBuilder.setMessage("voulez vous autouriser knocker à afficher des notifications directement sur d'autre application")
-        alertDialogBuilder.setPositiveButton("oui"
+        alertDialogBuilder.setTitle(R.string.alert_dialog_overlay_title)
+        alertDialogBuilder.setMessage(R.string.alert_dialog_overlay_message)
+        alertDialogBuilder.setPositiveButton(R.string.alert_dialog_yes
         ) { _, _ ->
             val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivity(intentPermission)
@@ -637,8 +638,8 @@ class EditContactActivity : AppCompatActivity() {
             edit.apply()
 
         }
-        alertDialogBuilder.setNegativeButton("non"
-        ) { _, _ ->
+        alertDialogBuilder.setNegativeButton(R.string.alert_dialog_no)
+        { _, _ ->
             val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons

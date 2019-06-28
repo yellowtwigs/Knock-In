@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
@@ -27,7 +26,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
 import com.example.knocker.model.PhoneLog
-import java.security.AccessController.getContext
 import java.util.ArrayList
 
 /**
@@ -331,7 +329,7 @@ class PhoneLogActivity : AppCompatActivity() {
                 intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "Enter a phone number please", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.phone_log_toast_number_missing, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -584,7 +582,6 @@ class PhoneLogActivity : AppCompatActivity() {
                 checkSelfPermission(android.Manifest.permission.READ_CALL_LOG) != PERMISSION_GRANTED) {
             requestPermissions(Array<String?>(1) { android.Manifest.permission.READ_CALL_LOG }, PERMISSIONS_REQUEST_READ_CALL_LOG)
         } else {
-            Toast.makeText(this, "Bla bla bla", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -638,7 +635,7 @@ class PhoneLogActivity : AppCompatActivity() {
             PERMISSIONS_REQUEST_READ_CALL_LOG -> if (grantResults[0] == PERMISSION_GRANTED) {
                 showListPhoneCalls()
             } else {
-                Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.phone_log_toast_wait_permission , Toast.LENGTH_SHORT).show()
             }
         }
     }

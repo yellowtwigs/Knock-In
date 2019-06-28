@@ -171,13 +171,13 @@ class AddNewContactActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.add_new_contact_alert_dialog_title)
                 .setMessage(R.string.add_new_contact_alert_dialog_message)
-                .setPositiveButton("Oui") { _, _ ->
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     main_ContactsDatabase?.contactsDao()?.insert(contactData)
                     val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
-                .setNegativeButton("Non") { _, _ ->
+                .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                 }
                 .show()
     }
@@ -191,16 +191,16 @@ class AddNewContactActivity : AppCompatActivity() {
                     finish()
                 } else {
                     val alertDialog = AlertDialog.Builder(this)
-                    alertDialog.setTitle("Attention")
-                    alertDialog.setMessage("Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?")
+                    alertDialog.setTitle(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_title))
+                    alertDialog.setMessage(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_message))
 
-                    alertDialog.setPositiveButton("Oui") { _, _ ->
+                    alertDialog.setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
 
                         startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
                         finish()
                     }
 
-                    alertDialog.setNegativeButton("Non") { _, _ ->
+                    alertDialog.setNegativeButton(R.string.alert_dialog_yes) { _, _ ->
                     }
                     alertDialog.show()
                 }
@@ -210,14 +210,14 @@ class AddNewContactActivity : AppCompatActivity() {
                 MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.add_new_contact_alert_dialog_title)
                         .setMessage(R.string.add_new_contact_alert_dialog_message)
-                        .setPositiveButton("Oui") { _, _ ->
+                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                         }
-                        .setNegativeButton("Non") { _, _ ->
+                        .setNegativeButton(R.string.alert_dialog_yes) { _, _ ->
                         }
                         .show()
 
 
-                Toast.makeText(this, "Le champ prénom ne peut pas être vide !", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.add_new_contact_toast, Toast.LENGTH_SHORT).show()
             } else {
                 //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                 val printContacts = Runnable {
@@ -251,7 +251,8 @@ class AddNewContactActivity : AppCompatActivity() {
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
 
-                        println("test" + main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
+                       // println("test" + main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
+
                         val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -281,7 +282,9 @@ class AddNewContactActivity : AppCompatActivity() {
 
     private fun SelectImage() {
 
-        val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
+        val items = arrayOf<CharSequence>(getString(R.string.add_new_contact_alert_dialog_photo_camera)
+                , getString(R.string.add_new_contact_alert_dialog_photo_galery)
+                , getString(R.string.add_new_contact_alert_dialog_photo_cancel))
         //            ActionBar.DisplayOptions[]
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -289,18 +292,18 @@ class AddNewContactActivity : AppCompatActivity() {
         }
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Add Image")
+        builder.setTitle(R.string.add_new_contact_alert_dialog_photo_title)
         builder.setItems(items) { dialog, i ->
-            if (items[i] == "Camera") {
+            if (items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_camera)) {
                 openCamera()
 
-            } else if (items[i] == "Gallery") {
+            } else if (items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_galery)) {
 
                 val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 intent.type = "image/*"
-                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE!!)
+                startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
 
-            } else if (items[i] == "Cancel") {
+            } else if (items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_cancel)) {
                 dialog.dismiss()
             }
         }
@@ -309,8 +312,8 @@ class AddNewContactActivity : AppCompatActivity() {
 
     private fun openCamera() {
         val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        values.put(MediaStore.Images.Media.TITLE, getString(R.string.add_new_contact_camera_open_title))
+        values.put(MediaStore.Images.Media.DESCRIPTION,  getString(R.string.add_new_contact_camera_open_description))
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)

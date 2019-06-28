@@ -31,7 +31,6 @@ class SynchronizeContactActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        println("test")
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.synchronise_contact_synchronise_toast, Toast.LENGTH_LONG).show()
@@ -46,8 +45,8 @@ class SynchronizeContactActivity : AppCompatActivity() {
 
     private fun overlayAlertDialog(): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Knocker")
-        alertDialogBuilder.setMessage("Vous pourrez toujours synchroniser vos contact dans la bar de navigation latéral avec l'onglet \'\'Synchroniser vos contact\'\' ")
+        alertDialogBuilder.setTitle(applicationContext.resources.getString(R.string.app_name))
+        alertDialogBuilder.setMessage(applicationContext.resources.getString(R.string.synchronise_contact_alert_dialog))
         alertDialogBuilder.setPositiveButton("ok"
         ) { _, _ ->
             startActivity(Intent(this@SynchronizeContactActivity, AcceptNotificationActivity::class.java))
