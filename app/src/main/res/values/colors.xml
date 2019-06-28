@@ -38,6 +38,16 @@
 
     <!-- endregion -->
 
+    <!-- region Custom Shape Top Bar Notif Adapter Colors -->
+
+    <color name="custom_shape_top_bar_notif_adapter_facebook">#3b5998</color>
+    <color name="custom_shape_top_bar_notif_adapter_messenger">#0084FF</color>
+    <color name="custom_shape_top_bar_notif_adapter_whatsapp">#25D366</color>
+    <color name="custom_shape_top_bar_notif_adapter_gmail">#b45a5a</color>
+    <color name="custom_shape_top_bar_notif_adapter_message">#b45a5a</color>
+
+    <!-- endregion -->
+
     <!-- region priority Colors -->
 
     <color name="priorityZeroColor">@color/redColorDark</color>

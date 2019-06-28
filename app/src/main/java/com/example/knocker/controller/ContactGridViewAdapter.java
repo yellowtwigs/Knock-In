@@ -295,7 +295,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 } else if (v.getId() == buttonWhatsApp.getId()) {
 
                     ContactWithAllInformation contactWithAllInformation = getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(contactWithAllInformation.getPhoneNumber(), context);
+                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
                 } else if (v.getId() == buttonEdit.getId()) {
 
                     Intent intent = new Intent(context, EditContactActivity.class);
@@ -346,6 +346,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         //endregion
         return gridview;
 
+    }
+
+    private String converter06To33(String phoneNumber) {
+        if (phoneNumber.charAt(0) == '0') {
+            return "+33" + phoneNumber;
+        }
+        return phoneNumber;
     }
 
     private int randomDefaultImage(int avatarId, String createOrGet) {

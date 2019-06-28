@@ -29,6 +29,7 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
+
 /**
  * La Classe qui permet d'afficher l'historique des notifications
  * @author Florian Striebel
@@ -41,7 +42,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private var main_BottomNavigationView: BottomNavigationView? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
-        println("r.id =" + R.id.notif_tri_par_priorite + " item.id=" + item.itemId + " ")
+        //        println("r.id =" + R.id.notif_tri_par_priorite + " item.id=" + item.itemId + " ")
         when (item.itemId) {
             R.id.navigation_phone_book -> {
                 startActivity(Intent(this@NotificationHistoryActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
@@ -51,10 +52,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             R.id.navigation_notifcations -> {
             }
-//            R.id.navigation_socials_networks -> {
-//                startActivity(Intent(this@NotificationHistoryActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-//                return@OnNavigationItemSelectedListener true
-//            }
             R.id.navigation_phone_keyboard -> {
                 startActivity(Intent(this@NotificationHistoryActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
@@ -125,7 +122,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_help -> startActivity(Intent(this, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.notification_history_drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
         }
@@ -145,7 +142,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         if (sharedPreferences.getBoolean("filtre_message", true)) {
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
 
-            println("BALISE = $notification_history_ListOfNotificationDB")
+//            println("BALISE = $notification_history_ListOfNotificationDB")
 
             val listTmp = mutableListOf<NotificationDB>()
 
@@ -165,7 +162,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_ListView = findViewById(R.id.listView_notification_history)
             notification_history_ListView!!.adapter = adapter
 
-            println("taille list " + notification_history_ListOfNotificationDB.size + " content " + notification_history_ListOfNotificationDB.toString())
+//            println("taille list " + notification_history_ListOfNotificationDB.size + " content " + notification_history_ListOfNotificationDB.toString())
 
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
 
@@ -174,7 +171,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             listTmp2.addAll(notification_history_ListOfNotificationDB)
             listTmp2.removeAll(listTmp)
-            println("TEEEEEEEST = " + listTmp2.size)
+//            println("TEEEEEEEST = " + listTmp2.size)
 
             listTmp.addAll(Math.max(firstContactPrio0(listTmp) - 1, 0), listTmp2)
 
@@ -190,30 +187,38 @@ class NotificationHistoryActivity : AppCompatActivity() {
             val gestionnaireContacts = ContactList(this.applicationContext)
             val iterator = (1 until gestionnaireContacts.contacts.size).iterator()
 
+            when (notification_history_ListOfNotificationDB[position].platform) {
+                "com.whatsapp" -> {
 
-            when {
-                notification_history_ListOfNotificationDB[position].platform == "com.whatsapp" -> iterator.forEach {
-                    if (notification_history_ListOfNotificationDB[position].contactName == gestionnaireContacts.contacts[iterator.nextInt()].contactDB!!.firstName) {
-                        openWhatsapp(converter06To33(gestionnaireContacts.contacts[iterator.nextInt()].getPhoneNumber()), baseContext)
+                    for (i in iterator) {
+                        if (notification_history_ListOfNotificationDB[position].contactName == gestionnaireContacts.contacts[i].contactDB!!.firstName) {
+                            openWhatsapp(converter06To33(gestionnaireContacts.contacts[i].getPhoneNumber()), baseContext)
+                        }
                     }
                 }
-                notification_history_ListOfNotificationDB[position].platform == "com.google.android.gm" -> iterator.forEach { _ ->
-                    openGmail(this)
+                "com.google.android.gm" -> openGmail(this)
+
+                "com.facebook.katana" -> goToFacebook()
+
+                "com.facebook.orca" -> openMessenger("", this)
+
+                "com.google.android.apps.messaging" -> {
+
+                    for (i in iterator) {
+                        if (notification_history_ListOfNotificationDB[position].contactName == gestionnaireContacts.contacts[i].contactDB!!.firstName) {
+                            val intent = Intent(Intent.ACTION_SEND, Uri.fromParts("sms", gestionnaireContacts.contacts[i].getPhoneNumber(), null))
+                            startActivity(intent)
+                        }
+                    }
+
+                    val sendIntent = Intent(Intent.ACTION_VIEW)
+                    sendIntent.data = Uri.parse("sms:")
+
                 }
-                notification_history_ListOfNotificationDB[position].platform == "com.facebook.katana" -> iterator.forEach { _ ->
-                    goToFacebook()
-                }
-                notification_history_ListOfNotificationDB[position].platform == "com.facebook.orca" -> iterator.forEach { _ ->
-                    openMessenger("", this)
-                }
-                notification_history_ListOfNotificationDB[position].platform == "com.google.android.apps.messaging" -> iterator.forEach { _ ->
-                }
-                notification_history_ListOfNotificationDB[position].platform == "com.instagram.android" -> iterator.forEach { _ ->
-                    goToInstagramPage()
-                }
-                notification_history_ListOfNotificationDB[position].platform == "com.twitter.android" -> iterator.forEach { _ ->
-                    goToTwitter()
-                }
+
+                "com.instagram.android" -> goToInstagramPage()
+
+                "com.twitter.android" -> goToTwitter()
             }
         }
     }
