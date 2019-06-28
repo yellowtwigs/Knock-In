@@ -61,10 +61,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
-    @Override
-    public int getViewTypeCount(){
-        return getCount();
-    }
+    
     @Override
     public int getCount() {
         return listContacts.size();
