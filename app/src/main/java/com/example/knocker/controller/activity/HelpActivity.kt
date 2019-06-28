@@ -63,10 +63,14 @@ class HelpActivity : AppCompatActivity() {
             if(it.id==help_activity_Terms!!.id){
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina")))
             }
+            if(it.id==help_activity_Infos!!.id){
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com")))
+            }
         }
         help_activity_ContactUs!!.setOnClickListener(onClick)
         help_activity_Infos!!.setOnClickListener(onClick)
         help_activity_FAQ!!.setOnClickListener(onClick)
+        help_activity_Terms!!.setOnClickListener(onClick)
 
         //endregion
     }
