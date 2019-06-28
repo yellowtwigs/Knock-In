@@ -224,11 +224,10 @@ class NotificationListener : NotificationListenerService() {
 
 
     fun appNotifiable(sbp: StatusBarParcelable): Boolean {
-        val regexNewMessage = "[0-9]+ nouveaux messages".toRegex()
         return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
-                convertPackageToString(sbp.appNotifier) != "" && !sbp.statusBarNotificationInfo["android.title"].toString().matches(regexNewMessage)
+                convertPackageToString(sbp.appNotifier) != ""
     }
 
     private fun convertPackageToString(packageName: String): String {
