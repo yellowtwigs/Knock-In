@@ -41,46 +41,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/activity_settings_imageView_1_contact"
-                android:layout_width="70dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/activity_settings_imageView_3_contact"
-                android:layout_width="70dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:padding="2dp" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activity_settings_imageView_0_contact"
+                    android:layout_width="70dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/activity_settings_imageView_4_contact"
-                android:layout_width="70dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
-                android:padding="2dp" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activity_settings_imageView_1_contact"
+                    android:layout_width="70dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/activity_settings_imageView_5_contact"
-                android:layout_width="70dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
-                android:padding="2dp" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activity_settings_imageView_3_contact"
+                    android:layout_width="70dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="2dp" />
+            </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/activity_settings_imageView_6_contact"
-                android:layout_width="70dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activity_settings_imageView_4_contact"
+                    android:layout_width="70dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:padding="2dp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activity_settings_imageView_5_contact"
+                    android:layout_width="70dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:padding="2dp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activity_settings_imageView_6_contact"
+                    android:layout_width="70dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="10dp" />
+            </LinearLayout>
         </LinearLayout>
 
 

@@ -89,20 +89,32 @@ public class ContactListViewAdapter extends BaseAdapter {
         ContactDB contact = getItem(position).getContactDB();
 
         holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
-
+        holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
         assert contact != null;
-        if (contact.getContactPriority() == 0) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
-        } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-        } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+        if(len==0){
+            holder.contactRoundedImageView.setVisibility(View.GONE);
+            if (contact.getContactPriority() == 0) {
+                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
+            } else if (contact.getContactPriority() == 1) {
+                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.blackColor));
+            } else if (contact.getContactPriority() == 2) {
+                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityTwoColor));
+            }
+        }else{
+            holder.contactRoundedImageView.setVisibility(View.VISIBLE);
+            if (contact.getContactPriority() == 0) {
+                holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
+            } else if (contact.getContactPriority() == 1) {
+                holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            } else if (contact.getContactPriority() == 2) {
+                holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+            }
+
         }
 
-        holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);

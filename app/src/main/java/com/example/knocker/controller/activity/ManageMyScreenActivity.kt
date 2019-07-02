@@ -24,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 class ManageMyScreenActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
+    private var tv_zero:ImageView?=null
     private var tv_one: ImageView? = null
     private var tv_three: ImageView? = null
     private var tv_four: ImageView? = null
@@ -46,9 +47,9 @@ class ManageMyScreenActivity : AppCompatActivity() {
         nbGrid = sharedPreferences.getInt("gridview", 3)
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
         callPopup = sharedPreferencePopup.getBoolean("popup", true)
-        tv_one = findViewById(R.id.activity_settings_imageView_1_contact)
         searchbarPos = sharedPreferencePopup.getBoolean("searchbarPos", false)
-
+        tv_zero=findViewById(R.id.activity_settings_imageView_0_contact)
+        tv_one = findViewById(R.id.activity_settings_imageView_1_contact)
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
         tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
         tv_five = findViewById(R.id.activity_settings_imageView_5_contact)
@@ -58,6 +59,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
         tv_four!!.setImageResource(R.drawable.contactbyline4)
         tv_three!!.setImageResource(R.drawable.contactbyline3)
         tv_one!!.setImageResource(R.drawable.contactbyline1)
+        tv_zero!!.setImageResource(R.drawable.contactbyline0)
 
 
         manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
@@ -123,8 +125,9 @@ class ManageMyScreenActivity : AppCompatActivity() {
         //endregion
 
         //region ==================================== SetOnClickListener ====================================
-
-        if (nbGrid == 1) {
+        if (nbGrid==0){
+            tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
+        }else if (nbGrid == 1) {
             tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
         } else if (nbGrid == 3) {
             tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
@@ -135,8 +138,20 @@ class ManageMyScreenActivity : AppCompatActivity() {
         } else if (nbGrid == 6) {
             tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
         }
+        tv_zero?.setOnClickListener {
+            nbGrid = 0
+            tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            tv_one!!.background=null
+            tv_three!!.background = null
+            tv_four!!.background = null
+            tv_five!!.background = null
+            tv_six!!.background = null
+            changeGridColumn()
+        }
         tv_one?.setOnClickListener {
             nbGrid = 1
+            tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            tv_zero!!.background=null
             tv_three!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
@@ -147,11 +162,12 @@ class ManageMyScreenActivity : AppCompatActivity() {
             nbGrid = 3
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_zero!!.background=null
             tv_one!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
-            tv_six!!.background = null
             tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            tv_six!!.background = null
             changeGridColumn()
         }
 
@@ -159,6 +175,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             nbGrid = 4
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_zero!!.background=null
             tv_one!!.background = null
             tv_three!!.background = null
             tv_five!!.background = null
@@ -171,6 +188,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             nbGrid = 5
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_zero!!.background=null
             tv_one!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null
@@ -183,6 +201,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             nbGrid = 6
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
+            tv_zero!!.background=null
             tv_one!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null

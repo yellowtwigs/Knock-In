@@ -17,12 +17,11 @@
 
         <com.example.knocker.controller.CircularImageView
             android:id="@+id/list_contact_item_contactRoundedImageView"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:src="@drawable/ic_user_blue"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Bla bla"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/browser_actions_text_color"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/list_contact_item_contactRoundedImageView"
             app:layout_constraintStart_toEndOf="@+id/list_contact_item_contactRoundedImageView"
