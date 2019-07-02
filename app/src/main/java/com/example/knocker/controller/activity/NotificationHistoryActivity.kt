@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
@@ -189,28 +188,27 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             when (notification_history_ListOfNotificationDB[position].platform) {
                 "com.whatsapp" -> {
+                    val contact=gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
 
-                    for (i in iterator) {
-                        if (notification_history_ListOfNotificationDB[position].contactName == gestionnaireContacts.contacts[i].contactDB!!.firstName) {
-                            openWhatsapp(converter06To33(gestionnaireContacts.contacts[i].getPhoneNumber()), baseContext)
+                        if (contact!=null) {
+                            openWhatsapp(converter06To33(contact.getPhoneNumber()), baseContext)
                         }
-                    }
+
                 }
-                "com.google.android.gm" -> openGmail(this)
+                "com.google.android.gm" -> openGmail(this,gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
 
                 "com.facebook.katana" -> goToFacebook()
 
                 "com.facebook.orca" -> openMessenger("", this)
 
-                "com.google.android.apps.messaging" -> {
-
-                    for (i in iterator) {
-                        if (notification_history_ListOfNotificationDB[position].contactName == gestionnaireContacts.contacts[i].contactDB!!.firstName) {
-                            val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", gestionnaireContacts.contacts[i].getPhoneNumber(), null))
-                            startActivity(intent)
-                        }
+                "com.google.android.apps.messaging","com.android.mms","com.samsung.android.messaging" -> {
+                    println("into messaging")
+                    val contact=gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
+                    if ( contact!=null) {
+                        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact.getPhoneNumber(), null))
+                        startActivity(intent)
+                    }else{
                     }
-
                     val sendIntent = Intent(Intent.ACTION_VIEW)
                     sendIntent.data = Uri.parse("sms:")
 
@@ -271,7 +269,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    fun openGmail(context: Context) {
+    fun openGmail(context: Context, contact: ContactWithAllInformation?) {
         val i = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
         i!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
