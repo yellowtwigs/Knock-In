@@ -215,9 +215,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
                 "com.instagram.android" -> goToInstagramPage()
 
-                "com.outlook.android" -> goToInstagramPage()
+                "com.microsoft.office.outlook" -> goToOutlook()
 
                 "com.twitter.android" -> goToTwitter()
+
+                "com.skype.raider" -> goToSkype()
+
+                "com.linkedin.android" -> goToLinkedin()
             }
         }
 
@@ -225,6 +229,47 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ==========================================
+
+    private fun goToYoutube() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://youtube.com/")))
+        }
+    }
+
+    private fun goToSpotify() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("spotify://spotify"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://spotify.com/")))
+        }
+    }
+
+    private fun goToSkype() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://skype.com/")))
+        }
+    }
+
+    private fun goToLinkedin() {
+        /// don't work
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://you"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://linkedin.com/")))
+        }
+    }
 
     private fun goToTwitter() {
         val appIntent = Intent(Intent.ACTION_VIEW)
@@ -272,7 +317,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    fun openMessenger(id: String, context: Context) {
+    private fun openMessenger(id: String, context: Context) {
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
             context.startActivity(intent);
@@ -282,7 +327,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    fun openGmail(context: Context, contact: ContactWithAllInformation?) {
+    private fun openGmail(context: Context, contact: ContactWithAllInformation?) {
         val i = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
         i!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
@@ -297,7 +342,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    fun openWhatsapp(contact: CharSequence, context: Context) {
+    private fun openWhatsapp(contact: CharSequence, context: Context) {
         val url = "https://api.whatsapp.com/send?phone=$contact"
         try {
             val pm = context.packageManager
@@ -312,7 +357,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    fun firstContactPrio0(notifList: List<NotificationDB>): Int {
+    private fun firstContactPrio0(notifList: List<NotificationDB>): Int {
         for (i in 0..notifList.size - 1) {
             val contact = notification_history_NotificationsDatabase!!.contactsDao().getContact(notifList.get(i).idContact)
             if (contact.contactDB!!.contactPriority == 0) {
