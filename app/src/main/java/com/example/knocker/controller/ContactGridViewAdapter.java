@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -343,7 +344,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }
             }
         });
-        //endregion
         return gridview;
 
     }

@@ -244,7 +244,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 //            listParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
 //        }
 //        main_Listview!!.layoutParams = listParams
-        //endrgion
+        //endregion
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
         if (len == 1) {
