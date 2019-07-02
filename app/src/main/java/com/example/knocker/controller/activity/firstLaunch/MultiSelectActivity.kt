@@ -35,19 +35,19 @@ class MultiSelectActivity : AppCompatActivity() {
 
             }
         }
-        multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.listContactSelect().size)
+        multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.getListContactSelect().size)
         multi_select_gridView.numColumns += 4
         multi_select_gridView.adapter = adapter
 
         multi_select_gridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             adapter.itemSelected(position)
             adapter.notifyDataSetChanged()
-            multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.listContactSelect().size)
+            multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.getListContactSelect().size)
 
             true
         }
         multi_select_validate.setOnClickListener {
-            val listItemSelect = adapter.listContactSelect()
+            val listItemSelect = adapter.getListContactSelect()
             overlayAlertDialog(listItemSelect).show()
         }
     }

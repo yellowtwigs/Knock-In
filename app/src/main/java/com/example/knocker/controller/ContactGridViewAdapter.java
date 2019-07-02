@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.knocker.controller.activity.EditContactActivity;
+import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
@@ -87,7 +88,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     @SuppressLint({"InflateParams", "ResourceType"})
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
         View gridview = convertView;
         ViewHolder holder;
@@ -328,6 +329,15 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 selectMenu.close(true);
             }
         };
+        View.OnLongClickListener longClick= new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ((MainActivity) context).longItemClick(len,position);
+                return true;
+            }
+        };
+        holder.gridContactItemLayout.setOnLongClickListener(longClick);
+        holder.contactRoundedImageView.setOnLongClickListener(longClick);
         buttonMessenger.setOnClickListener(buttonListener);
         buttonWhatsApp.setOnClickListener(buttonListener);
         buttonCall.setOnClickListener(buttonListener);
@@ -345,6 +355,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             }
         });
         return gridview;
+
 
     }
 

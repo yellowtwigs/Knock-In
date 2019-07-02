@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.CircularImageView;
+import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
@@ -38,7 +39,7 @@ public class SelectContactAdapter extends BaseAdapter {
         this.gestionnaireContact = contactList;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
-        listSelectedItem = new ArrayList<ContactWithAllInformation>();
+        listSelectedItem = new ArrayList<>();
     }
 
     @Override
@@ -169,10 +170,26 @@ public class SelectContactAdapter extends BaseAdapter {
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
         }
-        if (listSelectedItem.contains(getItem(position))) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
-        } else {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.whiteColor));
+        if(context instanceof MainActivity){
+            if (listSelectedItem.contains(getItem(position))) {
+                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+
+
+            } else {
+                if (!contact.getProfilePicture64().equals("")) {
+                    Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+
+                    holder.contactRoundedImageView.setImageBitmap(bitmap);
+                } else {
+                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
+                }
+            }
+        }else {
+            if (listSelectedItem.contains(getItem(position))) {
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+            } else {
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.whiteColor));
+            }
         }
         return gridview;
     }
@@ -203,11 +220,9 @@ public class SelectContactAdapter extends BaseAdapter {
         }
     }
 
-    public ArrayList<ContactWithAllInformation> listContactSelect() {
-
+    public ArrayList<ContactWithAllInformation> getListContactSelect() {
         return listSelectedItem;
     }
-
     private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
             return new Random().nextInt(7);

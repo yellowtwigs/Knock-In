@@ -2,17 +2,12 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Build
-import android.os.Build.VERSION_CODES.M
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -22,24 +17,20 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.DisplayMetrics
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.example.knocker.*
 import com.example.knocker.controller.*
 import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
 import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import java.util.regex.Pattern
+
+import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 
 /**
  * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
@@ -57,6 +48,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_Listview: ListView? = null
 
     private var main_FloatingButtonAdd: FloatingActionButton? = null
+    private var main_FloatingButtonSend: FloatingActionButton? = null
 
     internal var main_FloatingButtonIsOpen = false
     internal var main_search_bar_value = ""
@@ -74,6 +66,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var gridViewAdapter: ContactGridViewAdapter? = null
     private var listViewAdapter: ContactListViewAdapter? = null
     private var main_layout: LinearLayout? = null
+
+    private var firstClick:Boolean=true
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -110,10 +104,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // window.navigationBarColor = getResources().getColor(R.color.whiteColor)
+        val decorView=window.decorView
+        val window=window
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
         }
 
+//<item name="android:windowLightNavigationBar">true</item>
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
@@ -139,6 +136,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         // Floating Button
         main_FloatingButtonAdd = findViewById(R.id.main_floating_button_open_id)
 
+        main_FloatingButtonSend = findViewById(R.id.main_floating_button_validate_id)
+
         main_BottomNavigationView = findViewById(R.id.navigation)
 
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -156,6 +155,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+        actionbar.title=""
         actionbar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
 
         //endregion
@@ -247,7 +247,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
-        if (len == 1) {
+        if (len <= 1) {
             main_GridView!!.visibility = View.GONE
             main_Listview!!.visibility = View.VISIBLE
         } else {
@@ -273,28 +273,27 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             edit.apply()
 
             main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                if (!main_FloatingButtonIsOpen) {
-
-                    //Save position in gridview
-                    //val state = main_GridView!!.onSaveInstanceState()
-                    index = main_GridView!!.getFirstVisiblePosition()
-                    //val edit : SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putInt("index", index)
-                    edit.commit()
-                    //
-                    val contact = gestionnaireContacts!!.contacts.get(position)
-                    /*                          val mail = contact.contactDetailList!!.get(1).contactDetails
-                                              val phone = contact.contactDetailList!!.get(0).contactDetails
-                  */
-                    //val intent = Intent(this, EditContactActivity::class.java)
-                    //intent.putExtra("ContactId", contact.getContactId())
-                    // startActivity(intent)
-
-
-                } else {
-                    main_FloatingButtonIsOpen = false
+                println("Item selected")
+                if(main_GridView!!.adapter is SelectContactAdapter && !firstClick){
+                    val adapter =(main_GridView!!.adapter as SelectContactAdapter)
+                    adapter.itemSelected(position)
+                    adapter.notifyDataSetChanged()
+                    if(adapter.getListContactSelect().size==0){
+                        main_GridView!!.adapter=ContactGridViewAdapter(this,gestionnaireContacts,len)
+                        main_FloatingButtonAdd!!.visibility=View.VISIBLE
+                        main_FloatingButtonSend!!.visibility=View.GONE
+                        main_SearchBar!!.visibility=View.VISIBLE
+                    }
                 }
+                firstClick=false
             }
+            /*main_GridView!!.setOnItemLongClickListener{parent, view, position, id ->
+                println("long click")
+                val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
+                main_GridView!!.adapter = adapter
+                true
+            }*/
+
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
                 override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
 
@@ -373,12 +372,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 var filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                 gestionnaireContacts!!.contacts = filteredList
                 if (len > 1) {
-                    gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                    main_GridView!!.adapter = gridViewAdapter
-                } else {
-                    listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                    main_Listview!!.adapter = listViewAdapter
-                    listViewAdapter!!.notifyDataSetChanged()
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        main_GridView!!.adapter = gridViewAdapter
+                }else {
+
+                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_Listview!!.adapter = listViewAdapter
+                        listViewAdapter!!.notifyDataSetChanged()
+
                 }
             }
         })
@@ -388,6 +389,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_FloatingButtonIsOpen = false
         }
 
+        main_FloatingButtonSend!!.setOnClickListener{
+
+        }
         //endregion
 
         scaleGestureDetectore = ScaleGestureDetector(this,
@@ -677,6 +681,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     override fun onDrawerOpened(drawerView: View) {
         gridViewAdapter!!.closeMenu()
+    }
+
+    fun longItemClick(len: Int,position:Int) {
+        println("long click")
+        val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
+        main_GridView!!.adapter = adapter
+        adapter.itemSelected(position)
+        adapter.notifyDataSetChanged()
+        main_FloatingButtonAdd!!.visibility=View.GONE
+        main_FloatingButtonSend!!.visibility=View.VISIBLE
+        main_SearchBar!!.visibility=View.GONE
+        firstClick=true
+        true
     }
 
 }
