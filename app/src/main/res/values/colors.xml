@@ -2,7 +2,7 @@
 <resources>
     <!-- region Universal Color -->
 
-    <color name="colorPrimary">#fcd74c</color>
+    <color name="colorPrimary">#F8F408</color>
     <color name="colorSecondary">#2D53C0</color>
 
     <color name="colorPrimaryDark">#e4b41e</color>
@@ -18,7 +18,7 @@
     <color name="blackColor">#000000</color>
     <color name="greyColor">#e6e6e6</color>
     <color name="redColorDark">#ba3224</color>
-
+    <color name="user_knocker_color">#1DE9B6</color>
     <color name="transparentColor">#55f5f5f5</color>
 
     <color name="lightGreyColor">#f0f0f0</color>
