@@ -6,11 +6,4 @@
     android:layout_height="match_parent"
     tools:context=".controller.activity.ManageKnockonsActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/transparentColor"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

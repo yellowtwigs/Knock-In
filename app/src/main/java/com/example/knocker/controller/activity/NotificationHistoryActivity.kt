@@ -7,25 +7,26 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.knocker.model.DbWorkerThread
-import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationHistoryAdapterActivity
 import com.example.knocker.controller.NotificationListener
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ContactsRoomDatabase
+import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.example.knocker.model.ModelDB.NotificationDB
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
 
@@ -41,7 +42,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private var main_BottomNavigationView: BottomNavigationView? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
-        //        println("r.id =" + R.id.notif_tri_par_priorite + " item.id=" + item.itemId + " ")
         when (item.itemId) {
             R.id.navigation_phone_book -> {
                 startActivity(Intent(this@NotificationHistoryActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
@@ -83,9 +83,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.notification_history_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        actionbar!!.title = this.resources.getString(R.string.bottom_navigation_view_notify_history)
-        actionbar.run {
-            actionbar.title = resources.getString(R.string.bottom_navigation_view_notify_history)
+        actionbar!!.run {
+            actionbar.title = ""
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_open_drawer)
             setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
@@ -138,10 +137,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //on get la base de données
         notification_history_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+
         if (sharedPreferences.getBoolean("filtre_message", true)) {
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
-
-//            println("BALISE = $notification_history_ListOfNotificationDB")
 
             val listTmp = mutableListOf<NotificationDB>()
 
@@ -155,32 +153,33 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
         }
 
-        if (sharedPreferences.getString("tri", "date") == "date") {
+        when {
+            sharedPreferences.getString("tri", "date") == "date" -> {
 
-            val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
-            notification_history_ListView = findViewById<ListView>(R.id.listView_notification_history)
-            notification_history_ListView!!.adapter = adapter
+                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
+                notification_history_ListView = findViewById(R.id.listView_notification_history)
+                notification_history_ListView!!.adapter = adapter
 
-//            println("taille list " + notification_history_ListOfNotificationDB.size + " content " + notification_history_ListOfNotificationDB.toString())
+            }
+            sharedPreferences.getString("tri", "date") == "priorite" -> {
 
-        } else if (sharedPreferences.getString("tri", "date") == "priorite") {
+                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
+                val listTmp2 = mutableListOf<NotificationDB>()
 
-            val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
-            val listTmp2 = mutableListOf<NotificationDB>()
+                listTmp2.addAll(notification_history_ListOfNotificationDB)
+                listTmp2.removeAll(listTmp)
 
-            listTmp2.addAll(notification_history_ListOfNotificationDB)
-            listTmp2.removeAll(listTmp)
-//            println("TEEEEEEEST = " + listTmp2.size)
+                listTmp.addAll(Math.max(firstContactPrio0(listTmp) - 1, 0), listTmp2)
 
-            listTmp.addAll(Math.max(firstContactPrio0(listTmp) - 1, 0), listTmp2)
+                val adapter = NotificationHistoryAdapterActivity(this, listTmp)
+                notification_history_ListView = findViewById(R.id.listView_notification_history)
+                notification_history_ListView!!.adapter = adapter
 
-            val adapter = NotificationHistoryAdapterActivity(this, listTmp)
-            notification_history_ListView = findViewById(R.id.listView_notification_history)
-            notification_history_ListView!!.adapter = adapter
-
-        } else {
-            println("thats a problem")
+            }
+            else -> println("thats a problem")
         }
+
+        //region ======================================== Listeners =========================================
 
         notification_history_ListView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val gestionnaireContacts = ContactList(this.applicationContext)
@@ -216,9 +215,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
                 "com.instagram.android" -> goToInstagramPage()
 
+                "com.outlook.android" -> goToInstagramPage()
+
                 "com.twitter.android" -> goToTwitter()
             }
         }
+
+        //endregion
     }
 
     //region ========================================== Functions ==========================================
@@ -231,6 +234,16 @@ class NotificationHistoryActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://twitter.com/")))
+        }
+    }
+
+    private fun goToOutlook() {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("ms-outlook://emails"))
+        try {
+            startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://outlook.com/")))
         }
     }
 
@@ -346,13 +359,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 val editor = sharedPreferences.edit()
                 editor.putString("tri", "priorite")
                 editor.apply()
-                item.setChecked(true)
+                item.isChecked = true
                 this.recreate()
             }
             R.id.item_help -> {
-                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_history))
-                alertDialogBuilder.show()
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_notification_history))
+                        .show()
             }
             R.id.messagefilter -> {
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)

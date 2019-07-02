@@ -1,9 +1,11 @@
 package com.example.knocker.controller.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Build
@@ -11,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
@@ -21,16 +25,21 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
 import com.example.knocker.model.PhoneLog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_phone_log.*
 import java.util.ArrayList
 
 /**
  * La Classe qui permet d'afficher la liste des appels reçu
- * @author Kenzy Suon
+ * @author Kenzy Suon & Ryan Granet
  */
 class PhoneLogActivity : AppCompatActivity() {
 
@@ -38,6 +47,8 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private val PERMISSIONS_REQUEST_READ_CALL_LOG = 100
+
+    private var phone_log_DrawerLayout: DrawerLayout? = null
 
     private var main_BottomNavigationView: BottomNavigationView? = null
     private var phone_log_IncomingCallButton: FloatingActionButton? = null
@@ -69,9 +80,9 @@ class PhoneLogActivity : AppCompatActivity() {
     private var link_socials_networks_Instagram: AppCompatImageView? = null
     private var link_socials_networks_Facebook: AppCompatImageView? = null
     private var link_socials_networks_Whatsapp: AppCompatImageView? = null
-    //    private var link_socials_networks_Youtube: AppCompatImageView? = null
+    private var link_socials_networks_Youtube: AppCompatImageView? = null
     private var link_socials_networks_Gmail: AppCompatImageView? = null
-    //    private var link_socials_networks_Spotify: AppCompatImageView? = null
+    private var link_socials_networks_Snapchat: AppCompatImageView? = null
     private var link_socials_networks_Telegram: AppCompatImageView? = null
     private var link_socials_networks_Outlook: AppCompatImageView? = null
     private var link_socials_networks_Skype: AppCompatImageView? = null
@@ -96,10 +107,6 @@ class PhoneLogActivity : AppCompatActivity() {
                 startActivity(Intent(this@PhoneLogActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-//            R.id.navigation_socials_networks -> {
-//                startActivity(Intent(this@PhoneLogActivity, SocialsNetworksLinksActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-//                return@OnNavigationItemSelectedListener true
-//            }
             R.id.navigation_phone_keyboard -> {
                 startActivity(Intent(this@PhoneLogActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
@@ -119,11 +126,15 @@ class PhoneLogActivity : AppCompatActivity() {
         //region ========================================== Toolbar =========================================
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-//        setSupportActionBar(toolbar)
-//        val actionbar = supportActionBar
-//        supportActionBar!!.setDisplayShowTitleEnabled(false);
-//        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        //toolbar.title = "Phone Log" //////////////
+        setSupportActionBar(toolbar)
+        val actionbar = supportActionBar
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar.run {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+        }
+        toolbar.setTitle(R.string.phone_log_toolbar_title)
 
         //endregion
 
@@ -160,9 +171,9 @@ class PhoneLogActivity : AppCompatActivity() {
         link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
         link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
         link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
-//        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
+        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
         link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
-//        link_socials_networks_Spotify = findViewById(R.id.spotify_link_socials_networks)
+        link_socials_networks_Snapchat = findViewById(R.id.snapchat_link_socials_networks)
         link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
         link_socials_networks_Outlook = findViewById(R.id.outlook_link_socials_networks)
         link_socials_networks_Skype = findViewById(R.id.skype_link_socials_networks)
@@ -183,6 +194,43 @@ class PhoneLogActivity : AppCompatActivity() {
         } else {
             phone_log_EditTextLayout!!.visibility = View.VISIBLE
         }
+
+        //region ======================================= DrawerLayout =======================================
+
+        // Drawerlayout
+        phone_log_DrawerLayout = findViewById(R.id.phone_log_drawer_layout)
+        val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
+        val menu = navigationView.menu
+        val nav_item = menu.findItem(R.id.nav_address_book)
+        nav_item.isChecked = true
+
+        navigationView!!.menu.getItem(0).isChecked = true
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            phone_log_DrawerLayout!!.closeDrawers()
+
+            when (menuItem.itemId) {
+                R.id.nav_address_book -> {
+                    startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java))
+                }
+                R.id.nav_informations -> startActivity(Intent(this@PhoneLogActivity, EditInformationsActivity::class.java))
+                R.id.nav_notif_config -> startActivity(Intent(this@PhoneLogActivity, ManageNotificationActivity::class.java))
+                R.id.nav_screen_config -> startActivity(Intent(this@PhoneLogActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_data_access -> {
+                }
+                R.id.nav_knockons -> startActivity(Intent(this@PhoneLogActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_statistics -> {
+                }
+                R.id.nav_help -> startActivity(Intent(this@PhoneLogActivity, HelpActivity::class.java))
+            }
+
+            val drawer = findViewById<DrawerLayout>(R.id.phone_log_drawer_layout)
+            drawer.closeDrawer(GravityCompat.START)
+            true
+        }
+
+        //endregion
 
         //region ========================================= Phone Log ========================================
 
@@ -222,12 +270,12 @@ class PhoneLogActivity : AppCompatActivity() {
             link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
         }
 
-//        if (!listApp.contains("com.google.android.youtube")) {
-//            link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
-//            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, "Youtube n\'est pas installé", Toast.LENGTH_SHORT).show() }
-//        } else {
-//            link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
-//        }
+        if (!listApp.contains("com.google.android.youtube")) {
+            link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
+            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, "Youtube n\'est pas installé", Toast.LENGTH_SHORT).show() }
+        } else {
+            link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
+        }
 
         if (!listApp.contains("com.google.android.gm")) {
             link_socials_networks_Gmail!!.setImageResource(R.drawable.ic_gmail_disable)
@@ -236,12 +284,13 @@ class PhoneLogActivity : AppCompatActivity() {
             link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
         }
 
-//        if (!listApp.contains("com.spotify.music")) {
-//            link_socials_networks_Spotify!!.setImageResource(R.drawable.ic_spotify_disable)
-//            link_socials_networks_Spotify!!.setOnClickListener { Toast.makeText(this, "Spotify n\'est pas installé", Toast.LENGTH_SHORT).show() }
-//        } else {
-//            link_socials_networks_Spotify!!.setOnClickListener { goToSpotify() }
-//        }
+        if (!listApp.contains("com.snapchat.android")) {
+            link_socials_networks_Snapchat!!.setImageResource(R.drawable.ic_snapchat)
+            link_socials_networks_Snapchat!!.setOnClickListener { goToSnapchat() }
+//            link_socials_networks_Snapchat!!.setOnClickListener { Toast.makeText(this, "Spotify n\'est pas installé", Toast.LENGTH_SHORT).show() }
+        } else {
+            link_socials_networks_Snapchat!!.setOnClickListener { goToSnapchat() }
+        }
 
         if (!listApp.contains("org.telegram.messenger")) {
             link_socials_networks_Telegram!!.setImageResource(R.drawable.ic_telegram_disable)
@@ -406,6 +455,31 @@ class PhoneLogActivity : AppCompatActivity() {
 
     //region ========================================== Functions ===========================================
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_help, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    @SuppressLint("ShowToast")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                phone_log_DrawerLayout!!.openDrawer(GravityCompat.START)
+                hideKeyboard()
+                return true
+            }
+            R.id.item_help -> {
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_phone_log))
+                        .show()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     // slide the view from below itself to the current position
     private fun slideUp(view: View) {
         val height = view.height.toFloat()
@@ -439,6 +513,16 @@ class PhoneLogActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
             startActivity(intent)
+        }
+    }
+
+    private fun goToSnapchat() {
+        val i = packageManager.getLaunchIntentForPackage("com.snapchat.android")
+        try {
+            startActivity(i)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://snapchat.com/")))
         }
     }
 
@@ -635,7 +719,7 @@ class PhoneLogActivity : AppCompatActivity() {
             PERMISSIONS_REQUEST_READ_CALL_LOG -> if (grantResults[0] == PERMISSION_GRANTED) {
                 showListPhoneCalls()
             } else {
-                Toast.makeText(this, R.string.phone_log_toast_wait_permission , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.phone_log_toast_wait_permission, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -660,6 +744,5 @@ class PhoneLogActivity : AppCompatActivity() {
         val matcher = pattern.matcher(phone)
         return matcher.matches()
     }
-
     //endregion
 }

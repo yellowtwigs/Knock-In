@@ -5,11 +5,27 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">#f5e270</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor">@color/transparentColor</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="backgroundColor">@color/backgroundColor</item>
         <item name="textColor">@color/textColorDark</item>
         <item name="textColorLight">@color/textColorLight</item>
+        <item name="lightGreyColor">@color/lightGreyColor</item>
+        <item name="colorSurface">@color/backgroundColor</item>
+        <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
+    </style>
+
+    <!-- Dark/Night Mode theme. -->
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor">@color/transparentColor</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="backgroundColor">@color/backgroundColorDark</item>
+        <item name="textColor">@color/textColorLight</item>
+        <item name="textColorLight">@color/textColorDark</item>
         <item name="lightGreyColor">@color/lightGreyColor</item>
         <item name="colorSurface">@color/lightGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
@@ -28,10 +44,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="BottomNavigationView">
         <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigationView.Active

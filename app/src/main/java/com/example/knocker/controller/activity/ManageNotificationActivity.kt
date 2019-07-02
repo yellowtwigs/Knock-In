@@ -172,9 +172,10 @@ class ManageNotificationActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_notification_manager))
-                alertDialogBuilder.show()
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_notification_manager))
+                        .show()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -184,17 +185,17 @@ class ManageNotificationActivity : AppCompatActivity() {
     private fun buildNotificationServiceAlertDialog(): androidx.appcompat.app.AlertDialog {
         val inflater: LayoutInflater = this.layoutInflater
         val alertView: View = inflater.inflate(R.layout.alert_dialog_catch_notification, null)
-        val AlertDialog=MaterialAlertDialogBuilder(this)
+        val alertDialog = MaterialAlertDialogBuilder(this)
                 .setView(alertView)
                 .show()
 
         val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_allow_it)
-        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick(AlertDialog)}
+        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick(alertDialog) }
 
         val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_dismiss)
-        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick(AlertDialog) }
+        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick(alertDialog) }
 
-        return AlertDialog
+        return alertDialog
     }
 
     private fun positiveAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {

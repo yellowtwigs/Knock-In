@@ -3,12 +3,16 @@
     <!-- region Universal Color -->
 
     <color name="colorPrimary">#F8F408</color>
+    <color name="colorPrimaryVariant">#f5e270</color>
     <color name="colorSecondary">#2D53C0</color>
 
     <color name="colorPrimaryDark">#e4b41e</color>
 
     <color name="backgroundColor">#fafafa</color>
+    <color name="backgroundColorDark">#121212</color>
+
     <color name="backgroundPressedColor">@color/lightGreyColor</color>
+    <color name="backgroundPressedColorDark">@color/lightGreyColor</color>
 
     <color name="textColorDark">#2c2c2c</color>
     <color name="textColorLight">@color/lightGreyColor</color>
