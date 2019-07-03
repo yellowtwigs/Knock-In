@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginBottom="8dp"
-            android:background="@color/transparentColor"
+            android:background="?attr/transparentColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

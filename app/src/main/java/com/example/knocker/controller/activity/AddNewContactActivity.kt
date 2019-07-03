@@ -111,7 +111,7 @@ class AddNewContactActivity : AppCompatActivity() {
         //endregion
 
         if (intent != null &&
-                intent.getStringExtra("ContactPhoneNumber")!=null) {
+                intent.getStringExtra("ContactPhoneNumber") != null) {
             val add_new_contact_phone_number = intent.getStringExtra("ContactPhoneNumber")
             add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
         }
@@ -148,35 +148,36 @@ class AddNewContactActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
+
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                println("position equals"+position)
-                    if (position == 0) {
-                        add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
-                        add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
-                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
-                    } else if (position == 1) {
-                        add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority1))
-                        add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
-                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
-                    } else if (position == 2) {
-                        add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority2))
-                        add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
-                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
-                    }
-                println("selected item equals"+add_new_contact_Priority!!.selectedItemPosition)
+                println("position equals" + position)
+                if (position == 0) {
+                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
+                    add_new_contact_RoundedImageView!!.visibility = View.GONE
+                    add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
+                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                } else if (position == 1) {
+                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority1))
+                    add_new_contact_RoundedImageView!!.visibility = View.GONE
+                    add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
+                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                } else if (position == 2) {
+                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority2))
+                    add_new_contact_RoundedImageView!!.visibility = View.GONE
+                    add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
+                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                }
+                println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
             }
         }
 
         add_new_contact_Priority!!.setSelection(1)
         add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
         add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
-        println("selected item equals"+add_new_contact_Priority!!.selectedItemPosition)
+        println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
     }
 
     //region ========================================== Functions ===========================================
@@ -267,7 +268,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
 
-                       // println("test" + main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
+                        // println("test" + main_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
 
                         val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
                         startActivity(intent)
@@ -329,7 +330,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private fun openCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, getString(R.string.add_new_contact_camera_open_title))
-        values.put(MediaStore.Images.Media.DESCRIPTION,  getString(R.string.add_new_contact_camera_open_description))
+        values.put(MediaStore.Images.Media.DESCRIPTION, getString(R.string.add_new_contact_camera_open_description))
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)

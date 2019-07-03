@@ -37,7 +37,7 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/notification_history_search_bar"
-                android:layout_width="300dp"
+                android:layout_width="225dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="50dp"

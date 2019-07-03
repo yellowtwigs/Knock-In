@@ -3,10 +3,7 @@ package com.example.knocker.controller.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -225,13 +222,14 @@ class EditContactActivity : AppCompatActivity() {
 
         //region ========================================= Toolbar ==========================================
 
-        // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
         actionbar.title = "Editer le contact"
+
+        //endregion
 
         // Set Resources from MainActivity to ContactDetailsActivity
 
@@ -248,17 +246,24 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
         textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
 
+        //region ======================================== Listeners =========================================
+
         edit_contact_RoundedImageView!!.setOnClickListener {
             selectImage()
         }
 
         edit_contact_DeleteContact!!.setOnClickListener {
             val delete = Runnable {
-                edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
-                val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
-                mainIntent.putExtra("isDelete", true)
-                startActivity(mainIntent)
-                finish()
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.edit_contact_alert_dialog_delete_contact_title)
+                        .setMessage(R.string.edit_contact_alert_dialog_delete_contact_message)
+                        .setPositiveButton("Oui") { _, _ ->
+                            deleteContact()
+                        }
+                        .setNegativeButton("Non") { _, _ ->
+                        }
+                        .show()
+
             }
             edit_contact_mDbWorkerThread.postTask(delete)
         }
@@ -282,6 +287,8 @@ class EditContactActivity : AppCompatActivity() {
                     .setView(alertView)
                     .show()
         }
+
+        //endregion
 
         // drop list
         val priority_list = arrayOf(0, 1, 2)
@@ -326,6 +333,16 @@ class EditContactActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    //region ========================================== Functions ===========================================
+
+    private fun deleteContact() {
+        edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
+        val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
+        mainIntent.putExtra("isDelete", true)
+        startActivity(mainIntent)
+        finish()
     }
 
     private fun hideKeyboard() {
@@ -674,4 +691,6 @@ class EditContactActivity : AppCompatActivity() {
         }
         return alertDialogBuilder.create()
     }
+
+    //endregion
 }

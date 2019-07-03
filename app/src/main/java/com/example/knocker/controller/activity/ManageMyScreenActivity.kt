@@ -25,7 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ManageMyScreenActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
-    private var tv_zero:ImageView?=null
+    private var tv_zero: ImageView? = null
     private var tv_one: ImageView? = null
     private var tv_three: ImageView? = null
     private var tv_four: ImageView? = null
@@ -49,12 +49,16 @@ class ManageMyScreenActivity : AppCompatActivity() {
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
         callPopup = sharedPreferencePopup.getBoolean("popup", true)
         searchbarPos = sharedPreferencePopup.getBoolean("searchbarPos", false)
-        tv_zero=findViewById(R.id.activity_settings_imageView_0_contact)
+
+
+        tv_zero = findViewById(R.id.activity_settings_imageView_0_contact)
         tv_one = findViewById(R.id.activity_settings_imageView_1_contact)
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
         tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
         tv_five = findViewById(R.id.activity_settings_imageView_5_contact)
         tv_six = findViewById(R.id.activity_settings_imageView_6_contact)
+
+
         tv_six!!.setImageResource(R.drawable.contactbyline6)
         tv_five!!.setImageResource(R.drawable.contactbyline5)
         tv_four!!.setImageResource(R.drawable.contactbyline4)
@@ -125,23 +129,22 @@ class ManageMyScreenActivity : AppCompatActivity() {
         //endregion
 
         //region ==================================== SetOnClickListener ====================================
-        if (nbGrid==0){
-            tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
-        }else if (nbGrid == 1) {
-            tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
-        } else if (nbGrid == 3) {
-            tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
-        } else if (nbGrid == 4) {
-            tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
-        } else if (nbGrid == 5) {
-            tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
-        } else if (nbGrid == 6) {
-            tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
+
+        when (nbGrid) {
+            0 -> tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            1 -> tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            3 -> tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            4 -> tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            5 -> tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            6 -> tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
         }
+
         tv_zero?.setOnClickListener {
             nbGrid = 0
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list_smaller), nbGrid)
+            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
             tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_one!!.background=null
+            tv_one!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
@@ -150,8 +153,10 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
         tv_one?.setOnClickListener {
             nbGrid = 1
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list), nbGrid)
+            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
             tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_zero!!.background=null
+            tv_zero!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
@@ -160,9 +165,9 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
         tv_three?.setOnClickListener {
             nbGrid = 3
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background=null
+            tv_zero!!.background = null
             tv_one!!.background = null
             tv_four!!.background = null
             tv_five!!.background = null
@@ -170,12 +175,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_six!!.background = null
             changeGridColumn()
         }
-
         tv_four?.setOnClickListener {
             nbGrid = 4
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background=null
+            tv_zero!!.background = null
             tv_one!!.background = null
             tv_three!!.background = null
             tv_five!!.background = null
@@ -183,12 +187,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
             changeGridColumn()
         }
-
         tv_five?.setOnClickListener {
             nbGrid = 5
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background=null
+            tv_zero!!.background = null
             tv_one!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null
@@ -196,12 +199,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
             changeGridColumn()
         }
-
         tv_six?.setOnClickListener {
             nbGrid = 6
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast), nbGrid)
+            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background=null
+            tv_zero!!.background = null
             tv_one!!.background = null
             tv_three!!.background = null
             tv_four!!.background = null
@@ -212,21 +214,25 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         manage_theme_SwitchTheme!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                setTheme(R.style.AppThemeDark)
+
                 val sharedThemePreferences: SharedPreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("theme", false)
                 edit.apply()
+//                refreshActivity()
             } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                setTheme(R.style.AppTheme)
+
                 val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("theme", true)
                 edit.apply()
+//                refreshActivity()
             }
         }
 
-        manage_call_popup_switch!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        manage_call_popup_switch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
@@ -238,16 +244,24 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 edit.putBoolean("popup", false)
                 edit.apply()
             }
-        })
+        }
 
         // endregion
+
     }
+
     //region ========================================== Functions ===========================================
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_help, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    fun refreshActivity() {
+        val i = Intent(applicationContext, ManageMyScreenActivity::class.java)
+        startActivity(i)
+        finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

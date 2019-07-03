@@ -2,7 +2,7 @@
 <resources>
     <!-- region Universal Color -->
 
-    <color name="colorPrimary">#F8F408</color>
+    <color name="colorPrimary">#fcd74c</color>
     <color name="colorPrimaryVariant">#f5e270</color>
     <color name="colorSecondary">#2D53C0</color>
 
@@ -23,10 +23,15 @@
     <color name="greyColor">#e6e6e6</color>
     <color name="redColorDark">#ba3224</color>
     <color name="user_knocker_color">#1DE9B6</color>
-    <color name="transparentColor">#55f5f5f5</color>
+
+    <color name="transparentColor">#88ffffff</color>
+    <color name="transparentColorDark">#88121212</color>
 
     <color name="lightGreyColor">#f0f0f0</color>
+    <color name="lightGreyColorDark">#646464</color>
+
     <color name="darkGreyColor">#646464</color>
+    <color name="darkGreyColorDark">#f0f0f0</color>
 
     <!-- endregion -->
 

@@ -45,7 +45,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="@color/backgroundColor"
+        android:background="?attr/backgroundColor"
         app:layout_constraintTop_toTopOf="@+id/alert_dialog_catch_notification_layout_button" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

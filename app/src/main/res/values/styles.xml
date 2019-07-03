@@ -9,25 +9,29 @@
         <item name="android:navigationBarColor">@color/transparentColor</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="backgroundColor">@color/backgroundColor</item>
+        <item name="transparentColor">@color/transparentColor</item>
         <item name="textColor">@color/textColorDark</item>
         <item name="textColorLight">@color/textColorLight</item>
         <item name="lightGreyColor">@color/lightGreyColor</item>
         <item name="colorSurface">@color/backgroundColor</item>
+        <item name="darkGreyColor">@color/darkGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
     </style>
 
     <!-- Dark/Night Mode theme. -->
-    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppThemeDark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
-        <item name="android:navigationBarColor">@color/transparentColor</item>
+        <item name="android:navigationBarColor">@color/transparentColorDark</item>
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="backgroundColor">@color/backgroundColorDark</item>
+        <item name="transparentColor">@color/transparentColorDark</item>
         <item name="textColor">@color/textColorLight</item>
         <item name="textColorLight">@color/textColorDark</item>
-        <item name="lightGreyColor">@color/lightGreyColor</item>
-        <item name="colorSurface">@color/lightGreyColor</item>
+        <item name="lightGreyColor">@color/lightGreyColorDark</item>
+        <item name="colorSurface">@color/backgroundColorDark</item>
+        <item name="darkGreyColor">@color/darkGreyColorDark</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
     </style>
 

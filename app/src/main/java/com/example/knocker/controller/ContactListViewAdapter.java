@@ -82,17 +82,18 @@ public class ContactListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        @SuppressLint("ViewHolder") View listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
+        View listview;
         final ViewHolder holder;
         holder = new ViewHolder();
         holder.position = position;
         ContactDB contact = getItem(position).getContactDB();
 
-        holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
-        holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
-        assert contact != null;
-        if(len==0){
-            holder.contactRoundedImageView.setVisibility(View.GONE);
+        if (len == 0) {
+            listview = layoutInflater.inflate(R.layout.list_contact_item_layout_smaller, null);
+            holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
+            holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
+            assert contact != null;
+
             if (contact.getContactPriority() == 0) {
                 holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
             } else if (contact.getContactPriority() == 1) {
@@ -100,8 +101,20 @@ public class ContactListViewAdapter extends BaseAdapter {
             } else if (contact.getContactPriority() == 2) {
                 holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityTwoColor));
             }
-        }else{
-            holder.contactRoundedImageView.setVisibility(View.VISIBLE);
+
+            holder.constraintLayoutSmaller = listview.findViewById(R.id.list_contact_item_layout_smaller);
+            holder.constraintLayoutMenuSmaller = listview.findViewById(R.id.list_contact_item_menu_smaller);
+            holder.callCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_call);
+            holder.smsCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_sms);
+            holder.whatsappCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
+            holder.mailCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_mail);
+            holder.editCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_edit);
+        } else {
+            listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
+            holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
+            holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
+            assert contact != null;
+
             if (contact.getContactPriority() == 0) {
                 holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
@@ -113,6 +126,13 @@ public class ContactListViewAdapter extends BaseAdapter {
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
             }
 
+            holder.constraintLayout = listview.findViewById(R.id.list_contact_item_layout);
+            holder.constraintLayoutMenu = listview.findViewById(R.id.list_contact_item_menu);
+            holder.callCl = listview.findViewById(R.id.list_contact_item_constraint_call);
+            holder.smsCl = listview.findViewById(R.id.list_contact_item_constraint_sms);
+            holder.whatsappCl = listview.findViewById(R.id.list_contact_item_constraint_whatsapp);
+            holder.mailCl = listview.findViewById(R.id.list_contact_item_constraint_mail);
+            holder.editCl = listview.findViewById(R.id.list_contact_item_constraint_edit);
         }
 
         if (!contact.getProfilePicture64().equals("")) {
@@ -130,20 +150,12 @@ public class ContactListViewAdapter extends BaseAdapter {
         }
 
         holder.contactFirstNameView.setText(contactName);
-        holder.constraintLayout = listview.findViewById(R.id.list_contact_item_layout);
-        holder.constraintLayoutMenu = listview.findViewById(R.id.list_contact_item_menu);
-        holder.callCl = listview.findViewById(R.id.list_contact_item_constraint_call);
-        holder.smsCl = listview.findViewById(R.id.list_contact_item_constraint_sms);
-        holder.whatsappCl = listview.findViewById(R.id.list_contact_item_constraint_whatsapp);
-        holder.mailCl = listview.findViewById(R.id.list_contact_item_constraint_mail);
-        holder.editCl = listview.findViewById(R.id.list_contact_item_constraint_edit);
 
         if (activeMenu != null) {
             if (holder.position == activeMenu.position) {
                 holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
             }
         }
-
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -166,7 +178,7 @@ public class ContactListViewAdapter extends BaseAdapter {
 
                     System.out.println("edit");
                     Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId", getItem(position).getContactDB().getId());
+                    intent.putExtra("ContactId", Objects.requireNonNull(getItem(position).getContactDB()).getId());
                     context.startActivity(intent);
                 }
                 if (v.getId() == holder.mailCl.getId()) {
@@ -182,20 +194,23 @@ public class ContactListViewAdapter extends BaseAdapter {
                 }
                 System.out.println("click position " + position);
 
-                if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
-                    holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-                    if (activeMenu != null) {
-                        activeMenu.constraintLayoutMenu.setVisibility(View.GONE);
-                    }
-                    activeMenu = holder;
-                    println("active menu" + activeMenu.toString());
-                } else {
-                    println("menu active");
-                    holder.constraintLayoutMenu.setVisibility(View.GONE);
-                    activeMenu = null;
+                if (holder.constraintLayoutMenu != null) {
 
-                    Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                    holder.constraintLayoutMenu.startAnimation(slideDown);
+                    if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
+                        holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
+                        if (activeMenu != null) {
+                            activeMenu.constraintLayoutMenu.setVisibility(View.GONE);
+                        }
+                        activeMenu = holder;
+                        println("active menu" + activeMenu.toString());
+                    } else {
+                        println("menu active");
+                        holder.constraintLayoutMenu.setVisibility(View.GONE);
+                        activeMenu = null;
+
+                        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+                        holder.constraintLayoutMenu.startAnimation(slideDown);
+                    }
                 }
             }
         };
@@ -218,7 +233,25 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder.editCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
 
-        holder.constraintLayout.setOnClickListener(listener);
+        if (holder.constraintLayout == null) {
+            holder.constraintLayoutSmaller.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Animation slideLeft = AnimationUtils.loadAnimation(context, R.anim.slide_left);
+                    Animation slideRight = AnimationUtils.loadAnimation(context, R.anim.slide_right);
+
+                    if (holder.constraintLayoutMenuSmaller.getVisibility() == View.GONE) {
+                        holder.constraintLayoutMenuSmaller.startAnimation(slideRight);
+                        holder.constraintLayoutMenuSmaller.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.constraintLayoutMenuSmaller.startAnimation(slideLeft);
+                        holder.constraintLayoutMenuSmaller.setVisibility(View.GONE);
+                    }
+                }
+            });
+        } else {
+            holder.constraintLayout.setOnClickListener(listener);
+        }
 
         return listview;
     }
@@ -301,6 +334,9 @@ public class ContactListViewAdapter extends BaseAdapter {
         ConstraintLayout constraintLayout;
         ConstraintLayout constraintLayoutMenu;
         CircularImageView contactRoundedImageView;
+
+        ConstraintLayout constraintLayoutSmaller;
+        ConstraintLayout constraintLayoutMenuSmaller;
         int position;
 
         ConstraintLayout callCl;

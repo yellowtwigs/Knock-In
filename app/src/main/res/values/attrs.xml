@@ -17,6 +17,8 @@
         </attr>
 
         <attr name="backgroundColor" format="color" />
+        <attr name="transparentColor" format="color" />
+        <attr name="darkGreyColor" format="color" />
         <attr name="textColor" format="color" />
         <attr name="textColorLight" format="color" />
         <attr name="backgroundPressedColor" format="color" />

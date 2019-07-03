@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selector_relative_layout_with_border"
-    android:focusable="true">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/list_contact_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/selector_relative_layout_with_border"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.example.knocker.controller.CircularImageView
             android:id="@+id/list_contact_item_contactRoundedImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:src="@drawable/ic_user_blue"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,9 +32,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Bla bla"
-            android:textColor="@color/browser_actions_text_color"
-            android:textSize="18sp"
+            android:text="bla bla"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/list_contact_item_contactRoundedImageView"
             app:layout_constraintStart_toEndOf="@+id/list_contact_item_contactRoundedImageView"
             app:layout_constraintTop_toTopOf="@+id/list_contact_item_contactRoundedImageView" />
@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:background="@color/lightGreyColor"
         android:visibility="gone"
-        android:backgroundTint="@color/whiteColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_contact_item_layout">
@@ -72,7 +71,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_call_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -106,7 +105,7 @@
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_call"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_sms_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -143,7 +142,7 @@
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_sms"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_whatsapp_tv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -153,7 +152,6 @@
                     app:layout_constraintEnd_toEndOf="@+id/list_contact_item_whartsapp_tv"
                     app:layout_constraintStart_toStartOf="@+id/list_contact_item_whartsapp_tv"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/ic_whatsapp" />
 
                 <TextView
@@ -180,7 +178,7 @@
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_whatsapp"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_mail_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -255,7 +253,7 @@
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_edit"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_messenger_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -285,4 +283,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

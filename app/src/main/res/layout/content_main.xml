@@ -48,7 +48,7 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/main_search_bar"
-                    android:layout_width="300dp"
+                    android:layout_width="225dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
                     android:layout_marginStart="50dp"
@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:paddingTop="10dp"
                 android:columnWidth="120dp"
                 android:gravity="center"
                 android:numColumns="auto_fit"
@@ -93,7 +94,6 @@
             android:alpha="0.70"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="20dp"
-            android:background="?attr/backgroundColor"
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"
