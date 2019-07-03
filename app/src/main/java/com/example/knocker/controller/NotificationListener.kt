@@ -99,7 +99,7 @@ class NotificationListener : NotificationListenerService() {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
-                if (notification != null && notificationNotDouble(notification) && appNotifiable(sbp)) {
+                if (notification != null && notificationNotDouble(notification) && sbp.appNotifier!=this.packageName) {
                     if (!notification.platform.equals(this.packageName)) {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                     }
