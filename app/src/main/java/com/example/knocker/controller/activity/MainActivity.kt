@@ -191,6 +191,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
               main_GridView!!.adapter = gridViewAdapter
   */
+                if (sharedPreferences.getString("tri","") == "priorite")
+                    gestionnaireContacts!!.sortContactByPriority()
                 gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
                 gridViewAdapter!!.notifyDataSetChanged()
                 drawerLayout!!.closeDrawers()
@@ -277,7 +279,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             edit.apply()
 
             main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                println("Item selected")
                 if(main_GridView!!.adapter is SelectContactAdapter && !firstClick){
                     val adapter =(main_GridView!!.adapter as SelectContactAdapter)
                     adapter.itemSelected(position)
@@ -317,7 +318,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             listViewAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
             main_Listview!!.adapter = listViewAdapter
             var index = sharedPreferences.getInt("index", 0)
-            //println("okkkkkkk = " + index+"    +"+len)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_Listview!!.setSelection(index)
             edit.putInt("index", 0)
@@ -653,7 +653,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     fun longItemClick(len: Int,position:Int) {
-        println("long click")
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
         main_GridView!!.adapter = adapter
         adapter.itemSelected(position)
