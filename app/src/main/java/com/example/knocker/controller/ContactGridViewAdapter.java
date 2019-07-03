@@ -164,13 +164,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 firstname = contact.getFirstName().substring(0, 10).concat("..");
 
             Spannable spanFistName = new SpannableString(firstname);
-            spanFistName.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(spanFistName);
             if (contact.getLastName().length() > 12)
                 lastName = contact.getLastName().substring(0, 10).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(1.0f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 5) {
@@ -179,14 +179,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.8f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
             //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             if (contact.getLastName().length() > 11)
                 lastName = contact.getLastName().substring(0, 9).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.8f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (len == 6) {
@@ -195,13 +195,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.71f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            span.setSpan(new RelativeSizeSpan(0.81f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
             if (contact.getLastName().length() > 10)
                 lastName = contact.getLastName().substring(0, 8).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.71f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
         }
         if (!contact.getProfilePicture64().equals("")) {
