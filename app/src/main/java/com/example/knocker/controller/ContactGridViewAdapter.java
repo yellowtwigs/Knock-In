@@ -121,12 +121,18 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 holder.contactRoundedImageView.getLayoutParams().width -= width * 0.15;
                 layoutParamsTV.topMargin = 10;
                 layoutParamsIV.topMargin = 10;
-            } else if (len == 5 || len == 6) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50; //175
+            } else if (len == 5 ) {
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.30;
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.30;
+                layoutParamsTV.topMargin = 0;
+                layoutParamsIV.topMargin = 0;
+            } else if (len == 6) {
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50;
                 holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
                 layoutParamsTV.topMargin = 0;
                 layoutParamsIV.topMargin = 0;
             }
+
             holder.contactLastNameView = gridview.findViewById(R.id.grid_adapter_contactLastName);
 
             gridview.setTag(holder);
