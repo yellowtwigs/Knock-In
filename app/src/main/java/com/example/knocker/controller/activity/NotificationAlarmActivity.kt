@@ -61,10 +61,14 @@ class NotificationAlarmActivity : AppCompatActivity() {
         val vibration= getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val thread = Thread{
-                while (isOpen) {
+                val timeWhenLaunch=System.currentTimeMillis()
+                while (isOpen && System.currentTimeMillis()-timeWhenLaunch<45*1000 ) {
                     vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
                     Thread.sleep(1000)
                     println("test")
+                }
+                if(System.currentTimeMillis()-timeWhenLaunch>10*1000){
+                    finish()
                 }
             }
             thread.start()
