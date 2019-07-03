@@ -65,7 +65,7 @@ class NotificationSender : BroadcastReceiver() {
                 }
                 println("after")
                 // calendar.time.after(Date(notificationDB.timestamp))
-                println("size of notif" + main_ContactsDatabase!!.notificationsDao().getIntTime().toString())
+                println("size of notif" + main_ContactsDatabase.notificationsDao().getIntTime().toString())
                 val intentSender = Intent(context, MainActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)

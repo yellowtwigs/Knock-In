@@ -2,20 +2,26 @@
     <string name="app_name">Knocker</string>
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contacts@yellowtwigs.com</string>
-    <!-- region HelpActivity -->
-    <string name="help_homepage">Sur cette page vous pouvez voir tous les contacts enregistrés sur Knocker</string>
-    <string name="help_history">Sur cette page vous pouvez voir toutes les notifications reçues</string>
-    <string name="help_cockpit">Sur cette page vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
-    <string name="help_screen_manager">Sur cette page vous pouvez choisir comment afficher vos contacts ou désactiver les popups avant d\'appeler un contact</string>
+
+    <!-- region Help -->
+    <string name="help">Help</string>
+    <string name="help_main">Sur cette page vous pouvez voir tous les contacts enregistrés sur Knocker</string>
+    <string name="help_notification_history">Sur cette page vous pouvez voir toutes les notifications reçues</string>
+    <string name="help_phone_log">Sur cette page vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
+    <string name="help_manage_screen">Sur cette page vous pouvez choisir comment afficher vos contacts ou désactiver les popups avant d\'appeler un contact</string>
     <string name="help_notification_manager">Sur cette page vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
-    <string name="help_my_information">Sur cette page vous pouvez modifier vos informations personnelles</string>
-    <string name="help_contact_us_intent">contactez-nous</string>
+    <string name="help_my_informations">Sur cette page vous pouvez modifier vos informations personnelles</string>
+    <string name="help_contact_us_intent">Contactez-nous</string>
+
     <!-- endregion-->
 
     <!-- region Faceboook Strings-->
+
     <string name="facebook_app_id">338926936767251</string>
     <string name="fb_login_protocol_scheme">fb338926936767251</string>
+
     <!-- endregion-->
+
 
     <!-- region Left Drawer Titles -->
 
@@ -39,7 +45,7 @@
 
     <string name="main_filter_sms">SMS</string>
     <string name="main_filter_mail">Email</string>
-    <string name="main_search_hint">Rechercher</string>
+    <string name="main_search_hint">Rechercher dans vos contacts</string>
     <string name="main_change_format_phone_book">Aide</string>
     <string name="main_tri_title">Trier par :</string>
     <string name="main_tri_par_nom">Prénom</string>
@@ -187,11 +193,13 @@
     <string name="phone_log_toolbar_title">Cockpit</string>
     <string name="phone_log_toast_number_missing">Entrez un numéro de téléphone</string>
     <string name="phone_log_toast_wait_permission">Tant que vous n\'acceptez pas la permission, nous ne pourrons afficher le nom</string>
+
     <!-- endregion -->
 
     <!-- region Notification History -->
 
-    <string name="notification_history_toolbar_title">Interaction</string>
+    <string name="notification_history_search_hint">Rechercher dans l\'historique</string>
+
 
     <!-- endregion -->
 
@@ -236,15 +244,15 @@
     <!-- region Multi Select-->
 
     <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
-        <!-- region Alert Dialog -->
-        <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
-        <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
-        <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
-        <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
-        <string name="multi_select_alert_dialog_nb_contact">vous venez de séléctionner %1s %2s </string>
-        <string name="multi_select_alert_dialog_0_contact">vous avez sélectionner 0 contact </string>
-        <string name="multi_select_validate_selection">\n voulez-vous valider votre séléction</string>
-        <!-- endregion -->
+    <!-- region Alert Dialog -->
+    <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
+    <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
+    <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
+    <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
+    <string name="multi_select_alert_dialog_nb_contact">vous venez de séléctionner %1s %2s </string>
+    <string name="multi_select_alert_dialog_0_contact">vous avez sélectionner 0 contact </string>
+    <string name="multi_select_validate_selection">\n voulez-vous valider votre séléction</string>
+    <!-- endregion -->
     <!-- endregion -->
     <!-- region Notification Sender -->
 
@@ -254,12 +262,12 @@
 
     <!-- endregion -->
     <!-- region alert Dialog button !-->
-        <string name="alert_dialog_yes">oui</string>
-        <string name="alert_dialog_no">no</string>
+    <string name="alert_dialog_yes">oui</string>
+    <string name="alert_dialog_no">no</string>
     <!-- endregion !-->
 
     <!-- region AlertDialog permission overlay !-->
-        <string name="alert_dialog_overlay_title">Knocker</string>
-        <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
+    <string name="alert_dialog_overlay_title">Knocker</string>
+    <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
     <!-- endregion !-->
 </resources>

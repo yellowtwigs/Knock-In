@@ -9,11 +9,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 
-import android.view.inputmethod.InputMethodManager
 import java.util.ArrayList
 
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.telephony.SmsManager
 import androidx.core.content.ContextCompat.checkSelfPermission
 import android.text.TextUtils
 import android.view.*
@@ -22,12 +20,9 @@ import com.example.knocker.*
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
 import androidx.core.graphics.drawable.DrawableCompat
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.knocker.model.ModelDB.NotificationDB
-import java.text.SimpleDateFormat
 
 
 /**
@@ -64,12 +59,11 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         notification_adapeter_mDbWorkerThread.start()
         var view = convertView//valeur qui prendra les changement
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.activity_notification_adapter, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.item_notification_adapter, parent, false)
         }
         //System.out.println("notifications taile"+notifications.size)
         val sbp = getItem(position)
-        val notifAdapterLayout = view!!.findViewById<View>(R.id.notification_adapter_layout) as ConstraintLayout
-        val app = view.findViewById<View>(R.id.notification_adapter_platform) as TextView
+        val app = view!!.findViewById<View>(R.id.notification_adapter_platform) as TextView
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
@@ -83,7 +77,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         content.text = sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
         //appImg.setImageResource(getApplicationNotifier(sbp));
 
-        notifAdapterLayout.setOnClickListener {
+        content.setOnClickListener {
             when (app.text) {
                 "Facebook" -> {
                     val uri = Uri.parse("facebook:/newsfeed")

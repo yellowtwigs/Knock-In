@@ -24,11 +24,14 @@ import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.example.knocker.*
 import com.example.knocker.controller.*
 import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.regex.Pattern
 
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 
@@ -93,6 +96,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param Bundle @type
      */
 
+    @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,7 +159,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-        actionbar.title=""
+        actionbar.title = ""
         actionbar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
 
         //endregion
@@ -396,8 +400,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         scaleGestureDetectore = ScaleGestureDetector(this,
                 MyOnScaleGestureListener())
-
-
     }
 
     //region ========================================== Functions ===========================================
@@ -436,9 +438,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
         if (tri.equals("nom")) {
-            triNom.setChecked(true)
+            triNom.isChecked = true
         } else {
-            triPrio.setChecked(true)
+            triPrio.isChecked = true
         }
         return true
     }
@@ -468,14 +470,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 return true
             }
             R.id.item_help -> {
-                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_homepage))
-                alertDialogBuilder.show()
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_main))
+                        .show()
                 return true
             }
             R.id.sms_filter -> {
                 if (item.isChecked) {
-                    item.setChecked(false)
+                    item.isChecked = false
                     main_filter.remove("sms")
                     // duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
@@ -558,7 +561,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.tri_par_nom -> {
                 if (!item.isChecked) {
-                    item.setChecked(true);
+                    item.isChecked = true;
                     gestionnaireContacts!!.sortContactByFirstNameAZ()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
@@ -573,7 +576,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putString("tri", "nom")
-                    edit.commit()
+                    edit.apply()
                 }
             }
             R.id.tri_par_priorite -> {
@@ -593,7 +596,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putString("tri", "priorite")
-                    edit.commit()
+                    edit.apply()
                 }
             }
         }
@@ -633,40 +636,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
-/*
-    @SuppressLint("ShowToast")
-    private fun phoneCall(phoneNumberEntered: String) {
-        if (!TextUtils.isEmpty(phoneNumberEntered)) {
-            if (isValidPhone(phoneNumberEntered)) {
-
-                val dial = "tel:$phoneNumberEntered"
-                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
-            } else {
-                Toast.makeText(this, "Entrer un numéro valide", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            Toast.makeText(this, "Entrer un numéro de téléphone", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    fun isValidPhone(phone: String): Boolean {
-        val expression = "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})\$"
-        val pattern = Pattern.compile(expression)
-        val matcher = pattern.matcher(phone)
-        return matcher.matches()
-    }
-*/
-//    if (main_Listview != null && gestionnaireContacts!!.contacts != null) {
-//        val contactAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
-//        main_Listview!!.adapter = contactAdapter
-//        var index = sharedPreferences.getInt("index", 0)
-//        println("okkkkkkk = " + index)a
-//        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-//        main_Listview!!.setSelection(index)
-//        edit.putInt("index", 0)
-//        edit.apply()
-
-    //endregion
 
     override fun onDrawerStateChanged(newState: Int) {
 
@@ -697,4 +666,3 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
 }
-

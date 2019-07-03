@@ -1,6 +1,5 @@
 package com.example.knocker.controller
 
-
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.app.Notification
@@ -25,7 +24,6 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.NotificationDB
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 
 /**
@@ -116,33 +114,8 @@ class NotificationListener : NotificationListenerService() {
                     if (contact != null) {
 
                         println("I know this contact" + contact)
-                            when {
-                                contact.contactDB!!.contactPriority == 2 -> {
-                                     val screenListener:KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                                    if(screenListener.isKeyguardLocked){
-                                        println("screenIsLocked")
-                                        val i=Intent(this@NotificationListener,NotificationAlarmActivity::class.java)
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                        i.putExtra("notification",sbp)
-                                        startActivity(i)
-                                    }else {
-
-                                        println("screenIsUnlocked")
-                                        displayLayout(sbp, sharedPreferences)
-                                        cancelNotification(sbn.key)
-                                    }
-                                }
-                                contact.contactDB!!.contactPriority == 1 -> {
-
-                                }
-                                contact.contactDB!!.contactPriority == 0 -> {
-                                    println("priority 0")
-                                    this.cancelNotification(sbn.key)
-                                }
-                            }
-                        } else {
-                            println("I don't know this contact" + contact)
-                            if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
+                        when {
+                            contact.contactDB!!.contactPriority == 2 -> {
                                 val screenListener:KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
                                 if(screenListener.isKeyguardLocked){
                                     println("screenIsLocked")
@@ -156,9 +129,34 @@ class NotificationListener : NotificationListenerService() {
                                     displayLayout(sbp, sharedPreferences)
                                     cancelNotification(sbn.key)
                                 }
-                            } else {
-                                println("bad package " + sbn.packageName)
                             }
+                            contact.contactDB!!.contactPriority == 1 -> {
+
+                            }
+                            contact.contactDB!!.contactPriority == 0 -> {
+                                println("priority 0")
+                                this.cancelNotification(sbn.key)
+                            }
+                        }
+                    } else {
+                        println("I don't know this contact" + contact)
+                        if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
+                            val screenListener:KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                            if(screenListener.isKeyguardLocked){
+                                println("screenIsLocked")
+                                val i=Intent(this@NotificationListener,NotificationAlarmActivity::class.java)
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                i.putExtra("notification",sbp)
+                                startActivity(i)
+                            }else {
+
+                                println("screenIsUnlocked")
+                                displayLayout(sbp, sharedPreferences)
+                                cancelNotification(sbn.key)
+                            }
+                        } else {
+                            println("bad package " + sbn.packageName)
+                        }
                     }
                 }
             }

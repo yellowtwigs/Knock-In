@@ -121,12 +121,18 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 holder.contactRoundedImageView.getLayoutParams().width -= width * 0.15;
                 layoutParamsTV.topMargin = 10;
                 layoutParamsIV.topMargin = 10;
-            } else if (len == 5 || len == 6) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50; //175
+            } else if (len == 5 ) {
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.30;
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.30;
+                layoutParamsTV.topMargin = 0;
+                layoutParamsIV.topMargin = 0;
+            } else if (len == 6) {
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50;
                 holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
                 layoutParamsTV.topMargin = 0;
                 layoutParamsIV.topMargin = 0;
             }
+
             holder.contactLastNameView = gridview.findViewById(R.id.grid_adapter_contactLastName);
 
             gridview.setTag(holder);
@@ -137,13 +143,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         final ContactDB contact = this.gestionnaireContact.getContacts().get(position).getContactDB();
         assert contact != null;
         if (contact.getContactPriority() == 0) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.whiteColor));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
         } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.whiteColor));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
         } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.whiteColor));
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         }
         String firstname = contact.getFirstName();

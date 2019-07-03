@@ -137,15 +137,18 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
             val result = executorService.submit(callDb)
             filter = result.get()
             if (filter != null && filter.isEmpty() == false) {
+                println("MAILLLLLLLL="+filter)
                 allFilters.add(filter)
             }
         }
         if (filterList.isEmpty())
             return null
         var i = 0
+
         if (allFilters.size > 1) {
             while (i < allFilters.size - 1) {
-                allFilters[i + 1] = allFilters[i].intersect(allFilters[i + 1]).toList()
+                allFilters[i + 1]= allContactIntersect(allFilters[i],allFilters[i + 1])
+                //allFilters[i + 1] = allFilters[i].intersect(allFilters[i + 1]).toList()
                 i++
             }
         } else if (allFilters.size == 0) {
@@ -155,6 +158,16 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
         return allFilters[i]
     }
 
+    fun allContactIntersect(firstList: List<ContactWithAllInformation>, secondList: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
+        val filter = arrayListOf<ContactWithAllInformation>()
+        firstList.forEach { first->
+            secondList.forEach {
+                if (first.getContactId() == it.getContactId())
+                    filter.add(first)
+            }
+        }
+        return filter
+    }
 
     fun getContactByName(name: String): List<ContactWithAllInformation> {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -217,6 +230,8 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
         val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
 
         val contactList = getContactByName(name)
+        println("BEFOR INTERSECT ="+contactList)
+        println("SECONDE LIST = "+contactFilterList)
         if (contactFilterList != null) {
             return intersectContactWithAllInformation(contactList, contactFilterList)
         }

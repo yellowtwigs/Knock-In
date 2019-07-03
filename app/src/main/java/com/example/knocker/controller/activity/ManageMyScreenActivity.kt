@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * La Classe qui permet de changer le theme de l'application et de changer le nombre de contact par ligne
@@ -64,7 +65,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
         manage_call_popup_switch = findViewById(R.id.manage_call_popup_switch)
-        manage_searchbar_pos = findViewById(R.id.manage_searchbar_pos_switch)
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             manage_theme_SwitchTheme!!.isChecked = true
@@ -210,7 +210,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             changeGridColumn()
         }
 
-        manage_theme_SwitchTheme!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        manage_theme_SwitchTheme!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 val sharedThemePreferences: SharedPreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
@@ -224,7 +224,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 edit.putBoolean("theme", true)
                 edit.apply()
             }
-        })
+        }
 
         manage_call_popup_switch!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -240,19 +240,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
             }
         })
 
-        manage_searchbar_pos!!.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("searchbarPos", true)
-                edit.apply()
-            } else {
-                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("searchbarPos", false)
-                edit.apply()
-            }
-        })
         // endregion
     }
     //region ========================================== Functions ===========================================
@@ -270,9 +257,10 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_screen_manager))
-                alertDialogBuilder.show()
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_manage_screen))
+                        .show()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -36,6 +36,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.controller.CircularImageView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -333,9 +334,10 @@ class EditInformationsActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-                alertDialogBuilder.setMessage(this.resources.getString(R.string.help_my_information))
-                alertDialogBuilder.show()
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_my_informations))
+                        .show()
             }
         }
         return super.onOptionsItemSelected(item)
