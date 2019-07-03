@@ -110,11 +110,11 @@ class AddNewContactActivity : AppCompatActivity() {
 
         //endregion
 
-//        val intent = intent
-//        if (!intent.getStringExtra("ContactPhoneNumber").isEmpty()) {
-//            add_new_contact_phone_number = intent.getStringExtra("ContactPhoneNumber")
-//            add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
-//        }
+        if (intent != null &&
+                intent.getStringExtra("ContactPhoneNumber")!=null) {
+            val add_new_contact_phone_number = intent.getStringExtra("ContactPhoneNumber")
+            add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
+        }
 
         avatar = gestionnaireContacts!!.randomDefaultImage(0, "Create")
         add_new_contact_RoundedImageView!!.setImageResource(gestionnaireContacts!!.randomDefaultImage(avatar, "Get"))
