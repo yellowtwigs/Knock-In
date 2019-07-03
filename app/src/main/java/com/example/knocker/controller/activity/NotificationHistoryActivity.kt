@@ -135,49 +135,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //endregion
 
         //on get la base de données
-        notification_history_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
-        val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
-
-        if (sharedPreferences.getBoolean("filtre_message", true)) {
-            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
-
-            val listTmp = mutableListOf<NotificationDB>()
-
-            listTmp.addAll(notification_history_ListOfNotificationDB)
-            listTmp.forEach {
-                if (!isMessagingApp(it.platform)) {
-                    notification_history_ListOfNotificationDB.remove(it)
-                }
-            }
-        } else {
-            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
-        }
-
-        when {
-            sharedPreferences.getString("tri", "date") == "date" -> {
-
-                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
-                notification_history_ListView = findViewById(R.id.listView_notification_history)
-                notification_history_ListView!!.adapter = adapter
-
-            }
-            sharedPreferences.getString("tri", "date") == "priorite" -> {
-
-                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
-                val listTmp2 = mutableListOf<NotificationDB>()
-
-                listTmp2.addAll(notification_history_ListOfNotificationDB)
-                listTmp2.removeAll(listTmp)
-
-                listTmp.addAll(Math.max(firstContactPrio0(listTmp) , 0), listTmp2)
-
-                val adapter = NotificationHistoryAdapterActivity(this, listTmp)
-                notification_history_ListView = findViewById(R.id.listView_notification_history)
-                notification_history_ListView!!.adapter = adapter
-
-            }
-            else -> println("thats a problem")
-        }
+        notification_history_NotificationsDatabase= ContactsRoomDatabase.getDatabase(this)
+        updateFilter()
 
         //region ======================================== Listeners =========================================
 
@@ -396,7 +355,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.putString("tri", "date")
                 editor.apply()
                 item.setChecked(true)
-                this.recreate()
+               // this.recreate()
             }
             R.id.notif_tri_par_priorite -> {
                 println("tri par priorité checked")
@@ -405,7 +364,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.putString("tri", "priorite")
                 editor.apply()
                 item.isChecked = true
-                this.recreate()
+             //   this.recreate()
             }
             R.id.item_help -> {
                 MaterialAlertDialogBuilder(this)
@@ -424,9 +383,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     item.setChecked(true)
                 }
                 editor.apply()
-                this.recreate()
+              //  this.recreate()
             }
         }
+        updateFilter()
         return super.onOptionsItemSelected(item)
     }
 
@@ -441,6 +401,49 @@ class NotificationHistoryActivity : AppCompatActivity() {
             else -> false
         }
     }
+    private fun updateFilter(){
 
+        val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean("filtre_message", true)) {
+            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+
+            val listTmp = mutableListOf<NotificationDB>()
+
+            listTmp.addAll(notification_history_ListOfNotificationDB)
+            listTmp.forEach {
+                if (!isMessagingApp(it.platform)) {
+                    notification_history_ListOfNotificationDB.remove(it)
+                }
+            }
+        } else {
+            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+        }
+
+        when {
+            sharedPreferences.getString("tri", "date") == "date" -> {
+
+                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
+                notification_history_ListView = findViewById(R.id.listView_notification_history)
+                notification_history_ListView!!.adapter = adapter
+
+            }
+            sharedPreferences.getString("tri", "date") == "priorite" -> {
+
+                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
+                val listTmp2 = mutableListOf<NotificationDB>()
+
+                listTmp2.addAll(notification_history_ListOfNotificationDB)
+                listTmp2.removeAll(listTmp)
+
+                listTmp.addAll(Math.max(firstContactPrio0(listTmp) , 0), listTmp2)
+
+                val adapter = NotificationHistoryAdapterActivity(this, listTmp)
+                notification_history_ListView = findViewById(R.id.listView_notification_history)
+                notification_history_ListView!!.adapter = adapter
+
+            }
+            else -> println("thats a problem")
+        }
+    }
     //endregion
 }
