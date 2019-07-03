@@ -169,7 +169,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp2.addAll(notification_history_ListOfNotificationDB)
                 listTmp2.removeAll(listTmp)
 
-                listTmp.addAll(Math.max(firstContactPrio0(listTmp) - 1, 0), listTmp2)
+                listTmp.addAll(Math.max(firstContactPrio0(listTmp) , 0), listTmp2)
 
                 val adapter = NotificationHistoryAdapterActivity(this, listTmp)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
