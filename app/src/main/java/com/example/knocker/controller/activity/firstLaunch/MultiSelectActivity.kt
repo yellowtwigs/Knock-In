@@ -36,7 +36,7 @@ class MultiSelectActivity : AppCompatActivity() {
             }
         }
         multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.getListContactSelect().size)
-        multi_select_gridView.numColumns += 4
+        multi_select_gridView.numColumns = 4
         multi_select_gridView.adapter = adapter
 
         multi_select_gridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
