@@ -405,6 +405,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("filtre_message", true)) {
+            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
 
             val listTmp = mutableListOf<NotificationDB>()
@@ -416,6 +417,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 }
             }
         } else {
+            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
         }
 
@@ -436,8 +438,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp2.removeAll(listTmp)
 
                 listTmp.addAll(Math.max(firstContactPrio0(listTmp) , 0), listTmp2)
-
-                val adapter = NotificationHistoryAdapterActivity(this, listTmp)
+                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+                notification_history_ListOfNotificationDB.addAll(listTmp)
+                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB
+                )
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
 
