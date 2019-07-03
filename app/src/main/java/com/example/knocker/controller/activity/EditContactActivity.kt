@@ -204,6 +204,23 @@ class EditContactActivity : AppCompatActivity() {
                 val image64 = edit_contact_image64
                 edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
             }
+            when(edit_contact_priority) {
+                0 -> {
+                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    println("red")
+                }
+                1 -> {
+                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    println("no color ")
+                }
+                2 -> {
+                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    println("yellow")
+                }
+            }
         }
 
         //region ========================================= Toolbar ==========================================
@@ -282,19 +299,28 @@ class EditContactActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
-                    edit_contact_RoundedImageView!!.setBorderColor(R.color.priorityZeroColor)
+                    edit_contact_RoundedImageView!!.visibility=View.GONE
+                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.visibility=View.VISIBLE
+                    println("red color choosen")
                 } else if (position == 1) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
-                    edit_contact_RoundedImageView!!.setBorderColor(R.color.priorityOneColor)
+                    edit_contact_RoundedImageView!!.visibility=View.GONE
+                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.visibility=View.VISIBLE
                 } else if (position == 2) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
-                    edit_contact_RoundedImageView!!.setBorderColor(R.color.priorityTwoColor)
-
+                    edit_contact_RoundedImageView!!.visibility=View.GONE
+                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.visibility=View.VISIBLE
+                    println("yellow color choosen")
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (!Settings.canDrawOverlays(applicationContext)) {
                             val alertDialog = OverlayAlertDialog()
                             alertDialog.show()
-
                         }
                     }
                 }

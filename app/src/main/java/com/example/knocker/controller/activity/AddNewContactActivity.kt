@@ -118,6 +118,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
         avatar = gestionnaireContacts!!.randomDefaultImage(0, "Create")
         add_new_contact_RoundedImageView!!.setImageResource(gestionnaireContacts!!.randomDefaultImage(avatar, "Get"))
+
         //region ==================================== SetOnClickListener ====================================
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
@@ -147,20 +148,35 @@ class AddNewContactActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position == 0) {
-                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
-                    add_new_contact_RoundedImageView!!.setBorderColor(R.color.priorityZeroColor)
-                } else if (position == 1) {
-                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority1))
-                    add_new_contact_RoundedImageView!!.setBorderColor(R.color.priorityOneColor)
-                } else if (position == 2) {
-                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority2))
-                    add_new_contact_RoundedImageView!!.setBorderColor(R.color.priorityTwoColor)
-                }
+                println("position equals"+position)
+                    if (position == 0) {
+                        add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
+                        add_new_contact_RoundedImageView!!.visibility = View.GONE
+                        add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    } else if (position == 1) {
+                        add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority1))
+                        add_new_contact_RoundedImageView!!.visibility = View.GONE
+                        add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    } else if (position == 2) {
+                        add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority2))
+                        add_new_contact_RoundedImageView!!.visibility = View.GONE
+                        add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    }
+                println("selected item equals"+add_new_contact_Priority!!.selectedItemPosition)
             }
         }
+
+        add_new_contact_Priority!!.setSelection(1)
+        add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
+        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+        println("selected item equals"+add_new_contact_Priority!!.selectedItemPosition)
     }
 
     //region ========================================== Functions ===========================================
