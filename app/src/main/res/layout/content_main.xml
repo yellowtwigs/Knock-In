@@ -32,7 +32,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/custom_shadow_background"
+                android:background="?attr/backgroundColor"
                 android:elevation="10dp">
 
                 <androidx.appcompat.widget.Toolbar
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:alpha="0.70"
-                    android:background="@drawable/rounded_toolbar"
+                    android:backgroundTint="?attr/backgroundColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -53,10 +53,10 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginEnd="8dp"
-                    android:background="@color/transparentColor"
+                    android:background="?attr/backgroundColor"
                     android:hint="@string/main_search_hint"
                     android:inputType="textPersonName"
-                    android:textColor="@color/textColorDark"
+                    app:textColor="?attr/textColor"
                     android:textColorHint="@color/textColorDarkGrey"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -71,6 +71,7 @@
                 android:paddingTop="10dp"
                 android:columnWidth="120dp"
                 android:gravity="center"
+                android:backgroundTint="?attr/backgroundColor"
                 android:numColumns="auto_fit"
                 android:visibility="visible" />
 
@@ -81,6 +82,7 @@
                 android:layout_marginStart="12dp"
                 android:columnWidth="120dp"
                 android:gravity="center"
+                android:backgroundTint="?attr/backgroundColor"
                 android:numColumns="auto_fit"
                 android:visibility="gone" />
 
@@ -94,8 +96,8 @@
             android:alpha="0.70"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="20dp"
-            app:itemIconTint="@color/bottom_navigation_color"
-            app:itemTextColor="@color/bottom_navigation_color"
+            android:background="?attr/backgroundColor"
+            app:itemTextColor="?attr/textColor"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/main_navigation_view" />
@@ -108,6 +110,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
+        app:itemTextColor="?attr/textColor"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>
