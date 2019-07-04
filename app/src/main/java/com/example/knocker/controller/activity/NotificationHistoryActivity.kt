@@ -355,6 +355,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.putString("tri", "date")
                 editor.apply()
                 item.setChecked(true)
+                updateFilter()
                // this.recreate()
             }
             R.id.notif_tri_par_priorite -> {
@@ -364,7 +365,16 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.putString("tri", "priorite")
                 editor.apply()
                 item.isChecked = true
+
+                updateFilter()
              //   this.recreate()
+            }
+            R.id.notif_tri_par_contact -> {
+                val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("tri", "contact")
+                editor.apply()
+                updateFilter()
             }
             R.id.item_help -> {
                 MaterialAlertDialogBuilder(this)
@@ -431,7 +441,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             sharedPreferences.getString("tri", "date") == "priorite" -> {
 
-                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.testPriority() as MutableList<NotificationDB>
+                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
                 val listTmp2 = mutableListOf<NotificationDB>()
 
                 listTmp2.addAll(notification_history_ListOfNotificationDB)
@@ -440,11 +450,17 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp.addAll(Math.max(firstContactPrio0(listTmp) , 0), listTmp2)
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
-                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB
-                )
+                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
 
+            }
+            sharedPreferences.getString("tri", "date") == "contact"->{
+
+                val listNotif=notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact()
+                val adapter = NotificationHistoryAdapterActivity(this, listNotif)
+                notification_history_ListView = findViewById(R.id.listView_notification_history)
+                notification_history_ListView!!.adapter = adapter
             }
             else -> println("thats a problem")
         }

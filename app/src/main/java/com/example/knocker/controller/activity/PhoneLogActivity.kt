@@ -12,6 +12,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
+import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -25,6 +26,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -62,17 +64,17 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_ButtonClose: ImageView? = null
 
     // Keyboard Pad
-    private var phone_log_CallKeyboard_1: RelativeLayout? = null
-    private var phone_log_CallKeyboard_2: RelativeLayout? = null
-    private var phone_log_CallKeyboard_3: RelativeLayout? = null
-    private var phone_log_CallKeyboard_4: RelativeLayout? = null
-    private var phone_log_CallKeyboard_5: RelativeLayout? = null
-    private var phone_log_CallKeyboard_6: RelativeLayout? = null
-    private var phone_log_CallKeyboard_7: RelativeLayout? = null
-    private var phone_log_CallKeyboard_8: RelativeLayout? = null
-    private var phone_log_CallKeyboard_9: RelativeLayout? = null
+    private var phone_log_CallKeyboard_1: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_2: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_3: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_4: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_5: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_6: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_7: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_8: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_9: ConstraintLayout? = null
     private var phone_log_CallKeyboard_Star: RelativeLayout? = null
-    private var phone_log_CallKeyboard_0: RelativeLayout? = null
+    private var phone_log_CallKeyboard_0: ConstraintLayout? = null
     private var phone_log_CallKeyboard_Sharp: RelativeLayout? = null
 
     //social network
@@ -432,7 +434,11 @@ class PhoneLogActivity : AppCompatActivity() {
             phone_log_EditTextLayout!!.visibility = View.VISIBLE
             phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + "#")
         }
-
+        phone_log_CallKeyboard_0!!.setOnLongClickListener {
+            phone_log_EditTextLayout!!.visibility = View.VISIBLE
+            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + "+")
+            true
+        }
         phone_log_CallBackSpace!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
                 phone_log_PhoneNumberEditText!!.text!!.delete(
@@ -444,6 +450,18 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_CallBackSpace!!.setOnLongClickListener {
             if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
                 phone_log_PhoneNumberEditText!!.setText("")
+            }
+            true
+        }
+        phone_log_CallKeyboard_1!!.setOnLongClickListener{
+            val  telecomManager=  getSystemService(Context.TELEPHONY_SERVICE)as TelephonyManager
+            if (ContextCompat.checkSelfPermission(this@PhoneLogActivity, Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this@PhoneLogActivity,  arrayOf(Manifest.permission.READ_PHONE_STATE), 0);
+            }else {
+                val numberVoiceMail = telecomManager.voiceMailNumber
+                val dial = "tel:$numberVoiceMail"
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
             }
             true
         }
@@ -726,16 +744,18 @@ class PhoneLogActivity : AppCompatActivity() {
 
     @SuppressLint("ShowToast")
     private fun phoneCall(phoneNumberEntered: String) {
-        if (!TextUtils.isEmpty(phoneNumberEntered)) {
-            if (isValidPhone(phoneNumberEntered)) {
+       if (!TextUtils.isEmpty(phoneNumberEntered)) {
+            /*if (isValidPhone(phoneNumberEntered)) {
                 val dial = "tel:$phoneNumberEntered"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
             } else {
                 Toast.makeText(this, "Enter a phone number valid", Toast.LENGTH_SHORT).show()
-            }
+            }*/
+           val dial = "tel:$phoneNumberEntered"
+           startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
         } else {
             Toast.makeText(this, "Enter a phone number", Toast.LENGTH_SHORT).show()
-        }
+        }//pas besoin de vérification du numéro de téléphonne
     }
 
     fun isValidPhone(phone: String): Boolean {

@@ -212,7 +212,6 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_above="@+id/phone_log_call_keyboard_view"
-            android:background="@drawable/keyboard_selector_relative_layout"
             android:visibility="visible">
 
             <View
@@ -279,175 +278,443 @@
 
             <TableRow>
 
-                <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_1"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
-                    android:layout_column="0"
-                    android:background="@drawable/keyboard_selector_relative_layout"
-                    android:clickable="true"
-                    android:focusable="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/phone_log_call_keyboard_1"
+            android:layout_width="@dimen/phone_log_keyboard_width"
+            android:layout_height="@dimen/phone_log_keyboard_height"
+            android:layout_column="0"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
+            android:focusable="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="1"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-                <RelativeLayout
+            <TextView
+                android:id="@+id/phone_log_tv_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="1"
+                android:textColor="@color/textColorDark"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="24dp"
+                android:layout_height="12dp"
+                android:layout_below="@+id/phone_log_tv_1"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_1"
+                app:srcCompat="@drawable/ic_voicemail" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_2"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="2"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                <RelativeLayout
+                        <TextView
+                            android:id="@+id/phone_log_tv_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="2"
+                            android:textColor="@color/textColorDark"
+                            android:textSize="25sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/phone_log_tv_2"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="2dp"
+                            android:text="ABC"
+                            android:textColor="@color/subtext_keylog"
+                            android:textAlignment="center"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_2" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_3"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="3"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/phone_log_tv_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="3"
+                            android:textColor="@color/textColorDark"
+                            android:textSize="25sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.495"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/phone_log_tv_3"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="2dp"
+                            android:text="DEF"
+                            android:textColor="@color/subtext_keylog"
+                            android:textAlignment="center"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_3" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </TableRow>
 
             <TableRow>
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_4"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="4"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                <RelativeLayout
+                        <TextView
+                            android:id="@+id/phone_log_tv_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="4"
+                            android:textColor="@color/textColorDark"
+                            android:textSize="25sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.495"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/phone_log_tv_4"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="2dp"
+                            android:text="GHI"
+                            android:textAlignment="center"
+                            android:textColor="@color/subtext_keylog"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_4" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_5"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="5"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
+                        <TextView
+                            android:id="@+id/phone_log_tv_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="5"
+                            android:textColor="@color/textColorDark"
+                            android:textSize="25sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.495"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <RelativeLayout
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/phone_log_tv_5"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="2dp"
+                            android:text="JKL"
+                            android:textColor="@color/subtext_keylog"
+                            android:textAlignment="center"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_5" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_6"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="6"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/phone_log_tv_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="6"
+                            android:textColor="@color/textColorDark"
+                            android:textSize="25sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.495"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/phone_log_tv_6"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="2dp"
+                            android:text="MNO"
+                            android:textColor="@color/subtext_keylog"
+                            android:textAlignment="center"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_6" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </TableRow>
 
             <TableRow>
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_7"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="7"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                <RelativeLayout
+                        <TextView
+                            android:id="@+id/phone_log_tv_7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="7"
+                            android:textColor="@color/textColorDark"
+                            android:textSize="25sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.495"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/phone_log_tv_7"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="2dp"
+                            android:text="PQRS"
+                            android:textColor="@color/subtext_keylog"
+                            android:textAlignment="center"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_7" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_8"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="8"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/phone_log_tv_8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="8"
+                            android:textColor="@color/textColorDark"
+                            android:textSize="25sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.495"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/phone_log_tv_8"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="2dp"
+                            android:text="TUV"
+                            android:textColor="@color/subtext_keylog"
+                            android:textAlignment="center"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_8" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_9"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
-                    android:layout_column="2"
-                    android:background="@drawable/keyboard_selector_relative_layout"
-                    android:clickable="true"
-                    android:focusable="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/phone_log_call_keyboard_9"
+            android:layout_width="@dimen/phone_log_keyboard_width"
+            android:layout_height="@dimen/phone_log_keyboard_height"
+            android:layout_column="2"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
+            android:focusable="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="9"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/phone_log_tv_9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="9"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/phone_log_tv_9"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:text="WXYZ"
+                    android:textColor="@color/subtext_keylog"
+                    android:textAlignment="center"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_9" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
             </TableRow>
 
             <TableRow>
@@ -457,11 +724,11 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/keyboard_selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <TextView
+                        android:id="@+id/phone_log_tv_star"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -470,23 +737,53 @@
                         android:textSize="25sp" />
                 </RelativeLayout>
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/phone_log_call_keyboard_0"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/keyboard_selector_relative_layout"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="0"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="25sp" />
-                </RelativeLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/phone_log_tv_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="0"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="25sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/phone_log_tv_0"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:text="+"
+                    android:textColor="@color/subtext_keylog"
+                    android:textAlignment="center"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <RelativeLayout
@@ -494,11 +791,11 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/keyboard_selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <TextView
+                        android:id="@+id/phone_log_tv_sharp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -595,6 +892,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

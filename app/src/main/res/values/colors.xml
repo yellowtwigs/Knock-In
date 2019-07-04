@@ -64,4 +64,7 @@
     <color name="priorityTwoColor">@color/colorPrimary</color>
 
     <!-- endregion -->
+    <!-- region phoneLog color -->
+    <color name="subtext_keylog">#FFaaaaaa</color>
+    <!-- end region-->
 </resources>
