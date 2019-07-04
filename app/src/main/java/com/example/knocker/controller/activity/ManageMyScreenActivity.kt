@@ -42,8 +42,13 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+            setTheme(R.style.AppThemeDark)
+        }else{
+            setTheme(R.style.AppTheme)
+        }
         setContentView(R.layout.activity_manage_my_screen)
-
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         nbGrid = sharedPreferences.getInt("gridview", 3)
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
@@ -70,7 +75,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
         manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
         manage_call_popup_switch = findViewById(R.id.manage_call_popup_switch)
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+        if(sharedThemePreferences.getBoolean("darkTheme",false)){
             manage_theme_SwitchTheme!!.isChecked = true
         }
         if (callPopup) {
@@ -218,17 +223,18 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
                 val sharedThemePreferences: SharedPreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("theme", false)
+                edit.putBoolean("darkTheme", true)
                 edit.apply()
-//                refreshActivity()
+                refreshActivity()
             } else {
                 setTheme(R.style.AppTheme)
 
                 val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("theme", true)
+                edit.putBoolean("darkTheme", false)
                 edit.apply()
-//                refreshActivity()
+
+                refreshActivity()
             }
         }
 

@@ -11,15 +11,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/transparentColor"
+        android:background="?attr/backgroundColor"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="?attr/textColor"
+            app:itemTextColor="?attr/textColor"
             android:layout_marginBottom="8dp"
-            android:background="?attr/transparentColor"
+            android:background="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,13 +35,14 @@
             android:layout_marginTop="10dp"
             android:padding="2dp"
             android:text="@string/manage_my_screen_number_of_line"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="@dimen/settings_subtitle_size"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:backgroundTint="?attr/backgroundColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_relative_layout_with_border"
@@ -135,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="@string/manage_my_screen_theme"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="@dimen/settings_title_size"
             android:textStyle="bold"
             android:visibility="gone"
@@ -149,7 +152,9 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/selector_relative_layout_with_border"
             android:visibility="visible"
+            android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
+
             app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
 
             <TextView
@@ -159,7 +164,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/manage_my_screen_theme"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +178,7 @@
                 android:layout_marginEnd="6dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/manage_my_screen_theme_long_text"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -199,7 +204,8 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/selector_relative_layout_with_border"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
+            app:layout_constraintTop_toTopOf="@+id/manage_theme_title"
+            android:backgroundTint="?attr/backgroundColor">
 
             <TextView
                 android:id="@+id/manage_call_popup_title"
@@ -208,7 +214,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/manage_my_screen_contact_popup"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -222,7 +228,7 @@
                 android:layout_marginEnd="6dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/manage_my_screen_contact_popup_long_text"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -249,9 +255,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemTextColor="?attr/textColorLight"
         android:background="?attr/backgroundColor"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/activity_main_drawer"
+        tools:visibility="gone" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
