@@ -20,10 +20,17 @@
             android:title="@string/notif_tri_date"
             app:showAsAction="collapseActionView"
             android:checked="true"/>
+
+        <item
+            android:id="@+id/notif_tri_par_contact"
+            android:title="@string/notif_tri_par_contact"
+            app:showAsAction="collapseActionView" />
+
         <item
             android:id="@+id/notif_tri_par_priorite"
             android:title="@string/main_tri_par_priorite"
             app:showAsAction="collapseActionView" />
+
     </group>
     <item
         android:id="@+id/filtre"

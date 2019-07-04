@@ -55,6 +55,7 @@
     <string name="notif_filtre_message">Notification de Message</string>
     <string name="notif_filtre_systeme">Notification du Système</string>
     <string name="notif_tri_date">Date et heure</string>
+    <string name="notif_tri_par_contact">nom de contact</string>
     <string name="main_toast_delete_contact">Vous venez de supprimer un contact !</string>
 
     <!-- endregion -->

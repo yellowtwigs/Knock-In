@@ -86,8 +86,8 @@ class NotificationListener : NotificationListenerService() {
     @SuppressLint("WrongConstant")
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean("serviceNotif", false)) {
-            val sbp = StatusBarParcelable(sbn)
+        val sbp = StatusBarParcelable(sbn)
+        if (sharedPreferences.getBoolean("serviceNotif", false)&& messagesNotUseless(sbp)){
             sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
             val name = sbp.statusBarNotificationInfo.get("android.title").toString()
             val app = this.convertPackageToString(sbp.appNotifier)
@@ -197,7 +197,10 @@ class NotificationListener : NotificationListenerService() {
             return null
         }
     }
-
+    private fun messagesNotUseless(sbp:StatusBarParcelable):Boolean{
+        val pregMatchString = ".*(nouveaux messages).*"
+        return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex()))
+    }
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             //this.cancelNotification(sbn.key)
