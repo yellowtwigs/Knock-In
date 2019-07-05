@@ -3,7 +3,8 @@
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contacts@yellowtwigs.com</string>
 
-    <!-- region Help -->
+    <!-- region Help Tutorial -->
+
     <string name="help">Help</string>
     <string name="help_main">Sur cette page vous pouvez voir tous les contacts enregistrés sur Knocker</string>
     <string name="help_notification_history">Sur cette page vous pouvez voir toutes les notifications reçues</string>
@@ -19,6 +20,15 @@
 
     <string name="facebook_app_id">338926936767251</string>
     <string name="fb_login_protocol_scheme">fb338926936767251</string>
+
+    <!-- endregion-->
+
+    <!-- region Help Activity -->
+
+    <string name="help_activity_tutorial">Tutorial</string>
+    <string name="help_activity_contact_us">Contact Us</string>
+    <string name="help_activity_contact_terms_of_use">Terms of use</string>
+    <string name="help_activity_contact_generals_informations">Generals Infos</string>
 
     <!-- endregion-->
 
@@ -40,7 +50,7 @@
     <string name="left_drawer_notification_history">Interactions</string>
     <!-- endregion-->
 
-    <!-- region Toolbar, Main, Filtre et Tri !-->
+    <!-- region Main Activity !-->
 
     <string name="main_filter_sms">SMS</string>
     <string name="main_filter_mail">Email</string>
@@ -56,6 +66,8 @@
     <string name="notif_tri_date">Date et heure</string>
     <string name="notif_tri_par_contact">nom de contact</string>
     <string name="main_toast_delete_contact">Vous venez de supprimer un contact !</string>
+    <string name="main_toast_multi_select_actived">Mode Multi Select Activé</string>
+    <string name="main_toast_multi_select_deactived">Mode Multi Select Désactivé</string>
 
     <!-- endregion -->
 
@@ -198,15 +210,30 @@
     <!-- region Phone Log -->
 
     <string name="phone_log_toolbar_title">Cockpit</string>
-    <string name="phone_log_toast_number_missing">Entrez un numéro de téléphone</string>
     <string name="phone_log_toast_wait_permission">Tant que vous n\'acceptez pas la permission, nous ne pourrons afficher le nom</string>
+
+    <string name="phone_log_toast_phone_number_empty">Enter a phone number please</string>
+
+    <string name="phone_log_toast_number_valid">Enter a phone number valid please</string>
+
+    <string name="phone_log_toast_facebook_not_install">Facebook n\'est pas installé</string>
+    <string name="phone_log_toast_instagram_not_install">Instagram n\'est pas installé</string>
+    <string name="phone_log_toast_whatsapp_not_install">Whatsapp n\'est pas installé</string>
+    <string name="phone_log_toast_messenger_not_install">Facebook Messenger n\'est pas installé</string>
+    <string name="phone_log_toast_youtube_not_install">Youtube n\'est pas installé</string>
+    <string name="phone_log_toast_gmail_not_install">Gmail n\'est pas installé</string>
+    <string name="phone_log_toast_telegram_not_install">Telegram n\'est pas installé</string>
+    <string name="phone_log_toast_outlook_not_install">Outlook n\'est pas installé</string>
+    <string name="phone_log_toast_skype_not_install">Skype n\'est pas installé</string>
+    <string name="phone_log_toast_linkedin_not_install">Linkedin n\'est pas installé</string>
+    <string name="phone_log_toast_twitter_not_install">Twitter n\'est pas installé</string>
+    <string name="phone_log_toast_snapchat_not_install">Snapchat n\'est pas installé</string>
 
     <!-- endregion -->
 
     <!-- region Notification History -->
 
     <string name="notification_history_search_hint">Rechercher dans l\'historique</string>
-
 
     <!-- endregion -->
 
@@ -248,19 +275,25 @@
     <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
 
     <!-- endregion -->
-    <!-- region Multi Select-->
+
+    <!-- region Multi Select in First Launch-->
 
     <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
-    <!-- region Alert Dialog -->
-    <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
-    <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
-    <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
-    <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
-    <string name="multi_select_alert_dialog_nb_contact">vous venez de séléctionner %1s %2s </string>
-    <string name="multi_select_alert_dialog_0_contact">vous avez sélectionner 0 contact </string>
-    <string name="multi_select_validate_selection">\n voulez-vous valider votre séléction</string>
+
+        <!-- region Alert Dialog -->
+
+        <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
+        <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
+        <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
+        <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
+        <string name="multi_select_alert_dialog_nb_contact">vous venez de séléctionner %1s %2s </string>
+        <string name="multi_select_alert_dialog_0_contact">vous avez sélectionner 0 contact </string>
+        <string name="multi_select_validate_selection">\n voulez-vous valider votre séléction</string>
+
+        <!-- endregion -->
+
     <!-- endregion -->
-    <!-- endregion -->
+
     <!-- region Notification Sender -->
 
     <string name="notification_sender_content_title">Résumé des interactions</string>
@@ -268,13 +301,18 @@
     <string name="notification_sender_big_text">Knocker a traité %1s messages depuis hier \n vous pouvez les consulter depuis l\'application dans "Historique"</string>
 
     <!-- endregion -->
+
     <!-- region alert Dialog button !-->
-    <string name="alert_dialog_yes">oui</string>
-    <string name="alert_dialog_no">no</string>
+
+    <string name="alert_dialog_yes">Yes</string>
+    <string name="alert_dialog_no">No</string>
+
     <!-- endregion !-->
 
     <!-- region AlertDialog permission overlay !-->
+
     <string name="alert_dialog_overlay_title">Knocker</string>
     <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
+
     <!-- endregion !-->
 </resources>

@@ -348,13 +348,15 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 selectMenu.close(true);
             }
         };
-        View.OnLongClickListener longClick= new View.OnLongClickListener() {
+        
+        View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ((MainActivity) context).longItemClick(len,position);
+                ((MainActivity) context).longGridItemClick(len, position);
                 return true;
             }
         };
+
         holder.gridContactItemLayout.setOnLongClickListener(longClick);
         holder.contactRoundedImageView.setOnLongClickListener(longClick);
         //buttonMessenger.setOnClickListener(buttonListener);
@@ -363,6 +365,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);
+
         holder.gridContactItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

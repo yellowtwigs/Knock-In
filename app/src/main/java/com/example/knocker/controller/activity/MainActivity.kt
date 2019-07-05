@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -25,15 +26,18 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatButton
 import com.example.knocker.*
 import com.example.knocker.controller.*
 import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.regex.Pattern
 
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
+import kotlinx.android.synthetic.main.content_main.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
@@ -53,7 +57,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonSend: FloatingActionButton? = null
 
-    internal var main_FloatingButtonIsOpen = false
+    private var main_WhatsappButton: AppCompatButton? = null
+    private var main_SMSButton: AppCompatButton? = null
+    private var main_MailButton: AppCompatButton? = null
+
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
@@ -70,7 +77,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var listViewAdapter: ContactListViewAdapter? = null
     private var main_layout: LinearLayout? = null
 
-    private var firstClick:Boolean=true
+    private var firstClick: Boolean = true
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -114,13 +121,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
-        val decorView=window.decorView
-        val window=window
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
+        val decorView = window.decorView
+        val window = window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
 
-//<item name="android:windowLightNavigationBar">true</item>
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
@@ -143,10 +149,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================= FindViewById =======================================
 
-        // Floating Button
         main_FloatingButtonAdd = findViewById(R.id.main_floating_button_open_id)
 
-        main_FloatingButtonSend = findViewById(R.id.main_floating_button_validate_id)
+        main_FloatingButtonSend = findViewById(R.id.main_floating_button_send_id)
 
         main_BottomNavigationView = findViewById(R.id.navigation)
 
@@ -156,6 +161,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
         main_layout = findViewById(R.id.content_frame)
+
+        main_WhatsappButton = findViewById(R.id.main_whatsapp_button)
+        main_MailButton = findViewById(R.id.main_gmail_button)
+        main_SMSButton = findViewById(R.id.main_sms_button)
+
         //endregion
 
         //region ========================================== Toolbar =========================================
@@ -172,7 +182,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================= DrawerLayout =======================================
 
-        // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -183,37 +192,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         nav_sync_contact.isVisible = true
 
         navigationView!!.menu.getItem(0).isChecked = true
-
-        //Sync contact
-        nav_sync_contact.setOnMenuItemClickListener {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
-            }
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
-                //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
-                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                val len = sharedPreferences.getInt("gridview", 4)
-                /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
-              main_GridView!!.adapter = gridViewAdapter
-  */
-                if (sharedPreferences.getString("tri","") == "priorite")
-                    gestionnaireContacts!!.sortContactByPriority()
-                gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
-                gridViewAdapter!!.notifyDataSetChanged()
-                drawerLayout!!.closeDrawers()
-            }
-            true
-        }
-
-        main_layout!!.setOnTouchListener { v, event ->
-            val view = this@MainActivity.currentFocus
-            val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (view != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
-            }
-            true
-        }
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -270,7 +248,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gestionnaireContacts = ContactList(this.applicationContext)
 
         if (main_GridView != null) {
-            if (sharedPreferences.getString("tri", "nom").equals("nom")) {
+            if (sharedPreferences.getString("tri", "nom") == "nom") {
                 gestionnaireContacts!!.sortContactByFirstNameAZ()
             } else {
                 gestionnaireContacts!!.sortContactByPriority()
@@ -279,31 +257,31 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
 
             main_GridView!!.adapter = gridViewAdapter
-            var index = sharedPreferences.getInt("index", 0)
+            val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_GridView!!.setSelection(index)
             edit.apply()
 
             main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                if(main_GridView!!.adapter is SelectContactAdapter && !firstClick){
-                    val adapter =(main_GridView!!.adapter as SelectContactAdapter)
+                if (main_GridView!!.adapter is SelectContactAdapter && !firstClick) {
+                    val adapter = (main_GridView!!.adapter as SelectContactAdapter)
                     adapter.itemSelected(position)
                     adapter.notifyDataSetChanged()
-                    if(adapter.getListContactSelect().size==0){
-                        main_GridView!!.adapter=ContactGridViewAdapter(this,gestionnaireContacts,len)
-                        main_FloatingButtonAdd!!.visibility=View.VISIBLE
-                        main_FloatingButtonSend!!.visibility=View.GONE
-                        main_SearchBar!!.visibility=View.VISIBLE
+                    if (adapter.listContactSelect.size == 0) {
+                        main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                        main_FloatingButtonSend!!.visibility = View.GONE
+                        main_SearchBar!!.visibility = View.VISIBLE
+
+                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+
+                        main_MailButton!!.visibility = View.GONE
+                        main_WhatsappButton!!.visibility = View.GONE
+                        main_SMSButton!!.visibility = View.GONE
                     }
                 }
-                firstClick=false
+                firstClick = false
             }
-            /*main_GridView!!.setOnItemLongClickListener{parent, view, position, id ->
-                println("long click")
-                val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
-                main_GridView!!.adapter = adapter
-                true
-            }*/
 
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
                 override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
@@ -323,41 +301,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (main_Listview != null) {
             listViewAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
             main_Listview!!.adapter = listViewAdapter
-            var index = sharedPreferences.getInt("index", 0)
+            val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_Listview!!.setSelection(index)
             edit.putInt("index", 0)
             edit.apply()
-
-            var listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null)
-
-
-//                phone_call_ImageView!!.setOnClickListener {
-//                    val intent = Intent(this@MainActivity, ComposeMessageActivity::class.java)
-//                    intent.putExtra("ContactPhoneNumber", !!.text.toString())
-//                    startActivity(intent)
-//                }
-
-            main_Listview!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                if (!main_FloatingButtonIsOpen) {
-
-                    //Save position in gridview
-                    index = main_Listview!!.firstVisiblePosition
-
-                    //val edit : SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putInt("index", index)
-                    edit.commit()
-                    //
-                    val o = main_Listview!!.getItemAtPosition(position)
-                    val contact = o as ContactWithAllInformation
-
-                    val intent = Intent(this, EditContactActivity::class.java)
-                    intent.putExtra("ContactId", contact.contactDB!!.id)
-                    startActivity(intent)
-                } else {
-                    main_FloatingButtonIsOpen = false
-                }
-            }
         }
 
 
@@ -365,7 +313,57 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
-        //region ==================================== SetOnClickListener ====================================
+        //region ======================================== Listeners =========================================
+
+        main_FloatingButtonSend!!.setOnClickListener {
+            val adapter: SelectContactAdapter = if (len > 1) {
+                (main_GridView!!.adapter as SelectContactAdapter)
+            } else {
+                (main_Listview!!.adapter as SelectContactAdapter)
+            }
+            val intent = Intent(this@MainActivity, MultiChannelActivity::class.java)
+            val iterator = (0 until adapter.listContactSelect.size).iterator()
+            val listOfIdContactSelected: ArrayList<Int> = ArrayList()
+
+            for (i in iterator) {
+                listOfIdContactSelected.add(adapter.listContactSelect[i].getContactId())
+            }
+
+            intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+
+            startActivity(intent)
+        }
+
+        //Sync contact
+        nav_sync_contact.setOnMenuItemClickListener {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
+            }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                val len = sharedPreferences.getInt("gridview", 4)
+                /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
+              main_GridView!!.adapter = gridViewAdapter
+  */
+                if (sharedPreferences.getString("tri", "") == "priorite")
+                    gestionnaireContacts!!.sortContactByPriority()
+                gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                gridViewAdapter!!.notifyDataSetChanged()
+                drawerLayout!!.closeDrawers()
+            }
+            true
+        }
+
+        main_layout!!.setOnTouchListener { v, event ->
+            val view = this@MainActivity.currentFocus
+            val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (view != null) {
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            true
+        }
 
         main_SearchBar!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
@@ -382,13 +380,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 var filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                 gestionnaireContacts!!.contacts = filteredList
                 if (len > 1) {
-                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_GridView!!.adapter = gridViewAdapter
-                }else {
+                    gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    main_GridView!!.adapter = gridViewAdapter
+                } else {
 
-                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_Listview!!.adapter = listViewAdapter
-                        listViewAdapter!!.notifyDataSetChanged()
+                    listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                    main_Listview!!.adapter = listViewAdapter
+                    listViewAdapter!!.notifyDataSetChanged()
 
                 }
             }
@@ -396,12 +394,24 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_FloatingButtonAdd!!.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddNewContactActivity::class.java))
-            main_FloatingButtonIsOpen = false
         }
 
-        main_FloatingButtonSend!!.setOnClickListener{
+        main_SMSButton!!.setOnClickListener {
+            val adapter: SelectContactAdapter = if (len > 1) {
+                (main_GridView!!.adapter as SelectContactAdapter)
+            } else {
+                (main_Listview!!.adapter as SelectContactAdapter)
+            }
+            val iterator = (0 until adapter.listContactSelect.size).iterator()
+            val listOfPhoneNumberContactSelected: ArrayList<String> = ArrayList()
 
+            for (i in iterator) {
+                listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getPhoneNumber())
+            }
+
+            monoChannelSmsClick(listOfPhoneNumberContactSelected)
         }
+
         //endregion
 
         scaleGestureDetectore = ScaleGestureDetector(this,
@@ -658,16 +668,114 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gridViewAdapter!!.closeMenu()
     }
 
-    fun longItemClick(len: Int,position:Int) {
+    fun longGridItemClick(len: Int, position: Int) {
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
         main_GridView!!.adapter = adapter
         adapter.itemSelected(position)
         adapter.notifyDataSetChanged()
-        main_FloatingButtonAdd!!.visibility=View.GONE
-        main_FloatingButtonSend!!.visibility=View.VISIBLE
-        main_SearchBar!!.visibility=View.GONE
-        firstClick=true
-        true
+        main_FloatingButtonAdd!!.visibility = View.GONE
+        main_FloatingButtonSend!!.visibility = View.VISIBLE
+        main_SearchBar!!.visibility = View.GONE
+        firstClick = true
+
+        if (gestionnaireContacts!!.contacts[position].getFirstMail() != "") {
+            main_MailButton!!.visibility = View.VISIBLE
+        }
+
+        if (appIsInstalled() && gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
+            main_WhatsappButton!!.visibility = View.VISIBLE
+        }
+
+        if (gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
+            main_SMSButton!!.visibility = View.VISIBLE
+        }
+
+
+        Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
+    fun longListItemClick(len: Int, position: Int) {
+        val adapter = SelectContactAdapter(this, gestionnaireContacts, len, true)
+        main_Listview!!.adapter = adapter
+        adapter.itemSelected(position)
+        adapter.notifyDataSetChanged()
+        main_FloatingButtonAdd!!.visibility = View.GONE
+        main_FloatingButtonSend!!.visibility = View.VISIBLE
+        main_SearchBar!!.visibility = View.GONE
+        firstClick = false
+
+        if (gestionnaireContacts!!.contacts[position].getFirstMail() != "") {
+            main_MailButton!!.visibility = View.VISIBLE
+        }
+
+        if (appIsInstalled() && gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
+            main_WhatsappButton!!.visibility = View.VISIBLE
+        }
+
+        if (gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
+            main_SMSButton!!.visibility = View.VISIBLE
+        }
+
+        Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+    }
+
+    fun listItemClick(len: Int, position: Int) {
+        if (main_Listview!!.adapter is SelectContactAdapter && !firstClick) {
+            val adapter = (main_Listview!!.adapter as SelectContactAdapter)
+            adapter.itemSelected(position)
+            adapter.notifyDataSetChanged()
+            if (adapter.listContactSelect.size == 0) {
+                main_Listview!!.adapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
+                main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                main_FloatingButtonSend!!.visibility = View.GONE
+                main_SearchBar!!.visibility = View.VISIBLE
+
+                Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            }
+        }
+        firstClick = false
+    }
+
+    private fun appIsInstalled(): Boolean {
+        val pm = this.packageManager
+        return try {
+            pm.getApplicationInfo("com.whatsapp", 0)
+            true
+        } catch (e: Exception) {
+            false
+        }
+
+    }
+
+    private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
+
+        val iterator = (0 until listOfPhoneNumber.size).iterator()
+        var intent: Intent? = null
+
+        for (i in iterator) {
+            listOfPhoneNumber[i]
+        }
+
+        when (listOfPhoneNumber.size) {
+            2 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1]))
+            3 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2]))
+            4 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2] + ";" + listOfPhoneNumber[3]))
+            5 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2] + ";" + listOfPhoneNumber[3] + ";" + listOfPhoneNumber[4]))
+        }
+
+        startActivity(intent)
+    }
+
+//    private fun monoChannelMailClick(listOfPhoneNumber: ArrayList<String>) {
+//
+//        val mail = "dzdzq"
+//        val intent = Intent(Intent.ACTION_SEND)
+//        intent.data = Uri.parse("mailto:")
+//        intent.type = "text/html"
+//        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail.substring(0, mail.length - 1)))
+//        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+//        intent.putExtra(Intent.EXTRA_TEXT, "")
+//
+//        startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length - 1)))
+//    }
 }

@@ -84,12 +84,10 @@ class AddNewContactActivity : AppCompatActivity() {
 
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        gestionnaireContacts = ContactList(this.applicationContext)
 
         //region ========================================== Toolbar =========================================
 
-        gestionnaireContacts = ContactList(this.applicationContext)
-
-        // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
@@ -99,9 +97,8 @@ class AddNewContactActivity : AppCompatActivity() {
 
         //endregion
 
-        //region ====================================== FindViewById() ======================================
+        //region ======================================= FindViewById =======================================
 
-        // Find View By Id
         add_new_contact_FirstName = findViewById(R.id.add_new_contact_first_name_id)
         add_new_contact_LastName = findViewById(R.id.add_new_contact_last_name_id)
         add_new_contact_PhoneNumber = findViewById(R.id.add_new_contact_phone_number_id)

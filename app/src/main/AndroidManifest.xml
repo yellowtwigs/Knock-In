@@ -28,7 +28,8 @@
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:icon="@drawable/ic_letter_k"
         android:label="@string/app_name"
@@ -36,9 +37,11 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.NotificationAlarmActivity"
+        <activity android:name=".controller.activity.MultiChannelActivity"></activity>
+        <activity
+            android:name=".controller.activity.NotificationAlarmActivity"
             android:showOnLockScreen="true"
-            android:turnScreenOn="true"/>
+            android:turnScreenOn="true" />
         <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
         <activity android:name=".controller.activity.firstLaunch.SynchronizeContactActivity" />
         <activity android:name=".controller.activity.firstLaunch.AcceptNotificationActivity" />

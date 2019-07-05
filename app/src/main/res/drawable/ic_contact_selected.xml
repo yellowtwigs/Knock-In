@@ -1,8 +1,16 @@
-<vector android:height="24dp" android:viewportHeight="500"
-    android:viewportWidth="500" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="500"
+    android:viewportHeight="500">
     <group>
-        <clip-path android:pathData="M0,0h500v500h-500z M 0,0"/>
-        <path android:fillColor="@color/colorPrimary" android:pathData="M250,250m-250,0a250,250 0,1 1,500 0a250,250 0,1 1,-500 0"/>
-        <path android:fillColor="@color/whiteColor" android:fillType="evenOdd" android:pathData="M182.972,350.071L102.033,269.132C91.474,258.573 74.328,258.573 63.768,269.132L63.768,269.132C53.209,279.692 53.209,296.838 63.768,307.398L161.148,404.778C166.224,409.854 172.823,412.49 179.48,412.677C183.503,412.862 187.564,412.091 191.286,410.361C194.236,409.057 196.997,407.194 199.413,404.778L199.413,404.778C200.399,403.792 201.292,402.75 202.093,401.66L441.683,162.071C451.439,152.315 451.439,136.472 441.683,126.716L441.683,126.716C431.926,116.959 416.084,116.959 406.327,126.716L182.972,350.071Z"/>
+        <clip-path android:pathData="M0,0h500v500h-500z M 0,0" />
+        <path
+            android:fillColor="?attr/colorPrimary"
+            android:pathData="M250,250m-250,0a250,250 0,1 1,500 0a250,250 0,1 1,-500 0" />
+        <path
+            android:fillColor="@color/whiteColor"
+            android:fillType="evenOdd"
+            android:pathData="M182.972,350.071L102.033,269.132C91.474,258.573 74.328,258.573 63.768,269.132L63.768,269.132C53.209,279.692 53.209,296.838 63.768,307.398L161.148,404.778C166.224,409.854 172.823,412.49 179.48,412.677C183.503,412.862 187.564,412.091 191.286,410.361C194.236,409.057 196.997,407.194 199.413,404.778L199.413,404.778C200.399,403.792 201.292,402.75 202.093,401.66L441.683,162.071C451.439,152.315 451.439,136.472 441.683,126.716L441.683,126.716C431.926,116.959 416.084,116.959 406.327,126.716L182.972,350.071Z" />
     </group>
 </vector>

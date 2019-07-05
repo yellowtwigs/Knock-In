@@ -19,8 +19,9 @@
         android:background="@color/colorPrimary"
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_validate_id"
+        android:id="@+id/main_floating_button_send_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"

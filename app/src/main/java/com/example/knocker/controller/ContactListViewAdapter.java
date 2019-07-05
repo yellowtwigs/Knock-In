@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.activity.EditContactActivity;
+import com.example.knocker.controller.activity.MainActivity;
+import com.example.knocker.controller.activity.MultiChannelActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
@@ -53,12 +55,20 @@ public class ContactListViewAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
-    private ContactList gestionnaireContacts;
+    private boolean fromMultiSelect = false;
     private ViewHolder activeMenu;
 
     public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
         this.listContacts = listContacts;
+        this.len = len;
+        layoutInflater = LayoutInflater.from(context);
+    }
+
+    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len, boolean fromMultiSelect) {
+        this.context = context;
+        this.listContacts = listContacts;
+        this.fromMultiSelect = fromMultiSelect;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -89,26 +99,42 @@ public class ContactListViewAdapter extends BaseAdapter {
         ContactDB contact = getItem(position).getContactDB();
 
         if (len == 0) {
-            listview = layoutInflater.inflate(R.layout.list_contact_item_layout_smaller, null);
-            holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
-            holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
-            assert contact != null;
+            if (fromMultiSelect) {
+                listview = layoutInflater.inflate(R.layout.list_contact_selected_with_channel, null);
 
-            if (contact.getContactPriority() == 0) {
-                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
-            } else if (contact.getContactPriority() == 1) {
-                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.blackColor));
-            } else if (contact.getContactPriority() == 2) {
-                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityTwoColor));
+                holder.contactRoundedImageView = listview.findViewById(R.id.multi_channel_list_item_contactRoundedImageView);
+                holder.contactFirstNameView = listview.findViewById(R.id.multi_channel_list_item_contactFirstName);
+            } else {
+                listview = layoutInflater.inflate(R.layout.list_contact_item_layout_smaller, null);
+
+                holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
+                holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
+
+                assert contact != null;
+                if (contact.getContactPriority() == 0) {
+                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
+                } else if (contact.getContactPriority() == 1) {
+                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.blackColor));
+                } else if (contact.getContactPriority() == 2) {
+                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityTwoColor));
+                }
             }
 
-            holder.constraintLayoutSmaller = listview.findViewById(R.id.list_contact_item_layout_smaller);
-            holder.constraintLayoutMenuSmaller = listview.findViewById(R.id.list_contact_item_menu_smaller);
-            holder.callCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_call);
-            holder.smsCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_sms);
-            holder.whatsappCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
-            holder.mailCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_mail);
-            holder.editCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_edit);
+            if (fromMultiSelect) {
+                holder.constraintLayoutSmaller = listview.findViewById(R.id.multi_channel_list_item_layout);
+                holder.constraintLayoutMenuSmaller = listview.findViewById(R.id.multi_channel_list_item_menu);
+                holder.callCl = listview.findViewById(R.id.multi_channel_list_item_constraint_call);
+                holder.smsCl = listview.findViewById(R.id.multi_channel_list_item_constraint_sms);
+                holder.whatsappCl = listview.findViewById(R.id.multi_channel_list_item_constraint_whatsapp);
+                holder.mailCl = listview.findViewById(R.id.multi_channel_list_item_constraint_mail);
+            } else {
+                holder.constraintLayoutSmaller = listview.findViewById(R.id.list_contact_item_layout_smaller);
+                holder.constraintLayoutMenuSmaller = listview.findViewById(R.id.list_contact_item_menu_smaller);
+                holder.callCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_call);
+                holder.smsCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_sms);
+                holder.whatsappCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
+                holder.mailCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_mail);
+            }
         } else {
             listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
             holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
@@ -132,7 +158,6 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.smsCl = listview.findViewById(R.id.list_contact_item_constraint_sms);
             holder.whatsappCl = listview.findViewById(R.id.list_contact_item_constraint_whatsapp);
             holder.mailCl = listview.findViewById(R.id.list_contact_item_constraint_mail);
-            holder.editCl = listview.findViewById(R.id.list_contact_item_constraint_edit);
         }
 
         if (!contact.getProfilePicture64().equals("")) {
@@ -141,7 +166,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         } else {
             System.out.println(contact.getProfilePicture());
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get"));
-            //holder.contactRoundedImageView.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
         if (contactName.length() > 27) {
@@ -176,7 +200,6 @@ public class ContactListViewAdapter extends BaseAdapter {
                 }
                 if (v.getId() == holder.editCl.getId()) {
 
-                    System.out.println("edit");
                     Intent intent = new Intent(context, EditContactActivity.class);
                     intent.putExtra("ContactId", Objects.requireNonNull(getItem(position).getContactDB()).getId());
                     context.startActivity(intent);
@@ -192,28 +215,49 @@ public class ContactListViewAdapter extends BaseAdapter {
                     println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
-                System.out.println("click position " + position);
 
-                if (holder.constraintLayoutMenu != null) {
-
-                    if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
-                        holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-                        if (activeMenu != null) {
-                            activeMenu.constraintLayoutMenu.setVisibility(View.GONE);
-                        }
-                        activeMenu = holder;
-                        println("active menu" + activeMenu.toString());
-                    } else {
-                        println("menu active");
-                        holder.constraintLayoutMenu.setVisibility(View.GONE);
-                        activeMenu = null;
-
-                        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                        holder.constraintLayoutMenu.startAnimation(slideDown);
-                    }
-                }
+//                if (holder.constraintLayoutMenu != null) {
+//
+//                    if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
+//                        holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
+//                        if (activeMenu != null) {
+//                            activeMenu.constraintLayoutMenu.setVisibility(View.GONE);
+//                        }
+//                        activeMenu = holder;
+//                    } else {
+//                        holder.constraintLayoutMenu.setVisibility(View.GONE);
+//                        activeMenu = null;
+//
+//                        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+//                        holder.constraintLayoutMenu.startAnimation(slideDown);
+//                    }
+//                }
             }
         };
+
+        View.OnLongClickListener longClick = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ((MainActivity) context).longListItemClick(len, position);
+                return true;
+            }
+        };
+
+        View.OnLongClickListener longClickMultiChannel = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ((MultiChannelActivity) context).longListItemClick(len, position);
+                return true;
+            }
+        };
+
+        View.OnClickListener listItemClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) context).listItemClick(len, position);
+            }
+        };
+
 
         if (!whatsappIsInstalled()) {
             holder.whatsappCl.setVisibility(View.GONE);
@@ -227,31 +271,25 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.mailCl.setVisibility(View.VISIBLE);
         }
 
+        if (holder.constraintLayout != null) {
+            holder.constraintLayout.setOnLongClickListener(longClick);
+            holder.constraintLayout.setOnClickListener(listItemClick);
+        } else if(fromMultiSelect) {
+            holder.constraintLayoutSmaller.setOnLongClickListener(longClickMultiChannel);
+        }else{
+            holder.constraintLayoutSmaller.setOnLongClickListener(longClick);
+            holder.constraintLayoutSmaller.setOnClickListener(listItemClick);;
+        }
+
         holder.mailCl.setOnClickListener(listener);
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);
         holder.editCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
 
-        if (holder.constraintLayout == null) {
-            holder.constraintLayoutSmaller.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Animation slideLeft = AnimationUtils.loadAnimation(context, R.anim.slide_left);
-                    Animation slideRight = AnimationUtils.loadAnimation(context, R.anim.slide_right);
-
-                    if (holder.constraintLayoutMenuSmaller.getVisibility() == View.GONE) {
-                        holder.constraintLayoutMenuSmaller.startAnimation(slideRight);
-                        holder.constraintLayoutMenuSmaller.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.constraintLayoutMenuSmaller.startAnimation(slideLeft);
-                        holder.constraintLayoutMenuSmaller.setVisibility(View.GONE);
-                    }
-                }
-            });
-        } else {
-            holder.constraintLayout.setOnClickListener(listener);
-        }
+//        if (holder.constraintLayout != null) {
+//            holder.constraintLayout.setOnClickListener(listener);
+//        }
 
         return listview;
     }

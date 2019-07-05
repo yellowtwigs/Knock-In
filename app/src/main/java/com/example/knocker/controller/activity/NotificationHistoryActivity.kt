@@ -141,37 +141,36 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //endregion
 
         //on get la base de données
-        notification_history_NotificationsDatabase= ContactsRoomDatabase.getDatabase(this)
+        notification_history_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
         updateFilter()
 
         //region ======================================== Listeners =========================================
 
         notification_history_ListView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val gestionnaireContacts = ContactList(this.applicationContext)
-            val iterator = (0 until gestionnaireContacts.contacts.size).iterator()
 
             when (notification_history_ListOfNotificationDB[position].platform) {
                 "com.whatsapp" -> {
-                    val contact=gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
+                    val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
 
-                        if (contact!=null) {
-                            openWhatsapp(converter06To33(contact.getPhoneNumber()), baseContext)
-                        }
+                    if (contact != null) {
+                        openWhatsapp(converter06To33(contact.getPhoneNumber()), baseContext)
+                    }
 
                 }
-                "com.google.android.gm" -> openGmail(this,gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
+                "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
 
                 "com.facebook.katana" -> goToFacebook()
 
                 "com.facebook.orca" -> openMessenger("", this)
 
-                "com.google.android.apps.messaging","com.android.mms","com.samsung.android.messaging" -> {
+                "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
                     println("into messaging")
-                    val contact=gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
-                    if ( contact!=null) {
+                    val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
+                    if (contact != null) {
                         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact.getPhoneNumber(), null))
                         startActivity(intent)
-                    }else{
+                    } else {
                     }
                     val sendIntent = Intent(Intent.ACTION_VIEW)
                     sendIntent.data = Uri.parse("sms:")
@@ -362,7 +361,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.apply()
                 item.setChecked(true)
                 updateFilter()
-               // this.recreate()
+                // this.recreate()
             }
             R.id.notif_tri_par_priorite -> {
                 println("tri par priorité checked")
@@ -373,7 +372,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
 
                 updateFilter()
-             //   this.recreate()
+                //   this.recreate()
             }
             R.id.notif_tri_par_contact -> {
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
@@ -399,7 +398,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     item.setChecked(true)
                 }
                 editor.apply()
-              //  this.recreate()
+                //  this.recreate()
             }
         }
         updateFilter()
@@ -417,7 +416,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
             else -> false
         }
     }
-    private fun updateFilter(){
+
+    private fun updateFilter() {
 
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("filtre_message", true)) {
@@ -453,7 +453,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp2.addAll(notification_history_ListOfNotificationDB)
                 listTmp2.removeAll(listTmp)
 
-                listTmp.addAll(Math.max(firstContactPrio0(listTmp) , 0), listTmp2)
+                listTmp.addAll(Math.max(firstContactPrio0(listTmp), 0), listTmp2)
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
                 val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
@@ -461,9 +461,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_ListView!!.adapter = adapter
 
             }
-            sharedPreferences.getString("tri", "date") == "contact"->{
+            sharedPreferences.getString("tri", "date") == "contact" -> {
 
-                val listNotif=notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact()
+                val listNotif = notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact()
                 val adapter = NotificationHistoryAdapterActivity(this, listNotif)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter

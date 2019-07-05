@@ -130,6 +130,7 @@ class PhoneLogActivity : AppCompatActivity() {
         }
         setContentView(R.layout.activity_phone_log)
         hideKeyboard()
+        val listApp = getAppOnPhone()
 
         //region ========================================== Toolbar =========================================
 
@@ -240,97 +241,89 @@ class PhoneLogActivity : AppCompatActivity() {
 
         //endregion
 
-        //region ========================================= Phone Log ========================================
-
-        showPhoneLog()
-
-        //endregion
-
-        val listApp = getAppOnPhone()
 
         //region ========================================== Listener ========================================
 
         if (!listApp.contains("com.facebook.katana")) {
             link_socials_networks_Messenger!!.setImageResource(R.drawable.ic_facebook_disable)
-            link_socials_networks_Messenger!!.setOnClickListener { Toast.makeText(this, "Facebook n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Messenger!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_facebook_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
         }
 
         if (!listApp.contains("com.instagram.android")) {
             link_socials_networks_Instagram!!.setImageResource(R.drawable.ic_instagram_disable)
-            link_socials_networks_Instagram!!.setOnClickListener { Toast.makeText(this, "Instagram n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Instagram!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_instagram_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
         }
 
         if (!listApp.contains("com.whatsapp")) {
             link_socials_networks_Whatsapp!!.setImageResource(R.drawable.ic_whatsapp_disable)
-            link_socials_networks_Whatsapp!!.setOnClickListener { Toast.makeText(this, "Whatsapp n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Whatsapp!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_whatsapp_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
         }
 
         if (!listApp.contains("com.facebook.orca")) {
             link_socials_networks_Facebook!!.setImageResource(R.drawable.ic_messenger_disable)
-            link_socials_networks_Facebook!!.setOnClickListener { Toast.makeText(this, "Facebook Messenger n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Facebook!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_messenger_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
         }
 
         if (!listApp.contains("com.google.android.youtube")) {
             link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
-            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, "Youtube n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_youtube_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
         }
 
         if (!listApp.contains("com.google.android.gm")) {
             link_socials_networks_Gmail!!.setImageResource(R.drawable.ic_gmail_disable)
-            link_socials_networks_Gmail!!.setOnClickListener { Toast.makeText(this, "Gmail n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Gmail!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_gmail_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
         }
 
         if (!listApp.contains("com.snapchat.android")) {
-            link_socials_networks_Snapchat!!.setImageResource(R.drawable.ic_snapchat)
-            link_socials_networks_Snapchat!!.setOnClickListener { goToSnapchat() }
-//            link_socials_networks_Snapchat!!.setOnClickListener { Toast.makeText(this, "Spotify n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Snapchat!!.setImageResource(R.drawable.ic_snapchat_disable)
+            link_socials_networks_Snapchat!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_snapchat_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Snapchat!!.setOnClickListener { goToSnapchat() }
         }
 
         if (!listApp.contains("org.telegram.messenger")) {
             link_socials_networks_Telegram!!.setImageResource(R.drawable.ic_telegram_disable)
-            link_socials_networks_Telegram!!.setOnClickListener { Toast.makeText(this, "Telegram n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Telegram!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_telegram_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
         }
 
         if (!listApp.contains("com.microsoft.office.outlook")) {
             link_socials_networks_Outlook!!.setImageResource(R.drawable.ic_outlook_disable)
-            link_socials_networks_Outlook!!.setOnClickListener { Toast.makeText(this, "Outlook n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Outlook!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_outlook_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
         }
 
         if (!listApp.contains("com.skype.raider")) {
             link_socials_networks_Skype!!.setImageResource(R.drawable.ic_skype_disable)
-            link_socials_networks_Skype!!.setOnClickListener { Toast.makeText(this, "Skype n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Skype!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_skype_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
         }
 
         if (!listApp.contains("com.linkedin.android")) {
             link_socials_networks_Linkedin!!.setImageResource(R.drawable.ic_linkedin_disable)
-            link_socials_networks_Linkedin!!.setOnClickListener { Toast.makeText(this, "Linkedin n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Linkedin!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_linkedin_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
         }
 
         if (!listApp.contains("com.twitter.android")) {
             link_socials_networks_Twitter!!.setImageResource(R.drawable.ic_twitter_disable)
-            link_socials_networks_Twitter!!.setOnClickListener { Toast.makeText(this, "Twitter n\'est pas installé", Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Twitter!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_twitter_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
         }
@@ -346,7 +339,7 @@ class PhoneLogActivity : AppCompatActivity() {
                 val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null));
                 startActivity(i)
             } else {
-                Toast.makeText(this, "Enter a phone number please", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -382,11 +375,15 @@ class PhoneLogActivity : AppCompatActivity() {
 
         phone_log_ButtonAddContact!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                val intent = Intent(this@PhoneLogActivity, AddNewContactActivity::class.java)
-                intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
-                startActivity(intent)
+                if (isValidPhone(phone_log_PhoneNumberEditText!!.text.toString())) {
+                    val intent = Intent(this@PhoneLogActivity, AddNewContactActivity::class.java)
+                    intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+                }
             } else {
-                Toast.makeText(this, R.string.phone_log_toast_number_missing, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -459,12 +456,12 @@ class PhoneLogActivity : AppCompatActivity() {
             }
             true
         }
-        phone_log_CallKeyboard_1!!.setOnLongClickListener{
-            val  telecomManager=  getSystemService(Context.TELEPHONY_SERVICE)as TelephonyManager
+        phone_log_CallKeyboard_1!!.setOnLongClickListener {
+            val telecomManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             if (ContextCompat.checkSelfPermission(this@PhoneLogActivity, Manifest.permission.READ_PHONE_STATE)
                     != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this@PhoneLogActivity,  arrayOf(Manifest.permission.READ_PHONE_STATE), 0);
-            }else {
+                ActivityCompat.requestPermissions(this@PhoneLogActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0);
+            } else {
                 val numberVoiceMail = telecomManager.voiceMailNumber
                 val dial = "tel:$numberVoiceMail"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
@@ -681,57 +678,16 @@ class PhoneLogActivity : AppCompatActivity() {
         }
     }
 
-    private fun showPhoneLog() {
-//        phone_log_CallsListView!!.adapter = PhoneLogListAdapter(this@PhoneLogActivity, getListPhoneCalls())
-    }
-
     private fun showListPhoneCalls() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(android.Manifest.permission.READ_CALL_LOG) != PERMISSION_GRANTED) {
-            requestPermissions(Array<String?>(1) { android.Manifest.permission.READ_CALL_LOG }, PERMISSIONS_REQUEST_READ_CALL_LOG)
+                checkSelfPermission(Manifest.permission.READ_CALL_LOG) != PERMISSION_GRANTED) {
+            requestPermissions(Array<String?>(1) { Manifest.permission.READ_CALL_LOG }, PERMISSIONS_REQUEST_READ_CALL_LOG)
         } else {
         }
     }
 
-    @SuppressLint("Recycle")
-    private fun getListPhoneCalls(): MutableList<PhoneLog> {
-        checkPermission()
-        val listOfPhoneCallDetails: MutableList<PhoneLog> = mutableListOf()
-
-        val contentUri = Uri.parse("content://call_log/calls")
-        val cursor = this.contentResolver.query(contentUri, null, null, null, null)
-
-        cursor!!.moveToFirst()
-
-        val num = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER))
-        var name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME))
-        val duration = cursor.getString(cursor.getColumnIndex(CallLog.Calls.DURATION))
-        val type = Integer.parseInt(cursor.getString(cursor.getColumnIndex(CallLog.Calls.TYPE)))
-        var callType = ""
-        val date = cursor.getString(cursor.getColumnIndex(CallLog.Calls.DATE))
-
-        if (name == null) {
-            name = num
-        }
-
-        when (type) {
-            1 -> callType = "INCOMING_TYPE"
-            2 -> callType = "OUTGOING_TYPE"
-            3 -> callType = "MISSED_TYPE"
-            4 -> callType = "VOICEMAIL_TYPE"
-            5 -> callType = "REJECTED_TYPE"
-            6 -> callType = "BLOCKED_TYPE"
-        }
-
-        while (cursor.moveToNext()) {
-            listOfPhoneCallDetails.add(PhoneLog(num, name, duration, callType, date))
-        }
-
-        return listOfPhoneCallDetails
-    }
-
     private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CALL_LOG) == PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) == PERMISSION_GRANTED) {
         }
     }
 
@@ -750,17 +706,12 @@ class PhoneLogActivity : AppCompatActivity() {
 
     @SuppressLint("ShowToast")
     private fun phoneCall(phoneNumberEntered: String) {
-       if (!TextUtils.isEmpty(phoneNumberEntered)) {
-            /*if (isValidPhone(phoneNumberEntered)) {
-                val dial = "tel:$phoneNumberEntered"
-                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
-            } else {
-                Toast.makeText(this, "Enter a phone number valid", Toast.LENGTH_SHORT).show()
-            }*/
-           val dial = "tel:$phoneNumberEntered"
-           startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+        if (!TextUtils.isEmpty(phoneNumberEntered)) {
+            val dial = "tel:$phoneNumberEntered"
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+            Toast.makeText(this, R.string.phone_log_toast_number_valid, Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Enter a phone number", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }//pas besoin de vérification du numéro de téléphonne
     }
 

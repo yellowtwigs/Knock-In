@@ -9,12 +9,11 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/transparentColor"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <!--android:layout_height="?attr/actionBarSize"-->
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/compose_message_phone_number_edittext"
             android:layout_width="match_parent"

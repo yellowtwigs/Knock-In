@@ -86,7 +86,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
         //region ========================================== Toolbar =========================================
 
-        // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
@@ -97,7 +96,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         //region ======================================= DrawerLayout =======================================
 
-        // Drawerlayout
         drawerLayout = findViewById(R.id.manage_my_screen_drawer_layout)
 
         val navigationView = findViewById<NavigationView>(R.id.manage_my_screen_nav_view)

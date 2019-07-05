@@ -45,7 +45,7 @@ class HelpActivity : AppCompatActivity() {
 
         //region ======================================= FindViewById =======================================
 
-        help_activity_FAQ = findViewById(R.id.help_activity_q_and_r_id)
+        help_activity_FAQ = findViewById(R.id.help_activity_tutorial)
         help_activity_ContactUs = findViewById(R.id.help_activity_contact_us_id)
         help_activity_Terms = findViewById(R.id.help_activity_terms_id)
         help_activity_Infos = findViewById(R.id.help_activity_infos_id)
@@ -54,23 +54,23 @@ class HelpActivity : AppCompatActivity() {
 
         //region ==================================== SetOnClickListener ====================================
         val onClick = View.OnClickListener {
-            if(it.id==help_activity_FAQ!!.id){
+            if (it.id == help_activity_FAQ!!.id) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/tutorial")))
             }
-            if(it.id==help_activity_ContactUs!!.id){
-                val intent= Intent(Intent.ACTION_SEND)
+            if (it.id == help_activity_ContactUs!!.id) {
+                val intent = Intent(Intent.ACTION_SEND)
                 intent.setData(Uri.parse("mailto:"))
                 intent.setType("text/html");
                 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_mail)))
                 intent.putExtra(Intent.EXTRA_SUBJECT, "")
-                intent.putExtra(Intent.EXTRA_TEXT,"")
-                println("intent "+ intent.extras.toString())
-                startActivity(Intent.createChooser(intent,getString(R.string.help_contact_us_intent)))
+                intent.putExtra(Intent.EXTRA_TEXT, "")
+                println("intent " + intent.extras.toString())
+                startActivity(Intent.createChooser(intent, getString(R.string.help_contact_us_intent)))
             }
-            if(it.id==help_activity_Terms!!.id){
+            if (it.id == help_activity_Terms!!.id) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina")))
             }
-            if(it.id==help_activity_Infos!!.id){
+            if (it.id == help_activity_Infos!!.id) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com")))
             }
         }
