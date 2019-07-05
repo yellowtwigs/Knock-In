@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -117,13 +119,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 layoutParamsTV.topMargin = 30;
                 layoutParamsIV.topMargin = 10;
             } else if (len == 4) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.15;
-                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.15;
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.25;
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.25;
                 layoutParamsTV.topMargin = 10;
                 layoutParamsIV.topMargin = 10;
             } else if (len == 5 ) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.30;
-                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.30;
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.40;
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.40;
                 layoutParamsTV.topMargin = 0;
                 layoutParamsIV.topMargin = 0;
             } else if (len == 6) {
@@ -213,26 +215,37 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
         //region circular menu
 
-        final ImageView buttonMessenger = new ImageView(context);
+        //final ImageView buttonMessenger = new ImageView(context);
         final ImageView buttonCall = new ImageView(context);
         final ImageView buttonWhatsApp = new ImageView(context);
         final ImageView buttonSMS = new ImageView(context);
         final ImageView buttonEdit = new ImageView(context);
         final ImageView buttonMail = new ImageView(context);
 
-        buttonMessenger.setId(0);
+      //  buttonMessenger.setId(0);
         buttonCall.setId(1);
         buttonSMS.setId(2);
         buttonWhatsApp.setId(3);
         buttonEdit.setId(4);
         buttonMail.setId(5);
 
-        buttonMessenger.setImageResource(R.drawable.ic_messenger);
-        buttonCall.setImageResource(R.drawable.ic_phone_call);
-        buttonWhatsApp.setImageResource(R.drawable.ic_whatsapp);
-        buttonSMS.setImageResource(R.drawable.ic_sms);
+        PackageManager pckManager = context.getPackageManager();
+
+        //buttonMessenger.setImageDrawable(iconMessenger);
+
+        buttonCall.setImageResource(R.drawable.ic_google_call);
+        Drawable iconWhatsApp = null;
+        try {
+            iconWhatsApp = pckManager.getApplicationIcon("com.whatsapp");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        buttonWhatsApp.setImageDrawable(iconWhatsApp);
+        Drawable iconSMS = null;
+
+        buttonSMS.setImageResource(R.drawable.ic_google_messages);
         buttonEdit.setImageResource(R.drawable.ic_edit);
-        buttonMail.setImageResource(android.R.drawable.ic_dialog_email);
+        buttonMail.setImageResource(R.drawable.ic_rounded_gmail);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
@@ -294,13 +307,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             @Override
             public void onClick(View v) {
 
-                if (v.getId() == buttonMessenger.getId()) {
+               /* if (v.getId() == buttonMessenger.getId()) {
                     try {
                         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
                     } catch (ActivityNotFoundException e) {
                         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
                     }
-                } else if (v.getId() == buttonWhatsApp.getId()) {
+                } else*/ if (v.getId() == buttonWhatsApp.getId()) {
 
                     ContactWithAllInformation contactWithAllInformation = getItem(position);
                     ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
@@ -344,7 +357,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         };
         holder.gridContactItemLayout.setOnLongClickListener(longClick);
         holder.contactRoundedImageView.setOnLongClickListener(longClick);
-        buttonMessenger.setOnClickListener(buttonListener);
+        //buttonMessenger.setOnClickListener(buttonListener);
         buttonWhatsApp.setOnClickListener(buttonListener);
         buttonCall.setOnClickListener(buttonListener);
         buttonSMS.setOnClickListener(buttonListener);
