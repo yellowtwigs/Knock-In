@@ -436,7 +436,7 @@ class EditContactActivity : AppCompatActivity() {
                                 if (havePhone) {
                                     //println("------------il a un numéro ------")
                                     if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition })).get(i).id!!)
                                     } else
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
                                     //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
@@ -448,7 +448,7 @@ class EditContactActivity : AppCompatActivity() {
                                 } else {
                                     //println("------------il a un seulement un mail ------")
                                     if (haveMail && edit_contact_Mail!!.editText!!.text.toString() == "")
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition })).get(i).id!!)
                                     else
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
                                     if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
@@ -459,7 +459,7 @@ class EditContactActivity : AppCompatActivity() {
                                 }
                             } else if (i == 1) {
                                 if (edit_contact_Mail!!.editText!!.text.toString() == "") {
-                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(i).id!!)
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition })).get(i).id!!)
                                 }
                                 edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
                             }
