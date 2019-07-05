@@ -69,6 +69,12 @@ class AddNewContactActivity : AppCompatActivity() {
     @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+            setTheme(R.style.AppThemeDark)
+        }else{
+            setTheme(R.style.AppTheme)
+        }
         setContentView(R.layout.activity_add_new_contact)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
 
@@ -129,9 +135,8 @@ class AddNewContactActivity : AppCompatActivity() {
 
         // drop list
         val priority_list = arrayOf(0, 1, 2)
-        val array_adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priority_list)
-        array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
+        val array_adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, priority_list)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         //disable keyboard window
         add_new_contact_layout.setOnTouchListener { v, event ->
             val view = this@AddNewContactActivity.currentFocus
@@ -144,7 +149,6 @@ class AddNewContactActivity : AppCompatActivity() {
         //
         add_new_contact_Priority!!.adapter = array_adapter
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -173,11 +177,22 @@ class AddNewContactActivity : AppCompatActivity() {
                 println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
             }
         }
-
         add_new_contact_Priority!!.setSelection(1)
         add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
         add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
         println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
+
+
+        val phoneTagList= resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
+        val adapterPhoneTagList= ArrayAdapter(this,R.layout.spinner_dropdown_item,phoneTagList)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        add_new_contact_PhoneProperty!!.adapter=adapterPhoneTagList
+
+        val mailTagList= resources.getStringArray(R.array.add_new_contact_mail_arrays)
+        val adapterMailTagList= ArrayAdapter(this,R.layout.spinner_dropdown_item,phoneTagList)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        add_new_contact_MailProperty!!.adapter=adapterPhoneTagList
+        android.R.layout.simple_spinner_item
     }
 
     //region ========================================== Functions ===========================================
@@ -185,7 +200,7 @@ class AddNewContactActivity : AppCompatActivity() {
     //demmande de confirmation de la création d'un contact en double
     private fun confirmationDuplicate(contactData: ContactDB) {
 
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(this,R.style.AlertDialog)
                 .setTitle(R.string.add_new_contact_alert_dialog_title)
                 .setMessage(R.string.add_new_contact_alert_dialog_message)
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
@@ -207,7 +222,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    val alertDialog = AlertDialog.Builder(this)
+                    val alertDialog = AlertDialog.Builder(this,R.style.AlertDialog)
                     alertDialog.setTitle(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_title))
                     alertDialog.setMessage(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_message))
 
@@ -217,19 +232,19 @@ class AddNewContactActivity : AppCompatActivity() {
                         finish()
                     }
 
-                    alertDialog.setNegativeButton(R.string.alert_dialog_yes) { _, _ ->
+                    alertDialog.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                     }
                     alertDialog.show()
                 }
             }
             R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName)) {
 
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this,R.style.AlertDialog)
                         .setTitle(R.string.add_new_contact_alert_dialog_title)
                         .setMessage(R.string.add_new_contact_alert_dialog_message)
                         .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                         }
-                        .setNegativeButton(R.string.alert_dialog_yes) { _, _ ->
+                        .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                         }
                         .show()
 

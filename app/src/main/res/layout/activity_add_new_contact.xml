@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/add_new_contact_layout"
@@ -11,6 +12,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
+        android:background="?attr/backgroundColor"
         android:focusableInTouchMode="true"
         tools:context=".controller.activity.AddNewContactActivity">
 
@@ -18,7 +20,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/backgroundColor"
+            app:titleTextColor="?attr/textColor"
+            app:itemTextColor="?attr/textColor"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +49,8 @@
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="44dp"
             android:hint="@string/add_new_contact_first_name"
+            android:background="?attr/backgroundColor"
+            android:textColorHint="?attr/textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_rounded_image_view_id">
@@ -52,10 +58,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_edit_text"
+                android:background="?attr/backgroundColor"
+                android:textColorHint="?attr/textColor"
+                android:textColor="?attr/textColor"
                 android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textColor="@color/textColorDark" />
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,6 +72,8 @@
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="5dp"
             android:hint="@string/add_new_contact_last_name"
+            android:background="?attr/backgroundColor"
+            android:textColorHint="?attr/textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_first_name_id">
@@ -72,10 +81,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_edit_text"
                 android:inputType="textPersonName"
                 android:maxLines="1"
-                android:textColor="@color/textColorDark" />
+                android:background="?attr/backgroundColor"
+                android:textColorHint="?attr/textColor"
+                android:textColor="?attr/textColor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:background="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_last_name_id">
@@ -95,22 +105,28 @@
                 android:layout_height="@dimen/spinner_height"
                 android:layout_centerVertical="true"
                 android:entries="@array/add_new_contact_phone_number_arrays"
-                android:prompt="@string/add_new_contact_phone_number_mobile" />
+                android:prompt="@string/add_new_contact_phone_number_mobile"
+                android:background="?attr/backgroundColor"
+                android:textColor="?attr/textColor"
+                />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/add_new_contact_phone_number_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/add_new_contact_phone_number_spinner"
-                android:hint="@string/add_new_contact_phone_number">
+                android:hint="@string/add_new_contact_phone_number"
+                android:background="?attr/backgroundColor"
+                android:textColorHint="?attr/textColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/custom_edit_text"
                     android:inputType="phone"
                     android:maxLines="1"
-                    android:textColor="@color/textColorDark" />
+                    android:background="?attr/backgroundColor"
+                    android:textColorHint="?attr/textColor"
+                    android:textColor="?attr/textColor" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -120,10 +136,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_layout">
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_layout"
+            android:background="?attr/backgroundColor">
 
             <Spinner
                 android:id="@+id/add_new_contact_mail_spinner_id"
@@ -132,22 +148,27 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
                 android:entries="@array/add_new_contact_mail_arrays"
-                android:prompt="@string/add_new_contact_mail_mobile" />
+                android:prompt="@string/add_new_contact_mail_mobile"
+                android:background="?attr/backgroundColor"
+                android:textColor="?attr/textColor"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/add_new_contact_mail_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/add_new_contact_mail_spinner_id"
-                android:hint="@string/add_new_contact_mail">
+                android:hint="@string/add_new_contact_mail"
+                android:background="?attr/backgroundColor"
+                android:textColorHint="?attr/textColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/custom_edit_text"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:textColor="@color/textColorDark" />
+                    android:background="?attr/backgroundColor"
+                    android:textColorHint="?attr/textColor"
+                    android:textColor="?attr/textColor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,7 +179,8 @@
             android:layout_width="match_parent"
             android:layout_height="18dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_mail_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_mail_layout"
+            android:background="?attr/backgroundColor" />
 
         <Spinner
             android:id="@+id/add_new_contact_priority"
@@ -168,10 +190,11 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view" />
+            app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view"
+            android:background="?attr/backgroundColor"
+            android:textColor="?attr/textColor" />
 
         <TextView
             android:id="@+id/add_new_contact_priority_explain"
@@ -182,7 +205,9 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/add_new_contact_priority"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view"
+            android:background="?attr/backgroundColor"
+            android:textColor="?attr/textColor" />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -191,7 +216,9 @@
             android:layout_height="wrap_content"
             android:text="@string/add_new_contact_add_field"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view"
+            android:background="?attr/backgroundColor"
+            android:textColor="?attr/textColor"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
