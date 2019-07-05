@@ -258,7 +258,6 @@
         android:background="?attr/backgroundColor"
         app:headerLayout="@layout/nav_header_main"
         app:itemTextColor="?attr/textColor"
-        app:menu="@menu/activity_main_drawer"
-        tools:visibility="gone" />
+        app:menu="@menu/activity_main_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

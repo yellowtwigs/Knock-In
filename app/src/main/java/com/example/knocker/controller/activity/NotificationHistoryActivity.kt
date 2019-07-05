@@ -72,6 +72,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+            setTheme(R.style.AppThemeDark)
+        }else{
+            setTheme(R.style.AppTheme)
+        }
         setContentView(R.layout.activity_notification_history)
 
         main_BottomNavigationView = findViewById(R.id.navigation)

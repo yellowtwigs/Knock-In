@@ -13,9 +13,10 @@
         <item name="textColor">@color/textColorDark</item>
         <item name="textColorLight">@color/textColorLight</item>
         <item name="lightGreyColor">@color/lightGreyColor</item>
-        <item name="colorSurface">@color/backgroundColor</item>
+        <item name="colorSurface">@color/greyColor</item>
         <item name="darkGreyColor">@color/darkGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
     </style>
 
     <!-- Dark/Night Mode theme. -->
@@ -30,9 +31,10 @@
         <item name="textColor">@color/textColorLight</item>
         <item name="textColorLight">@color/textColorDark</item>
         <item name="lightGreyColor">@color/lightGreyColorDark</item>
-        <item name="colorSurface">@color/backgroundColorDark</item>
+        <item name="colorSurface">@color/darkGreyColor</item>
         <item name="darkGreyColor">@color/darkGreyColorDark</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
     </style>
 
     <style name="windowAnimationTransition">
@@ -73,8 +75,8 @@
     </style>
     <style name="AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">
         <item name="android:textColor">?attr/textColor</item>
-        <item name="android:background">?attr/backgroundPressedColor</item>
-        <item name="android:textColorPrimary">?attr/colorPrimary</item>
+        <item name="android:background">?attr/backgroundColor</item>
+        <item name="android:textColorPrimary">?attr/textColor</item>
 
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
@@ -86,5 +88,11 @@
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/whiteColor</item>
+        <item name="colorControlActivated">@color/whiteColor</item>
+        <item name="colorControlHighlight">@color/whiteColor</item>
     </style>
 </resources>

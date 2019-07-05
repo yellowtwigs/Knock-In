@@ -21,5 +21,5 @@
 
     <!-- Manage My Screen !-->
     <dimen name="spinner_height">55dp</dimen>
-    <dimen name="spinner_width">140dp</dimen>
+    <dimen name="spinner_width">130dp</dimen>
 </resources>

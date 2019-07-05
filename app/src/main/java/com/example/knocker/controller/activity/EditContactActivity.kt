@@ -96,6 +96,12 @@ class EditContactActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+            setTheme(R.style.AppThemeDark)
+        }else{
+            setTheme(R.style.AppTheme)
+        }
         setContentView(R.layout.activity_edit_contact)
 
         // on init WorkerThread
@@ -254,7 +260,7 @@ class EditContactActivity : AppCompatActivity() {
 
         edit_contact_DeleteContact!!.setOnClickListener {
             val delete = Runnable {
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this,R.style.AlertDialog)
                         .setTitle(R.string.edit_contact_alert_dialog_delete_contact_title)
                         .setMessage(R.string.edit_contact_alert_dialog_delete_contact_message)
                         .setPositiveButton("Oui") { _, _ ->
@@ -333,6 +339,17 @@ class EditContactActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+
+        val phoneTagList= resources.getStringArray(R.array.edit_contact_phone_number_arrays)
+        val adapterPhoneTagList= ArrayAdapter(this,R.layout.spinner_item,phoneTagList)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        edit_contact_Phone_Property!!.adapter=adapterPhoneTagList
+        val mailTagList= resources.getStringArray(R.array.edit_contact_mail_arrays)
+        val adapterMailTagList= ArrayAdapter(this,R.layout.spinner_item,mailTagList)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        edit_contact_Mail_Property!!.adapter=adapterMailTagList
     }
 
     //region ========================================== Functions ===========================================
@@ -400,7 +417,7 @@ class EditContactActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (isChanged) {
-                    val alertDialog = AlertDialog.Builder(this.applicationContext)
+                    val alertDialog = AlertDialog.Builder(this,R.style.AlertDialog)
                     alertDialog.setTitle(R.string.edit_contact_alert_dialog_cancel_title)
                     alertDialog.setMessage(R.string.edit_contact_alert_dialog_cancel_message)
 
@@ -527,7 +544,7 @@ class EditContactActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
 
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this,R.style.AlertDialog)
         builder.setTitle(R.string.edit_contact_alert_dialog_photo_title)
         builder.setItems(items) { dialog, i ->
             if (items[i] == getString(R.string.edit_contact_alert_dialog_photo_camera)) {
@@ -667,7 +684,7 @@ class EditContactActivity : AppCompatActivity() {
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): android.app.AlertDialog {
-        val alertDialogBuilder = android.app.AlertDialog.Builder(this)
+        val alertDialogBuilder = android.app.AlertDialog.Builder(this,R.style.AlertDialog)
         alertDialogBuilder.setTitle(R.string.alert_dialog_overlay_title)
         alertDialogBuilder.setMessage(R.string.alert_dialog_overlay_message)
         alertDialogBuilder.setPositiveButton(R.string.alert_dialog_yes

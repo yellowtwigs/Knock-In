@@ -5,7 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    android:background="?attr/backgroundColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/my_informations_layout_id"
@@ -14,7 +15,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:background="#f7f7f7">
+        android:background="?attr/backgroundColor">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -22,6 +23,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_marginBottom="8dp"
             android:background="?attr/transparentColor"
+            app:titleTextColor="?attr/textColor"
             app:title="@string/edit_info_toolbar_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +77,7 @@
             android:background="@drawable/selector_relative_layout_with_border"
             android:clickable="true"
             android:focusable="true"
+            android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_informations_profile_image">
@@ -86,7 +89,7 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/edit_informations_name"
-                android:textColor="#000"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +102,7 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:textColor="#000"
+                android:textColor="?attr/textColor"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,6 +127,9 @@
             android:layout_marginTop="35dp"
             android:hint="@string/add_new_contact_last_name"
             android:visibility="gone"
+            android:textColorHint="?attr/textColor"
+            android:background="?attr/backgroundColor"
+            android:theme="@style/EditTextStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,10 +139,11 @@
                 android:id="@+id/edit_informations_input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_edit_text"
+                android:background="?attr/backgroundColor"
+                android:textColorHint="?attr/textColor"
+                android:textColor="?attr/textColor"
                 android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textColor="@color/textColorDark" />
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,6 +154,7 @@
             android:background="@drawable/selector_relative_layout_with_border"
             android:clickable="true"
             android:focusable="true"
+            android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +167,7 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/edit_informations_email"
-                android:textColor="#000"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +180,7 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:textColor="#000"
+                android:textColor="?attr/textColor"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -196,7 +204,10 @@
             android:layout_height="@dimen/edit_text_height"
             android:layout_marginTop="20dp"
             android:hint="@string/add_new_contact_mail"
+            android:backgroundTint="?attr/backgroundColor"
+            android:textColor="?attr/textColor"
             android:visibility="gone"
+            android:textColorHint="?attr/textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -206,10 +217,11 @@
                 android:id="@+id/edit_informations_input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_edit_text"
+                android:background="?attr/backgroundColor"
+                android:textColorHint="?attr/textColor"
+                android:textColor="?attr/textColor"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textColor="@color/textColorDark" />
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -220,6 +232,7 @@
             android:background="@drawable/selector_relative_layout_with_border"
             android:clickable="true"
             android:focusable="true"
+            android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintTop_toBottomOf="@+id/edit_informations_mail_layout"
             tools:layout_editor_absoluteX="0dp">
 
@@ -230,7 +243,7 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/edit_informations_phone_number"
-                android:textColor="#000"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -243,7 +256,7 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:textColor="#000"
+                android:textColor="?attr/textColor"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -268,6 +281,7 @@
             android:layout_marginTop="20dp"
             android:hint="@string/add_new_contact_phone_number"
             android:visibility="gone"
+            android:textColorHint="?attr/textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -278,10 +292,11 @@
                 android:id="@+id/edit_informations_input_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_edit_text"
                 android:inputType="phone"
                 android:maxLines="1"
-                android:textColor="@color/textColorDark" />
+                android:background="?attr/backgroundColor"
+                android:textColorHint="?attr/textColor"
+                android:textColor="?attr/textColor"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -293,5 +308,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer"
+        android:backgroundTint="?attr/backgroundColor"
+        app:itemTextColor="?attr/textColor"
+        android:visibility="gone"/>
 </androidx.drawerlayout.widget.DrawerLayout>

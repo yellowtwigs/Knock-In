@@ -39,6 +39,12 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+            setTheme(R.style.AppThemeDark)
+        }else{
+            setTheme(R.style.AppTheme)
+        }
         setContentView(R.layout.activity_manage_notification)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)

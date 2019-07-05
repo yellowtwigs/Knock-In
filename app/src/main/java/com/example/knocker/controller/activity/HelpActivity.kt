@@ -1,5 +1,6 @@
 package com.example.knocker.controller.activity
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,6 +24,12 @@ class HelpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+            setTheme(R.style.AppThemeDark)
+        }else{
+            setTheme(R.style.AppTheme)
+        }
         setContentView(R.layout.activity_help)
 
         //region ========================================== Toolbar =========================================

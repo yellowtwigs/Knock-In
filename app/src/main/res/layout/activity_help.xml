@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activity.HelpActivity">
+    tools:context=".controller.activity.HelpActivity"
+    android:background="?attr/backgroundColor">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -12,6 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_marginBottom="8dp"
         android:background="?attr/transparentColor"
+        app:titleTextColor="?attr/textColor"
+        app:itemTextColor="?attr/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout_with_border"
+        android:background="?attr/backgroundColor"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -45,7 +48,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Tutoriel"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -57,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout_with_border"
+        android:background="?attr/backgroundColor"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/help_activity_q_and_r_id">
@@ -81,7 +84,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Contactez-nous"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView6"
@@ -93,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout_with_border"
+        android:background="?attr/backgroundColor"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/help_activity_contact_us_id">
@@ -118,7 +121,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="conditions d\'utilisation"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView5"
@@ -130,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_relative_layout_with_border"
+        android:background="?attr/backgroundColor"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toBottomOf="@+id/help_activity_terms_id">
@@ -153,7 +156,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Infos générales"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
