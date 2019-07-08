@@ -26,8 +26,8 @@ import java.util.concurrent.Executors
  * La Classe qui contient toute les fonctions qui touche à la synchronisation des contacts, les filtre et searchbar
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class ContactList(var contacts: List<ContactWithAllInformation>, var context: Context) {
-    constructor(context: Context) : this(mutableListOf<ContactWithAllInformation>(), context)
+class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var context: Context) {
+    constructor(context: Context) : this(arrayListOf<ContactWithAllInformation>(), context)
 
     private var mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
     private var contactsDatabase: ContactsRoomDatabase? = null
@@ -43,7 +43,8 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
             }
             val result = executorService.submit(callDb)
             println("result knocker" + result?.get())
-            val tmp: List<ContactWithAllInformation>? = result.get()
+            val tmp: ArrayList<ContactWithAllInformation> = arrayListOf<ContactWithAllInformation>()
+                tmp.addAll(result.get())
             if (tmp!!.isEmpty()) {
                 contacts = buildContactListFromJson(context)
             } else {
@@ -58,7 +59,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
         val callDb = Callable { contactsDatabase!!.contactsDao().getContactAllInfo() }
         val result = executorService.submit(callDb)
         println("result knocker" + result.get())
-        contacts = result.get()
+        contacts.addAll(result.get())
         //TODO verifiy with Ryan
 
     }
@@ -103,19 +104,27 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
         return null;
     }
 
+
     fun sortContactByFirstNameAZ() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
         val result = executorService.submit(callDb)
-        contacts = result.get()
+        val listChangement:ArrayList<ContactWithAllInformation> = ArrayList()
+        listChangement.addAll(result.get())
+        listChangement.retainAll(contacts)
+        contacts=listChangement
     }
 
     fun sortContactByPriority() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByPriority20() }
         val result = executorService.submit(callDb)
-        contacts = result.get()
+        val listChangement:ArrayList<ContactWithAllInformation> = ArrayList()
+        listChangement.addAll(result.get())
+        listChangement.retainAll(contacts)
+        contacts=listChangement
     }
+
 
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
@@ -255,8 +264,8 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
         return json
     }
 
-    fun buildContactListFromJson(context: Context): List<ContactWithAllInformation> {
-        var listContacts = mutableListOf<ContactWithAllInformation>()
+    fun buildContactListFromJson(context: Context): ArrayList<ContactWithAllInformation> {
+        var listContacts = arrayListOf<ContactWithAllInformation>()
         var contactString = loadJSONFromAsset(context)
         try {
             val jsArray = JSONArray(contactString)
@@ -623,7 +632,7 @@ class ContactList(var contacts: List<ContactWithAllInformation>, var context: Co
             deleteDeletedContactFromPhone(lastSyncList, phoneContactsList)
             storeLastSync(phoneContactsList, applicationContext, lastSyncList, false)
         }
-        gestionnaireContacts.contacts = syncContact!!
+        gestionnaireContacts.contacts.addAll(syncContact!!)
 
     }
 

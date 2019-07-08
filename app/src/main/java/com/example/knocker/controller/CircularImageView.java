@@ -1,6 +1,7 @@
 package com.example.knocker.controller;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -85,7 +86,12 @@ public class CircularImageView extends AppCompatImageView {
             float defaultBorderSize = DEFAULT_BORDER_WIDTH * getContext().getResources().getDisplayMetrics().density;
             setBorderWidth(attributes.getDimension(R.styleable.CircularImageView_civ_border_width, defaultBorderSize));
             setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
-            setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
+            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+            if(sharedThemePreferences.getBoolean("darkTheme",false)){
+                setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, getResources().getColor(R.color.backgroundColorDark)));
+            }else{
+                setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, getResources().getColor(R.color.backgroundColor)));
+            }
         }
         setBackgroundColor(attributes.getColor(R.styleable.CircularImageView_civ_background_color, Color.WHITE));
 
