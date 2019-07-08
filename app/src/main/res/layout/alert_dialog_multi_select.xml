@@ -60,7 +60,7 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/rounded_button_background_blue"
         android:text="@string/multi_select_alert_dialog_allow_it"
-        android:textColor="@color/whiteColor"
+        android:textColor="@color/lightColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/alert_dialog_multi_select_message" />

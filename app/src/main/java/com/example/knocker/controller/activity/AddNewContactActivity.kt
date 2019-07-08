@@ -156,19 +156,19 @@ class AddNewContactActivity : AppCompatActivity() {
                     add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
                     add_new_contact_RoundedImageView!!.visibility = View.GONE
                     add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
-                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                 } else if (position == 1) {
                     add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority1))
                     add_new_contact_RoundedImageView!!.visibility = View.GONE
                     add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
-                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                 } else if (position == 2) {
                     add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority2))
                     add_new_contact_RoundedImageView!!.visibility = View.GONE
                     add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
-                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                 }
                 println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
@@ -176,7 +176,7 @@ class AddNewContactActivity : AppCompatActivity() {
         }
         add_new_contact_Priority!!.setSelection(1)
         add_new_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
-        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+        add_new_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
         println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
 
 

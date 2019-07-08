@@ -16,6 +16,7 @@
             <flag name="end" value="5" />
         </attr>
 
+        <attr name="darkColor" format="color"/>
         <attr name="backgroundColor" format="color" />
         <attr name="transparentColor" format="color" />
         <attr name="darkGreyColor" format="color" />

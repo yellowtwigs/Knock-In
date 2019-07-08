@@ -12,7 +12,6 @@
         android:id="@+id/tri"
         android:title="@string/main_tri_title"
         android:enabled="false"
-        app:itemIconTint="?attr/textColor"
         />
     <group
         android:id="@+id/group_tri"

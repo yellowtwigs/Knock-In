@@ -16,10 +16,10 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="?attr/backgroundColor"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:background="?attr/backgroundColor"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/navigation"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,8 +32,11 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="10dp"
-                android:background="?attr/backgroundColor"
-                android:elevation="10dp">
+                android:background="@drawable/custom_shadow_background"
+                android:elevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/main_toolbar"
@@ -43,21 +46,20 @@
                     android:backgroundTint="?attr/backgroundColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/main_search_bar"
                     android:layout_width="225dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
                     android:layout_marginStart="50dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
                     android:background="?attr/backgroundColor"
                     android:hint="@string/main_search_hint"
                     android:inputType="textPersonName"
-                    app:textColor="?attr/textColor"
-                    android:textColorHint="@color/textColorDarkGrey"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -68,21 +70,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:paddingTop="10dp"
+                android:backgroundTint="?attr/backgroundColor"
                 android:columnWidth="120dp"
                 android:gravity="center"
-                android:backgroundTint="?attr/backgroundColor"
                 android:numColumns="auto_fit"
+                android:paddingTop="10dp"
                 android:visibility="visible" />
 
             <ListView
                 android:id="@+id/main_list_view_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="?attr/backgroundColor"
                 android:columnWidth="120dp"
                 android:gravity="center"
-                android:backgroundTint="?attr/backgroundColor"
                 android:numColumns="auto_fit"
                 android:visibility="gone" />
         </LinearLayout>
@@ -94,8 +98,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="50dp"
-            android:visibility="gone"
             android:background="@drawable/ic_sms"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -107,8 +111,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="50dp"
-            android:visibility="gone"
             android:background="@drawable/ic_whatsapp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/main_sms_button" />
@@ -120,8 +124,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="50dp"
-            android:visibility="gone"
             android:background="@drawable/ic_gmail"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toStartOf="@+id/main_sms_button"
             app:layout_constraintStart_toStartOf="parent" />
@@ -132,10 +136,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.70"
+            android:background="?attr/backgroundColor"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="20dp"
-            android:background="?attr/backgroundColor"
-            app:itemTextColor="?attr/textColor"
+            app:itemIconTint="@color/navigation_color"
+            app:itemTextColor="@color/navigation_color"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/main_navigation_view" />
@@ -148,7 +153,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
-        app:itemTextColor="?attr/textColor"
         app:headerLayout="@layout/nav_header_main"
+        app:itemIconTint="@color/navigation_color"
+        app:itemTextColor="@color/navigation_color"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>
