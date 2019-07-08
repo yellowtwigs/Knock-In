@@ -193,7 +193,7 @@ public class SelectContactAdapter extends BaseAdapter {
                 if (listSelectedItem.contains(getItem(position))) {
                     holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
                 } else {
-                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.whiteColor));
+                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor));
                 }
             }
             return gridview;

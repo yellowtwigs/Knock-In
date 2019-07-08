@@ -476,11 +476,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         super.onPrepareOptionsMenu(menu)
         val main_filter = intent.getStringArrayListExtra("Filter")
         if (main_filter != null && main_filter.contains("sms")) {
-            menu?.findItem(R.id.sms_filter)?.setChecked(true)
+            menu?.findItem(R.id.sms_filter)?.isChecked = true
             intent.putStringArrayListExtra("Filter", main_filter)
         }
         if (main_filter != null && main_filter.contains("mail")) {
-            menu?.findItem(R.id.mail_filter)?.setChecked(true)
+            menu?.findItem(R.id.mail_filter)?.isChecked = true
             intent.putStringArrayListExtra("Filter", main_filter)
         }
         return true
@@ -528,9 +528,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
                         main_Listview!!.adapter = listViewAdapter
                     }
-                    //
                 } else {
-                    item.setChecked(true)
+                    item.isChecked = true
                     main_filter.add("sms")
                     // duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
@@ -554,7 +553,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_Listview!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
-                    //
                 }
                 return true
             }
@@ -586,7 +584,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_Listview!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
-                    //
                 } else {
                     item.setChecked(true)
                     main_filter.add("mail")
@@ -610,7 +607,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                         listViewAdapter!!.notifyDataSetChanged()
                     }
-                    //
                 }
                 return true
             }
@@ -783,7 +779,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         } catch (e: Exception) {
             false
         }
-
     }
 
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {

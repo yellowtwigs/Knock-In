@@ -4,8 +4,8 @@
     <!-- This is the stroke you want to define -->
     <stroke android:width="0.30dp"
         android:color="@color/darkGreyColor"/>
-    <gradient android:startColor="@color/lightGreyColor"
-        android:centerColor="@color/lightGreyColor"
-        android:endColor="@color/lightGreyColor"
+    <gradient android:startColor="?attr/lightGreyColor"
+        android:centerColor="?attr/lightGreyColor"
+        android:endColor="?attr/lightGreyColor"
         android:angle="90"/>
 </shape>

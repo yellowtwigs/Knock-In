@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -23,7 +21,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -123,7 +120,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 holder.contactRoundedImageView.getLayoutParams().width -= width * 0.25;
                 layoutParamsTV.topMargin = 10;
                 layoutParamsIV.topMargin = 10;
-            } else if (len == 5 ) {
+            } else if (len == 5) {
                 holder.contactRoundedImageView.getLayoutParams().height -= height * 0.40;
                 holder.contactRoundedImageView.getLayoutParams().width -= width * 0.40;
                 layoutParamsTV.topMargin = 0;
@@ -219,7 +216,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         final ImageView buttonEdit = new ImageView(context);
         final ImageView buttonMail = new ImageView(context);
 
-      //  buttonMessenger.setId(0);
+        //  buttonMessenger.setId(0);
         buttonCall.setId(1);
         buttonSMS.setId(2);
         buttonWhatsApp.setId(3);
@@ -240,13 +237,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonWhatsApp.setImageDrawable(iconWhatsApp);
         Drawable iconSMS = null;
 
-        buttonSMS.setImageResource(R.drawable.ic_google_messages);
+        buttonSMS.setImageResource(R.drawable.ic_sms);
         buttonEdit.setImageResource(R.drawable.ic_edit);
         buttonMail.setImageResource(R.drawable.ic_rounded_gmail);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
         builderIcon.setContentView(buttonCall);
+
         int startAngle;
         int endAngle;
         if (position % len == 0) {
@@ -290,7 +288,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
 
-
        /* if( appIsInstalled( "com.facebook.orca")){
             builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton);
         }*/
@@ -310,7 +307,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     } catch (ActivityNotFoundException e) {
                         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
                     }
-                } else*/ if (v.getId() == buttonWhatsApp.getId()) {
+                } else*/
+                if (v.getId() == buttonWhatsApp.getId()) {
 
                     ContactWithAllInformation contactWithAllInformation = getItem(position);
                     ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
@@ -345,7 +343,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 selectMenu.close(true);
             }
         };
-        
+
         View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

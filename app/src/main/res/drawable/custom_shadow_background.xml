@@ -2,11 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/transparentColor" />
+            <solid android:color="?attr/backgroundColor" />
             <stroke
                 android:width="1dp"
-                android:color="@color/textColorDark" />
-            <corners android:radius="50dp" />
+                android:color="?attr/darkColor" />
+            <corners
+
+                android:radius="50dp" />
         </shape>
     </item>
 
@@ -16,7 +18,7 @@
         android:right="2dp"
         android:top="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/transparentColor" />
+            <solid android:color="?attr/transparentColor" />
             <corners android:radius="15dp" />
         </shape>
     </item>

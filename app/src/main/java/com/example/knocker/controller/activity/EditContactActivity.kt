@@ -210,17 +210,17 @@ class EditContactActivity : AppCompatActivity() {
             when(edit_contact_priority) {
                 0 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     println("red")
                 }
                 1 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     println("no color ")
                 }
                 2 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     println("yellow")
                 }
             }
@@ -314,20 +314,20 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
                     edit_contact_RoundedImageView!!.visibility=View.GONE
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility=View.VISIBLE
                     println("red color choosen")
                 } else if (position == 1) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
                     edit_contact_RoundedImageView!!.visibility=View.GONE
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility=View.VISIBLE
                 } else if (position == 2) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
                     edit_contact_RoundedImageView!!.visibility=View.GONE
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.whiteColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility=View.VISIBLE
                     println("yellow color choosen")
                     if (Build.VERSION.SDK_INT >= 23) {
