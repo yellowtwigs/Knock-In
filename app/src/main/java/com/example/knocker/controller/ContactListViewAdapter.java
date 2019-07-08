@@ -134,6 +134,7 @@ public class ContactListViewAdapter extends BaseAdapter {
                 holder.smsCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_sms);
                 holder.whatsappCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
                 holder.mailCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_mail);
+                holder.editCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_edit);
             }
         } else {
             listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);

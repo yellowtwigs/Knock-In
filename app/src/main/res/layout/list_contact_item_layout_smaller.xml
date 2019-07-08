@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="bla bla"
+            android:textColor="?attr/textColor"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/list_contact_item_contactRoundedImageView"
             app:layout_constraintStart_toEndOf="@+id/list_contact_item_contactRoundedImageView"
