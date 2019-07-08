@@ -20,7 +20,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/custom_shadow_background"
+            android:background="?attr/backgroundColor"
             android:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,10 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:alpha="0.70"
-                android:background="?attr/backgroundColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/notification_history_search_bar"
@@ -43,10 +42,9 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="8dp"
-                android:background="@color/transparentColor"
+                android:background="?attr/backgroundColor"
                 android:hint="@string/notification_history_search_hint"
                 android:inputType="textPersonName"
-                android:backgroundTint="?attr/backgroundColor"
                 android:textColor="?attr/textColor"
                 android:textColorHint="@color/textColorDarkGrey"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +76,7 @@
             app:menu="@menu/main_navigation_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+<!--
   <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -87,5 +85,5 @@
         app:headerLayout="@layout/nav_header_main"
         android:background="?attr/backgroundColor"
         app:itemTextColor="?attr/textColor"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer" />-->
 </androidx.drawerlayout.widget.DrawerLayout>

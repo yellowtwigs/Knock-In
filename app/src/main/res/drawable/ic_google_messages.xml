@@ -3,7 +3,6 @@
     android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
         <clip-path android:pathData="M0,0h471v461h-471z M 0,0"/>
-        <path android:fillColor="#F1F3F4" android:pathData="M0,0h471v461h-471z"/>
         <path android:fillColor="#315BC8" android:pathData="M0,230.5a235.5,230.5 0,1 0,471 0a235.5,230.5 0,1 0,-471 0z"/>
         <path android:fillColor="#FFFFFF" android:pathData="M122,136.792L122,136.792L122,204L102.172,170.457L92.07,154.313C86.019,144.643 90.368,136.806 101.775,136.823L121.961,136.853L122,136.792Z"/>
         <path android:fillColor="#FFFFFF" android:pathData="M121.894,136.74L322.723,136.74C347.16,136.74 367,156.58 367,181.017L367,293.723C367,318.16 347.16,338 322.723,338L166.171,338C141.734,338 121.894,318.16 121.894,293.723L121.894,136.74Z"/>

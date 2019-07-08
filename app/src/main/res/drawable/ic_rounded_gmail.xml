@@ -3,7 +3,6 @@
     android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
         <clip-path android:pathData="M0,0h218v221h-218z M 0,0"/>
-        <path android:fillColor="#F1F3F4" android:pathData="M0,0h218v221h-218z"/>
         <path android:fillColor="#E65C4F" android:pathData="M0,110.5a109,110.5 0,1 0,218 0a109,110.5 0,1 0,-218 0z"/>
         <path android:fillColor="#FFFFFF" android:pathData="M8.5,110.5a100.5,103.5 0,1 0,201 0a100.5,103.5 0,1 0,-201 0z"/>
         <path android:fillColor="#E6E3D6"
