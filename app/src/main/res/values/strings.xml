@@ -6,7 +6,7 @@
     <!-- region Help Tutorial -->
 
     <string name="help">Help</string>
-    <string name="help_main">Sur cet écran vous pouvez voir tous les contacts enregistrés le carnet d\'adresses de Knocker</string>
+    <string name="help_main">On this page you see your contacts Knocker</string>
     <string name="help_notification_history">Sur cet écran vous pouvez voir toutes les notifications reçues</string>
     <string name="help_phone_log">Sur cet écran vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
     <string name="help_manage_screen">Sur cet écran vous pouvez choisir comment afficher vos contacts et activer/désactiver la popups d\'appel un contact</string>
