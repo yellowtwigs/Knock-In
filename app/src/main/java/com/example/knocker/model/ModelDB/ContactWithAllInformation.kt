@@ -61,5 +61,20 @@ class ContactWithAllInformation {
         println("test getContactID "+test)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if(other is ContactWithAllInformation){
+            if(other.contactDB!!.equals(this.contactDB)){
+                println("is printing true")
+                return true
+            }else{
+                println("is printing false")
+                return false
+            }
+        }else{
+            return false
+        }
+        return super.equals(other)
+    }
+
 
 }

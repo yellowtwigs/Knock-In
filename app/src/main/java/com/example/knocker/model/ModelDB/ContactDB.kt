@@ -32,4 +32,5 @@ data class ContactDB(
          * Image de profile du contact convertis en base 64.
          */
         @ColumnInfo(name = "profile_picture_str") val profilePicture64: String
+
 )

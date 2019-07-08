@@ -91,7 +91,7 @@ class MultiSelectActivity : AppCompatActivity() {
         alertDialog.cancel()
     }
 
-    private fun overlayAlertDialog(contactList: List<ContactWithAllInformation>): android.app.AlertDialog {
+    private fun overlayAlertDialog(contactList: ArrayList<ContactWithAllInformation>): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
         var message = ""
