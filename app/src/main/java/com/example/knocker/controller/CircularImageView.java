@@ -88,10 +88,8 @@ public class CircularImageView extends AppCompatImageView {
             setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
             if(sharedThemePreferences.getBoolean("darkTheme",false)){
-                System.out.println("theme Dark");
                 setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, getResources().getColor(R.color.backgroundColorDark)));
             }else{
-                System.out.println("theme light");
                 setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, getResources().getColor(R.color.backgroundColor)));
             }
         }
