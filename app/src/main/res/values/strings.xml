@@ -205,6 +205,7 @@
     <string name="notification_manager_stop_popup">Autorisez Knocker à afficher des notifications prioritaire</string>
     <string name="notification_manager_stop_service">Activez le service de notification</string>
     <string name="notification_manager_horaire">Choisissez l\'horaire de rappel pour voir les notifications ratées</string>
+    <string name="notification_manager_prio_1">Masquer les notification de priorité 1</string>
 
     <!-- endregion -->
 

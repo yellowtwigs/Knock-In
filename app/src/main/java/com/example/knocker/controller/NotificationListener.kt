@@ -131,7 +131,9 @@ class NotificationListener : NotificationListenerService() {
                                 }
                             }
                             contact.contactDB!!.contactPriority == 1 -> {
-
+                                if(sharedPreferences.getBoolean("mask_prio_1",false)){
+                                    this.cancelNotification(sbn.key)
+                                }
                             }
                             contact.contactDB!!.contactPriority == 0 -> {
                                 println("priority 0")

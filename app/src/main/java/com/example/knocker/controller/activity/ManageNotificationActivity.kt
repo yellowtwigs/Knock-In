@@ -34,7 +34,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     // Show on the Main Layout
     private var drawerLayout: DrawerLayout? = null
-
+    private var activityVisible:Boolean=false
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +51,14 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
+        val switchMaskNotif= this.findViewById<Switch>(R.id.switch_manage_notif_prio_1)
+
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
         switchPopupNotif.isChecked = sharedPreferences.getBoolean("popupNotif", false)
         switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
-
+        switchMaskNotif.isChecked = sharedPreferences.getBoolean("mask_prio_1",false)
         var hour = sharedPreferences.getInt("remindHour", 18)
         var minute = sharedPreferences.getInt("remindMinute", 0)
 
@@ -127,7 +129,32 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-
+        switchMaskNotif.setOnCheckedChangeListener(){_,_ ->
+            val edit:SharedPreferences.Editor= sharedPreferences.edit()
+            if (switchMaskNotif.isChecked){
+                if (!isNotificationServiceEnabled) {
+                    buildNotificationServiceAlertDialog().show()
+                }else{
+                    switchservice.setChecked(true)
+                    edit.putBoolean("serviceNotif", true)
+                    edit.putBoolean("mask_prio_1", true)
+                    edit.apply()
+                }
+                val thread =Thread {
+                   while (!isNotificationServiceEnabled || !activityVisible) {
+                   }
+                    if (!isNotificationServiceEnabled) {
+                        switchservice.setChecked(true)
+                        edit.putBoolean("serviceNotif", true)
+                        edit.putBoolean("mask_prio_1", true)
+                        edit.apply()
+                    }
+                }
+            } else {
+                edit.putBoolean("mask_prio_1", false)
+                edit.commit()
+            }
+        }
         switchservice.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchservice.isChecked) {
@@ -136,8 +163,10 @@ class ManageNotificationActivity : AppCompatActivity() {
             } else {
 
                 switchPopupNotif.setChecked(false)
+                switchMaskNotif.setChecked(false)
                 edit.putBoolean("serviceNotif", false)
                 edit.putBoolean("popupNotif", false)
+                edit.putBoolean("mask_prio_1", false)
                 edit.commit()
             }
         }
@@ -266,4 +295,21 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     //endregion
+
+
+
+    override fun onResume() {
+        super.onResume()
+        activityVisible = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activityVisible = false
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activityVisible = true
+    }
 }
