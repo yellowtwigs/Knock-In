@@ -711,6 +711,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val contactGroup = listOf<Triple<Int, String, String>>()
         val contactDetail = contactNumberAndPic.union(contactMail)
         //       println("PHONE GROUP = "+contactGroup)
+        contacts.clear()
         createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, this)
     }
 //endregion
