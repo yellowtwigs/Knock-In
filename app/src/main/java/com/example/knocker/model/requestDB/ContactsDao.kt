@@ -24,25 +24,25 @@ interface ContactsDao {
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY first_name COLLATE NOCASE DESC")
-    fun sortContactByFirstNameZA(): List<ContactDB>
+    fun sortContactByFirstNameZA(): List<ContactWithAllInformation>
     /**
      * Récupère les [contacts][ContactDB] trier par nom A->Z
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY last_name COLLATE NOCASE ASC")
-    fun sortContactByLastNameAZ(): List<ContactDB>
+    fun sortContactByLastNameAZ(): List<ContactWithAllInformation>
     /**
      * Récupère les [contacts][ContactDB] trier par nom Z->A
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY last_name COLLATE NOCASE DESC")
-    fun sortContactByLastNameZA(): List<ContactDB>
+    fun sortContactByLastNameZA(): List<ContactWithAllInformation>
     /**
      * Récupere les [contacts][ContactDB] trier par priorité 0->2
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY contact_priority ASC")
-    fun sortContactByPriority02(): List<ContactDB>
+    fun sortContactByPriority02(): List<ContactWithAllInformation>
     /**
      * Récupere les [contacts][ContactDB] trier par priorité 2->0
      * @return List&lt[ContactDB]&gt

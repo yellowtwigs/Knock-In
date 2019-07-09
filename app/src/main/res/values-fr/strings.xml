@@ -317,4 +317,9 @@
     <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
 
     <!-- endregion !-->
+
+
+    <!-- region Group -->
+    <string name="group_search_hint">Rechercher</string>
+    <!--endregion -->
 </resources>

@@ -84,6 +84,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             R.id.navigation_phone_book -> {
             }
             R.id.navigation_groups -> {
+                startActivity(Intent(this@MainActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
                 startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
