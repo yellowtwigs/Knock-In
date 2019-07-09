@@ -18,7 +18,6 @@
         android:right="2dp"
         android:top="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="?attr/transparentColor" />
             <corners android:radius="15dp" />
         </shape>
     </item>
