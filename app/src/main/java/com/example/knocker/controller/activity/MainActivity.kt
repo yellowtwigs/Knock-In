@@ -615,7 +615,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.tri_par_nom -> {
                 if (!item.isChecked) {
-                    item.isChecked = true;
+                    item.isChecked = true
                     gestionnaireContacts!!.sortContactByFirstNameAZ()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
@@ -627,7 +627,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_Listview!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
-
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putString("tri", "nom")
                     edit.apply()

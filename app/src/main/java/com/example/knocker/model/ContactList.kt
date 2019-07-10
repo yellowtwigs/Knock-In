@@ -42,7 +42,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                         .getContactAllInfo()
             }
             val result = executorService.submit(callDb)
-            println("result knocker" + result?.get())
             val tmp: ArrayList<ContactWithAllInformation> = arrayListOf<ContactWithAllInformation>()
                 tmp.addAll(result.get())
             if (tmp!!.isEmpty()) {
@@ -146,7 +145,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             val result = executorService.submit(callDb)
             filter = result.get()
             if (filter != null && filter.isEmpty() == false) {
-                println("MAILLLLLLLL="+filter)
                 allFilters.add(filter)
             }
         }
@@ -198,13 +196,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             if (contact.contactDetailList != null) {
                 contact.contactDetailList!!.forEach {
                     if (it.type == "phone" && isSameNumber(name, it.content)) {
-                        println("contact name =" + contact.contactDB!!.firstName + " Number = " + it.content)
                         finalList.add(contact)
                     }
                 }
             }
         }
-        println("NUMBERRRRRR !!!! = " + finalList)
         return finalList
     }
 
@@ -239,8 +235,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
 
         val contactList = getContactByName(name)
-        println("BEFOR INTERSECT ="+contactList)
-        println("SECONDE LIST = "+contactFilterList)
         if (contactFilterList != null) {
             return intersectContactWithAllInformation(contactList, contactFilterList)
         }
@@ -285,8 +279,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val profilPicture: Int = R.drawable.img_avatar
         val contactPriority: Int = json.getInt("contact_priority")
         val profilPictureStr: String = json.getString("profile_picture_str")
-
-        println("contact :" + firstName + " " + lastName)
         val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr)
         val contactInfo = ContactWithAllInformation()
         contactInfo.contactDB = contact
@@ -301,14 +293,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1)
         return mutableListOf<ContactDetailDB>(contactDetails, contactDetails2)
     }
-    /*   fun getContactId(id:Int): ContactWithAllInformation? {
-        for (contactJSON in contacts){
-            if(contactJSON.contactDB!!.id==id){
-                return contactJSON
-            }
-        }
-        return null
-    }*/
 
     //endregion
 
@@ -372,8 +356,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     private fun isDuplicateNumber(idAndPhoneNumber: Map<Int, Any>, contactPhoneNumber: List<Map<Int, Any>>): Boolean {
         contactPhoneNumber.forEach {
-            //println("IT = "+it[2]+" IDANDPHONE = "+idAndPhoneNumber[2])
-            //println("SAME IT = "+it[2].toString().replace("\\s".toRegex(), "")+" IDANDPHONE = "+idAndPhoneNumber[2].toString().replace("\\s".toRegex(), ""))
             if (it[1] == idAndPhoneNumber[1] && it[2].toString().replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString().replace("\\s".toRegex(), "")) {
                 println("IT = " + it[2] + " IDANDPHONE = " + idAndPhoneNumber[2])
                 return true
@@ -410,8 +392,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             var phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
             if (phoneEmail == null)
                 phoneEmail = ""
-
-            println(phoneId + "=id email = " + phoneEmail + " tag=\"" + phoneTag + "\"")
             if (phoneTag == null) {
                 phoneTag = "0"
             }
@@ -561,7 +541,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                     isDelete = false
             }
             if (isDelete == true) {
-                println("NEW = " + old.second + "   id = " + old.first)
                 contactsDatabase?.contactsDao()?.deleteContactById(old.first)
             }
         }
@@ -579,30 +558,49 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return contactDetails
     }
 
+    private fun getGroupsAndLinks(id: Int, contactGroup: List<Triple<Int, String?, String?>>): List<GroupDB> {
+        val contactGroups = arrayListOf<GroupDB>()
+        var linkAndGroup: GroupDB
+        contactGroup.forEach {
+            if (it.first == id) {
+                linkAndGroup = GroupDB(null, it.third!!, "")
+                contactGroups.add(linkAndGroup)
+            }
+        }
+        return contactGroups
+    }
+
     fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
         val lastId = arrayListOf<Int>()
+        var ContactLinksGroup : Pair<LinkContactGroup, GroupDB>
+        var listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val applicationContext = this.context
         val callDb = Callable {
             val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             phoneStructName!!.forEach { fullName ->
                 contactNumberAndPic.forEach { numberPic ->
-                    ///////////////////////////////////////
                     val id = numberPic[1].toString().toInt()
                     if (!lastId.contains(id)) {
                         val contactDetails = getDetailsById(id, contactNumberAndPic)
-                        //addGroupInDatabase(contactGroup, id)
+                        val contactGroups = getGroupsAndLinks(id, contactGroup)
                         if (fullName.first == numberPic[1]) {
                             lastId.add(id)
                             if (fullName.second.second == "") {
                                 val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
                                 if (!isDuplicate(allcontacts, contacts)) {
-
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
                                     for (details in contactDetails) {
                                         details.idContact = contacts.id
                                     }
+                                    for (groups in contactGroups) {
+                                        val links = LinkContactGroup(0, contacts.id!!.toInt())
+                                        ContactLinksGroup = Pair(links,groups)
+                                        listLinkAndGroup.add(ContactLinksGroup)
+                                    }
+                                    saveGroupsAndLinks(listLinkAndGroup)
+                                    listLinkAndGroup.clear()
                                     contactsDatabase!!.contactsDao().insertDetails(contactDetails)
                                 }
                                 phoneContactsList.add(contacts)
@@ -677,38 +675,29 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return false
     }
 
-    private fun addGroupInDatabase(contactGroup: List<Triple<Int, String?, String?>>, contactId: Int) {
-        println("THE ID IS => " + contactId)
-        var group = GroupDB(null, "", "")
-        contactGroup.forEach {
-            if (it.first == contactId)
-                group = GroupDB(null, it.third!!, "")
-        }
-        if (group.name != "") {
-            println("GROUP OMG = " + group)
-            val groupId: Int?
-            val dbGroup = contactsDatabase?.GroupsDao()!!.getGroupWhithName(group.name)
-            println("DB GROUP =" + dbGroup)
+    private fun saveGroupsAndLinks(listLinkAndGroup: List<Pair<LinkContactGroup, GroupDB>>) {
+        listLinkAndGroup.forEach {
+            val dbGroup = contactsDatabase?.GroupsDao()!!.getGroupWhithName(it.second.name)
+            var groupId = 0
             if (dbGroup == null) {
-                groupId = contactsDatabase?.GroupsDao()!!.insert(group)!!.toInt()
-                println("GROUP INSERT BECAUSE NULL")
+                groupId = contactsDatabase?.GroupsDao()!!.insert(it.second)!!.toInt()
             } else {
                 groupId = dbGroup.id!!.toInt()
             }
-            val link = LinkContactGroup(groupId, contactId)
-            println("LINK CONTACT = " + link)
-            println("RESULT = " + contactsDatabase?.LinkContactGroupDao()!!.getAllLinkContactGroup())
-            contactsDatabase?.LinkContactGroupDao()!!.insert(link)
+            if (groupId != 0) {
+                contactsDatabase?.LinkContactGroupDao()!!.insert(LinkContactGroup(groupId, it.first.idContact))
+            }
         }
     }
 
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver) {
         val phoneStructName = getStructuredNameSync(main_contentResolver)
         println("PHONE STRUCT = " + phoneStructName)
+
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
         val contactMail = getContactMailSync(main_contentResolver)
-//        val contactGroup = getContactGroupSync(main_contentResolver)
-        val contactGroup = listOf<Triple<Int, String, String>>()
+        val contactGroup = getContactGroupSync(main_contentResolver)
+        //val contactGroup = listOf<Triple<Int, String, String>>()
         val contactDetail = contactNumberAndPic.union(contactMail)
         //       println("PHONE GROUP = "+contactGroup)
         contacts.clear()
