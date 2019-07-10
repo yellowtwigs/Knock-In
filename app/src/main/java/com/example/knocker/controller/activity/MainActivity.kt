@@ -31,12 +31,10 @@ import com.example.knocker.*
 import com.example.knocker.controller.*
 import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
 import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
-import kotlinx.android.synthetic.main.content_main.*
-import java.util.*
+import com.example.knocker.controller.activity.group.GroupActivity
 import kotlin.collections.ArrayList
 
 /**

@@ -489,6 +489,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             lastSyncSplit.forEach {
                 if (it != "") {
                     val idAndNameSplit = it.split(":")
+                    println("id and name split"+it)
                     idAndName = Pair(idAndNameSplit[0].toInt(), idAndNameSplit[1])
                     lastSyncList.add(idAndName)
                 }
@@ -697,7 +698,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
         val contactMail = getContactMailSync(main_contentResolver)
         val contactGroup = getContactGroupSync(main_contentResolver)
-        //val contactGroup = listOf<Triple<Int, String, String>>()
+//        val contactGroup = listOf<Triple<Int, String, String>>()
+        println("contact group "+contactGroup)
         val contactDetail = contactNumberAndPic.union(contactMail)
         //       println("PHONE GROUP = "+contactGroup)
         contacts.clear()

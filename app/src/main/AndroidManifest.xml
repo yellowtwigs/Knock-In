@@ -37,7 +37,7 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.GroupActivity"></activity>
+        <activity android:name=".controller.activity.group.GroupActivity"></activity>
         <activity android:name=".controller.activity.MultiChannelActivity" />
         <activity
             android:name=".controller.activity.NotificationAlarmActivity"

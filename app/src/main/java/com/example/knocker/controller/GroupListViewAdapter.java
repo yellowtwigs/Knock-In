@@ -60,6 +60,9 @@ public class GroupListViewAdapter extends BaseAdapter {
         ViewHolder holder = new ViewHolder();
         holder.groupGrid=listView.findViewById(R.id.grid_group);
         ContactGridViewAdapter adapter= new ContactGridViewAdapter(context,contactList,len);
+
+        holder.groupGrid.setColumnWidth(len);
+        holder.groupGrid.setAdapter(adapter);
         return listView;
     }
 

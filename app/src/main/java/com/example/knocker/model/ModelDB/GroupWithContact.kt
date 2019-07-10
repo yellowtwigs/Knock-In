@@ -9,8 +9,8 @@ class GroupWithContact {
     fun getListContact(context: Context):ArrayList<ContactWithAllInformation>{
         val contactRoom=ContactsRoomDatabase.getDatabase(context)
         val listContact:ArrayList<ContactWithAllInformation> = arrayListOf<ContactWithAllInformation>()
-        for(link in linkContactList!!) {
-            listContact.add(contactRoom!!.contactsDao().getContact(link.idContact))
+        for(idContact in ContactIdList!!) {
+            listContact.add(contactRoom!!.contactsDao().getContact(idContact))
         }
         return listContact
     }
@@ -18,8 +18,8 @@ class GroupWithContact {
     @Embedded
     var groupDB: GroupDB? = null
 
-    @Relation(parentColumn = "id", entityColumn = "id_contact", entity = LinkContactGroup::class,projection = arrayOf("id_group"))
-    var linkContactList: List<LinkContactGroup>? = null
+    @Relation(parentColumn = "id", entityColumn = "id_group", entity = LinkContactGroup::class,projection = arrayOf("id_contact"))
+    var ContactIdList: List<Int>? = null
 
     //var contactList:List<ContactDB>?= null
 

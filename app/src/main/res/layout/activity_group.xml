@@ -56,7 +56,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
                     android:background="?attr/backgroundColor"
-                    android:hint="@string/group_search_hint"
+                    android:hint=""
                     android:inputType="textPersonName"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor"
@@ -65,12 +65,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/group_list_view_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:backgroundTint="?attr/backgroundColor"
+                android:background="?attr/backgroundColor"
                 android:columnWidth="120dp"
                 android:gravity="center"
                 android:numColumns="auto_fit"

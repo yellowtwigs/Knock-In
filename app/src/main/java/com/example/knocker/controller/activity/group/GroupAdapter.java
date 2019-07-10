@@ -1,0 +1,105 @@
+package com.example.knocker.controller.activity.group;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.knocker.R;
+import com.example.knocker.controller.CircularImageView;
+import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+
+import java.util.List;
+import java.util.Random;
+
+
+public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewHolder> {
+//    private static final int COUNT = 100;
+    private final Context context;
+    private final List<ContactWithAllInformation> contactList;
+    private int mCurrentItemId = 0;
+
+    public static class SimpleViewHolder extends RecyclerView.ViewHolder {
+        public final TextView firstName;
+        public final TextView lastName;
+        public final CircularImageView circularImageView;
+
+        public SimpleViewHolder(View view) {
+            super(view);
+            firstName = (TextView) view.findViewById(R.id.grid_adapter_contactFirstName);
+            lastName = (TextView) view.findViewById(R.id.grid_adapter_contactLastName);
+            circularImageView= (CircularImageView) view.findViewById(R.id.contactRoundedImageView);
+        }
+    }
+
+    public GroupAdapter(Context context,List<ContactWithAllInformation> contactList) {
+        this.context = context;
+        this.contactList=contactList;
+    }
+
+    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
+        return new SimpleViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(SimpleViewHolder holder, final int position) {
+        holder.firstName.setText(contactList.get(position).getContactDB().getFirstName());
+        holder.lastName.setText(contactList.get(position).getContactDB().getLastName());
+    }
+
+
+
+    public void removeItem(int position) {
+        contactList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return contactList.size();
+    }
+
+
+
+
+
+    private int randomDefaultImage(int avatarId, String createOrGet) {
+        if (createOrGet.equals("Create")) {
+            return new Random().nextInt(7);
+        } else if (createOrGet.equals("Get")) {
+            switch (avatarId) {
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_knocker;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_orange;
+                case 6:
+                    return R.drawable.ic_user_pink;
+                default:
+                    return R.drawable.ic_user_blue;
+            }
+        }
+        return -1;
+    }
+    private Bitmap base64ToBitmap(String base64) {
+
+        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        //options.inSampleSize = 2;
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
+    }
+}
