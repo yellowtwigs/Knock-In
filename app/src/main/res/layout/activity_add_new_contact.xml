@@ -193,8 +193,7 @@
             android:spinnerMode="dropdown"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view"
-            android:background="?attr/backgroundColor"
-            android:textColor="?attr/textColor" />
+            />
 
         <TextView
             android:id="@+id/add_new_contact_priority_explain"

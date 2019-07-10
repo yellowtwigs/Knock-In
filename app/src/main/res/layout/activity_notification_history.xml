@@ -20,7 +20,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
-            android:background="?attr/backgroundColor"
+            android:background="@drawable/custom_shadow_background"
             android:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,8 +56,10 @@
         <ListView
             android:id="@+id/listView_notification_history"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notification_history_toolbar_layout" />

@@ -375,13 +375,9 @@ class PhoneLogActivity : AppCompatActivity() {
 
         phone_log_ButtonAddContact!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                if (isValidPhone(phone_log_PhoneNumberEditText!!.text.toString())) {
                     val intent = Intent(this@PhoneLogActivity, AddNewContactActivity::class.java)
                     intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
                     startActivity(intent)
-                } else {
-                    Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
-                }
             } else {
                 Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }

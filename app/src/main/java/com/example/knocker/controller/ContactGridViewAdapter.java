@@ -331,14 +331,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 } else if (v.getId() == buttonMail.getId()) {
 
                     String mail = getItem(position).getFirstMail();
-                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
                     intent.setData(Uri.parse("mailto:"));
-                    intent.setType("text/html");
+                    //intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
                     intent.putExtra(Intent.EXTRA_SUBJECT, "");
                     intent.putExtra(Intent.EXTRA_TEXT, "");
                     println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
-                    context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
+                    context.startActivity(intent);
                 }
                 selectMenu.close(true);
             }

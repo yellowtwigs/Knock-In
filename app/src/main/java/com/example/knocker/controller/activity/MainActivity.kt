@@ -488,6 +488,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     @SuppressLint("ShowToast")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        gridViewAdapter!!.closeMenu()
         when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
