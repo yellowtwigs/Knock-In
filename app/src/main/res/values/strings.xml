@@ -281,7 +281,7 @@
     <!-- region Multi Select in First Launch-->
 
     <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
-
+    <string name="multi_select_title">Sélectionner vos contacts prioritaires </string>
     <!-- region Alert Dialog -->
 
     <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
