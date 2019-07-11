@@ -1,6 +1,7 @@
 package com.example.knocker.controller
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.KeyguardManager
 import android.app.Notification
 import android.content.*
@@ -11,11 +12,13 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
+import android.view.*
+import android.view.View.X
+import android.view.View.Y
+import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.PopupWindow
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.knocker.R
 import com.example.knocker.controller.activity.NotificationAlarmActivity
@@ -87,7 +90,7 @@ class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         val sbp = StatusBarParcelable(sbn)
-        if (sharedPreferences.getBoolean("serviceNotif", false)&& messagesNotUseless(sbp)){
+        if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
             sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
             val name = sbp.statusBarNotificationInfo.get("android.title").toString()
             val app = this.convertPackageToString(sbp.appNotifier)
@@ -97,7 +100,7 @@ class NotificationListener : NotificationListenerService() {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
-                if (notification != null && notificationNotDouble(notification) && sbp.appNotifier!=this.packageName) {
+                if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName) {
                     if (!notification.platform.equals(this.packageName)) {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                     }
@@ -116,14 +119,14 @@ class NotificationListener : NotificationListenerService() {
                         println("I know this contact" + contact)
                         when {
                             contact.contactDB!!.contactPriority == 2 -> {
-                                val screenListener:KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                                if(screenListener.isKeyguardLocked){
+                                val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                                if (screenListener.isKeyguardLocked) {
                                     println("screenIsLocked")
-                                    val i=Intent(this@NotificationListener,NotificationAlarmActivity::class.java)
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    i.putExtra("notification",sbp)
+                                    val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
+                                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                    i.putExtra("notification", sbp)
                                     startActivity(i)
-                                }else {
+                                } else {
 
                                     println("screenIsUnlocked")
                                     displayLayout(sbp, sharedPreferences)
@@ -131,7 +134,7 @@ class NotificationListener : NotificationListenerService() {
                                 }
                             }
                             contact.contactDB!!.contactPriority == 1 -> {
-                                if(sharedPreferences.getBoolean("mask_prio_1",false)){
+                                if (sharedPreferences.getBoolean("mask_prio_1", false)) {
                                     this.cancelNotification(sbn.key)
                                 }
                             }
@@ -143,14 +146,14 @@ class NotificationListener : NotificationListenerService() {
                     } else {
                         println("I don't know this contact" + contact)
                         if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
-                            val screenListener:KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                            if(screenListener.isKeyguardLocked){
+                            val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                            if (screenListener.isKeyguardLocked) {
                                 println("screenIsLocked")
-                                val i=Intent(this@NotificationListener,NotificationAlarmActivity::class.java)
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                i.putExtra("notification",sbp)
+                                val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
+                                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                i.putExtra("notification", sbp)
                                 startActivity(i)
-                            }else {
+                            } else {
 
                                 println("screenIsUnlocked")
                                 displayLayout(sbp, sharedPreferences)
@@ -199,10 +202,12 @@ class NotificationListener : NotificationListenerService() {
             return null
         }
     }
-    private fun messagesNotUseless(sbp:StatusBarParcelable):Boolean{
+
+    private fun messagesNotUseless(sbp: StatusBarParcelable): Boolean {
         val pregMatchString = ".*(nouveaux messages).*"
         return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex()))
     }
+
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             //this.cancelNotification(sbn.key)
@@ -236,8 +241,40 @@ class NotificationListener : NotificationListenerService() {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
+
         notifLayout(sbp, popupView)
+
         windowManager!!.addView(popupView, parameters) // affichage de la popupview
+
+        popupView!!.setOnTouchListener { view, event ->
+            val x = event.rawX.toInt()
+            val y = event.rawY.toInt()
+            var _xDelta = 0
+            var _yDelta = 0
+
+            when (event.action and MotionEvent.ACTION_MASK) {
+
+                MotionEvent.ACTION_DOWN -> {
+                    _xDelta = (view.x - event.rawX).toInt()
+                    _yDelta = (view.y - event.rawY).toInt()
+                }
+
+                MotionEvent.ACTION_UP -> {
+                }
+                MotionEvent.ACTION_POINTER_DOWN -> {
+                }
+                MotionEvent.ACTION_POINTER_UP -> {
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    view.animate()
+                            .x(event.rawX + _xDelta)
+                            .y(event.rawY + _yDelta)
+                            .setDuration(0)
+                            .start()
+                }
+            }
+            return@setOnTouchListener true
+        }
     }
 
     private fun notifLayout(sbp: StatusBarParcelable, view: View?) {
@@ -275,7 +312,7 @@ class NotificationListener : NotificationListenerService() {
             return "WhatsApp"
         } else if (packageName.equals(GMAIL_PACKAGE)) {
             return "gmail"
-        } else if (packageName.equals(MESSAGE_PACKAGE) || packageName.equals(MESSAGE_SAMSUNG_PACKAGE)||  packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
+        } else if (packageName.equals(MESSAGE_PACKAGE) || packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
             return "message"
         }
         return ""
@@ -286,6 +323,10 @@ class NotificationListener : NotificationListenerService() {
         return title.matches(pregMatchString.toRegex())
     }
 
+    private fun movablePopup() {
+
+    }
+
     companion object {
         var TAG = NotificationListener::class.java.simpleName
         val FACEBOOK_PACKAGE = "com.facebook.katana"
@@ -293,7 +334,7 @@ class NotificationListener : NotificationListenerService() {
         val WHATSAPP_SERVICE = "com.whatsapp"
         val GMAIL_PACKAGE = "com.google.android.gm"
         val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
-        val XIAOMI_MESSAGE_PACKAGE= "com.android.mms"
+        val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
         val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
         val TELEGRAM_PACKAGE = "org.telegram.messenger"
 

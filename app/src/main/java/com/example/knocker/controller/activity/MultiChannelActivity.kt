@@ -79,7 +79,7 @@ class MultiChannelActivity : AppCompatActivity() {
     }
 
     fun longListItemClick(len: Int, position: Int) {
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len, true)
+        val adapter = SelectContactAdapter(this, gestionnaireContacts, len, true, false)
         multi_channel_Listview!!.adapter = adapter
         adapter.itemSelected(position)
         adapter.notifyDataSetChanged()

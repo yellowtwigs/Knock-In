@@ -21,14 +21,14 @@
     <color name="lightColor">#FFFFFF</color>
     <color name="darkColor">#000000</color>
 
-    <color name="greyColor">#e6e6e6</color>
+    <color name="greyColor">#a0a0a0</color>
     <color name="redColorDark">#ba3224</color>
     <color name="user_knocker_color">#1DE9B6</color>
 
     <color name="transparentColor">#88ffffff</color>
     <color name="transparentColorDark">#88121212</color>
 
-    <color name="lightGreyColor">#f0f0f0</color>
+    <color name="lightGreyColor">#e6e6e6</color>
     <color name="lightGreyColorDark">@color/darkGreyColor</color>
 
     <color name="darkGreyColor">#646464</color>

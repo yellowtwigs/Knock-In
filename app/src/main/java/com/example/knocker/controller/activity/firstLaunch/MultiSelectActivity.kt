@@ -9,9 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
@@ -20,44 +23,57 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MultiSelectActivity : AppCompatActivity() {
 
-    var activityVisible: Boolean = true;
+    //region ========================================= Var or Val ===========================================
+
+    private var multi_select_gridView: GridView? = null
+    private var gestionnaireContact: ContactList? = null
+    private var multi_select_textView: TextView? = null
+    private var activityVisible: Boolean = true
+    private var adapter: SelectContactAdapter? = null
+    private var listItemSelect: ArrayList<ContactWithAllInformation>? = null
+
+    //endregion
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi_select)
-        val multi_select_gridView = findViewById<GridView>(R.id.multiSelect_gridView)
-        val gestionnaireContact = ContactList(this)
-        val multi_select_textView = findViewById<TextView>(R.id.multiSelect_Tv_nb_contact)
-        val adapter = SelectContactAdapter(this, gestionnaireContact, 4)
-        val multi_select_validate = findViewById<ImageView>(R.id.multiSelect_validate)
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (!Settings.canDrawOverlays(applicationContext)) {
-                overlayAlertDialogPermission().show()
 
-            }else{
-                val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-                edit.apply()
-            }
-        }
-        multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.getListContactSelect().size)
-        multi_select_gridView.numColumns = 4
-        multi_select_gridView.adapter = adapter
 
-        multi_select_gridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            adapter.itemSelected(position)
-            adapter.notifyDataSetChanged()
-            multi_select_textView.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter.getListContactSelect().size)
+        //region ========================================= Toolbar ==========================================
 
-            true
-        }
-        multi_select_validate.setOnClickListener {
-            val listItemSelect = adapter.getListContactSelect()
-            overlayAlertDialog(listItemSelect).show()
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val actionbar = supportActionBar
+        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar.title = getString(R.string.multi_select_toolbar_title)
+
+        //endregion
+
+        //region ====================================== FindViewById ========================================
+
+        multi_select_gridView = findViewById(R.id.multiSelect_gridView)
+        multi_select_textView = findViewById(R.id.multiSelect_Tv_nb_contact)
+        gestionnaireContact = ContactList(this)
+
+        //endregion
+
+        adapter = SelectContactAdapter(this, gestionnaireContact, 4, false, true)
+
+        multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
+        multi_select_gridView!!.numColumns = 4
+        multi_select_gridView!!.adapter = adapter
+
+
+//        adapter!!.itemSelected(position)
+//        adapter!!.notifyDataSetChanged()
+        multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
+
+        multi_select_gridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+
         }
     }
 
-    private fun overlayAlertDialogPermission(): androidx.appcompat.app.AlertDialog {
+    private fun overlayAlertDialogPermission(): AlertDialog {
         val inflater: LayoutInflater = this.layoutInflater
         val alertView: View = inflater.inflate(R.layout.alert_dialog_multi_select, null)
         val alertDialog = MaterialAlertDialogBuilder(this)
@@ -100,16 +116,16 @@ class MultiSelectActivity : AppCompatActivity() {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Knocker")
         var message = ""
-        if(contactList.size==0){
-            message= applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
-        }else if (contactList.size==1){
-             message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),contactList.size,"contact :")
-            if(contactList.size==1){
-                val contact=contactList.get(0)
-                message+="\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
+        if (contactList.size == 0) {
+            message = applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
+        } else if (contactList.size == 1) {
+            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, "contact :")
+            if (contactList.size == 1) {
+                val contact = contactList.get(0)
+                message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
-        }else {
-            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),contactList.size,"contacts :")
+        } else {
+            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, "contacts :")
             for (contact in contactList) {
                 message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
@@ -129,6 +145,31 @@ class MultiSelectActivity : AppCompatActivity() {
         return alertDialogBuilder.create()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (!Settings.canDrawOverlays(applicationContext)) {
+                        overlayAlertDialogPermission().show()
+                    } else {
+                        val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+                        edit.apply()
+                    }
+                }
+                listItemSelect = adapter!!.listContactSelect
+                overlayAlertDialog(listItemSelect!!).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_toolbar_validate, menu)
+        return true
+    }
 
     override fun onResume() {
         super.onResume()

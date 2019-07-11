@@ -2,6 +2,7 @@ package com.example.knocker.controller.activity.firstLaunch;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Spannable;
@@ -12,12 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.CircularImageView;
+import com.example.knocker.controller.ContactRecyclerViewAdapter;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
@@ -33,23 +37,27 @@ public class SelectContactAdapter extends BaseAdapter {
     private Context context;
     private Integer len;
     private ArrayList<ContactWithAllInformation> listSelectedItem;
-    private Boolean fromListView = false;
+    private Boolean fromRecyclerView;
+    private Boolean fromMultiSelect = false;
 
-    public SelectContactAdapter(Context context, ContactList contactList, Integer len) {
+    public SelectContactAdapter(Context context, ContactList contactList, Integer len, Boolean fromRecyclerView, Boolean fromMultiSelect) {
         this.context = context;
         this.gestionnaireContact = contactList;
         this.len = len;
+        this.fromRecyclerView = fromRecyclerView;
+        this.fromMultiSelect = fromMultiSelect;
         layoutInflater = LayoutInflater.from(context);
         listSelectedItem = new ArrayList<>();
     }
 
-    public SelectContactAdapter(Context context, ContactList contactList, Integer len, Boolean fromListView) {
-        this.context = context;
-        this.gestionnaireContact = contactList;
-        this.len = len;
-        this.fromListView = fromListView;
-        layoutInflater = LayoutInflater.from(context);
-        listSelectedItem = new ArrayList<>();
+    /**
+     * Register an observer that is called when changes happen to the data used by this adapter.
+     *
+     * @param observer the object that gets notified when the data set changes.
+     */
+    @Override
+    public void registerDataSetObserver(DataSetObserver observer) {
+
     }
 
     @Override
@@ -62,14 +70,21 @@ public class SelectContactAdapter extends BaseAdapter {
         return gestionnaireContact.getContacts().get(position);
     }
 
+    /**
+     * Get the row id associated with the specified position in the list.
+     *
+     * @param position The position of the item within the adapter's data set whose row id we want.
+     * @return The id of the item at the specified position.
+     */
     @Override
     public long getItemId(int position) {
         return 0;
     }
 
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (!fromListView) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        if (!fromRecyclerView) {
             View gridview = convertView;
             final ViewHolder holder;
 
@@ -78,6 +93,10 @@ public class SelectContactAdapter extends BaseAdapter {
 
                 holder = new ViewHolder();
                 holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
+
+                if(fromMultiSelect){
+                    holder.multi_select_ContactLayout = gridview.findViewById(R.id.multi_select_contact_layout);
+                }
 
                 SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
@@ -169,6 +188,7 @@ public class SelectContactAdapter extends BaseAdapter {
                 spanLastName.setSpan(new RelativeSizeSpan(0.71f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.contactLastNameView.setText(spanLastName);
             }
+
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
 
@@ -189,39 +209,47 @@ public class SelectContactAdapter extends BaseAdapter {
                         holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
                     }
                 }
-            } else {
-                if (listSelectedItem.contains(getItem(position))) {
-                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
-                } else {
-                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor));
-                }
             }
+
+            if(fromMultiSelect){
+                holder.multi_select_ContactLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listSelectedItem.contains(getItem(position))) {
+                            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor));
+                            listSelectedItem.remove(getItem(position));
+                        } else {
+                            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+                            listSelectedItem.add(getItem(position));
+                        }
+                    }
+                });
+            }
+
             return gridview;
         } else {
 
-            View listview = convertView;
+            View recyclerview = convertView;
             final ViewHolder holder;
 
-            if (listview == null) {
+            if (recyclerview == null) {
                 holder = new ViewHolder();
 
                 if (len == 0) {
-
-                    listview = layoutInflater.inflate(R.layout.list_contact_item_layout_smaller, null);
-
+                    recyclerview = layoutInflater.inflate(R.layout.list_contact_item_layout_smaller, null);
                 } else if (len == 1) {
-
-                    listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
+                    recyclerview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
                 }
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            assert listview != null;
-            holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
-            holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
+            assert recyclerview != null;
 
-            listview.setTag(holder);
+            holder.contactRoundedImageView = recyclerview.findViewById(R.id.list_contact_item_contactRoundedImageView);
+            holder.contactFirstNameView = recyclerview.findViewById(R.id.list_contact_item_contactFirstName);
+
+            recyclerview.setTag(holder);
 
             final ContactDB contact = getItem(position).getContactDB();
 
@@ -240,7 +268,6 @@ public class SelectContactAdapter extends BaseAdapter {
             if (context instanceof MainActivity) {
                 if (listSelectedItem.contains(getItem(position))) {
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-
                 } else {
                     if (!contact.getProfilePicture64().equals("")) {
                         Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -250,9 +277,9 @@ public class SelectContactAdapter extends BaseAdapter {
                         holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
                     }
                 }
-            } else if(context instanceof MultiSelectActivity){
+            } else if (context instanceof MultiSelectActivity) {
                 if (listSelectedItem.contains(getItem(position))) {
-//                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
 
                 } else {
                     if (!contact.getProfilePicture64().equals("")) {
@@ -264,8 +291,7 @@ public class SelectContactAdapter extends BaseAdapter {
                     }
                 }
             }
-
-            return listview;
+            return recyclerview;
         }
     }
 
@@ -273,6 +299,7 @@ public class SelectContactAdapter extends BaseAdapter {
         TextView contactFirstNameView;
         TextView contactLastNameView;
         CircularImageView contactRoundedImageView;
+        ConstraintLayout multi_select_ContactLayout;
         Boolean isSelect;
     }
 

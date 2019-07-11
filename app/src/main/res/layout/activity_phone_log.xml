@@ -868,14 +868,16 @@
             app:backgroundTint="#27b769"
             app:srcCompat="@drawable/ic_phone_keypad" />
 
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
             style="@style/BottomNavigationView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/navigation"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:alpha="0.70"
+            android:background="?attr/backgroundColor"
             app:itemIconTint="@color/navigation_color"
             app:itemTextColor="@color/navigation_color"
             app:labelVisibilityMode="labeled"

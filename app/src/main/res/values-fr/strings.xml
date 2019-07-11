@@ -52,7 +52,7 @@
 
     <string name="main_filter_sms">SMS</string>
     <string name="main_filter_mail">Email</string>
-    <string name="main_search_hint">Rechercher dans vos contacts</string>
+    <string name="main_search_hint">Rechercher</string>
     <string name="main_change_format_phone_book">Aide</string>
     <string name="main_tri_title">Trier par :</string>
     <string name="main_tri_par_nom">Prénom</string>
@@ -280,7 +280,8 @@
     <!-- region Multi Select in First Launch-->
 
     <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
-    <string name="multi_select_title">Sélectionner vos contacts prioritaires </string>
+    <string name="multi_select_toolbar_title">Sélectionner vos contacts prioritaires</string>
+
     <!-- region Alert Dialog -->
 
     <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
