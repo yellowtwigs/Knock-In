@@ -2,6 +2,8 @@ package com.example.knocker.controller.activity.group;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -88,6 +91,8 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             titleTv = (TextView) view.findViewById(R.id.section_text);
             gmailIV = (ImageView) view.findViewById(R.id.section_gmail_imageview);
             smsIV=(ImageView) view.findViewById(R.id.section_sms_imageview);
+
+
         }
     }
 
@@ -103,7 +108,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder sectionViewHolder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder sectionViewHolder, final int position) {
 
         if (isSectionHeaderPosition(position)) {
             int i=position+1;
@@ -122,7 +127,32 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ((SectionViewHolder)sectionViewHolder).smsIV.setVisibility(View.GONE);
                 }
             }
-
+            ((SectionViewHolder)sectionViewHolder).gmailIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i=position+1;
+                    ArrayList<String> groupSms=new ArrayList<String>();
+                    while (!isSectionHeaderPosition(i) && i<getItemCount()){
+                        ContactWithAllInformation contact =((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(i));
+                        groupSms.add(contact.getPhoneNumber());
+                        i++;
+                    }
+                    monoChannelMailClick(groupSms);
+                }
+            });
+            ((SectionViewHolder)sectionViewHolder).smsIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i=position+1;
+                    ArrayList<String> groupSms=new ArrayList<String>();
+                    while (!isSectionHeaderPosition(i) && i<getItemCount()){
+                        ContactWithAllInformation contact =((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(i));
+                        groupSms.add(contact.getPhoneNumber());
+                        i++;
+                    }
+                    monoChannelSmsClick(groupSms);
+                }
+            });
         }else{
            // System.out.println("position non section"+position);
             mBaseAdapter.onBindViewHolder(sectionViewHolder,sectionedPositionToPosition(position));
@@ -219,5 +249,22 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return (mValid ? mBaseAdapter.getItemCount() + mSections.size() : 0);
     }
+    private void monoChannelSmsClick( ArrayList<String> listOfPhoneNumber) {
 
+        String message="smsto:"+listOfPhoneNumber.get(0);
+        for(int i=0 ;i<listOfPhoneNumber.size();i++){
+            message+=";"+listOfPhoneNumber.get(i);
+        }
+        mContext.startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(message)));
+    }
+    private void monoChannelMailClick(ArrayList<String> listOfMail){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL,/*listOfMail.toArray(new String[listOfMail.size()]*/ new String[]{"test@mail.com" , "test@mail2.com"});
+        intent.setData(Uri.parse("mailto:"));
+        intent.setType("message/rfc822");
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        mContext.startActivity(intent);
+    }
 }
