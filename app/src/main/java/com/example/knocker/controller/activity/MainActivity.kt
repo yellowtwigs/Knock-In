@@ -785,21 +785,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         val iterator = (0 until listOfPhoneNumber.size).iterator()
         var intent: Intent? = null
-
         for (i in iterator) {
             listOfPhoneNumber[i]
         }
-
-        when (listOfPhoneNumber.size) {
-            2 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1]))
-            3 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2]))
-            4 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2] + ";" + listOfPhoneNumber[3]))
-            5 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2] + ";" + listOfPhoneNumber[3] + ";" + listOfPhoneNumber[4]))
+        var message="smsto:"+listOfPhoneNumber[0]
+        for(i in 1..listOfPhoneNumber.size-1){
+            message+=";"+listOfPhoneNumber[i]
         }
-
-        startActivity(intent)
+        startActivity(Intent(Intent.ACTION_SENDTO,Uri.parse(message)))
     }
-
 //    private fun monoChannelMailClick(listOfPhoneNumber: ArrayList<String>) {
 //
 //        val mail = "dzdzq"
