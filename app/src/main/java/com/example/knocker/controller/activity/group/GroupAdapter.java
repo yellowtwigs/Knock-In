@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.CircularImageView;
+import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.List;
@@ -20,11 +22,9 @@ import java.util.Random;
 
 
 public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewHolder> {
-//    private static final int COUNT = 100;
     private final Context context;
     private final List<ContactWithAllInformation> contactList;
-    private int mCurrentItemId = 0;
-
+    private final Integer len;
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
         public final TextView firstName;
         public final TextView lastName;
@@ -38,9 +38,10 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
         }
     }
 
-    public GroupAdapter(Context context,List<ContactWithAllInformation> contactList) {
+    public GroupAdapter(Context context,List<ContactWithAllInformation> contactList,Integer len) {
         this.context = context;
         this.contactList=contactList;
+        this.len=len;
     }
 
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,8 +51,44 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
 
     @Override
     public void onBindViewHolder(SimpleViewHolder holder, final int position) {
-        holder.firstName.setText(contactList.get(position).getContactDB().getFirstName());
+        ContactDB contact=contactList.get(position).getContactDB();
+        holder.firstName.setText(contact.getFirstName());
         holder.lastName.setText(contactList.get(position).getContactDB().getLastName());
+
+        ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.firstName.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.circularImageView.getLayoutParams();
+
+
+        int height = holder.circularImageView.getLayoutParams().height;
+        int width = holder.circularImageView.getLayoutParams().width;
+        if (len == 3) {
+            holder.circularImageView.getLayoutParams().height -= height * 0.05;
+            holder.circularImageView.getLayoutParams().width -= height * 0.05;
+            layoutParamsTV.topMargin = 30;
+            layoutParamsIV.topMargin = 10;
+        } else if (len == 4) {
+            holder.circularImageView.getLayoutParams().height -= height * 0.25;
+            holder.circularImageView.getLayoutParams().width -= width * 0.25;
+            layoutParamsTV.topMargin = 10;
+            layoutParamsIV.topMargin = 10;
+        } else if (len == 5) {
+            holder.circularImageView.getLayoutParams().height -= height * 0.40;
+            holder.circularImageView.getLayoutParams().width -= width * 0.40;
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
+        } else if (len == 6) {
+            holder.circularImageView.getLayoutParams().height -= height * 0.50;
+            holder.circularImageView.getLayoutParams().width -= width * 0.50;
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
+        }
+        if (!contact.getProfilePicture64().equals("")) {
+            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+
+            holder.circularImageView.setImageBitmap(bitmap);
+        } else {
+            holder.circularImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
+        }
     }
 
 

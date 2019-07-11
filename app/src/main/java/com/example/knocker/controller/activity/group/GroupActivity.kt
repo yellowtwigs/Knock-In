@@ -2,9 +2,12 @@ package com.example.knocker.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -61,11 +64,22 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         false
     }
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
+
+        val toolbar = findViewById<Toolbar>(R.id.group_toolbar)
+        setSupportActionBar(toolbar)
+        val actionbar = supportActionBar
+        actionbar!!.run {
+            actionbar.title = ""
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+            setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
+        }
+
         recycler=findViewById<RecyclerView>(R.id.group_list_view_id)
         recycler!!.setHasFixedSize(true)
-        recycler!!.setLayoutManager(GridLayoutManager(this, 4))
         group_BottomNavigationView = findViewById(R.id.navigation)
         group_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         //region Navigation
@@ -111,6 +125,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         group_mDbWorkerThread.start()
         val group:ArrayList<GroupWithContact> = ArrayList()
         group.addAll(group_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
+        println("group size"+group.size)
         for(aGroup in group)
             println("group content"+aGroup.ContactIdList)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
@@ -124,7 +139,14 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             sections.add(SectionGroupAdapter.Section(position,i.groupDB!!.name))
             position+=list.size
         }
-        val adapter= GroupAdapter(this,listContactGroup)
+        val adapter:GroupAdapter
+        if(len>=3) {
+            adapter = GroupAdapter(this, listContactGroup, len)
+            recycler!!.setLayoutManager(GridLayoutManager(this, len))
+        }else{
+            adapter =GroupAdapter(this, listContactGroup, 4)
+            recycler!!.setLayoutManager(GridLayoutManager(this, 4))
+        }
         val sectionList=arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
         val sectionAdapter=SectionGroupAdapter(this,R.layout.recycler_adapter_section,R.id.section_text,recycler,adapter)
         sectionAdapter.setSections(sections.toArray(sectionList))
@@ -132,5 +154,4 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
        // val adapter= GroupListViewAdapter(group,this,len)
         recycler!!.adapter=sectionAdapter
     }
-
 }
