@@ -51,9 +51,11 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
 
     @Override
     public void onBindViewHolder(SimpleViewHolder holder, final int position) {
-        ContactDB contact=contactList.get(position).getContactDB();
+        ContactDB contact=getItem(position).getContactDB();
         holder.firstName.setText(contact.getFirstName());
-        holder.lastName.setText(contactList.get(position).getContactDB().getLastName());
+        holder.lastName.setText(contact.getLastName());
+
+
 
         ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.firstName.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.circularImageView.getLayoutParams();
@@ -82,16 +84,19 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         }
+
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-
             holder.circularImageView.setImageBitmap(bitmap);
         } else {
             holder.circularImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
         }
+
     }
 
-
+    public ContactWithAllInformation getItem(int position){
+        return contactList.get(position);
+    }
 
     public void removeItem(int position) {
         contactList.remove(position);

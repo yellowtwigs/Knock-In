@@ -1,11 +1,14 @@
 package com.example.knocker.controller.activity.group
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -19,25 +22,15 @@ import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
 class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
-    override fun onDrawerStateChanged(newState: Int) {
-    }
 
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-    }
-
-    override fun onDrawerClosed(drawerView: View) {
-    }
-
-    override fun onDrawerOpened(drawerView: View) {
-    }
-
+    private var group_DrawerLayout: DrawerLayout? = null
     private var group_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var group_mDbWorkerThread: DbWorkerThread
 
-    private var drawerLayout: DrawerLayout? = null
     private var group_BottomNavigationView: BottomNavigationView? = null
 
     var recycler: RecyclerView?=null ;
@@ -77,14 +70,14 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             setHomeAsUpIndicator(R.drawable.ic_open_drawer)
             setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
         }
-
+        group_DrawerLayout = findViewById(R.id.group_drawer_layout)
         recycler=findViewById<RecyclerView>(R.id.group_list_view_id)
         recycler!!.setHasFixedSize(true)
         group_BottomNavigationView = findViewById(R.id.navigation)
         group_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         //region Navigation
-        drawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout!!.addDrawerListener(this)
+        group_DrawerLayout = findViewById(R.id.group_drawer_layout)
+        group_DrawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
         val nav_item = menu.findItem(R.id.nav_address_book)
@@ -96,7 +89,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            drawerLayout!!.closeDrawers()
+            group_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_address_book -> {
@@ -139,6 +132,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             sections.add(SectionGroupAdapter.Section(position,i.groupDB!!.name))
             position+=list.size
         }
+
         val adapter:GroupAdapter
         if(len>=3) {
             adapter = GroupAdapter(this, listContactGroup, len)
@@ -148,10 +142,47 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             recycler!!.setLayoutManager(GridLayoutManager(this, 4))
         }
         val sectionList=arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter=SectionGroupAdapter(this,R.layout.recycler_adapter_section,R.id.section_text,recycler,adapter)
+        val sectionAdapter=SectionGroupAdapter(this,R.layout.recycler_adapter_section,recycler,adapter)
         sectionAdapter.setSections(sections.toArray(sectionList))
         println("taille list group "+listContactGroup.size)
        // val adapter= GroupListViewAdapter(group,this,len)
         recycler!!.adapter=sectionAdapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_help, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    @SuppressLint("ShowToast")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                group_DrawerLayout!!.openDrawer(GravityCompat.START)
+                return true
+            }
+            R.id.item_help -> {
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_phone_log))
+                        .show()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onDrawerStateChanged(newState: Int) {
+    }
+
+    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+    }
+
+    override fun onDrawerClosed(drawerView: View) {
+    }
+
+    override fun onDrawerOpened(drawerView: View) {
     }
 }

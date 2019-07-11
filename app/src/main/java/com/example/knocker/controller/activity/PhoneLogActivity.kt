@@ -33,6 +33,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
+import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.model.PhoneLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
@@ -104,6 +105,8 @@ class PhoneLogActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
+                startActivity(Intent(this@PhoneLogActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
                 startActivity(Intent(this@PhoneLogActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))

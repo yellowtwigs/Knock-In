@@ -6,12 +6,14 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
+import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -23,19 +25,17 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private boolean mValid = true;
     private int mSectionResourceId;
-    private int mTextResourceId;
     private LayoutInflater mLayoutInflater;
     private RecyclerView.Adapter mBaseAdapter;
     private SparseArray<Section> mSections = new SparseArray<Section>();
     private RecyclerView mRecyclerView;
 
 
-    public SectionGroupAdapter(Context context, int sectionResourceId, int textResourceId, RecyclerView recyclerView,
+    public SectionGroupAdapter(Context context, int sectionResourceId, RecyclerView recyclerView,
                                RecyclerView.Adapter baseAdapter) {
 
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSectionResourceId = sectionResourceId;
-        mTextResourceId = textResourceId;
         mBaseAdapter = baseAdapter;
         mContext = context;
         mRecyclerView = recyclerView;
@@ -79,11 +79,15 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public static class SectionViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView title;
+        public TextView titleTv;
+        public ImageView gmailIV;
+        public ImageView smsIV;
 
-        public SectionViewHolder(View view, int mTextResourceid) {
+        public SectionViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(mTextResourceid);
+            titleTv = (TextView) view.findViewById(R.id.section_text);
+            gmailIV = (ImageView) view.findViewById(R.id.section_gmail_imageview);
+            smsIV=(ImageView) view.findViewById(R.id.section_sms_imageview);
         }
     }
 
@@ -92,7 +96,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (typeView == SECTION_TYPE) {
             final View view = LayoutInflater.from(mContext).inflate(mSectionResourceId, parent, false);
             view.setBackgroundResource(R.drawable.recycler_section);
-            return new SectionViewHolder(view,mTextResourceId);
+            return new SectionViewHolder(view);
         }else{
             return mBaseAdapter.onCreateViewHolder(parent, typeView -1);
         }
@@ -100,10 +104,29 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder sectionViewHolder, int position) {
+
         if (isSectionHeaderPosition(position)) {
-            ((SectionViewHolder)sectionViewHolder).title.setText(mSections.get(position).title);
+            int i=position+1;
+            System.out.println("position section"+position);
+            ((SectionViewHolder)sectionViewHolder).titleTv.setText(mSections.get(position).title);
+            while (!isSectionHeaderPosition(i) && i<getItemCount()){
+                ContactWithAllInformation contact =((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(i));
+                System.out.println("contact "+contact.getContactDB()+ " de la section "+position);
+                i++;
+                if(contact.getFirstMail().isEmpty()){
+                    System.out.println("contact "+contact.getContactDB()+ "n'as pas de mail "+contact.getFirstMail());
+                    ((SectionViewHolder)sectionViewHolder).gmailIV.setVisibility(View.GONE);
+                }
+                if(contact.getPhoneNumber().isEmpty()){
+                    System.out.println("contact "+contact.getContactDB()+ "n'as pas de num "+contact.getPhoneNumber());
+                    ((SectionViewHolder)sectionViewHolder).smsIV.setVisibility(View.GONE);
+                }
+            }
+
         }else{
+           // System.out.println("position non section"+position);
             mBaseAdapter.onBindViewHolder(sectionViewHolder,sectionedPositionToPosition(position));
+            //System.out.println("contact "+((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(position)).getContactDB()+ " position "+position);
         }
 
     }
