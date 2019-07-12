@@ -446,9 +446,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
             val stringSearch= notification_Search_TextView!!.text.toString().toLowerCase()
             listTmp.addAll(notification_history_ListOfNotificationDB)
             if (!stringSearch.isEmpty()) {
-                val regex=(".*"+stringSearch+".*").toRegex()
+                val regex=(".*("+stringSearch+").*").toRegex()
                 listTmp.forEach {
-                    if ((!it.contactName.toLowerCase().matches(regex)&& !it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
+                    if (!(it.contactName.toLowerCase().matches(regex)|| it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
                         notification_history_ListOfNotificationDB.remove(it)
                     }
                 }

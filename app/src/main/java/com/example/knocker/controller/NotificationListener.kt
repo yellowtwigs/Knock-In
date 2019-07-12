@@ -27,6 +27,9 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.NotificationDB
 import java.util.*
 import kotlin.collections.ArrayList
+import android.util.DisplayMetrics
+
+
 
 
 /**
@@ -38,7 +41,8 @@ class NotificationListener : NotificationListenerService() {
     // Database && Thread
     private var notification_listener_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var notification_listener_mDbWorkerThread: DbWorkerThread
-
+    private var  oldPosX:Float = 0.0f
+    private var  oldPosY:Float = 0.0f
     var popupView: View? = null
     var windowManager: WindowManager? = null
 
@@ -176,7 +180,7 @@ class NotificationListener : NotificationListenerService() {
         println("dernière insertion " + lastInsertId)
         val lastInsert = notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
 
-        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp-lastInsert.timestamp<60) {
+        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp-lastInsert.timestamp<1000) {
             return false
         }
         return true
@@ -241,22 +245,26 @@ class NotificationListener : NotificationListenerService() {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
-
+        val popupDropable= popupView!!.findViewById<ConstraintLayout>(R.id.notification_dropable)
+        val popupContainer=popupView!!.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
         notifLayout(sbp, popupView)
 
         windowManager!!.addView(popupView, parameters) // affichage de la popupview
 
-        popupView!!.setOnTouchListener { view, event ->
-            val x = event.rawX.toInt()
-            val y = event.rawY.toInt()
-            var _xDelta = 0
-            var _yDelta = 0
+        popupDropable!!.setOnTouchListener { view, event ->
 
+            val metrics = DisplayMetrics()
+            windowManager!!.getDefaultDisplay().getMetrics(metrics)
             when (event.action and MotionEvent.ACTION_MASK) {
 
                 MotionEvent.ACTION_DOWN -> {
-                    _xDelta = (view.x - event.rawX).toInt()
-                    _yDelta = (view.y - event.rawY).toInt()
+                    println("action Down")
+                        oldPosX=event.x
+                        oldPosY=event.y
+
+                    println("oldx"+oldPosX+"oldy"+oldPosY)
+                    //xDelta = (popupContainer.x - event.rawX).toInt()
+                    //yDelta = (popupContainer.y - event.rawY).toInt()
                 }
 
                 MotionEvent.ACTION_UP -> {
@@ -266,11 +274,21 @@ class NotificationListener : NotificationListenerService() {
                 MotionEvent.ACTION_POINTER_UP -> {
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    view.animate()
-                            .x(event.rawX + _xDelta)
-                            .y(event.rawY + _yDelta)
-                            .setDuration(0)
-                            .start()
+                    println("action move")
+                    val x=event.x
+                    val y=event.y
+
+                    val deplacementX = x - oldPosX
+                    val deplacementY = y - oldPosY
+                    println("oldx"+oldPosX+"oldy"+oldPosY)
+                    println("x:"+x +" y:"+y)
+                    println("deplacement x:"+deplacementX+" deplacement y:"+deplacementY)
+                    println("Before container position x: "+popupContainer.x+" y:"+popupContainer.y)
+                    popupContainer.x=(popupContainer.x + deplacementX)
+                    oldPosX=x-deplacementX
+                    popupContainer.y=(popupContainer.y + deplacementY)
+                    oldPosY=y-deplacementY
+                    println("after container position x:"+popupContainer.x+" y:"+popupContainer.y)
                 }
             }
             return@setOnTouchListener true
