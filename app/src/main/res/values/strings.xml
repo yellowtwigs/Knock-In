@@ -6,13 +6,13 @@
     <!-- region Help Tutorial -->
 
     <string name="help">Help</string>
-    <string name="help_main">On this page you see your contacts Knocker</string>
-    <string name="help_notification_history">Sur cet écran vous pouvez voir toutes les notifications reçues</string>
-    <string name="help_phone_log">Sur cet écran vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
-    <string name="help_manage_screen">Sur cet écran vous pouvez choisir comment afficher vos contacts et activer/désactiver la popups d\'appel un contact</string>
-    <string name="help_notification_manager">Sur cet écran vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
-    <string name="help_my_informations">Sur cette écran vous pouvez modifier vos informations personnelles</string>
-    <string name="help_contact_us_intent">Contactez-nous</string>
+    <string name="help_main">In this screen you can see your Knocker contacts</string>
+    <string name="help_notification_history">In this screen you can see all the received notifications</string>
+    <string name="help_phone_log">From this screen you can call or send an SMS to someone not listed into your address book. You can also connect to email and SoMe</string>
+    <string name="help_manage_screen">In this screen you can chose how to display your contacts and configure other display options</string>
+    <string name="help_notification_manager">In this screen you can chose to enable/disable the priority 2 notifications</string>
+    <string name="help_my_informations">In this screen you can update your personal details</string>
+    <string name="help_contact_us_intent">Contact us</string>
 
     <!-- endregion-->
 
@@ -25,10 +25,10 @@
 
     <!-- region Help Activity -->
 
-    <string name="help_activity_tutorial">Tutoriel</string>
-    <string name="help_activity_contact_us">Contactez-nous</string>
-    <string name="help_activity_contact_terms_of_use">Conditions d\'utilisation</string>
-    <string name="help_activity_contact_generals_informations">Infos générales</string>
+    <string name="help_activity_tutorial">Tutorial</string>
+    <string name="help_activity_contact_us">Contact us</string>
+    <string name="help_activity_contact_terms_of_use">Terms and conditions</string>
+    <string name="help_activity_contact_generals_informations">For more information</string>
 
     <!-- endregion-->
 
@@ -36,15 +36,15 @@
 
     <string name="left_drawer_knockons">Knockons</string>
 
-    <string name="left_drawer_address_book">Mon carnet d\'adresse</string>
-    <string name="left_drawer_information">Mes informations</string>
-    <string name="left_drawer_notif_config">Paramètres de notification</string>
-    <string name="left_drawer_my_screen">Affichage</string>
+    <string name="left_drawer_address_book">My address book</string>
+    <string name="left_drawer_information">My personal data </string>
+    <string name="left_drawer_notif_config">Notification configurations</string>
+    <string name="left_drawer_my_screen">Display options</string>
 
-    <string name="left_drawer_data_access">Accès aux données</string>
-    <string name="left_drawer_statistics">Mes statistiques</string>
-    <string name="left_drawer_help">Aide</string>
-    <string name="left_drawer_sync">Synchronisation</string>
+    <string name="left_drawer_data_access">Data access</string>
+    <string name="left_drawer_statistics">Statistics</string>
+    <string name="left_drawer_help">Help</string>
+    <string name="left_drawer_sync">Synchronisation of contacts</string>
 
     <!-- endregion-->
 
@@ -52,246 +52,242 @@
 
     <string name="main_filter_sms">SMS</string>
     <string name="main_filter_mail">Email</string>
-    <string name="main_search_hint">Rechercher</string>
-    <string name="main_change_format_phone_book">Aide</string>
-    <string name="main_tri_title">Trier par :</string>
-    <string name="main_tri_par_nom">Prénom</string>
-    <string name="main_tri_par_priorite">Priorité</string>
-    <string name="main_filtre_title">Filtrer par :</string>
-    <string name="notif_filtre_app">Notification d\'application</string>
-    <string name="notif_filtre_message">Notification de Message</string>
-    <string name="notif_filtre_systeme">Notification du Système</string>
-    <string name="notif_tri_date">Date et heure</string>
-    <string name="notif_tri_par_contact">nom de contact</string>
-    <string name="main_toast_delete_contact">Vous venez de supprimer un contact !</string>
-    <string name="main_toast_multi_select_actived">Mode Multi Select Activé</string>
-    <string name="main_toast_multi_select_deactived">Mode Multi Select Désactivé</string>
+    <string name="main_search_hint">Search your contacts</string>
+    <string name="main_change_format_phone_book">Help</string>
+    <string name="main_tri_title">Filter:</string>
+    <string name="main_tri_par_nom">Firstname</string>
+    <string name="main_tri_par_priorite">Priority</string>
+    <string name="main_filtre_title">Notification filter:</string>
+    <string name="notif_filtre_app">Application</string>
+    <string name="notif_filtre_message">Message</string>
+    <string name="notif_filtre_systeme">System</string>
+    <string name="notif_tri_date">Date and time</string>
+    <string name="notif_tri_par_contact">Firtsname</string>
+    <string name="main_toast_delete_contact">You removed a contact!</string>
+    <string name="main_toast_multi_select_actived">Enable Multi-select mode</string>
+    <string name="main_toast_multi_select_deactived">Disable Multi-select mode</string>
 
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->
 
-    <string name="bottom_navigation_view_phone_book">Carnet d\'adresse</string>
+    <string name="bottom_navigation_view_phone_book">Address book</string>
     <string name="bottom_navigation_view_notify_history">Interactions</string>
-    <string name="bottom_navigation_view_groups">Groupes</string>
+    <string name="bottom_navigation_view_groups">Groups</string>
     <string name="bottom_navigation_view_phone_log">Cockpit</string>
 
     <!-- endregion !-->
 
     <!-- region Add New Contact !-->
 
-    <string name="add_new_contact_title">Ajouter un nouveau contact</string>
-    <string name="add_new_contact_last_name">Nom</string>
-    <string name="add_new_contact_first_name">Prénom</string>
-    <string name="add_new_contact_phone_number">Numéro de téléphone</string>
+    <string name="add_new_contact_title">Add a new contact</string>
+    <string name="add_new_contact_last_name">Name</string>
+    <string name="add_new_contact_first_name">Firstname</string>
+    <string name="add_new_contact_phone_number">Phone number</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
-    <string name="add_new_contact_priority0">Toutes les notifications de ce contact seront désactivées </string>
-    <string name="add_new_contact_priority1">Toutes les notifications de ce contact s\'afficheront comme avant</string>
-    <string name="add_new_contact_priority2">Toutes les notifications de ce contact seront affichées au milieu de l\'écran</string>
-    <string name="add_new_contact_toast">"Le champ prénom ne peut pas être vide !"</string>
+    <string name="add_new_contact_priority0">All the notifications from this contact will be disabled </string>
+    <string name="add_new_contact_priority1">All the notification from this contact will be displayed in the notification bar unless you want to hide them </string>
+    <string name="add_new_contact_priority2">All the notifications from this contact will be intrusive</string>
+    <string name="add_new_contact_toast">"Firstname field must be populated"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Bureau</item>
-        <item>Domicile</item>
-        <item>Principal</item>
-        <item>Autre</item>
-        <item>Personnalisé</item>
+        <item>Office</item>
+        <item>Home</item>
+        <item>Main</item>
+        <item>Other</item>
+        <item>Custom</item>
     </string-array>
 
     <string name="add_new_contact_mail">E-mail</string>
-    <string name="add_new_contact_mail_mobile">Bureau</string>
+    <string name="add_new_contact_mail_mobile">Office</string>
 
     <string-array name="add_new_contact_mail_arrays">
-        <item>Bureau</item>
-        <item>Domicile</item>
-        <item>Ecole</item>
-        <item>Autre</item>
-        <item>Personnalisé</item>
+        <item>Office</item>
+        <item>Hone</item>
+        <item>School</item>
+        <item>Other</item>
+        <item>Custom</item>
 
     </string-array>
 
-    <string name="add_new_contact_add_field">Ajouter un champ</string>
-    <string name="add_new_contact_validate">Valider</string>
+    <string name="add_new_contact_add_field">Add a new field</string>
+    <string name="add_new_contact_validate">Validate</string>
 
-    <string name="add_new_contact_alert_dialog_title" tools:ignore="Typos">Contact déjà existant</string>
-    <string name="add_new_contact_alert_dialog_message">Un contact porte déjà ce nom. Voulez-vous tout de même l\'enregistrer sous ce nom ?</string>
-    <string name="add_new_contact_alert_dialog_cancel_title">Attention</string>
-    <string name="add_new_contact_alert_dialog_cancel_message">Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?</string>
-    <string name="add_new_contact_alert_dialog_photo_title">ajouter une image</string>
-    <string name="add_new_contact_alert_dialog_photo_camera">caméra</string>
-    <string name="add_new_contact_alert_dialog_photo_galery">galerie</string>
-    <string name="add_new_contact_alert_dialog_photo_cancel">annuler</string>
+    <string name="add_new_contact_alert_dialog_title" tools:ignore="Typos">Existing contact</string>
+    <string name="add_new_contact_alert_dialog_message">An existing contact is already using this name. Do you want to record it under this name anyway?</string>
+    <string name="add_new_contact_alert_dialog_cancel_title">Warning</string>
+    <string name="add_new_contact_alert_dialog_cancel_message">You will lose all our data, do you really want to continue?</string>
+    <string name="add_new_contact_alert_dialog_photo_title">Add a picture</string>
+    <string name="add_new_contact_alert_dialog_photo_camera">Camera</string>
+    <string name="add_new_contact_alert_dialog_photo_galery">Gallery</string>
+    <string name="add_new_contact_alert_dialog_photo_cancel">Cancel</string>
     <string name="add_new_contact_intent_title">Select File</string>
-    <string name="add_new_contact_camera_open_title">Nouvelle photo</string>
-    <string name="add_new_contact_camera_open_description">Depuis votre appareil photo</string>
+    <string name="add_new_contact_camera_open_title">New picture</string>
+    <string name="add_new_contact_camera_open_description">From you Smartphone camera</string>
 
     <!-- endregion !-->
 
     <!-- region Edit Contact !-->
 
-    <string name="edit_contact_title">Ajouter un nouveau contact</string>
-    <string name="edit_contact_last_name">Nom</string>
-    <string name="edit_contact_first_name">Prénom</string>
-    <string name="edit_contact_phone_number">Numéro de téléphone</string>
+    <string name="edit_contact_title">Add a new contact</string>
+    <string name="edit_contact_last_name">Name</string>
+    <string name="edit_contact_first_name">Firstname</string>
+    <string name="edit_contact_phone_number">Phone number</string>
     <string name="edit_contact_phone_number_mobile">Mobile</string>
     <string-array name="edit_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Bureau</item>
-        <item>Domicile</item>
-        <item>Principal</item>
-        <item>Autre</item>
-        <item>Personnalisé</item>
+        <item>Office</item>
+        <item>Home</item>
+        <item>Main</item>
+        <item>Other</item>
+        <item>Custom</item>
     </string-array>
     <string name="edit_contact_mail">E-mail</string>
-    <string name="edit_contact_mail_mobile">Bureau</string>
+    <string name="edit_contact_mail_mobile">Office</string>
     <string-array name="edit_contact_mail_arrays">
-        <item>Bureau</item>
-        <item>Domicile</item>
-        <item>École</item>
-        <item>Autre</item>
-        <item>Personnalisé</item>
+        <item>Office</item>
+        <item>Home</item>
+        <item>School</item>
+        <item>Other</item>
+        <item>Custom</item>
     </string-array>
-    <string name="edit_contact_add_field">Ajouter un champ</string>
-    <string name="edit_contact_delete_contact">Supprimer Contact</string>
-    <string name="edit_contact_validate">Valider</string>
-    <string name="edit_contact_toast">Nom ou prénom requis</string>
+    <string name="edit_contact_add_field">Add a new filed</string>
+    <string name="edit_contact_delete_contact">Remove contact</string>
+    <string name="edit_contact_validate">Validate</string>
+    <string name="edit_contact_toast">Name or firstname is required</string>
 
-    <string name="edit_contact_alert_dialog_cancel_title">Attention</string>
-    <string name="edit_contact_alert_dialog_cancel_message">Vous risquez de perdre toutes vos champs, voulez vous vraiment continuer ?</string>
-    <string name="edit_contact_alert_dialog_photo_title">Ajouter une image</string>
-    <string name="edit_contact_alert_dialog_photo_camera">Caméra</string>
-    <string name="edit_contact_alert_dialog_photo_galery">Galerie</string>
-    <string name="edit_contact_alert_dialog_photo_cancel">Annuler</string>
+    <string name="edit_contact_alert_dialog_cancel_title">Warning</string>
+    <string name="edit_contact_alert_dialog_cancel_message">You will lose all our data, do you really want to continue?</string>
+    <string name="edit_contact_alert_dialog_photo_title">Add a picture</string>
+    <string name="edit_contact_alert_dialog_photo_camera">Camera</string>
+    <string name="edit_contact_alert_dialog_photo_galery">Gallery</string>
+    <string name="edit_contact_alert_dialog_photo_cancel">Cancel</string>
     <string name="edit_contact_intent_title">Select File</string>
-    <string name="edit_contact_camera_open_title">Nouvelle photo</string>
-    <string name="edit_contact_camera_open_description">Depuis votre appareil photo</string>
+    <string name="edit_contact_camera_open_title">New picture</string>
+    <string name="edit_contact_camera_open_description">From your Smartphone camera</string>
 
-    <string name="edit_contact_alert_dialog_delete_contact_title">Supprimer un contact</string>
-    <string name="edit_contact_alert_dialog_delete_contact_message">Êtes-vous sûr de vouloir supprimer ce contact ?</string>
+    <string name="edit_contact_alert_dialog_delete_contact_title">Remove a contact</string>
+    <string name="edit_contact_alert_dialog_delete_contact_message">Do you really want to remove this contact?</string>
 
     <!-- endregion !-->
 
     <!-- region Edit My Informations !-->
 
-    <string name="edit_info_toolbar_title">Mes informations</string>
+    <string name="edit_info_toolbar_title">My details</string>
 
-    <string name="edit_informations_name">Nom</string>
-    <string name="edit_informations_phone_number">Numéro de téléphone</string>
+    <string name="edit_informations_name">Name</string>
+    <string name="edit_informations_phone_number">Phone number</string>
     <string name="edit_informations_email">Email</string>
-    <string name="edit_information_toast_enable">Mode Edition Activé</string>
-    <string name="edit_information_toast_disable">Mode Edition Désactivé</string>
+    <string name="edit_information_toast_enable">Editing mode enabled</string>
+    <string name="edit_information_toast_disable">Editing mode disabled</string>
 
     <!-- endregion -->
 
     <!-- region Manage My Screen !-->
 
-    <string name="manage_my_screen_toolbar_title">Affichage</string>
-    <string name="manage_my_screen_theme">Changer le thème</string>
-    <string name="manage_my_screen_theme_long_text">Activer thème foncé</string>
-    <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne </string>
-    <string name="manage_my_screen_toast_grid">Vous avez sélectionné %1$d contacts par ligne</string>
-    <string name="manage_my_screen_toast_list">Vous avez sélectionné le mode "Liste"</string>
-    <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionné le mode "Petite List"</string>
-    <string name="manage_my_screen_contact_popup">Popup contact</string>
-    <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
-    <string name="manage_my_screen_searchbar_pos">Position de la Barre de recherche</string>
-    <string name="manage_my_screen_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
+    <string name="manage_my_screen_toolbar_title">Display</string>
+    <string name="manage_my_screen_theme">Change theme</string>
+    <string name="manage_my_screen_theme_long_text">Enable dark theme</string>
+    <string name="manage_my_screen_number_of_line">Number of contacts per row</string>
+    <string name="manage_my_screen_toast_grid">You have selected %1$d contacts per row</string>
+    <string name="manage_my_screen_toast_list">List mode selected</string>
+    <string name="manage_my_screen_toast_list_smaller">Compact list mode selected</string>
+    <string name="manage_my_screen_contact_popup">Phone call popup</string>
+    <string name="manage_my_screen_contact_popup_long_text">Enable/disable popup before calling a contact</string>
+    <string name="manage_my_screen_searchbar_pos">Search bar position</string>
+    <string name="manage_my_screen_searchbar_pos_long_text">Position the search bar at the bottom of the screen</string>
 
     <!-- endregion -->
 
     <!-- region Notification Manager -->
 
-    <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_popup">Autorisez Knocker à afficher des notifications prioritaire</string>
-    <string name="notification_manager_stop_service">Activez le service de notification</string>
-    <string name="notification_manager_horaire">Choisissez l\'horaire de rappel pour voir les notifications ratées</string>
-    <string name="notification_manager_prio_1">Masquer les notification de priorité 1</string>
+    <string name="notification_manager_toolbar_title">Notification parameters</string>
+    <string name="notification_manager_stop_popup">Allow Knocker to display priority notifications</string>
+    <string name="notification_manager_stop_service">Enable the notification service</string>
+    <string name="notification_manager_horaire">Select recall daily time to view all your notifications</string>
+    <string name="notification_manager_prio_1">Hide priority 1 notifications</string>
 
     <!-- endregion -->
 
     <!-- region Phone Log -->
 
     <string name="phone_log_toolbar_title">Cockpit</string>
-    <string name="phone_log_toast_wait_permission">Tant que vous n\'acceptez pas la permission, nous ne pourrons afficher le nom</string>
-    <string name="phone_log_toast_phone_number_empty">Entrer un numéro de téléphone s\'il vous plait</string>
+    <string name="phone_log_toast_phone_number_empty">Enter a phone number</string>
+    <string name="phone_log_toast_number_valid">Enter a valid phone number</string>
 
-    <string name="phone_log_toast_number_valid">Entrer un numéro de téléphone valide s\'il vous plait</string>
-
-    <string name="phone_log_toast_facebook_not_install">Facebook n\'est pas installé</string>
-    <string name="phone_log_toast_instagram_not_install">Instagram n\'est pas installé</string>
-    <string name="phone_log_toast_whatsapp_not_install">Whatsapp n\'est pas installé</string>
-    <string name="phone_log_toast_messenger_not_install">Facebook Messenger n\'est pas installé</string>
-    <string name="phone_log_toast_youtube_not_install">Youtube n\'est pas installé</string>
-    <string name="phone_log_toast_gmail_not_install">Gmail n\'est pas installé</string>
-    <string name="phone_log_toast_telegram_not_install">Telegram n\'est pas installé</string>
-    <string name="phone_log_toast_outlook_not_install">Outlook n\'est pas installé</string>
-    <string name="phone_log_toast_skype_not_install">Skype n\'est pas installé</string>
-    <string name="phone_log_toast_linkedin_not_install">Linkedin n\'est pas installé</string>
-    <string name="phone_log_toast_twitter_not_install">Twitter n\'est pas installé</string>
-    <string name="phone_log_toast_snapchat_not_install">Snapchat n\'est pas installé</string>
+    <string name="phone_log_toast_facebook_not_install">Facebook is not installed</string>
+    <string name="phone_log_toast_instagram_not_install">Instagram is not installed</string>
+    <string name="phone_log_toast_whatsapp_not_install">Whatsapp is not installed</string>
+    <string name="phone_log_toast_messenger_not_install">Facebook Messenger is not installed</string>
+    <string name="phone_log_toast_youtube_not_install">Youtube is not installed</string>
+    <string name="phone_log_toast_gmail_not_install">Gmail is not installed</string>
+    <string name="phone_log_toast_telegram_not_install">Telegram is not installed</string>
+    <string name="phone_log_toast_outlook_not_install">Outlook is not installed</string>
+    <string name="phone_log_toast_skype_not_install">Skype is not installed</string>
+    <string name="phone_log_toast_linkedin_not_install">Linkedin is not installed</string>
+    <string name="phone_log_toast_twitter_not_install">Twitter is not installed</string>
+    <string name="phone_log_toast_snapchat_not_install">Snapchat is not installed</string>
 
     <!-- endregion -->
 
     <!-- region Notification History -->
 
-    <string name="notification_history_search_hint">Rechercher dans l\'historique</string>
+    <string name="notification_history_search_hint">Search in the history</string>
 
     <!-- endregion -->
 
     <!-- region Alert Dialog Notifications -->
 
     <string name="alert_dialog_notification_message">Autoriser Knocker à accéder a vos notifications pour ne plus être dérangé par des messages inutiles</string>
-    <string name="alert_dialog_notification_allow_it">Autoriser</string>
-    <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
+    <string name="alert_dialog_notification_allow_it">Authorize</string>
+    <string name="alert_dialog_notification_dismiss">Do not authorize</string>
 
     <!-- endregion -->
 
     <!-- region List Contact Item -->
 
-    <string name="list_contact_item_call">Appel</string>
+    <string name="list_contact_item_call">Call</string>
     <string name="list_contact_item_sms">Message</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
-    <string name="list_contact_item_mail">Mail</string>
-    <string name="list_contact_item_edit">Modifier</string>
+    <string name="list_contact_item_mail">Email</string>
+    <string name="list_contact_item_edit">Update</string>
     <string name="list_contact_item_messenger">Messenger</string>
 
     <!-- endregion -->
 
     <!-- region Synchronize Contact -->
 
-    <string name="synchronise_contact_title">Synchroniser les contacts</string>
-    <string name="synchronise_contact_synchronise_long_text">Synchroniser les contacts de votre téléphone et récupérer leurs informations dans l\'application Knocker,
-        vous pourrez alors les contacter facilement ainsi que leur affecter des priorités</string>
-    <string name="synchronise_contact_synchronise_button_yes">Synchroniser</string>
-    <string name="synchronise_contact_synchronise_button_no">Ne pas synchroniser</string>
-    <string name="synchronise_contact_synchronise_toast">Contacts synchronisés</string>
-    <string name="synchronise_contact_alert_dialog">Vous pourrez toujours synchroniser vos contact dans la bar de navigation latéral avec l\'onglet "Synchroniser vos contact"</string>
+    <string name="synchronise_contact_title">Synchronize contacts</string>
+    <string name="synchronise_contact_synchronise_long_text">Synchronize your phone contacts to import their details in Knocker. You will be able to easily communicate with them and and change their priotity</string>
+    <string name="synchronise_contact_synchronise_button_yes">Synchronize</string>
+    <string name="synchronise_contact_synchronise_button_no">Do not synchronize</string>
+    <string name="synchronise_contact_synchronise_toast">Contacts aere synchronized</string>
+    <string name="synchronise_contact_alert_dialog">You can synchronize your contacts later from the navigation menu via the "Synchronize your contacts" tab</string>
 
     <!-- endregion -->
 
     <!-- region First Launch -->
 
-    <string name="first_launch_welcome">Bienvenue sur Knocker</string>
-    <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquer avec eux</string>
-    <string name="first_launch_welcome_accept">Accepter et continuer</string>
-    <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
+    <string name="first_launch_welcome">Welcome to Knocker</string>
+    <string name="first_launch_welcome_long_text">Enjoy a new way to manage your contacts and to communicate with them</string>
+    <string name="first_launch_welcome_accept">Accept and continue</string>
+    <string name="first_launch_confidentiality">Please read our Terms and Conditions<a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF</a> To accept, please click on "Accept and continue" </string>
 
     <!-- endregion -->
 
     <!-- region Multi Select in First Launch-->
 
-    <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
-    <string name="multi_select_toolbar_title">Sélectionner vos contacts prioritaires</string>
-
+    <string name="multi_select_nb_contact">Number of selected contacts: %1s </string>
+    <string name="multi_select_title">Select your VIPs</string>
     <!-- region Alert Dialog -->
 
-    <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
-    <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knocker à afficher des notifications par dessus d\'autres applications ?</string>
-    <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
-    <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
-    <string name="multi_select_alert_dialog_nb_contact">vous venez de séléctionner %1s %2s </string>
-    <string name="multi_select_alert_dialog_0_contact">vous avez sélectionner 0 contact </string>
-    <string name="multi_select_validate_selection">\n voulez-vous valider votre séléction</string>
+    <string name="multi_select_alert_dialog_title">Notifications display</string>
+    <string name="multi_select_alert_dialog_message">Do you want to authorize Knocker to display priority notifications</string>
+    <string name="multi_select_alert_dialog_allow_it">Authorize</string>
+    <string name="multi_select_alert_dialog_dismiss">Do not authorize</string>
+    <string name="multi_select_alert_dialog_nb_contact">You ahve selected %1s %2s </string>
+    <string name="multi_select_alert_dialog_0_contact">You have selected 0 contact </string>
+    <string name="multi_select_validate_selection">DO you validate your selection?</string>
 
     <!-- endregion -->
 
@@ -299,23 +295,23 @@
 
     <!-- region Notification Sender -->
 
-    <string name="notification_sender_content_title">Résumé des interactions</string>
-    <string name="notification_sender_content_text">Knocker a traité %1s messages depuis hier…</string>
-    <string name="notification_sender_big_text">Knocker a traité %1s messages depuis hier \n vous pouvez les consulter depuis l\'application dans "Historique"</string>
+    <string name="notification_sender_content_title">Summary of interactions</string>
+    <string name="notification_sender_content_text">Knocker has treated %1s messages during the last 24 hours</string>
+    <string name="notification_sender_big_text">Knocker has trated %1s messages during the last 24 hours\n You can consult them from the "Interactions" tab</string>
 
     <!-- endregion -->
 
     <!-- region alert Dialog button !-->
 
-    <string name="alert_dialog_yes">Oui</string>
-    <string name="alert_dialog_no">Non</string>
+    <string name="alert_dialog_yes">Yes</string>
+    <string name="alert_dialog_no">No</string>
 
     <!-- endregion !-->
 
     <!-- region AlertDialog permission overlay !-->
 
     <string name="alert_dialog_overlay_title">Knocker</string>
-    <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
+    <string name="alert_dialog_overlay_message">Do you want to authorize Knocker to display priority notifications</string>
 
     <!-- endregion !-->
 </resources>

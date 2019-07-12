@@ -45,7 +45,7 @@ class MultiSelectActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.title = getString(R.string.multi_select_toolbar_title)
+        actionbar.title = getString(R.string.multi_select_title)
 
         //endregion
 

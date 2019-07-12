@@ -692,11 +692,11 @@ class PhoneLogActivity : AppCompatActivity() {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 phone_log_IncomingCallButton!!.isEnabled = true
             }
-            PERMISSIONS_REQUEST_READ_CALL_LOG -> if (grantResults[0] == PERMISSION_GRANTED) {
+           /* PERMISSIONS_REQUEST_READ_CALL_LOG -> if (grantResults[0] == PERMISSION_GRANTED) {
                 showListPhoneCalls()
             } else {
                 Toast.makeText(this, R.string.phone_log_toast_wait_permission, Toast.LENGTH_SHORT).show()
-            }
+            }*/
         }
     }
 
