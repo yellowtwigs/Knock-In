@@ -205,7 +205,10 @@ class NotificationListener : NotificationListenerService() {
 
     private fun messagesNotUseless(sbp: StatusBarParcelable): Boolean {
         val pregMatchString = ".*(nouveaux messages).*"
-        return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex()))
+        return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex())) &&
+                sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
+                sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
+                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées"
     }
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
@@ -297,10 +300,7 @@ class NotificationListener : NotificationListenerService() {
 
 
     fun appNotifiable(sbp: StatusBarParcelable): Boolean {
-        return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
-                convertPackageToString(sbp.appNotifier) != ""
+        return convertPackageToString(sbp.appNotifier) != ""
     }
 
     private fun convertPackageToString(packageName: String): String {

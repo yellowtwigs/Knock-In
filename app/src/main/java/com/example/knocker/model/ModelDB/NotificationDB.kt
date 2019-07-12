@@ -49,4 +49,17 @@ data class NotificationDB(
         fun insert(database: ContactsRoomDatabase){
                 database.notificationsDao().insert(this)
         }
+
+        override fun equals(other: Any?): Boolean {
+
+                if(other is NotificationDB ){
+                        if(other.contactName.equals(contactName) && other.description.equals(description) && other.timestamp.equals(timestamp)){
+                                return true
+                        }
+                }else{
+                        return false
+                }
+
+                return false
+        }
 }
