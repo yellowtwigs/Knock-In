@@ -22,7 +22,7 @@ interface NotificationsDao {
     @Query("SELECT * FROM notifications_table INNER JOIN contacts_table ON contacts_table.id=notifications_table.id_contact where contact_priority!=1 ORDER BY contacts_table.contact_priority DESC,timestamp DESC ")
     fun getContactWithPriority0And2():List<NotificationDB>
 
-    @Query("SELECT * FROM notifications_table ORDER BY contact_name,timestamp DESC")
+    @Query("SELECT * FROM notifications_table ORDER BY contact_name DESC,timestamp DESC")
     fun getNotifSortByContact():List<NotificationDB>
 
     /**

@@ -340,6 +340,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
 
             menu!!.findItem(R.id.notif_tri_par_priorite).setChecked(true)
+        }else if(sharedPreferences.getBoolean("filtre_message", true)){
+            menu!!.findItem(R.id.notif_tri_par_contact)
         }
         if (!sharedPreferences.getBoolean("filtre_message", true)) {
             menu!!.findItem(R.id.messagefilter).setChecked(false)
@@ -463,7 +465,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             sharedPreferences.getString("tri", "date") == "contact" -> {
 
-                val listNotif = notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact()
+                val listNotif:ArrayList<NotificationDB> = arrayListOf()
+                listNotif.addAll( notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact() )
+                listNotif.retainAll(notification_history_ListOfNotificationDB);
                 val adapter = NotificationHistoryAdapterActivity(this, listNotif)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
