@@ -57,4 +57,11 @@ interface ContactDetailsDao {
      */
     @Query("DELETE FROM contact_details_table WHERE id = :id")
     fun deleteDetailById(id: Int)
+    /**
+     * Supprime tout les [contact detail][ContactDetailDB] d'un contact.
+     * @param id Int    id du contact
+     */
+    @Query("DELETE FROM contact_details_table WHERE id_contact = :id")
+    fun deleteAllDetailsOfContact(id: Int)
+
 }
