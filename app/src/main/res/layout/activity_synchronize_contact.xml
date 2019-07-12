@@ -19,50 +19,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/synchronise_contact_progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/synchronise_contact_title" />
-
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:textAlignment="center"
         android:text="@string/synchronise_contact_synchronise_long_text"
+        android:maxWidth="300dp"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/synchronise_contact_title" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/synchronise_contact_not_accept_button"
-        android:layout_width="185dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="150dp"
-        android:text="@string/synchronise_contact_synchronise_button_no"
-        app:icon="@drawable/ic_turn_synchronization_off"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/synchronise_contact_accept_button"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/synchronise_contact_accept_button"
         android:layout_width="185dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginTop="100dp"
         android:text="@string/synchronise_contact_synchronise_button_yes"
         app:icon="@drawable/ic_synchronization_arrows"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/synchronise_contact_not_accept_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/synchronise_contact_not_accept_button" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/synchronise_contact_not_accept_button"
+        android:layout_width="185dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/synchronise_contact_synchronise_button_no"
+        app:icon="@drawable/ic_turn_synchronization_off"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/synchronise_contact_accept_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

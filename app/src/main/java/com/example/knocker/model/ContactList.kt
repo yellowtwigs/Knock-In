@@ -12,6 +12,7 @@ import android.telephony.PhoneNumberUtils
 import android.util.Base64
 import com.example.knocker.R
 import com.example.knocker.model.ModelDB.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
@@ -479,28 +480,41 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return false//TODO
     }
 
-    fun getLastSync(applicationContext: Context): List<Pair<Int, String>> {
-        val lastSyncList = arrayListOf<Pair<Int, String>>()
-        var idAndName: Pair<Int, String>
-        val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
-        val lastSync = sharedPreferences.getString("last_sync", "")
-        if (lastSync != null && lastSync != "" && lastSync.contains("|")) {
-            val lastSyncSplit = lastSync.split("|")
-            lastSyncSplit.forEach {
-                if (it != "") {
-                    val idAndNameSplit = it.split(":")
-                    println("id and name split"+it)
-                    idAndName = Pair(idAndNameSplit[0].toInt(), idAndNameSplit[1])
-                    lastSyncList.add(idAndName)
-                }
+    fun sliceLastSync(lastSync: String): List<Pair<Int, Int>> {
+        val lastSyncList = arrayListOf<Pair<Int, Int>>()
+        var AllId: Pair<Int, Int>
+        val lastSyncSplit = lastSync.split("|")
+        lastSyncSplit.forEach {
+            if (it != "") {
+                val idSplit = it.split(":")
+                AllId = Pair(idSplit[0].toInt(), idSplit[1].toInt())
+                lastSyncList.add(AllId)
             }
-        } else if (lastSync != null && lastSync != "") {
-            val idAndNameSplit = lastSync.split(":")
-            idAndName = Pair(idAndNameSplit[0].toInt(), idAndNameSplit[1])
-            lastSyncList.add(idAndName)
         }
         return lastSyncList
     }
+
+//    fun getLastSync(applicationContext: Context): List<Pair<Int, String>> {
+//        val lastSyncList = arrayListOf<Pair<Int, String>>()
+//        var idAndName: Pair<Int, String>
+//        val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+//        val lastSync = sharedPreferences.getString("last_sync", "")
+//        if (lastSync != null && lastSync != "" && lastSync.contains("|")) {
+//            val lastSyncSplit = lastSync.split("|")
+//            lastSyncSplit.forEach {
+//                if (it != "") {
+//                    val idAndNameSplit = it.split(":")
+//                    idAndName = Pair(idAndNameSplit[0].toInt(), idAndNameSplit[1])
+//                    lastSyncList.add(idAndName)
+//                }
+//            }
+//        } else if (lastSync != null && lastSync != "") {
+//            val idAndNameSplit = lastSync.split(":")
+//            idAndName = Pair(idAndNameSplit[0].toInt(), idAndNameSplit[1])
+//            lastSyncList.add(idAndName)
+//        }
+//        return lastSyncList
+//    }
 
     fun storeLastSync(contactsList: List<ContactDB>, applicationContext: Context, lastSync: List<Pair<Int, String>>, isFirstTime: Boolean) {
         val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
@@ -510,6 +524,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             contactsList.forEach {
                 name += it.id.toString() + ":" + it.firstName + " " + it.lastName + "|"
             }
+            println("FIRST TIME LIST = "+ name)
             edit.putString("last_sync", name)
             edit.apply()
         } else {
@@ -526,6 +541,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                     name += it.id.toString() + ":" + it.firstName + " " + it.lastName + "|"
                 }
             }
+            println("LIST = "+ name)
             edit.putString("last_sync", name)
             edit.apply()
         }
@@ -574,13 +590,18 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
         val lastId = arrayListOf<Int>()
+        val applicationContext = this.context
+        val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+        val edit: SharedPreferences.Editor = sharedPreferences.edit()
         var ContactLinksGroup : Pair<LinkContactGroup, GroupDB>
         var listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val applicationContext = this.context
+        var lastSyncId = ""
         val callDb = Callable {
             val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
+            var modifiedContact = 0
             phoneStructName!!.forEach { fullName ->
+                val set = mutableSetOf<String>()
                 contactNumberAndPic.forEach { numberPic ->
                     val id = numberPic[1].toString().toInt()
                     if (!lastId.contains(id)) {
@@ -590,8 +611,10 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                             lastId.add(id)
                             if (fullName.second.second == "") {
                                 val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
-                                if (!isDuplicate(allcontacts, contacts)) {
+                                val lastSync = sharedPreferences.getString("last_sync", "")
+                                if (!isDuplicateContacts(fullName, lastSync)) {
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
+                                    lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
                                     for (details in contactDetails) {
                                         details.idContact = contacts.id
                                     }
@@ -603,6 +626,26 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                     saveGroupsAndLinks(listLinkAndGroup)
                                     listLinkAndGroup.clear()
                                     contactsDatabase!!.contactsDao().insertDetails(contactDetails)
+                                } else {
+                                    var positionInSet = 3
+                                    println("CONTACT ALREADY EXIST = " + fullName.second + " " + fullName.first)
+                                    val contact = getContactWithAndroidId(fullName.first, lastSync!!)
+                                    set.add("0"+contact!!.contactDB!!.id)
+                                    set.add("1"+fullName.second.first)
+                                    if (fullName.second.second == "")
+                                        set += "2"+fullName.second.third
+                                    else
+                                        set += "2"+fullName.second.second+" "+fullName.second.third
+                                    for (details in contactDetails) {
+                                        val alldetail = details.type+":"+details.content+":"+details.tag
+                                        set += positionInSet.toString() + alldetail
+                                        positionInSet++
+                                    }
+                                    if (!isSameContact(contact, fullName.second, contactDetails)) {
+                                        modifiedContact++
+                                        edit.putStringSet(modifiedContact.toString(), set)
+                                        edit.apply()
+                                    }
                                 }
                                 phoneContactsList.add(contacts)
                             } else if (fullName.second.second != "") {
@@ -615,24 +658,86 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                     }
                                     contactsDatabase!!.contactsDao().insertDetails(contactDetails)
                                 }
-                            } else {
                             }
                         }
                     }
                 }
             }
+            if (lastSyncId != "") {
+                edit.putString("last_sync", lastSyncId)
+                edit.apply()
+            }
             contactsDatabase?.contactsDao()?.getContactAllInfo()
         }
         val syncContact = executorService.submit(callDb).get()
-        val lastSyncList = getLastSync(applicationContext)
-        if (lastSyncList.isEmpty()) {
-            storeLastSync(phoneContactsList, applicationContext, lastSyncList, true)
-        } else {
-            deleteDeletedContactFromPhone(lastSyncList, phoneContactsList)
-            storeLastSync(phoneContactsList, applicationContext, lastSyncList, false)
-        }
         gestionnaireContacts.contacts.addAll(syncContact!!)
+    }
 
+    fun setToContactList(contactset: List<String>): Pair<ContactDB, List<ContactDetailDB>>{
+        val allContacts: Pair<ContactDB, List<ContactDetailDB>>
+        val detailList = arrayListOf<ContactDetailDB>()
+        for (i in 3..contactset.size-1) {
+            val contactSetSplite = contactset.elementAt(i).split(":")
+            detailList.add(ContactDetailDB(null,null,contactSetSplite[1],contactSetSplite[0].drop(1),contactSetSplite[2],i-2))
+        }
+        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(),contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), 0,0,""), detailList)
+        return allContacts
+    }
+
+    private fun isSameContact(knockerContact: ContactWithAllInformation?, fullname: Triple<String, String, String>, contactDetail: List<ContactDetailDB>): Boolean {
+        var isSame = true
+        if (fullname.second != "") {
+            if (knockerContact!!.contactDB!!.firstName != fullname.first || knockerContact.contactDB!!.lastName != fullname.second + " " + fullname.third) {
+                return false
+            }
+        } else {
+            if (knockerContact!!.contactDB!!.firstName != fullname.first || knockerContact.contactDB!!.lastName != fullname.third) {
+                return false
+            }
+        }
+        if (knockerContact.contactDetailList!!.size != contactDetail.size) {
+            return false
+        }
+        var alreadyCheck: Int
+        knockerContact.contactDetailList!!.forEach {knocker ->
+            alreadyCheck = 0
+            contactDetail.forEach {
+                if (alreadyCheck == 0 && (knocker.type != it.type || knocker.content != it.content || knocker.tag != it.tag)) {
+                    isSame = false
+                } else {
+                    alreadyCheck = 1
+                    isSame = true
+                }
+            }
+            if (!isSame)
+                return false
+        }
+        return true
+    }
+
+    private fun getContactWithAndroidId(androidId: Int, lastSync: String): ContactWithAllInformation? {
+        var contact: ContactWithAllInformation? = null
+        var knockerId = -1
+        val allId = sliceLastSync(lastSync)
+        allId.forEach {
+            if (androidId == it.first)
+                knockerId = it.second
+        }
+        if (knockerId != -1) {
+            contact = contactsDatabase?.contactsDao()?.getContact(knockerId)
+        }
+        return contact
+    }
+
+    private fun isDuplicateContacts(allcontacts: Pair<Int, Triple<String, String, String>>?, lastSync: String?): Boolean {
+        if (lastSync != null || lastSync == "") {
+            val allId = sliceLastSync(lastSync)
+            allId.forEach {Id ->
+                if (allcontacts!!.first == Id.first)
+                    return true
+                }
+            }
+        return false
     }
 
     private fun getContactGroupSync(main_contentResolver: ContentResolver): List<Triple<Int, String?, String?>> {
@@ -709,7 +814,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
 
     fun getContactWithName(name: String, platform: String): ContactWithAllInformation? {
-        println("test platform" + platform + " test name " + name)
+        println("test platform " + platform + " test name " + name)
         when (platform) {
             "message" -> {
                 return getContact(name)

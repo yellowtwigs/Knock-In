@@ -247,7 +247,57 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/manage_searchbar_pos"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="47dp"
+            android:background="@drawable/selector_relative_layout"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
 
+            <TextView
+                android:id="@+id/manage_searchbar_pos_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/manage_my_screen_searchbar_pos"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/settings_subtitle_size"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/manage_searchbar_pos_long_text"
+                android:layout_width="333dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/manage_searchbar_pos_title"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/manage_my_screen_searchbar_pos_long_text"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/settings_long_text_size"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <Switch
+                android:id="@+id/manage_searchbar_pos_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

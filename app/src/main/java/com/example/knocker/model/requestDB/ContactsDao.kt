@@ -67,7 +67,7 @@ interface ContactsDao {
      * @param name String     nom ou prénom du contact
      * @return List&lt[ContactWithAllInformation]&gt
      */
-    @Query("SELECT * FROM contacts_table WHERE instr(lower(first_name), :name) > 0 OR instr(lower(last_name), :name) > 0")
+    @Query("SELECT * FROM contacts_table WHERE instr(lower(first_name), lower(:name)) > 0 OR instr(lower(last_name), lower(:name)) > 0")
     fun getContactByName(name: String): List<ContactWithAllInformation>
     /**
      * Sauvegarde dans la base de données un [contacts][ContactDB]
@@ -102,6 +102,14 @@ interface ContactsDao {
      */
     @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, contact_priority = :priority WHERE id = :id")
     fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, priority: Int)
+    /**
+     * Update un [contact][ContactDB] apres une synchronisation grace à son id
+     * @param id Int     Id du contact sélectionné
+     * @param firstName String  Prénom du contact
+     * @param lastName String   Nom du contact
+     */
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName WHERE id = :id")
+    fun updateContactByIdSync(id: Int, firstName: String, lastName: String)
     /**
      * Supprime un [contacts][ContactDB] grâce à son id
      * @param id Int     Id du contact sélectionné

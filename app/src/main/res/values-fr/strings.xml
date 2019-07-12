@@ -6,9 +6,9 @@
     <!-- region Help Tutorial -->
 
     <string name="help">Help</string>
-    <string name="help_main">Sur cet écran vous pouvez voir tous les contacts enregistrés le carnet d\'adresses de Knocker</string>
+    <string name="help_main">Sur cet écran vous pouvez voir tous les contacts enregistrés dans le carnet d\'adresses de Knocker</string>
     <string name="help_notification_history">Sur cet écran vous pouvez voir toutes les notifications reçues</string>
-    <string name="help_phone_log">Sur cet écran vous pouvez appeler ou envoyer un SMS à un numéro de téléphone. Vous pouvez aussi vous diriger vers un réseau social</string>
+    <string name="help_phone_log">Sur cet écran vous pouvez appeler un numéro de téléphone ou envoyer un SMS à une personne qui n\'est pas dans vos contacts. Vous pouvez aussi vous diriger vers un réseau social</string>
     <string name="help_manage_screen">Sur cet écran vous pouvez choisir comment afficher vos contacts et activer/désactiver la popups d\'appel un contact</string>
     <string name="help_notification_manager">Sur cet écran vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
     <string name="help_my_informations">Sur cette écran vous pouvez modifier vos informations personnelles</string>
@@ -36,7 +36,7 @@
 
     <string name="left_drawer_knockons">Knockons</string>
 
-    <string name="left_drawer_address_book">Mon carnet d\'adresse</string>
+    <string name="left_drawer_address_book">Mon carnet d\'adresses</string>
     <string name="left_drawer_information">Mes informations</string>
     <string name="left_drawer_notif_config">Paramètres de notification</string>
     <string name="left_drawer_my_screen">Affichage</string>
@@ -52,7 +52,7 @@
 
     <string name="main_filter_sms">SMS</string>
     <string name="main_filter_mail">Email</string>
-    <string name="main_search_hint">Rechercher dans vos contacts</string>
+    <string name="main_search_hint">Rechercher</string>
     <string name="main_change_format_phone_book">Aide</string>
     <string name="main_tri_title">Trier par :</string>
     <string name="main_tri_par_nom">Prénom</string>
@@ -62,7 +62,7 @@
     <string name="notif_filtre_message">Notification de Message</string>
     <string name="notif_filtre_systeme">Notification du Système</string>
     <string name="notif_tri_date">Date et heure</string>
-    <string name="notif_tri_par_contact">nom de contact</string>
+    <string name="notif_tri_par_contact">Contact</string>
     <string name="main_toast_delete_contact">Vous venez de supprimer un contact !</string>
     <string name="main_toast_multi_select_actived">Mode Multi Select Activé</string>
     <string name="main_toast_multi_select_deactived">Mode Multi Select Désactivé</string>
@@ -191,8 +191,8 @@
     <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne </string>
     <string name="manage_my_screen_toast_grid">Vous avez sélectionné %1$d contacts par ligne</string>
     <string name="manage_my_screen_toast_list">Vous avez sélectionné le mode "Liste"</string>
-    <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionné le mode "Petite List"</string>
-    <string name="manage_my_screen_contact_popup">Popup contact</string>
+    <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionnez le mode d\'affichage compact</string>
+    <string name="manage_my_screen_contact_popup">Popup d\'appel</string>
     <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
     <string name="manage_my_screen_searchbar_pos">Position de la Barre de recherche</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
@@ -202,17 +202,16 @@
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_popup">Autorisez Knocker à afficher des notifications prioritaire</string>
+    <string name="notification_manager_stop_popup">Autorisez Knocker à afficher des notifications prioritaires</string>
     <string name="notification_manager_stop_service">Activez le service de notification</string>
-    <string name="notification_manager_horaire">Choisissez l\'horaire de rappel pour voir les notifications ratées</string>
-    <string name="notification_manager_prio_1">Masquer les notification de priorité 1</string>
+    <string name="notification_manager_horaire">Choisissez l\'horaire de rappel des notifications de la journée</string>
+    <string name="notification_manager_prio_1">Masquez les notification standard (priorité 1)</string>
 
     <!-- endregion -->
 
     <!-- region Phone Log -->
 
     <string name="phone_log_toolbar_title">Cockpit</string>
-    <string name="phone_log_toast_wait_permission">Tant que vous n\'acceptez pas la permission, nous ne pourrons afficher le nom</string>
     <string name="phone_log_toast_phone_number_empty">Entrer un numéro de téléphone s\'il vous plait</string>
 
     <string name="phone_log_toast_number_valid">Entrer un numéro de téléphone valide s\'il vous plait</string>
@@ -259,9 +258,8 @@
 
     <!-- region Synchronize Contact -->
 
-    <string name="synchronise_contact_title">Synchroniser les contacts</string>
-    <string name="synchronise_contact_synchronise_long_text">Synchroniser les contacts de votre téléphone et récupérer leurs informations dans l\'application Knocker,
-        vous pourrez alors les contacter facilement ainsi que leur affecter des priorités</string>
+    <string name="synchronise_contact_title">Synchronisation des contacts</string>
+    <string name="synchronise_contact_synchronise_long_text">Synchronisez les contacts de votre téléphone et récupérez leurs informations dans Knocker. Vous pourrez alors leurs affecter des priorités et communiquer beaucoup plus facilement et efficacement avec eux </string>
     <string name="synchronise_contact_synchronise_button_yes">Synchroniser</string>
     <string name="synchronise_contact_synchronise_button_no">Ne pas synchroniser</string>
     <string name="synchronise_contact_synchronise_toast">Contacts synchronisés</string>
@@ -274,13 +272,14 @@
     <string name="first_launch_welcome">Bienvenue sur Knocker</string>
     <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquer avec eux</string>
     <string name="first_launch_welcome_accept">Accepter et continuer</string>
-    <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF</a> pour accepter ceux-ci appuyez sur "Accepter et continuer" </string>
+    <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a> Pour les accepter, cliquez sur le bouton ci-dessous</string>
 
     <!-- endregion -->
 
     <!-- region Multi Select in First Launch-->
 
     <string name="multi_select_nb_contact">Nombre de contacts sélectionnés : %1s </string>
+    <string name="multi_select_title">Sélectionner vos contacts prioritaires</string>
 
     <!-- region Alert Dialog -->
 
@@ -290,7 +289,7 @@
     <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
     <string name="multi_select_alert_dialog_nb_contact">vous venez de séléctionner %1s %2s </string>
     <string name="multi_select_alert_dialog_0_contact">vous avez sélectionner 0 contact </string>
-    <string name="multi_select_validate_selection">\n voulez-vous valider votre séléction</string>
+    <string name="multi_select_validate_selection">\n Voulez-vous valider votre séléction ?</string>
 
     <!-- endregion -->
 
@@ -317,6 +316,14 @@
     <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
 
     <!-- endregion !-->
+
+
+
+    <!-- region NotificationListener-->
+
+    <string name="new_messages">nouveaux messages</string>
+
+    <!-- endregion -->
 
 
     <!-- region Group -->

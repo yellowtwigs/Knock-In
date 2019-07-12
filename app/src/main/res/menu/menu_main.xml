@@ -7,20 +7,19 @@
         android:icon="@drawable/ic_help"
         android:orderInCategory="100"
         android:title="@string/main_change_format_phone_book"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/tri"
-        android:title="@string/main_tri_title"
         android:enabled="false"
-        />
+        android:title="@string/main_tri_title" />
     <group
         android:id="@+id/group_tri"
         android:checkableBehavior="single">
         <item
             android:id="@+id/tri_par_nom"
+            android:checked="true"
             android:title="@string/main_tri_par_nom"
-            app:showAsAction="collapseActionView"
-            android:checked="true"/>
+            app:showAsAction="collapseActionView" />
         <item
             android:id="@+id/tri_par_priorite"
             android:title="@string/main_tri_par_priorite"
@@ -28,9 +27,8 @@
     </group>
     <item
         android:id="@+id/filtre"
-        android:title="@string/main_filtre_title"
-        android:enabled="false">
-    </item>
+        android:enabled="false"
+        android:title="@string/main_filtre_title"/>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/sms_filter"

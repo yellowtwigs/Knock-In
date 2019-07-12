@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -22,18 +24,27 @@ import androidx.core.app.ActivityCompat
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
 import com.example.knocker.controller.*
+import com.example.knocker.controller.ContactRecyclerViewAdapter.ContactViewHolder
 import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
 import com.example.knocker.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
+import com.example.knocker.model.ModelDB.ContactDB
+import com.example.knocker.model.ModelDB.ContactDetailDB
+import kotlinx.android.synthetic.main.content_main.*
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import java.util.*
 import com.example.knocker.controller.activity.group.GroupActivity
 import kotlin.collections.ArrayList
 
@@ -50,7 +61,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var drawerLayout: DrawerLayout? = null
 
     private var main_GridView: GridView? = null
-    private var main_Listview: ListView? = null
+    private var main_ListView: ListView? = null
+    private var main_RecyclerView: RecyclerView? = null
 
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonSend: FloatingActionButton? = null
@@ -73,7 +85,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var gestionnaireContacts: ContactList? = null
     private var gridViewAdapter: ContactGridViewAdapter? = null
     private var listViewAdapter: ContactListViewAdapter? = null
+    private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
     private var main_layout: LinearLayout? = null
+
+    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList<ContactWithAllInformation>()
 
     private var firstClick: Boolean = true
 
@@ -108,9 +123,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
-        }else{
+        } else {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_main)
@@ -224,7 +239,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //affiche tout les contacts de la Database
 
         main_GridView = findViewById(R.id.main_grid_view_id)
-        main_Listview = findViewById(R.id.main_list_view_id)
+        main_ListView = findViewById(R.id.main_list_view_id)
+        main_RecyclerView = findViewById(R.id.main_recycler_view_id)
 
         //region commentaire
 //        val listParams = main_GridView!!.layoutParams
@@ -233,17 +249,20 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 //        } else {
 //            listParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
 //        }
-//        main_Listview!!.layoutParams = listParams
+//        main_ListView!!.layoutParams = listParams
+
         //endregion
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
+
         if (len <= 1) {
             main_GridView!!.visibility = View.GONE
-            main_Listview!!.visibility = View.VISIBLE
+            main_RecyclerView!!.visibility = View.VISIBLE
         } else {
-            main_Listview!!.visibility = View.GONE
+            main_RecyclerView!!.visibility = View.GONE
             main_GridView!!.visibility = View.VISIBLE
         }
+
         main_GridView!!.numColumns = len // permet de changer
         gestionnaireContacts = ContactList(this.applicationContext)
 
@@ -267,6 +286,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val adapter = (main_GridView!!.adapter as SelectContactAdapter)
                     adapter.itemSelected(position)
                     adapter.notifyDataSetChanged()
+
+                    if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
+                        listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+                    } else {
+                        listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+                    }
+
+                    verifiedContactsChannel(listOfItemSelected)
+
                     if (adapter.listContactSelect.size == 0) {
                         main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
@@ -294,20 +322,72 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                 }
             })
-
-            // Drag n Drop
         }
 
-        if (main_Listview != null) {
+        if (main_ListView != null) {
             listViewAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
-            main_Listview!!.adapter = listViewAdapter
+            main_ListView!!.adapter = listViewAdapter
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            main_Listview!!.setSelection(index)
+            main_ListView!!.setSelection(index)
             edit.putInt("index", 0)
             edit.apply()
+
+            main_ListView!!.setOnItemClickListener { _, _, position, id ->
+                if (main_ListView!!.adapter is SelectContactAdapter && !firstClick) {
+                    val adapter = (main_ListView!!.adapter as SelectContactAdapter)
+                    adapter.itemSelected(position)
+                    if (adapter.listContactSelect.size == 0) {
+                        main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                        main_FloatingButtonSend!!.visibility = View.GONE
+                        main_SearchBar!!.visibility = View.VISIBLE
+
+                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+
+                        main_MailButton!!.visibility = View.GONE
+                        main_WhatsappButton!!.visibility = View.GONE
+                        main_SMSButton!!.visibility = View.GONE
+                    }
+                }
+                firstClick = false
+            }
         }
 
+        if (main_RecyclerView != null) {
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+            main_RecyclerView!!.adapter = recyclerViewAdapter
+            val index = sharedPreferences.getInt("index", 0)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            main_RecyclerView!!.scrollToPosition(index)
+            edit.putInt("index", 0)
+            edit.apply()
+
+            main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+
+            main_RecyclerView!!.setOnClickListener {
+                if (main_RecyclerView!!.adapter is SelectContactAdapter && !firstClick) {
+                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+                    main_RecyclerView!!.adapter = adapter
+//                    adapter.itemSelected(adapter.)
+
+                    adapter.notifyDataSetChanged()
+                    if (adapter.listContactSelect.size == 0) {
+                        main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                        main_FloatingButtonSend!!.visibility = View.GONE
+                        main_SearchBar!!.visibility = View.VISIBLE
+
+                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+
+                        main_MailButton!!.visibility = View.GONE
+                        main_WhatsappButton!!.visibility = View.GONE
+                        main_SMSButton!!.visibility = View.GONE
+                    }
+                }
+                firstClick = false
+            }
+        }
 
         //main_mDbWorkerThread.postTask(printContacts)
 
@@ -316,22 +396,31 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //region ======================================== Listeners =========================================
 
         main_FloatingButtonSend!!.setOnClickListener {
-            val adapter: SelectContactAdapter = if (len > 1) {
-                (main_GridView!!.adapter as SelectContactAdapter)
-            } else {
-                (main_Listview!!.adapter as SelectContactAdapter)
-            }
             val intent = Intent(this@MainActivity, MultiChannelActivity::class.java)
-            val iterator = (0 until adapter.listContactSelect.size).iterator()
+            var iterator: IntIterator?
             val listOfIdContactSelected: ArrayList<Int> = ArrayList()
 
-            for (i in iterator) {
-                listOfIdContactSelected.add(adapter.listContactSelect[i].getContactId())
+            if (len > 1) {
+                val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
+                iterator = (0 until adapter.listContactSelect.size).iterator()
+
+                for (i in iterator) {
+                    listOfIdContactSelected.add(adapter.listContactSelect[i].getContactId())
+                }
+                intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+
+                startActivity(intent)
+            } else {
+//                val adapter: ContactRecyclerViewAdapter = main_RecyclerView!!.adapter as ContactRecyclerViewAdapter
+//                iterator = (0 until adapter.listContactSelect.size).iterator()
+//
+//                for (i in iterator) {
+//                    listOfIdContactSelected.add(adapter.listContactSelect[i].getContactId())
+//                }
+//                intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+//
+//                startActivity(intent)
             }
-
-            intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
-
-            startActivity(intent)
         }
 
         //Sync contact
@@ -341,14 +430,57 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                 gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+                var index = 1
+                var stringSet = listOf<String>()
+                if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
+                    stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
+                while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
+                    stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                    changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
+                    index++
+                }
+                changedContactList.forEach {changedContact ->
+                    MaterialAlertDialogBuilder(this)
+                            .setTitle("Contact modifié")
+                            .setMessage("Le Contact "+changedContact.first.firstName+" "+changedContact.first.lastName+" a été changer, garder la version du carnet d'address d'Android ou de Knocker ?")
+                            .setPositiveButton("Knocker",{dialog, which ->
+                            })
+                            .setNegativeButton("Android", {dialog, which ->
+                                val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync", "")!!)
+                                allId.forEach {
+                                    if (changedContact.first.id == it.first)
+                                        changedContact.first.id = it.second
+                                }
+                                main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!,changedContact.first.firstName, changedContact.first.lastName)
+                                main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
+                                changedContact.second.forEach {
+                                    it.idContact = changedContact.first.id
+                                    main_ContactsDatabase!!.contactDetailsDao().insert(it)
+                                }
+                            })
+                            .show()
+                }
+                //gestionnaireContacts!!.
                 //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
-                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                val len = sharedPreferences.getInt("gridview", 4)
+                //val len = sharedPreferences.getInt("gridview", 4)
                 /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
               main_GridView!!.adapter = gridViewAdapter
   */
+                index = 1
+                val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
+                while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
+                    stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                    edit.remove(index.toString())
+                    index++
+                }
+                edit.apply()
+                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 if (sharedPreferences.getString("tri", "") == "priorite")
                     gestionnaireContacts!!.sortContactByPriority()
+                else
+                    gestionnaireContacts!!.sortContactByFirstNameAZ()
                 gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
                 gridViewAdapter!!.notifyDataSetChanged()
                 drawerLayout!!.closeDrawers()
@@ -378,12 +510,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedPreferences.getInt("gridview", 4)
                 var filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                val contactListDb=ContactList(this@MainActivity)
+                val contactListDb = ContactList(this@MainActivity)
                 if (sharedPreferences.getString("tri", "nom") == "nom") {
-                    contactListDb!!.sortContactByFirstNameAZ()
+                    contactListDb.sortContactByFirstNameAZ()
                     contactListDb.contacts.retainAll(filteredList)
                 } else {
-                    contactListDb!!.sortContactByPriority()
+                    contactListDb.sortContactByPriority()
                     contactListDb.contacts.retainAll(filteredList)
                 }
                 gestionnaireContacts!!.contacts.clear()
@@ -394,9 +526,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 } else {
 
                     listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                    main_Listview!!.adapter = listViewAdapter
+                    main_ListView!!.adapter = listViewAdapter
                     listViewAdapter!!.notifyDataSetChanged()
-
                 }
             }
         })
@@ -406,19 +537,40 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         main_SMSButton!!.setOnClickListener {
-            val adapter: SelectContactAdapter = if (len > 1) {
-                (main_GridView!!.adapter as SelectContactAdapter)
+
+            val iterator: IntIterator?
+            val listOfPhoneNumberContactSelected: ArrayList<String> = ArrayList()
+
+            if (len > 1) {
+                val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
+
+                iterator = (0 until adapter.listContactSelect.size).iterator()
+
+                for (i in iterator) {
+                    listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getPhoneNumber())
+                }
             } else {
-                (main_Listview!!.adapter as SelectContactAdapter)
+//                val adapter: ContactRecyclerViewAdapter = main_RecyclerView!!.adapter as ContactRecyclerViewAdapter
+//
+//                iterator = (0 until adapter.listContactSelect.size).iterator()
+//
+//                for (i in iterator) {
+//                    listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getPhoneNumber())
+//                }
             }
+            monoChannelSmsClick(listOfPhoneNumberContactSelected)
+        }
+
+        main_MailButton!!.setOnClickListener {
+            val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
             val iterator = (0 until adapter.listContactSelect.size).iterator()
             val listOfPhoneNumberContactSelected: ArrayList<String> = ArrayList()
 
             for (i in iterator) {
-                listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getPhoneNumber())
+                listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getFirstMail())
             }
 
-            monoChannelSmsClick(listOfPhoneNumberContactSelected)
+            monoChannelMailClick(listOfPhoneNumberContactSelected)
         }
 
         //endregion
@@ -462,7 +614,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val triPrio = menu.findItem(R.id.tri_par_priorite)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
-        if (tri.equals("nom")) {
+        if (tri == "nom") {
             triNom.isChecked = true
         } else {
             triPrio.isChecked = true
@@ -512,12 +664,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    val contactListDb=ContactList(this)
+                    val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
-                        contactListDb!!.sortContactByFirstNameAZ()
+                        contactListDb.sortContactByFirstNameAZ()
                         contactListDb.contacts.retainAll(filteredContact)
                     } else {
-                        contactListDb!!.sortContactByPriority()
+                        contactListDb.sortContactByPriority()
                         contactListDb.contacts.retainAll(filteredContact)
                     }
                     gestionnaireContacts!!.contacts.clear()
@@ -527,7 +679,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
                         listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_Listview!!.adapter = listViewAdapter
+                        main_ListView!!.adapter = listViewAdapter
                     }
                 } else {
                     item.isChecked = true
@@ -551,7 +703,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
                         listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_Listview!!.adapter = listViewAdapter
+                        main_ListView!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
                 }
@@ -567,12 +719,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    val contactListDb=ContactList(this)
+                    val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
-                        contactListDb!!.sortContactByFirstNameAZ()
+                        contactListDb.sortContactByFirstNameAZ()
                         contactListDb.contacts.retainAll(filteredContact)
                     } else {
-                        contactListDb!!.sortContactByPriority()
+                        contactListDb.sortContactByPriority()
                         contactListDb.contacts.retainAll(filteredContact)
                     }
                     gestionnaireContacts!!.contacts.clear()
@@ -582,11 +734,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
                         listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_Listview!!.adapter = listViewAdapter
+                        main_ListView!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
                 } else {
-                    item.setChecked(true)
+                    item.isChecked = true
                     main_filter.add("mail")
                     // duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
@@ -604,7 +756,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
                         listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_Listview!!.adapter = listViewAdapter
+                        main_ListView!!.adapter = listViewAdapter
 
                         listViewAdapter!!.notifyDataSetChanged()
                     }
@@ -622,7 +774,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
                         listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_Listview!!.adapter = listViewAdapter
+                        main_ListView!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -641,7 +793,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
                         listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_Listview!!.adapter = listViewAdapter
+                        main_ListView!!.adapter = listViewAdapter
                         listViewAdapter!!.notifyDataSetChanged()
                     }
 
@@ -704,7 +856,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     fun longGridItemClick(len: Int, position: Int) {
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
+        val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         main_GridView!!.adapter = adapter
         adapter.itemSelected(position)
         adapter.notifyDataSetChanged()
@@ -713,27 +865,75 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SearchBar!!.visibility = View.GONE
         firstClick = true
 
-        if (gestionnaireContacts!!.contacts[position].getFirstMail() != "") {
-            main_MailButton!!.visibility = View.VISIBLE
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+        } else {
+            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
         }
 
-        if (appIsInstalled() && gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
-            main_WhatsappButton!!.visibility = View.VISIBLE
-        }
-
-        if (gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
-            main_SMSButton!!.visibility = View.VISIBLE
-        }
-
+        verifiedContactsChannel(listOfItemSelected)
 
         Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
-    fun longListItemClick(len: Int, position: Int) {
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len, true)
-        main_Listview!!.adapter = adapter
-        adapter.itemSelected(position)
-        adapter.notifyDataSetChanged()
+    private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
+        val iterator = (0 until listOfItemSelected.size).iterator()
+        var allContactsHaveMail = true
+        var allContactsHavePhoneNumber = true
+
+        for (i in iterator) {
+            if (listOfItemSelected[i].getFirstMail() == "") {
+                allContactsHaveMail = false
+            }
+
+            if (listOfItemSelected[i].getPhoneNumber() == "") {
+                allContactsHavePhoneNumber = false
+            }
+        }
+
+        if (allContactsHaveMail) {
+            main_MailButton!!.visibility = View.VISIBLE
+        } else {
+            main_MailButton!!.visibility = View.GONE
+        }
+
+        if (allContactsHavePhoneNumber) {
+            main_SMSButton!!.visibility = View.VISIBLE
+        } else {
+            main_SMSButton!!.visibility = View.GONE
+        }
+
+        if (appIsInstalled() && allContactsHavePhoneNumber) {
+            main_WhatsappButton!!.visibility = View.VISIBLE
+        } else {
+            main_WhatsappButton!!.visibility = View.GONE
+        }
+    }
+
+    fun longRecyclerItemClick(position: Int, view: View, contactViewHolder: ContactViewHolder) {
+        var holder = contactViewHolder
+
+        holder.contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
+        holder.contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName)
+
+        view.tag = holder
+
+        val contact = gestionnaireContacts!!.contacts[position].contactDB
+
+        holder.contactFirstNameView.text = contact!!.firstName
+
+        if (gestionnaireContacts!!.contacts.contains(gestionnaireContacts!!.contacts[position])) {
+            if (contact.profilePicture64 != "") {
+                val bitmap = base64ToBitmap(contact.profilePicture64)
+                holder.contactRoundedImageView.setImageBitmap(bitmap)
+            } else {
+                holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.profilePicture, "Get")) //////////////
+            }
+        } else {
+            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected)
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+        }
+
         main_FloatingButtonAdd!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.VISIBLE
         main_SearchBar!!.visibility = View.GONE
@@ -750,26 +950,23 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
             main_SMSButton!!.visibility = View.VISIBLE
         }
-
-        Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
-    fun listItemClick(len: Int, position: Int) {
-        if (main_Listview!!.adapter is SelectContactAdapter && !firstClick) {
-            val adapter = (main_Listview!!.adapter as SelectContactAdapter)
-            adapter.itemSelected(position)
-            adapter.notifyDataSetChanged()
-            if (adapter.listContactSelect.size == 0) {
-                main_Listview!!.adapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
-                main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                main_FloatingButtonSend!!.visibility = View.GONE
-                main_SearchBar!!.visibility = View.VISIBLE
-
-                Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-            }
-        }
-        firstClick = false
-    }
+//    fun recyclerItemClick(len: Int, position: Int) {
+////        if (main_RecyclerView!!.adapter is SelectContactAdapter && !firstClick) {
+//        val adapter = (main_RecyclerView!!.adapter as SelectContactAdapter)
+//        adapter.itemSelected(position)
+//        if (adapter.listContactSelect.size == 0) {
+//            main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+//            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+//            main_FloatingButtonSend!!.visibility = View.GONE
+//            main_SearchBar!!.visibility = View.VISIBLE
+//
+//            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+//        }
+////        }
+//        firstClick = false
+//    }
 
     private fun appIsInstalled(): Boolean {
         val pm = this.packageManager
@@ -783,33 +980,48 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
-        val iterator = (0 until listOfPhoneNumber.size).iterator()
-        var intent: Intent? = null
-
-        for (i in iterator) {
-            listOfPhoneNumber[i]
+        var message = "smsto:" + listOfPhoneNumber[0]
+        for (i in 1 until listOfPhoneNumber.size) {
+            message += ";" + listOfPhoneNumber[i]
         }
+        startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
+    }
 
-        when (listOfPhoneNumber.size) {
-            2 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1]))
-            3 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2]))
-            4 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2] + ";" + listOfPhoneNumber[3]))
-            5 -> intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + listOfPhoneNumber[0] + ";" + listOfPhoneNumber[1] + ";" + listOfPhoneNumber[2] + ";" + listOfPhoneNumber[3] + ";" + listOfPhoneNumber[4]))
+    private fun base64ToBitmap(base64: String): Bitmap {
+
+        val decodedString = Base64.decode(base64, Base64.DEFAULT)
+        val options = BitmapFactory.Options()
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size, options)
+    }
+
+    private fun randomDefaultImage(avatarId: Int, createOrGet: String): Int {
+        if (createOrGet == "Create") {
+            return Random().nextInt(7)
+        } else if (createOrGet == "Get") {
+            return when (avatarId) {
+                0 -> R.drawable.ic_user_purple
+                1 -> R.drawable.ic_user_blue
+                2 -> R.drawable.ic_user_knocker
+                3 -> R.drawable.ic_user_green
+                4 -> R.drawable.ic_user_om
+                5 -> R.drawable.ic_user_orange
+                6 -> R.drawable.ic_user_pink
+                else -> R.drawable.ic_user_blue
+            }
         }
+        return -1
+    }
 
+    private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
+        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
+        intent.data = Uri.parse("mailto:")
+        intent.type = "message/rfc822"
+        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+        intent.putExtra(Intent.EXTRA_TEXT, "")
         startActivity(intent)
     }
 
-//    private fun monoChannelMailClick(listOfPhoneNumber: ArrayList<String>) {
-//
-//        val mail = "dzdzq"
-//        val intent = Intent(Intent.ACTION_SEND)
-//        intent.data = Uri.parse("mailto:")
-//        intent.type = "text/html"
-//        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail.substring(0, mail.length - 1)))
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "")
-//        intent.putExtra(Intent.EXTRA_TEXT, "")
-//
-//        startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length - 1)))
-//    }
+    //endregion
 }

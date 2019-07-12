@@ -8,10 +8,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -29,6 +32,7 @@ import com.example.knocker.model.ModelDB.NotificationDB
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.knocker_infos.*
 
 
 /**
@@ -40,7 +44,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
     //region ========================================== Val or Var ==========================================
 
     private var notification_history_DrawerLayout: DrawerLayout? = null
-    private var main_BottomNavigationView: BottomNavigationView? = null
+    private var notification_BottomNavigationView: BottomNavigationView? = null
+    private var notification_Search_TextView:TextView?= null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
@@ -82,10 +87,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_notification_history)
-
-        main_BottomNavigationView = findViewById(R.id.navigation)
-        main_BottomNavigationView!!.menu.getItem(1).isChecked = true
-        main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        notification_Search_TextView=findViewById(R.id.notification_history_search_bar)
+        notification_BottomNavigationView = findViewById(R.id.navigation)
+        notification_BottomNavigationView!!.menu.getItem(1).isChecked = true
+        notification_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         //region ========================================= Toolbar ==========================================
 
@@ -192,6 +197,15 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
         }
 
+        notification_Search_TextView!!.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                updateFilter()
+            }
+        }
+
+        )
         //endregion
     }
 
@@ -343,6 +357,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
 
             menu!!.findItem(R.id.notif_tri_par_priorite).setChecked(true)
+        }else if(sharedPreferences.getBoolean("filtre_message", true)){
+            menu!!.findItem(R.id.notif_tri_par_contact)
         }
         if (!sharedPreferences.getBoolean("filtre_message", true)) {
             menu!!.findItem(R.id.messagefilter).setChecked(false)
@@ -428,16 +444,39 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
 
             val listTmp = mutableListOf<NotificationDB>()
-
             listTmp.addAll(notification_history_ListOfNotificationDB)
-            listTmp.forEach {
-                if (!isMessagingApp(it.platform)) {
-                    notification_history_ListOfNotificationDB.remove(it)
+
+            val stringSearch= notification_Search_TextView!!.text.toString().toLowerCase()
+            listTmp.addAll(notification_history_ListOfNotificationDB)
+            if (!stringSearch.isEmpty()) {
+                val regex=(".*("+stringSearch+").*").toRegex()
+                listTmp.forEach {
+                    if (!(it.contactName.toLowerCase().matches(regex)|| it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
+                        notification_history_ListOfNotificationDB.remove(it)
+                    }
+                }
+            }else{
+                listTmp.forEach {
+                    if (!isMessagingApp(it.platform)) {
+                        notification_history_ListOfNotificationDB.remove(it)
+                    }
                 }
             }
+
         } else {
             notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+            val listTmp = mutableListOf<NotificationDB>()
+            val stringSearch= notification_Search_TextView!!.text.toString().toLowerCase()
+            listTmp.addAll(notification_history_ListOfNotificationDB)
+            if (!stringSearch.isEmpty()) {
+                val regex=(".*"+stringSearch+".*").toRegex()
+                listTmp.forEach {
+                    if (!it.contactName.toLowerCase().matches(regex)&& !it.description.toLowerCase().matches(regex)) {
+                        notification_history_ListOfNotificationDB.remove(it)
+                    }
+                }
+            }
         }
 
         when {
@@ -466,7 +505,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             sharedPreferences.getString("tri", "date") == "contact" -> {
 
-                val listNotif = notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact()
+                val listNotif:ArrayList<NotificationDB> = arrayListOf()
+                listNotif.addAll( notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact() )
+                listNotif.retainAll(notification_history_ListOfNotificationDB);
                 val adapter = NotificationHistoryAdapterActivity(this, listNotif)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
