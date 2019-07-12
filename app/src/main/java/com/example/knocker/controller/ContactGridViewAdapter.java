@@ -267,7 +267,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         int border = (int) (0.0625 * metrics.densityDpi);
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.setMargins(border, border, border, border);
+        layoutParams.setMargins(5, 5, 5, 5);
 
         FloatingActionMenu.Builder builder = new FloatingActionMenu.Builder((Activity) context)
                 .setStartAngle(startAngle)
