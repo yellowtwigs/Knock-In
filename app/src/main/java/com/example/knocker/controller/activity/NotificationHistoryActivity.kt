@@ -509,7 +509,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
             }
-            else -> println("thats a problem")
+            else -> println("thats a problem test")
+
         }
     }
     //endregion
