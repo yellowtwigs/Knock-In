@@ -16,6 +16,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/floating_button_margin"
         android:layout_marginBottom="80dp"
+        android:tint="@color/lightColor"
         android:background="@color/colorPrimary"
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add" />

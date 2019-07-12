@@ -35,7 +35,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:maxWidth="250dp"
-            android:text="@string/multi_select_alert_dialog_message"
+            android:text="@string/alert_dialog_notification_message"
             android:textAlignment="center"
             android:textColor="@color/lightColor"
             android:textSize="16sp"

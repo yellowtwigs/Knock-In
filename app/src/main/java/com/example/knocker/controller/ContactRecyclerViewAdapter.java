@@ -1,7 +1,6 @@
 package com.example.knocker.controller;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -34,9 +33,9 @@ import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import static java.sql.DriverManager.println;
 
@@ -52,24 +51,38 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private Integer len;
     private boolean fromMultiChannel = false;
     private View view;
-
-    public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
-        this.context = context;
-        this.listContacts = listContacts;
-        this.len = len;
-        layoutInflater = LayoutInflater.from(context);
-    }
+    private ArrayList<ContactWithAllInformation> listSelectedItem;
 
     public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len, boolean fromMultiChannel) {
         this.context = context;
         this.listContacts = listContacts;
         this.fromMultiChannel = fromMultiChannel;
         this.len = len;
-        layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(context);
+        listSelectedItem = new ArrayList<>();
     }
 
     public ContactWithAllInformation getItem(int position) {
         return listContacts.get(position);
+    }
+
+    public void itemSelected(int position) {
+
+        ContactWithAllInformation contact = getItem(position);
+        if (listSelectedItem.contains(contact)) {
+            listSelectedItem.remove(contact);
+        } else {
+            listSelectedItem.add(contact);
+        }
+    }
+
+//    public int getPosition(final ContactViewHolder holder)
+//    {
+//        return holder.position;
+//    }
+
+    public ArrayList<ContactWithAllInformation> getListContactSelect() {
+        return listSelectedItem;
     }
 
     @NonNull
@@ -116,7 +129,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             System.out.println(contact.getProfilePicture());
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get"));
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
 
         String contactName = contact.getFirstName() + " " + contact.getLastName();
@@ -178,7 +191,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ((MainActivity) context).longRecyclerItemClick(len, position, view, holder);
+                ((MainActivity) context).longRecyclerItemClick(position, view, holder);
                 return true;
             }
         };
@@ -251,26 +264,22 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return phoneNumber;
     }
 
-    private int randomDefaultImage(int avatarId, String createOrGet) {
-        if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
-        } else if (createOrGet.equals("Get")) {
-            switch (avatarId) {
-                case 0:
-                    return R.drawable.ic_user_purple;
-                case 1:
-                    return R.drawable.ic_user_blue;
-                case 2:
-                    return R.drawable.ic_user_knocker;
-                case 3:
-                    return R.drawable.ic_user_green;
-                case 4:
-                    return R.drawable.ic_user_om;
-                case 5:
-                    return R.drawable.ic_user_orange;
-                case 6:
-                    return R.drawable.ic_user_pink;
-            }
+    private int randomDefaultImage(int avatarId) {
+        switch (avatarId) {
+            case 0:
+                return R.drawable.ic_user_purple;
+            case 1:
+                return R.drawable.ic_user_blue;
+            case 2:
+                return R.drawable.ic_user_knocker;
+            case 3:
+                return R.drawable.ic_user_green;
+            case 4:
+                return R.drawable.ic_user_om;
+            case 5:
+                return R.drawable.ic_user_orange;
+            case 6:
+                return R.drawable.ic_user_pink;
         }
         return -1;
     }
@@ -289,7 +298,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             //Intent intent=new Intent(Intent.ACTION_CALL);
             //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
-            Boolean popup = sharedPreferences.getBoolean("popup", true);
+            boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup) {
                 new AlertDialog.Builder(context)
                         .setTitle("Voulez-vous appeler ce contact ?")
@@ -319,11 +328,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     public class ContactViewHolder extends RecyclerView.ViewHolder {
         public TextView contactFirstNameView;
-        public ConstraintLayout constraintLayout;
-        public ConstraintLayout constraintLayoutMenu;
+        ConstraintLayout constraintLayout;
+        ConstraintLayout constraintLayoutMenu;
         public CircularImageView contactRoundedImageView;
-        public ConstraintLayout constraintLayoutSmaller;
-        public ConstraintLayout constraintLayoutMenuSmaller;
+        ConstraintLayout constraintLayoutSmaller;
+        ConstraintLayout constraintLayoutMenuSmaller;
 
         int position;
 
@@ -333,7 +342,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         ConstraintLayout mailCl;
         ConstraintLayout editCl;
 
-        public ContactViewHolder(@NonNull View view) {
+        ContactViewHolder(@NonNull View view) {
             super(view);
 
             if (len == 0) {

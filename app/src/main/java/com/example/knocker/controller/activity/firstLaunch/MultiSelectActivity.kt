@@ -38,7 +38,6 @@ class MultiSelectActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi_select)
 
-
         //region ========================================= Toolbar ==========================================
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -57,19 +56,20 @@ class MultiSelectActivity : AppCompatActivity() {
 
         //endregion
 
-        adapter = SelectContactAdapter(this, gestionnaireContact, 4, false, true)
+        adapter = SelectContactAdapter(this, gestionnaireContact, 4, true)
 
         multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
         multi_select_gridView!!.numColumns = 4
         multi_select_gridView!!.adapter = adapter
 
-
-//        adapter!!.itemSelected(position)
-//        adapter!!.notifyDataSetChanged()
         multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
 
         multi_select_gridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            adapter!!.itemSelected(position)
+            adapter!!.notifyDataSetChanged()
+            multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.getListContactSelect().size)
 
+            true
         }
     }
 
@@ -145,9 +145,15 @@ class MultiSelectActivity : AppCompatActivity() {
         return alertDialogBuilder.create()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_toolbar_validate, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
+            R.id.nav_validate -> {
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (!Settings.canDrawOverlays(applicationContext)) {
                         overlayAlertDialogPermission().show()
@@ -163,12 +169,6 @@ class MultiSelectActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_validate, menu)
-        return true
     }
 
     override fun onResume() {
