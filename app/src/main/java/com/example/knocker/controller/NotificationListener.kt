@@ -245,36 +245,6 @@ class NotificationListener : NotificationListenerService() {
         notifLayout(sbp, popupView)
 
         windowManager!!.addView(popupView, parameters) // affichage de la popupview
-
-        popupView!!.setOnTouchListener { view, event ->
-            val x = event.rawX.toInt()
-            val y = event.rawY.toInt()
-            var _xDelta = 0
-            var _yDelta = 0
-
-            when (event.action and MotionEvent.ACTION_MASK) {
-
-                MotionEvent.ACTION_DOWN -> {
-                    _xDelta = (view.x - event.rawX).toInt()
-                    _yDelta = (view.y - event.rawY).toInt()
-                }
-
-                MotionEvent.ACTION_UP -> {
-                }
-                MotionEvent.ACTION_POINTER_DOWN -> {
-                }
-                MotionEvent.ACTION_POINTER_UP -> {
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    view.animate()
-                            .x(event.rawX + _xDelta)
-                            .y(event.rawY + _yDelta)
-                            .setDuration(0)
-                            .start()
-                }
-            }
-            return@setOnTouchListener true
-        }
     }
 
     private fun notifLayout(sbp: StatusBarParcelable, view: View?) {

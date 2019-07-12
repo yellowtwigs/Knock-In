@@ -237,7 +237,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonWhatsApp.setImageDrawable(iconWhatsApp);
         Drawable iconSMS = null;
 
-        buttonSMS.setImageResource(R.drawable.ic_sms);
+        buttonSMS.setImageResource(R.drawable.ic_sms_selector);
         buttonEdit.setImageResource(R.drawable.ic_edit);
         buttonMail.setImageResource(R.drawable.ic_rounded_gmail);
 
