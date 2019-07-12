@@ -314,4 +314,10 @@
     <string name="alert_dialog_overlay_message">Do you want to authorize Knocker to display priority notifications</string>
 
     <!-- endregion !-->
+
+    <!-- region NotificationListener-->
+
+    <string name="new_messages">new messages</string>
+
+    <!-- endregion -->
 </resources>

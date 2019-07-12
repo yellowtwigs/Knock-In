@@ -176,7 +176,7 @@ class NotificationListener : NotificationListenerService() {
         println("dernière insertion " + lastInsertId)
         val lastInsert = notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
 
-        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description) {
+        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp-lastInsert.timestamp<60) {
             return false
         }
         return true
@@ -204,11 +204,8 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun messagesNotUseless(sbp: StatusBarParcelable): Boolean {
-        val pregMatchString = ".*(nouveaux messages).*"
-        return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex())) &&
-                sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées"
+        val pregMatchString = ".*"+resources.getString(R.string.new_messages)+".*"
+        return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex()))
     }
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
@@ -300,7 +297,10 @@ class NotificationListener : NotificationListenerService() {
 
 
     fun appNotifiable(sbp: StatusBarParcelable): Boolean {
-        return convertPackageToString(sbp.appNotifier) != ""
+        return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
+                sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
+                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
+                convertPackageToString(sbp.appNotifier) != ""
     }
 
     private fun convertPackageToString(packageName: String): String {

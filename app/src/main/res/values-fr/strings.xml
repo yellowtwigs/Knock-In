@@ -316,4 +316,12 @@
     <string name="alert_dialog_overlay_message">voulez vous autouriser knocker à afficher des notifications directement sur d\'autre application</string>
 
     <!-- endregion !-->
+
+
+
+    <!-- region NotificationListener-->
+
+    <string name="new_messages">nouveaux messages</string>
+
+    <!-- endregion -->
 </resources>
