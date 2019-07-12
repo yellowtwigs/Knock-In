@@ -921,7 +921,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
-        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size()))
+        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
         intent.data = Uri.parse("mailto:")
