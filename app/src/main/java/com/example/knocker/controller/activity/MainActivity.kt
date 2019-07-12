@@ -920,16 +920,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         return -1
     }
 
-    private fun monoChannelMailClick(listOfPhoneNumber: ArrayList<String>) {
-
-        val mail = "dzdzq"
+    private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
+        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size()))
         val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
         intent.data = Uri.parse("mailto:")
-        intent.type = "text/html"
-        intent.putExtra(Intent.EXTRA_EMAIL, listOfPhoneNumber)
+        intent.type = "message/rfc822"
         intent.putExtra(Intent.EXTRA_SUBJECT, "")
         intent.putExtra(Intent.EXTRA_TEXT, "")
-
-        startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length - 1)))
+        startActivity(intent)
     }
 }
