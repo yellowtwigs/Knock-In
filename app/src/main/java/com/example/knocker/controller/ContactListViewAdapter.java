@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,6 +34,7 @@ import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -48,22 +50,11 @@ public class ContactListViewAdapter extends BaseAdapter {
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
     private Context context;
-    private Integer len;
-    private boolean fromMultiChannel = false;
-    private ViewHolder activeMenu;
+    private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<AppCompatImageView>();
 
-    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
+    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts) {
         this.context = context;
         this.listContacts = listContacts;
-        this.len = len;
-        layoutInflater = LayoutInflater.from(context);
-    }
-
-    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len, boolean fromMultiChannel) {
-        this.context = context;
-        this.listContacts = listContacts;
-        this.fromMultiChannel = fromMultiChannel;
-        this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -82,7 +73,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         return 0;
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams", "ViewHolder"})
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -90,70 +81,18 @@ public class ContactListViewAdapter extends BaseAdapter {
         final ViewHolder holder;
         holder = new ViewHolder();
         holder.position = position;
-        ContactDB contact = getItem(position).getContactDB();
+        final ContactDB contact = getItem(position).getContactDB();
 
-        if (len == 0) {
-            if (fromMultiChannel) {
-                listview = layoutInflater.inflate(R.layout.list_contact_selected_with_channel, null);
+        listview = layoutInflater.inflate(R.layout.list_contact_selected_with_channel, null);
 
-                holder.contactRoundedImageView = listview.findViewById(R.id.multi_channel_list_item_contactRoundedImageView);
-                holder.contactFirstNameView = listview.findViewById(R.id.multi_channel_list_item_contactFirstName);
-            } else {
-                listview = layoutInflater.inflate(R.layout.list_contact_item_layout_smaller, null);
+        holder.contactRoundedImageView = listview.findViewById(R.id.multi_channel_list_item_contactRoundedImageView);
+        holder.contactFirstNameView = listview.findViewById(R.id.multi_channel_list_item_contactFirstName);
 
-                holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
-                holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
-
-                assert contact != null;
-                if (contact.getContactPriority() == 0) {
-                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
-                } else if (contact.getContactPriority() == 1) {
-                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorDark));
-                } else if (contact.getContactPriority() == 2) {
-                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityTwoColor));
-                }
-            }
-
-            if (fromMultiChannel) {
-                holder.constraintLayoutSmaller = listview.findViewById(R.id.multi_channel_list_item_layout);
-                holder.constraintLayoutMenuSmaller = listview.findViewById(R.id.multi_channel_list_item_menu);
-                holder.callCl = listview.findViewById(R.id.multi_channel_list_item_constraint_call);
-                holder.smsCl = listview.findViewById(R.id.multi_channel_list_item_constraint_sms);
-                holder.whatsappCl = listview.findViewById(R.id.multi_channel_list_item_constraint_whatsapp);
-                holder.mailCl = listview.findViewById(R.id.multi_channel_list_item_constraint_mail);
-            } else {
-                holder.constraintLayoutSmaller = listview.findViewById(R.id.list_contact_item_layout_smaller);
-                holder.constraintLayoutMenuSmaller = listview.findViewById(R.id.list_contact_item_menu_smaller);
-                holder.callCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_call);
-                holder.smsCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_sms);
-                holder.whatsappCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
-                holder.mailCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_mail);
-                holder.editCl = listview.findViewById(R.id.list_contact_item_smaller_constraint_edit);
-            }
-        } else {
-            listview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
-            holder.contactRoundedImageView = listview.findViewById(R.id.list_contact_item_contactRoundedImageView);
-            holder.contactFirstNameView = listview.findViewById(R.id.list_contact_item_contactFirstName);
-            assert contact != null;
-
-            if (contact.getContactPriority() == 0) {
-                holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
-            } else if (contact.getContactPriority() == 1) {
-                holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-            } else if (contact.getContactPriority() == 2) {
-                holder.contactRoundedImageView.setBetweenBorderColor(context.getResources().getColor(R.color.priorityOneColor));
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
-            }
-
-            holder.constraintLayout = listview.findViewById(R.id.list_contact_item_layout);
-            holder.constraintLayoutMenu = listview.findViewById(R.id.list_contact_item_menu);
-            holder.callCl = listview.findViewById(R.id.list_contact_item_constraint_call);
-            holder.smsCl = listview.findViewById(R.id.list_contact_item_constraint_sms);
-            holder.whatsappCl = listview.findViewById(R.id.list_contact_item_constraint_whatsapp);
-            holder.mailCl = listview.findViewById(R.id.list_contact_item_constraint_mail);
-        }
+        holder.constraintLayout = listview.findViewById(R.id.multi_channel_list_item_layout);
+        holder.callCl = listview.findViewById(R.id.multi_channel_list_item_phone_call_iv);
+        holder.smsCl = listview.findViewById(R.id.multi_channel_list_item_sms_iv);
+        holder.whatsappCl = listview.findViewById(R.id.multi_channel_list_item_whatsapp_iv);
+        holder.mailCl = listview.findViewById(R.id.multi_channel_list_item_mail_iv);
 
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -170,89 +109,50 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         holder.contactFirstNameView.setText(contactName);
 
-        if (activeMenu != null) {
-            if (holder.position == activeMenu.position) {
-                holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-            }
-        }
-
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (v.getId() == holder.smsCl.getId()) {
-
-                    String phone = getItem(position).getPhoneNumber();
-                    Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
-                    context.startActivity(i);
-                }
-                if (v.getId() == holder.callCl.getId()) {
-                    callPhone(getItem(position).getPhoneNumber());
-                }
-                if (v.getId() == holder.whatsappCl.getId()) {
-                    ContactWithAllInformation contactWithAllInformation = getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
-                }
-                if (v.getId() == holder.editCl.getId()) {
-
-                    Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId", Objects.requireNonNull(getItem(position).getContactDB()).getId());
-                    context.startActivity(intent);
-                }
-                if (v.getId() == holder.mailCl.getId()) {
-                    String mail = getItem(position).getFirstMail();
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setData(Uri.parse("mailto:"));
-                    intent.setType("text/html");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "");
-                    intent.putExtra(Intent.EXTRA_TEXT, "");
-                    println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
-                    context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
-                }
-
-                if (holder.constraintLayoutMenu != null) {
-
-                    if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
-                        holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-                        if (activeMenu != null) {
-                            activeMenu.constraintLayoutMenu.setVisibility(View.GONE);
-                        }
-                        activeMenu = holder;
+                    if (listItemChannelSelected.contains(holder.smsCl)) {
+                        listItemChannelSelected.remove(holder.smsCl);
+                        holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
                     } else {
-                        holder.constraintLayoutMenu.setVisibility(View.GONE);
-                        activeMenu = null;
-
-                        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                        holder.constraintLayoutMenu.startAnimation(slideDown);
+                        listItemChannelSelected.add(holder.smsCl);
+                        holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
                     }
                 }
+                if (v.getId() == holder.callCl.getId()) {
+                }
+                if (v.getId() == holder.whatsappCl.getId()) {
+                    if (listItemChannelSelected.contains(holder.whatsappCl)) {
+                        listItemChannelSelected.remove(holder.whatsappCl);
+                        holder.whatsappCl.setImageResource(R.drawable.ic_whatsapp);
+                    } else {
+                        listItemChannelSelected.add(holder.whatsappCl);
+                        holder.whatsappCl.setImageResource(R.drawable.ic_contact_selected);
+                    }
+                }
+                if (v.getId() == holder.mailCl.getId()) {
+                    if (listItemChannelSelected.contains(holder.mailCl)) {
+                        listItemChannelSelected.remove(holder.mailCl);
+                        holder.mailCl.setImageResource(R.drawable.ic_email);
+                    } else {
+                        listItemChannelSelected.add(holder.mailCl);
+                        holder.mailCl.setImageResource(R.drawable.ic_contact_selected);
+                    }
+//                    String mail = getItem(position).getFirstMail();
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.setData(Uri.parse("mailto:"));
+//                    intent.setType("text/html");
+//                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, "");
+//                    intent.putExtra(Intent.EXTRA_TEXT, "");
+//                    println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
+//                    context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
+                }
             }
         };
-
-        View.OnLongClickListener longClick = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-//                ((MainActivity) context).longListItemClick(len, position);
-                return true;
-            }
-        };
-
-        View.OnLongClickListener longClickMultiChannel = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ((MultiChannelActivity) context).longListItemClick(len, position);
-                return true;
-            }
-        };
-
-//        View.OnClickListener listItemClick = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ((MainActivity) context).listItemClick(len, position);
-//            }
-//        };
-
 
         if (!whatsappIsInstalled()) {
             holder.whatsappCl.setVisibility(View.GONE);
@@ -264,17 +164,6 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.mailCl.setVisibility(View.GONE);
         } else {
             holder.mailCl.setVisibility(View.VISIBLE);
-        }
-
-        if (holder.constraintLayout != null) {
-            holder.constraintLayout.setOnLongClickListener(longClick);
-//            holder.constraintLayout.setOnClickListener(listItemClick);
-        } else if (fromMultiChannel) {
-            holder.constraintLayoutSmaller.setOnLongClickListener(longClickMultiChannel);
-        } else {
-            holder.constraintLayoutSmaller.setOnLongClickListener(longClick);
-//            holder.constraintLayoutSmaller.setOnClickListener(listItemClick);
-            holder.editCl.setOnClickListener(listener);
         }
 
         holder.mailCl.setOnClickListener(listener);
@@ -330,7 +219,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             //Intent intent=new Intent(Intent.ACTION_CALL);
             //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
-            Boolean popup = sharedPreferences.getBoolean("popup", true);
+            boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup) {
                 new AlertDialog.Builder(context)
                         .setTitle("Voulez-vous appeler ce contact ?")
@@ -361,17 +250,13 @@ public class ContactListViewAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView contactFirstNameView;
         ConstraintLayout constraintLayout;
-        ConstraintLayout constraintLayoutMenu;
         CircularImageView contactRoundedImageView;
 
-        ConstraintLayout constraintLayoutSmaller;
-        ConstraintLayout constraintLayoutMenuSmaller;
         int position;
 
-        ConstraintLayout callCl;
-        ConstraintLayout smsCl;
-        ConstraintLayout whatsappCl;
-        ConstraintLayout mailCl;
-        ConstraintLayout editCl;
+        AppCompatImageView callCl;
+        AppCompatImageView smsCl;
+        AppCompatImageView whatsappCl;
+        AppCompatImageView mailCl;
     }
 }

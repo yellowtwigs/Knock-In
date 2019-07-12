@@ -318,38 +318,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             })
         }
 
-        if (main_ListView != null) {
-            listViewAdapter = ContactListViewAdapter(this, gestionnaireContacts!!.contacts, len)
-            main_ListView!!.adapter = listViewAdapter
-            val index = sharedPreferences.getInt("index", 0)
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            main_ListView!!.setSelection(index)
-            edit.putInt("index", 0)
-            edit.apply()
-
-            main_ListView!!.setOnItemClickListener { _, _, position, id ->
-                if (main_ListView!!.adapter is SelectContactAdapter && !firstClick) {
-                    val adapter = (main_ListView!!.adapter as SelectContactAdapter)
-                    adapter.itemSelected(position)
-                    if (adapter.listContactSelect.size == 0) {
-                        main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                        main_FloatingButtonSend!!.visibility = View.GONE
-                        main_SearchBar!!.visibility = View.VISIBLE
-
-                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-
-                        main_MailButton!!.visibility = View.GONE
-                        main_WhatsappButton!!.visibility = View.GONE
-                        main_SMSButton!!.visibility = View.GONE
-                    }
-                }
-                firstClick = false
-            }
-        }
-
         if (main_RecyclerView != null) {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -361,13 +331,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             main_RecyclerView!!.setOnClickListener {
                 if (main_RecyclerView!!.adapter is SelectContactAdapter && !firstClick) {
-                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
                     main_RecyclerView!!.adapter = adapter
 //                    adapter.itemSelected(adapter.)
 
                     adapter.notifyDataSetChanged()
                     if (adapter.listContactSelect.size == 0) {
-                        main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+                        main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         main_FloatingButtonSend!!.visibility = View.GONE
                         main_SearchBar!!.visibility = View.VISIBLE
@@ -475,10 +445,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
-
-                    listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                    main_ListView!!.adapter = listViewAdapter
-                    listViewAdapter!!.notifyDataSetChanged()
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                    main_RecyclerView!!.adapter = recyclerViewAdapter
+                    recyclerViewAdapter!!.notifyDataSetChanged()
                 }
             }
         })
@@ -629,8 +598,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_ListView!!.adapter = listViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
                     }
                 } else {
                     item.isChecked = true
@@ -653,9 +622,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_ListView!!.adapter = listViewAdapter
-                        listViewAdapter!!.notifyDataSetChanged()
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 }
                 return true
@@ -684,9 +653,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_ListView!!.adapter = listViewAdapter
-                        listViewAdapter!!.notifyDataSetChanged()
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 } else {
                     item.isChecked = true
@@ -706,10 +675,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_ListView!!.adapter = listViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
 
-                        listViewAdapter!!.notifyDataSetChanged()
+                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 }
                 return true
@@ -724,9 +692,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_ListView!!.adapter = listViewAdapter
-                        listViewAdapter!!.notifyDataSetChanged()
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putString("tri", "nom")
@@ -743,9 +711,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        listViewAdapter = ContactListViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
-                        main_ListView!!.adapter = listViewAdapter
-                        listViewAdapter!!.notifyDataSetChanged()
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
 
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()

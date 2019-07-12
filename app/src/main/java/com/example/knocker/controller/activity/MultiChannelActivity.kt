@@ -61,7 +61,7 @@ class MultiChannelActivity : AppCompatActivity() {
             multi_channel_listOfContactSelected.add(gestionnaireContacts!!.getContactById(intent_listOfContactSelected[i]))
         }
 
-        val multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected, 0, true)
+        val multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected)
 
         multi_channel_Listview!!.adapter = multi_channel_listViewAdapter
     }
@@ -76,16 +76,6 @@ class MultiChannelActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    fun longListItemClick(len: Int, position: Int) {
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len,  false)
-        multi_channel_Listview!!.adapter = adapter
-        adapter.itemSelected(position)
-        adapter.notifyDataSetChanged()
-        firstClick = true
-
-        Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
     //endregion

@@ -49,14 +49,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
-    private boolean fromMultiChannel = false;
     private View view;
     private ArrayList<ContactWithAllInformation> listSelectedItem;
 
-    public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len, boolean fromMultiChannel) {
+    public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
         this.listContacts = listContacts;
-        this.fromMultiChannel = fromMultiChannel;
         this.len = len;
         this.layoutInflater = LayoutInflater.from(context);
         listSelectedItem = new ArrayList<>();
@@ -89,11 +87,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (len == 0) {
-            if (fromMultiChannel) {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_selected_with_channel, parent, false);
-            } else {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout_smaller, parent, false);
-            }
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout_smaller, parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout, parent, false);
         }
@@ -157,12 +151,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     ContactWithAllInformation contactWithAllInformation = getItem(position);
                     ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
                 }
-                if (v.getId() == holder.editCl.getId()) {
-
-                    Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId", Objects.requireNonNull(getItem(position).getContactDB()).getId());
-                    context.startActivity(intent);
-                }
                 if (v.getId() == holder.mailCl.getId()) {
                     String mail = getItem(position).getFirstMail();
                     Intent intent = new Intent(Intent.ACTION_SEND);
@@ -196,14 +184,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         };
 
-        View.OnLongClickListener longClickMultiChannel = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ((MultiChannelActivity) context).longListItemClick(len, position);
-                return true;
-            }
-        };
-
         View.OnClickListener listItemClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,8 +208,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             holder.constraintLayout.setOnLongClickListener(longClick);
             holder.constraintLayout.setOnClickListener(listItemClick);
             holder.constraintLayout.setOnClickListener(listener);
-        } else if (fromMultiChannel) {
-            holder.constraintLayoutSmaller.setOnLongClickListener(longClickMultiChannel);
         } else {
             holder.constraintLayoutSmaller.setOnLongClickListener(longClick);
             holder.constraintLayoutSmaller.setOnClickListener(listItemClick);
@@ -346,26 +324,15 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             super(view);
 
             if (len == 0) {
-                if (fromMultiChannel) {
-                    contactRoundedImageView = view.findViewById(R.id.multi_channel_list_item_contactRoundedImageView);
-                    contactFirstNameView = view.findViewById(R.id.multi_channel_list_item_contactFirstName);
-                    constraintLayoutSmaller = view.findViewById(R.id.multi_channel_list_item_layout);
-                    constraintLayoutMenuSmaller = view.findViewById(R.id.multi_channel_list_item_menu);
-                    callCl = view.findViewById(R.id.multi_channel_list_item_constraint_call);
-                    smsCl = view.findViewById(R.id.multi_channel_list_item_constraint_sms);
-                    whatsappCl = view.findViewById(R.id.multi_channel_list_item_constraint_whatsapp);
-                    mailCl = view.findViewById(R.id.multi_channel_list_item_constraint_mail);
-                } else {
-                    contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
-                    contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
-                    constraintLayoutSmaller = view.findViewById(R.id.list_contact_item_layout_smaller);
-                    constraintLayoutMenuSmaller = view.findViewById(R.id.list_contact_item_menu_smaller);
-                    callCl = view.findViewById(R.id.list_contact_item_smaller_constraint_call);
-                    smsCl = view.findViewById(R.id.list_contact_item_smaller_constraint_sms);
-                    whatsappCl = view.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
-                    mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
-                    editCl = view.findViewById(R.id.list_contact_item_smaller_constraint_edit);
-                }
+                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
+                contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
+                constraintLayoutSmaller = view.findViewById(R.id.list_contact_item_layout_smaller);
+                constraintLayoutMenuSmaller = view.findViewById(R.id.list_contact_item_menu_smaller);
+                callCl = view.findViewById(R.id.list_contact_item_smaller_constraint_call);
+                smsCl = view.findViewById(R.id.list_contact_item_smaller_constraint_sms);
+                whatsappCl = view.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
+                mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
+                editCl = view.findViewById(R.id.list_contact_item_smaller_constraint_edit);
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);

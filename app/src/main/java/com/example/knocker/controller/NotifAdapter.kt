@@ -64,6 +64,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         //System.out.println("notifications taile"+notifications.size)
         val sbp = getItem(position)
         val app = view!!.findViewById<View>(R.id.notification_adapter_platform) as TextView
+        val layout = view.findViewById<View>(R.id.notification_adapter_layout) as ConstraintLayout
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
@@ -221,6 +222,36 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //            }
 //        }
 
+        layout!!.setOnTouchListener { view, event ->
+            val x = event.rawX.toInt()
+            val y = event.rawY.toInt()
+            var _xDelta = 0
+            var _yDelta = 0
+
+            when (event.action and MotionEvent.ACTION_MASK) {
+
+                MotionEvent.ACTION_DOWN -> {
+                    _xDelta = (view.x - event.rawX).toInt()
+                    _yDelta = (view.y - event.rawY).toInt()
+                }
+
+                MotionEvent.ACTION_UP -> {
+                }
+                MotionEvent.ACTION_POINTER_DOWN -> {
+                }
+                MotionEvent.ACTION_POINTER_UP -> {
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    view.animate()
+                            .x(event.rawX + _xDelta)
+                            .y(event.rawY + _yDelta)
+                            .setDuration(0)
+                            .start()
+                }
+            }
+            return@setOnTouchListener true
+        }
+
         return view
     }
 
@@ -289,7 +320,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         } else if (sbp.appNotifier == WHATSAPP_SERVICE) {
             return R.drawable.ic_whatsapp_circle_menu
         }
-        return R.drawable.ic_sms
+        return R.drawable.ic_sms_selector
     }
 
 
