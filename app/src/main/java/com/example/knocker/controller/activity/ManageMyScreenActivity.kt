@@ -74,6 +74,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
         manage_call_popup_switch = findViewById(R.id.manage_call_popup_switch)
+        //manage_searchbar_pos = findViewById(R.id.manage_searchbar_pos)
 
         if(sharedThemePreferences.getBoolean("darkTheme",false)){
             manage_theme_SwitchTheme!!.isChecked = true
@@ -249,6 +250,20 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
+
+        /*manage_searchbar_pos!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("searchbarPos", true)
+                edit.apply()
+            } else {
+                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("searchbarPos", false)
+                edit.apply()
+            }
+        }*/
 
         // endregion
 
