@@ -611,7 +611,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                             lastId.add(id)
                             if (fullName.second.second == "") {
                                 val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
-                                val lastSync = sharedPreferences.getString("last_sync", "")
+                                val lastSync = sharedPreferences.getString("last_sync_2", "")
                                 if (!isDuplicateContacts(fullName, lastSync)) {
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
                                     lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
@@ -664,7 +664,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                 }
             }
             if (lastSyncId != "") {
-                edit.putString("last_sync", lastSyncId)
+                edit.putString("last_sync_2", lastSyncId)
                 edit.apply()
             }
             contactsDatabase?.contactsDao()?.getContactAllInfo()

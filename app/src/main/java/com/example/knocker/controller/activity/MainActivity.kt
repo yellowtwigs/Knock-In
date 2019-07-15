@@ -445,7 +445,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             .setPositiveButton("Knocker",{dialog, which ->
                             })
                             .setNegativeButton("Android", {dialog, which ->
-                                val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync", "")!!)
+                                val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
                                 allId.forEach {
                                     if (changedContact.first.id == it.first)
                                         changedContact.first.id = it.second
