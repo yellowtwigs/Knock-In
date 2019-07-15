@@ -1,11 +1,16 @@
 package com.example.knocker.controller.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.ContactListViewAdapter
@@ -25,7 +30,10 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private var gestionnaireContacts: ContactList? = null
 
-    private var firstClick: Boolean = true
+    private var multi_channel_listViewAdapter: ContactListViewAdapter? = null
+
+    private var multi_channel_SendMessageEditText: AppCompatEditText? = null
+    private var multi_channel_SendMessageButton: AppCompatImageView? = null
 
     //endregion
 
@@ -49,6 +57,8 @@ class MultiChannelActivity : AppCompatActivity() {
         //region ======================================= FindViewById =======================================
 
         multi_channel_Listview = findViewById(R.id.multi_channel_list_of_contacts_selected)
+        multi_channel_SendMessageEditText = findViewById(R.id.multi_channel_chatbox)
+        multi_channel_SendMessageButton = findViewById(R.id.multi_channel_chatbox_send)
 
         //endregion
 
@@ -61,9 +71,24 @@ class MultiChannelActivity : AppCompatActivity() {
             multi_channel_listOfContactSelected.add(gestionnaireContacts!!.getContactById(intent_listOfContactSelected[i]))
         }
 
-        val multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected)
+        multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected)
 
         multi_channel_Listview!!.adapter = multi_channel_listViewAdapter
+
+        multi_channel_SendMessageButton!!.setOnClickListener {
+
+            if (multi_channel_SendMessageEditText!!.text.toString() != "") {
+                if (multi_channel_listViewAdapter!!.listOfNumberSelected != null) {
+                    multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
+                }
+
+                if (multi_channel_listViewAdapter!!.listOfMailSelected != null) {
+                    //                    multiChannelSendMessage(listOfMailSelected, messageToSend);
+                }
+            }
+
+
+        }
     }
 
     //region ================================ Functions =======================================
@@ -76,6 +101,20 @@ class MultiChannelActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, message: String) {
+
+        var numbers = "" + listOfPhoneNumber[0]
+        for (i in 1 until listOfPhoneNumber.size) {
+            numbers += ";" + listOfPhoneNumber[i]
+        }
+
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(numbers))
+
+        intent.putExtra("sms_body:", message)
+
+        startActivity(intent)
     }
 
     //endregion

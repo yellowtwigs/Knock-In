@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -50,7 +51,9 @@ public class ContactListViewAdapter extends BaseAdapter {
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
     private Context context;
-    private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<AppCompatImageView>();
+    private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<>();
+    private ArrayList<String> listOfNumberSelected = new ArrayList<>();
+    private ArrayList<String> listOfMailSelected = new ArrayList<>();
 
     public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts) {
         this.context = context;
@@ -89,7 +92,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder.contactFirstNameView = listview.findViewById(R.id.multi_channel_list_item_contactFirstName);
 
         holder.constraintLayout = listview.findViewById(R.id.multi_channel_list_item_layout);
-        holder.callCl = listview.findViewById(R.id.multi_channel_list_item_phone_call_iv);
         holder.smsCl = listview.findViewById(R.id.multi_channel_list_item_sms_iv);
         holder.whatsappCl = listview.findViewById(R.id.multi_channel_list_item_whatsapp_iv);
         holder.mailCl = listview.findViewById(R.id.multi_channel_list_item_mail_iv);
@@ -117,39 +119,35 @@ public class ContactListViewAdapter extends BaseAdapter {
                     if (listItemChannelSelected.contains(holder.smsCl)) {
                         listItemChannelSelected.remove(holder.smsCl);
                         holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
+                        listOfNumberSelected.remove(listContacts.get(position).getPhoneNumber());
                     } else {
                         listItemChannelSelected.add(holder.smsCl);
                         holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
+                        listOfNumberSelected.add(listContacts.get(position).getPhoneNumber());
+//                        Toast.makeText(context, listContacts.get(position).getPhoneNumber(), Toast.LENGTH_SHORT).show();
                     }
-                }
-                if (v.getId() == holder.callCl.getId()) {
                 }
                 if (v.getId() == holder.whatsappCl.getId()) {
                     if (listItemChannelSelected.contains(holder.whatsappCl)) {
                         listItemChannelSelected.remove(holder.whatsappCl);
                         holder.whatsappCl.setImageResource(R.drawable.ic_whatsapp);
+//                        listOfNumberSelected.remove(listContacts.get(position).getPhoneNumber());
                     } else {
                         listItemChannelSelected.add(holder.whatsappCl);
                         holder.whatsappCl.setImageResource(R.drawable.ic_contact_selected);
+//                        listOfNumberSelected.add(listContacts.get(position).getPhoneNumber());
                     }
                 }
                 if (v.getId() == holder.mailCl.getId()) {
                     if (listItemChannelSelected.contains(holder.mailCl)) {
                         listItemChannelSelected.remove(holder.mailCl);
                         holder.mailCl.setImageResource(R.drawable.ic_email);
+                        listOfMailSelected.remove(listContacts.get(position).getFirstMail());
                     } else {
                         listItemChannelSelected.add(holder.mailCl);
                         holder.mailCl.setImageResource(R.drawable.ic_contact_selected);
+                        listOfMailSelected.add(listContacts.get(position).getFirstMail());
                     }
-//                    String mail = getItem(position).getFirstMail();
-//                    Intent intent = new Intent(Intent.ACTION_SEND);
-//                    intent.setData(Uri.parse("mailto:"));
-//                    intent.setType("text/html");
-//                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
-//                    intent.putExtra(Intent.EXTRA_SUBJECT, "");
-//                    intent.putExtra(Intent.EXTRA_TEXT, "");
-//                    println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
-//                    context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
             }
         };
@@ -168,11 +166,29 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         holder.mailCl.setOnClickListener(listener);
         holder.whatsappCl.setOnClickListener(listener);
-        holder.callCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
 
         return listview;
     }
+
+    public ArrayList<String> getListOfMailSelected() {
+        return listOfMailSelected;
+    }
+
+    public ArrayList<String> getListOfNumberSelected() {
+        return listOfNumberSelected;
+    }
+
+//    private void monoChannelMailClick(ArrayList<String> listOfMail) {
+//        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size()));
+//        val intent = Intent(Intent.ACTION_SEND)
+//        intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
+//        intent.data = Uri.parse("mailto:")
+//        intent.type = "message/rfc822"
+//        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+//        intent.putExtra(Intent.EXTRA_TEXT, "")
+//        startActivity(intent)
+//    }
 
     private String converter06To33(String phoneNumber) {
         if (phoneNumber.charAt(0) == '0') {

@@ -31,17 +31,18 @@
         android:id="@+id/multi_channel_layout_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/layout_rounded_form"
-        android:minHeight="48dp"
+        android:maxWidth="395dp"
+        android:minHeight="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/multi_channe_attachement"
+            android:id="@+id/multi_channel_attachement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -58,7 +59,7 @@
         <!--android:background="?attr/selectableItemBackground"-->
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/multi_channe_attachement_blue"
+            android:id="@+id/multi_channel_attachement_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -74,7 +75,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/multi_channe_chatbox"
+            android:id="@+id/multi_channel_chatbox"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginStart="15dp"
@@ -85,12 +86,12 @@
             android:inputType="textLongMessage"
             android:textColor="@color/textColorDark"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/multi_channe_chatbox_send"
-            app:layout_constraintStart_toEndOf="@+id/multi_channe_attachement"
+            app:layout_constraintEnd_toStartOf="@+id/multi_channel_chatbox_send"
+            app:layout_constraintStart_toEndOf="@+id/multi_channel_attachement"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/multi_channe_chatbox_send"
+            android:id="@+id/multi_channel_chatbox_send"
             android:layout_width="45dp"
             android:layout_height="30dp"
             android:layout_marginTop="8dp"
@@ -104,5 +105,4 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
