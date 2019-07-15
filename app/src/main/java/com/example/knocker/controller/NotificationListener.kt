@@ -280,15 +280,12 @@ class NotificationListener : NotificationListenerService() {
 
                     val deplacementX = x - oldPosX
                     val deplacementY = y - oldPosY
-                    println("oldx"+oldPosX+"oldy"+oldPosY)
-                    println("x:"+x +" y:"+y)
-                    println("deplacement x:"+deplacementX+" deplacement y:"+deplacementY)
-                    println("Before container position x: "+popupContainer.x+" y:"+popupContainer.y)
+
                     popupContainer.x=positionXIntoScreen(popupContainer.x,deplacementX,popupContainer.width.toFloat())//(popupContainer.x + deplacementX)
                     oldPosX=x-deplacementX
+
                     popupContainer.y=positionYIntoScreen(popupContainer.y,deplacementY,popupContainer.height.toFloat())//(popupContainer.y + deplacementY)
                     oldPosY=y-deplacementY
-                    println("after container position x:"+popupContainer.x+" y:"+popupContainer.y)
                 }
             }
             return@setOnTouchListener true
