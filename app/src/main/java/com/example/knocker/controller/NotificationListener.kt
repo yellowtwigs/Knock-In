@@ -284,14 +284,36 @@ class NotificationListener : NotificationListenerService() {
                     println("x:"+x +" y:"+y)
                     println("deplacement x:"+deplacementX+" deplacement y:"+deplacementY)
                     println("Before container position x: "+popupContainer.x+" y:"+popupContainer.y)
-                    popupContainer.x=(popupContainer.x + deplacementX)
+                    popupContainer.x=positionXIntoScreen(popupContainer.x,deplacementX,popupContainer.width.toFloat())//(popupContainer.x + deplacementX)
                     oldPosX=x-deplacementX
-                    popupContainer.y=(popupContainer.y + deplacementY)
+                    popupContainer.y=positionYIntoScreen(popupContainer.y,deplacementY,popupContainer.height.toFloat())//(popupContainer.y + deplacementY)
                     oldPosY=y-deplacementY
                     println("after container position x:"+popupContainer.x+" y:"+popupContainer.y)
                 }
             }
             return@setOnTouchListener true
+        }
+    }
+    private fun positionXIntoScreen(popupX:Float,deplacementX:Float,popupSizeX:Float): Float {
+        val metrics = DisplayMetrics()
+        windowManager!!.getDefaultDisplay().getMetrics(metrics)
+        if(popupX+deplacementX<0){
+            return 0.0f
+        }else if(popupX+deplacementX+popupSizeX<metrics.widthPixels){
+            return popupX+deplacementX
+        }else{
+            return metrics.widthPixels.toFloat()-popupSizeX
+        }
+    }
+    private fun positionYIntoScreen(popupY:Float,deplacementY:Float,popupSizeY:Float): Float {
+        val metrics = DisplayMetrics()
+        windowManager!!.getDefaultDisplay().getMetrics(metrics)
+        if(popupY+deplacementY<0){
+            return 0.0f
+        }else if(popupY+deplacementY+popupSizeY<metrics.heightPixels){
+            return popupY+deplacementY
+        }else{
+            return metrics.heightPixels.toFloat()-popupSizeY
         }
     }
 
