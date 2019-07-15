@@ -29,6 +29,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,10 +41,8 @@ import com.example.knocker.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
-import com.example.knocker.model.ModelDB.ContactDB
-import com.example.knocker.model.ModelDB.ContactDetailDB
+import com.example.knocker.model.ModelDB.*
 import kotlinx.android.synthetic.main.content_main.*
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -574,6 +573,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         scaleGestureDetectore = ScaleGestureDetector(this,
                 MyOnScaleGestureListener())
+
+        saveGroupMultiSelect(mutableListOf<ContactWithAllInformation>())
     }
 
     //region ========================================== Functions ===========================================
@@ -1008,7 +1009,39 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         return -1
     }
+    private fun saveGroupMultiSelect(listContacts:List<ContactWithAllInformation>){
+        val editText=EditText(this)
+        editText.hint="group"+main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
+                AlertDialog.Builder(this)
+                        .setTitle("création groupe")
+                        .setMessage("Donnez un nom à votre groupe")
+                        .setView(editText)
+                        .setNegativeButton("annuler", null)
+                        .setPositiveButton("oui",
+                                object : DialogInterface.OnClickListener {
+                                    override fun onClick(dialog: DialogInterface, which: Int) {
+                                        var nameGroup=""
+                                        if(!editText!!.text.isEmpty()){
+                                            nameGroup=editText!!.text.toString()
+                                        }else{
+                                            nameGroup=editText.hint.toString()
+                                        }
+                                        println("name group"+nameGroup)
+                                        val printContacts = Runnable {
+                                            if(listContacts.size!=0) {
+                                                val group = GroupDB(null, nameGroup, "")
+                                                val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
+                                                for (contact in listContacts) {
+                                                    val link = LinkContactGroup(idGroup!!.toInt(), contact.contactDB!!.id!!)
+                                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
+                                                }
+                                            }
+                                        }
+                                        main_mDbWorkerThread.postTask(printContacts)
+                                    }
+                                }).show()
 
+    }
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
@@ -1019,6 +1052,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         intent.putExtra(Intent.EXTRA_TEXT, "")
         startActivity(intent)
     }
+
+
+
 
     //endregion
 }
