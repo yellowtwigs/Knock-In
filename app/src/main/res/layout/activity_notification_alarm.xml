@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activity.NotificationAlarmActivity"
     android:background="@color/cardview_dark_background"
+    tools:context=".controller.activity.NotificationAlarmActivity"
     tools:ignore="PrivateResource">
 
     <TextView
@@ -47,10 +47,11 @@
         android:layout_margin="50dp"
         android:layout_marginStart="64dp"
         android:layout_marginBottom="52dp"
+        android:tint="@color/lightColor"
         app:backgroundTint="#00dd00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_sms"/>
+        app:srcCompat="@drawable/ic_sms_selector" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/notification_alarm_floating_button_close"
@@ -60,6 +61,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="48dp"
+        android:tint="@color/lightColor"
         app:backgroundTint="#dd0000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
