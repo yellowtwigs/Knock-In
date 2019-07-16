@@ -311,14 +311,21 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val phoneContactsList = arrayListOf<Pair<Int, Triple<String, String, String>>>()
         var idAndName: Pair<Int, Triple<String, String, String>>
         var StructName: Triple<String, String, String>
+        //requete pour récuperer tout les nom/prénom complet contacts dans le carnet android
         val phonecontact = main_contentResolver.query(ContactsContract.Data.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)
         if (phonecontact != null) {
             while (phonecontact.moveToNext()) {
+                //récupère l'id d'un contact
                 val phone_id = phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID)).toInt()
+                //récupère le prénom d'un contact
                 var firstName = phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME))
+                //récupère le middleName d'un contact
                 var middleName = phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME))
+                //récupère le nom de famille d'un contact
                 var lastName = phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME))
+                //récupère le mimeType de la requete (permet de savoir si le curseur est sur item/name)
                 val mimeType = phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIMETYPE))
+                //on regarde si on à pas le contact en double
                 if (phoneContactsList.isEmpty() && mimeType == "vnd.android.cursor.item/name") {
                     if (firstName == null)
                         firstName = ""
@@ -328,6 +335,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                         lastName = ""
                     StructName = Triple(firstName, middleName, lastName)
                     idAndName = Pair(phone_id, StructName)
+                    //ajoute le contact à la liste de contact
                     phoneContactsList.add(idAndName)
                 } else if (!isDuplicate(phone_id, phoneContactsList) && mimeType == "vnd.android.cursor.item/name") {
                     if (firstName == null)
@@ -338,12 +346,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                         lastName = ""
                     StructName = Triple(firstName, middleName, lastName)
                     idAndName = Pair(phone_id, StructName)
+                    //ajoute le contact à la liste de contact
                     phoneContactsList.add(idAndName)
                 }
             }
         }
         phonecontact?.close()
-        println("ok ?= " + phoneContactsList)
         return phoneContactsList
     }
 
@@ -366,14 +374,18 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     private fun openPhoto(contactId: Long, main_contentResolver: ContentResolver): InputStream? {
+        //on recupert l'uri du contact grace à l'id du contact
         val contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId)
+        //on recupert l'uri de la photo grâce à l'uri du contact
         val photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
+        //on met le curseur sur la photo
         val cursor = main_contentResolver.query(photoUri,
                 arrayOf(ContactsContract.Contacts.Photo.PHOTO), null, null, null) ?: return null
         try {
             if (cursor.moveToFirst()) {
                 val data = cursor.getBlob(0)
                 if (data != null) {
+                    //on return la photo
                     return ByteArrayInputStream(data)
                 }
             }
@@ -388,17 +400,21 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         var idAndMail = mapOf<Int, Any>()
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC")
         while (phonecontact.moveToNext()) {
+            //recupert l'id du contact
             val phoneId = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+            //recupert l'email du contact
             var phoneEmail = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
+            //recupert le tag de l'email
             var phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
             if (phoneEmail == null)
                 phoneEmail = ""
             if (phoneTag == null) {
                 phoneTag = "0"
             }
+            //crée une map avec l'email, l'id du contact, son tag et le type du detail (mail)
             idAndMail = mapOf(1 to phoneId!!.toInt(), 2 to phoneEmail, 3 to assignTagEmail(phoneTag.toInt()), 4 to "", 5 to "mail")
-
             if (contactDetails.isEmpty() || !isDuplicateNumber(idAndMail, contactDetails)) {
+                //ajoute la map à la liste
                 contactDetails.add(idAndMail)
             }
         }
@@ -409,29 +425,37 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     private fun getPhoneNumberSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactPhoneNumber = arrayListOf<Map<Int, Any>>()
         var idAndPhoneNumber = mapOf<Int, Any>()
+        //requete pour récuperer les numéros de téléphone des contacts
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
         while (phonecontact.moveToNext()) {
+            //récupère l'id d'un contact
             val phoneId = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
+            //récupère le numéro de téléphone d'un contact
             var phoneNumber = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            //récupère l'id de la photo de profile d'un contact
             var phonePic = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+            //récupère le tag du numéro de téléphone
             var phoneTag = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
             if (phoneNumber == null)
                 phoneNumber = ""
+            //on check si le contact possède une photo
             if (phonePic == null || phonePic.contains("content://com.android.contacts/contacts/", ignoreCase = true)) {
                 phonePic = ""
             } else {
+                //on recupert la photo et on la converti en base64
                 phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(), main_contentResolver)))
             }
             if (phoneTag == null) {
                 phoneTag = "0"
             }
+            //on stocke toute les infos d'un contact dans idAndPhoneNumber
             idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag.toInt()), 4 to phonePic, 5 to "phone")
             if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(idAndPhoneNumber, contactPhoneNumber)) {
+                //on ajoute le contact dans la liste des contacts
                 contactPhoneNumber.add(idAndPhoneNumber)
             }
         }
         phonecontact?.close()
-        //println("number ?= " + contactPhoneNumber)
         return contactPhoneNumber
     }
 
@@ -597,39 +621,57 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         var listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         var lastSyncId = ""
+        var lastSync = ""
         val callDb = Callable {
+            //on récupère tout les contacts de la database
             val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             var modifiedContact = 0
+            //Pour chaque contact on va recuperer tout les numéro et email associé
             phoneStructName!!.forEach { fullName ->
                 val set = mutableSetOf<String>()
                 contactNumberAndPic.forEach { numberPic ->
                     val id = numberPic[1].toString().toInt()
+                    //on regarde si l'id est dans lastId pour évité de créer un contact doublon dans la database
                     if (!lastId.contains(id)) {
+                        //on récupere tout les details d'un contact grâce à son id android
                         val contactDetails = getDetailsById(id, contactNumberAndPic)
+                        //on récupere tout les groupe du contact grâce à son id android
                         val contactGroups = getGroupsAndLinks(id, contactGroup)
+                        // on regarde si l'id du fullName est le même que celui de numberPic
                         if (fullName.first == numberPic[1]) {
                             lastId.add(id)
+                            //on regarde si le contact possède un middle name
                             if (fullName.second.second == "") {
+                                //on créé un objet ContactDB que l'on remplis avec les info récolté avant
                                 val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
-                                val lastSync = sharedPreferences.getString("last_sync_2", "")
+                                //on recupere la liste des contacts récuperer lors de la derniere synchro sous format idAndroid:id
+                                lastSync = sharedPreferences.getString("last_sync_2", "")!!
+                                //on regarde si on a pas deja enregistré le contact lors de la dernière synchro
                                 if (!isDuplicateContacts(fullName, lastSync)) {
+                                    //on enregistre dans la database le contact et on recupere son id Knocker
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
+                                    //on serialise le nouveau contact ( idAndroid:
                                     lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
                                     for (details in contactDetails) {
+                                        //pour chaque details du contact on lui donne l'id du contact
                                         details.idContact = contacts.id
                                     }
                                     for (groups in contactGroups) {
+                                        //pour chaque groupe du contact on lui donne l'id du contact pour crée un link
                                         val links = LinkContactGroup(0, contacts.id!!.toInt())
                                         ContactLinksGroup = Pair(links,groups)
                                         listLinkAndGroup.add(ContactLinksGroup)
                                     }
+                                    //on sauvegarde dans la database les groupes et les linkcontactGroupe
                                     saveGroupsAndLinks(listLinkAndGroup)
                                     listLinkAndGroup.clear()
+                                    //on sauvegarde dans la database les details du contact
                                     contactsDatabase!!.contactsDao().insertDetails(contactDetails)
                                 } else {
                                     var positionInSet = 3
+                                    //on commence à serialiser le contact
                                     println("CONTACT ALREADY EXIST = " + fullName.second + " " + fullName.first)
-                                    val contact = getContactWithAndroidId(fullName.first, lastSync!!)
+                                    val contact = getContactWithAndroidId(fullName.first, lastSync)
                                     set.add("0"+contact!!.contactDB!!.id)
                                     set.add("1"+fullName.second.first)
                                     if (fullName.second.second == "")
@@ -641,6 +683,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                         set += positionInSet.toString() + alldetail
                                         positionInSet++
                                     }
+                                    // on regarde si le contact à été modifier depuis la dernière synchro, si oui on sauvegarde la serialisation dans une shared Pref
                                     if (!isSameContact(contact, fullName.second, contactDetails)) {
                                         modifiedContact++
                                         edit.putStringSet(modifiedContact.toString(), set)
@@ -664,6 +707,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                 }
             }
             if (lastSyncId != "") {
+                if (lastSync != "")
+                    lastSyncId = lastSync+lastSyncId
                 edit.putString("last_sync_2", lastSyncId)
                 edit.apply()
             }
@@ -744,10 +789,14 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val phoneContact = main_contentResolver.query(ContactsContract.Groups.CONTENT_URI, null, null, null, ContactsContract.Groups.TITLE + " ASC")
         var allGroupMembers = listOf<Triple<Int, String?, String?>>()
         while (phoneContact.moveToNext()) {
+            //récupère l'id du groupe
             val groupId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups._ID))
+            //récupère le nom du groupe
             val groupName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups.TITLE))
+            //récupère les membres du groupe
             val groupMembers = getMemberOfGroup(main_contentResolver, groupId.toString(), groupName)
             if (!groupMembers.isEmpty() && !allGroupMembers.isEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {
+                //ajoute un membre au groupe
                 allGroupMembers = allGroupMembers.union(groupMembers).toList()
             } else if (allGroupMembers.isEmpty())
                 allGroupMembers = groupMembers
@@ -762,10 +811,13 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         var member: Triple<Int, String?, String?>
         val groupMembers = arrayListOf<Triple<Int, String?, String?>>()
         while (phoneContact.moveToNext()) {
+            //récupère l'id du contact
             val contactId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Data.CONTACT_ID))
+            //récupère le nom du contact
             val contactName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Data.DISPLAY_NAME))
             member = Triple(contactId!!.toInt(), contactName, groupeName)
             if (!groupMembers.contains(member)) {
+                //ajoute le contact à la liste des membre du groupe
                 groupMembers.add(member)
             }
         }
@@ -797,20 +849,22 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver) {
+        //récupère le prénom et nom complet de tout les contacts
         val phoneStructName = getStructuredNameSync(main_contentResolver)
-        println("PHONE STRUCT = " + phoneStructName)
-
+        //récupère tout les numéros de téléphone et l'image de profil de chaque contact
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
+        //récupère tout les mail de chaque contact
         val contactMail = getContactMailSync(main_contentResolver)
+        //récupère tout les groupe de chaque contact
         val contactGroup = getContactGroupSync(main_contentResolver)
-        //val contactGroup = listOf<Triple<Int, String, String>>()
+        //fusionne dans contactDetail la list contactNumberAndPic et contactMail
         val contactDetail = contactNumberAndPic.union(contactMail)
-        //       println("PHONE GROUP = "+contactGroup)
+        //clear la liste des contacts de la classe ContactList(ContactWithAllInformation)
         contacts.clear()
+        //fonction qui va stocker dans la database tout les element récuperé plus haut
         createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, this)
     }
 //endregion
-
 
     fun getContactWithName(name: String, platform: String): ContactWithAllInformation? {
         println("test platform " + platform + " test name " + name)
