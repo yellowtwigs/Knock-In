@@ -581,7 +581,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             for (i in iterator) {
                 listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i])
             }
-            saveGroupMultiSelect(listOfPhoneNumberContactSelected)
+            saveGroupMultiSelect(listOfPhoneNumberContactSelected,len)
         }
         //endregion
 
@@ -1041,7 +1041,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         return -1
     }
-    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>){
+    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>,len: Int){
         val editText=EditText(this)
         editText.hint="group"+main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
                 AlertDialog.Builder(this)
