@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationHistoryAdapterActivity
 import com.example.knocker.controller.NotificationListener
+import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
@@ -53,6 +54,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
+                startActivity(Intent(this@NotificationHistoryActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
             }
