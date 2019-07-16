@@ -317,11 +317,15 @@
 
     <!-- endregion !-->
 
+    <!-- region Multi Channel -->
 
+    <string name="multi_channel_empty_field">Votre message ne doit pas être vide</string>
+
+    <!-- endregion -->
 
     <!-- region NotificationListener-->
 
-    <string name="new_messages">nouveaux messages</string>
+    <string name="new_messages">Nouveaux Messages</string>
 
     <!-- endregion -->
 </resources>

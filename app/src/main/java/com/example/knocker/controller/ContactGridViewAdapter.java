@@ -357,6 +357,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         //buttonMessenger.setOnClickListener(buttonListener);
         buttonWhatsApp.setOnClickListener(buttonListener);
         buttonCall.setOnClickListener(buttonListener);
+//        buttonCall.setOnLongClickListener(buttonListener);
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);

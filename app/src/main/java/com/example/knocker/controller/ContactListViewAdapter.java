@@ -57,10 +57,12 @@ public class ContactListViewAdapter extends BaseAdapter {
     private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<>();
     private ArrayList<String> listOfNumberSelected = new ArrayList<>();
     private ArrayList<String> listOfMailSelected = new ArrayList<>();
+    private Boolean messageSend = false;
 
-    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts) {
+    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, boolean messageSend) {
         this.context = context;
         this.listContacts = listContacts;
+        this.messageSend = messageSend;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -121,10 +123,15 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         holder.contactFirstNameView.setText(contactName);
 
+        if (messageSend) {
+            holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
+            holder.whatsappCl.setImageResource(R.drawable.ic_whatsapp);
+            holder.mailCl.setImageResource(R.drawable.ic_email);
+        }
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (v.getId() == holder.smsCl.getId()) {
                     if (listItemChannelSelected.contains(holder.smsCl)) {
                         listItemChannelSelected.remove(holder.smsCl);
@@ -134,18 +141,15 @@ public class ContactListViewAdapter extends BaseAdapter {
                         listItemChannelSelected.add(holder.smsCl);
                         holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
                         listOfNumberSelected.add(listContacts.get(position).getPhoneNumber());
-//                        Toast.makeText(context, listContacts.get(position).getPhoneNumber(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 if (v.getId() == holder.whatsappCl.getId()) {
                     if (listItemChannelSelected.contains(holder.whatsappCl)) {
                         listItemChannelSelected.remove(holder.whatsappCl);
                         holder.whatsappCl.setImageResource(R.drawable.ic_whatsapp);
-//                        listOfNumberSelected.remove(listContacts.get(position).getPhoneNumber());
                     } else {
                         listItemChannelSelected.add(holder.whatsappCl);
                         holder.whatsappCl.setImageResource(R.drawable.ic_contact_selected);
-//                        listOfNumberSelected.add(listContacts.get(position).getPhoneNumber());
                     }
                 }
                 if (v.getId() == holder.mailCl.getId()) {

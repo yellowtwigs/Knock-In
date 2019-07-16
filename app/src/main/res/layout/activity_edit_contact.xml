@@ -104,7 +104,6 @@
             android:background="@drawable/custom_shape_relative_layout_with_border"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
-
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_last_name_id">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -153,6 +152,61 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/edit_contact_phone_number_fix_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_contact_phone_number_fix_spinner_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface">
+
+                <Spinner
+                    android:id="@+id/edit_contact_phone_number_spinner_fix"
+                    android:layout_width="@dimen/spinner_width"
+                    android:layout_height="@dimen/spinner_height"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="6dp"
+                    android:entries="@array/edit_contact_phone_number_arrays"
+                    android:prompt="@string/edit_contact_phone_number_mobile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_contact_phone_number_fix_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/edit_contact_phone_number_fix_spinner_view"
+                android:backgroundTint="?attr/backgroundColor"
+                android:hint="@string/edit_contact_phone_number"
+
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor"
+                app:layout_constraintStart_toEndOf="@+id/edit_contact_phone_number_fix_spinner_view">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/custom_edit_text"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/edit_contact_phone_mail_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,8 +214,7 @@
             android:background="@drawable/custom_shape_relative_layout_with_border"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
-
-            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_layout">
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_fix_layout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/edit_contact_mail_spinner_id_view"
