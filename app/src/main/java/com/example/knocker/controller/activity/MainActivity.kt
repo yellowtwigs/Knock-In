@@ -913,6 +913,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false phoneNumber")
             main_SMSButton!!.visibility = View.GONE
         }
+         println("")
         if (appIsInstalled() && allContactsHavePhoneNumber) {
             main_WhatsappButton!!.visibility = View.VISIBLE
             val params:ViewGroup.MarginLayoutParams=main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
