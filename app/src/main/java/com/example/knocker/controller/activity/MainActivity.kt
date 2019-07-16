@@ -2,6 +2,7 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -25,12 +26,12 @@ import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Base64
+import android.util.DisplayMetrics
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
@@ -42,7 +43,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 import com.example.knocker.model.ModelDB.*
-import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -65,9 +66,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonSend: FloatingActionButton? = null
 
-    private var main_WhatsappButton: AppCompatButton? = null
-    private var main_SMSButton: AppCompatButton? = null
-    private var main_MailButton: AppCompatButton? = null
+    private var main_WhatsappButton: FloatingActionButton? = null
+    private var main_SMSButton: FloatingActionButton? = null
+    private var main_MailButton: FloatingActionButton? = null
+    private var main_groupButton: FloatingActionButton? = null
 
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
@@ -176,6 +178,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_WhatsappButton = findViewById(R.id.main_whatsapp_button)
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
+        main_groupButton= findViewById(R.id.main_group_button)
 
         //endregion
 
@@ -302,6 +305,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_MailButton!!.visibility = View.GONE
                         main_WhatsappButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
+                        main_groupButton!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -344,6 +348,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_MailButton!!.visibility = View.GONE
                         main_WhatsappButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
+                        main_groupButton!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -379,6 +384,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_MailButton!!.visibility = View.GONE
                         main_WhatsappButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
+                        main_groupButton!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -568,13 +574,20 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             monoChannelMailClick(listOfPhoneNumberContactSelected)
         }
-
+        main_groupButton!!.setOnClickListener{
+            val adapter:SelectContactAdapter=(main_GridView!!.adapter) as SelectContactAdapter
+            val listOfPhoneNumberContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
+            val iterator = (0 until adapter.listContactSelect.size).iterator()
+            for (i in iterator) {
+                listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i])
+            }
+            saveGroupMultiSelect(listOfPhoneNumberContactSelected)
+        }
         //endregion
 
         scaleGestureDetectore = ScaleGestureDetector(this,
                 MyOnScaleGestureListener())
 
-        saveGroupMultiSelect(mutableListOf<ContactWithAllInformation>())
     }
 
     //region ========================================== Functions ===========================================
@@ -888,24 +901,43 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 allContactsHavePhoneNumber = false
             }
         }
-
-        if (allContactsHaveMail) {
-            main_MailButton!!.visibility = View.VISIBLE
-        } else {
-            main_MailButton!!.visibility = View.GONE
-        }
-
+        var i= 2
+        val metrics = DisplayMetrics()
+        this.windowManager.defaultDisplay.getMetrics(metrics)
+        val margin=(0.5*metrics.densityDpi).toInt()
+        println("metric smartphone"+metrics.densityDpi)
         if (allContactsHavePhoneNumber) {
             main_SMSButton!!.visibility = View.VISIBLE
+            i++
         } else {
+            println("false phoneNumber")
             main_SMSButton!!.visibility = View.GONE
         }
-
         if (appIsInstalled() && allContactsHavePhoneNumber) {
             main_WhatsappButton!!.visibility = View.VISIBLE
+            val params:ViewGroup.MarginLayoutParams=main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
+            params.bottomMargin=margin*i
+            main_WhatsappButton!!.layoutParams=params
+            i++
         } else {
+            println("false whatsApp")
             main_WhatsappButton!!.visibility = View.GONE
         }
+        if (allContactsHaveMail) {
+            main_MailButton!!.visibility = View.VISIBLE
+            val params:ViewGroup.MarginLayoutParams=main_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
+            params.bottomMargin=margin*i
+            main_MailButton!!.layoutParams=params
+            println("height of floating mail"+main_MailButton!!.height)
+            i++
+        } else {
+            println("false mail")
+            main_MailButton!!.visibility = View.GONE
+        }
+        val params:ViewGroup.MarginLayoutParams=main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
+        params.bottomMargin=margin*i
+        main_groupButton!!.layoutParams=params
+        main_groupButton!!.visibility=View.VISIBLE
     }
 
     fun longRecyclerItemClick(position: Int, view: View, contactViewHolder: ContactViewHolder) {
@@ -1009,7 +1041,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         return -1
     }
-    private fun saveGroupMultiSelect(listContacts:List<ContactWithAllInformation>){
+    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>){
         val editText=EditText(this)
         editText.hint="group"+main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
                 AlertDialog.Builder(this)
@@ -1032,7 +1064,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                                 val group = GroupDB(null, nameGroup, "")
                                                 val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
                                                 for (contact in listContacts) {
-                                                    val link = LinkContactGroup(idGroup!!.toInt(), contact.contactDB!!.id!!)
+                                                    val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
                                                     main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
                                                 }
                                             }
