@@ -251,8 +251,8 @@ class AddNewContactActivity : AppCompatActivity() {
                 //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                 val printContacts = Runnable {
                     //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                    val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString())
-                    val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString())
+                    val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(),this)
+                    val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(),this)
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),

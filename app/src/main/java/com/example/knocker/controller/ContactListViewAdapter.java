@@ -19,11 +19,8 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,19 +28,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.knocker.R;
-import com.example.knocker.controller.activity.EditContactActivity;
-import com.example.knocker.controller.activity.MainActivity;
-import com.example.knocker.controller.activity.MultiChannelActivity;
-import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
-
-import static java.sql.DriverManager.println;
 
 /**
  * La Classe qui permet de remplir la listview avec les bon éléments

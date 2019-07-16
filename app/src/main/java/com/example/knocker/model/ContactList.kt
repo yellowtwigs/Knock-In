@@ -12,7 +12,6 @@ import android.telephony.PhoneNumberUtils
 import android.util.Base64
 import com.example.knocker.R
 import com.example.knocker.model.ModelDB.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayInputStream

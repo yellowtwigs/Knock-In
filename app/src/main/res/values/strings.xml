@@ -134,6 +134,7 @@
     <string name="edit_contact_first_name">Firstname</string>
     <string name="edit_contact_phone_number">Phone number</string>
     <string name="edit_contact_phone_number_mobile">Mobile</string>
+    <string name="edit_contact_phone_number_home">Home</string>
     <string-array name="edit_contact_phone_number_arrays">
         <item>Mobile</item>
         <item>Office</item>

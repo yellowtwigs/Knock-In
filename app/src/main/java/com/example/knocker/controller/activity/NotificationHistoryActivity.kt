@@ -31,7 +31,6 @@ import com.example.knocker.model.ModelDB.NotificationDB
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.knocker_infos.*
 
 
 /**

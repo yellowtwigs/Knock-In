@@ -2,7 +2,6 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -11,7 +10,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -44,10 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 import com.example.knocker.model.ModelDB.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import java.util.concurrent.Callable
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 /**

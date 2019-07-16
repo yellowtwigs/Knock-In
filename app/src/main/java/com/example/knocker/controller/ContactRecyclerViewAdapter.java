@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.knocker.R;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
-import com.example.knocker.controller.activity.MultiChannelActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;

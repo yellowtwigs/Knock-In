@@ -52,6 +52,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_FirstName: TextInputLayout? = null
     private var edit_contact_LastName: TextInputLayout? = null
     private var edit_contact_PhoneNumber: TextInputLayout? = null
+    private var edit_contact_fixNumber:TextInputLayout?=null
     private var edit_contact_Mail: TextInputLayout? = null
 
     private var gestionnaireContacts: ContactList? = null
@@ -60,6 +61,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Priority: Spinner? = null
     private var edit_contact_Priority_explain: TextView? = null
     private var edit_contact_Phone_Property: Spinner? = null
+    private var edit_contact_Fix_Property: Spinner? = null
     private var edit_contact_Mail_Property: Spinner? = null
     private var edit_contact_AddFieldButton: Button? = null
     private var edit_contact_DeleteContact: Button? = null
@@ -71,6 +73,8 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_last_name: String = ""
     private var edit_contact_phone_number: String = ""
     private var edit_contact_phone_property: String = ""
+    private var edit_contact_fix_number: String = ""
+    private var edit_contact_fix_property: String = ""
     private var edit_contact_mail_property: String = ""
     private var edit_contact_mail: String = ""
     private var edit_contact_rounded_image: Int = 0
@@ -126,11 +130,13 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
         edit_contact_LastName = findViewById(R.id.edit_contact_last_name_id)
         edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
+        edit_contact_fixNumber=findViewById(R.id.edit_contact_phone_number_fix_id)
         edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
         edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
         edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
+        edit_contact_Fix_Property= findViewById(R.id.edit_contact_phone_number_spinner_fix)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
         edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete_contact)
@@ -178,15 +184,21 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
             //TODO :enlever code Dupliquer
 
-            edit_contact_phone_property = "Mobile"
+            edit_contact_phone_property = getString(R.string.edit_contact_phone_number_mobile)
+            edit_contact_fix_number= getString(R.string.edit_contact_phone_number_home)
             edit_contact_phone_number = ""
             edit_contact_mail = ""
-            edit_contact_mail_property = "Bureau"
+            edit_contact_mail_property = getString(R.string.edit_contact_mail_mobile)
 
             val tagPhone = contact.getPhoneNumberTag()
             val phoneNumber = contact.getFirstPhoneNumber()
             edit_contact_phone_number = phoneNumber
             edit_contact_phone_property = tagPhone
+            println("phone property of number "+phoneNumber+" is "+tagPhone)
+            val tagFix=contact.getSecondPhoneTag(phoneNumber)
+            val fixNumber=contact.getSecondPhoneNumber(phoneNumber)
+            edit_contact_fix_number=fixNumber
+            edit_contact_fix_property=tagFix
             val tagMail = contact.getMailTag()
             val mail = contact.getFirstMail()
             edit_contact_mail = mail
@@ -243,10 +255,12 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_FirstName!!.editText!!.setText(edit_contact_first_name)
         edit_contact_LastName!!.editText!!.setText(edit_contact_last_name)
         edit_contact_PhoneNumber!!.editText!!.setText(edit_contact_phone_number)
+        edit_contact_fixNumber!!.editText!!.setText(edit_contact_fix_number)
         edit_contact_Mail!!.editText!!.setText(edit_contact_mail)
         edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property, edit_contact_Mail_Property!!))
         edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property, edit_contact_Phone_Property!!))
-
+        edit_contact_Fix_Property!!.setSelection(getPosItemSpinner(edit_contact_fix_property, edit_contact_Fix_Property!!))
+        println("get item position"+edit_contact_Phone_Property!!.selectedItem.toString())
         textChanged(edit_contact_FirstName, edit_contact_FirstName!!.editText!!.text?.toString())
         textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
         textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
@@ -406,8 +420,11 @@ class EditContactActivity : AppCompatActivity() {
         val tailleSpinner: Int = spinner.adapter.count
         //println("taille spinner" + tailleSpinner)
         for (x in 0 until tailleSpinner) {
-            if (spinner.getItemAtPosition(x).equals(item)) {
+            if (spinner.getItemAtPosition(x).toString().equals(NumberAndMailDB!!.convertStringToSpinnerString(item,this))) {
+                println(" return in edit"+x)
                 return x
+            }else{
+                println(spinner.getItemAtPosition(x).toString()+"est diférent de "+NumberAndMailDB!!.convertStringToSpinnerString(item,this))
             }
         }
         return 0;
@@ -436,8 +453,8 @@ class EditContactActivity : AppCompatActivity() {
                 hideKeyboard()
                 val editContact = Runnable {
                     if (edit_contact_FirstName!!.editText!!.toString() != "" || edit_contact_LastName!!.editText!!.toString() != "") {
-                        val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString())
-                        val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString())
+                        val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString(),this)
+                        val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(),this)
                         var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         val nbDetail = contact!!.contactDetailList!!.size - 1
                         if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
