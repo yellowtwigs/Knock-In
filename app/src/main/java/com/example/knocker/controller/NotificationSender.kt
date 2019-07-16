@@ -1,10 +1,7 @@
 package com.example.knocker.controller
 
 import android.app.*
-import android.content.BroadcastReceiver
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
+import android.content.*
 
 import androidx.core.app.NotificationCompat
 import com.example.knocker.R
@@ -34,7 +31,8 @@ class NotificationSender : BroadcastReceiver() {
                     NotificationManager.IMPORTANCE_DEFAULT)
             manager.createNotificationChannel(channel)
         }
-        if (!isNotificationServiceEnabled(context)) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+        if (!isNotificationServiceEnabled(context) && sharedPreferences.getBoolean("reminder",true)) {
 
             var main_ContactsDatabase: ContactsRoomDatabase? = null
             lateinit var main_mDbWorkerThread: DbWorkerThread
