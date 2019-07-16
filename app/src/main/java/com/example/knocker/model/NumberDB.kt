@@ -1,25 +1,29 @@
 package com.example.knocker.model
 
+import android.content.Context
+import com.example.knocker.R
+
 /**
- * TO DELETE ???
+ *
  * @author Florian Striebel
  */
 object NumberAndMailDB {
-   public fun convertSpinnerStringToChar(type :String ):String{ //récupère la valeur du spinner pour en sortir un caractère
-
-       if(type.equals("Mobile")){
+   public fun convertSpinnerStringToChar(type :String, context: Context):String{ //récupère la valeur du spinner pour en sortir un caractère
+       val array = context.resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
+       val arrayMail = context.resources.getStringArray(R.array.add_new_contact_mail_arrays)
+       if(type.equals(context.getString(R.string.edit_contact_phone_number_mobile))){
             return "mobil"
-        }else if (type.equals("Bureau")){
+        }else if (type == array[1]){
             return "work"
-        }else if(type.equals("Domicile")){
+        }else if(type == array[2]){
             return "home"
-        }else if(type.equals("Principal")){
+        }else if(type == array[3]){
             return "principal"
-        }else if(type.equals("Autre")){
+        }else if(type == array[4]){
             return "other"
-        }else if(type.equals("Personnalisé")){
+        }else if(type == array[5]){
             return "custom"
-        }else if(type.equals("Ecole")){
+        }else if(type == arrayMail[2]){
             return "school"
         }
        return " "
