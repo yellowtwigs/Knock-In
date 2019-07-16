@@ -64,7 +64,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     }
 
-    fun getDetailsOfPlatform(name: String, platform: String): String {
+    /*fun getDetailsOfPlatform(name: String, platform: String): String {
         // on init WorkerThread
 
 
@@ -94,7 +94,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         }
         return info
     }
-
+*/
     fun getContactById(id: Int): ContactWithAllInformation? {
         for (contact in this.contacts) {
             if (contact.contactDB!!.id == id) {

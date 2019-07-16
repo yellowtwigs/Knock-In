@@ -142,6 +142,48 @@
                 app:layout_constraintStart_toEndOf="@+id/textView_manage_notif_prio_1"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/manage_notif_reminder_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="204dp">
+
+            <TextView
+                android:id="@+id/textView_manage_reminder"
+                android:layout_width="268dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="left"
+                android:textColor="?attr/textColor"
+                android:text="@string/notification_reminder"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Switch
+                android:id="@+id/switch_manage_notif_reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView_manage_reminder"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/modify_hour_Constariant"
             android:layout_width="match_parent"
@@ -156,7 +198,7 @@
 
 
             <TextView
-                android:id="@+id/textView_horraire_rappel"
+                android:id="@+id/textView_horraire_reminder"
                 android:layout_width="268dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="16dp"
@@ -182,7 +224,7 @@
                 android:textColor="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView_horraire_rappel"
+                app:layout_constraintStart_toEndOf="@+id/textView_horraire_reminder"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
