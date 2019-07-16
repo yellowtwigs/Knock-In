@@ -1,6 +1,8 @@
 package com.example.knocker.controller.activity
 
 import android.Manifest
+import android.app.PendingIntent.getActivity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -96,17 +98,11 @@ class MultiChannelActivity : AppCompatActivity() {
 
 
         multi_channel_SendMessageButton!!.setOnClickListener {
-
             if (checkPermission(Manifest.permission.SEND_SMS)) {
                 if (multi_channel_SendMessageEditText!!.text.toString() != "") {
-                    if (multi_channel_listViewAdapter!!.listOfNumberSelected != null) {
+                    if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
                         multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
                         refreshActivity()
-                    }
-
-                    if (multi_channel_listViewAdapter!!.listOfMailSelected != null) {
-                        multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
-
                     }
                 } else {
                     Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
@@ -114,6 +110,11 @@ class MultiChannelActivity : AppCompatActivity() {
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
                 Toast.makeText(this, "No Permission", Toast.LENGTH_SHORT).show()
+            }
+
+            if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
+                monoChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+                refreshActivity()
             }
         }
     }
@@ -164,16 +165,30 @@ class MultiChannelActivity : AppCompatActivity() {
         }
     }
 
-    private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
+    private fun monoChannelMailClick(listOfMail: ArrayList<String>, msg: String) {
+
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
-        intent.data = Uri.parse("mailto:")
-        intent.type = "message/rfc822"
-        intent.putExtra(Intent.EXTRA_SUBJECT, "")
-        intent.putExtra(Intent.EXTRA_TEXT, "")
-        startActivity(intent)
+        val emailIntent = Intent(Intent.ACTION_SEND)
+
+        emailIntent.type = "text/plain"
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, contact)
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
+        emailIntent.putExtra(Intent.EXTRA_TEXT, msg)
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send email using..."))
+        } catch (ex: ActivityNotFoundException) {
+            Toast.makeText(this, "No email clients installed.", Toast.LENGTH_SHORT).show()
+        }
+        //val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
+        //val intent = Intent(Intent.ACTION_SEND)
+        //intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
+        //intent.data = Uri.parse("mailto:")
+        //intent.type = "message/rfc822"
+        //intent.putExtra(Intent.EXTRA_SUBJECT, "")
+        //intent.putExtra(Intent.EXTRA_TEXT, "")
+        //startActivity(intent)
     }
 
-    //endregion
+//endregion
 }

@@ -9,29 +9,6 @@
 
     <include layout="@layout/content_main" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_open_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginBottom="80dp"
-        android:tint="@color/lightColor"
-        android:background="@color/colorPrimary"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_add" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_send_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/floating_button_margin"
-        android:layout_marginBottom="80dp"
-        android:background="@color/colorPrimary"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_send" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_sms_button"
@@ -61,19 +38,19 @@
         app:srcCompat="@drawable/ic_whatsapp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/main_gmail_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="320dp"
-    android:visibility="gone"
-    android:background="@color/colorPrimary"
-    app:backgroundTint="@color/colorPrimary"
-    app:layout_constraintBottom_toTopOf="@+id/navigation"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/main_sms_button"
-    app:srcCompat="@drawable/ic_gmail" />
+        android:id="@+id/main_gmail_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="320dp"
+        android:visibility="gone"
+        android:background="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/main_sms_button"
+        app:srcCompat="@drawable/ic_gmail" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_group_button"
@@ -89,4 +66,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/main_sms_button"
         app:srcCompat="@drawable/ic_group_floating" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_floating_button_open_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/floating_button_margin"
+        android:layout_marginBottom="80dp"
+        android:tint="@color/lightColor"
+        android:background="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_floating_button_send_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/floating_button_margin"
+        android:layout_marginBottom="80dp"
+        android:background="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_send" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -161,16 +161,16 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             public void onClick(View v) {
                 if (v.getId() == holder.smsCl.getId()) {
 
-                    String phone = getItem(holder.position).getPhoneNumber();
+                    String phone = getItem(holder.position).getFirstPhoneNumber();
                     Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                     context.startActivity(i);
                 }
                 if (v.getId() == holder.callCl.getId()) {
-                    callPhone(getItem(position).getPhoneNumber());
+                    callPhone(getItem(position).getFirstPhoneNumber());
                 }
                 if (v.getId() == holder.whatsappCl.getId()) {
                     ContactWithAllInformation contactWithAllInformation = getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
+                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
                 }
                 if (v.getId() == holder.mailCl.getId()) {
                     String mail = getItem(position).getFirstMail();
@@ -300,7 +300,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
             //Intent intent=new Intent(Intent.ACTION_CALL);
-            //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
+            //intent.setData(Uri.parse(getItem(position).getFirstPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
             boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup) {

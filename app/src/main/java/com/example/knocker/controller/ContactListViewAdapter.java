@@ -136,11 +136,11 @@ public class ContactListViewAdapter extends BaseAdapter {
                     if (listItemChannelSelected.contains(holder.smsCl)) {
                         listItemChannelSelected.remove(holder.smsCl);
                         holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
-                        listOfNumberSelected.remove(listContacts.get(position).getPhoneNumber());
+                        listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
                     } else {
                         listItemChannelSelected.add(holder.smsCl);
                         holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
-                        listOfNumberSelected.add(listContacts.get(position).getPhoneNumber());
+                        listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
                     }
                 }
                 if (v.getId() == holder.whatsappCl.getId()) {
@@ -176,6 +176,12 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.mailCl.setVisibility(View.GONE);
         } else {
             holder.mailCl.setVisibility(View.VISIBLE);
+        }
+
+        if (getItem(position).getFirstPhoneNumber().isEmpty()) {
+            holder.smsCl.setVisibility(View.GONE);
+        } else {
+            holder.smsCl.setVisibility(View.VISIBLE);
         }
 
         holder.mailCl.setOnClickListener(listener);
@@ -241,31 +247,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         //options.inSampleSize = 2;
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
     }
-
-    private void callPhone(final String phoneNumber) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
-        } else {
-            //Intent intent=new Intent(Intent.ACTION_CALL);
-            //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
-            SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
-            boolean popup = sharedPreferences.getBoolean("popup", true);
-            if (popup) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Voulez-vous appeler ce contact ?")
-                        .setMessage("Vous pouvez désactiver cette validation depuis les options")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null)
-                        .show();
-            } else {
-                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
-            }
-        }
-    }//code duplicate à mettre dans contactAllInfo
 
     private boolean whatsappIsInstalled() {
         PackageManager pm = context.getPackageManager();

@@ -277,13 +277,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
                 .disableAnimations();
-        if (appIsInstalled() && !getItem(position).getPhoneNumber().equals("")) {
+        if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
         if (!getItem(position).getFirstMail().equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonMail, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
-        if (!getItem(position).getPhoneNumber().equals("")) {
+        if (!getItem(position).getFirstPhoneNumber().equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonSMS, layoutParams).build(), diametreBoutton, diametreBoutton)
                     .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
@@ -311,7 +311,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 if (v.getId() == buttonWhatsApp.getId()) {
 
                     ContactWithAllInformation contactWithAllInformation = getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getPhoneNumber()), context);
+                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
                 } else if (v.getId() == buttonEdit.getId()) {
 
                     Intent intent = new Intent(context, EditContactActivity.class);
@@ -320,11 +320,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
                 } else if (v.getId() == buttonCall.getId()) {
 
-                    callPhone(getItem(position).getPhoneNumber());
+                    callPhone(getItem(position).getFirstPhoneNumber());
 
                 } else if (v.getId() == buttonSMS.getId()) {
 
-                    String phone = getItem(position).getPhoneNumber();
+                    String phone = getItem(position).getFirstPhoneNumber();
                     Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                     context.startActivity(i);
 
@@ -415,7 +415,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
             //Intent intent=new Intent(Intent.ACTION_CALL);
-            //intent.setData(Uri.parse(getItem(position).getPhoneNumber()));
+            //intent.setData(Uri.parse(getItem(position).getFirstPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
             Boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup) {

@@ -159,7 +159,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
 
                     if (contact != null) {
-                        openWhatsapp(converter06To33(contact.getPhoneNumber()), baseContext)
+                        openWhatsapp(converter06To33(contact.getFirstPhoneNumber()), baseContext)
                     }
 
                 }
@@ -173,7 +173,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     println("into messaging")
                     val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
                     if (contact != null) {
-                        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact.getPhoneNumber(), null))
+                        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact.getFirstPhoneNumber(), null))
                         startActivity(intent)
                     } else {
                     }

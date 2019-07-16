@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_WhatsappButton = findViewById(R.id.main_whatsapp_button)
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
-        main_groupButton= findViewById(R.id.main_group_button)
+        main_groupButton = findViewById(R.id.main_group_button)
 
         //endregion
 
@@ -541,7 +541,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 iterator = (0 until adapter.listContactSelect.size).iterator()
 
                 for (i in iterator) {
-                    listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getPhoneNumber())
+                    listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getFirstPhoneNumber())
                 }
             } else {
 //                val adapter: ContactRecyclerViewAdapter = main_RecyclerView!!.adapter as ContactRecyclerViewAdapter
@@ -549,7 +549,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 //                iterator = (0 until adapter.listContactSelect.size).iterator()
 //
 //                for (i in iterator) {
-//                    listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getPhoneNumber())
+//                    listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i].getFirstPhoneNumber())
 //                }
             }
             monoChannelSmsClick(listOfPhoneNumberContactSelected)
@@ -566,14 +566,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             monoChannelMailClick(listOfPhoneNumberContactSelected)
         }
-        main_groupButton!!.setOnClickListener{
-            val adapter:SelectContactAdapter=(main_GridView!!.adapter) as SelectContactAdapter
+        main_groupButton!!.setOnClickListener {
+            val adapter: SelectContactAdapter = (main_GridView!!.adapter) as SelectContactAdapter
             val listOfPhoneNumberContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
             val iterator = (0 until adapter.listContactSelect.size).iterator()
             for (i in iterator) {
                 listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i])
             }
-            saveGroupMultiSelect(listOfPhoneNumberContactSelected,len)
+            saveGroupMultiSelect(listOfPhoneNumberContactSelected, len)
         }
         //endregion
 
@@ -888,15 +888,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 allContactsHaveMail = false
             }
 
-            if (listOfItemSelected[i].getPhoneNumber() == "") {
+            if (listOfItemSelected[i].getFirstPhoneNumber() == "") {
                 allContactsHavePhoneNumber = false
             }
         }
-        var i= 2
+        var i = 2
         val metrics = DisplayMetrics()
         this.windowManager.defaultDisplay.getMetrics(metrics)
-        val margin=(0.5*metrics.densityDpi).toInt()
-        println("metric smartphone"+metrics.densityDpi)
+        val margin = (0.5 * metrics.densityDpi).toInt()
+        println("metric smartphone" + metrics.densityDpi)
         if (allContactsHavePhoneNumber) {
             main_SMSButton!!.visibility = View.VISIBLE
             i++
@@ -906,9 +906,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         if (appIsInstalled() && allContactsHavePhoneNumber) {
             main_WhatsappButton!!.visibility = View.VISIBLE
-            val params:ViewGroup.MarginLayoutParams=main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin=margin*i
-            main_WhatsappButton!!.layoutParams=params
+            val params: ViewGroup.MarginLayoutParams = main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
+            params.bottomMargin = margin * i
+            main_WhatsappButton!!.layoutParams = params
             i++
         } else {
             println("false whatsApp")
@@ -916,19 +916,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         if (allContactsHaveMail) {
             main_MailButton!!.visibility = View.VISIBLE
-            val params:ViewGroup.MarginLayoutParams=main_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin=margin*i
-            main_MailButton!!.layoutParams=params
-            println("height of floating mail"+main_MailButton!!.height)
+            val params: ViewGroup.MarginLayoutParams = main_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
+            params.bottomMargin = margin * i
+            main_MailButton!!.layoutParams = params
+            println("height of floating mail" + main_MailButton!!.height)
             i++
         } else {
             println("false mail")
             main_MailButton!!.visibility = View.GONE
         }
-        val params:ViewGroup.MarginLayoutParams=main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
-        params.bottomMargin=margin*i
-        main_groupButton!!.layoutParams=params
-        main_groupButton!!.visibility=View.VISIBLE
+        val params: ViewGroup.MarginLayoutParams = main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
+        params.bottomMargin = margin * i
+        main_groupButton!!.layoutParams = params
+        main_groupButton!!.visibility = View.VISIBLE
     }
 
     fun longRecyclerItemClick(position: Int, view: View, contactViewHolder: ContactViewHolder) {
@@ -964,11 +964,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_MailButton!!.visibility = View.VISIBLE
         }
 
-        if (appIsInstalled() && gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
+        if (appIsInstalled() && gestionnaireContacts!!.contacts[position].getFirstPhoneNumber() != "") {
             main_WhatsappButton!!.visibility = View.VISIBLE
         }
 
-        if (gestionnaireContacts!!.contacts[position].getPhoneNumber() != "") {
+        if (gestionnaireContacts!!.contacts[position].getFirstPhoneNumber() != "") {
             main_SMSButton!!.visibility = View.VISIBLE
         }
     }
@@ -1032,9 +1032,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         return -1
     }
-    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>,len: Int){
-        val editText=EditText(this)
-        editText.hint="group"+main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
+
+    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
+        val editText = EditText(this)
+        editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
         AlertDialog.Builder(this)
                 .setTitle("création groupe")
                 .setMessage("Donnez un nom à votre groupe")
@@ -1043,15 +1044,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 .setPositiveButton("oui",
                         object : DialogInterface.OnClickListener {
                             override fun onClick(dialog: DialogInterface, which: Int) {
-                                var nameGroup=""
-                                if(!editText!!.text.isEmpty()){
-                                    nameGroup=editText!!.text.toString()
-                                }else{
-                                    nameGroup=editText.hint.toString()
+                                var nameGroup = ""
+                                if (!editText!!.text.isEmpty()) {
+                                    nameGroup = editText!!.text.toString()
+                                } else {
+                                    nameGroup = editText.hint.toString()
                                 }
-                                println("name group"+nameGroup)
+                                println("name group" + nameGroup)
                                 val printContacts = Runnable {
-                                    if(listContacts.size!=0) {
+                                    if (listContacts.size != 0) {
                                         val group = GroupDB(null, nameGroup, "")
                                         val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
                                         for (contact in listContacts) {
@@ -1072,6 +1073,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SMSButton!!.visibility = View.GONE
         main_groupButton!!.visibility = View.GONE
     }
+
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)

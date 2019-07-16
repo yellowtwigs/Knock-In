@@ -926,7 +926,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     fun getContactFromNumber(phoneNumber: String): ContactWithAllInformation? {
         for (contact in this.contacts) {
-            if (PhoneNumberUtils.compare(contact.getPhoneNumber(), phoneNumber)) {
+            if (PhoneNumberUtils.compare(contact.getFirstPhoneNumber(), phoneNumber)) {
                 return contact
             }
         }

@@ -184,7 +184,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_mail_property = "Bureau"
 
             val tagPhone = contact.getPhoneNumberTag()
-            val phoneNumber = contact.getPhoneNumber()
+            val phoneNumber = contact.getFirstPhoneNumber()
             edit_contact_phone_number = phoneNumber
             edit_contact_phone_property = tagPhone
             val tagMail = contact.getMailTag()
