@@ -206,6 +206,7 @@
     <string name="notification_manager_stop_service">Enable the notification service</string>
     <string name="notification_manager_horaire">Select recall daily time to view all your notifications</string>
     <string name="notification_manager_prio_1">Hide priority 1 notifications</string>
+    <string name="notification_reminder">to translate </string>
 
     <!-- endregion -->
 

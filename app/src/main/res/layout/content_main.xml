@@ -77,6 +77,19 @@
                 android:paddingTop="10dp"
                 android:visibility="gone" />
 
+            <RelativeLayout
+                android:id="@+id/loadingPanel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true" />
+            </RelativeLayout>
+
             <ListView
                 android:id="@+id/main_list_view_id"
                 android:layout_width="match_parent"

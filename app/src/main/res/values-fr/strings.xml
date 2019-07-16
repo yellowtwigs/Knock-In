@@ -206,7 +206,7 @@
     <string name="notification_manager_stop_service">Activez le service de notification</string>
     <string name="notification_manager_horaire">Choisissez l\'horaire de rappel des notifications de la journée</string>
     <string name="notification_manager_prio_1">Masquez les notification standard (priorité 1)</string>
-
+    <string name="notification_reminder">m\'envoyer un rappel pour regarder les messages traité par knocker</string>
     <!-- endregion -->
 
     <!-- region Phone Log -->

@@ -52,13 +52,18 @@ class ManageNotificationActivity : AppCompatActivity() {
         val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         val switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
         val switchMaskNotif= this.findViewById<Switch>(R.id.switch_manage_notif_prio_1)
-
+        val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
         switchPopupNotif.isChecked = sharedPreferences.getBoolean("popupNotif", false)
         switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
         switchMaskNotif.isChecked = sharedPreferences.getBoolean("mask_prio_1",false)
+        switchReminder.isChecked= sharedPreferences.getBoolean("reminder",true)
+        if(!switchReminder.isChecked){
+            viewHour.isEnabled=false
+            viewHour.background= getDrawable(R.color.greyColor)
+        }
         var hour = sharedPreferences.getInt("remindHour", 18)
         var minute = sharedPreferences.getInt("remindMinute", 0)
 
@@ -169,6 +174,23 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.putBoolean("mask_prio_1", false)
                 edit.commit()
             }
+        }
+        switchReminder.setOnCheckedChangeListener{ _, _ ->
+            val edit=sharedPreferences.edit()
+            if(switchReminder.isChecked){
+                edit.putBoolean("reminder",true)
+                viewHour.isEnabled=true
+                if(sharedThemePreferences.getBoolean("darkTheme",false)){
+                    viewHour.background= getDrawable(R.color.backgroundColorDark)
+                }else{
+                    viewHour.background= getDrawable(R.color.backgroundColor)
+                }
+            }else{
+                edit.putBoolean("reminder",false)
+                viewHour.isEnabled=false
+                viewHour.background= getDrawable(R.color.greyColor)
+            }
+            edit.apply()
         }
 
 
