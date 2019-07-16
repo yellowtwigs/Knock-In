@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -45,6 +46,8 @@ import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 import com.example.knocker.model.ModelDB.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import java.util.concurrent.Callable
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 /**
@@ -87,6 +90,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var listViewAdapter: ContactListViewAdapter? = null
     private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
     private var main_layout: LinearLayout? = null
+    private var main_loadingPanel: RelativeLayout? = null
 
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList<ContactWithAllInformation>()
 
@@ -174,6 +178,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
         main_layout = findViewById(R.id.content_frame)
+        main_loadingPanel = findViewById(R.id.loadingPanel)
 
         main_WhatsappButton = findViewById(R.id.main_whatsapp_button)
         main_MailButton = findViewById(R.id.main_gmail_button)
@@ -396,66 +401,85 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
-            }
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
-                val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
-                var index = 1
-                var stringSet = listOf<String>()
-                if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                    stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
-                val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
-                while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
-                    stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
-                    changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
-                    index++
+            //check les permissions
+            drawerLayout!!.closeDrawers()
+            main_GridView!!.visibility = View.GONE
+            val sync = Runnable {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
                 }
-                changedContactList.forEach {changedContact ->
-                    MaterialAlertDialogBuilder(this)
-                            .setTitle("Contact modifié")
-                            .setMessage("Le Contact "+changedContact.first.firstName+" "+changedContact.first.lastName+" a été changer, garder la version du carnet d'address d'Android ou de Knocker ?")
-                            .setPositiveButton("Knocker",{dialog, which ->
-                            })
-                            .setNegativeButton("Android", {dialog, which ->
-                                val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
-                                allId.forEach {
-                                    if (changedContact.first.id == it.first)
-                                        changedContact.first.id = it.second
-                                }
-                                main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!,changedContact.first.firstName, changedContact.first.lastName)
-                                main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
-                                changedContact.second.forEach {
-                                    it.idContact = changedContact.first.id
-                                    main_ContactsDatabase!!.contactDetailsDao().insert(it)
-                                }
-                            })
-                            .show()
-                }
-                //gestionnaireContacts!!.
-                //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
-                //val len = sharedPreferences.getInt("gridview", 4)
-                /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    /////////////////////////////////////////////////////////////////
+
+                    //Synchronise tout les contacts du carnet android
+                    val displayLoading = Runnable {
+                        main_loadingPanel!!.visibility = View.VISIBLE
+                    }
+                    runOnUiThread(displayLoading)
+                    gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                    val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+                    var index = 1
+                    var stringSet = listOf<String>()
+                    if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                    val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
+                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
+                        index++
+                    }
+                    changedContactList.forEach { changedContact ->
+                        MaterialAlertDialogBuilder(this)
+                                .setTitle("Contact modifié")
+                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'address d'Android ou de Knocker ?")
+                                .setPositiveButton("Knocker", { dialog, which ->
+                                })
+                                .setNegativeButton("Android", { dialog, which ->
+                                    val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
+                                    allId.forEach {
+                                        if (changedContact.first.id == it.first)
+                                            changedContact.first.id = it.second
+                                    }
+                                    main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!, changedContact.first.firstName, changedContact.first.lastName)
+                                    main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
+                                    changedContact.second.forEach {
+                                        it.idContact = changedContact.first.id
+                                        main_ContactsDatabase!!.contactDetailsDao().insert(it)
+                                    }
+                                })
+                                .show()
+                    }
+                    //gestionnaireContacts!!.
+                    //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+                    //val len = sharedPreferences.getInt("gridview", 4)
+                    /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
               main_GridView!!.adapter = gridViewAdapter
   */
-                index = 1
-                val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
-                while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
-                    stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
-                    edit.remove(index.toString())
-                    index++
+                    index = 1
+                    val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
+                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        edit.remove(index.toString())
+                        index++
+                    }
+                    edit.apply()
+                    val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    if (sharedPreferences.getString("tri", "") == "priorite")
+                        gestionnaireContacts!!.sortContactByPriority()
+                    else
+                        gestionnaireContacts!!.sortContactByFirstNameAZ()
+
+                    val displaySync = Runnable {
+                        main_loadingPanel!!.visibility = View.GONE
+                        main_GridView!!.visibility = View.VISIBLE
+                        gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                        gridViewAdapter!!.notifyDataSetChanged()
+                        drawerLayout!!.closeDrawers()
+                    }
+                    runOnUiThread(displaySync)
                 }
-                edit.apply()
-                val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                if (sharedPreferences.getString("tri", "") == "priorite")
-                    gestionnaireContacts!!.sortContactByPriority()
-                else
-                    gestionnaireContacts!!.sortContactByFirstNameAZ()
-                gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
-                gridViewAdapter!!.notifyDataSetChanged()
-                drawerLayout!!.closeDrawers()
             }
+            main_mDbWorkerThread.postTask(sync)
             true
         }
 
