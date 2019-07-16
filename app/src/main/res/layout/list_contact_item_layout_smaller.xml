@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/list_contact_item_layout_smaller"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="@drawable/selector_relative_layout_with_border">
+    android:id="@+id/list_contact_item_layout_smaller">
+
+    <!--android:clickable="true"-->
+    <!--android:focusable="true"-->
+    <!--android:background="@drawable/selector_relative_layout_with_border"-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,9 +20,9 @@
             android:id="@+id/list_contact_item_contactRoundedImageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             app:civ_border="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:maxWidth="170dp"
             android:text="bla bla"
             android:textColor="?attr/textColor"
             android:textSize="16sp"
@@ -54,7 +56,7 @@
                 android:id="@+id/list_contact_item_smaller_constraint_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -63,8 +65,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +78,7 @@
                 android:id="@+id/list_contact_item_smaller_constraint_sms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -86,8 +88,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_sms_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +102,7 @@
                 android:id="@+id/list_contact_item_smaller_constraint_whatsapp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -111,8 +113,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_whatsapp_tv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +126,7 @@
                 android:id="@+id/list_contact_item_smaller_constraint_mail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -135,8 +137,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_mail_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +150,7 @@
                 android:id="@+id/list_contact_item_smaller_constraint_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -156,11 +158,10 @@
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_smaller_constraint_mail"
                 app:layout_constraintTop_toTopOf="parent">
 
-
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_edit_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +173,7 @@
                 android:id="@+id/list_contact_item_smaller_constraint_messenger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"

@@ -9,6 +9,7 @@
             android:title="@string/left_drawer_address_book" />
         <item
             android:id="@+id/nav_informations"
+            android:enabled="false"
             android:icon="@drawable/ic_avatar"
             android:title="@string/left_drawer_information" />
         <item
@@ -26,19 +27,19 @@
         android:checkableBehavior="none">
         <item
             android:id="@+id/nav_data_access"
+            android:enabled="false"
             android:icon="@drawable/ic_folder"
-            android:title="@string/left_drawer_data_access"
-            android:enabled="false"/>
+            android:title="@string/left_drawer_data_access" />
         <item
             android:id="@+id/nav_knockons"
+            android:enabled="false"
             android:icon="@drawable/ic_letter_k"
-            android:title="@string/left_drawer_knockons"
-            android:enabled="false"/>
+            android:title="@string/left_drawer_knockons" />
         <item
             android:id="@+id/nav_statistics"
+            android:enabled="false"
             android:icon="@drawable/ic_statistics"
-            android:title="@string/left_drawer_statistics"
-            android:enabled="false"/>
+            android:title="@string/left_drawer_statistics" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
@@ -47,6 +48,6 @@
             android:id="@+id/nav_sync_contact"
             android:icon="@drawable/ic_synchronization_arrows"
             android:title="@string/left_drawer_sync"
-            android:visible="false"/>
+            android:visible="false" />
     </group>
 </menu>

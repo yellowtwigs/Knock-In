@@ -238,7 +238,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         Drawable iconSMS = null;
 
         buttonSMS.setImageResource(R.drawable.ic_sms_selector);
-        buttonEdit.setImageResource(R.drawable.ic_edit);
+        buttonEdit.setImageResource(R.drawable.ic_circular_edit);
         buttonMail.setImageResource(R.drawable.ic_rounded_gmail);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);

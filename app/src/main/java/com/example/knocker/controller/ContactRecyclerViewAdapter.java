@@ -11,6 +11,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +100,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     @Override
     public void onBindViewHolder(@NonNull final ContactViewHolder holder, final int position) {
-        ContactDB contact = getItem(position).getContactDB();
+        final ContactDB contact = getItem(position).getContactDB();
         assert contact != null;
 
         if (len == 0) {
@@ -127,9 +130,27 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
 
         String contactName = contact.getFirstName() + " " + contact.getLastName();
-        if (contactName.length() > 27) {
-            contactName = contact.getFirstName() + " " + contact.getLastName();
-            contactName = contactName.substring(0, 25) + "..";
+
+        if (len == 0) {
+            if (contactName.length() > 18) {
+
+                Spannable spanFistName = new SpannableString(contactName);
+                spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder.contactFirstNameView.setText(spanFistName);
+
+                contactName = contact.getFirstName() + " " + contact.getLastName();
+                contactName = contactName.substring(0, 18) + "..";
+            }
+        } else {
+            if (contactName.length() > 30) {
+
+                Spannable spanFistName = new SpannableString(contactName);
+                spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder.contactFirstNameView.setText(spanFistName);
+
+                contactName = contact.getFirstName() + " " + contact.getLastName();
+                contactName = contactName.substring(0, 30) + "..";
+            }
         }
 
         holder.contactFirstNameView.setText(contactName);
@@ -161,6 +182,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     intent.putExtra(Intent.EXTRA_TEXT, "");
                     println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
+                }
+                if (v.getId() == holder.editCl.getId()) {
+                    Intent intent = new Intent(context, EditContactActivity.class);
+                    intent.putExtra("ContactId", contact.getId());
+                    context.startActivity(intent);
                 }
                 if (holder.constraintLayoutMenu != null) {
 
@@ -205,15 +231,15 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
 
         if (holder.constraintLayout != null) {
-            holder.constraintLayout.setOnLongClickListener(longClick);
+//            holder.constraintLayout.setOnLongClickListener(longClick);
             holder.constraintLayout.setOnClickListener(listItemClick);
             holder.constraintLayout.setOnClickListener(listener);
         } else {
             holder.constraintLayoutSmaller.setOnLongClickListener(longClick);
             holder.constraintLayoutSmaller.setOnClickListener(listItemClick);
-            holder.editCl.setOnClickListener(listener);
         }
 
+        holder.editCl.setOnClickListener(listener);
         holder.mailCl.setOnClickListener(listener);
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);

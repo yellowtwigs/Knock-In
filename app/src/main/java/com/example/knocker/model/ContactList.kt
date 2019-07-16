@@ -264,7 +264,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         var contactString = loadJSONFromAsset(context)
         try {
             val jsArray = JSONArray(contactString)
-            for (x in 0..(jsArray.length() - 1)) {
+            for (x in 0 until jsArray.length()) {
                 listContacts.add(getContactFromJSONObject(jsArray.getJSONObject(x), x + 1))
             }
         } catch (e: Exception) {

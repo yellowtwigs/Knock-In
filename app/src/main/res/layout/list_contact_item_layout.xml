@@ -146,7 +146,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/list_contact_item_whatsapp_tv"
+                    android:id="@+id/list_contact_item_whatsapp_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="8dp"
