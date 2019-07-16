@@ -105,7 +105,8 @@ class MultiChannelActivity : AppCompatActivity() {
                     }
 
                     if (multi_channel_listViewAdapter!!.listOfMailSelected != null) {
-                        //                    multiChannelSendMessage(listOfMailSelected, messageToSend);
+                        multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
+
                     }
                 } else {
                     Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
@@ -119,7 +120,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
     //region ================================ Functions =======================================
 
-    fun refreshActivity(){
+    private fun refreshActivity() {
         multi_channel_SendMessageEditText!!.text!!.clear()
         multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected, true)
         multi_channel_Listview!!.adapter = multi_channel_listViewAdapter
