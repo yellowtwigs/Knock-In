@@ -1072,7 +1072,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                         main_mDbWorkerThread.postTask(printContacts)
                                     }
                                 }).show()
-
+        main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+        main_FloatingButtonAdd!!.visibility = View.VISIBLE
+        main_FloatingButtonSend!!.visibility = View.GONE
+        main_SearchBar!!.visibility = View.VISIBLE
+        main_MailButton!!.visibility = View.GONE
+        main_WhatsappButton!!.visibility = View.GONE
+        main_SMSButton!!.visibility = View.GONE
+        main_groupButton!!.visibility = View.GONE
     }
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
