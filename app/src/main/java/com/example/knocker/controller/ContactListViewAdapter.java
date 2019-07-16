@@ -12,6 +12,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,6 +99,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder.whatsappCl = listview.findViewById(R.id.multi_channel_list_item_whatsapp_iv);
         holder.mailCl = listview.findViewById(R.id.multi_channel_list_item_mail_iv);
 
+        assert contact != null;
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -104,9 +108,15 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get"));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
-        if (contactName.length() > 27) {
+
+        if (contactName.length() > 15) {
+
+            Spannable spanFistName = new SpannableString(contactName);
+            spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(spanFistName);
+
             contactName = contact.getFirstName() + " " + contact.getLastName();
-            contactName = contactName.substring(0, 25) + "..";
+            contactName = contactName.substring(0, 15) + "..";
         }
 
         holder.contactFirstNameView.setText(contactName);
