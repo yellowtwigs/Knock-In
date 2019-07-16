@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_WhatsappButton = findViewById(R.id.main_whatsapp_button)
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
-        main_groupButton= findViewById(R.id.main_group_button)
+        main_groupButton = findViewById(R.id.main_group_button)
 
         //endregion
 
@@ -412,19 +412,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                     index++
                 }
-                changedContactList.forEach {changedContact ->
+                changedContactList.forEach { changedContact ->
                     MaterialAlertDialogBuilder(this)
                             .setTitle("Contact modifié")
-                            .setMessage("Le Contact "+changedContact.first.firstName+" "+changedContact.first.lastName+" a été changer, garder la version du carnet d'address d'Android ou de Knocker ?")
-                            .setPositiveButton("Knocker",{dialog, which ->
+                            .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'address d'Android ou de Knocker ?")
+                            .setPositiveButton("Knocker", { dialog, which ->
                             })
-                            .setNegativeButton("Android", {dialog, which ->
+                            .setNegativeButton("Android", { dialog, which ->
                                 val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
                                 allId.forEach {
                                     if (changedContact.first.id == it.first)
                                         changedContact.first.id = it.second
                                 }
-                                main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!,changedContact.first.firstName, changedContact.first.lastName)
+                                main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!, changedContact.first.firstName, changedContact.first.lastName)
                                 main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
                                 changedContact.second.forEach {
                                     it.idContact = changedContact.first.id
@@ -542,14 +542,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             monoChannelMailClick(listOfPhoneNumberContactSelected)
         }
-        main_groupButton!!.setOnClickListener{
-            val adapter:SelectContactAdapter=(main_GridView!!.adapter) as SelectContactAdapter
+        main_groupButton!!.setOnClickListener {
+            val adapter: SelectContactAdapter = (main_GridView!!.adapter) as SelectContactAdapter
             val listOfPhoneNumberContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
             val iterator = (0 until adapter.listContactSelect.size).iterator()
             for (i in iterator) {
                 listOfPhoneNumberContactSelected.add(adapter.listContactSelect[i])
             }
-            saveGroupMultiSelect(listOfPhoneNumberContactSelected,len)
+            saveGroupMultiSelect(listOfPhoneNumberContactSelected, len)
         }
         //endregion
 
@@ -868,11 +868,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 allContactsHavePhoneNumber = false
             }
         }
-        var i= 2
+        var i = 2
         val metrics = DisplayMetrics()
         this.windowManager.defaultDisplay.getMetrics(metrics)
-        val margin=(0.5*metrics.densityDpi).toInt()
-        println("metric smartphone"+metrics.densityDpi)
+        val margin = (0.5 * metrics.densityDpi).toInt()
+        println("metric smartphone" + metrics.densityDpi)
         if (allContactsHavePhoneNumber) {
             main_SMSButton!!.visibility = View.VISIBLE
             i++
@@ -882,9 +882,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         if (appIsInstalled() && allContactsHavePhoneNumber) {
             main_WhatsappButton!!.visibility = View.VISIBLE
-            val params:ViewGroup.MarginLayoutParams=main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin=margin*i
-            main_WhatsappButton!!.layoutParams=params
+            val params: ViewGroup.MarginLayoutParams = main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
+            params.bottomMargin = margin * i
+            main_WhatsappButton!!.layoutParams = params
             i++
         } else {
             println("false whatsApp")
@@ -892,19 +892,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         if (allContactsHaveMail) {
             main_MailButton!!.visibility = View.VISIBLE
-            val params:ViewGroup.MarginLayoutParams=main_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin=margin*i
-            main_MailButton!!.layoutParams=params
-            println("height of floating mail"+main_MailButton!!.height)
+            val params: ViewGroup.MarginLayoutParams = main_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
+            params.bottomMargin = margin * i
+            main_MailButton!!.layoutParams = params
+            println("height of floating mail" + main_MailButton!!.height)
             i++
         } else {
             println("false mail")
             main_MailButton!!.visibility = View.GONE
         }
-        val params:ViewGroup.MarginLayoutParams=main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
-        params.bottomMargin=margin*i
-        main_groupButton!!.layoutParams=params
-        main_groupButton!!.visibility=View.VISIBLE
+        val params: ViewGroup.MarginLayoutParams = main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
+        params.bottomMargin = margin * i
+        main_groupButton!!.layoutParams = params
+        main_groupButton!!.visibility = View.VISIBLE
     }
 
     fun longRecyclerItemClick(position: Int, view: View, contactViewHolder: ContactViewHolder) {
@@ -1008,37 +1008,35 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         return -1
     }
-    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>,len: Int){
-        val editText=EditText(this)
-        editText.hint="group"+main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
-                AlertDialog.Builder(this)
-                        .setTitle("création groupe")
-                        .setMessage("Donnez un nom à votre groupe")
-                        .setView(editText)
-                        .setNegativeButton("annuler", null)
-                        .setPositiveButton("oui",
-                                object : DialogInterface.OnClickListener {
-                                    override fun onClick(dialog: DialogInterface, which: Int) {
-                                        var nameGroup=""
-                                        if(!editText!!.text.isEmpty()){
-                                            nameGroup=editText!!.text.toString()
-                                        }else{
-                                            nameGroup=editText.hint.toString()
-                                        }
-                                        println("name group"+nameGroup)
-                                        val printContacts = Runnable {
-                                            if(listContacts.size!=0) {
-                                                val group = GroupDB(null, nameGroup, "")
-                                                val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
-                                                for (contact in listContacts) {
-                                                    val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
-                                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
-                                                }
-                                            }
-                                        }
-                                        main_mDbWorkerThread.postTask(printContacts)
-                                    }
-                                }).show()
+
+    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
+        val editText = EditText(this)
+        editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
+        AlertDialog.Builder(this)
+                .setTitle("création groupe")
+                .setMessage("Donnez un nom à votre groupe")
+                .setView(editText)
+                .setNegativeButton("annuler", null)
+                .setPositiveButton("oui"
+                ) { dialog, which ->
+                    var nameGroup = ""
+                    when {
+                        !editText.text.isEmpty() -> nameGroup = editText.text.toString()
+                        else -> nameGroup = editText.hint.toString()
+                    }
+                    println("name group" + nameGroup)
+                    val printContacts = Runnable {
+                        if (listContacts.size != 0) {
+                            val group = GroupDB(null, nameGroup, "")
+                            val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
+                            for (contact in listContacts) {
+                                val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
+                                main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
+                            }
+                        }
+                    }
+                    main_mDbWorkerThread.postTask(printContacts)
+                }.show()
         main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
         main_FloatingButtonAdd!!.visibility = View.VISIBLE
         main_FloatingButtonSend!!.visibility = View.GONE
@@ -1048,6 +1046,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SMSButton!!.visibility = View.GONE
         main_groupButton!!.visibility = View.GONE
     }
+
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
@@ -1058,8 +1057,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         intent.putExtra(Intent.EXTRA_TEXT, "")
         startActivity(intent)
     }
-
-
 
 
     //endregion

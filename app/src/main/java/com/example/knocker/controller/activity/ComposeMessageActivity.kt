@@ -148,7 +148,7 @@ class ComposeMessageActivity : AppCompatActivity() {
             compose_message_Attachement_Blue!!.isClickable = false
         })
 
-        compose_message_send_Button!!.setOnClickListener(View.OnClickListener {
+        compose_message_send_Button!!.setOnClickListener {
             val msg = compose_message_MessageEditText!!.text.toString()
             val phoneNumb = compose_message_PhoneNumberEditText!!.text.toString()
 
@@ -176,7 +176,7 @@ class ComposeMessageActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this@ComposeMessageActivity, "Enter a message and a phone number", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
         //endregion
     }

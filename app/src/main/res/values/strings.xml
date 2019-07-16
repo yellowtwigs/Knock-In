@@ -315,6 +315,12 @@
 
     <!-- endregion !-->
 
+    <!-- region Multi Channel -->
+
+    <string name="multi_channel_empty_field">Your messaging field can not be empty</string>
+
+    <!-- endregion -->
+
     <!-- region NotificationListener-->
 
     <string name="new_messages">new messages</string>
