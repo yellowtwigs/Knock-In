@@ -58,7 +58,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private Integer len;
     private ArrayList<FloatingActionMenu> listCircularMenu = new ArrayList<FloatingActionMenu>();
     private FloatingActionMenu selectMenu;
-
+    private final int PERMISSION_CALL_RESULT=1;
+    private String numberForPermission;
     public ContactGridViewAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
         this.gestionnaireContact = contactList;
@@ -410,15 +411,16 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         return -1;
     }
 
-    private void callPhone(final String phoneNumber) {
+    public void callPhone(final String phoneNumber) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_RESULT);
+            numberForPermission=phoneNumber;
         } else {
             //Intent intent=new Intent(Intent.ACTION_CALL);
             //intent.setData(Uri.parse(getItem(position).getFirstPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
             Boolean popup = sharedPreferences.getBoolean("popup", true);
-            if (popup) {
+            if (popup&& numberForPermission.isEmpty()) {
                 new AlertDialog.Builder(context)
                         .setTitle("Voulez-vous appeler ce contact ?")
                         .setMessage("Vous pouvez désactiver cette validation depuis les options")
@@ -431,6 +433,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                         .show();
             } else {
                 context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
+                numberForPermission="";
             }
         }
     }
@@ -492,5 +495,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         } catch (Exception e) {
             return false;
         }
+    }
+    public String getPhonePermission(){
+        return numberForPermission;
     }
 }

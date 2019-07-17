@@ -54,6 +54,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private View view;
     private ArrayList<ContactWithAllInformation> listSelectedItem;
 
+    private final int PERMISSION_CALL_RESULT=1;
+    private String numberForPermission;
+
     public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
         this.listContacts = listContacts;
@@ -294,15 +297,16 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
     }
 
-    private void callPhone(final String phoneNumber) {
+    public void callPhone(final String phoneNumber) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_RESULT);
+            numberForPermission=phoneNumber;
         } else {
             //Intent intent=new Intent(Intent.ACTION_CALL);
             //intent.setData(Uri.parse(getItem(position).getFirstPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
             boolean popup = sharedPreferences.getBoolean("popup", true);
-            if (popup) {
+            if (popup && numberForPermission.isEmpty()) {
                 new AlertDialog.Builder(context)
                         .setTitle("Voulez-vous appeler ce contact ?")
                         .setMessage("Vous pouvez désactiver cette validation depuis les options")
@@ -315,6 +319,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         .show();
             } else {
                 context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
+                numberForPermission="";
             }
         }
     }//code duplicate à mettre dans contactAllInfo
@@ -370,5 +375,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
             }
         }
+    }
+    public String getPhonePermission(){
+        return numberForPermission;
     }
 }

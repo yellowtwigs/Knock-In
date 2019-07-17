@@ -91,6 +91,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var firstClick: Boolean = true
 
+
+    private val PERMISSION_CALL_RESULT = 1
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_phone_book -> {
@@ -1080,4 +1083,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         startActivity(intent)
     }
     //endregion
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+
+            PERMISSION_CALL_RESULT -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if(main_GridView!!.visibility==View.VISIBLE){
+                    gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
+                }else{
+                    recyclerViewAdapter!!.callPhone(recyclerViewAdapter!!.phonePermission)
+                }
+            }
+        }
+    }
 }
