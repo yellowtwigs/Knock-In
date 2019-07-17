@@ -359,7 +359,7 @@ class EditContactActivity : AppCompatActivity() {
         val phoneTagList= resources.getStringArray(R.array.edit_contact_phone_number_arrays)
         val adapterPhoneTagList= ArrayAdapter(this,R.layout.spinner_item,phoneTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        edit_contact_Phone_Property!!.adapter=adapterPhoneTagList
+        //edit_contact_Phone_Property!!.adapter=adapterPhoneTagList
         val mailTagList= resources.getStringArray(R.array.edit_contact_mail_arrays)
         val adapterMailTagList= ArrayAdapter(this,R.layout.spinner_item,mailTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
