@@ -43,6 +43,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 import com.example.knocker.model.ModelDB.*
 import java.util.*
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
 /**
@@ -438,12 +441,30 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                         if (changedContact.first.id == it.first)
                                             changedContact.first.id = it.second
                                     }
+
                                     main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!, changedContact.first.firstName, changedContact.first.lastName)
                                     main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
                                     changedContact.second.forEach {
                                         it.idContact = changedContact.first.id
                                         main_ContactsDatabase!!.contactDetailsDao().insert(it)
                                     }
+                                    val displaySync = Runnable {
+                                        gestionnaireContacts!!.contacts.clear()
+                                        val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+                                        if (sharedPreferences.getString("tri", "") == "priorite"){
+                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByPriority20() }
+                                            val result = executorService.submit(callDb)
+                                            gestionnaireContacts!!.contacts.addAll(result.get())
+                                        }else{
+                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
+                                            val result = executorService.submit(callDb)
+                                            gestionnaireContacts!!.contacts.addAll(result.get())
+                                        }
+                                        gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                                        gridViewAdapter!!.notifyDataSetChanged()
+                                    }
+                                    runOnUiThread(displaySync)
                                 })
                                 .show()
                     }
