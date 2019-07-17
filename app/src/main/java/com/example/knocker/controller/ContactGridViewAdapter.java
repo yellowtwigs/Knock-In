@@ -352,7 +352,17 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 return true;
             }
         };
+        buttonCall.setOnLongClickListener(new View.OnLongClickListener(){
 
+            @Override
+            public boolean onLongClick(View v) {
+                String phoneNumber= getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
+                if(!phoneNumber.isEmpty()) {
+                    callPhone(phoneNumber);
+                }
+                return true;
+            }
+        });
         holder.gridContactItemLayout.setOnLongClickListener(longClick);
         holder.contactRoundedImageView.setOnLongClickListener(longClick);
         //buttonMessenger.setOnClickListener(buttonListener);
