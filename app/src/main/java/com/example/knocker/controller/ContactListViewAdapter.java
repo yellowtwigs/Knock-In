@@ -189,24 +189,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         return listOfNumberSelected;
     }
 
-//    private void monoChannelMailClick(ArrayList<String> listOfMail) {
-//        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size()));
-//        val intent = Intent(Intent.ACTION_SEND)
-//        intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
-//        intent.data = Uri.parse("mailto:")
-//        intent.type = "message/rfc822"
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "")
-//        intent.putExtra(Intent.EXTRA_TEXT, "")
-//        startActivity(intent)
-//    }
-
-    private String converter06To33(String phoneNumber) {
-        if (phoneNumber.charAt(0) == '0') {
-            return "+33" + phoneNumber;
-        }
-        return phoneNumber;
-    }
-
     private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {
             return new Random().nextInt(7);
@@ -255,7 +237,6 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         int position;
 
-        AppCompatImageView callCl;
         AppCompatImageView smsCl;
         AppCompatImageView whatsappCl;
         AppCompatImageView mailCl;

@@ -1,5 +1,6 @@
 package com.example.knocker.controller.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,6 +16,7 @@ import com.example.knocker.R
  * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de knocker
  * @author Kenzy Suon
  */
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HelpActivity : AppCompatActivity() {
 
     var help_activity_FAQ: ConstraintLayout? = null
@@ -22,6 +24,7 @@ class HelpActivity : AppCompatActivity() {
     var help_activity_Terms: ConstraintLayout? = null
     var help_activity_Infos: ConstraintLayout? = null
 
+    @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
@@ -59,8 +62,8 @@ class HelpActivity : AppCompatActivity() {
             }
             if (it.id == help_activity_ContactUs!!.id) {
                 val intent = Intent(Intent.ACTION_SEND)
-                intent.setData(Uri.parse("mailto:"))
-                intent.setType("text/html");
+                intent.data = Uri.parse("mailto:")
+                intent.type = "text/html";
                 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_mail)))
                 intent.putExtra(Intent.EXTRA_SUBJECT, "")
                 intent.putExtra(Intent.EXTRA_TEXT, "")

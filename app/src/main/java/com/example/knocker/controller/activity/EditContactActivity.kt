@@ -101,9 +101,9 @@ class EditContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
-        }else{
+        } else {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_edit_contact)
@@ -219,7 +219,7 @@ class EditContactActivity : AppCompatActivity() {
                 val image64 = edit_contact_image64
                 edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
             }
-            when(edit_contact_priority) {
+            when (edit_contact_priority) {
                 0 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
@@ -232,7 +232,7 @@ class EditContactActivity : AppCompatActivity() {
                 }
                 2 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     println("yellow")
                 }
             }
@@ -274,7 +274,7 @@ class EditContactActivity : AppCompatActivity() {
 
         edit_contact_DeleteContact!!.setOnClickListener {
             val delete = Runnable {
-                MaterialAlertDialogBuilder(this,R.style.AlertDialog)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.edit_contact_alert_dialog_delete_contact_title)
                         .setMessage(R.string.edit_contact_alert_dialog_delete_contact_message)
                         .setPositiveButton("Oui") { _, _ ->
@@ -326,23 +326,23 @@ class EditContactActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
-                    edit_contact_RoundedImageView!!.visibility=View.GONE
+                    edit_contact_RoundedImageView!!.visibility = View.GONE
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
-                    edit_contact_RoundedImageView!!.visibility=View.VISIBLE
+                    edit_contact_RoundedImageView!!.visibility = View.VISIBLE
                     println("red color choosen")
                 } else if (position == 1) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
-                    edit_contact_RoundedImageView!!.visibility=View.GONE
+                    edit_contact_RoundedImageView!!.visibility = View.GONE
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
-                    edit_contact_RoundedImageView!!.visibility=View.VISIBLE
+                    edit_contact_RoundedImageView!!.visibility = View.VISIBLE
                 } else if (position == 2) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
-                    edit_contact_RoundedImageView!!.visibility=View.GONE
+                    edit_contact_RoundedImageView!!.visibility = View.GONE
                     edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
-                    edit_contact_RoundedImageView!!.visibility=View.VISIBLE
+                    edit_contact_RoundedImageView!!.visibility = View.VISIBLE
                     println("yellow color choosen")
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (!Settings.canDrawOverlays(applicationContext)) {
@@ -355,15 +355,14 @@ class EditContactActivity : AppCompatActivity() {
         }
 
 
-
-        val phoneTagList= resources.getStringArray(R.array.edit_contact_phone_number_arrays)
-        val adapterPhoneTagList= ArrayAdapter(this,R.layout.spinner_item,phoneTagList)
+        val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
+        val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        edit_contact_Phone_Property!!.adapter=adapterPhoneTagList
-        val mailTagList= resources.getStringArray(R.array.edit_contact_mail_arrays)
-        val adapterMailTagList= ArrayAdapter(this,R.layout.spinner_item,mailTagList)
+        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
+        val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
+        val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        edit_contact_Mail_Property!!.adapter=adapterMailTagList
+        edit_contact_Mail_Property!!.adapter = adapterMailTagList
     }
 
     //region ========================================== Functions ===========================================
@@ -434,7 +433,7 @@ class EditContactActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (isChanged) {
-                    val alertDialog = AlertDialog.Builder(this,R.style.AlertDialog)
+                    val alertDialog = AlertDialog.Builder(this, R.style.AlertDialog)
                     alertDialog.setTitle(R.string.edit_contact_alert_dialog_cancel_title)
                     alertDialog.setMessage(R.string.edit_contact_alert_dialog_cancel_message)
 
@@ -561,7 +560,7 @@ class EditContactActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
 
-        val builder = AlertDialog.Builder(this,R.style.AlertDialog)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialog)
         builder.setTitle(R.string.edit_contact_alert_dialog_photo_title)
         builder.setItems(items) { dialog, i ->
             if (items[i] == getString(R.string.edit_contact_alert_dialog_photo_camera)) {
@@ -701,7 +700,7 @@ class EditContactActivity : AppCompatActivity() {
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): android.app.AlertDialog {
-        val alertDialogBuilder = android.app.AlertDialog.Builder(this,R.style.AlertDialog)
+        val alertDialogBuilder = android.app.AlertDialog.Builder(this, R.style.AlertDialog)
         alertDialogBuilder.setTitle(R.string.alert_dialog_overlay_title)
         alertDialogBuilder.setMessage(R.string.alert_dialog_overlay_message)
         alertDialogBuilder.setPositiveButton(R.string.alert_dialog_yes

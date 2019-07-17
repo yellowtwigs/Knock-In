@@ -213,7 +213,8 @@
             android:background="@drawable/custom_shape_relative_layout_with_border"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_fix_layout">
+
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_layout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/edit_contact_mail_spinner_id_view"

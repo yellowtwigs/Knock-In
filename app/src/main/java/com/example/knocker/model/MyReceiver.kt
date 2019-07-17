@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Calendar
 
+@Suppress("DEPRECATION")
 class MyReceiver : BroadcastReceiver() {
 
     private val compose_message_listOfMessage = ArrayList<Message>()
@@ -65,7 +66,7 @@ class MyReceiver : BroadcastReceiver() {
 
             Toast.makeText(context, msg + " from : " + phoneNumber, Toast.LENGTH_LONG).show();
 
-            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 //            composeMessageView = inflater.inflate(R.layout.activity_compose_message, null)
 //
 //            val c = Calendar.getInstance().time

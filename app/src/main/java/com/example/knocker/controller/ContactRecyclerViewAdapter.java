@@ -1,6 +1,7 @@
 package com.example.knocker.controller;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -157,8 +158,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
         holder.contactFirstNameView.setText(contactName);
 
-
         View.OnClickListener listener = new View.OnClickListener() {
+            @SuppressLint("IntentReset")
             @Override
             public void onClick(View v) {
                 if (v.getId() == holder.smsCl.getId()) {
@@ -215,7 +216,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         View.OnClickListener listItemClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ((MainActivity) context).recyclerItemClick(len, position);
+                ((MainActivity) context).recyclerItemClick(len, position);
             }
         };
 
@@ -233,7 +234,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
 
         if (holder.constraintLayout != null) {
-//            holder.constraintLayout.setOnLongClickListener(longClick);
+            holder.constraintLayout.setOnLongClickListener(longClick);
             holder.constraintLayout.setOnClickListener(listItemClick);
             holder.constraintLayout.setOnClickListener(listener);
         } else {

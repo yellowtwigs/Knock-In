@@ -74,7 +74,6 @@
                 android:columnWidth="120dp"
                 android:gravity="center"
                 android:numColumns="auto_fit"
-                android:paddingTop="10dp"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -95,7 +94,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginEnd="8dp"
                 android:backgroundTint="?attr/backgroundColor"
                 android:columnWidth="120dp"
