@@ -689,6 +689,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                             edit.putStringSet(modifiedContact.toString(), set)
                                             edit.apply()
                                         }
+                                    } else {
+                                        lastSync = deleteContactFromLastSync(lastSync, fullName.first)
+                                        edit.putString("last_sync_2", lastSync)
+                                        edit.apply()
+                                        createListContactsSync(phoneStructName, contactNumberAndPic, contactGroup, gestionnaireContacts)
                                     }
                                 }
                                 phoneContactsList.add(contacts)
@@ -717,6 +722,20 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         }
         val syncContact = executorService.submit(callDb).get()
         gestionnaireContacts.contacts.addAll(syncContact!!)
+    }
+
+    fun deleteContactFromLastSync(lastSync: String, id: Int): String {
+        val list = mutableListOf<Pair<Int, Int>>()
+        val allId = sliceLastSync(lastSync)
+        var newList = ""
+        allId.forEach {
+            if (id != it.first)
+                list.add(Pair(it.first, it.second))
+        }
+        list.forEach {
+            newList += it.first.toString() + ":" + it.second.toString() + "|"
+        }
+        return newList
     }
 
     fun setToContactList(contactset: List<String>): Pair<ContactDB, List<ContactDetailDB>>{
