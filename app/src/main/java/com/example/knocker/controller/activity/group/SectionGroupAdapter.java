@@ -6,22 +6,26 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
+import com.example.knocker.model.ContactsRoomDatabase;
+import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements PopupMenu.OnMenuItemClickListener {
 
     private final Context mContext;
     private static final int SECTION_TYPE = 0;
@@ -85,13 +89,14 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView titleTv;
         public ImageView gmailIV;
         public ImageView smsIV;
+        public ImageView menu;
 
         public SectionViewHolder(View view) {
             super(view);
             titleTv = (TextView) view.findViewById(R.id.section_text);
             gmailIV = (ImageView) view.findViewById(R.id.section_gmail_imageview);
             smsIV=(ImageView) view.findViewById(R.id.section_sms_imageview);
-
+            menu = (ImageView) view.findViewById(R.id.section_more_imageView);
 
         }
     }
@@ -153,6 +158,38 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     monoChannelSmsClick(groupSms);
                 }
             });
+            ((SectionViewHolder)sectionViewHolder).menu.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu= new PopupMenu(mContext,v);
+                    popupMenu.inflate(R.menu.menu_group_view);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+
+                            Intent i= new Intent();
+                            switch (item.getItemId()){
+                                case R.id.menu_group_add_contact:
+                                    System.out.println("add contact");
+                                case R.id.menu_group_delete_contacts:
+                                    System.out.println("delete contact");
+                                case R.id.menu_group_delete_group:
+                                    ContactsRoomDatabase contactsDatabase = null;
+                                    DbWorkerThread mDbWorkerThread;
+                                    mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+                                    mDbWorkerThread.start();
+                                    contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(mContext);
+                                    System.out.println("id group"+mSections.get(position).getIdGroup().intValue()+" voici le groupe concerné"+ contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
+                                    contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
+                                default:
+                                    System.out.println("always in default");
+                            }
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         }else{
            // System.out.println("position non section"+position);
             mBaseAdapter.onBindViewHolder(sectionViewHolder,sectionedPositionToPosition(position));
@@ -160,6 +197,13 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
     }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return false;
+    }
+
+
 
     @Override
     public int getItemViewType(int position) {
@@ -173,15 +217,18 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         int firstPosition;
         int sectionedPosition;
         CharSequence title;
+        Long idGroup;
 
-        public Section(int firstPosition, CharSequence title) {
+        public Section(int firstPosition, CharSequence title,Long idGroup) {
             this.firstPosition = firstPosition;
             this.title = title;
+            this.idGroup=idGroup;
         }
 
         public CharSequence getTitle() {
             return title;
         }
+        public Long getIdGroup(){return idGroup;}
     }
 
 

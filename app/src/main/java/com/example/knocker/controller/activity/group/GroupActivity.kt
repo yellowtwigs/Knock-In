@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,7 +26,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
-class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
+class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
+
 
     private var group_DrawerLayout: DrawerLayout? = null
     private var group_ContactsDatabase: ContactsRoomDatabase? = null
@@ -129,7 +131,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         for(i in group){
             val list=i.getListContact(this)
             listContactGroup.addAll(list)
-            sections.add(SectionGroupAdapter.Section(position,i.groupDB!!.name))
+            sections.add(SectionGroupAdapter.Section(position,i.groupDB!!.name,i.groupDB!!.id))
             position+=list.size
         }
 

@@ -30,25 +30,25 @@
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:layout_marginEnd="8dp"
+        android:clickable="true"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/section_more_imageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.428"
-        app:srcCompat="@drawable/ic_rounded_gmail"
-        android:clickable="true"/>
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_rounded_gmail" />
 
     <ImageView
         android:id="@+id/section_sms_imageview"
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:layout_marginEnd="8dp"
+        android:clickable="true"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/section_gmail_imageview"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_sms"
-        android:clickable="true" />
+        app:srcCompat="@drawable/ic_sms" />
 
     <ImageView
         android:id="@+id/section_whatsapp_imageview"
@@ -61,4 +61,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.666"
         app:srcCompat="@drawable/ic_whatsapp" />
+
+    <ImageView
+        android:id="@+id/section_more_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.551"
+        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
