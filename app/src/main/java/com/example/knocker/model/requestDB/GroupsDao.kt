@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.knocker.model.ModelDB.GroupDB
+import com.example.knocker.model.ModelDB.GroupWithContact
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table groups
@@ -17,7 +18,7 @@ interface GroupsDao {
      */
     //get touts les groupes de la database trié par nom de A à Z
     @Query("SELECT * FROM groups_table ORDER BY name ASC")
-    fun getAllGroupsByNameAZ(): List<GroupDB>
+    fun getAllGroupsByNameAZ(): List<GroupWithContact>
 
     @Query("SELECT * FROM groups_table WHERE name = :groupName")
     fun getGroupWhithName(groupName: String): GroupDB

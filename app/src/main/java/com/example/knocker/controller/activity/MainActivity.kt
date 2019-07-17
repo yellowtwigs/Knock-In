@@ -46,6 +46,7 @@ import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import com.example.knocker.controller.activity.group.GroupActivity
 import kotlin.collections.ArrayList
 
 /**
@@ -101,6 +102,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             R.id.navigation_phone_book -> {
             }
             R.id.navigation_groups -> {
+                startActivity(Intent(this@MainActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
                 startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
@@ -947,6 +950,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false phoneNumber")
             main_SMSButton!!.visibility = View.GONE
         }
+         println("")
         if (appIsInstalled() && allContactsHavePhoneNumber) {
             main_WhatsappButton!!.visibility = View.VISIBLE
             val params: ViewGroup.MarginLayoutParams = main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams

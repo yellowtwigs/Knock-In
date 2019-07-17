@@ -92,7 +92,6 @@ class ContactWithAllInformation {
                 println("is printing true")
                 return true
             }else{
-                println("is printing false")
                 return false
             }
         }else{

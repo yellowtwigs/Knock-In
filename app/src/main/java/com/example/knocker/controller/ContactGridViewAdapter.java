@@ -242,15 +242,15 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         int startAngle;
         int endAngle;
         if (position % len == 0) {
-            System.out.println("position vaut " + position + " modulo vaut" + position % len);
+            System.out.println("position vaut " + position + " modulo"+len+" vaut" + position % len);
             startAngle = 90;
             endAngle = -90;
         } else if (position % len == len - 1) {
-            System.out.println("position vaut " + position + " modulo vaut" + position % len);
+            System.out.println("position vaut " + position  +" modulo"+len+" vaut" + position % len);
             startAngle = 90;
             endAngle = 270;
         } else {
-            System.out.println("position vaut " + position + " modulo vaut" + position % len);
+            System.out.println("position vaut " + position + " modulo"+len+" vaut" + position % len);
             startAngle = 0;
             endAngle = -180;
         }
