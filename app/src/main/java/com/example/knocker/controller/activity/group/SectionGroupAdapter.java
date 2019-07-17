@@ -127,8 +127,8 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     System.out.println("contact "+contact.getContactDB()+ "n'as pas de mail "+contact.getFirstMail());
                     ((SectionViewHolder)sectionViewHolder).gmailIV.setVisibility(View.GONE);
                 }
-                if(contact.getPhoneNumber().isEmpty()){
-                    System.out.println("contact "+contact.getContactDB()+ "n'as pas de num "+contact.getPhoneNumber());
+                if(contact.getFirstPhoneNumber().isEmpty()){
+                    System.out.println("contact "+contact.getContactDB()+ "n'as pas de num "+contact.getFirstPhoneNumber());
                     ((SectionViewHolder)sectionViewHolder).smsIV.setVisibility(View.GONE);
                 }
             }
@@ -139,7 +139,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ArrayList<String> groupSms=new ArrayList<String>();
                     while (!isSectionHeaderPosition(i) && i<getItemCount()){
                         ContactWithAllInformation contact =((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(i));
-                        groupSms.add(contact.getPhoneNumber());
+                        groupSms.add(contact.getFirstPhoneNumber());
                         i++;
                     }
                     monoChannelMailClick(groupSms);
@@ -152,7 +152,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ArrayList<String> groupSms=new ArrayList<String>();
                     while (!isSectionHeaderPosition(i) && i<getItemCount()){
                         ContactWithAllInformation contact =((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(i));
-                        groupSms.add(contact.getPhoneNumber());
+                        groupSms.add(contact.getFirstPhoneNumber());
                         i++;
                     }
                     monoChannelSmsClick(groupSms);

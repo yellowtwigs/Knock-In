@@ -5,7 +5,6 @@
     <item
         android:id="@+id/menu_group_add_contact"
         android:title="ajouter des contatcts"
-        android:="true"
         android:visible="false"
         android:orderInCategory="100"
 
