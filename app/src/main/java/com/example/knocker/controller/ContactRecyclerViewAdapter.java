@@ -55,7 +55,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private ArrayList<ContactWithAllInformation> listSelectedItem;
 
     private final int PERMISSION_CALL_RESULT=1;
-    private String numberForPermission;
+    private String numberForPermission="";
 
     public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;

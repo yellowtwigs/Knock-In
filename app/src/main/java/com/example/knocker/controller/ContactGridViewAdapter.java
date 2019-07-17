@@ -59,7 +59,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private ArrayList<FloatingActionMenu> listCircularMenu = new ArrayList<FloatingActionMenu>();
     private FloatingActionMenu selectMenu;
     private final int PERMISSION_CALL_RESULT=1;
-    private String numberForPermission;
+    private String numberForPermission="";
     public ContactGridViewAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
         this.gestionnaireContact = contactList;
