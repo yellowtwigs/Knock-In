@@ -136,13 +136,13 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     int i=position+1;
-                    ArrayList<String> groupSms=new ArrayList<String>();
+                    ArrayList<String> groupMail=new ArrayList<String>();
                     while (!isSectionHeaderPosition(i) && i<getItemCount()){
                         ContactWithAllInformation contact =((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(i));
-                        groupSms.add(contact.getFirstPhoneNumber());
+                        groupMail.add(contact.getFirstMail());
                         i++;
                     }
-                    monoChannelMailClick(groupSms);
+                    monoChannelMailClick(groupMail);
                 }
             });
             ((SectionViewHolder)sectionViewHolder).smsIV.setOnClickListener(new View.OnClickListener() {
@@ -306,7 +306,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
     private void monoChannelMailClick(ArrayList<String> listOfMail){
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL,/*listOfMail.toArray(new String[listOfMail.size()]*/ new String[]{"test@mail.com" , "test@mail2.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL,listOfMail.toArray(new String[listOfMail.size()]));
         intent.setData(Uri.parse("mailto:"));
         intent.setType("message/rfc822");
 
