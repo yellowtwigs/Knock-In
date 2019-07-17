@@ -671,22 +671,24 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                     //on commence à serialiser le contact
                                     println("CONTACT ALREADY EXIST = " + fullName.second + " " + fullName.first)
                                     val contact = getContactWithAndroidId(fullName.first, lastSync)
-                                    set.add("0"+contact!!.contactDB!!.id)
-                                    set.add("1"+fullName.second.first)
-                                    if (fullName.second.second == "")
-                                        set += "2"+fullName.second.third
-                                    else
-                                        set += "2"+fullName.second.second+" "+fullName.second.third
-                                    for (details in contactDetails) {
-                                        val alldetail = details.type+":"+details.content+":"+details.tag
-                                        set += positionInSet.toString() + alldetail
-                                        positionInSet++
-                                    }
-                                    // on regarde si le contact à été modifier depuis la dernière synchro, si oui on sauvegarde la serialisation dans une shared Pref
-                                    if (!isSameContact(contact, fullName.second, contactDetails)) {
-                                        modifiedContact++
-                                        edit.putStringSet(modifiedContact.toString(), set)
-                                        edit.apply()
+                                    if (contact != null) {
+                                        set.add("0" + contact.contactDB!!.id)
+                                        set.add("1" + fullName.second.first)
+                                        if (fullName.second.second == "")
+                                            set += "2" + fullName.second.third
+                                        else
+                                            set += "2" + fullName.second.second + " " + fullName.second.third
+                                        for (details in contactDetails) {
+                                            val alldetail = details.type + ":" + details.content + ":" + details.tag
+                                            set += positionInSet.toString() + alldetail
+                                            positionInSet++
+                                        }
+                                        // on regarde si le contact à été modifier depuis la dernière synchro, si oui on sauvegarde la serialisation dans une shared Pref
+                                        if (!isSameContact(contact, fullName.second, contactDetails)) {
+                                            modifiedContact++
+                                            edit.putStringSet(modifiedContact.toString(), set)
+                                            edit.apply()
+                                        }
                                     }
                                 }
                                 phoneContactsList.add(contacts)
@@ -777,8 +779,10 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         if (lastSync != null || lastSync == "") {
             val allId = sliceLastSync(lastSync)
             allId.forEach {Id ->
-                if (allcontacts!!.first == Id.first)
+                if (allcontacts!!.first == Id.first) {
+                    println("TRUE = "+allcontacts!!.first + " " + Id.first)
                     return true
+                }
                 }
             }
         return false
