@@ -1,28 +1,28 @@
 package com.example.knocker.controller
 
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-
-import java.util.ArrayList
-
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import androidx.core.content.ContextCompat.checkSelfPermission
-import android.text.TextUtils
-import android.view.*
-import android.widget.*
-import com.example.knocker.*
-import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDB
-import androidx.core.graphics.drawable.DrawableCompat
 import android.net.Uri
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.DrawableCompat
+import com.example.knocker.R
+import com.example.knocker.model.ContactsRoomDatabase
+import com.example.knocker.model.DbWorkerThread
+import com.example.knocker.model.StatusBarParcelable
+import java.util.*
 
 
 /**
@@ -32,14 +32,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
 
     private val TAG = NotificationListener::class.java.simpleName
-    private var notification_adapeter_ContactsDatabase: ContactsRoomDatabase? = null
+    private var notification_adapter_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var notification_adapeter_mDbWorkerThread: DbWorkerThread
     private val FACEBOOK_PACKAGE = "com.facebook.katana"
     private val MESSENGER_PACKAGE = "com.facebook.orca"
     private val WHATSAPP_SERVICE = "com.whatsapp"
     private val GMAIL_PACKAGE = "com.google.android.gm"
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
-    val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+    private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
 
     override fun getCount(): Int {
         return notifications.size
@@ -68,8 +68,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
-//        val buttonSend = convertView.findViewById<View>(R.id.notification_adapter_send) as Button
-//        val editText = convertView.findViewById<View>(R.id.notification_adapter_message_to_send) as EditText
+        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as Button
+        val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as AppCompatEditText
 
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
@@ -222,36 +222,6 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //            }
 //        }
 
-        layout!!.setOnTouchListener { view, event ->
-            val x = event.rawX.toInt()
-            val y = event.rawY.toInt()
-            var _xDelta = 0
-            var _yDelta = 0
-
-            when (event.action and MotionEvent.ACTION_MASK) {
-
-                MotionEvent.ACTION_DOWN -> {
-                    _xDelta = (view.x - event.rawX).toInt()
-                    _yDelta = (view.y - event.rawY).toInt()
-                }
-
-                MotionEvent.ACTION_UP -> {
-                }
-                MotionEvent.ACTION_POINTER_DOWN -> {
-                }
-                MotionEvent.ACTION_POINTER_UP -> {
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    view.animate()
-                            .x(event.rawX + _xDelta)
-                            .y(event.rawY + _yDelta)
-                            .setDuration(0)
-                            .start()
-                }
-            }
-            return@setOnTouchListener true
-        }
-
         return view
     }
 
@@ -304,12 +274,12 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         return ""
     }
 
-    private fun canResponse(packageName: String): Boolean {
-        if ((checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) && (packageName == MESSAGE_PACKAGE || packageName == WHATSAPP_SERVICE || packageName == MESSAGE_SAMSUNG_PACKAGE)) {
-            return true
-        }
-        return false
-    }
+//    private fun canResponse(packageName: String): Boolean {
+//        if ((checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) && (packageName == MESSAGE_PACKAGE || packageName == WHATSAPP_SERVICE || packageName == MESSAGE_SAMSUNG_PACKAGE)) {
+//            return true
+//        }
+//        return false
+//    }
 
     private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
 
@@ -330,9 +300,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private fun openSms(sbp: StatusBarParcelable) {
         val i: Intent
         if (sbp.appNotifier.equals(MESSAGE_PACKAGE)) {
-            i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")
+            i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")!!
         } else {
-            i = context.packageManager.getLaunchIntentForPackage("com.samsung.android.messaging")
+            i = context.packageManager.getLaunchIntentForPackage("com.samsung.android.messaging")!!
         }
         i.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
@@ -343,34 +313,34 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         this.notifyDataSetChanged()
     }
 
-    private fun getContactNameFromString(NameFromSbp: String): String {
-        val pregMatchString: String = ".*\\([0-9]*\\)"
-        if (NameFromSbp.matches(pregMatchString.toRegex())) {
-            return NameFromSbp.substring(0, TextUtils.lastIndexOf(NameFromSbp, '(')).dropLast(1)
-        } else {
-            println("pregmatch fail" + NameFromSbp)
-            return NameFromSbp
-        }
-    }
+//    private fun getContactNameFromString(NameFromSbp: String): String {
+//        val pregMatchString: String = ".*\\([0-9]*\\)"
+//        if (NameFromSbp.matches(pregMatchString.toRegex())) {
+//            return NameFromSbp.substring(0, TextUtils.lastIndexOf(NameFromSbp, '(')).dropLast(1)
+//        } else {
+//            println("pregmatch fail$NameFromSbp")
+//            return NameFromSbp
+//        }
+//    }
 
-    fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
-
-        if (name.contains(" ")) {
-            listContact!!.forEach { dbContact ->
-
-                //                println("contact "+dbContact+ "différent de name"+name)
-                if (dbContact.firstName + " " + dbContact.lastName == name) {
-                    return dbContact
-                }
-            }
-        } else {
-            listContact!!.forEach { dbContact ->
-                if (dbContact.firstName == name && dbContact.lastName == "" || dbContact.firstName == "" && dbContact.lastName == name) {
-                    return dbContact
-                }
-            }
-        }
-        return null
-    }//TODO : trouver une place pour toutes les méthodes des contacts
+//    fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
+//
+//        if (name.contains(" ")) {
+//            listContact!!.forEach { dbContact ->
+//
+//                //                println("contact "+dbContact+ "différent de name"+name)
+//                if (dbContact.firstName + " " + dbContact.lastName == name) {
+//                    return dbContact
+//                }
+//            }
+//        } else {
+//            listContact!!.forEach { dbContact ->
+//                if (dbContact.firstName == name && dbContact.lastName == "" || dbContact.firstName == "" && dbContact.lastName == name) {
+//                    return dbContact
+//                }
+//            }
+//        }
+//        return null
+//    }//TODO : trouver une place pour toutes les méthodes des contacts
 
 }

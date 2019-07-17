@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import com.example.knocker.R;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactGesture;
+import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
@@ -55,8 +57,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private View view;
     private ArrayList<ContactWithAllInformation> listSelectedItem;
 
-    private final int PERMISSION_CALL_RESULT=1;
-    private String numberForPermission="";
+    private final int PERMISSION_CALL_RESULT = 1;
+    private String numberForPermission = "";
 
     public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
@@ -68,6 +70,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     public ContactWithAllInformation getItem(int position) {
         return listContacts.get(position);
+    }
+
+    public void setGestionnairecontact(ContactList gestionnaireContact) {
+        gestionnaireContact = gestionnaireContact;
     }
 
     public void itemSelected(int position) {
@@ -117,7 +123,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             if (contact.getContactPriority() == 0) {
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
             } else if (contact.getContactPriority() == 1) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.textColorDark));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor));
             } else if (contact.getContactPriority() == 2) {
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
             }
@@ -287,8 +293,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 return R.drawable.ic_user_orange;
             case 6:
                 return R.drawable.ic_user_pink;
+            default:
+                return R.drawable.ic_user_blue;
         }
-        return -1;
     }
 
     private Bitmap base64ToBitmap(String base64) {
@@ -301,7 +308,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     public void callPhone(final String phoneNumber) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_RESULT);
-            numberForPermission=phoneNumber;
+            numberForPermission = phoneNumber;
         } else {
             //Intent intent=new Intent(Intent.ACTION_CALL);
             //intent.setData(Uri.parse(getItem(position).getFirstPhoneNumber()));
@@ -320,7 +327,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         .show();
             } else {
                 context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
-                numberForPermission="";
+                numberForPermission = "";
             }
         }
     }//code duplicate à mettre dans contactAllInfo
@@ -377,7 +384,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }
     }
-    public String getPhonePermission(){
+
+    public String getPhonePermission() {
         return numberForPermission;
     }
 }

@@ -43,7 +43,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             }
             val result = executorService.submit(callDb)
             val tmp: ArrayList<ContactWithAllInformation> = arrayListOf<ContactWithAllInformation>()
-                tmp.addAll(result.get())
+            tmp.addAll(result.get())
             if (tmp!!.isEmpty()) {
                 contacts = buildContactListFromJson(context)
             } else {
@@ -108,20 +108,20 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
         val result = executorService.submit(callDb)
-        val listChangement:ArrayList<ContactWithAllInformation> = ArrayList()
+        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
         listChangement.retainAll(contacts)
-        contacts=listChangement
+        contacts = listChangement
     }
 
     fun sortContactByPriority() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByPriority20() }
         val result = executorService.submit(callDb)
-        val listChangement:ArrayList<ContactWithAllInformation> = ArrayList()
+        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
         listChangement.retainAll(contacts)
-        contacts=listChangement
+        contacts = listChangement
     }
 
 
@@ -154,7 +154,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
         if (allFilters.size > 1) {
             while (i < allFilters.size - 1) {
-                allFilters[i + 1]= allContactIntersect(allFilters[i],allFilters[i + 1])
+                allFilters[i + 1] = allContactIntersect(allFilters[i], allFilters[i + 1])
                 //allFilters[i + 1] = allFilters[i].intersect(allFilters[i + 1]).toList()
                 i++
             }
@@ -167,7 +167,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     fun allContactIntersect(firstList: List<ContactWithAllInformation>, secondList: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
         val filter = arrayListOf<ContactWithAllInformation>()
-        firstList.forEach { first->
+        firstList.forEach { first ->
             secondList.forEach {
                 if (first.getContactId() == it.getContactId())
                     filter.add(first)
@@ -489,6 +489,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                 4 -> return R.drawable.ic_user_om
                 5 -> return R.drawable.ic_user_orange
                 6 -> return R.drawable.ic_user_pink
+                else -> return R.drawable.ic_user_blue
             }
         }
         return -1
@@ -547,7 +548,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             contactsList.forEach {
                 name += it.id.toString() + ":" + it.firstName + " " + it.lastName + "|"
             }
-            println("FIRST TIME LIST = "+ name)
+            println("FIRST TIME LIST = " + name)
             edit.putString("last_sync", name)
             edit.apply()
         } else {
@@ -564,7 +565,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                     name += it.id.toString() + ":" + it.firstName + " " + it.lastName + "|"
                 }
             }
-            println("LIST = "+ name)
+            println("LIST = " + name)
             edit.putString("last_sync", name)
             edit.apply()
         }
@@ -616,7 +617,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val applicationContext = this.context
         val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
         val edit: SharedPreferences.Editor = sharedPreferences.edit()
-        var ContactLinksGroup : Pair<LinkContactGroup, GroupDB>
+        var ContactLinksGroup: Pair<LinkContactGroup, GroupDB>
         var listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         var lastSyncId = ""
@@ -658,7 +659,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                     for (groups in contactGroups) {
                                         //pour chaque groupe du contact on lui donne l'id du contact pour crée un link
                                         val links = LinkContactGroup(0, contacts.id!!.toInt())
-                                        ContactLinksGroup = Pair(links,groups)
+                                        ContactLinksGroup = Pair(links, groups)
                                         listLinkAndGroup.add(ContactLinksGroup)
                                     }
                                     //on sauvegarde dans la database les groupes et les linkcontactGroupe
@@ -714,7 +715,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             }
             if (lastSyncId != "") {
                 if (lastSync != "")
-                    lastSyncId = lastSync+lastSyncId
+                    lastSyncId = lastSync + lastSyncId
                 edit.putString("last_sync_2", lastSyncId)
                 edit.apply()
             }
@@ -738,14 +739,14 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return newList
     }
 
-    fun setToContactList(contactset: List<String>): Pair<ContactDB, List<ContactDetailDB>>{
+    fun setToContactList(contactset: List<String>): Pair<ContactDB, List<ContactDetailDB>> {
         val allContacts: Pair<ContactDB, List<ContactDetailDB>>
         val detailList = arrayListOf<ContactDetailDB>()
-        for (i in 3..contactset.size-1) {
+        for (i in 3..contactset.size - 1) {
             val contactSetSplite = contactset.elementAt(i).split(":")
-            detailList.add(ContactDetailDB(null,null,contactSetSplite[1],contactSetSplite[0].drop(1),contactSetSplite[2],i-2))
+            detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2))
         }
-        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(),contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), 0,0,""), detailList)
+        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), 0, 0, ""), detailList)
         return allContacts
     }
 
@@ -764,7 +765,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             return false
         }
         var alreadyCheck: Int
-        knockerContact.contactDetailList!!.forEach {knocker ->
+        knockerContact.contactDetailList!!.forEach { knocker ->
             alreadyCheck = 0
             contactDetail.forEach {
                 if (alreadyCheck == 0 && (knocker.type != it.type || knocker.content != it.content || knocker.tag != it.tag)) {
@@ -797,13 +798,13 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     private fun isDuplicateContacts(allcontacts: Pair<Int, Triple<String, String, String>>?, lastSync: String?): Boolean {
         if (lastSync != null || lastSync == "") {
             val allId = sliceLastSync(lastSync)
-            allId.forEach {Id ->
+            allId.forEach { Id ->
                 if (allcontacts!!.first == Id.first) {
-                    println("TRUE = "+allcontacts!!.first + " " + Id.first)
+                    println("TRUE = " + allcontacts!!.first + " " + Id.first)
                     return true
                 }
-                }
             }
+        }
         return false
     }
 

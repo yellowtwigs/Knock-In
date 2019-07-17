@@ -403,6 +403,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             //check les permissions
             drawerLayout!!.closeDrawers()
             main_GridView!!.visibility = View.GONE
+            main_RecyclerView!!.visibility = View.GONE
             val sync = Runnable {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
@@ -422,7 +423,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
                         stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
                     val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
-                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
+                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
                         stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
@@ -430,7 +431,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this)
                                 .setTitle("Contact modifié")
-                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'address d'Android ou de Knocker ?")
+                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'adresse d'Android ou de Knocker ?")
                                 .setPositiveButton("Knocker") { _, _ ->
                                 }
                                 .setNegativeButton("Android") { _, _ ->
@@ -474,7 +475,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
   */
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
-                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && !stringSet.isEmpty()) {
+                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
                         stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
                         edit.remove(index.toString())
                         index++
@@ -488,9 +489,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                     val displaySync = Runnable {
                         main_loadingPanel!!.visibility = View.GONE
-                        main_GridView!!.visibility = View.VISIBLE
-                        gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
-                        gridViewAdapter!!.notifyDataSetChanged()
+
+                        if (len >= 3) {
+                            main_GridView!!.visibility = View.VISIBLE
+                            gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                            gridViewAdapter!!.notifyDataSetChanged()
+                        } else {
+                            main_RecyclerView!!.visibility = View.VISIBLE
+                            recyclerViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                            recyclerViewAdapter!!.notifyDataSetChanged()
+                        }
                         drawerLayout!!.closeDrawers()
                     }
                     runOnUiThread(displaySync)

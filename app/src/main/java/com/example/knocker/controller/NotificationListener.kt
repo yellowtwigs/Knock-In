@@ -29,9 +29,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 import android.util.DisplayMetrics
 
-
-
-
 /**
  * Service qui nous permet de traiter les notifications
  */
@@ -131,7 +128,6 @@ class NotificationListener : NotificationListenerService() {
                                     i.putExtra("notification", sbp)
                                     startActivity(i)
                                 } else {
-
                                     println("screenIsUnlocked")
                                     displayLayout(sbp, sharedPreferences)
                                     cancelNotification(sbn.key)
@@ -259,8 +255,8 @@ class NotificationListener : NotificationListenerService() {
 
                 MotionEvent.ACTION_DOWN -> {
                     println("action Down")
-                        oldPosX=event.x
-                        oldPosY=event.y
+                    oldPosX=event.x
+                    oldPosY=event.y
 
                     println("oldx"+oldPosX+"oldy"+oldPosY)
                     //xDelta = (popupContainer.x - event.rawX).toInt()
