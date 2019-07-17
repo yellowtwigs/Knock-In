@@ -4,20 +4,18 @@
 
     <item
         android:id="@+id/menu_group_add_contact"
-        android:title="ajouter des contatcts"
-        android:visible="false"
         android:orderInCategory="100"
-
-        />
+        android:title="Ajouter des contacts"
+        android:visible="false" />
     <item
         android:id="@+id/menu_group_delete_contacts"
-        android:title="enlever des contacts du groupe"
         android:enabled="true"
-        android:visible="false"
-        android:orderInCategory="100" />
+        android:orderInCategory="100"
+        android:title="Enlever des contacts du groupe"
+        android:visible="false" />
     <item
         android:id="@+id/menu_group_delete_group"
-        android:title="supprimmer groupe"
         android:enabled="true"
-        android:orderInCategory="100" />
+        android:orderInCategory="100"
+        android:title="Supprimer un groupe" />
 </menu>

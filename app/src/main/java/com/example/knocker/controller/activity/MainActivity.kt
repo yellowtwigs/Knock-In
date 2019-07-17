@@ -94,7 +94,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var firstClick: Boolean = true
 
-
     private val PERMISSION_CALL_RESULT = 1
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -1000,8 +999,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_MailButton!!.visibility = View.GONE
             main_groupButton!!.visibility = View.GONE
 
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-
             if (contact.profilePicture64 != "") {
                 val bitmap = base64ToBitmap(contact.profilePicture64)
                 contactViewHolder.contactRoundedImageView.setImageBitmap(bitmap)
@@ -1018,8 +1015,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 //            firstClick = false
 
             verifiedContactsChannel(listOfItemSelected)
+        }
 
+        if (listOfItemSelected.size == 1 && firstClick) {
             Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+            firstClick = false
+        } else if (listOfItemSelected.size == 0) {
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            firstClick = true
         }
     }
 
@@ -1091,18 +1094,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
         val editText = EditText(this)
         editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
-        AlertDialog.Builder(this)
-                .setTitle("Création groupe")
-                .setMessage("Donnez un nom à votre groupe")
+        MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.main_alert_dialog_group_title)
+                .setMessage(R.string.main_alert_dialog_group_subtitle)
                 .setView(editText)
                 .setNegativeButton(R.string.alert_dialog_no, null)
                 .setPositiveButton(R.string.alert_dialog_yes
                 ) { _, _ ->
                     var nameGroup = ""
-                    if (!editText.text.isEmpty()) {
-                        nameGroup = editText.text.toString()
+                    nameGroup = if (editText.text.isNotEmpty()) {
+                        editText.text.toString()
                     } else {
-                        nameGroup = editText.hint.toString()
+                        editText.hint.toString()
                     }
                     println("name group$nameGroup")
                     val printContacts = Runnable {

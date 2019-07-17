@@ -44,7 +44,6 @@
         android:id="@+id/notification_alarm_floating_button_openMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
         android:layout_margin="50dp"
         android:layout_marginStart="64dp"
         android:layout_marginBottom="52dp"

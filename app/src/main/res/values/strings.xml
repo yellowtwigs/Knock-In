@@ -67,6 +67,10 @@
     <string name="main_toast_multi_select_actived">Enable Multi-select mode</string>
     <string name="main_toast_multi_select_deactived">Disable Multi-select mode</string>
 
+    <string name="main_alert_dialog_group_title">Creation of a group</string>
+    <string name="main_alert_dialog_group_subtitle">Give a name to your group</string>
+
+
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->
