@@ -618,7 +618,31 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     listOfContactSelected.add(listOfItemSelected[i])
                 }
             }
-            saveGroupMultiSelect(listOfContactSelected, len)
+            if(len>=3){
+                main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                main_FloatingButtonSend!!.visibility = View.GONE
+                main_SearchBar!!.visibility = View.VISIBLE
+
+
+                main_MailButton!!.visibility = View.GONE
+                main_WhatsappButton!!.visibility = View.GONE
+                main_SMSButton!!.visibility = View.GONE
+                main_groupButton!!.visibility = View.GONE
+            }else{
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+                main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                main_FloatingButtonSend!!.visibility = View.GONE
+                main_SearchBar!!.visibility = View.VISIBLE
+
+
+                main_MailButton!!.visibility = View.GONE
+                main_WhatsappButton!!.visibility = View.GONE
+                main_SMSButton!!.visibility = View.GONE
+                main_groupButton!!.visibility = View.GONE
+            }
+
+            saveGroupMultiSelect(listOfPhoneNumberContactSelected)
         }
         //endregion
 
