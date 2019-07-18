@@ -13,5 +13,6 @@ interface LinkContactGroupDao {
     @Insert
     fun insert(linkContactGroup : LinkContactGroup)
 
-
+    @Query("DELETE FROM link_contact_group_table WHERE id_contact = :idContact AND id_group=:idGroup")
+    fun deleteContactIngroup(idContact:Int,idGroup:Int)
 }

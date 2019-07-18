@@ -26,14 +26,19 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.Group
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.CustomAdapterEditText
+import com.example.knocker.controller.GroupEditAdapter
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.example.knocker.model.ModelDB.GroupDB
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -95,6 +100,9 @@ class EditContactActivity : AppCompatActivity() {
 
     private var havePhone: Boolean = false
     private var haveMail: Boolean = false
+
+
+    private var recyclerGroup:RecyclerView?=null
     //endregion
 
     @SuppressLint("InflateParams")
@@ -363,6 +371,21 @@ class EditContactActivity : AppCompatActivity() {
         val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         edit_contact_Mail_Property!!.adapter = adapterMailTagList
+
+
+        recyclerGroup=findViewById(R.id.edit_contact_recycler)
+        val layoutMananger:LinearLayoutManager= LinearLayoutManager(applicationContext,LinearLayoutManager.HORIZONTAL,false)
+        recyclerGroup!!.layoutManager=layoutMananger
+        //edit_contact_ContactsDatabase.contactsDao()
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDbGroup = Callable { edit_contact_ContactsDatabase!!.GroupsDao().getGroupForContact(edit_contact_id!!) }
+        val resultGroup = executorService.submit(callDbGroup)
+        val listGroup:ArrayList<GroupDB> = ArrayList()
+        listGroup.addAll(resultGroup.get())
+        val callDBContact = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
+        val resultContact= executorService.submit(callDBContact)
+        val adapter=GroupEditAdapter(this,listGroup,resultContact.get())
+        recyclerGroup!!.adapter=adapter
     }
 
     //region ========================================== Functions ===========================================
