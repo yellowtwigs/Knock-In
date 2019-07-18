@@ -54,10 +54,11 @@
     <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Search your contacts</string>
     <string name="main_change_format_phone_book">Help</string>
-    <string name="main_tri_title">Filter:</string>
+    <string name="main_tri_title">sort:</string>
     <string name="main_tri_par_nom">Firstname</string>
     <string name="main_tri_par_priorite">Priority</string>
-    <string name="main_filtre_title">Notification filter:</string>
+    <string name="main_tri_par_groupe">Group</string>
+    <string name="main_filtre_title">filter by:</string>
     <string name="notif_filtre_app">Application</string>
     <string name="notif_filtre_message">Message</string>
     <string name="notif_filtre_systeme">System</string>

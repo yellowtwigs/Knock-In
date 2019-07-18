@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spannable;
@@ -30,13 +31,17 @@ import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
+import com.example.knocker.model.ContactsRoomDatabase;
+import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+import com.example.knocker.model.ModelDB.GroupDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -44,7 +49,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import static java.sql.DriverManager.println;
 
 /**
  * La Classe qui permet de remplir la gridview avec les bon éléments
@@ -100,9 +104,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder = new ViewHolder();
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
             holder.gridContactItemLayout = gridview.findViewById(R.id.grid_contact_item_layout);
+            holder.groupWordingConstraint= gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
+            holder.groupWordingTv = gridview.findViewById(R.id.grid_adapter_wording_group_tv);
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
-
 
             int len = sharedPreferences.getInt("gridview", 4);
             int height = holder.contactRoundedImageView.getLayoutParams().height;
@@ -150,26 +155,63 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         } else if (contact.getContactPriority() == 2) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         }
+        //region set libbellé group
+       // ContactsRoomDatabase main_ContactsDatabase=ContactsRoomDatabase.Companion.getDatabase(context);
+        //DbWorkerThread main_mDbWorkerThread=new DbWorkerThread("dbWorkerThread");
+        //main_mDbWorkerThread.start() ;
+        //List<GroupDB> listDB=main_ContactsDatabase.GroupsDao().getGroupForContact(contact.getId());
+        //endregion
+       // getItem(position).getFirstGroup(context);
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
+        String group= "no group";
+        GroupDB firstGroup=getItem(position).getFirstGroup(context);
+        if(firstGroup==null){
+            System.out.println("no group"+contact.getFirstName()+" "+contact.getLastName());
+            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            roundedLayout.setColorFilter(context.getResources().getColor(R.color.greyColor), PorterDuff.Mode.MULTIPLY);
+            holder.groupWordingConstraint.setBackground(roundedLayout);
+        }else{
+            System.out.println("have group");
+            group = firstGroup.getName();
+            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
+            holder.groupWordingConstraint.setBackground(roundedLayout);
+        }
         if (len == 3) {
-            holder.contactFirstNameView.setText(firstname);
-            holder.contactLastNameView.setText(lastName);
+            Spannable spanFistName = new SpannableString(firstname);
+            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(spanFistName);
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
             //holder.contactFirstNameView.;
+            holder.groupWordingTv.setText(group);
+            Spannable spanGroup = new SpannableString(group);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.groupWordingTv.setText(spanGroup);
+
         }
         if (len == 4) {
             if (contact.getFirstName().length() > 12)
                 firstname = contact.getFirstName().substring(0, 10).concat("..");
 
             Spannable spanFistName = new SpannableString(firstname);
-            spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(spanFistName);
             if (contact.getLastName().length() > 12)
                 lastName = contact.getLastName().substring(0, 10).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(1.0f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
+
+            if(group.length()>12)
+                group= group.substring(0,10).concat("..");
+            Spannable spanGroup = new SpannableString(group);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.groupWordingTv.setText(spanGroup);
+
         }
         if (len == 5) {
             if (contact.getFirstName().length() > 11)
@@ -186,6 +228,12 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
+
+            if(group.length()>11)
+                group= group.substring(0,9).concat("..");
+            Spannable spanGroup = new SpannableString(group);
+            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.groupWordingTv.setText(spanGroup);
         }
         if (len == 6) {
             if (contact.getFirstName().length() > 10)
@@ -201,6 +249,12 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
+
+            if(group.length()>10)
+                group= group.substring(0,8).concat("..");
+            Spannable spanGroup = new SpannableString(group);
+            spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.groupWordingTv.setText(spanGroup);
         }
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -331,7 +385,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
                     intent.putExtra(Intent.EXTRA_SUBJECT, "");
                     intent.putExtra(Intent.EXTRA_TEXT, "");
-                    println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
+                    System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(intent);
                 }
                 selectMenu.close(true);
@@ -452,7 +506,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     @Override
     public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
-        println("menu select");
+        System.out.println("menu select");
         if (selectMenu != null) {
             selectMenu.close(true);
         }
@@ -462,7 +516,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     @Override
     public void onMenuClosed(FloatingActionMenu floatingActionMenu) {
-        println("menu close");
+        System.out.println("menu close");
         selectMenu = null;
     }
 
@@ -484,6 +538,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         TextView contactLastNameView;
         CircularImageView contactRoundedImageView;
         ConstraintLayout gridContactItemLayout;
+        ConstraintLayout groupWordingConstraint;
+        TextView groupWordingTv;
     }
 
     public FloatingActionMenu getSelectMenu() {

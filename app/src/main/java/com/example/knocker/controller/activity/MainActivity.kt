@@ -275,8 +275,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (main_GridView != null) {
             if (sharedPreferences.getString("tri", "nom") == "nom") {
                 gestionnaireContacts!!.sortContactByFirstNameAZ()
-            } else {
+            } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
                 gestionnaireContacts!!.sortContactByPriority()
+            }else{
+                gestionnaireContacts!!.sortContactByGroup()
             }
 
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
@@ -630,7 +632,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
             }else{
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, false)
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
                 main_FloatingButtonSend!!.visibility = View.GONE
                 main_SearchBar!!.visibility = View.VISIBLE
@@ -642,7 +644,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_groupButton!!.visibility = View.GONE
             }
 
-            saveGroupMultiSelect(listOfPhoneNumberContactSelected)
+            saveGroupMultiSelect(listOfItemSelected,len)
         }
         //endregion
 
@@ -684,12 +686,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         inflater.inflate(R.menu.menu_main, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
         val triPrio = menu.findItem(R.id.tri_par_priorite)
+        val triGroup = menu.findItem(R.id.trie_par_group)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
         if (tri == "nom") {
             triNom.isChecked = true
-        } else {
+        } else if(tri=="priorite") {
             triPrio.isChecked = true
+        }else{
+           triGroup.isChecked=true
         }
         return true
     }
@@ -739,11 +744,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
-                        contactListDb.contacts.retainAll(filteredContact)
-                    } else {
+                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
                         contactListDb.sortContactByPriority()
-                        contactListDb.contacts.retainAll(filteredContact)
+                    }else{
+                        contactListDb.sortContactByGroup()
                     }
+                    contactListDb.contacts.retainAll(filteredContact)
                     gestionnaireContacts!!.contacts.clear()
                     gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
                     if (len > 1) {
@@ -764,10 +770,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else {
+                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
                         gestionnaireContacts!!.sortContactByPriority()
+                    }else{
+                        gestionnaireContacts!!.sortContactByGroup()
                     }
-
                     gestionnaireContacts!!.contacts.retainAll(filteredContact)
 
                     if (len > 1) {
@@ -794,11 +801,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
-                        contactListDb.contacts.retainAll(filteredContact)
-                    } else {
+                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
                         contactListDb.sortContactByPriority()
-                        contactListDb.contacts.retainAll(filteredContact)
+                    }else{
+                        contactListDb.sortContactByGroup()
                     }
+                    contactListDb.contacts.retainAll(filteredContact)
                     gestionnaireContacts!!.contacts.clear()
                     gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
                     if (len > 1) {
@@ -819,8 +827,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else {
+                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
                         gestionnaireContacts!!.sortContactByPriority()
+                    }else{
+                        gestionnaireContacts!!.sortContactByGroup()
                     }
                     gestionnaireContacts!!.contacts.retainAll(filteredContact)
                     if (len > 1) {
@@ -870,6 +880,25 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putString("tri", "priorite")
+                    edit.apply()
+                }
+            }
+            R.id.trie_par_group -> {
+                if(!item.isChecked) {
+                    item.setChecked(true);
+                    gestionnaireContacts!!.sortContactByGroup()
+                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        main_GridView!!.adapter = gridViewAdapter
+                    } else {
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
+                    }
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putString("tri", "group")
                     edit.apply()
                 }
             }

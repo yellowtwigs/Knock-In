@@ -28,6 +28,7 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
         public final TextView firstName;
         public final TextView lastName;
+        public final ConstraintLayout groupConstraint;
         public final CircularImageView circularImageView;
 
         public SimpleViewHolder(View view) {
@@ -35,6 +36,7 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
             firstName = (TextView) view.findViewById(R.id.grid_adapter_contactFirstName);
             lastName = (TextView) view.findViewById(R.id.grid_adapter_contactLastName);
             circularImageView= (CircularImageView) view.findViewById(R.id.contactRoundedImageView);
+            groupConstraint=(ConstraintLayout) view.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
         }
     }
 
@@ -54,7 +56,7 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
         ContactDB contact=getItem(position).getContactDB();
         holder.firstName.setText(contact.getFirstName());
         holder.lastName.setText(contact.getLastName());
-
+        holder.groupConstraint.setVisibility(View.GONE);
 
 
         ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.firstName.getLayoutParams();

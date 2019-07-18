@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -37,6 +39,7 @@ import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+import com.example.knocker.model.ModelDB.GroupDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,41 +132,66 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
 
         }
-
-        if (!contact.getProfilePicture64().equals("")) {
-            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-            holder.contactRoundedImageView.setImageBitmap(bitmap);
-        } else {
-            System.out.println(contact.getProfilePicture());
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+        if(len==1) {
+            if (!contact.getProfilePicture64().equals("")) {
+                Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                holder.contactRoundedImageView.setImageBitmap(bitmap);
+            } else {
+                System.out.println(contact.getProfilePicture());
+                holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+            }
         }
 
         String contactName = contact.getFirstName() + " " + contact.getLastName();
 
         if (len == 0) {
-            if (contactName.length() > 18) {
+            if (contactName.length() > 14) {
 
                 Spannable spanFistName = new SpannableString(contactName);
                 spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.contactFirstNameView.setText(spanFistName);
 
                 contactName = contact.getFirstName() + " " + contact.getLastName();
-                contactName = contactName.substring(0, 18) + "..";
+                contactName = contactName.substring(0, 13) + "..";
             }
         } else {
-            if (contactName.length() > 30) {
+            if (contactName.length() > 25) {
 
                 Spannable spanFistName = new SpannableString(contactName);
                 spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.contactFirstNameView.setText(spanFistName);
 
                 contactName = contact.getFirstName() + " " + contact.getLastName();
-                contactName = contactName.substring(0, 30) + "..";
+                contactName = contactName.substring(0, 24) + "..";
             }
         }
 
-        holder.contactFirstNameView.setText(contactName);
 
+        holder.contactFirstNameView.setText(contactName);
+        String group= "no group";
+        GroupDB firstGroup=getItem(position).getFirstGroup(context);
+        if(firstGroup==null){
+            System.out.println("no group"+contact.getFirstName()+" "+contact.getLastName());
+            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            roundedLayout.setColorFilter(context.getResources().getColor(R.color.greyColor), PorterDuff.Mode.MULTIPLY);
+            holder.groupWordingConstraint.setBackground(roundedLayout);
+        }else{
+            System.out.println("have group");
+            group = firstGroup.getName();
+            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
+            holder.groupWordingConstraint.setBackground(roundedLayout);
+        }
+        if(len==0) {
+            if (group.length()>6){
+               group=group.substring(0,6).concat("..");
+            }
+        }else{
+            if(group.length()>9){
+                group=group.substring(0,9).concat("..");
+            }
+        }
+        holder.groupWordingTv.setText(group);
         View.OnClickListener listener = new View.OnClickListener() {
             @SuppressLint("IntentReset")
             @Override
@@ -358,11 +386,13 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         ConstraintLayout mailCl;
         ConstraintLayout editCl;
 
+        ConstraintLayout groupWordingConstraint;
+        TextView groupWordingTv;
         ContactViewHolder(@NonNull View view) {
             super(view);
 
             if (len == 0) {
-                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
+                //contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
                 constraintLayoutSmaller = view.findViewById(R.id.list_contact_item_layout_smaller);
                 constraintLayoutMenuSmaller = view.findViewById(R.id.list_contact_item_menu_smaller);
@@ -371,6 +401,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 whatsappCl = view.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
                 mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
                 editCl = view.findViewById(R.id.list_contact_item_smaller_constraint_edit);
+                groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
+                groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
+
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
@@ -381,6 +414,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp);
                 mailCl = view.findViewById(R.id.list_contact_item_constraint_mail);
                 editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
+                groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
+                groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
             }
         }
     }

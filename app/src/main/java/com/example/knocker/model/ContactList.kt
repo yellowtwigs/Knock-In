@@ -124,6 +124,19 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         contacts = listChangement
     }
 
+    fun sortContactByGroup(){
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDb = Callable { contactsDatabase!!.contactsDao().getContactAllInfo() }
+        val result = executorService.submit(callDb)
+        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
+        listChangement.addAll(result.get())
+        listChangement.sortByDescending{it.getFirstGroup(context)?.name}//selector(listChangement.get(i))}
+
+        contacts=listChangement
+    }
+
+    private fun selector(contact:ContactWithAllInformation):GroupDB?=contact.getFirstGroup(this.context)
+
 
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()

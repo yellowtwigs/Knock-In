@@ -1,5 +1,6 @@
 package com.example.knocker.model.ModelDB
 
+import android.content.Context
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.knocker.model.ContactsRoomDatabase
@@ -104,5 +105,13 @@ class ContactWithAllInformation {
         return super.equals(other)
     }
 
+    fun getFirstGroup(context: Context):GroupDB?{
+        val contactRoom=ContactsRoomDatabase.getDatabase(context)
+        if( !groupList!!.isEmpty()) {
+            return contactRoom!!.GroupsDao().getGroup(groupList!!.get(0).idGroup)
+        }else{
 
+            return null
+        }
+    }
 }

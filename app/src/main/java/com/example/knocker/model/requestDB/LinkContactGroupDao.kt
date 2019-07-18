@@ -12,4 +12,6 @@ interface LinkContactGroupDao {
     //insert le lien dans la database
     @Insert
     fun insert(linkContactGroup : LinkContactGroup)
+
+
 }
