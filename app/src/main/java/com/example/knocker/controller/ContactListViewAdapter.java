@@ -1,17 +1,10 @@
 package com.example.knocker.controller;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -24,8 +17,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactDB;
@@ -47,7 +38,7 @@ public class ContactListViewAdapter extends BaseAdapter {
     private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<>();
     private ArrayList<String> listOfNumberSelected = new ArrayList<>();
     private ArrayList<String> listOfMailSelected = new ArrayList<>();
-    private Boolean messageSend = false;
+    private Boolean messageSend;
 
     public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, boolean messageSend) {
         this.context = context;
@@ -88,7 +79,6 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         holder.constraintLayout = listview.findViewById(R.id.multi_channel_list_item_layout);
         holder.smsCl = listview.findViewById(R.id.multi_channel_list_item_sms_iv);
-        holder.whatsappCl = listview.findViewById(R.id.multi_channel_list_item_whatsapp_iv);
         holder.mailCl = listview.findViewById(R.id.multi_channel_list_item_mail_iv);
 
         assert contact != null;
@@ -97,7 +87,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             System.out.println(contact.getProfilePicture());
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get"));
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
 
@@ -115,7 +105,6 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         if (messageSend) {
             holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
-            holder.whatsappCl.setImageResource(R.drawable.ic_whatsapp);
             holder.mailCl.setImageResource(R.drawable.ic_email);
         }
 
@@ -133,15 +122,6 @@ public class ContactListViewAdapter extends BaseAdapter {
                         listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
                     }
                 }
-                if (v.getId() == holder.whatsappCl.getId()) {
-                    if (listItemChannelSelected.contains(holder.whatsappCl)) {
-                        listItemChannelSelected.remove(holder.whatsappCl);
-                        holder.whatsappCl.setImageResource(R.drawable.ic_whatsapp);
-                    } else {
-                        listItemChannelSelected.add(holder.whatsappCl);
-                        holder.whatsappCl.setImageResource(R.drawable.ic_contact_selected);
-                    }
-                }
                 if (v.getId() == holder.mailCl.getId()) {
                     if (listItemChannelSelected.contains(holder.mailCl)) {
                         listItemChannelSelected.remove(holder.mailCl);
@@ -156,12 +136,6 @@ public class ContactListViewAdapter extends BaseAdapter {
             }
         };
 
-        if (!whatsappIsInstalled()) {
-            holder.whatsappCl.setVisibility(View.GONE);
-        } else {
-            holder.whatsappCl.setVisibility(View.VISIBLE);
-        }
-
         if (getItem(position).getFirstMail().isEmpty()) {
             holder.mailCl.setVisibility(View.GONE);
         } else {
@@ -175,7 +149,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         }
 
         holder.mailCl.setOnClickListener(listener);
-        holder.whatsappCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
 
         return listview;
@@ -189,10 +162,10 @@ public class ContactListViewAdapter extends BaseAdapter {
         return listOfNumberSelected;
     }
 
-    private int randomDefaultImage(int avatarId, String createOrGet) {
-        if (createOrGet.equals("Create")) {
+    private int randomDefaultImage(int avatarId) {
+        if ("Get".equals("Create")) {
             return new Random().nextInt(7);
-        } else if (createOrGet.equals("Get")) {
+        } else if ("Get".equals("Get")) {
             switch (avatarId) {
                 case 0:
                     return R.drawable.ic_user_purple;
@@ -222,16 +195,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
     }
 
-    private boolean whatsappIsInstalled() {
-        PackageManager pm = context.getPackageManager();
-        try {
-            pm.getApplicationInfo("com.whatsapp", 0);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     static class ViewHolder {
         TextView contactFirstNameView;
         ConstraintLayout constraintLayout;
@@ -240,7 +203,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         int position;
 
         AppCompatImageView smsCl;
-        AppCompatImageView whatsappCl;
         AppCompatImageView mailCl;
     }
 }

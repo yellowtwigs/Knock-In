@@ -57,10 +57,12 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_IncomingCallButton: FloatingActionButton? = null
     private var phone_log_SendMessage: ImageView? = null
 
+    private var phone_log_ButtonOpen: FloatingActionButton? = null
     private var phone_log_CallLayout: ConstraintLayout? = null
     private var phone_log_KeyboardView: TableLayout? = null
     private var phone_log_EditTextLayout: ConstraintLayout? = null
     private var phone_log_PhoneNumberEditText: AppCompatEditText? = null
+    private var phone_log_ButtonClose: ImageView? = null
 
     // Keyboard Pad
     private var phone_log_CallKeyboard_1: ConstraintLayout? = null
@@ -153,9 +155,9 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_IncomingCallButton = findViewById(R.id.phone_log_incoming_call_button)
         main_BottomNavigationView = findViewById(R.id.navigation)
 
-//        phone_log_Calls = findViewById(R.id.phone_log_calls)
-
+        phone_log_ButtonOpen = findViewById(R.id.phone_log_button_open_id)
         phone_log_CallLayout = findViewById(R.id.phone_log_call_layout_id)
+        phone_log_ButtonClose = findViewById(R.id.phone_log_button_close_id)
 
         phone_log_SendMessage = findViewById(R.id.phone_log_send_message)
         phone_log_KeyboardView = findViewById(R.id.phone_log_call_keyboard_view)
@@ -349,6 +351,36 @@ class PhoneLogActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }
+        }
+
+        phone_log_ButtonOpen!!.setOnClickListener {
+
+            val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
+
+            slideUp(phone_log_EditTextLayout!!)
+            slideUp(phone_log_KeyboardView!!)
+            slideUp(phone_log_CallLayout!!)
+            phone_log_ButtonOpen!!.startAnimation(slideLeft)
+
+            phone_log_CallLayout!!.visibility = View.VISIBLE
+            phone_log_KeyboardView!!.visibility = View.VISIBLE
+            phone_log_ButtonOpen!!.visibility = View.GONE
+        }
+
+        phone_log_ButtonClose!!.setOnClickListener {
+
+            val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
+            val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
+
+            phone_log_EditTextLayout!!.startAnimation(slideDown)
+            phone_log_KeyboardView!!.startAnimation(slideDown)
+            phone_log_CallLayout!!.startAnimation(slideDown)
+            phone_log_ButtonOpen!!.startAnimation(slideRight)
+
+            phone_log_CallLayout!!.visibility = View.GONE
+            phone_log_KeyboardView!!.visibility = View.GONE
+            phone_log_EditTextLayout!!.visibility = View.GONE
+            phone_log_ButtonOpen!!.visibility = View.VISIBLE
         }
 
         //region ========================================== Keyboard ========================================

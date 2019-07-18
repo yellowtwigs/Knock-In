@@ -183,8 +183,9 @@
             android:id="@+id/phone_log_call_edit_text_layout"
             android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_above="@+id/phone_log_call_keyboard_view"
             android:background="?attr/backgroundColor"
-            android:layout_above="@+id/phone_log_call_keyboard_view">
+            android:visibility="visible">
 
             <View
                 android:layout_width="match_parent"
@@ -193,6 +194,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/phone_log_button_add_contact"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_plus_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/phone_log_call_phone_number_edit_text"
@@ -213,8 +227,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/phone_log_call_back_space"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="30dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -230,6 +244,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/phone_log_call_layout_id"
+            android:background="?attr/backgroundColor"
             android:shrinkColumns="*"
             android:stretchColumns="*"
             android:visibility="visible">
@@ -270,7 +285,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imageView"
                             android:layout_width="24dp"
                             android:layout_height="12dp"
@@ -775,9 +790,9 @@
                 android:id="@+id/phone_log_send_message"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="30dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:src="@drawable/ic_sms_selector"
@@ -786,32 +801,45 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/phone_log_incoming_call_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_incoming_call"
-            android:tint="@color/lightColor"
-            app:backgroundTint="#27b769"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/phone_log_incoming_call_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_incoming_call"
+                android:tint="@color/lightColor"
+                app:backgroundTint="#27b769"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/phone_log_button_add_contact"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/phone_log_button_close_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_plus_selector"
+                android:src="@drawable/ic_phone_keypad_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/phone_log_button_open_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/navigation"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:tint="@color/lightColor"
+            android:visibility="gone"
+            app:backgroundTint="#27b769"
+            app:srcCompat="@drawable/ic_phone_keypad" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
@@ -829,13 +857,13 @@
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
-    android:id="@+id/phone_log_nav_view"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:background="?attr/backgroundColor"
-    app:headerLayout="@layout/nav_header_main"
-    app:itemIconTint="@color/navigation_color"
-    app:itemTextColor="@color/navigation_color"
-    app:menu="@menu/activity_main_drawer" />
+        android:id="@+id/phone_log_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="?attr/backgroundColor"
+        app:headerLayout="@layout/nav_header_main"
+        app:itemIconTint="@color/navigation_color"
+        app:itemTextColor="@color/navigation_color"
+        app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

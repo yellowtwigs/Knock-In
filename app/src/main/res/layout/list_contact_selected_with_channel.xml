@@ -56,21 +56,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/multi_channel_list_item_whatsapp_iv"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_sms_pressed" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/multi_channel_list_item_whatsapp_iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/multi_channel_list_item_mail_iv"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_whatsapp" />
+                app:srcCompat="@drawable/ic_sms_pressed" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/multi_channel_list_item_mail_iv"
@@ -82,7 +70,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_email" />
+                app:srcCompat="@drawable/ic_circular_gmail" />
 
             <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/list_contact_item_messenger_iv"

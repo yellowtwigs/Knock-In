@@ -9,33 +9,20 @@
 
     <include layout="@layout/content_main" />
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_sms_button"
+        android:id="@+id/main_group_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginBottom="400dp"
         android:background="@color/colorPrimary"
-        android:visibility="gone"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_message_floating" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_whatsapp_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="240dp"
-        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_group_floating"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/main_sms_button"
-        android:src="@drawable/ic_whatsapp" />
+        app:layout_constraintStart_toEndOf="@+id/main_sms_button" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_gmail_button"
@@ -53,19 +40,16 @@
         app:layout_constraintStart_toEndOf="@+id/main_sms_button" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_group_button"
+        android:id="@+id/main_sms_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="400dp"
+        android:layout_marginBottom="160dp"
         android:background="@color/colorPrimary"
+        android:src="@drawable/ic_message_floating"
         android:visibility="gone"
-        app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/main_sms_button"
-        android:src="@drawable/ic_group_floating" />
+        app:backgroundTint="@color/colorPrimary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_floating_button_open_id"
@@ -75,9 +59,9 @@
         android:layout_marginEnd="@dimen/floating_button_margin"
         android:layout_marginBottom="80dp"
         android:background="@color/colorPrimary"
+        android:src="@drawable/ic_add"
         android:tint="@color/lightColor"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_add" />
+        app:backgroundTint="@color/colorPrimary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_floating_button_send_id"
@@ -87,7 +71,7 @@
         android:layout_marginEnd="@dimen/floating_button_margin"
         android:layout_marginBottom="80dp"
         android:background="@color/colorPrimary"
+        android:src="@drawable/ic_send"
         android:visibility="gone"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_send" />
+        app:backgroundTint="@color/colorPrimary" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

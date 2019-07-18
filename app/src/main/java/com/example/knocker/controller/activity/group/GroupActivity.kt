@@ -26,8 +26,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
-class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
+class GroupActivity : AppCompatActivity(){
 
+    //region ========================================= Var or Val ===========================================
 
     private var group_DrawerLayout: DrawerLayout? = null
     private var group_ContactsDatabase: ContactsRoomDatabase? = null
@@ -35,7 +36,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
 
     private var group_BottomNavigationView: BottomNavigationView? = null
 
-    var recycler: RecyclerView?=null ;
+    private var group_NavigationView: NavigationView? = null
+
+    private var recycler: RecyclerView? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -58,10 +61,14 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         }
         false
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
 
+    //endregion
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
+
+        //region ========================================= Toolbar ==========================================
 
         val toolbar = findViewById<Toolbar>(R.id.group_toolbar)
         setSupportActionBar(toolbar)
@@ -72,24 +79,34 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
             setHomeAsUpIndicator(R.drawable.ic_open_drawer)
             setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
         }
+
+        //endregion
+
+        //region ====================================== FindViewById ========================================
+
         group_DrawerLayout = findViewById(R.id.group_drawer_layout)
-        recycler=findViewById<RecyclerView>(R.id.group_list_view_id)
-        recycler!!.setHasFixedSize(true)
+        recycler = findViewById(R.id.group_list_view_id)
         group_BottomNavigationView = findViewById(R.id.navigation)
+        group_NavigationView = findViewById<NavigationView>(R.id.nav_view)
+
+
+        //endregion
+
+        recycler!!.setHasFixedSize(true)
+        group_BottomNavigationView!!.menu.getItem(2).isChecked = true
         group_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
         //region Navigation
-        group_DrawerLayout = findViewById(R.id.group_drawer_layout)
-        group_DrawerLayout!!.addDrawerListener(this)
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        val menu = navigationView.menu
+
+        val menu = group_NavigationView!!.menu
         val nav_item = menu.findItem(R.id.nav_address_book)
         nav_item.isChecked = true
         val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
         nav_sync_contact.isVisible = true
 
-        navigationView!!.menu.getItem(0).isChecked = true
+        group_NavigationView!!.menu.getItem(0).isChecked = true
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        group_NavigationView!!.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             group_DrawerLayout!!.closeDrawers()
 
@@ -112,43 +129,44 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
             drawer.closeDrawer(GravityCompat.START)
             true
         }
+
         //endregion
 
-        group_ContactsDatabase=ContactsRoomDatabase.getDatabase(this)
+        group_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         group_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         group_mDbWorkerThread.start()
-        val group:ArrayList<GroupWithContact> = ArrayList()
+        val group: ArrayList<GroupWithContact> = ArrayList()
         group.addAll(group_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
-        println("group size"+group.size)
-        for(aGroup in group)
-            println("group content"+aGroup.ContactIdList)
+        println("group size" + group.size)
+        for (aGroup in group)
+            println("group content" + aGroup.ContactIdList)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
-        val listContactGroup:ArrayList<ContactWithAllInformation> = arrayListOf()
+        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
         val sections = ArrayList<SectionGroupAdapter.Section>()
-        var position=0
-        for(i in group){
-            val list=i.getListContact(this)
+        var position = 0
+        for (i in group) {
+            val list = i.getListContact(this)
             listContactGroup.addAll(list)
-            sections.add(SectionGroupAdapter.Section(position,i.groupDB!!.name,i.groupDB!!.id))
-            position+=list.size
+            sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id))
+            position += list.size
         }
 
-        val adapter:GroupAdapter
-        if(len>=3) {
+        val adapter: GroupAdapter
+        if (len >= 3) {
             adapter = GroupAdapter(this, listContactGroup, len)
             recycler!!.setLayoutManager(GridLayoutManager(this, len))
-        }else{
-            adapter =GroupAdapter(this, listContactGroup, 4)
+        } else {
+            adapter = GroupAdapter(this, listContactGroup, 4)
             recycler!!.setLayoutManager(GridLayoutManager(this, 4))
         }
-        val sectionList=arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter=SectionGroupAdapter(this,R.layout.recycler_adapter_section,recycler,adapter)
+        val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
+        val sectionAdapter = SectionGroupAdapter(this, R.layout.recycler_adapter_section, recycler, adapter)
         sectionAdapter.setSections(sections.toArray(sectionList))
-        println("taille list group "+listContactGroup.size)
-       // val adapter= GroupListViewAdapter(group,this,len)
-        recycler!!.adapter=sectionAdapter
+        println("taille list group " + listContactGroup.size)
+        // val adapter= GroupListViewAdapter(group,this,len)
+        recycler!!.adapter = sectionAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -173,18 +191,5 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-
-    override fun onDrawerStateChanged(newState: Int) {
-    }
-
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-    }
-
-    override fun onDrawerClosed(drawerView: View) {
-    }
-
-    override fun onDrawerOpened(drawerView: View) {
     }
 }

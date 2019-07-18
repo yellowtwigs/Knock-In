@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.PendingIntent.getActivity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -113,13 +114,13 @@ class MultiChannelActivity : AppCompatActivity() {
             }
 
             if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
-                monoChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+                multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
                 refreshActivity()
             }
         }
     }
 
-    //region ================================ Functions =======================================
+    //region ======================================= Functions ==============================================
 
     private fun refreshActivity() {
         multi_channel_SendMessageEditText!!.text!!.clear()
@@ -135,16 +136,6 @@ class MultiChannelActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
-//        var numbers = "" + listOfPhoneNumber[0]
-        for (i in 0 until listOfPhoneNumber.size) {
-            val smsManager = SmsManager.getDefault()
-            smsManager.sendTextMessage(listOfPhoneNumber[i], null, msg, null, null)
-        }
-        Toast.makeText(applicationContext, "Message Sent",
-                Toast.LENGTH_LONG).show()
     }
 
     private fun checkPermission(permission: String): Boolean {
@@ -165,7 +156,17 @@ class MultiChannelActivity : AppCompatActivity() {
         }
     }
 
-    private fun monoChannelMailClick(listOfMail: ArrayList<String>, msg: String) {
+    private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
+//        var numbers = "" + listOfPhoneNumber[0]
+        for (i in 0 until listOfPhoneNumber.size) {
+            val smsManager = SmsManager.getDefault()
+            smsManager.sendTextMessage(listOfPhoneNumber[i], null, msg, null, null)
+        }
+        Toast.makeText(applicationContext, "Message Sent",
+                Toast.LENGTH_LONG).show()
+    }
+
+    private fun multiChannelMailClick(listOfMail: ArrayList<String>, msg: String) {
 
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val emailIntent = Intent(Intent.ACTION_SEND)
@@ -190,5 +191,26 @@ class MultiChannelActivity : AppCompatActivity() {
         //startActivity(intent)
     }
 
-//endregion
+    private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {
+
+        val intent = Intent(Intent.ACTION_VIEW)
+
+        var message = "phone=" + converter06To33(listOfPhoneNumber[0])
+        for (i in 1 until listOfPhoneNumber.size) {
+            message += "," + converter06To33(listOfPhoneNumber[i])
+        }
+
+        for (i in 0 until listOfPhoneNumber.size) {
+            intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
+        }
+        startActivity(intent)
+    }
+
+    private fun converter06To33(phoneNumber: String): String {
+        return if (phoneNumber[0] == '0') {
+            "+33$phoneNumber"
+        } else phoneNumber
+    }
+
+    //endregion
 }

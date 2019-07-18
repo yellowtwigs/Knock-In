@@ -287,7 +287,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms_selector);
         buttonEdit.setImageResource(R.drawable.ic_circular_edit);
-        buttonMail.setImageResource(R.drawable.ic_rounded_gmail);
+        buttonMail.setImageResource(R.drawable.ic_circular_gmail);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
@@ -399,6 +399,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 return true;
             }
         };
+
         buttonCall.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
@@ -415,7 +416,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         //buttonMessenger.setOnClickListener(buttonListener);
         buttonWhatsApp.setOnClickListener(buttonListener);
         buttonCall.setOnClickListener(buttonListener);
-//        buttonCall.setOnLongClickListener(buttonListener);
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);

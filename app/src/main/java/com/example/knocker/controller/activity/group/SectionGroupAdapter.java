@@ -1,6 +1,7 @@
 package com.example.knocker.controller.activity.group;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +21,8 @@ import com.example.knocker.R;
 import com.example.knocker.model.ContactsRoomDatabase;
 import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,10 +96,10 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public SectionViewHolder(View view) {
             super(view);
-            titleTv = (TextView) view.findViewById(R.id.section_text);
-            gmailIV = (ImageView) view.findViewById(R.id.section_gmail_imageview);
-            smsIV = (ImageView) view.findViewById(R.id.section_sms_imageview);
-            menu = (ImageView) view.findViewById(R.id.section_more_imageView);
+            titleTv = view.findViewById(R.id.section_text);
+            gmailIV = view.findViewById(R.id.section_gmail_imageview);
+            smsIV = view.findViewById(R.id.section_sms_imageview);
+            menu = view.findViewById(R.id.section_more_imageView);
 
         }
     }
@@ -113,7 +116,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder sectionViewHolder, final int position) {
+    public void onBindViewHolder(@NotNull final RecyclerView.ViewHolder sectionViewHolder, final int position) {
 
         if (isSectionHeaderPosition(position)) {
             int i = position + 1;
@@ -135,10 +138,10 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((SectionViewHolder) sectionViewHolder).gmailIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int i=position+1;
-                    ArrayList<String> groupMail=new ArrayList<String>();
-                    while (!isSectionHeaderPosition(i) && i<getItemCount()){
-                        ContactWithAllInformation contact =((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(i));
+                    int i = position + 1;
+                    ArrayList<String> groupMail = new ArrayList<String>();
+                    while (!isSectionHeaderPosition(i) && i < getItemCount()) {
+                        ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i));
                         groupMail.add(contact.getFirstMail());
                         i++;
                     }
@@ -174,11 +177,12 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 case R.id.menu_group_delete_contacts:
                                     System.out.println("delete contact");
                                 case R.id.menu_group_delete_group:
-                                    ContactsRoomDatabase contactsDatabase = null;
+                                    ContactsRoomDatabase contactsDatabase;
                                     DbWorkerThread mDbWorkerThread;
                                     mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
                                     mDbWorkerThread.start();
                                     contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(mContext);
+                                    assert contactsDatabase != null;
                                     System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
                                     contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
                                 default:
@@ -240,9 +244,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Arrays.sort(sections, new Comparator<Section>() {
             @Override
             public int compare(Section o, Section o1) {
-                return (o.firstPosition == o1.firstPosition)
-                        ? 0
-                        : ((o.firstPosition < o1.firstPosition) ? -1 : 1);
+                return Integer.compare(o.firstPosition, o1.firstPosition);
             }
         });
 
@@ -308,9 +310,10 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mContext.startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(message)));
     }
 
+    @SuppressLint("IntentReset")
     private void monoChannelMailClick(ArrayList<String> listOfMail) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL,listOfMail.toArray(new String[listOfMail.size()]));
+        intent.putExtra(Intent.EXTRA_EMAIL, listOfMail.toArray(new String[listOfMail.size()]));
         intent.setData(Uri.parse("mailto:"));
         intent.setType("message/rfc822");
 

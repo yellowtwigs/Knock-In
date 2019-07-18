@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonSend: FloatingActionButton? = null
 
-    private var main_WhatsappButton: FloatingActionButton? = null
     private var main_SMSButton: FloatingActionButton? = null
     private var main_MailButton: FloatingActionButton? = null
     private var main_groupButton: FloatingActionButton? = null
@@ -182,7 +181,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_layout = findViewById(R.id.content_frame)
         main_loadingPanel = findViewById(R.id.loadingPanel)
 
-        main_WhatsappButton = findViewById(R.id.main_whatsapp_button)
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
         main_groupButton = findViewById(R.id.main_group_button)
@@ -275,9 +273,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (main_GridView != null) {
             if (sharedPreferences.getString("tri", "nom") == "nom") {
                 gestionnaireContacts!!.sortContactByFirstNameAZ()
-            } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+            } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                 gestionnaireContacts!!.sortContactByPriority()
-            }else{
+            } else {
                 gestionnaireContacts!!.sortContactByGroup()
             }
 
@@ -312,7 +310,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
                         main_MailButton!!.visibility = View.GONE
-                        main_WhatsappButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
                         main_groupButton!!.visibility = View.GONE
                     }
@@ -334,7 +331,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         if (main_RecyclerView != null) {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
             main_RecyclerView!!.adapter = recyclerViewAdapter
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -343,30 +340,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             edit.apply()
 
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
-
-            main_RecyclerView!!.setOnClickListener {
-                if (main_RecyclerView!!.adapter is SelectContactAdapter && !firstClick) {
-                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
-                    main_RecyclerView!!.adapter = adapter
-//                    adapter.itemSelected(adapter.)
-
-                    adapter.notifyDataSetChanged()
-                    if (adapter.listContactSelect.size == 0) {
-                        main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
-                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                        main_FloatingButtonSend!!.visibility = View.GONE
-                        main_SearchBar!!.visibility = View.VISIBLE
-
-                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-
-                        main_MailButton!!.visibility = View.GONE
-                        main_WhatsappButton!!.visibility = View.GONE
-                        main_SMSButton!!.visibility = View.GONE
-                        main_groupButton!!.visibility = View.GONE
-                    }
-                }
-                firstClick = false
-            }
         }
 
         //main_mDbWorkerThread.postTask(printContacts)
@@ -548,7 +521,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, length)
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, length, gestionnaireContacts)
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                     recyclerViewAdapter!!.notifyDataSetChanged()
                 }
@@ -620,7 +593,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     listOfContactSelected.add(listOfItemSelected[i])
                 }
             }
-            if(len>=3){
+            if (len >= 3) {
                 main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
                 main_FloatingButtonSend!!.visibility = View.GONE
@@ -628,23 +601,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 
                 main_MailButton!!.visibility = View.GONE
-                main_WhatsappButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
-            }else{
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+            } else {
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
                 main_FloatingButtonSend!!.visibility = View.GONE
                 main_SearchBar!!.visibility = View.VISIBLE
 
 
                 main_MailButton!!.visibility = View.GONE
-                main_WhatsappButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
             }
 
-            saveGroupMultiSelect(listOfItemSelected,len)
+            saveGroupMultiSelect(listOfContactSelected, len)
         }
         //endregion
 
@@ -691,10 +662,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val tri = sharedPreferences.getString("tri", "nom")
         if (tri == "nom") {
             triNom.isChecked = true
-        } else if(tri=="priorite") {
+        } else if (tri == "priorite") {
             triPrio.isChecked = true
-        }else{
-           triGroup.isChecked=true
+        } else {
+            triGroup.isChecked = true
         }
         return true
     }
@@ -744,9 +715,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         contactListDb.sortContactByPriority()
-                    }else{
+                    } else {
                         contactListDb.sortContactByGroup()
                     }
                     contactListDb.contacts.retainAll(filteredContact)
@@ -756,7 +727,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                     }
                 } else {
@@ -770,9 +741,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         gestionnaireContacts!!.sortContactByPriority()
-                    }else{
+                    } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
                     gestionnaireContacts!!.contacts.retainAll(filteredContact)
@@ -781,7 +752,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -801,9 +772,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         contactListDb.sortContactByPriority()
-                    }else{
+                    } else {
                         contactListDb.sortContactByGroup()
                     }
                     contactListDb.contacts.retainAll(filteredContact)
@@ -813,7 +784,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -827,9 +798,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         gestionnaireContacts!!.sortContactByPriority()
-                    }else{
+                    } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
                     gestionnaireContacts!!.contacts.retainAll(filteredContact)
@@ -837,7 +808,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
 
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -854,7 +825,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -873,7 +844,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -884,7 +855,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
             }
             R.id.trie_par_group -> {
-                if(!item.isChecked) {
+                if (!item.isChecked) {
                     item.setChecked(true);
                     gestionnaireContacts!!.sortContactByGroup()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
@@ -893,7 +864,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -1002,17 +973,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false phoneNumber")
             main_SMSButton!!.visibility = View.GONE
         }
-         println("")
-        if (appIsInstalled() && allContactsHavePhoneNumber) {
-            main_WhatsappButton!!.visibility = View.VISIBLE
-            val params: ViewGroup.MarginLayoutParams = main_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin = margin * i
-            main_WhatsappButton!!.layoutParams = params
-            i++
-        } else {
-            println("false whatsApp")
-            main_WhatsappButton!!.visibility = View.GONE
-        }
         if (allContactsHaveMail) {
             main_MailButton!!.visibility = View.VISIBLE
             val params: ViewGroup.MarginLayoutParams = main_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
@@ -1030,42 +990,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_groupButton!!.visibility = View.VISIBLE
     }
 
-    fun longRecyclerItemClick(position: Int, view: View, contactViewHolder: ContactViewHolder) {
-
-        contactViewHolder.contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
-        contactViewHolder.contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName)
-
-        view.tag = contactViewHolder
-
-        val contact = gestionnaireContacts!!.contacts[position].contactDB
-
-        contactViewHolder.contactFirstNameView.text = contact!!.firstName
-
+    fun longRecyclerItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
             main_FloatingButtonAdd!!.visibility = View.VISIBLE
             main_FloatingButtonSend!!.visibility = View.GONE
             main_SearchBar!!.visibility = View.VISIBLE
-            main_WhatsappButton!!.visibility = View.GONE
             main_SMSButton!!.visibility = View.GONE
             main_MailButton!!.visibility = View.GONE
             main_groupButton!!.visibility = View.GONE
-
-            if (contact.profilePicture64 != "") {
-                val bitmap = base64ToBitmap(contact.profilePicture64)
-                contactViewHolder.contactRoundedImageView.setImageBitmap(bitmap)
-            } else {
-                contactViewHolder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.profilePicture, "Get")) //////////////
-            }
         } else {
-            contactViewHolder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected)
             listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
 
             main_FloatingButtonAdd!!.visibility = View.GONE
             main_FloatingButtonSend!!.visibility = View.VISIBLE
             main_SearchBar!!.visibility = View.GONE
-//            firstClick = false
 
             verifiedContactsChannel(listOfItemSelected)
         }
@@ -1112,7 +1052,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
         var message = "smsto:" + listOfPhoneNumber[0]
-        for (i in 1 until listOfPhoneNumber.size) {
+        for (i in 0 until listOfPhoneNumber.size) {
             message += ";" + listOfPhoneNumber[i]
         }
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
@@ -1178,7 +1118,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_FloatingButtonSend!!.visibility = View.GONE
         main_SearchBar!!.visibility = View.VISIBLE
         main_MailButton!!.visibility = View.GONE
-        main_WhatsappButton!!.visibility = View.GONE
         main_SMSButton!!.visibility = View.GONE
         main_groupButton!!.visibility = View.GONE
     }
@@ -1193,8 +1132,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         intent.putExtra(Intent.EXTRA_TEXT, "")
         startActivity(intent)
     }
-    //endregion
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -1208,4 +1145,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
         }
     }
+
+    //endregion
 }

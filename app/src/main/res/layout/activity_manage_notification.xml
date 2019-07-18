@@ -12,8 +12,8 @@
         android:id="@+id/manage_my_notif_layout_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
         android:orientation="vertical"
+        android:visibility="visible"
         tools:context=".controller.activity.ManageNotificationActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -25,7 +25,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/notification_manager_toolbar_title" />
+            app:title="@string/notification_manager_toolbar_title"
+            app:titleTextColor="?attr/textColor" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout11"
@@ -45,8 +46,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="left"
-                android:textColor="?attr/textColor"
                 android:text="@string/notification_manager_stop_service"
+                android:textColor="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -85,8 +86,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="left"
-                android:textColor="?attr/textColor"
                 android:text="@string/notification_manager_stop_popup"
+                android:textColor="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -104,6 +105,7 @@
                 app:layout_constraintStart_toEndOf="@+id/textView_manage_notif"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/manage_notif_prio_1_layout"
             android:layout_width="match_parent"
@@ -123,8 +125,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="left"
-                android:textColor="?attr/textColor"
                 android:text="@string/notification_manager_prio_1"
+                android:textColor="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -162,8 +164,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="left"
-                android:textColor="?attr/textColor"
                 android:text="@string/notification_reminder"
+                android:textColor="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -181,7 +183,6 @@
                 app:layout_constraintStart_toEndOf="@+id/textView_manage_reminder"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -236,9 +237,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
-        app:itemTextColor="@color/navigation_color"
-        app:itemIconTint="@color/navigation_color"
         app:headerLayout="@layout/nav_header_main"
+        app:itemIconTint="@color/navigation_color"
+        app:itemTextColor="@color/navigation_color"
         app:menu="@menu/activity_main_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

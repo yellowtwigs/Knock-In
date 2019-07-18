@@ -134,7 +134,7 @@ class MultiSelectActivity : AppCompatActivity() {
         alertDialogBuilder.setPositiveButton("oui"
         ) { _, _ ->
             val gestionnaireContact = ContactList(contactList, this)
-            if (!contactList.isEmpty()) {
+            if (contactList.isNotEmpty()) {
                 gestionnaireContact.setToContactInListPriority2()
             }
             startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
