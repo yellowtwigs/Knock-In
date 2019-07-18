@@ -6,6 +6,7 @@ import androidx.room.Query
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.example.knocker.model.ModelDB.GroupDB
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table contact
@@ -147,4 +148,7 @@ interface ContactsDao {
      */
     @Query("SELECT * FROM contacts_table")
     fun getContactAllInfo():List<ContactWithAllInformation>
+
+    @Query("SELECT * FROM contacts_table INNER JOIN link_contact_group_table ON contacts_table.id=link_contact_group_table.id_group WHERE id_group=:groupId")
+    fun getContactForGroup(groupId:Int): List<ContactWithAllInformation>
 }
