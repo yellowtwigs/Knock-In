@@ -68,8 +68,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
-        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as Button
-        val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as AppCompatEditText
+//        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as Button
+//      val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as AppCompatEditText
 
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
