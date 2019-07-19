@@ -47,6 +47,7 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import kotlin.collections.ArrayList
 
 /**
@@ -218,7 +219,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_home -> {
                     startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 }
-                R.id.nav_groups -> startActivity(Intent(this@MainActivity, GroupActivity::class.java))
+                R.id.nav_groups -> startActivity(Intent(this@MainActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
