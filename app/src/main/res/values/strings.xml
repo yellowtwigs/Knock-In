@@ -195,7 +195,7 @@
     <string name="manage_my_screen_toolbar_title">Display</string>
     <string name="manage_my_screen_theme">Change theme</string>
     <string name="manage_my_screen_theme_long_text">Enable dark theme</string>
-    <string name="manage_my_screen_number_of_line">Number of contacts per row in home</string>
+    <string name="manage_my_screen_number_of_line">Number of contacts per row</string>
     <string name="manage_my_screen_number_of_line_group">Number of contacts per row in group</string>
     <string name="manage_my_screen_toast_grid">You have selected %1$d contacts per row</string>
     <string name="manage_my_screen_toast_list">List mode selected</string>

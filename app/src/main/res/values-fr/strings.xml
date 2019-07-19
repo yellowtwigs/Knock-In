@@ -194,8 +194,8 @@
     <string name="manage_my_screen_toolbar_title">Affichage</string>
     <string name="manage_my_screen_theme">Changer le thème</string>
     <string name="manage_my_screen_theme_long_text">Activer thème foncé</string>
-    <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne acceuil</string>
-    <string name="manage_my_screen_number_of_line_group">Nombre de contacts par ligne groupe</string>
+    <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne</string>
+    <string name="manage_my_screen_number_of_line_group">Nombre de contacts par ligne section groupe</string>
     <string name="manage_my_screen_toast_grid">Vous avez sélectionné %1$d contacts par ligne</string>
     <string name="manage_my_screen_toast_list">Vous avez sélectionné le mode "Liste"</string>
     <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionnez le mode d\'affichage compact</string>

@@ -53,18 +53,16 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
-class GroupActivity : AppCompatActivity(){
+class GroupActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
 
     //region ========================================= Var or Val ===========================================
+
     private var group_GridView: GridView? = null
-    private var group_ListView: ListView? = null
     private var group_RecyclerView: RecyclerView? = null
 
-    private var group_FloatingButtonAdd: FloatingActionButton? = null
     private var group_FloatingButtonSend: FloatingActionButton? = null
 
-    private var group_WhatsappButton: FloatingActionButton? = null
     private var group_SMSButton: FloatingActionButton? = null
     private var group_MailButton: FloatingActionButton? = null
     private var main_groupButton: FloatingActionButton? = null
@@ -235,7 +233,6 @@ class GroupActivity : AppCompatActivity(){
         //affiche tout les contacts de la Database
 
         group_GridView = findViewById(R.id.main_grid_view_id)
-        group_ListView = findViewById(R.id.main_list_view_id)
         group_RecyclerView = findViewById(R.id.main_recycler_view_id)
 
         //region commentaire
@@ -295,14 +292,12 @@ class GroupActivity : AppCompatActivity(){
 
                     if (adapter.listContactSelect.size == 0) {
                         group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                        group_FloatingButtonAdd!!.visibility = View.GONE
                         group_FloatingButtonSend!!.visibility = View.GONE
                         group_SearchBar!!.visibility = View.VISIBLE
 
                         Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
                         group_MailButton!!.visibility = View.GONE
-                        group_WhatsappButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
                         main_groupButton!!.visibility = View.GONE
                     }
@@ -343,14 +338,12 @@ class GroupActivity : AppCompatActivity(){
                     adapter.notifyDataSetChanged()
                     if (adapter.listOfItemSelected.size == 0) {
                         group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
-                        group_FloatingButtonAdd!!.visibility = View.GONE
                         group_FloatingButtonSend!!.visibility = View.GONE
                         group_SearchBar!!.visibility = View.VISIBLE
 
                         Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
                         group_MailButton!!.visibility = View.GONE
-                        group_WhatsappButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
                         main_groupButton!!.visibility = View.GONE
                     }
@@ -545,10 +538,6 @@ class GroupActivity : AppCompatActivity(){
             }
         })
 
-        group_FloatingButtonAdd!!.setOnClickListener {
-            startActivity(Intent(this@GroupActivity, AddNewContactActivity::class.java))
-        }
-
         group_SMSButton!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfPhoneNumberContactSelected: ArrayList<String> = ArrayList()
@@ -610,26 +599,22 @@ class GroupActivity : AppCompatActivity(){
                     listOfContactSelected.add(listOfItemSelected[i])
                 }
             }
-            if(len>=3){
+            if (len >= 3) {
                 group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                group_FloatingButtonAdd!!.visibility = View.GONE
                 group_FloatingButtonSend!!.visibility = View.GONE
                 group_SearchBar!!.visibility = View.VISIBLE
 
 
                 group_MailButton!!.visibility = View.GONE
-                group_WhatsappButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
-            }else{
+            } else {
                 group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
-                group_FloatingButtonAdd!!.visibility = View.GONE
                 group_FloatingButtonSend!!.visibility = View.GONE
                 group_SearchBar!!.visibility = View.VISIBLE
 
 
                 group_MailButton!!.visibility = View.GONE
-                group_WhatsappButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
             }
@@ -937,7 +922,6 @@ class GroupActivity : AppCompatActivity(){
         group_GridView!!.adapter = adapter
         adapter.itemSelected(position)
         adapter.notifyDataSetChanged()
-        group_FloatingButtonAdd!!.visibility = View.GONE
         group_FloatingButtonSend!!.visibility = View.VISIBLE
         group_SearchBar!!.visibility = View.GONE
         firstClick = true
@@ -979,17 +963,6 @@ class GroupActivity : AppCompatActivity(){
             println("false phoneNumber")
             group_SMSButton!!.visibility = View.GONE
         }
-        println("")
-        if (appIsInstalled() && allContactsHavePhoneNumber) {
-            group_WhatsappButton!!.visibility = View.VISIBLE
-            val params: ViewGroup.MarginLayoutParams = group_WhatsappButton!!.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin = margin * i
-            group_WhatsappButton!!.layoutParams = params
-            i++
-        } else {
-            println("false whatsApp")
-            group_WhatsappButton!!.visibility = View.GONE
-        }
         if (allContactsHaveMail) {
             group_MailButton!!.visibility = View.VISIBLE
             val params: ViewGroup.MarginLayoutParams = group_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
@@ -1021,10 +994,8 @@ class GroupActivity : AppCompatActivity(){
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
-            group_FloatingButtonAdd!!.visibility = View.GONE
             group_FloatingButtonSend!!.visibility = View.GONE
             group_SearchBar!!.visibility = View.VISIBLE
-            group_WhatsappButton!!.visibility = View.GONE
             group_SMSButton!!.visibility = View.GONE
             group_MailButton!!.visibility = View.GONE
             main_groupButton!!.visibility = View.GONE
@@ -1039,7 +1010,6 @@ class GroupActivity : AppCompatActivity(){
             contactViewHolder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected)
             listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
 
-            group_FloatingButtonAdd!!.visibility = View.GONE
             group_FloatingButtonSend!!.visibility = View.VISIBLE
             group_SearchBar!!.visibility = View.GONE
 //            firstClick = false
@@ -1150,11 +1120,9 @@ class GroupActivity : AppCompatActivity(){
                     main_mDbWorkerThread.postTask(printContacts)
                 }.show()
         group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-        group_FloatingButtonAdd!!.visibility = View.GONE
         group_FloatingButtonSend!!.visibility = View.GONE
         group_SearchBar!!.visibility = View.VISIBLE
         group_MailButton!!.visibility = View.GONE
-        group_WhatsappButton!!.visibility = View.GONE
         group_SMSButton!!.visibility = View.GONE
         main_groupButton!!.visibility = View.GONE
     }
