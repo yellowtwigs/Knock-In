@@ -95,10 +95,8 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_phone_book -> {
-            }
-            R.id.navigation_groups -> {
-                startActivity(Intent(this@GroupActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_contacts -> {
+                startActivity(Intent(this@GroupActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
@@ -172,15 +170,14 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
 
         main_BottomNavigationView = findViewById(R.id.navigation)
 
+        main_BottomNavigationView!!.menu.getItem(2).isChecked = true
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        //main_BottomNavigationView!!.background= this.getDrawable(R.drawable.border_bottom_nav_view)
 
         // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
         main_layout = findViewById(R.id.content_frame)
         main_loadingPanel = findViewById(R.id.loadingPanel)
 
-        main_WhatsappButton = findViewById(R.id.main_whatsapp_button)
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
         main_groupButton = findViewById(R.id.main_group_button)
@@ -205,7 +202,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_address_book)
+        val nav_item = menu.findItem(R.id.nav_home)
         nav_item.isChecked = true
         val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
         nav_sync_contact.isVisible = true
@@ -217,8 +214,8 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
             drawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_address_book -> {
-                    startActivity(Intent(this@GroupActivity, GroupActivity::class.java))
+                R.id.nav_home -> {
+                    startActivity(Intent(this@GroupActivity, MainActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@GroupActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@GroupActivity, ManageNotificationActivity::class.java))
@@ -332,7 +329,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         }
 
         if (main_RecyclerView != null) {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
             main_RecyclerView!!.adapter = recyclerViewAdapter
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -344,13 +341,13 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
 
             main_RecyclerView!!.setOnClickListener {
                 if (main_RecyclerView!!.adapter is SelectContactAdapter && !firstClick) {
-                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                     main_RecyclerView!!.adapter = adapter
 //                    adapter.itemSelected(adapter.)
 
                     adapter.notifyDataSetChanged()
-                    if (adapter.listContactSelect.size == 0) {
-                        main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+                    if (adapter.listOfItemSelected.size == 0) {
+                        main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_FloatingButtonAdd!!.visibility = View.GONE
                         main_FloatingButtonSend!!.visibility = View.GONE
                         main_SearchBar!!.visibility = View.VISIBLE
@@ -546,7 +543,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                     gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, length)
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, length)
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, length, gestionnaireContacts)
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                     recyclerViewAdapter!!.notifyDataSetChanged()
                 }
@@ -630,7 +627,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                 main_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
             }else{
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                 main_FloatingButtonAdd!!.visibility = View.GONE
                 main_FloatingButtonSend!!.visibility = View.GONE
                 main_SearchBar!!.visibility = View.VISIBLE
@@ -754,7 +751,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                     }
                 } else {
@@ -779,7 +776,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -811,7 +808,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -835,7 +832,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
 
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -852,7 +849,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -871,7 +868,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -891,7 +888,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -1084,7 +1081,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
 //            val adapter = (main_RecyclerView!!.adapter as SelectContactAdapter)
 //            adapter.itemSelected(position)
 //            if (adapter.listContactSelect.size == 0) {
-//                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
+//                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
 //
 //
 //                main_FloatingButtonAdd!!.visibility = View.VISIBLE

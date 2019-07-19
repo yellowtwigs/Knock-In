@@ -60,8 +60,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private Context context;
     private Integer len;
     private View view;
-    private ArrayList<ContactWithAllInformation> listSelectedItem;
     private ContactList gestionnaireContacts;
+
+    public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
+        return listOfItemSelected;
+    }
+
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     private final int PERMISSION_CALL_RESULT = 1;
@@ -73,7 +77,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         this.len = len;
         this.layoutInflater = LayoutInflater.from(context);
         this.gestionnaireContacts = gestionnaireContacts;
-        listSelectedItem = new ArrayList<>();
     }
 
     public ContactWithAllInformation getItem(int position) {
@@ -256,6 +259,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                 }
 
+                
                 ((MainActivity) context).longRecyclerItemClick(position);
                 return true;
             }

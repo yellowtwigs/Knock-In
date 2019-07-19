@@ -164,18 +164,26 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((SectionViewHolder) sectionViewHolder).menu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    System.out.println("BUTTON CLICK");
                     PopupMenu popupMenu = new PopupMenu(mContext, v);
                     popupMenu.inflate(R.menu.menu_group_view);
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-
-                            Intent i = new Intent();
+                            System.out.println("VALUES = "+item.getItemId());
+                            System.out.println("ok = "+R.id.menu_group_add_contact);
+                            System.out.println("ok = "+R.id.menu_group_delete_contacts);
+                            System.out.println("ok = "+R.id.menu_group_delete_group);
                             switch (item.getItemId()) {
                                 case R.id.menu_group_add_contact:
                                     System.out.println("add contact");
+                                    Intent intent = new Intent(mContext, AddContactToGroup.class);
+                                    intent.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
+                                    mContext.startActivity(intent);
+                                    break;
                                 case R.id.menu_group_delete_contacts:
                                     System.out.println("delete contact");
+                                    break;
                                 case R.id.menu_group_delete_group:
                                     ContactsRoomDatabase contactsDatabase;
                                     DbWorkerThread mDbWorkerThread;
@@ -185,8 +193,10 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     assert contactsDatabase != null;
                                     System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
                                     contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
+                                    break;
                                 default:
                                     System.out.println("always in default");
+                                    break;
                             }
                             return true;
                         }

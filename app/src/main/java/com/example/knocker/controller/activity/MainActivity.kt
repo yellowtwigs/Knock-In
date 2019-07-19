@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             R.id.navigation_contacts -> {
             }
             R.id.navigation_groups -> {
-                //TODO
+                startActivity(Intent(this@MainActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
@@ -553,41 +553,25 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         main_MailButton!!.setOnClickListener {
-            val iterator: IntIterator?
+            var iterator: IntIterator?
             val listOfMailContactSelected: ArrayList<String> = ArrayList()
 
             if (len > 1) {
                 val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
                 iterator = (0 until adapter.listContactSelect.size).iterator()
 
-                for (i in iterator) {
+                for (i in iterator!!) {
                     listOfMailContactSelected.add(adapter.listContactSelect[i].getFirstMail())
                 }
             } else {
                 iterator = (0 until listOfItemSelected.size).iterator()
 
-                for (i in iterator) {
-                    listOfMailContactSelected.add(listOfItemSelected[i].getFirstPhoneNumber())
+                for (i in iterator!!) {
+                    listOfMailContactSelected.add(listOfItemSelected[i].getFirstMail())
                 }
             }
             monoChannelMailClick(listOfMailContactSelected)
-        }
 
-
-            if (len > 1) {
-                val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
-                iterator = (0 until adapter.listContactSelect.size).iterator()
-
-                for (i in iterator) {
-                    listOfContactSelected.add(adapter.listContactSelect[i])
-                }
-            } else {
-                iterator = (0 until listOfItemSelected.size).iterator()
-
-                for (i in iterator) {
-                    listOfContactSelected.add(listOfItemSelected[i])
-                }
-            }
             if (len >= 3) {
                 main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
@@ -597,7 +581,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 main_MailButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
             } else {
                 main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
@@ -607,17 +590,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 main_MailButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
             }
 
-            saveGroupMultiSelect(listOfContactSelected, len)
+        scaleGestureDetectore = ScaleGestureDetector(this, MyOnScaleGestureListener())
         }
         //endregion
 
-        scaleGestureDetectore = ScaleGestureDetector(this,
-                MyOnScaleGestureListener())
+}
 
-    }
 
     //region ========================================== Functions ===========================================
 

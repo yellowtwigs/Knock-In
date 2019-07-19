@@ -338,5 +338,6 @@
 
     <!-- region Group -->
     <string name="group_search_hint">Rechercher</string>
+    <string name="add_member">Choisir un contact</string>
     <!--endregion -->
 </resources>
