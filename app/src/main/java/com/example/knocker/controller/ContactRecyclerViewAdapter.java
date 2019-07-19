@@ -274,13 +274,13 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
 
         if (!whatsappIsInstalled()) {
-            holder.whatsappCl.setVisibility(View.GONE);
+            holder.whatsappCl.setVisibility(View.INVISIBLE);
         } else {
             holder.whatsappCl.setVisibility(View.VISIBLE);
         }
 
         if (getItem(position).getFirstMail().isEmpty()) {
-            holder.mailCl.setVisibility(View.GONE);
+            holder.mailCl.setVisibility(View.INVISIBLE);
         } else {
             holder.mailCl.setVisibility(View.VISIBLE);
         }
