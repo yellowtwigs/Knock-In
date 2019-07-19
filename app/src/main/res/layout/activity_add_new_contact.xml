@@ -23,6 +23,7 @@
             android:background="?attr/backgroundColor"
             app:titleTextColor="?attr/textColor"
             app:itemTextColor="?attr/textColor"
+            android:descendantFocusability="blocksDescendants"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

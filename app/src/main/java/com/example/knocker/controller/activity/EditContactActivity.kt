@@ -57,7 +57,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_FirstName: TextInputLayout? = null
     private var edit_contact_LastName: TextInputLayout? = null
     private var edit_contact_PhoneNumber: TextInputLayout? = null
-    private var edit_contact_fixNumber:TextInputLayout?=null
+    private var edit_contact_FixNumber: TextInputLayout? = null
     private var edit_contact_Mail: TextInputLayout? = null
 
     private var gestionnaireContacts: ContactList? = null
@@ -69,7 +69,6 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Fix_Property: Spinner? = null
     private var edit_contact_Mail_Property: Spinner? = null
     private var edit_contact_AddFieldButton: Button? = null
-    private var edit_contact_DeleteContact: Button? = null
 
     private var customAdapterEditText: CustomAdapterEditText? = null
 
@@ -97,12 +96,10 @@ class EditContactActivity : AppCompatActivity() {
     private val IMAGE_CAPTURE_CODE = 1001
     private var edit_contact_imgString: String? = null;
 
-
     private var havePhone: Boolean = false
     private var haveMail: Boolean = false
 
-
-    private var recyclerGroup:RecyclerView?=null
+    private var recyclerGroup: RecyclerView? = null
     //endregion
 
     @SuppressLint("InflateParams")
@@ -138,16 +135,15 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
         edit_contact_LastName = findViewById(R.id.edit_contact_last_name_id)
         edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
-        edit_contact_fixNumber=findViewById(R.id.edit_contact_phone_number_fix_id)
+        edit_contact_FixNumber = findViewById(R.id.edit_contact_phone_number_fix_id)
         edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
         edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
         edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
-        edit_contact_Fix_Property= findViewById(R.id.edit_contact_phone_number_spinner_fix)
+        edit_contact_Fix_Property = findViewById(R.id.edit_contact_phone_number_spinner_fix)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
-        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete_contact)
 
         //endregion
 
@@ -165,6 +161,7 @@ class EditContactActivity : AppCompatActivity() {
 
         //edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
 
+        //TODO wash the code
         if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
 
             val contactList = ContactList(this)
@@ -193,7 +190,7 @@ class EditContactActivity : AppCompatActivity() {
             //TODO :enlever code Dupliquer
 
             edit_contact_phone_property = getString(R.string.edit_contact_phone_number_mobile)
-            edit_contact_fix_number= getString(R.string.edit_contact_phone_number_home)
+            edit_contact_fix_number = getString(R.string.edit_contact_phone_number_home)
             edit_contact_phone_number = ""
             edit_contact_mail = ""
             edit_contact_mail_property = getString(R.string.edit_contact_mail_mobile)
@@ -202,11 +199,11 @@ class EditContactActivity : AppCompatActivity() {
             val phoneNumber = contact.getFirstPhoneNumber()
             edit_contact_phone_number = phoneNumber
             edit_contact_phone_property = tagPhone
-            println("phone property of number "+phoneNumber+" is "+tagPhone)
-            val tagFix=contact.getSecondPhoneTag(phoneNumber)
-            val fixNumber=contact.getSecondPhoneNumber(phoneNumber)
-            edit_contact_fix_number=fixNumber
-            edit_contact_fix_property=tagFix
+            println("phone property of number $phoneNumber is $tagPhone")
+            val tagFix = contact.getSecondPhoneTag(phoneNumber)
+            val fixNumber = contact.getSecondPhoneNumber(phoneNumber)
+            edit_contact_fix_number = fixNumber
+            edit_contact_fix_property = tagFix
             val tagMail = contact.getMailTag()
             val mail = contact.getFirstMail()
             edit_contact_mail = mail
@@ -229,17 +226,17 @@ class EditContactActivity : AppCompatActivity() {
             }
             when (edit_contact_priority) {
                 0 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     println("red")
                 }
                 1 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     println("no color ")
                 }
                 2 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     println("yellow")
                 }
@@ -253,7 +250,7 @@ class EditContactActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
-        actionbar.title = "Editer le contact"
+        actionbar.title = "Editer le contact" //TODO make in string.xml
 
         //endregion
 
@@ -263,12 +260,12 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_FirstName!!.editText!!.setText(edit_contact_first_name)
         edit_contact_LastName!!.editText!!.setText(edit_contact_last_name)
         edit_contact_PhoneNumber!!.editText!!.setText(edit_contact_phone_number)
-        edit_contact_fixNumber!!.editText!!.setText(edit_contact_fix_number)
+        edit_contact_FixNumber!!.editText!!.setText(edit_contact_fix_number)
         edit_contact_Mail!!.editText!!.setText(edit_contact_mail)
         edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property, edit_contact_Mail_Property!!))
         edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property, edit_contact_Phone_Property!!))
         edit_contact_Fix_Property!!.setSelection(getPosItemSpinner(edit_contact_fix_property, edit_contact_Fix_Property!!))
-        println("get item position"+edit_contact_Phone_Property!!.selectedItem.toString())
+        println("get item position" + edit_contact_Phone_Property!!.selectedItem.toString())
         textChanged(edit_contact_FirstName, edit_contact_FirstName!!.editText!!.text?.toString())
         textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
         textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
@@ -280,35 +277,19 @@ class EditContactActivity : AppCompatActivity() {
             selectImage()
         }
 
-        edit_contact_DeleteContact!!.setOnClickListener {
-            val delete = Runnable {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(R.string.edit_contact_alert_dialog_delete_contact_title)
-                        .setMessage(R.string.edit_contact_alert_dialog_delete_contact_message)
-                        .setPositiveButton("Oui") { _, _ ->
-                            deleteContact()
-                        }
-                        .setNegativeButton("Non") { _, _ ->
-                        }
-                        .show()
-
-            }
-            edit_contact_mDbWorkerThread.postTask(delete)
-        }
-
         edit_contact_AddFieldButton!!.setOnClickListener {
             val inflater: LayoutInflater = this.layoutInflater
             val alertView: View = inflater.inflate(R.layout.alert_dialog_add_field, null)
 
-            val alert_dialog_AddFieldListView = alertView.findViewById<ListView>(R.id.alert_dialog_add_field_list_view)
+//            val alert_dialog_AddFieldListView = alertView.findViewById<List>(R.id.alert_dialog_add_field_list_view)
             val alert_dialog_FieldAdded = findViewById<ListView>(R.id.edit_contact_field_added)
 
-            alert_dialog_AddFieldListView.adapter = ArrayAdapter(this@EditContactActivity, R.layout.list_item_add_fields_layout, R.id.list_item_add_fields_text, getListOfFields())
-            alert_dialog_AddFieldListView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-
-                customAdapterEditText = CustomAdapterEditText(this@EditContactActivity, getListOfEditText(position))
-                alert_dialog_FieldAdded.adapter = customAdapterEditText
-            }
+//            alert_dialog_AddFieldListView.adapter = ArrayAdapter(this@EditContactActivity, R.layout.list_item_add_fields_layout, R.id.list_item_add_fields_text, getListOfFields())
+//            alert_dialog_AddFieldListView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+//
+//                customAdapterEditText = CustomAdapterEditText(this@EditContactActivity, getListOfEditText(position))
+//                alert_dialog_FieldAdded.adapter = customAdapterEditText
+//            }
 
             MaterialAlertDialogBuilder(this)
                     .setTitle("Ajouter un champ")
@@ -373,19 +354,19 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Mail_Property!!.adapter = adapterMailTagList
 
 
-        recyclerGroup=findViewById(R.id.edit_contact_recycler)
-        val layoutMananger:LinearLayoutManager= LinearLayoutManager(applicationContext,LinearLayoutManager.HORIZONTAL,false)
-        recyclerGroup!!.layoutManager=layoutMananger
+        recyclerGroup = findViewById(R.id.edit_contact_recycler)
+        val layoutMananger: LinearLayoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        recyclerGroup!!.layoutManager = layoutMananger
         //edit_contact_ContactsDatabase.contactsDao()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDbGroup = Callable { edit_contact_ContactsDatabase!!.GroupsDao().getGroupForContact(edit_contact_id!!) }
         val resultGroup = executorService.submit(callDbGroup)
-        val listGroup:ArrayList<GroupDB> = ArrayList()
+        val listGroup: ArrayList<GroupDB> = ArrayList()
         listGroup.addAll(resultGroup.get())
         val callDBContact = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
-        val resultContact= executorService.submit(callDBContact)
-        val adapter=GroupEditAdapter(this,listGroup,resultContact.get())
-        recyclerGroup!!.adapter=adapter
+        val resultContact = executorService.submit(callDBContact)
+        val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
+        recyclerGroup!!.adapter = adapter
     }
 
     //region ========================================== Functions ===========================================
@@ -442,11 +423,11 @@ class EditContactActivity : AppCompatActivity() {
         val tailleSpinner: Int = spinner.adapter.count
         //println("taille spinner" + tailleSpinner)
         for (x in 0 until tailleSpinner) {
-            if (spinner.getItemAtPosition(x).toString().equals(NumberAndMailDB!!.convertStringToSpinnerString(item,this))) {
-                println(" return in edit"+x)
+            if (spinner.getItemAtPosition(x).toString().equals(NumberAndMailDB!!.convertStringToSpinnerString(item, this))) {
+                println(" return in edit" + x)
                 return x
-            }else{
-                println(spinner.getItemAtPosition(x).toString()+"est diférent de "+NumberAndMailDB!!.convertStringToSpinnerString(item,this))
+            } else {
+                println(spinner.getItemAtPosition(x).toString() + "est diférent de " + NumberAndMailDB!!.convertStringToSpinnerString(item, this))
             }
         }
         return 0;
@@ -456,27 +437,42 @@ class EditContactActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (isChanged) {
-                    val alertDialog = AlertDialog.Builder(this, R.style.AlertDialog)
-                    alertDialog.setTitle(R.string.edit_contact_alert_dialog_cancel_title)
-                    alertDialog.setMessage(R.string.edit_contact_alert_dialog_cancel_message)
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(R.string.edit_contact_alert_dialog_cancel_title)
+                            .setMessage(R.string.edit_contact_alert_dialog_cancel_message)
 
-                    alertDialog.setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                        finish()
-                    }
-                    alertDialog.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                    }
-                    alertDialog.show()
+                            .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                                finish()
+                            }
+                            .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
+                            }
+                            .show()
                 } else {
                     finish()
                 }
                 hideKeyboard()
             }
+            R.id.nav_delete -> {
+                val delete = Runnable {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(R.string.edit_contact_alert_dialog_delete_contact_title)
+                            .setMessage(R.string.edit_contact_alert_dialog_delete_contact_message)
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                deleteContact()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            }
+                            .show()
+
+                }
+                edit_contact_mDbWorkerThread.postTask(delete)
+            }
             R.id.nav_validate -> {
                 hideKeyboard()
                 val editContact = Runnable {
                     if (edit_contact_FirstName!!.editText!!.toString() != "" || edit_contact_LastName!!.editText!!.toString() != "") {
-                        val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString(),this)
-                        val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(),this)
+                        val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString(), this)
+                        val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), this)
                         var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         val nbDetail = contact!!.contactDetailList!!.size - 1
                         if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
@@ -551,7 +547,7 @@ class EditContactActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_validate, menu)
+        inflater.inflate(R.menu.menu_toolbar_edit_contact, menu)
         return true
     }
 

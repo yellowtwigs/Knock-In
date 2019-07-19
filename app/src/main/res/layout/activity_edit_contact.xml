@@ -155,7 +155,7 @@
             android:id="@+id/edit_contact_phone_number_fix_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/custom_shape_relative_layout_with_border"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
@@ -307,24 +307,9 @@
             android:textColor="?attr/textColor"
             android:textColorHint="?attr/textColor"
             android:visibility="gone"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/edit_contact_delete_contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="?attr/colorSurface"
-            android:text="@string/edit_contact_delete_contact"
-            android:textColor="?attr/textColor"
-            android:textColorHint="?attr/textColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_contact_group_constraint_layout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/edit_contact_group_constraint_layout"
@@ -353,7 +338,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_contact_group_tv"></androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toBottomOf="@+id/edit_contact_group_tv"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

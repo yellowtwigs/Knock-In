@@ -66,7 +66,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/rounded_button_background_blue"
             android:text="@string/alert_dialog_notification_allow_it"
-            android:textColor="@color/textColorLight"
+            android:textColor="@color/lightColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

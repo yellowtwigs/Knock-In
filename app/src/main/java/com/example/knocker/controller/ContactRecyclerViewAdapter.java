@@ -71,9 +71,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private final int PERMISSION_CALL_RESULT = 1;
     private String numberForPermission = "";
 
-    public ContactRecyclerViewAdapter(Context context, List<ContactWithAllInformation> listContacts, Integer len, ContactList gestionnaireContacts) {
+    public ContactRecyclerViewAdapter(Context context, ContactList gestionnaireContacts, Integer len) {
         this.context = context;
-        this.listContacts = listContacts;
+        this.listContacts = gestionnaireContacts.getContacts();
         this.len = len;
         this.layoutInflater = LayoutInflater.from(context);
         this.gestionnaireContacts = gestionnaireContacts;
@@ -155,20 +155,20 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
 
         holder.contactFirstNameView.setText(contactName);
-        String group= "";
-        GroupDB firstGroup=getItem(position).getFirstGroup(context);
-        if(context instanceof GroupActivity){
+        String group = "";
+        GroupDB firstGroup = getItem(position).getFirstGroup(context);
+        if (context instanceof GroupActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
-            if(len==0){
+            if (len == 0) {
                 holder.contactRoundedImageView.setVisibility(View.INVISIBLE);
             }
         }
-        if(firstGroup==null){
-            System.out.println("no group"+contact.getFirstName()+" "+contact.getLastName());
-            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+        if (firstGroup == null) {
+            System.out.println("no group" + contact.getFirstName() + " " + contact.getLastName());
+            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
-        }else{
+        } else {
             System.out.println("have group");
             group = firstGroup.getName();
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
@@ -185,7 +185,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 group = group.substring(0, 9).concat("..");
             }
         }
-        if(holder.groupWordingTv != null){
+        if (holder.groupWordingTv != null) {
             holder.groupWordingTv.setText(group);
         }
         View.OnClickListener listener = new View.OnClickListener() {

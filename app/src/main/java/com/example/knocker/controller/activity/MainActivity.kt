@@ -30,17 +30,14 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
 import com.example.knocker.controller.*
-import com.example.knocker.controller.ContactRecyclerViewAdapter.ContactViewHolder
 import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
 import com.example.knocker.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 import com.example.knocker.model.ModelDB.*
 import java.util.*
 import java.util.concurrent.Callable
@@ -330,7 +327,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         if (main_RecyclerView != null) {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -520,7 +517,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, length, gestionnaireContacts)
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, length)
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                     recyclerViewAdapter!!.notifyDataSetChanged()
                 }
@@ -583,7 +580,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_MailButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
             } else {
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
                 main_FloatingButtonSend!!.visibility = View.GONE
                 main_SearchBar!!.visibility = View.VISIBLE
@@ -703,7 +700,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                     }
                 } else {
@@ -728,7 +725,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -760,7 +757,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -784,7 +781,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
 
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -801,7 +798,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -820,7 +817,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -840,7 +837,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -1054,44 +1051,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
         }
         return -1
-    }
-
-    //TODO: Put an Material Alert Dialog
-    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
-        val editText = EditText(this)
-        editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
-        MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.main_alert_dialog_group_title)
-                .setMessage(R.string.main_alert_dialog_group_subtitle)
-                .setView(editText)
-                .setNegativeButton(R.string.alert_dialog_no, null)
-                .setPositiveButton(R.string.alert_dialog_yes
-                ) { _, _ ->
-                    var nameGroup = ""
-                    nameGroup = if (editText.text.isNotEmpty()) {
-                        editText.text.toString()
-                    } else {
-                        editText.hint.toString()
-                    }
-                    println("name group$nameGroup")
-                    val printContacts = Runnable {
-                        if (listContacts.size != 0) {
-                            val group = GroupDB(null, nameGroup, "")
-                            val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
-                            for (contact in listContacts) {
-                                val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
-                                main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
-                            }
-                        }
-                    }
-                    main_mDbWorkerThread.postTask(printContacts)
-                }.show()
-        main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-        main_FloatingButtonAdd!!.visibility = View.VISIBLE
-        main_FloatingButtonSend!!.visibility = View.GONE
-        main_SearchBar!!.visibility = View.VISIBLE
-        main_MailButton!!.visibility = View.GONE
-        main_SMSButton!!.visibility = View.GONE
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {

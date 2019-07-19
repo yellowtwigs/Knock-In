@@ -37,17 +37,16 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.group.AddContactToGroup"></activity>
+        <activity android:name=".controller.activity.group.AddContactToGroup" />
         <activity android:name=".controller.activity.group.GroupActivity" />
         <activity android:name=".controller.activity.MultiChannelActivity" />
         <activity
             android:name=".controller.activity.NotificationAlarmActivity"
             android:showOnLockScreen="true"
             android:turnScreenOn="true" />
+        <activity android:name=".controller.activity.MultiSelectActivity" />
         <activity android:name=".controller.activity.group.GroupManagerActivity"/>
-        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
         <activity android:name=".controller.activity.firstLaunch.SynchronizeContactActivity" />
-        <activity android:name=".controller.activity.firstLaunch.AcceptNotificationActivity" />
         <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity" />
         <activity android:name=".controller.activity.PhoneLogActivity" />
         <activity android:name=".controller.activity.HelpActivity" />
@@ -102,12 +101,12 @@
             android:value="@string/facebook_app_id" />
 
         <!--<receiver-->
-            <!--android:name=".model.MyReceiver"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="true">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".model.MyReceiver"-->
+        <!--android:enabled="true"-->
+        <!--android:exported="true">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
         <receiver android:name=".controller.NotificationSender" />
     </application>

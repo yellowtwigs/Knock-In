@@ -102,7 +102,7 @@ class NotificationListener : NotificationListenerService() {
                         gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
                 if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier!="com.samsung.android.incallui") {
-                    if (!notification.platform.equals(this.packageName)) {
+                    if (notification.platform != this.packageName) {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                     }
 
@@ -117,7 +117,7 @@ class NotificationListener : NotificationListenerService() {
                     }
                     if (contact != null) {
 
-                        println("I know this contact" + contact)
+                        println("I know this contact$contact")
                         when {
                             contact.contactDB!!.contactPriority == 2 -> {
                                 val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
@@ -145,7 +145,7 @@ class NotificationListener : NotificationListenerService() {
                         }
                     } else {
                         println("I don't know this contact" + contact)
-                        if (sbn.packageName.equals(MESSAGE_PACKAGE) || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
+                        if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
                             val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
                             if (screenListener.isKeyguardLocked) {
                                 println("screenIsLocked")

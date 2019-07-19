@@ -14,7 +14,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
@@ -26,20 +25,20 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.ContactGridViewAdapter
 import com.example.knocker.controller.ContactRecyclerViewAdapter
 import com.example.knocker.controller.NotificationListener
+import com.example.knocker.controller.SelectContactAdapter
 import com.example.knocker.controller.activity.*
 import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
-import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
@@ -54,7 +53,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
-class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
+class GroupActivity : AppCompatActivity(){
     private var drawerLayout: DrawerLayout? = null
 
     //region ========================================= Var or Val ===========================================
@@ -163,14 +162,11 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
 
         //region ======================================= FindViewById =======================================
 
-        group_FloatingButtonAdd = findViewById(R.id.main_floating_button_open_id)
-        group_FloatingButtonAdd!!.visibility=View.GONE
-
         group_FloatingButtonSend = findViewById(R.id.main_floating_button_send_id)
 
         group_BottomNavigationView = findViewById(R.id.navigation)
 
-        group_BottomNavigationView!!.menu.getItem(2).isChecked = true
+        group_BottomNavigationView!!.menu.getItem(1).isChecked = true
         group_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         // Search bar
@@ -199,7 +195,6 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         //region ======================================= DrawerLayout =======================================
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
         val nav_item = menu.findItem(R.id.nav_home)
@@ -270,9 +265,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         if (group_GridView != null) {
             if (sharedPreferences.getString("tri", "nom") == "nom") {
                 gestionnaireContacts!!.sortContactByFirstNameAZ()
-            } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+            } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                 gestionnaireContacts!!.sortContactByPriority()
-            }else{
+            } else {
                 gestionnaireContacts!!.sortContactByGroup()
             }
 
@@ -329,7 +324,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         }
 
         if (group_RecyclerView != null) {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             group_RecyclerView!!.adapter = recyclerViewAdapter
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -341,13 +336,13 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
 
             group_RecyclerView!!.setOnClickListener {
                 if (group_RecyclerView!!.adapter is SelectContactAdapter && !firstClick) {
-                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                    val adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                     group_RecyclerView!!.adapter = adapter
 //                    adapter.itemSelected(adapter.)
 
                     adapter.notifyDataSetChanged()
                     if (adapter.listOfItemSelected.size == 0) {
-                        group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                         group_FloatingButtonAdd!!.visibility = View.GONE
                         group_FloatingButtonSend!!.visibility = View.GONE
                         group_SearchBar!!.visibility = View.VISIBLE
@@ -543,8 +538,8 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                     gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, length)
                     group_GridView!!.adapter = gridViewAdapter
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, length, gestionnaireContacts)
                     group_RecyclerView!!.adapter = recyclerViewAdapter
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, length)
                     recyclerViewAdapter!!.notifyDataSetChanged()
                 }
             }
@@ -627,7 +622,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                 group_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
             }else{
-                group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                 group_FloatingButtonAdd!!.visibility = View.GONE
                 group_FloatingButtonSend!!.visibility = View.GONE
                 group_SearchBar!!.visibility = View.VISIBLE
@@ -639,7 +634,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                 main_groupButton!!.visibility = View.GONE
             }
 
-            saveGroupMultiSelect(listOfItemSelected,len)
+            saveGroupMultiSelect(listOfItemSelected, len)
         }
         //endregion
 
@@ -686,10 +681,10 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         val tri = sharedPreferences.getString("tri", "nom")
         if (tri == "nom") {
             triNom.isChecked = true
-        } else if(tri=="priorite") {
+        } else if (tri == "priorite") {
             triPrio.isChecked = true
-        }else{
-            triGroup.isChecked=true
+        } else {
+            triGroup.isChecked = true
         }
         return true
     }
@@ -739,9 +734,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                     val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         contactListDb.sortContactByPriority()
-                    }else{
+                    } else {
                         contactListDb.sortContactByGroup()
                     }
                     contactListDb.contacts.retainAll(filteredContact)
@@ -751,8 +746,8 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                     }
                 } else {
                     item.isChecked = true
@@ -765,9 +760,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         gestionnaireContacts!!.sortContactByPriority()
-                    }else{
+                    } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
                     gestionnaireContacts!!.contacts.retainAll(filteredContact)
@@ -776,8 +771,8 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 }
@@ -796,9 +791,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                     val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         contactListDb.sortContactByPriority()
-                    }else{
+                    } else {
                         contactListDb.sortContactByGroup()
                     }
                     contactListDb.contacts.retainAll(filteredContact)
@@ -808,8 +803,8 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 } else {
@@ -822,9 +817,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else if(sharedPreferences.getString("tri", "nom") == "priorite") {
+                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
                         gestionnaireContacts!!.sortContactByPriority()
-                    }else{
+                    } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
                     gestionnaireContacts!!.contacts.retainAll(filteredContact)
@@ -832,7 +827,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
 
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
@@ -849,8 +844,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -868,8 +864,9 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
 
@@ -879,7 +876,7 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                 }
             }
             R.id.trie_par_group -> {
-                if(!item.isChecked) {
+                if (!item.isChecked) {
                     item.setChecked(true);
                     gestionnaireContacts!!.sortContactByGroup()
                     val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
@@ -888,8 +885,8 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -933,21 +930,6 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
-    }
-
-    override fun onDrawerStateChanged(newState: Int) {
-
-    }
-
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        gridViewAdapter!!.closeMenu()
-    }
-
-    override fun onDrawerClosed(drawerView: View) {
-    }
-
-    override fun onDrawerOpened(drawerView: View) {
-        gridViewAdapter!!.closeMenu()
     }
 
     fun longGridItemClick(len: Int, position: Int) {
@@ -1138,7 +1120,6 @@ class GroupActivity : AppCompatActivity(), DrawerLayout.DrawerListener{
         return -1
     }
 
-    //TODO: Put an Material Alert Dialog
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
         val editText = EditText(this)
         editText.hint = "group" + group_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size

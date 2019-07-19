@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.firstLaunch
+package com.example.knocker.controller.activity
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
-import com.example.knocker.controller.activity.MainActivity
+import com.example.knocker.controller.SelectContactAdapter
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -121,7 +121,7 @@ class MultiSelectActivity : AppCompatActivity() {
         } else if (contactList.size == 1) {
             message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, "contact :")
             if (contactList.size == 1) {
-                val contact = contactList.get(0)
+                val contact = contactList[0]
                 message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
         } else {

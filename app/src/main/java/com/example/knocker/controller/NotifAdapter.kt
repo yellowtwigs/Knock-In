@@ -16,6 +16,7 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import com.example.knocker.R
@@ -68,8 +69,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
-//        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as Button
-//      val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as AppCompatEditText
+        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as AppCompatImageView
+        val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as AppCompatEditText
 
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)

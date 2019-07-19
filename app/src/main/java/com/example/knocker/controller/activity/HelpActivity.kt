@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
+import com.google.android.material.navigation.NavigationView
 
 /**
  * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de knocker
@@ -31,9 +32,9 @@ class HelpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
-        }else{
+        } else {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_help)
@@ -55,7 +56,43 @@ class HelpActivity : AppCompatActivity() {
         help_activity_ContactUs = findViewById(R.id.help_activity_contact_us_id)
         help_activity_Terms = findViewById(R.id.help_activity_terms_id)
         help_activity_Infos = findViewById(R.id.help_activity_infos_id)
+
+        //endregion
+
+        //region ======================================= DrawerLayout =======================================
+
+        // Drawerlayout
         help_activity_DrawerLayout = findViewById(R.id.phone_log_drawer_layout)
+
+        val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
+        val menu = navigationView.menu
+        val nav_item = menu.findItem(R.id.nav_notif_config)
+        nav_item.isChecked = true
+
+        navigationView!!.menu.getItem(3).isChecked = true
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            help_activity_DrawerLayout!!.closeDrawers()
+
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this@HelpActivity, MainActivity::class.java))
+                }
+                R.id.nav_informations -> startActivity(Intent(this@HelpActivity, EditInformationsActivity::class.java))
+                R.id.nav_screen_config -> startActivity(Intent(this@HelpActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_data_access -> {
+                }
+                R.id.nav_knockons -> startActivity(Intent(this@HelpActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_statistics -> {
+                }
+                R.id.nav_help -> startActivity(Intent(this@HelpActivity, HelpActivity::class.java))
+            }
+
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            drawer.closeDrawer(GravityCompat.START)
+            true
+        }
 
         //endregion
 

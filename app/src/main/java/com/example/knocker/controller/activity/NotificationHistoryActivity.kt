@@ -350,7 +350,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_notification, menu)////////////////////////////////////////////////////
+        inflater.inflate(R.menu.menu_notifications, menu)////////////////////////////////////////////////////
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getString("tri", "date") == "date") {
             menu!!.findItem(R.id.notif_tri_par_date).setChecked(true)

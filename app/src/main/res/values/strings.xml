@@ -267,10 +267,10 @@
     <!-- region Synchronize Contact -->
 
     <string name="synchronise_contact_title">Synchronize contacts</string>
-    <string name="synchronise_contact_synchronise_long_text">Synchronize your phone contacts to import their details in Knocker. You will be able to easily communicate with them and and change their priotity</string>
+    <string name="synchronise_contact_synchronise_long_text">Synchronize your phone contacts to import their details in Knocker. You will be able to easily communicate with them and change their priotity</string>
     <string name="synchronise_contact_synchronise_button_yes">Synchronize</string>
     <string name="synchronise_contact_synchronise_button_no">Do not synchronize</string>
-    <string name="synchronise_contact_synchronise_toast">Contacts aere synchronized</string>
+    <string name="synchronise_contact_synchronise_toast">Contacts are synchronized</string>
     <string name="synchronise_contact_alert_dialog">You can synchronize your contacts later from the navigation menu via the "Synchronize your contacts" tab</string>
 
     <!-- endregion -->
@@ -320,7 +320,7 @@
     <!-- region AlertDialog permission overlay !-->
 
     <string name="alert_dialog_overlay_title">Knocker</string>
-    <string name="alert_dialog_overlay_message">Do you want to authorize Knocker to display priority notifications</string>
+    <string name="alert_dialog_overlay_message">Do you want to authorize Knocker to display priority notifications ?</string>
 
     <!-- endregion !-->
 

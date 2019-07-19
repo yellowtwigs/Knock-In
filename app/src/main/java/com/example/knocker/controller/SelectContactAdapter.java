@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.firstLaunch;
+package com.example.knocker.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;

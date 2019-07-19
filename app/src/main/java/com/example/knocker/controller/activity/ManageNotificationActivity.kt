@@ -173,7 +173,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.putBoolean("serviceNotif", false)
                 edit.putBoolean("popupNotif", false)
                 edit.putBoolean("mask_prio_1", false)
-                edit.commit()
+                edit.apply()
             }
         }
         switchReminder.setOnCheckedChangeListener{ _, _ ->
@@ -197,7 +197,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
 
 
-        viewHour.setOnClickListener({
+        viewHour.setOnClickListener {
             val timePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener(
                     function = { view, h, m ->
                         val editor = sharedPreferences.edit()
@@ -211,7 +211,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                     }
             ), hour, minute, true)
             timePickerDialog.show()
-        })
+        }
 
     }
 

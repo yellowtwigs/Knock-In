@@ -1,33 +1,25 @@
 package com.example.knocker.controller.activity
 
 import android.Manifest
-import android.app.PendingIntent.getActivity
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.ContactListViewAdapter
-import com.example.knocker.controller.activity.firstLaunch.SelectContactAdapter
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import android.telephony.SmsManager
-import android.text.TextUtils
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.knocker.controller.MessageListAdapter
-import com.example.knocker.model.Message
 
 
 class MultiChannelActivity : AppCompatActivity() {
@@ -99,23 +91,23 @@ class MultiChannelActivity : AppCompatActivity() {
 
 
         multi_channel_SendMessageButton!!.setOnClickListener {
-            if (checkPermission(Manifest.permission.SEND_SMS)) {
-                if (multi_channel_SendMessageEditText!!.text.toString() != "") {
-                    if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
+            if (multi_channel_SendMessageEditText!!.text.toString() != "") {
+                if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
+                    if (checkPermission(Manifest.permission.SEND_SMS)) {
                         multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
-                        refreshActivity()
+                    } else {
+                        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
+                        Toast.makeText(this, "No Permission", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
-                Toast.makeText(this, "No Permission", Toast.LENGTH_SHORT).show()
-            }
 
-            if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
-                multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+                if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
+                    multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+                }
+
                 refreshActivity()
+            } else {
+                Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -168,27 +160,30 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private fun multiChannelMailClick(listOfMail: ArrayList<String>, msg: String) {
 
+//        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
+//        val emailIntent = Intent(Intent.ACTION_SEND)
+//
+//        emailIntent.type = "text/plain"
+//        emailIntent.putExtra(Intent.EXTRA_EMAIL, contact)
+//        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
+//        emailIntent.putExtra(Intent.EXTRA_TEXT, msg)
+//
+//        try {
+//            startActivity(Intent.createChooser(emailIntent, "Send email using..."))
+//        } catch (ex: ActivityNotFoundException) {
+//            Toast.makeText(this, "No email clients installed.", Toast.LENGTH_SHORT).show()
+//        }
+
+        val intent = Intent(Intent.ACTION_SEND)
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
-        val emailIntent = Intent(Intent.ACTION_SEND)
 
-        emailIntent.type = "text/plain"
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, contact)
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
-        emailIntent.putExtra(Intent.EXTRA_TEXT, msg)
+        intent.putExtra(Intent.EXTRA_EMAIL, contact);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
+        intent.putExtra(Intent.EXTRA_TEXT, msg)
 
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Send email using..."))
-        } catch (ex: ActivityNotFoundException) {
-            Toast.makeText(this, "No email clients installed.", Toast.LENGTH_SHORT).show()
-        }
-        //val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
-        //val intent = Intent(Intent.ACTION_SEND)
-        //intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
-        //intent.data = Uri.parse("mailto:")
-        //intent.type = "message/rfc822"
-        //intent.putExtra(Intent.EXTRA_SUBJECT, "")
-        //intent.putExtra(Intent.EXTRA_TEXT, "")
-        //startActivity(intent)
+        intent.type = "message/rfc822";
+
+        startActivity(Intent.createChooser(intent, "Select Email Sending App :"));
     }
 
     private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {
