@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -23,6 +25,7 @@ import com.example.knocker.controller.CircularImageView;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -31,11 +34,13 @@ public class AddContactToGroupAdapter extends BaseAdapter {
     private List<ContactWithAllInformation> listContacts;
     private Context context;
     private LayoutInflater layoutInflater;
+    private ArrayList<ContactDB> selectContact;
 
     public AddContactToGroupAdapter(Context context, List<ContactWithAllInformation> listContacts) {
         this.context = context;
         this.listContacts = listContacts;
         layoutInflater = LayoutInflater.from(context);
+        selectContact = new ArrayList<ContactDB>();
     }
 
     @Override
@@ -85,9 +90,19 @@ public class AddContactToGroupAdapter extends BaseAdapter {
             contactName = contactName.substring(0, 15) + "..";
         }
         holder.contactFirstNameView.setText(contactName);
-
+        holder.contactSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if (isChecked)
+                    selectContact.add(contact);
+                else
+                    selectContact.remove(contact);
+            }
+        });
         return listview;
     }
+
+    public List<ContactDB> getAllSelectContact() { return selectContact; }
 
     private int randomDefaultImage(int avatarId, String createOrGet) {
         if (createOrGet.equals("Create")) {

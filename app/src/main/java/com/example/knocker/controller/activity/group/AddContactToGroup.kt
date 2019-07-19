@@ -1,5 +1,6 @@
 package com.example.knocker.controller.activity.group
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -7,14 +8,18 @@ import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
+import com.example.knocker.controller.activity.NotificationHistoryActivity
 import com.example.knocker.model.ContactsRoomDatabase
+import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.example.knocker.model.ModelDB.LinkContactGroup
 
 class AddContactToGroup : AppCompatActivity() {
 
     private var contactsDatabase: ContactsRoomDatabase? = null
     private var main_ListView: ListView? = null
     private var addContactToGroupAdapter: AddContactToGroupAdapter? = null
+    private var groupId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +33,7 @@ class AddContactToGroup : AppCompatActivity() {
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
 
-        val groupId = intent.getIntExtra("GroupId", 0)
+        groupId = intent.getIntExtra("GroupId", 0)
         var allContactNotInGroup = listOf<ContactWithAllInformation>()
         if (groupId != 0)
             allContactNotInGroup = getContactNotInGroupe(groupId)
@@ -45,11 +50,19 @@ class AddContactToGroup : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_validate -> {
-                println("VALIDATION")
+                addToGroup(addContactToGroupAdapter!!.allSelectContact, groupId)
+                startActivity(Intent(this, GroupActivity::class.java))
             }
         }
     return super.onOptionsItemSelected(item)
 }
+
+    fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
+        listContact.forEach {
+            val link = LinkContactGroup(groupId, it.id!!)
+            contactsDatabase!!.LinkContactGroupDao().insert(link)
+        }
+    }
 
     fun getContactNotInGroupe(groupId: Int): List<ContactWithAllInformation> {
         val allInGroup = mutableListOf<ContactWithAllInformation>()

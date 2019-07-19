@@ -259,7 +259,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                 }
 
-                
+
                 ((MainActivity) context).longRecyclerItemClick(position);
                 return true;
             }
