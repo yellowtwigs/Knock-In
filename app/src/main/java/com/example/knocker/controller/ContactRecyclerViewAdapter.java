@@ -120,7 +120,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
 
         }
-        if (len == 1) {
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
                 holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -128,7 +127,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 System.out.println(contact.getProfilePicture());
                 holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
             }
-        }
+
 
         String contactName = contact.getFirstName() + " " + contact.getLastName();
 
