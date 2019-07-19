@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var main_SMSButton: FloatingActionButton? = null
     private var main_MailButton: FloatingActionButton? = null
-    private var main_groupButton: FloatingActionButton? = null
 
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
@@ -183,7 +182,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
-        main_groupButton = findViewById(R.id.main_group_button)
 
         //endregion
 
@@ -312,7 +310,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                         main_MailButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
-                        main_groupButton!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -576,9 +573,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             monoChannelMailClick(listOfMailContactSelected)
         }
 
-        main_groupButton!!.setOnClickListener {
-            val iterator: IntIterator?
-            val listOfContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
             if (len > 1) {
                 val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
@@ -985,10 +979,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false mail")
             main_MailButton!!.visibility = View.GONE
         }
-        val params: ViewGroup.MarginLayoutParams = main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
-        params.bottomMargin = margin * i
-        main_groupButton!!.layoutParams = params
-        main_groupButton!!.visibility = View.VISIBLE
+
     }
 
     fun longRecyclerItemClick(position: Int) {
@@ -1000,7 +991,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_SearchBar!!.visibility = View.VISIBLE
             main_SMSButton!!.visibility = View.GONE
             main_MailButton!!.visibility = View.GONE
-            main_groupButton!!.visibility = View.GONE
+
         } else {
             listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
 
@@ -1120,7 +1111,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SearchBar!!.visibility = View.VISIBLE
         main_MailButton!!.visibility = View.GONE
         main_SMSButton!!.visibility = View.GONE
-        main_groupButton!!.visibility = View.GONE
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {

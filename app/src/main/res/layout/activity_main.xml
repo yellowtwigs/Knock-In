@@ -32,7 +32,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="320dp"
         android:background="@color/colorPrimary"
-        android:src="@drawable/ic_gmail"
+        android:src="@drawable/ic_gmail_floating"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/navigation"

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.knocker.R;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
+import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ModelDB.ContactDB;
@@ -151,17 +153,20 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
 
         holder.contactFirstNameView.setText(contactName);
-        String group = "no group";
-        GroupDB firstGroup = getItem(position).getFirstGroup(context);
-        if (firstGroup == null) {
-            System.out.println("no group" + contact.getFirstName() + " " + contact.getLastName());
-            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            assert roundedLayout != null;
-            roundedLayout.setColorFilter(context.getResources().getColor(R.color.greyColor), PorterDuff.Mode.MULTIPLY);
-            if (holder.groupWordingConstraint != null){
-                holder.groupWordingConstraint.setBackground(roundedLayout);
+        String group= "";
+        GroupDB firstGroup=getItem(position).getFirstGroup(context);
+        if(context instanceof GroupActivity){
+            holder.groupWordingConstraint.setVisibility(View.VISIBLE);
+            if(len==0){
+                holder.contactRoundedImageView.setVisibility(View.INVISIBLE);
             }
-        } else {
+        }
+        if(firstGroup==null){
+            System.out.println("no group"+contact.getFirstName()+" "+contact.getLastName());
+            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
+            holder.groupWordingConstraint.setBackground(roundedLayout);
+        }else{
             System.out.println("have group");
             group = firstGroup.getName();
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
@@ -402,7 +407,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             super(view);
 
             if (len == 0) {
-                //contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
+                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
                 constraintLayoutSmaller = view.findViewById(R.id.list_contact_item_layout_smaller);
                 constraintLayoutMenuSmaller = view.findViewById(R.id.list_contact_item_menu_smaller);
@@ -411,8 +416,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 whatsappCl = view.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
                 mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
                 editCl = view.findViewById(R.id.list_contact_item_smaller_constraint_edit);
-                groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
-                groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
+                groupWordingConstraint = view.findViewById(R.id.list_contact_item_wording_group_constraint_layout);
+                groupWordingTv = view.findViewById(R.id.list_contact_item_wording_group_tv);
 
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);

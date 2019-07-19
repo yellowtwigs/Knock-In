@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.knocker.R;
 import com.example.knocker.controller.CircularImageView;
 import com.example.knocker.controller.activity.MainActivity;
+import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ContactsRoomDatabase;
 import com.example.knocker.model.DbWorkerThread;
@@ -128,7 +129,11 @@ public class SelectContactAdapter extends BaseAdapter {
 
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
-        String group= "no group";
+        String group= "";
+        if(context instanceof GroupActivity){
+            holder.groupWordingConstraint.setVisibility(View.VISIBLE);
+
+        }
         if(listDB.isEmpty()){
             System.out.println("no group");
             Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);

@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
+import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
 import com.example.knocker.model.ContactsRoomDatabase;
@@ -164,12 +166,16 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
        // getItem(position).getFirstGroup(context);
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
-        String group= "no group";
+        String group= "";
         GroupDB firstGroup=getItem(position).getFirstGroup(context);
+        if(context instanceof GroupActivity){
+            holder.groupWordingConstraint.setVisibility(View.VISIBLE);
+
+        }
         if(firstGroup==null){
             System.out.println("no group"+contact.getFirstName()+" "+contact.getLastName());
             Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
-            roundedLayout.setColorFilter(context.getResources().getColor(R.color.greyColor), PorterDuff.Mode.MULTIPLY);
+            roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }else{
             System.out.println("have group");
@@ -178,6 +184,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }
+
         if (len == 3) {
             Spannable spanFistName = new SpannableString(firstname);
             spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -229,8 +236,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>11)
-                group= group.substring(0,9).concat("..");
+            if(group.length()>9)
+                group= group.substring(0,7).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
@@ -250,8 +257,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>10)
-                group= group.substring(0,8).concat("..");
+            if(group.length()>6)
+                group= group.substring(0,5).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
@@ -395,7 +402,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ((MainActivity) context).longGridItemClick(len, position);
+                if(context instanceof MainActivity) {
+                    ((MainActivity) context).longGridItemClick(len, position);
+                }else{
+                    ((GroupActivity) context).longGridItemClick(len,position);
+                }
                 return true;
             }
         };

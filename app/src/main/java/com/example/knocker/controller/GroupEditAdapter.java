@@ -1,6 +1,7 @@
 package com.example.knocker.controller;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -14,8 +15,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
+import com.example.knocker.model.ContactsRoomDatabase;
+import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +48,26 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
             @Override
             public void onClick(View v) {
                 System.out.println("click close");
-                listGroup.remove(position);
+                new MaterialAlertDialogBuilder(context)
+                        .setTitle("Enlever du groupe")
+                        .setMessage("Vous allez enlever"+ contact.getContactDB().getFirstName()+" "+contact.getContactDB().getLastName()+" du groupe "+listGroup.get(position).getName())
+                        .setPositiveButton(R.string.edit_contact_validate, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+                                DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+                                mDbWorkerThread.start();
+                                ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(),listGroup.get(position).getId().intValue());
+
+                                listGroup.remove(position);
+                                notifyDataSetChanged();
+                            }
+                        }).setNegativeButton("annuler", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                        }).show();
+
                // holder.layoutGroup.setVisibility(View.GONE);
-                notifyDataSetChanged();
             }
         });
         Drawable drawable= context.getDrawable(R.drawable.rounded_rectangle_group);

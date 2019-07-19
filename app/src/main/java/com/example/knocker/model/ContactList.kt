@@ -126,12 +126,29 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     fun sortContactByGroup(){
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase!!.contactsDao().getContactAllInfo() }
+        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
         val result = executorService.submit(callDb)
         val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
-        listChangement.sortByDescending{it.getFirstGroup(context)?.name}//selector(listChangement.get(i))}
-
+        val listTmp:ArrayList<ContactWithAllInformation> = ArrayList()
+        //listTmp.addAll(listChangement)
+        for(i in listChangement){
+            if(i.getFirstGroup(context)==null){
+                listTmp.add(i)
+            }
+        }
+        println("---list group:---")
+        for (i in listTmp)
+            println("contact "+i.contactDB)
+        val listOfContactWithGroup:ArrayList<ContactWithAllInformation> = ArrayList()
+        listOfContactWithGroup.addAll(listChangement)
+        listOfContactWithGroup.removeAll(listTmp)
+        listOfContactWithGroup.sortBy{it.getFirstGroup(context)?.name?.toUpperCase()}//selector(listChangement.get(i))}
+        listChangement.removeAll(listOfContactWithGroup)
+        println("------------------------list group 2:--------------------------------------------------------------")
+        for (i in listOfContactWithGroup)
+            println("contact "+i.contactDB)
+        listChangement.addAll(0,listOfContactWithGroup)
         contacts=listChangement
     }
 
