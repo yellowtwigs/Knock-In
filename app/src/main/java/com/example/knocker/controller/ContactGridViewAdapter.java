@@ -213,8 +213,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>12)
-                group= group.substring(0,10).concat("..");
+            if(group.length()>8)
+                group= group.substring(0,7).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);

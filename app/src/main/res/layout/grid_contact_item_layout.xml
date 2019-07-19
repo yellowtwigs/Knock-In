@@ -17,7 +17,6 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_letter_k"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +59,6 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/rounded_rectangle_group"
-            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

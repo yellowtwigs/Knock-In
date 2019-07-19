@@ -136,6 +136,111 @@
                 app:layout_constraintStart_toEndOf="@+id/activity_settings_imageView_5_contact" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/activity_settings_change_nb_contact_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:padding="2dp"
+            android:text="@string/manage_my_screen_number_of_line_group"
+            android:textColor="?attr/textColor"
+            android:textSize="@dimen/settings_subtitle_size"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selector_relative_layout_with_border"
+
+            android:backgroundTint="?attr/backgroundColor"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activity_settings_imageView_0_contact_group"
+                android:layout_width="70dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_user_green"
+                app:layout_constraintBottom_toTopOf="@+id/activity_settings_imageView_4_contact_group"
+                app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_1_contact_group"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activity_settings_imageView_1_contact_group"
+                android:layout_width="70dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_user_green"
+                app:layout_constraintBottom_toTopOf="@+id/activity_settings_imageView_5_contact_group"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activity_settings_imageView_3_contact_group"
+                android:layout_width="70dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_user_green"
+                app:layout_constraintBottom_toTopOf="@+id/activity_settings_imageView_6_contact_group"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/activity_settings_imageView_1_contact_group" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activity_settings_imageView_4_contact_group"
+                android:layout_width="70dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_user_green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_5_contact_group"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activity_settings_imageView_5_contact_group"
+                android:layout_width="70dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_user_green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activity_settings_imageView_6_contact_group"
+                android:layout_width="70dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_user_green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/activity_settings_imageView_5_contact_group" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/manage_theme_title"
@@ -226,14 +331,15 @@
                 android:id="@+id/manage_call_popup_long_text"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:text="@string/manage_my_screen_contact_popup_long_text"
                 android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_long_text_size"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/manage_call_popup_title" />
+                app:layout_constraintTop_toBottomOf="@+id/manage_call_popup_title"
+                app:layout_constraintVertical_bias="1.0" />
 
 
             <Switch
