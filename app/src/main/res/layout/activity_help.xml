@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
         tools:context=".controller.activity.HelpActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -52,7 +52,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/help_activity_tutorial"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -88,7 +88,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/help_activity_contact_us"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
@@ -124,7 +124,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/help_activity_contact_terms_of_use"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
@@ -160,7 +160,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/help_activity_contact_generals_informations"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView7"

@@ -10,6 +10,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 
 /**
@@ -23,6 +25,7 @@ class HelpActivity : AppCompatActivity() {
     var help_activity_ContactUs: ConstraintLayout? = null
     var help_activity_Terms: ConstraintLayout? = null
     var help_activity_Infos: ConstraintLayout? = null
+    var help_activity_DrawerLayout: DrawerLayout? = null
 
     @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +45,7 @@ class HelpActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
 
         //endregion
 
@@ -52,10 +55,12 @@ class HelpActivity : AppCompatActivity() {
         help_activity_ContactUs = findViewById(R.id.help_activity_contact_us_id)
         help_activity_Terms = findViewById(R.id.help_activity_terms_id)
         help_activity_Infos = findViewById(R.id.help_activity_infos_id)
+        help_activity_DrawerLayout = findViewById(R.id.phone_log_drawer_layout)
 
         //endregion
 
         //region ==================================== SetOnClickListener ====================================
+
         val onClick = View.OnClickListener {
             if (it.id == help_activity_FAQ!!.id) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/tutorial")))
@@ -89,9 +94,7 @@ class HelpActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                val loginIntent = Intent(this@HelpActivity, MainActivity::class.java)
-                startActivity(loginIntent)
-                finish()
+                help_activity_DrawerLayout!!.openDrawer(GravityCompat.START)
                 return true
             }
         }

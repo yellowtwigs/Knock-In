@@ -100,12 +100,11 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_phone_book -> {
+            R.id.navigation_contacts -> {
                 startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
-                startActivity(Intent(this@PhoneLogActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
@@ -126,9 +125,9 @@ class PhoneLogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
-        }else{
+        } else {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_phone_log)
@@ -210,7 +209,7 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_DrawerLayout = findViewById(R.id.phone_log_drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_address_book)
+        val nav_item = menu.findItem(R.id.nav_home)
         nav_item.isChecked = true
 
         navigationView!!.menu.getItem(0).isChecked = true
@@ -220,9 +219,8 @@ class PhoneLogActivity : AppCompatActivity() {
             phone_log_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_address_book -> {
-                    startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java))
-                }
+                R.id.nav_home -> startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java))
+                R.id.nav_groups -> startActivity(Intent(this@PhoneLogActivity, GroupActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@PhoneLogActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@PhoneLogActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@PhoneLogActivity, ManageMyScreenActivity::class.java))
@@ -345,9 +343,9 @@ class PhoneLogActivity : AppCompatActivity() {
 
         phone_log_ButtonAddContact!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                    val intent = Intent(this@PhoneLogActivity, AddNewContactActivity::class.java)
-                    intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
-                    startActivity(intent)
+                val intent = Intent(this@PhoneLogActivity, AddNewContactActivity::class.java)
+                intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
+                startActivity(intent)
             } else {
                 Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }

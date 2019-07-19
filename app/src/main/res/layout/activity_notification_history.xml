@@ -31,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:alpha="0.70"
-                android:backgroundTint="?attr/backgroundColor"
+                android:background="@color/transparentColor"
+                android:backgroundTint="?attr/transparentColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

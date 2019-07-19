@@ -26,7 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
-class GroupActivity : AppCompatActivity(){
+class GroupActivity : AppCompatActivity() {
 
     //region ========================================= Var or Val ===========================================
 
@@ -34,33 +34,9 @@ class GroupActivity : AppCompatActivity(){
     private var group_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var group_mDbWorkerThread: DbWorkerThread
 
-    private var group_BottomNavigationView: BottomNavigationView? = null
-
     private var group_NavigationView: NavigationView? = null
 
     private var recycler: RecyclerView? = null
-
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_phone_book -> {
-                startActivity(Intent(this@GroupActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_groups -> {
-                startActivity(Intent(this@GroupActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifcations -> {
-                startActivity(Intent(this@GroupActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@GroupActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
 
     //endregion
 
@@ -86,33 +62,29 @@ class GroupActivity : AppCompatActivity(){
 
         group_DrawerLayout = findViewById(R.id.group_drawer_layout)
         recycler = findViewById(R.id.group_list_view_id)
-        group_BottomNavigationView = findViewById(R.id.navigation)
-        group_NavigationView = findViewById<NavigationView>(R.id.nav_view)
-
+        group_NavigationView = findViewById(R.id.nav_view)
 
         //endregion
 
         recycler!!.setHasFixedSize(true)
-        group_BottomNavigationView!!.menu.getItem(2).isChecked = true
-        group_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         //region Navigation
 
         val menu = group_NavigationView!!.menu
-        val nav_item = menu.findItem(R.id.nav_address_book)
+        val nav_item = menu.findItem(R.id.nav_home)
         nav_item.isChecked = true
         val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
         nav_sync_contact.isVisible = true
 
-        group_NavigationView!!.menu.getItem(0).isChecked = true
+        group_NavigationView!!.menu.getItem(1).isChecked = true
 
         group_NavigationView!!.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             group_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_address_book -> {
-                    startActivity(Intent(this@GroupActivity, GroupActivity::class.java))
+                R.id.nav_home -> {
+                    startActivity(Intent(this@GroupActivity, MainActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@GroupActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@GroupActivity, ManageNotificationActivity::class.java))
@@ -125,7 +97,7 @@ class GroupActivity : AppCompatActivity(){
                 R.id.nav_help -> startActivity(Intent(this@GroupActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.group_drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
         }
@@ -156,10 +128,10 @@ class GroupActivity : AppCompatActivity(){
         val adapter: GroupAdapter
         if (len >= 3) {
             adapter = GroupAdapter(this, listContactGroup, len)
-            recycler!!.setLayoutManager(GridLayoutManager(this, len))
+            recycler!!.layoutManager = GridLayoutManager(this, len)
         } else {
             adapter = GroupAdapter(this, listContactGroup, 4)
-            recycler!!.setLayoutManager(GridLayoutManager(this, 4))
+            recycler!!.layoutManager = GridLayoutManager(this, 4)
         }
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
         val sectionAdapter = SectionGroupAdapter(this, R.layout.recycler_adapter_section, recycler, adapter)

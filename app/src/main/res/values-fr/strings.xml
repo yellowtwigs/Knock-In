@@ -36,9 +36,10 @@
 
     <string name="left_drawer_knockons">Knockons</string>
 
-    <string name="left_drawer_address_book">Mon carnet d\'adresses</string>
+    <string name="left_drawer_home">Accueil</string>
+    <string name="left_drawer_my_groups">Gérer mes groupes</string>
     <string name="left_drawer_information">Mes informations</string>
-    <string name="left_drawer_notif_config">Paramètres de notification</string>
+    <string name="left_drawer_notif_config">Gérer mes notifications</string>
     <string name="left_drawer_my_screen">Affichage</string>
 
     <string name="left_drawer_data_access">Accès aux données</string>
@@ -75,9 +76,9 @@
 
     <!--region Bottom Navigation View !-->
 
-    <string name="bottom_navigation_view_phone_book">Carnet d\'adresse</string>
-    <string name="bottom_navigation_view_notify_history">Interactions</string>
-    <string name="bottom_navigation_view_groups">Groupes</string>
+    <string name="bottom_navigation_view_phone_book">Contacts</string>
+    <string name="bottom_navigation_view_groups">Groups</string>
+    <string name="bottom_navigation_view_notify_history">Notifications</string>
     <string name="bottom_navigation_view_phone_log">Cockpit</string>
 
     <!-- endregion !-->

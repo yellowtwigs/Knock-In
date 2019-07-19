@@ -158,7 +158,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             assert roundedLayout != null;
             roundedLayout.setColorFilter(context.getResources().getColor(R.color.greyColor), PorterDuff.Mode.MULTIPLY);
-            holder.groupWordingConstraint.setBackground(roundedLayout);
+            if (holder.groupWordingConstraint != null){
+                holder.groupWordingConstraint.setBackground(roundedLayout);
+            }
         } else {
             System.out.println("have group");
             group = firstGroup.getName();
@@ -176,7 +178,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 group = group.substring(0, 9).concat("..");
             }
         }
-        holder.groupWordingTv.setText(group);
+        if(holder.groupWordingTv != null){
+            holder.groupWordingTv.setText(group);
+        }
         View.OnClickListener listener = new View.OnClickListener() {
             @SuppressLint("IntentReset")
             @Override

@@ -36,6 +36,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.controller.CircularImageView
+import com.example.knocker.controller.activity.group.GroupActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
@@ -124,9 +125,10 @@ class EditInformationsActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
 
-                R.id.nav_address_book -> {
+                R.id.nav_home -> {
                     startActivity(Intent(this@EditInformationsActivity, MainActivity::class.java))
                 }
+                R.id.nav_groups -> startActivity(Intent(this@EditInformationsActivity, GroupActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@EditInformationsActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {

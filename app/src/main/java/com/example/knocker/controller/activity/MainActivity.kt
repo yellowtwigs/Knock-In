@@ -97,10 +97,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_phone_book -> {
+            R.id.navigation_contacts -> {
             }
             R.id.navigation_groups -> {
-                startActivity(Intent(this@MainActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                //TODO
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_address_book)
+        val nav_item = menu.findItem(R.id.nav_home)
         nav_item.isChecked = true
         val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
         nav_sync_contact.isVisible = true
@@ -217,9 +217,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             drawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_address_book -> {
+                R.id.nav_home -> {
                     startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 }
+                R.id.nav_groups -> startActivity(Intent(this@MainActivity, GroupActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))

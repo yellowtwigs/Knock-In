@@ -4,9 +4,13 @@
         android:id="@+id/menu_top"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_address_book"
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_phone_book"
-            android:title="@string/left_drawer_address_book" />
+            android:title="@string/left_drawer_home" />
+        <item
+            android:id="@+id/nav_groups"
+            android:icon="@drawable/ic_groups"
+            android:title="@string/left_drawer_my_groups" />
         <item
             android:id="@+id/nav_informations"
             android:enabled="false"

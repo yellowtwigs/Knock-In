@@ -48,7 +48,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
-            R.id.navigation_phone_book -> {
+            R.id.navigation_contacts -> {
                 startActivity(Intent(this@NotificationHistoryActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
@@ -88,7 +88,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_notification_history)
         notification_Search_TextView=findViewById(R.id.notification_history_search_bar)
         notification_BottomNavigationView = findViewById(R.id.navigation)
-        notification_BottomNavigationView!!.menu.getItem(1).isChecked = true
+        notification_BottomNavigationView!!.menu.getItem(2).isChecked = true
         notification_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         //region ========================================= Toolbar ==========================================
@@ -119,9 +119,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_address_book -> {
+                R.id.nav_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
                 }
+                R.id.nav_groups -> startActivity(Intent(this@NotificationHistoryActivity, GroupActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this, ManageMyScreenActivity::class.java))

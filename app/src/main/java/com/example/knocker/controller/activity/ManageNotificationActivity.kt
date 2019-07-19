@@ -20,6 +20,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationSender
+import com.example.knocker.controller.activity.group.GroupActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import java.util.*
@@ -90,17 +91,17 @@ class ManageNotificationActivity : AppCompatActivity() {
         val nav_item = menu.findItem(R.id.nav_notif_config)
         nav_item.isChecked = true
 
-        navigationView!!.menu.getItem(2).isChecked = true
+        navigationView!!.menu.getItem(3).isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_address_book -> {
+                R.id.nav_home -> {
                     startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
                 }
-
+                R.id.nav_groups -> startActivity(Intent(this@ManageNotificationActivity, GroupActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
