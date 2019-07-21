@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationSender
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import java.util.*
@@ -101,7 +102,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
                 }
-                R.id.nav_groups -> startActivity(Intent(this@ManageNotificationActivity, GroupActivity::class.java))
+                R.id.nav_groups -> startActivity(Intent(this@ManageNotificationActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
@@ -232,6 +233,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             R.id.item_help -> {
                 MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.help)
+                        .setBackground(getDrawable(R.color.backgroundColor))
                         .setMessage(this.resources.getString(R.string.help_notification_manager))
                         .show()
             }

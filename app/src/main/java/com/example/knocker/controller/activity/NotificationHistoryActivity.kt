@@ -24,6 +24,7 @@ import com.example.knocker.R
 import com.example.knocker.controller.NotificationHistoryAdapterActivity
 import com.example.knocker.controller.NotificationListener
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
@@ -44,7 +45,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private var notification_history_DrawerLayout: DrawerLayout? = null
     private var notification_BottomNavigationView: BottomNavigationView? = null
-    private var notification_Search_TextView:TextView?= null
+    private var notification_Search_TextView: TextView? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
@@ -80,13 +81,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
-        }else{
+        } else {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_notification_history)
-        notification_Search_TextView=findViewById(R.id.notification_history_search_bar)
+        notification_Search_TextView = findViewById(R.id.notification_history_search_bar)
         notification_BottomNavigationView = findViewById(R.id.navigation)
         notification_BottomNavigationView!!.menu.getItem(2).isChecked = true
         notification_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -122,7 +123,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
                 }
-                R.id.nav_groups -> startActivity(Intent(this@NotificationHistoryActivity, GroupActivity::class.java))
+                R.id.nav_groups -> startActivity(Intent(this@NotificationHistoryActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this, ManageMyScreenActivity::class.java))
@@ -197,7 +198,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
         }
 
-        notification_Search_TextView!!.addTextChangedListener(object: TextWatcher {
+        notification_Search_TextView!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
@@ -357,7 +358,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
 
             menu!!.findItem(R.id.notif_tri_par_priorite).setChecked(true)
-        }else if(sharedPreferences.getBoolean("filtre_message", true)){
+        } else if (sharedPreferences.getBoolean("filtre_message", true)) {
             menu!!.findItem(R.id.notif_tri_par_contact)
         }
         if (!sharedPreferences.getBoolean("filtre_message", true)) {
@@ -403,6 +404,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             R.id.item_help -> {
                 MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.help)
+                        .setBackground(getDrawable(R.color.backgroundColor))
                         .setMessage(this.resources.getString(R.string.help_notification_history))
                         .show()
             }
@@ -446,16 +448,16 @@ class NotificationHistoryActivity : AppCompatActivity() {
             val listTmp = mutableListOf<NotificationDB>()
             listTmp.addAll(notification_history_ListOfNotificationDB)
 
-            val stringSearch= notification_Search_TextView!!.text.toString().toLowerCase()
+            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             listTmp.addAll(notification_history_ListOfNotificationDB)
             if (!stringSearch.isEmpty()) {
-                val regex=(".*("+stringSearch+").*").toRegex()
+                val regex = (".*(" + stringSearch + ").*").toRegex()
                 listTmp.forEach {
-                    if (!(it.contactName.toLowerCase().matches(regex)|| it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
+                    if (!(it.contactName.toLowerCase().matches(regex) || it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
                         notification_history_ListOfNotificationDB.remove(it)
                     }
                 }
-            }else{
+            } else {
                 listTmp.forEach {
                     if (!isMessagingApp(it.platform)) {
                         notification_history_ListOfNotificationDB.remove(it)
@@ -467,12 +469,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
             val listTmp = mutableListOf<NotificationDB>()
-            val stringSearch= notification_Search_TextView!!.text.toString().toLowerCase()
+            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             listTmp.addAll(notification_history_ListOfNotificationDB)
             if (!stringSearch.isEmpty()) {
-                val regex=(".*"+stringSearch+".*").toRegex()
+                val regex = (".*" + stringSearch + ".*").toRegex()
                 listTmp.forEach {
-                    if (!it.contactName.toLowerCase().matches(regex)&& !it.description.toLowerCase().matches(regex)) {
+                    if (!it.contactName.toLowerCase().matches(regex) && !it.description.toLowerCase().matches(regex)) {
                         notification_history_ListOfNotificationDB.remove(it)
                     }
                 }
@@ -505,8 +507,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             sharedPreferences.getString("tri", "date") == "contact" -> {
 
-                val listNotif:ArrayList<NotificationDB> = arrayListOf()
-                listNotif.addAll( notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact() )
+                val listNotif: ArrayList<NotificationDB> = arrayListOf()
+                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
                 listNotif.retainAll(notification_history_ListOfNotificationDB);
                 val adapter = NotificationHistoryAdapterActivity(this, listNotif)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)

@@ -53,6 +53,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class GroupActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
 
@@ -65,7 +66,7 @@ class GroupActivity : AppCompatActivity() {
 
     private var group_SMSButton: FloatingActionButton? = null
     private var group_MailButton: FloatingActionButton? = null
-    private var main_groupButton: FloatingActionButton? = null
+    private var group_groupButton: FloatingActionButton? = null
 
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
@@ -174,7 +175,7 @@ class GroupActivity : AppCompatActivity() {
 
         group_MailButton = findViewById(R.id.main_gmail_button)
         group_SMSButton = findViewById(R.id.main_sms_button)
-        main_groupButton = findViewById(R.id.main_group_button)
+        group_groupButton = findViewById(R.id.main_group_button)
 
         //endregion
 
@@ -299,7 +300,7 @@ class GroupActivity : AppCompatActivity() {
 
                         group_MailButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
-                        main_groupButton!!.visibility = View.GONE
+                        group_groupButton!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -345,7 +346,7 @@ class GroupActivity : AppCompatActivity() {
 
                         group_MailButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
-                        main_groupButton!!.visibility = View.GONE
+                        group_groupButton!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -581,7 +582,7 @@ class GroupActivity : AppCompatActivity() {
             monoChannelMailClick(listOfMailContactSelected)
         }
 
-        main_groupButton!!.setOnClickListener {
+        group_groupButton!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
@@ -607,7 +608,7 @@ class GroupActivity : AppCompatActivity() {
 
                 group_MailButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
+                group_groupButton!!.visibility = View.GONE
             } else {
                 group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                 group_FloatingButtonSend!!.visibility = View.GONE
@@ -616,7 +617,7 @@ class GroupActivity : AppCompatActivity() {
 
                 group_MailButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
+                group_groupButton!!.visibility = View.GONE
             }
 
             saveGroupMultiSelect(listOfItemSelected, len)
@@ -974,23 +975,13 @@ class GroupActivity : AppCompatActivity() {
             println("false mail")
             group_MailButton!!.visibility = View.GONE
         }
-        val params: ViewGroup.MarginLayoutParams = main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
+        val params: ViewGroup.MarginLayoutParams = group_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin = margin * i
-        main_groupButton!!.layoutParams = params
-        main_groupButton!!.visibility = View.VISIBLE
+        group_groupButton!!.layoutParams = params
+        group_groupButton!!.visibility = View.VISIBLE
     }
 
-    fun longRecyclerItemClick(position: Int, view: View, contactViewHolder: ContactRecyclerViewAdapter.ContactViewHolder) {
-
-        contactViewHolder.contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
-        contactViewHolder.contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName)
-
-        view.tag = contactViewHolder
-
-        val contact = gestionnaireContacts!!.contacts[position].contactDB
-
-        contactViewHolder.contactFirstNameView.text = contact!!.firstName
-
+    fun longRecyclerItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
@@ -998,21 +989,12 @@ class GroupActivity : AppCompatActivity() {
             group_SearchBar!!.visibility = View.VISIBLE
             group_SMSButton!!.visibility = View.GONE
             group_MailButton!!.visibility = View.GONE
-            main_groupButton!!.visibility = View.GONE
 
-            if (contact.profilePicture64 != "") {
-                val bitmap = base64ToBitmap(contact.profilePicture64)
-                contactViewHolder.contactRoundedImageView.setImageBitmap(bitmap)
-            } else {
-                contactViewHolder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.profilePicture, "Get")) //////////////
-            }
         } else {
-            contactViewHolder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected)
             listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
 
             group_FloatingButtonSend!!.visibility = View.VISIBLE
             group_SearchBar!!.visibility = View.GONE
-//            firstClick = false
 
             verifiedContactsChannel(listOfItemSelected)
         }
@@ -1124,7 +1106,7 @@ class GroupActivity : AppCompatActivity() {
         group_SearchBar!!.visibility = View.VISIBLE
         group_MailButton!!.visibility = View.GONE
         group_SMSButton!!.visibility = View.GONE
-        main_groupButton!!.visibility = View.GONE
+        group_groupButton!!.visibility = View.GONE
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {

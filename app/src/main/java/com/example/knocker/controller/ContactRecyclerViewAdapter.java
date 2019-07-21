@@ -120,13 +120,13 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
 
         }
-            if (!contact.getProfilePicture64().equals("")) {
-                Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                holder.contactRoundedImageView.setImageBitmap(bitmap);
-            } else {
-                System.out.println(contact.getProfilePicture());
-                holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-            }
+        if (!contact.getProfilePicture64().equals("")) {
+            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+            holder.contactRoundedImageView.setImageBitmap(bitmap);
+        } else {
+            System.out.println(contact.getProfilePicture());
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+        }
 
 
         String contactName = contact.getFirstName() + " " + contact.getLastName();
@@ -258,8 +258,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                 }
 
-
-                ((MainActivity) context).longRecyclerItemClick(position);
+                if (context instanceof GroupActivity) {
+                    ((GroupActivity) context).longRecyclerItemClick(position);
+                } else if (context instanceof GroupActivity) {
+                    ((MainActivity) context).longRecyclerItemClick(position);
+                }
                 return true;
             }
         };

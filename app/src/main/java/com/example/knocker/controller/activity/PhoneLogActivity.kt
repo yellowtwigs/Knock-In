@@ -34,6 +34,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.regex.Pattern
 import com.example.knocker.R
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.PhoneLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
@@ -105,6 +106,7 @@ class PhoneLogActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
+                startActivity(Intent(this@PhoneLogActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
@@ -220,7 +222,7 @@ class PhoneLogActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java))
-                R.id.nav_groups -> startActivity(Intent(this@PhoneLogActivity, GroupActivity::class.java))
+                R.id.nav_groups -> startActivity(Intent(this@PhoneLogActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@PhoneLogActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@PhoneLogActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@PhoneLogActivity, ManageMyScreenActivity::class.java))

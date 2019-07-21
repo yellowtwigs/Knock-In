@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
@@ -140,7 +141,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
                 }
-                R.id.nav_groups -> startActivity(Intent(this@ManageMyScreenActivity, GroupActivity::class.java))
+                R.id.nav_groups -> startActivity(Intent(this@ManageMyScreenActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> {

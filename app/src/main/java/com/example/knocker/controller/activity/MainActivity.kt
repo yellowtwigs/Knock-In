@@ -672,6 +672,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.help)
                         .setMessage(this.resources.getString(R.string.help_main))
+                        .setBackground(getDrawable(R.color.backgroundColor))
                         .show()
                 return true
             }
@@ -734,7 +735,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.mail_filter -> {
                 if (item.isChecked) {
-                    item.setChecked(false)
+                    item.isChecked = false
                     main_filter.remove("mail")
                     // duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
@@ -809,7 +810,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.tri_par_priorite -> {
                 if (!item.isChecked) {
-                    item.setChecked(true);
+                    item.isChecked = true;
                     gestionnaireContacts!!.sortContactByPriority()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
@@ -829,7 +830,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.trie_par_group -> {
                 if (!item.isChecked) {
-                    item.setChecked(true);
+                    item.isChecked = true
                     gestionnaireContacts!!.sortContactByGroup()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)

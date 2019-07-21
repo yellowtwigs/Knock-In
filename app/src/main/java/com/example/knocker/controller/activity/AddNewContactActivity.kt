@@ -206,6 +206,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
+                .setBackground(getDrawable(R.color.backgroundColor))
                 .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                 }
                 .show()
@@ -241,6 +242,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         .setMessage(R.string.add_new_contact_alert_dialog_message)
                         .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                         }
+                        .setBackground(getDrawable(R.color.backgroundColor))
                         .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                         }
                         .show()

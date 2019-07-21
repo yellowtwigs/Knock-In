@@ -440,7 +440,7 @@ class EditContactActivity : AppCompatActivity() {
                     MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                             .setTitle(R.string.edit_contact_alert_dialog_cancel_title)
                             .setMessage(R.string.edit_contact_alert_dialog_cancel_message)
-
+                            .setBackground(getDrawable(R.color.backgroundColor))
                             .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
                                 finish()
                             }
@@ -460,6 +460,7 @@ class EditContactActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 deleteContact()
                             }
+                            .setBackground(getDrawable(R.color.backgroundColor))
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                             }
                             .show()
