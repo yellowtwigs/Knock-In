@@ -3,7 +3,10 @@ package com.example.knocker.controller.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.*
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -15,30 +18,29 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
-import androidx.core.app.ActivityCompat
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.Group
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.knocker.*
+import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.CustomAdapterEditText
 import com.example.knocker.controller.GroupEditAdapter
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDetailDB
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.GroupDB
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -102,7 +104,7 @@ class EditContactActivity : AppCompatActivity() {
     private var recyclerGroup: RecyclerView? = null
     //endregion
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
@@ -149,12 +151,12 @@ class EditContactActivity : AppCompatActivity() {
 
         //disable keyboard
 
-        edit_contact_ParentLayout!!.setOnTouchListener { _, event ->
+        edit_contact_ParentLayout!!.setOnTouchListener { _, _ ->
             val view = this@EditContactActivity.currentFocus
             val imm = this@EditContactActivity.getSystemService(
                     Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (view != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
             true
         }
@@ -316,21 +318,21 @@ class EditContactActivity : AppCompatActivity() {
                 if (position == 0) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
                     edit_contact_RoundedImageView!!.visibility = View.GONE
-                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityZeroColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility = View.VISIBLE
                     println("red color choosen")
                 } else if (position == 1) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
                     edit_contact_RoundedImageView!!.visibility = View.GONE
-                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityOneColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility = View.VISIBLE
                 } else if (position == 2) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
                     edit_contact_RoundedImageView!!.visibility = View.GONE
-                    edit_contact_RoundedImageView!!.setBorderColor(getResources().getColor(R.color.priorityTwoColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(getResources().getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility = View.VISIBLE
                     println("yellow color choosen")
                     if (Build.VERSION.SDK_INT >= 23) {
