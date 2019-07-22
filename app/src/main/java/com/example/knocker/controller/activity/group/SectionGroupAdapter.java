@@ -104,8 +104,9 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+    @NotNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int typeView) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int typeView) {
         if (typeView == SECTION_TYPE) {
             final View view = LayoutInflater.from(mContext).inflate(mSectionResourceId, parent, false);
             view.setBackgroundResource(R.drawable.recycler_section);
@@ -117,7 +118,6 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NotNull final RecyclerView.ViewHolder sectionViewHolder, final int position) {
-
         if (isSectionHeaderPosition(position)) {
             int i = position + 1;
             System.out.println("position section" + position);
@@ -139,7 +139,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     int i = position + 1;
-                    ArrayList<String> groupMail = new ArrayList<String>();
+                    ArrayList<String> groupMail = new ArrayList<>();
                     while (!isSectionHeaderPosition(i) && i < getItemCount()) {
                         ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i));
                         groupMail.add(contact.getFirstMail());
@@ -152,7 +152,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     int i = position + 1;
-                    ArrayList<String> groupSms = new ArrayList<String>();
+                    ArrayList<String> groupSms = new ArrayList<>();
                     while (!isSectionHeaderPosition(i) && i < getItemCount()) {
                         ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i));
                         groupSms.add(contact.getFirstPhoneNumber());
@@ -161,6 +161,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     monoChannelSmsClick(groupSms);
                 }
             });
+
             ((SectionViewHolder) sectionViewHolder).menu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -170,12 +171,12 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            System.out.println("VALUES = "+item.getItemId());
-                            System.out.println("ok = "+R.id.menu_group_add_contact);
-                            System.out.println("ok = "+R.id.menu_group_delete_contacts);
-                            System.out.println("ok = "+R.id.menu_group_delete_group);
+                            System.out.println("VALUES = " + item.getItemId());
+                            System.out.println("ok = " + R.id.menu_group_add_contacts);
+                            System.out.println("ok = " + R.id.menu_group_delete_contacts);
+                            System.out.println("ok = " + R.id.menu_group_delete_group);
                             switch (item.getItemId()) {
-                                case R.id.menu_group_add_contact:
+                                case R.id.menu_group_add_contacts:
                                     System.out.println("add contact");
                                     Intent intent = new Intent(mContext, AddContactToGroup.class);
                                     intent.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());

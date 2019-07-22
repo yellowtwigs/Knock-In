@@ -17,14 +17,17 @@ import com.example.knocker.controller.CircularImageView;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Random;
 
 
-public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewHolder> {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.SimpleViewHolder> {
     private final Context context;
     private final List<ContactWithAllInformation> contactList;
     private final Integer len;
+
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
         public final TextView firstName;
         public final TextView lastName;
@@ -33,31 +36,32 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
 
         public SimpleViewHolder(View view) {
             super(view);
-            firstName = (TextView) view.findViewById(R.id.grid_adapter_contactFirstName);
-            lastName = (TextView) view.findViewById(R.id.grid_adapter_contactLastName);
-            circularImageView= (CircularImageView) view.findViewById(R.id.contactRoundedImageView);
-            groupConstraint=(ConstraintLayout) view.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
+            firstName = view.findViewById(R.id.grid_adapter_contactFirstName);
+            lastName = view.findViewById(R.id.grid_adapter_contactLastName);
+            circularImageView = view.findViewById(R.id.contactRoundedImageView);
+            groupConstraint = view.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
         }
     }
 
-    public GroupAdapter(Context context,List<ContactWithAllInformation> contactList,Integer len) {
+    public GroupAdapter(Context context, List<ContactWithAllInformation> contactList, Integer len) {
         this.context = context;
-        this.contactList=contactList;
-        this.len=len;
+        this.contactList = contactList;
+        this.len = len;
     }
 
-    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NotNull
+    public SimpleViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
         return new SimpleViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(SimpleViewHolder holder, final int position) {
-        ContactDB contact=getItem(position).getContactDB();
+    public void onBindViewHolder(@NotNull SimpleViewHolder holder, final int position) {
+        ContactDB contact = getItem(position).getContactDB();
+        assert contact != null;
         holder.firstName.setText(contact.getFirstName());
         holder.lastName.setText(contact.getLastName());
         holder.groupConstraint.setVisibility(View.GONE);
-
 
         ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.firstName.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.circularImageView.getLayoutParams();
@@ -91,12 +95,12 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.circularImageView.setImageBitmap(bitmap);
         } else {
-            holder.circularImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
+            holder.circularImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
 
     }
 
-    public ContactWithAllInformation getItem(int position){
+    public ContactWithAllInformation getItem(int position) {
         return contactList.get(position);
     }
 
@@ -111,34 +115,27 @@ public class GroupAdapter  extends RecyclerView.Adapter<GroupAdapter.SimpleViewH
     }
 
 
-
-
-
-    private int randomDefaultImage(int avatarId, String createOrGet) {
-        if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
-        } else if (createOrGet.equals("Get")) {
-            switch (avatarId) {
-                case 0:
-                    return R.drawable.ic_user_purple;
-                case 1:
-                    return R.drawable.ic_user_blue;
-                case 2:
-                    return R.drawable.ic_user_knocker;
-                case 3:
-                    return R.drawable.ic_user_green;
-                case 4:
-                    return R.drawable.ic_user_om;
-                case 5:
-                    return R.drawable.ic_user_orange;
-                case 6:
-                    return R.drawable.ic_user_pink;
-                default:
-                    return R.drawable.ic_user_blue;
-            }
+    private int randomDefaultImage(int avatarId) {
+        switch (avatarId) {
+            case 0:
+                return R.drawable.ic_user_purple;
+            case 1:
+                return R.drawable.ic_user_blue;
+            case 2:
+                return R.drawable.ic_user_knocker;
+            case 3:
+                return R.drawable.ic_user_green;
+            case 4:
+                return R.drawable.ic_user_om;
+            case 5:
+                return R.drawable.ic_user_orange;
+            case 6:
+                return R.drawable.ic_user_pink;
+            default:
+                return R.drawable.ic_user_blue;
         }
-        return -1;
     }
+
     private Bitmap base64ToBitmap(String base64) {
 
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);

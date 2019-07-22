@@ -49,13 +49,16 @@ class AddContactToGroup : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
             R.id.nav_validate -> {
                 addToGroup(addContactToGroupAdapter!!.allSelectContact, groupId)
                 startActivity(Intent(this, GroupManagerActivity::class.java))
             }
         }
-    return super.onOptionsItemSelected(item)
-}
+        return super.onOptionsItemSelected(item)
+    }
 
     fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
         listContact.forEach {
@@ -68,7 +71,7 @@ class AddContactToGroup : AppCompatActivity() {
         val allInGroup = mutableListOf<ContactWithAllInformation>()
         val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
         val allContact = contactsDatabase!!.contactsDao().getContactAllInfo()
-        allContact.forEach {all ->
+        allContact.forEach { all ->
             groupMember.forEach {
                 if (all.contactDB!!.id == it.contactDB!!.id) {
                     allInGroup.add(all)

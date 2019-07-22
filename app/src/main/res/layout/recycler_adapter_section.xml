@@ -6,63 +6,52 @@
     android:layout_height="wrap_content"
     android:background="@drawable/recycler_section">
 
-    <TextView
-        android:id="@+id/section_text"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
-        android:background="?attr/colorPrimary"
-        android:gravity="center|start"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:singleLine="true"
-        android:text=""
-        android:textAllCaps="true"
-        android:textSize="16sp"
-        android:textStyle="bold"
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_button_color_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
+        <TextView
+            android:id="@+id/section_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="test"
+            android:textColor="@color/darkColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/section_gmail_imageview"
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
+        android:focusable="true"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/section_more_imageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_rounded_gmail" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/section_sms_imageview"
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
+        android:focusable="true"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/section_gmail_imageview"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_sms" />
 
-    <ImageView
-        android:id="@+id/section_whatsapp_imageview"
-        android:layout_width="52dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/section_sms_imageview"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666"
-        app:srcCompat="@drawable/ic_whatsapp" />
-
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/section_more_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,6 +59,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.551"
         app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

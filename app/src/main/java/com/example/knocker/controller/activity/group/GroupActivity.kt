@@ -211,6 +211,7 @@ class GroupActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@GroupActivity, MainActivity::class.java))
                 }
+                R.id.nav_groups -> startActivity(Intent(this@GroupActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@GroupActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@GroupActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@GroupActivity, ManageMyScreenActivity::class.java))
@@ -1151,7 +1152,7 @@ class GroupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_group)
+        setContentView(R.layout.activity_group_manager)
 
         //region ========================================= Toolbar ==========================================
 

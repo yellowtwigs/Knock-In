@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.graphics.Color
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -38,7 +37,7 @@ class GroupManagerActivity:AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_group)
+        setContentView(R.layout.activity_group_manager)
 
         //region ========================================= Toolbar ==========================================
 
