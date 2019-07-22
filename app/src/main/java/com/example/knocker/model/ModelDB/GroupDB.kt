@@ -23,22 +23,25 @@ data class GroupDB(
          */
         @ColumnInfo(name = "profile_picture_str") val profilePicture: String        //image de profile du groupe
 ){
-         fun randomColorGroup(context: Context): Int {
-                println("id group" + this.id!!.toInt() + "modulo 3 égale" + this.id!!.toInt() % 3)
-                when (this.id.toInt() % 3) {
-                        0 -> {
-                                println("return 0")
-                                return context.resources.getColor(R.color.redColorDark)
-                        }
-                        1 -> {
-                                println("return 1")
-                                return context.resources.getColor(R.color.com_facebook_blue)
-                        }
-                        2 -> {
-                                println("return 2")
-                                return context.resources.getColor(R.color.rounded_button_pressed_blue)
-                        }
-                }
-                return R.color.lightGreyColor
+    fun randomColorGroup(context: Context): Int {
+        println("id group" + this.id!!.toInt() + "modulo 3 égale" + this.id!!.toInt() % 3)
+        when (this.id.toInt() % 5) {
+            0 -> {
+                return context.resources.getColor(R.color.red_tag_group)
+            }
+            1 -> {
+                return context.resources.getColor(R.color.blue_tag_group)
+            }
+            2 -> {
+                return context.resources.getColor(R.color.green_tag_group)
+            }
+            3 -> {
+                return context.resources.getColor(R.color.yellow_tag_group)
+            }
+            4 -> {
+                return context.resources.getColor(R.color.orange_tag_group)
+            }
         }
+        return R.color.lightGreyColor
+    }
 }

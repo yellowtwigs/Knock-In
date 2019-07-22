@@ -305,7 +305,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         holder.callCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
 
-        if (holder.groupWordingConstraint.getVisibility()==View.VISIBLE) {
+       /* if (holder.groupWordingConstraint.getVisibility()==View.VISIBLE) {
             System.out.println("is visible"+holder.contactFirstNameView.getText());
             if (lastSelectMenuLen1.getId() != holder.groupWordingConstraint.getId()) {
                 holder.groupWordingConstraint.setVisibility(View.GONE);
@@ -314,7 +314,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }else{
             System.out.println("is gone"+holder.contactFirstNameView.getText());
-        }
+        }*/
     }
 
     @Override
