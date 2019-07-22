@@ -71,9 +71,9 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
-        }else{
+        } else {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_add_new_contact)
@@ -135,6 +135,7 @@ class AddNewContactActivity : AppCompatActivity() {
         val priority_list = arrayOf(0, 1, 2)
         val array_adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, priority_list)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+
         //disable keyboard window
         add_new_contact_layout.setOnTouchListener { v, event ->
             val view = this@AddNewContactActivity.currentFocus
@@ -181,15 +182,15 @@ class AddNewContactActivity : AppCompatActivity() {
         println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
 
 
-        val phoneTagList= resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
-        val adapterPhoneTagList= ArrayAdapter(this,R.layout.spinner_item,phoneTagList)
+        val phoneTagList = resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
+        val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        add_new_contact_PhoneProperty!!.adapter=adapterPhoneTagList
+        add_new_contact_PhoneProperty!!.adapter = adapterPhoneTagList
 
-        val mailTagList= resources.getStringArray(R.array.add_new_contact_mail_arrays)
-        val adapterMailTagList= ArrayAdapter(this,R.layout.spinner_item,mailTagList)
+        val mailTagList = resources.getStringArray(R.array.add_new_contact_mail_arrays)
+        val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        add_new_contact_MailProperty!!.adapter=adapterMailTagList
+        add_new_contact_MailProperty!!.adapter = adapterMailTagList
         android.R.layout.simple_spinner_item
     }
 
@@ -198,7 +199,7 @@ class AddNewContactActivity : AppCompatActivity() {
     //demmande de confirmation de la création d'un contact en double
     private fun confirmationDuplicate(contactData: ContactDB) {
 
-        MaterialAlertDialogBuilder(this,R.style.AlertDialog)
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.add_new_contact_alert_dialog_title)
                 .setMessage(R.string.add_new_contact_alert_dialog_message)
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
@@ -221,7 +222,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    val alertDialog = AlertDialog.Builder(this,R.style.AlertDialog)
+                    val alertDialog = AlertDialog.Builder(this, R.style.AlertDialog)
                     alertDialog.setTitle(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_title))
                     alertDialog.setMessage(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_message))
 
@@ -238,7 +239,7 @@ class AddNewContactActivity : AppCompatActivity() {
             }
             R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName)) {
 
-                MaterialAlertDialogBuilder(this,R.style.AlertDialog)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.add_new_contact_alert_dialog_title)
                         .setMessage(R.string.add_new_contact_alert_dialog_message)
                         .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
@@ -254,8 +255,8 @@ class AddNewContactActivity : AppCompatActivity() {
                 //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                 val printContacts = Runnable {
                     //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                    val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(),this)
-                    val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(),this)
+                    val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
+                    val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(), this)
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),

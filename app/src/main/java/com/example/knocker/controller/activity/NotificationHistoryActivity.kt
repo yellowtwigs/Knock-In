@@ -21,7 +21,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
-import com.example.knocker.controller.NotificationHistoryAdapterActivity
+import com.example.knocker.controller.NotificationHistoryAdapter
 import com.example.knocker.controller.NotificationListener
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
@@ -158,14 +158,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
         notification_history_ListView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val gestionnaireContacts = ContactList(this.applicationContext)
 
+            val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
+
             when (notification_history_ListOfNotificationDB[position].platform) {
                 "com.whatsapp" -> {
-                    val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
-
                     if (contact != null) {
-                        openWhatsapp(converter06To33(contact.getFirstPhoneNumber()), baseContext)
+                        openWhatsapp(contact.getFirstPhoneNumber())
                     }
-
                 }
                 "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
 
@@ -175,7 +174,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
                 "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
                     println("into messaging")
-                    val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
                     if (contact != null) {
                         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact.getFirstPhoneNumber(), null))
                         startActivity(intent)
@@ -183,7 +181,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     }
                     val sendIntent = Intent(Intent.ACTION_VIEW)
                     sendIntent.data = Uri.parse("sms:")
-
                 }
 
                 "com.instagram.android" -> goToInstagramPage()
@@ -324,19 +321,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun openWhatsapp(contact: CharSequence, context: Context) {
-        val url = "https://api.whatsapp.com/send?phone=$contact"
-        try {
-            val pm = context.packageManager
-            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-            val i = Intent(Intent.ACTION_VIEW)
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
-            i.data = Uri.parse(url)
-            context.startActivity(i)
-        } catch (e: PackageManager.NameNotFoundException) {
-            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        }
+    private fun openWhatsapp(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        val message = "phone=" + converter06To33(phoneNumber)
+        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
+
+        startActivity(intent)
     }
 
     private fun firstContactPrio0(notifList: List<NotificationDB>): Int {
@@ -484,7 +474,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         when {
             sharedPreferences.getString("tri", "date") == "date" -> {
 
-                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
+                val adapter = NotificationHistoryAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
 
@@ -500,7 +490,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp.addAll(Math.max(firstContactPrio0(listTmp), 0), listTmp2)
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
-                val adapter = NotificationHistoryAdapterActivity(this, notification_history_ListOfNotificationDB)
+                val adapter = NotificationHistoryAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
 
@@ -510,7 +500,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 val listNotif: ArrayList<NotificationDB> = arrayListOf()
                 listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
                 listNotif.retainAll(notification_history_ListOfNotificationDB);
-                val adapter = NotificationHistoryAdapterActivity(this, listNotif)
+                val adapter = NotificationHistoryAdapter(this, listNotif)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter
             }

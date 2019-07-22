@@ -63,7 +63,7 @@ class HelpActivity : AppCompatActivity() {
         //region ======================================= DrawerLayout =======================================
 
         // Drawerlayout
-        help_activity_DrawerLayout = findViewById(R.id.drawer_layout)
+        help_activity_DrawerLayout = findViewById(R.id.help_drawer_layout)
 
         val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
         val menu = navigationView.menu
@@ -84,15 +84,10 @@ class HelpActivity : AppCompatActivity() {
                 R.id.nav_informations -> startActivity(Intent(this@HelpActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@HelpActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@HelpActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_data_access -> {
-                }
-                R.id.nav_knockons -> startActivity(Intent(this@HelpActivity, ManageKnockonsActivity::class.java))
-                R.id.nav_statistics -> {
-                }
                 R.id.nav_help -> startActivity(Intent(this@HelpActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.help_drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
         }

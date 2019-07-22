@@ -361,6 +361,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
 
                 startActivity(intent)
+                finish()
             } else {
                 iterator = (0 until listOfItemSelected.size).iterator()
 
@@ -370,6 +371,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
 
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -592,11 +594,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_SMSButton!!.visibility = View.GONE
             }
 
-        scaleGestureDetectore = ScaleGestureDetector(this, MyOnScaleGestureListener())
+            scaleGestureDetectore = ScaleGestureDetector(this, MyOnScaleGestureListener())
         }
         //endregion
 
-}
+    }
 
 
     //region ========================================== Functions ===========================================
@@ -980,6 +982,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_FloatingButtonAdd!!.visibility = View.GONE
             main_FloatingButtonSend!!.visibility = View.VISIBLE
             main_SearchBar!!.visibility = View.GONE
+            main_SMSButton!!.visibility = View.VISIBLE
+            main_MailButton!!.visibility = View.VISIBLE
 
             verifiedContactsChannel(listOfItemSelected)
         }
@@ -993,33 +997,30 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
     }
 
-    fun recyclerItemClick(len: Int, position: Int) {
-        if (!firstClick) {
-            val l = len
-            val m = position
-//            val adapter = (main_RecyclerView!!.adapter as SelectContactAdapter)
-//            adapter.itemSelected(position)
-//            if (adapter.listContactSelect.size == 0) {
-//                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len)
-//
-//
-//                main_FloatingButtonAdd!!.visibility = View.VISIBLE
-//                main_FloatingButtonSend!!.visibility = View.GONE
-//                main_SearchBar!!.visibility = View.VISIBLE
-//
-//                Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-//            }
-        }
-        firstClick = false
-    }
+    fun recyclerItemClick(position: Int) {
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
-    private fun appIsInstalled(): Boolean {
-        val pm = this.packageManager
-        return try {
-            pm.getApplicationInfo("com.whatsapp", 0)
-            true
-        } catch (e: Exception) {
-            false
+            verifiedContactsChannel(listOfItemSelected)
+        } else {
+            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+
+            verifiedContactsChannel(listOfItemSelected)
+        }
+
+        if (listOfItemSelected.size == 1 && firstClick) {
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+            firstClick = false
+        } else if (listOfItemSelected.size == 0) {
+
+            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+            main_FloatingButtonSend!!.visibility = View.GONE
+            main_SearchBar!!.visibility = View.VISIBLE
+            main_SMSButton!!.visibility = View.GONE
+            main_MailButton!!.visibility = View.GONE
+
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            firstClick = true
         }
     }
 
@@ -1030,31 +1031,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             message += ";" + listOfPhoneNumber[i]
         }
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
-    }
-
-    private fun base64ToBitmap(base64: String): Bitmap {
-
-        val decodedString = Base64.decode(base64, Base64.DEFAULT)
-        val options = BitmapFactory.Options()
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size, options)
-    }
-
-    private fun randomDefaultImage(avatarId: Int, createOrGet: String): Int {
-        if (createOrGet == "Create") {
-            return Random().nextInt(7)
-        } else if (createOrGet == "Get") {
-            return when (avatarId) {
-                0 -> R.drawable.ic_user_purple
-                1 -> R.drawable.ic_user_blue
-                2 -> R.drawable.ic_user_knocker
-                3 -> R.drawable.ic_user_green
-                4 -> R.drawable.ic_user_om
-                5 -> R.drawable.ic_user_orange
-                6 -> R.drawable.ic_user_pink
-                else -> R.drawable.ic_user_blue
-            }
-        }
-        return -1
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {

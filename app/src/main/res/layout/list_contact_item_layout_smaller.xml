@@ -2,13 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_contact_item_layout_smaller"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/list_contact_item_layout_smaller">
-
-    <!--android:clickable="true"-->
-    <!--android:focusable="true"-->
-    <!--android:background="@drawable/selector_relative_layout_with_border"-->
+    android:background="@drawable/selector_relative_layout_with_border"
+    android:clickable="true"
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -137,7 +136,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_email" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,5 +1,6 @@
 package com.example.knocker.controller
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,13 @@ import java.util.*
  * La Classe qui permet de remplir l'historique des notifications
  * @author Florian Striebel
  */
-class NotificationHistoryAdapterActivity(private val context: Context, private val notifications: List<NotificationDB>) : BaseAdapter() {
+class NotificationHistoryAdapter(private val context: Context, private val notifications: List<NotificationDB>) : BaseAdapter() {
     var notification_history_adapter_expediteur: TextView? = null
     var notification_history_adapter_contenue: TextView? = null
     var notification_history_adapter_Date: TextView? = null
     var notification_history_adapter_App: ImageView? = null
+
+
     override fun getItem(position: Int): NotificationDB {
         return notifications[position]
     }
@@ -33,18 +36,19 @@ class NotificationHistoryAdapterActivity(private val context: Context, private v
         return notifications.size
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
+        var view = convertView
 
         val notif = getItem(position)
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_notification_history, parent, false)
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.list_item_notification_history, parent, false)
         }
-        notification_history_adapter_expediteur = convertView!!.findViewById(R.id.history_adapter_expediteur)
-        notification_history_adapter_contenue = convertView.findViewById(R.id.history_adapter_contenu)
-        notification_history_adapter_Date = convertView.findViewById(R.id.history_adapter_time)
-        notification_history_adapter_App = convertView.findViewById(R.id.history_adapter_imageView)
+        notification_history_adapter_expediteur = view!!.findViewById(R.id.history_adapter_expediteur)
+        notification_history_adapter_contenue = view.findViewById(R.id.history_adapter_contenu)
+        notification_history_adapter_Date = view.findViewById(R.id.history_adapter_time)
+        notification_history_adapter_App = view.findViewById(R.id.history_adapter_imageView)
         notification_history_adapter_expediteur!!.text = notif.contactName
         notification_history_adapter_contenue!!.text = notif.description
         notification_history_adapter_Date!!.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notif.timestamp))
@@ -56,7 +60,7 @@ class NotificationHistoryAdapterActivity(private val context: Context, private v
 
         println("notification " + position + " " + notif.platform)
 
-        return convertView
+        return view
     }
 
 }

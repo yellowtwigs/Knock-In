@@ -13,9 +13,9 @@ import java.util.HashMap
 class StatusBarParcelable : Parcelable {
     var id: Int = 0
         private set
-    var appNotifier: String = ""
+    var appNotifier: String? = ""
         private set
-    var tickerText: String=""
+    var tickerText: String? = ""
         private set
     var tailleList: Int = 0
         private set
@@ -29,19 +29,19 @@ class StatusBarParcelable : Parcelable {
         tailleList = sbn.notification.extras.keySet().size
         appNotifier = sbn.packageName
 
-        if(sbn.notification.tickerText!= null) {
+        if (sbn.notification.tickerText != null) {
             tickerText = sbn.notification.tickerText.toString()
-        }else{
+        } else {
             tickerText = ""
-            var ticker= sbn.notification.tickerText
-            Log.i(TAG," $ticker est null")
+            val ticker = sbn.notification.tickerText
+            Log.i(TAG, " $ticker est null")
         }
         for (keySbn in sbn.notification.extras.keySet()) {
             key.add(keySbn)
-            if(sbn.notification.extras.get(keySbn)!= null) {
+            if (sbn.notification.extras.get(keySbn) != null) {
                 statusBarNotificationInfo[keySbn] = sbn.notification.extras.get(keySbn)
-            }else{
-                statusBarNotificationInfo[keySbn]= ""
+            } else {
+                statusBarNotificationInfo[keySbn] = ""
             }
         }
         //Log.i(TAG, "ID:" + sbn.getId());
@@ -76,7 +76,7 @@ class StatusBarParcelable : Parcelable {
         id = `in`.readInt()
         appNotifier = `in`.readString()
         tailleList = `in`.readInt()
-        tickerText= `in`.readString()
+        tickerText = `in`.readString()
         Log.i(TAG, "posted by:$appNotifier taille list $tailleList and write by $tickerText")
         for (i in 0 until tailleList) {
             val keysbn = `in`.readString()
@@ -87,9 +87,10 @@ class StatusBarParcelable : Parcelable {
             }
         }
     }
+
     private fun getContactNameFromString(): String {
         val pregMatchString: String = ".*\\([0-9]*\\)"
-        val NameFromNotif:String= ""+this.statusBarNotificationInfo.get("android.title")
+        val NameFromNotif: String = "" + this.statusBarNotificationInfo.get("android.title")
         if (NameFromNotif.matches(pregMatchString.toRegex())) {
             return NameFromNotif.substring(0, TextUtils.lastIndexOf(NameFromNotif, '(')).dropLast(1)
         } else {
@@ -97,13 +98,16 @@ class StatusBarParcelable : Parcelable {
             return NameFromNotif
         }
     }
-    fun changeToContactName(contact:ContactWithAllInformation){
-        statusBarNotificationInfo.put("android.title",contact.contactDB!!.firstName+" "+ contact.contactDB!!.lastName)
+
+    fun changeToContactName(contact: ContactWithAllInformation) {
+        statusBarNotificationInfo.put("android.title", contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName)
     }
-    fun castName(){
-        statusBarNotificationInfo.put("android.title",getContactNameFromString())
+
+    fun castName() {
+        statusBarNotificationInfo.put("android.title", getContactNameFromString())
     }
-    companion object CREATOR: Parcelable.Creator<StatusBarParcelable> {
+
+    companion object CREATOR : Parcelable.Creator<StatusBarParcelable> {
         override fun createFromParcel(source: Parcel): StatusBarParcelable {
             return StatusBarParcelable(source)
         }
@@ -113,6 +117,7 @@ class StatusBarParcelable : Parcelable {
         }
 
     }
-        var TAG = StatusBarParcelable::class.java.simpleName
+
+    var TAG = StatusBarParcelable::class.java.simpleName
 
 }

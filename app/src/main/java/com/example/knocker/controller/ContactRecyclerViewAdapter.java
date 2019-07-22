@@ -61,8 +61,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private Integer len;
     private View view;
     private ContactList gestionnaireContacts;
+    private Boolean modeMultiSelect = false;
 
-    ConstraintLayout lastSelectMenuLen1=null;
+    ConstraintLayout lastSelectMenuLen1 = null;
+
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
@@ -78,7 +80,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         this.len = len;
         this.layoutInflater = LayoutInflater.from(context);
         this.gestionnaireContacts = gestionnaireContacts;
-        lastSelectMenuLen1=null;
+        lastSelectMenuLen1 = null;
     }
 
     public ContactWithAllInformation getItem(int position) {
@@ -156,7 +158,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }
 
-
         holder.contactFirstNameView.setText(contactName);
         String group = "";
         GroupDB firstGroup = getItem(position).getFirstGroup(context);
@@ -219,19 +220,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
-                if (holder.constraintLayoutMenu != null) {
-
-                    if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
-                        holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-                        if(lastSelectMenuLen1!=null)
-                            lastSelectMenuLen1.setVisibility(View.GONE);
-                        lastSelectMenuLen1=holder.constraintLayoutMenu;
-                    } else {
-                        holder.constraintLayoutMenu.setVisibility(View.GONE);
-                        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                        holder.constraintLayoutMenu.startAnimation(slideDown);
-                        lastSelectMenuLen1=null;
-                    }
+                if (v.getId() == holder.editCl.getId()) {
+                    Intent intent = new Intent(context, EditContactActivity.class);
+                    intent.putExtra("ContactId", contact.getId());
+                    context.startActivity(intent);
                 }
             }
         };
@@ -239,30 +231,34 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                view.setTag(holder);
-                ContactDB contact = gestionnaireContacts.getContacts().get(position).getContactDB();
-                assert contact != null;
+                if (!modeMultiSelect) {
+                    view.setTag(holder);
+                    ContactDB contact = gestionnaireContacts.getContacts().get(position).getContactDB();
+                    assert contact != null;
 
-                holder.contactFirstNameView.setText(contact.getFirstName());
+                    holder.contactFirstNameView.setText(contact.getFirstName());
 
-                if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
-                    listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
+                    if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
+                        listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
 
-                    if (!contact.getProfilePicture64().equals("")) {
-                        Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                        holder.contactRoundedImageView.setImageBitmap(bitmap);
+                        if (!contact.getProfilePicture64().equals("")) {
+                            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                            holder.contactRoundedImageView.setImageBitmap(bitmap);
+                        } else {
+                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+                        }
                     } else {
-                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+                        listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                     }
-                } else {
-                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-                }
 
-                if (context instanceof GroupActivity) {
-                    ((GroupActivity) context).longRecyclerItemClick(position);
-                } else if (context instanceof GroupActivity) {
-                    ((MainActivity) context).longRecyclerItemClick(position);
+                    if (context instanceof GroupActivity) {
+                        ((GroupActivity) context).longRecyclerItemClick(position);
+                    } else if (context instanceof MainActivity) {
+                        ((MainActivity) context).longRecyclerItemClick(position);
+                    }
+
+                    modeMultiSelect = true;
                 }
                 return true;
             }
@@ -271,30 +267,108 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         View.OnClickListener listItemClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) context).recyclerItemClick(len, position);
-                Intent intent = new Intent(context, EditContactActivity.class);
-                intent.putExtra("ContactId", contact.getId());
-                context.startActivity(intent);
+                if (!modeMultiSelect) {
+                    if (len == 0) {
+                        Intent intent = new Intent(context, EditContactActivity.class);
+                        intent.putExtra("ContactId", contact.getId());
+                        context.startActivity(intent);
+                    } else if (len == 1) {
+                        if (holder.constraintLayoutMenu != null) {
+                            if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
+                                holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
+                                if (lastSelectMenuLen1 != null)
+                                    lastSelectMenuLen1.setVisibility(View.GONE);
+                                lastSelectMenuLen1 = holder.constraintLayoutMenu;
+                            } else {
+                                holder.constraintLayoutMenu.setVisibility(View.GONE);
+                                Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+                                holder.constraintLayoutMenu.startAnimation(slideDown);
+                                lastSelectMenuLen1 = null;
+                            }
+                        }
+                    }
+                } else {
+                    view.setTag(holder);
+                    ContactDB contact = gestionnaireContacts.getContacts().get(position).getContactDB();
+                    assert contact != null;
+
+                    holder.contactFirstNameView.setText(contact.getFirstName());
+
+                    if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
+                        listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
+
+                        if (!contact.getProfilePicture64().equals("")) {
+                            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                            holder.contactRoundedImageView.setImageBitmap(bitmap);
+                        } else {
+                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+                        }
+                    } else {
+                        listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    }
+
+                    if (context instanceof GroupActivity) {
+                        ((GroupActivity) context).longRecyclerItemClick(position);
+                    } else if (context instanceof MainActivity) {
+                        ((MainActivity) context).recyclerItemClick(position);
+                    }
+
+                    if (listOfItemSelected.size() == 0) {
+                        modeMultiSelect = false;
+                    }
+                }
             }
         };
 
+        if (len == 0) {
+            if (whatsappIsNotInstalled()) {
+                holder.whatsappCl.setVisibility(View.INVISIBLE);
+            } else {
+                holder.whatsappCl.setVisibility(View.VISIBLE);
+            }
 
-        if (!whatsappIsInstalled()) {
-            holder.whatsappCl.setVisibility(View.INVISIBLE);
-        } else {
-            holder.whatsappCl.setVisibility(View.VISIBLE);
+            if (getItem(position).getFirstMail().isEmpty()) {
+                holder.mailCl.setVisibility(View.INVISIBLE);
+            } else {
+                holder.mailCl.setVisibility(View.VISIBLE);
+            }
+
+            if (getItem(position).getFirstPhoneNumber().isEmpty()) {
+                holder.callCl.setVisibility(View.INVISIBLE);
+                holder.smsCl.setVisibility(View.INVISIBLE);
+            } else {
+                holder.callCl.setVisibility(View.VISIBLE);
+                holder.smsCl.setVisibility(View.VISIBLE);
+            }
         }
 
-        if (getItem(position).getFirstMail().isEmpty()) {
-            holder.mailCl.setVisibility(View.INVISIBLE);
-        } else {
-            holder.mailCl.setVisibility(View.VISIBLE);
+        if (len == 1) {
+            if (whatsappIsNotInstalled()) {
+                holder.whatsappCl.setVisibility(View.GONE);
+            } else {
+                holder.whatsappCl.setVisibility(View.VISIBLE);
+            }
+
+            if (getItem(position).getFirstMail().isEmpty()) {
+                holder.mailCl.setVisibility(View.GONE);
+            } else {
+                holder.mailCl.setVisibility(View.VISIBLE);
+            }
+
+            if (getItem(position).getFirstPhoneNumber().isEmpty()) {
+                holder.callCl.setVisibility(View.GONE);
+                holder.smsCl.setVisibility(View.GONE);
+            } else {
+                holder.callCl.setVisibility(View.VISIBLE);
+                holder.smsCl.setVisibility(View.VISIBLE);
+            }
         }
 
         if (holder.constraintLayout != null) {
             holder.constraintLayout.setOnLongClickListener(longClick);
+
             holder.constraintLayout.setOnClickListener(listItemClick);
-            holder.constraintLayout.setOnClickListener(listener);
         } else {
             holder.constraintLayoutSmaller.setOnLongClickListener(longClick);
             holder.constraintLayoutSmaller.setOnClickListener(listItemClick);
@@ -394,13 +468,13 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
     }//code duplicate à mettre dans contactAllInfo
 
-    private boolean whatsappIsInstalled() {
+    private boolean whatsappIsNotInstalled() {
         PackageManager pm = context.getPackageManager();
         try {
             pm.getApplicationInfo("com.whatsapp", 0);
-            return true;
-        } catch (Exception e) {
             return false;
+        } catch (Exception e) {
+            return true;
         }
     }
 
@@ -418,6 +492,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         ConstraintLayout smsCl;
         ConstraintLayout whatsappCl;
         ConstraintLayout mailCl;
+        ConstraintLayout editCl;
 
         ConstraintLayout groupWordingConstraint;
         TextView groupWordingTv;
@@ -437,7 +512,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_item_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_item_wording_group_tv);
-                open=false;
+                open = false;
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
@@ -445,13 +520,15 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
                 callCl = view.findViewById(R.id.list_contact_item_constraint_call);
                 smsCl = view.findViewById(R.id.list_contact_item_constraint_sms);
+                editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
                 whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp);
                 mailCl = view.findViewById(R.id.list_contact_item_constraint_mail);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
-                open=false;
+                open = false;
             }
         }
+
     }
 
     public String getPhonePermission() {

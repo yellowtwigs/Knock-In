@@ -72,8 +72,6 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Mail_Property: Spinner? = null
     private var edit_contact_AddFieldButton: Button? = null
 
-    private var customAdapterEditText: CustomAdapterEditText? = null
-
     private var edit_contact_id: Int? = null
     private var edit_contact_first_name: String = ""
     private var edit_contact_last_name: String = ""
@@ -283,7 +281,7 @@ class EditContactActivity : AppCompatActivity() {
             val alertView: View = inflater.inflate(R.layout.alert_dialog_add_field, null)
 
 //            val alert_dialog_AddFieldListView = alertView.findViewById<List>(R.id.alert_dialog_add_field_list_view)
-            val alert_dialog_FieldAdded = findViewById<ListView>(R.id.edit_contact_field_added)
+//            val alert_dialog_FieldAdded = findViewById<ListView>(R.id.edit_contact_field_added)
 
 //            alert_dialog_AddFieldListView.adapter = ArrayAdapter(this@EditContactActivity, R.layout.list_item_add_fields_layout, R.id.list_item_add_fields_text, getListOfFields())
 //            alert_dialog_AddFieldListView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
@@ -348,12 +346,14 @@ class EditContactActivity : AppCompatActivity() {
         val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
         val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
+
         val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
         val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        edit_contact_Mail_Property!!.adapter = adapterMailTagList
 
+        edit_contact_Mail_Property!!.adapter = adapterMailTagList
+        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
+        edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
 
         recyclerGroup = findViewById(R.id.edit_contact_recycler)
         val layoutMananger: LinearLayoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
@@ -424,11 +424,11 @@ class EditContactActivity : AppCompatActivity() {
         val tailleSpinner: Int = spinner.adapter.count
         //println("taille spinner" + tailleSpinner)
         for (x in 0 until tailleSpinner) {
-            if (spinner.getItemAtPosition(x).toString().equals(NumberAndMailDB!!.convertStringToSpinnerString(item, this))) {
+            if (spinner.getItemAtPosition(x).toString().equals(NumberAndMailDB.convertStringToSpinnerString(item, this))) {
                 println(" return in edit" + x)
                 return x
             } else {
-                println(spinner.getItemAtPosition(x).toString() + "est diférent de " + NumberAndMailDB!!.convertStringToSpinnerString(item, this))
+                println(spinner.getItemAtPosition(x).toString() + "est diférent de " + NumberAndMailDB.convertStringToSpinnerString(item, this))
             }
         }
         return 0;
@@ -515,7 +515,7 @@ class EditContactActivity : AppCompatActivity() {
                                 if (edit_contact_Mail!!.editText!!.text.toString() == "") {
                                     edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition })).get(i).id!!)
                                 }
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact!!.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
                             }
 
                         }//TODO change for the listView

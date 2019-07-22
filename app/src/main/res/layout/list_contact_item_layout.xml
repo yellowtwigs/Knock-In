@@ -10,13 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_relative_layout_with_border"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <com.example.knocker.controller.CircularImageView
             android:id="@+id/list_contact_item_contactRoundedImageView"
@@ -62,11 +58,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="Bla bla"
                 android:textAlignment="center"
                 android:textColor="@color/textColorLight"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

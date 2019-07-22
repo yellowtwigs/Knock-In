@@ -92,7 +92,17 @@
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content">-->
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <!--<androidx.appcompat.widget.AppCompatEditText-->
+        <!--android:id="@+id/notification_adapter_message_to_send"-->
+        <!--android:layout_width="220dp"-->
+        <!--android:layout_height="35dp"-->
+        <!--android:layout_margin="15dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:background="@drawable/layout_rounded_form"-->
+
+
+        <EditText
             android:id="@+id/notification_adapter_message_to_send"
             android:layout_width="220dp"
             android:layout_height="35dp"
@@ -104,7 +114,6 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="@color/textColorDark"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content" />
@@ -118,7 +127,6 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_right_arrow"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/notification_adapter_message_to_send"

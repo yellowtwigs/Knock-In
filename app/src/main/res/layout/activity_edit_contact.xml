@@ -117,7 +117,6 @@
                     android:layout_width="@dimen/spinner_width"
                     android:layout_height="@dimen/spinner_height"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="6dp"
                     android:entries="@array/edit_contact_phone_number_arrays"
                     android:prompt="@string/edit_contact_phone_number_mobile"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -133,7 +132,6 @@
                 android:layout_toEndOf="@+id/edit_contact_phone_number_spinner_view"
                 android:backgroundTint="?attr/backgroundColor"
                 android:hint="@string/edit_contact_phone_number"
-
                 android:textColor="?attr/textColor"
                 android:textColorHint="?attr/textColor"
                 app:layout_constraintStart_toEndOf="@+id/edit_contact_phone_number_spinner_view">
@@ -172,8 +170,8 @@
                     android:layout_width="@dimen/spinner_width"
                     android:layout_height="@dimen/spinner_height"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="6dp"
                     android:entries="@array/edit_contact_phone_number_arrays"
+                    android:textColor="?attr/textColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -226,7 +224,6 @@
                     android:layout_width="@dimen/spinner_width"
                     android:layout_height="@dimen/spinner_height"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="6dp"
                     android:entries="@array/edit_contact_mail_arrays"
                     android:prompt="@string/edit_contact_mail_mobile"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -38,8 +38,8 @@ class NotificationListener : NotificationListenerService() {
     // Database && Thread
     private var notification_listener_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var notification_listener_mDbWorkerThread: DbWorkerThread
-    private var  oldPosX:Float = 0.0f
-    private var  oldPosY:Float = 0.0f
+    private var oldPosX: Float = 0.0f
+    private var oldPosY: Float = 0.0f
     var popupView: View? = null
     var windowManager: WindowManager? = null
 
@@ -94,14 +94,14 @@ class NotificationListener : NotificationListenerService() {
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
             sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
             val name = sbp.statusBarNotificationInfo.get("android.title").toString()
-            val app = this.convertPackageToString(sbp.appNotifier)
+            val app = this.convertPackageToString(sbp.appNotifier!!)
 
             val gestionnaireContact: ContactList = ContactList(this)
             val addNotification = Runnable {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
-                if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier!="com.samsung.android.incallui") {
+                if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier != "com.samsung.android.incallui") {
                     if (notification.platform != this.packageName) {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
                     }
@@ -176,7 +176,7 @@ class NotificationListener : NotificationListenerService() {
         println("dernière insertion " + lastInsertId)
         val lastInsert = notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
 
-        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp-lastInsert.timestamp<1000) {
+        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp - lastInsert.timestamp < 1000) {
             return false
         }
         return true
@@ -194,17 +194,17 @@ class NotificationListener : NotificationListenerService() {
                             sbp.tickerText.toString(),
                             sbp.statusBarNotificationInfo["android.title"]!!.toString(),
                             sbp.statusBarNotificationInfo["android.text"]!!.toString(),
-                            sbp.appNotifier, false,
+                            sbp.appNotifier!!, false,
                             Calendar.getInstance().timeInMillis.toString().toLong(), 0,
-                            contactId);
-            return notif;
+                            contactId)
+            return notif
         } else {
             return null
         }
     }
 
     private fun messagesNotUseless(sbp: StatusBarParcelable): Boolean {
-        val pregMatchString = ".*"+resources.getString(R.string.new_messages)+".*"
+        val pregMatchString = ".*" + resources.getString(R.string.new_messages) + ".*"
         return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex()))
     }
 
@@ -241,8 +241,8 @@ class NotificationListener : NotificationListenerService() {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
-        val popupDropable= popupView!!.findViewById<ConstraintLayout>(R.id.notification_dropable)
-        val popupContainer=popupView!!.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
+        val popupDropable = popupView!!.findViewById<ConstraintLayout>(R.id.notification_dropable)
+        val popupContainer = popupView!!.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
         notifLayout(sbp, popupView)
 
         windowManager!!.addView(popupView, parameters) // affichage de la popupview
@@ -255,10 +255,10 @@ class NotificationListener : NotificationListenerService() {
 
                 MotionEvent.ACTION_DOWN -> {
                     println("action Down")
-                    oldPosX=event.x
-                    oldPosY=event.y
+                    oldPosX = event.x
+                    oldPosY = event.y
 
-                    println("oldx"+oldPosX+"oldy"+oldPosY)
+                    println("oldx" + oldPosX + "oldy" + oldPosY)
                     //xDelta = (popupContainer.x - event.rawX).toInt()
                     //yDelta = (popupContainer.y - event.rawY).toInt()
                 }
@@ -271,42 +271,44 @@ class NotificationListener : NotificationListenerService() {
                 }
                 MotionEvent.ACTION_MOVE -> {
                     println("action move")
-                    val x=event.x
-                    val y=event.y
+                    val x = event.x
+                    val y = event.y
 
                     val deplacementX = x - oldPosX
                     val deplacementY = y - oldPosY
 
-                    popupContainer.x=positionXIntoScreen(popupContainer.x,deplacementX,popupContainer.width.toFloat())//(popupContainer.x + deplacementX)
-                    oldPosX=x-deplacementX
+                    popupContainer.x = positionXIntoScreen(popupContainer.x, deplacementX, popupContainer.width.toFloat())//(popupContainer.x + deplacementX)
+                    oldPosX = x - deplacementX
 
-                    popupContainer.y=positionYIntoScreen(popupContainer.y,deplacementY,popupContainer.height.toFloat())//(popupContainer.y + deplacementY)
-                    oldPosY=y-deplacementY
+                    popupContainer.y = positionYIntoScreen(popupContainer.y, deplacementY, popupContainer.height.toFloat())//(popupContainer.y + deplacementY)
+                    oldPosY = y - deplacementY
                 }
             }
             return@setOnTouchListener true
         }
     }
-    private fun positionXIntoScreen(popupX:Float,deplacementX:Float,popupSizeX:Float): Float {
+
+    private fun positionXIntoScreen(popupX: Float, deplacementX: Float, popupSizeX: Float): Float {
         val metrics = DisplayMetrics()
         windowManager!!.getDefaultDisplay().getMetrics(metrics)
-        if(popupX+deplacementX<0){
+        if (popupX + deplacementX < 0) {
             return 0.0f
-        }else if(popupX+deplacementX+popupSizeX<metrics.widthPixels){
-            return popupX+deplacementX
-        }else{
-            return metrics.widthPixels.toFloat()-popupSizeX
+        } else if (popupX + deplacementX + popupSizeX < metrics.widthPixels) {
+            return popupX + deplacementX
+        } else {
+            return metrics.widthPixels.toFloat() - popupSizeX
         }
     }
-    private fun positionYIntoScreen(popupY:Float,deplacementY:Float,popupSizeY:Float): Float {
+
+    private fun positionYIntoScreen(popupY: Float, deplacementY: Float, popupSizeY: Float): Float {
         val metrics = DisplayMetrics()
         windowManager!!.getDefaultDisplay().getMetrics(metrics)
-        if(popupY+deplacementY<0){
+        if (popupY + deplacementY < 0) {
             return 0.0f
-        }else if(popupY+deplacementY+popupSizeY<metrics.heightPixels){
-            return popupY+deplacementY
-        }else{
-            return metrics.heightPixels.toFloat()-popupSizeY
+        } else if (popupY + deplacementY + popupSizeY < metrics.heightPixels) {
+            return popupY + deplacementY
+        } else {
+            return metrics.heightPixels.toFloat() - popupSizeY
         }
     }
 
@@ -333,7 +335,7 @@ class NotificationListener : NotificationListenerService() {
         return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
-                convertPackageToString(sbp.appNotifier) != ""
+                convertPackageToString(sbp.appNotifier!!) != ""
     }
 
     private fun convertPackageToString(packageName: String): String {

@@ -9,6 +9,7 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.telephony.SmsManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import com.example.knocker.R
+import com.example.knocker.model.ContactList
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.StatusBarParcelable
@@ -33,8 +35,7 @@ import java.util.*
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
 
     private val TAG = NotificationListener::class.java.simpleName
-    private var notification_adapter_ContactsDatabase: ContactsRoomDatabase? = null
-    private lateinit var notification_adapeter_mDbWorkerThread: DbWorkerThread
+    private lateinit var notification_adapter_mDbWorkerThread: DbWorkerThread
     private val FACEBOOK_PACKAGE = "com.facebook.katana"
     private val MESSENGER_PACKAGE = "com.facebook.orca"
     private val WHATSAPP_SERVICE = "com.whatsapp"
@@ -56,26 +57,33 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
     @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        notification_adapeter_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        notification_adapeter_mDbWorkerThread.start()
+        notification_adapter_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        notification_adapter_mDbWorkerThread.start()
+
+
         var view = convertView//valeur qui prendra les changement
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.item_notification_adapter, parent, false)
         }
-        //System.out.println("notifications taile"+notifications.size)
+
         val sbp = getItem(position)
+
+        val gestionnaireContacts = ContactList(this.context)
+        val contact = gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"].toString())
+
+
         val app = view!!.findViewById<View>(R.id.notification_adapter_platform) as TextView
         val layout = view.findViewById<View>(R.id.notification_adapter_layout) as ConstraintLayout
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
         val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as AppCompatImageView
-        val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as AppCompatEditText
+        val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as EditText
 
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
-        app.text = convertPackageToString(sbp.appNotifier)
+        app.text = convertPackageToString(sbp.appNotifier!!)
         content.text = sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
         //appImg.setImageResource(getApplicationNotifier(sbp));
 
@@ -103,14 +111,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     closeNotification()
                 }
                 "WhatsApp" -> {
-                    val i = context.packageManager.getLaunchIntentForPackage("com.whatsapp")
-                    try {
-                        context.startActivity(i)
-                    } catch (e: ActivityNotFoundException) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://whatsapp.com/")))
-                    }
-                    closeNotification()
+                    openWhatsapp(contact!!.getFirstPhoneNumber())
                 }
                 "Gmail" -> {
                     val appIntent = Intent(Intent.ACTION_VIEW);
@@ -124,13 +125,13 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     closeNotification()
                 }
                 "Message" -> {
-                    openSms(sbp)
+                    openSms(contact!!.getFirstPhoneNumber())
                     closeNotification()
                 }
             }
         }
 
-        when (convertPackageToString(sbp.appNotifier)) {
+        when (convertPackageToString(sbp.appNotifier!!)) {
             "Facebook" -> {
                 DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook))
             }
@@ -145,6 +146,26 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             }
             "Message" -> {
                 DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorPrimary))
+            }
+        }
+
+        buttonSend.setOnClickListener {
+            if (editText.text.toString() == "") {
+                Toast.makeText(context, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
+            } else {
+
+                when (convertPackageToString(sbp.appNotifier!!)) {
+                    "WhatsApp" -> {
+                        sendMessageWithWhatsapp(contact!!.getFirstPhoneNumber(), editText.text.toString())
+                        closeNotification()
+                    }
+                    "Gmail" -> {
+                    }
+                    "Message" -> {
+                        sendMessageWithAndroidMessage(contact!!.getFirstPhoneNumber(), editText.text.toString())
+                        closeNotification()
+                    }
+                }
             }
         }
 
@@ -179,7 +200,6 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //                    closeNotification()
 //                }
 //                "WhatsApp" -> {
-//
 //                    notification_adapeter_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
 //                    closeNotification()
 //                }
@@ -226,26 +246,45 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         return view
     }
 
+    private fun openSms(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
+
+        context.startActivity(intent)
+    }
+
+    private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        val message = "phone=" + converter06To33(phoneNumber)
+        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
+
+        context.startActivity(intent)
+    }
+
+    private fun openWhatsapp(phoneNumber: String) {
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        val message = "phone=" + converter06To33(phoneNumber)
+        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
+
+        context.startActivity(intent)
+    }
+
+    private fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String) {
+        val smsManager = SmsManager.getDefault()
+        smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
+
+        Toast.makeText(context, "Message Sent",
+                Toast.LENGTH_LONG).show()
+    }
+
     private fun converter06To33(phoneNumber: String): String {
         return if (phoneNumber[0].toString() == "0") {
             val phoneNumberConvert = "+33" + phoneNumber.substring(0)
             phoneNumberConvert
         } else {
             phoneNumber
-        }
-    }
-
-    fun openWhatsapp(contact: CharSequence, context: Context) {
-        val url = "https://api.whatsapp.com/send?phone=$contact"
-        try {
-            val pm = context.packageManager
-            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
-            context.startActivity(i)
-        } catch (e: PackageManager.NameNotFoundException) {
-            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
         }
     }
 
@@ -296,18 +335,6 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
 
     /////****** code dupliqué faire attention trouvé un moyen de ne plus en avoir *******//////
-
-
-    private fun openSms(sbp: StatusBarParcelable) {
-        val i: Intent
-        if (sbp.appNotifier.equals(MESSAGE_PACKAGE)) {
-            i = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.messaging")!!
-        } else {
-            i = context.packageManager.getLaunchIntentForPackage("com.samsung.android.messaging")!!
-        }
-        i.flags = FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(i)
-    }
 
     fun addNotification(sbp: StatusBarParcelable) {
         notifications.add(0, sbp)
