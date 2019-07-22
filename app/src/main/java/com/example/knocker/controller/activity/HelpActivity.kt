@@ -62,7 +62,7 @@ class HelpActivity : AppCompatActivity() {
         //region ======================================= DrawerLayout =======================================
 
         // Drawerlayout
-        help_activity_DrawerLayout = findViewById(R.id.phone_log_drawer_layout)
+        help_activity_DrawerLayout = findViewById(R.id.drawer_layout)
 
         val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
         val menu = navigationView.menu
