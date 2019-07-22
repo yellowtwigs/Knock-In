@@ -9,7 +9,7 @@
             android:title="@string/left_drawer_home" />
         <item
             android:id="@+id/nav_groups"
-            android:icon="@drawable/ic_groups"
+            android:icon="@drawable/ic_group"
             android:title="@string/left_drawer_my_groups" />
         <item
             android:id="@+id/nav_informations"
