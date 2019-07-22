@@ -261,9 +261,9 @@ class GroupActivity : AppCompatActivity() {
         gestionnaireContacts = ContactList(this.applicationContext)
 
         if (group_GridView != null) {
-            if (sharedPreferences.getString("tri", "nom") == "nom") {
+            if (sharedPreferences.getString("tri", "group") == "nom") {
                 gestionnaireContacts!!.sortContactByFirstNameAZ()
-            } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
+            } else if (sharedPreferences.getString("tri", "group") == "priorite") {
                 gestionnaireContacts!!.sortContactByPriority()
             } else {
                 gestionnaireContacts!!.sortContactByGroup()

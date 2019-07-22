@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
@@ -85,8 +86,6 @@ public class SelectContactAdapter extends BaseAdapter {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
-
-            int len = sharedPreferences.getInt("gridview", 4);
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
 
@@ -100,12 +99,17 @@ public class SelectContactAdapter extends BaseAdapter {
                 layoutParamsTV.topMargin = 30;
                 layoutParamsIV.topMargin = 10;
             } else if (len == 4) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.15;
-                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.15;
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.25;
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.25;
                 layoutParamsTV.topMargin = 10;
                 layoutParamsIV.topMargin = 10;
-            } else if (len == 5 || len == 6) {
-                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50; //175
+            } else if (len == 5) {
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.40;
+                holder.contactRoundedImageView.getLayoutParams().width -= width * 0.40;
+                layoutParamsTV.topMargin = 0;
+                layoutParamsIV.topMargin = 0;
+            } else if (len == 6) {
+                holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50;
                 holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
                 layoutParamsTV.topMargin = 0;
                 layoutParamsIV.topMargin = 0;
@@ -137,7 +141,7 @@ public class SelectContactAdapter extends BaseAdapter {
         if(listDB.isEmpty()){
             System.out.println("no group");
             Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
-            roundedLayout.setColorFilter(context.getResources().getColor(R.color.greyColor), PorterDuff.Mode.MULTIPLY);
+            roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }else{
             System.out.println("have group");
@@ -148,29 +152,36 @@ public class SelectContactAdapter extends BaseAdapter {
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }
         if (len == 3) {
-            holder.contactFirstNameView.setText(firstname);
-            holder.contactLastNameView.setText(lastName);
+            Spannable spanFistName = new SpannableString(firstname);
+            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(spanFistName);
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
             //holder.contactFirstNameView.;
-            holder.groupWordingTv.setText(group);
+            Spannable spanGroup = new SpannableString(group);
+            spanGroup.setSpan(new RelativeSizeSpan(0.95f), 0, group.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.groupWordingTv.setText(spanGroup);
+
         }
         if (len == 4) {
             if (contact.getFirstName().length() > 12)
                 firstname = contact.getFirstName().substring(0, 10).concat("..");
 
             Spannable spanFistName = new SpannableString(firstname);
-            spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(spanFistName);
             if (contact.getLastName().length() > 12)
                 lastName = contact.getLastName().substring(0, 10).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(1.0f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>12)
-                group= group.substring(0,10).concat("..");
+            if(group.length()>8)
+                group= group.substring(0,7).concat("..");
             Spannable spanGroup = new SpannableString(group);
-            spanLastName.setSpan(new RelativeSizeSpan(1.0f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
 
         }
@@ -190,33 +201,35 @@ public class SelectContactAdapter extends BaseAdapter {
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>11)
-                group= group.substring(0,9).concat("..");
+            if(group.length()>9)
+                group= group.substring(0,7).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
         }
         if (len == 6) {
-            if (contact.getFirstName().length() > 10)
-                firstname = contact.getFirstName().substring(0, 8).concat("..");
+            if (contact.getFirstName().length() > 8)
+                firstname = contact.getFirstName().substring(0, 7).concat("..");
 
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.81f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            if (contact.getLastName().length() > 10)
-                lastName = contact.getLastName().substring(0, 8).concat("..");
+            if (contact.getLastName().length() > 8)
+                lastName = contact.getLastName().substring(0, 7).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>10)
-                group= group.substring(0,8).concat("..");
+            if(group.length()>6)
+                group= group.substring(0,5).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
         }
+
+
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
 

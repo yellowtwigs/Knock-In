@@ -194,9 +194,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
             //holder.contactFirstNameView.;
-            holder.groupWordingTv.setText(group);
             Spannable spanGroup = new SpannableString(group);
-            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanGroup.setSpan(new RelativeSizeSpan(0.95f), 0, group.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
 
         }
@@ -244,15 +243,15 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder.groupWordingTv.setText(spanGroup);
         }
         if (len == 6) {
-            if (contact.getFirstName().length() > 10)
-                firstname = contact.getFirstName().substring(0, 8).concat("..");
+            if (contact.getFirstName().length() > 8)
+                firstname = contact.getFirstName().substring(0, 7).concat("..");
 
             holder.contactFirstNameView.setText(firstname);
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.81f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            if (contact.getLastName().length() > 10)
-                lastName = contact.getLastName().substring(0, 8).concat("..");
+            if (contact.getLastName().length() > 8)
+                lastName = contact.getLastName().substring(0, 7).concat("..");
 
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -403,13 +402,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                int firstPosVis=position;
-              //  if(position<2*len) {
-                //     firstPosVis = 0;
-                //}else{
-                  //   firstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
-                //}
-                //System.out.println("selection"+firstPosVis);
+                int firstPosVis=0;
+                if(position<2*len) {
+                    firstPosVis = 0;
+                }else{
+                   firstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
+                }
+                System.out.println("selection"+firstPosVis);
                 if(context instanceof MainActivity) {
                     ((MainActivity) context).longGridItemClick(len, position,firstPosVis);
                 }else{

@@ -62,6 +62,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private View view;
     private ContactList gestionnaireContacts;
 
+    ConstraintLayout lastSelectMenuLen1=null;
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
@@ -77,6 +78,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         this.len = len;
         this.layoutInflater = LayoutInflater.from(context);
         this.gestionnaireContacts = gestionnaireContacts;
+        lastSelectMenuLen1=null;
     }
 
     public ContactWithAllInformation getItem(int position) {
@@ -424,7 +426,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 editCl = view.findViewById(R.id.list_contact_item_smaller_constraint_edit);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_item_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_item_wording_group_tv);
-
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
