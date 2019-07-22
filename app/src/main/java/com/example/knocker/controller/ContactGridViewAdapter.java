@@ -175,9 +175,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
         if(firstGroup==null){
             System.out.println("no group"+contact.getFirstName()+" "+contact.getLastName());
-            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
-            roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
-            holder.groupWordingConstraint.setBackground(roundedLayout);
+           // Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+           // holder.groupWordingConstraint.setBackground(roundedLayout);
         }else{
             System.out.println("have group");
             group = firstGroup.getName();

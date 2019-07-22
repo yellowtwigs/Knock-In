@@ -619,8 +619,8 @@ class GroupActivity : AppCompatActivity() {
                 group_SMSButton!!.visibility = View.GONE
                 group_groupButton!!.visibility = View.GONE
             }
-
             saveGroupMultiSelect(listOfItemSelected, len)
+           // recreate()
         }
         //endregion
 
