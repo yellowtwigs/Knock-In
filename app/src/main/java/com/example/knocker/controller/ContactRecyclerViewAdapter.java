@@ -219,11 +219,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
-                if (v.getId() == holder.editCl.getId()) {
-                    Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId", contact.getId());
-                    context.startActivity(intent);
-                }
                 if (holder.constraintLayoutMenu != null) {
 
                     if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
@@ -277,6 +272,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             @Override
             public void onClick(View v) {
                 ((MainActivity) context).recyclerItemClick(len, position);
+                Intent intent = new Intent(context, EditContactActivity.class);
+                intent.putExtra("ContactId", contact.getId());
+                context.startActivity(intent);
             }
         };
 
@@ -302,7 +300,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             holder.constraintLayoutSmaller.setOnClickListener(listItemClick);
         }
 
-        holder.editCl.setOnClickListener(listener);
         holder.mailCl.setOnClickListener(listener);
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);
@@ -421,7 +418,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         ConstraintLayout smsCl;
         ConstraintLayout whatsappCl;
         ConstraintLayout mailCl;
-        ConstraintLayout editCl;
 
         ConstraintLayout groupWordingConstraint;
         TextView groupWordingTv;
@@ -439,7 +435,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 smsCl = view.findViewById(R.id.list_contact_item_smaller_constraint_sms);
                 whatsappCl = view.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
                 mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
-                editCl = view.findViewById(R.id.list_contact_item_smaller_constraint_edit);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_item_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_item_wording_group_tv);
                 open=false;
@@ -452,7 +447,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 smsCl = view.findViewById(R.id.list_contact_item_constraint_sms);
                 whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp);
                 mailCl = view.findViewById(R.id.list_contact_item_constraint_mail);
-                editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
                 open=false;
