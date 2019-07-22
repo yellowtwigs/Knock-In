@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_contacts"
-        android:icon="@drawable/ic_phone_book"
+        android:icon="@drawable/ic_homepage"
         android:title="@string/bottom_navigation_view_phone_book" />
     <item
         android:id="@+id/navigation_groups"

@@ -36,7 +36,7 @@
 
     <string name="left_drawer_knockons">Knockons</string>
 
-    <string name="left_drawer_home">Home</string>
+    <string name="left_drawer_home">Home-Contacts</string>
     <string name="left_drawer_my_groups">Manage Groups</string>
     <string name="left_drawer_information">My personal data</string>
     <string name="left_drawer_notif_config">Notification configurations</string>
