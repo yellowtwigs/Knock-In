@@ -224,7 +224,7 @@ public class SelectContactAdapter extends BaseAdapter {
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
         }
-        if(context instanceof MainActivity){
+        if(context instanceof MainActivity || context instanceof GroupActivity){
             if (listSelectedItem.contains(getItem(position))) {
                 holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
             } else {

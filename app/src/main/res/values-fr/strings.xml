@@ -342,9 +342,13 @@
 
     <!-- endregion -->
 
-
     <!-- region Group -->
     <string name="group_search_hint">Rechercher</string>
     <string name="add_member">Choisir un contact</string>
     <!--endregion -->
+
+    <!-- region delete contact to group-->
+    <string name="delete_contact_0_contact">vous n\'allez supprimer aucun contact</string>
+    <string name="delete_contact">vous allez supprimmer%1s de ce groupe</string>
+    <!-- endregion-->
 </resources>

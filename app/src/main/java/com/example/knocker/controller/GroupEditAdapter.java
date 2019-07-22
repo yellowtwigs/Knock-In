@@ -50,7 +50,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                 System.out.println("click close");
                 new MaterialAlertDialogBuilder(context)
                         .setTitle("Enlever du groupe")
-                        .setMessage("Vous allez enlever"+ contact.getContactDB().getFirstName()+" "+contact.getContactDB().getLastName()+" du groupe "+listGroup.get(position).getName())
+                        .setMessage("Vous allez enlever "+ contact.getContactDB().getFirstName()+" "+contact.getContactDB().getLastName()+" du groupe "+listGroup.get(position).getName())
                         .setPositiveButton(R.string.edit_contact_validate, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);

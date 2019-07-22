@@ -299,10 +299,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     verifiedContactsChannel(listOfItemSelected)
 
                     if (adapter.listContactSelect.size == 0) {
+                        val pos=main_GridView!!.firstVisiblePosition
                         main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         main_FloatingButtonSend!!.visibility = View.GONE
                         main_SearchBar!!.visibility = View.VISIBLE
+                        main_GridView!!.setSelection(pos);
 
                         Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
@@ -900,7 +902,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gridViewAdapter!!.closeMenu()
     }
 
-    fun longGridItemClick(len: Int, position: Int) {
+    fun longGridItemClick(len: Int, position: Int, firstPosVis: Int) {
+        main_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         main_GridView!!.adapter = adapter
         adapter.itemSelected(position)

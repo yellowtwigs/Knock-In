@@ -11,8 +11,8 @@
         android:id="@+id/menu_group_delete_contacts"
         android:enabled="true"
         android:orderInCategory="100"
-        android:title="Enlever des contacts du groupe"
-        android:visible="false" />
+        android:title="Supprimmer des contacts"
+        android:visible="true" />
     <item
         android:id="@+id/menu_group_delete_group"
         android:enabled="true"

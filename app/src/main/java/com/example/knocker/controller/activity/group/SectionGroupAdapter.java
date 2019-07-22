@@ -182,6 +182,9 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     mContext.startActivity(intent);
                                     break;
                                 case R.id.menu_group_delete_contacts:
+                                    Intent intentdelete = new Intent(mContext, DeleteContactToGroup.class);
+                                    intentdelete.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
+                                    mContext.startActivity(intentdelete);
                                     System.out.println("delete contact");
                                     break;
                                 case R.id.menu_group_delete_group:

@@ -37,6 +37,7 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".controller.activity.group.DeleteContactToGroup"></activity>
         <activity android:name=".controller.activity.group.AddContactToGroup" />
         <activity android:name=".controller.activity.group.GroupActivity" />
         <activity android:name=".controller.activity.MultiChannelActivity" />
@@ -45,7 +46,7 @@
             android:showOnLockScreen="true"
             android:turnScreenOn="true" />
         <activity android:name=".controller.activity.MultiSelectActivity" />
-        <activity android:name=".controller.activity.group.GroupManagerActivity"/>
+        <activity android:name=".controller.activity.group.GroupManagerActivity" />
         <activity android:name=".controller.activity.firstLaunch.SynchronizeContactActivity" />
         <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity" />
         <activity android:name=".controller.activity.PhoneLogActivity" />
@@ -72,21 +73,16 @@
             android:name=".controller.activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden" />
-
-        <!--<activity-->
-        <!--android:name="com.facebook.CustomTabActivity"-->
-        <!--android:exported="true">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.VIEW" />-->
-
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--<category android:name="android.intent.category.BROWSABLE" />-->
-
-        <!--<data android:scheme="@string/fb_login_protocol_scheme" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
+            android:windowSoftInputMode="stateHidden" /> <!-- <activity -->
+        <!-- android:name="com.facebook.CustomTabActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+        <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <service
             android:name=".controller.NotificationListener"
             android:label="@string/app_name"
@@ -98,16 +94,14 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <!--<receiver-->
-        <!--android:name=".model.MyReceiver"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="true">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+            android:value="@string/facebook_app_id" /> <!-- <receiver -->
+        <!-- android:name=".model.MyReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver android:name=".controller.NotificationSender" />
     </application>
 

@@ -918,7 +918,8 @@ class GroupActivity : AppCompatActivity() {
         }
     }
 
-    fun longGridItemClick(len: Int, position: Int) {
+    fun longGridItemClick(len: Int, position: Int, firstPosVis: Int) {
+        group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         group_GridView!!.adapter = adapter
         adapter.itemSelected(position)

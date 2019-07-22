@@ -302,7 +302,6 @@
     <string name="multi_select_alert_dialog_nb_contact">You have selected %1s %2s </string>
     <string name="multi_select_alert_dialog_0_contact">You have selected 0 contact </string>
     <string name="multi_select_validate_selection"> Do you validate your selection ?</string>
-
     <!-- endregion -->
 
     <!-- endregion  in   -->
@@ -340,8 +339,14 @@
     <string name="new_messages">new messages</string>
 
     <!-- endregion -->
+
     <!-- region Group -->
     <string name="group_search_hint">Rechercher</string>
     <string name="add_member">Choose a contact</string>
     <!--endregion -->
+
+    <!-- region delete contact to group-->
+    <string name="delete_contact_0_contact">to Translate</string>
+    <string name="delete_contact">you will delete%1sfrom this group</string>
+    <!-- endregion-->
 </resources>

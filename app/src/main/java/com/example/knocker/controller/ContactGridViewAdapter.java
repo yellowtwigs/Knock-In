@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -402,10 +403,17 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                int firstPosVis=position;
+              //  if(position<2*len) {
+                //     firstPosVis = 0;
+                //}else{
+                  //   firstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
+                //}
+                //System.out.println("selection"+firstPosVis);
                 if(context instanceof MainActivity) {
-                    ((MainActivity) context).longGridItemClick(len, position);
+                    ((MainActivity) context).longGridItemClick(len, position,firstPosVis);
                 }else{
-                    ((GroupActivity) context).longGridItemClick(len,position);
+                    ((GroupActivity) context).longGridItemClick(len,position,firstPosVis);
                 }
                 return true;
             }

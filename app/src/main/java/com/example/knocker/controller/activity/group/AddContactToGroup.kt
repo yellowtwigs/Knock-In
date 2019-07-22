@@ -51,7 +51,7 @@ class AddContactToGroup : AppCompatActivity() {
         when (item.itemId) {
             R.id.nav_validate -> {
                 addToGroup(addContactToGroupAdapter!!.allSelectContact, groupId)
-                startActivity(Intent(this, GroupActivity::class.java))
+                startActivity(Intent(this, GroupManagerActivity::class.java))
             }
         }
     return super.onOptionsItemSelected(item)
