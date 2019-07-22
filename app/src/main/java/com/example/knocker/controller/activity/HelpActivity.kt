@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.navigation.NavigationView
 
 /**
@@ -79,7 +80,9 @@ class HelpActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@HelpActivity, MainActivity::class.java))
                 }
+                R.id.nav_groups -> startActivity(Intent(this@HelpActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@HelpActivity, EditInformationsActivity::class.java))
+                R.id.nav_notif_config -> startActivity(Intent(this@HelpActivity, ManageNotificationActivity::class.java))
                 R.id.nav_screen_config -> startActivity(Intent(this@HelpActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }

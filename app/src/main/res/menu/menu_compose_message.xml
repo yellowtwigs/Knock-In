@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_compose_message_phone_call"
-        android:icon="@drawable/ic_phone_call"
+        android:icon="@drawable/ic_google_call"
         android:title=""
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>

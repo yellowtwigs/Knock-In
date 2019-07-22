@@ -112,7 +112,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/list_contact_item_call_tv"
                     app:layout_constraintStart_toStartOf="@+id/list_contact_item_call_tv"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_phone_call" />
+                    app:srcCompat="@drawable/ic_google_call" />
 
                 <TextView
                     android:id="@+id/list_contact_item_call_tv"
