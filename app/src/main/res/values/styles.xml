@@ -16,7 +16,7 @@
         <item name="textColor">@color/textColorDark</item>
         <item name="textColorLight">@color/textColorLight</item>
         <item name="lightGreyColor">@color/lightGreyColor</item>
-        <item name="colorSurface">@color/greyColor</item>
+        <item name="colorSurface">@color/lightGreyColor</item>
         <item name="darkGreyColor">@color/darkGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
@@ -37,7 +37,7 @@
         <item name="textColor">@color/textColorLight</item>
         <item name="textColorLight">@color/textColorDark</item>
         <item name="lightGreyColor">@color/lightGreyColorDark</item>
-        <item name="colorSurface">@color/darkGreyColor</item>
+        <item name="colorSurface">@color/lightGreyColorDark</item>
         <item name="darkGreyColor">@color/darkGreyColorDark</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
