@@ -109,9 +109,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder.groupWordingConstraint= gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
             holder.groupWordingTv = gridview.findViewById(R.id.grid_adapter_wording_group_tv);
 
-            SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
+            //SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
-            int len = sharedPreferences.getInt("gridview", 4);
+            //int len = sharedPreferences.getInt("gridview", 4);
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
 
