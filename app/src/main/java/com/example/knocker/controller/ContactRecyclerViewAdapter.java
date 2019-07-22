@@ -106,6 +106,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         final ContactDB contact = getItem(position).getContactDB();
         assert contact != null;
 
+
         if (len == 0) {
             if (contact.getContactPriority() == 0) {
                 holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
@@ -227,11 +228,14 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
                     if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
                         holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
+                        if(lastSelectMenuLen1!=null)
+                            lastSelectMenuLen1.setVisibility(View.GONE);
+                        lastSelectMenuLen1=holder.constraintLayoutMenu;
                     } else {
                         holder.constraintLayoutMenu.setVisibility(View.GONE);
-
                         Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
                         holder.constraintLayoutMenu.startAnimation(slideDown);
+                        lastSelectMenuLen1=null;
                     }
                 }
             }
@@ -303,6 +307,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
+
+        if (holder.groupWordingConstraint.getVisibility()==View.VISIBLE) {
+            System.out.println("is visible"+holder.contactFirstNameView.getText());
+            if (lastSelectMenuLen1.getId() != holder.groupWordingConstraint.getId()) {
+                holder.groupWordingConstraint.setVisibility(View.GONE);
+            }else{
+                System.out.println("id are equals"+lastSelectMenuLen1.getId()+"="+holder.groupWordingConstraint.getId());
+            }
+        }else{
+            System.out.println("is gone"+holder.contactFirstNameView.getText());
+        }
     }
 
     @Override
@@ -410,6 +425,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
         ConstraintLayout groupWordingConstraint;
         TextView groupWordingTv;
+        Boolean open;
 
         ContactViewHolder(@NonNull View view) {
             super(view);
@@ -426,6 +442,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 editCl = view.findViewById(R.id.list_contact_item_smaller_constraint_edit);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_item_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_item_wording_group_tv);
+                open=false;
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
@@ -438,6 +455,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
+                open=false;
             }
         }
     }
