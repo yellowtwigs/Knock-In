@@ -71,6 +71,11 @@
 
     <string name="main_alert_dialog_group_title">Création d\'un groupe</string>
     <string name="main_alert_dialog_group_subtitle">Donner un nom à votre groupe</string>
+    <string name="main_edited_contact">Contact modifié</string>
+    <string name="main_content_edited_contact">Le contact </string>
+    <string name="main_content_edited_contact_2"> a été changer\, garder la version du carnet d\'adresse d\'Android ou de Knocker ?</string>
+    <string name="main_android_edited_contact">Android</string>
+    <string name="main_knocker_edited_contact">Knocker</string>
 
     <!-- endregion -->
 
@@ -174,6 +179,7 @@
 
     <string name="edit_contact_alert_dialog_delete_contact_title">Supprimer un contact</string>
     <string name="edit_contact_alert_dialog_delete_contact_message">Êtes-vous sûr de vouloir supprimer ce contact ?</string>
+    <string name="edit_contact">Editer le contact</string>
 
     <!-- endregion !-->
 

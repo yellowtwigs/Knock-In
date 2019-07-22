@@ -403,11 +403,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this)
-                                .setTitle("Contact modifié")
-                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'adresse d'Android ou de Knocker ?")
-                                .setPositiveButton("Knocker") { _, _ ->
+                                .setTitle(R.string.main_edited_contact)
+                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + changedContact.first.firstName + " " + changedContact.first.lastName + this.resources.getString(R.string.main_content_edited_contact_2))
+                                .setPositiveButton(R.string.main_knocker_edited_contact) { _, _ ->
                                 }
-                                .setNegativeButton("Android") { _, _ ->
+                                .setNegativeButton(R.string.main_android_edited_contact) { _, _ ->
                                     val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
                                     allId.forEach {
                                         if (changedContact.first.id == it.first)

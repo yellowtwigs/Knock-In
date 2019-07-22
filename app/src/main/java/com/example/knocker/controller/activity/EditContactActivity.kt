@@ -252,7 +252,7 @@ class EditContactActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
-        actionbar.title = "Editer le contact" //TODO make in string.xml
+        actionbar.title = this.resources.getString(R.string.edit_contact)
 
         //endregion
 
@@ -267,7 +267,6 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property, edit_contact_Mail_Property!!))
         edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property, edit_contact_Phone_Property!!))
         edit_contact_Fix_Property!!.setSelection(getPosItemSpinner(edit_contact_fix_property, edit_contact_Fix_Property!!))
-        println("get item position" + edit_contact_Phone_Property!!.selectedItem.toString())
         textChanged(edit_contact_FirstName, edit_contact_FirstName!!.editText!!.text?.toString())
         textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
         textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
@@ -294,7 +293,7 @@ class EditContactActivity : AppCompatActivity() {
 //            }
 
             MaterialAlertDialogBuilder(this)
-                    .setTitle("Ajouter un champ")
+                    .setTitle(R.string.edit_contact_add_field)
                     .setView(alertView)
                     .show()
         }
