@@ -54,8 +54,8 @@
             android:title="@string/left_drawer_help" />
         <item
             android:id="@+id/nav_sync_contact"
-            android:icon="@drawable/ic_synchronization_arrows"
-            android:title="@string/left_drawer_sync"
+            android:icon="@drawable/ic_import"
+            android:title="@string/left_drawer_import"
             android:visible="false" />
     </group>
 </menu>

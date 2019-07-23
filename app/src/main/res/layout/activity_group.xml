@@ -60,7 +60,7 @@
         android:layout_marginEnd="@dimen/floating_button_margin"
         android:layout_marginBottom="80dp"
         android:background="@color/colorPrimary"
-        android:src="@drawable/ic_send"
+        android:src="@drawable/ic_exchange_arrows"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
