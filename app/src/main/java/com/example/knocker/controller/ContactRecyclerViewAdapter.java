@@ -168,10 +168,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }
         if (firstGroup == null) {
-            System.out.println("no group" + contact.getFirstName() + " " + contact.getLastName());
-            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
-            holder.groupWordingConstraint.setBackground(roundedLayout);
+            System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
+            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+            if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+                Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
+                holder.groupWordingConstraint.setBackground(roundedLayout);
+                System.out.println(" black color");
+            }
+            //Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
+            //roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
+            //holder.groupWordingConstraint.setBackground(roundedLayout);
         } else {
             System.out.println("have group");
             group = firstGroup.getName();

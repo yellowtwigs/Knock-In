@@ -31,6 +31,54 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/manage_my_screen_toolbar_title"
             app:titleTextColor="?attr/textColor" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/manage_multi_row"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/selector_relative_layout_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
+
+        <TextView
+            android:id="@+id/manage_multi_row_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="dissociate contact per column"
+            android:textColor="?attr/textColor"
+            android:textSize="@dimen/settings_subtitle_size"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/manage_multi_row_long_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="choose different number of contact per row for home screen and group screen"
+                android:textColor="?attr/textColor"
+                android:textSize="@dimen/settings_long_text_size"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/manage_multi_row_switch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/manage_multi_row_subtitle" />
+
+        <Switch
+            android:id="@+id/manage_multi_row_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/activity_settings_change_nb_contact"
@@ -146,14 +194,17 @@
             android:text="@string/manage_my_screen_number_of_line_group"
             android:textColor="?attr/textColor"
             android:textSize="@dimen/settings_subtitle_size"
+            android:visibility="gone"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_settings_change_nb_contact_group_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             android:background="@drawable/selector_relative_layout_with_border"
 
             android:backgroundTint="?attr/backgroundColor"

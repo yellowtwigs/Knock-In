@@ -31,6 +31,10 @@ interface GroupsDao {
     @Query("SELECT * FROM groups_table WHERE id = :id")
     fun getGroup(id: Int): GroupDB
 
+
+    @Query("SELECT * FROM groups_table WHERE id = :id")
+    fun getGroupWithContact(id: Int): GroupWithContact
+
     @Query("SELECT * FROM groups_table INNER JOIN link_contact_group_table ON groups_table.id=link_contact_group_table.id_group WHERE id_contact=:contactId")
     fun getGroupForContact(contactId:Int): List<GroupDB>
 

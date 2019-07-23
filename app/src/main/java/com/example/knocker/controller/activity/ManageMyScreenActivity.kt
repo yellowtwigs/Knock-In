@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 
 import com.example.knocker.R
@@ -14,6 +15,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.controller.activity.group.GroupActivity
@@ -50,6 +52,10 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private var manage_call_popup_switch: Switch? = null
     private var manage_searchbar_pos: Switch? = null
 
+    private var manage_screen_dissociate_cl: ConstraintLayout? = null
+    private var manage_screen_dissociate_textView: TextView? = null
+    private var manage_screen_dissociate:Boolean? = null
+    private var manage_screen_dissociate_switch:Switch?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +73,32 @@ class ManageMyScreenActivity : AppCompatActivity() {
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
         callPopup = sharedPreferencePopup.getBoolean("popup", true)
         searchbarPos = sharedPreferencePopup.getBoolean("searchbarPos", false)
+        manage_screen_dissociate= sharedPreferences.getBoolean("dissociate_screen",false)
 
+        manage_screen_dissociate_cl= findViewById(R.id.activity_settings_change_nb_contact_group_cl)
+        manage_screen_dissociate_textView= findViewById(R.id.activity_settings_change_nb_contact_group)
+        manage_screen_dissociate_switch=findViewById(R.id.manage_multi_row_switch)
 
+        if (manage_screen_dissociate!!){
+            manage_screen_dissociate_textView!!.visibility=View.VISIBLE
+            manage_screen_dissociate_cl!!.visibility=View.VISIBLE
+        }
+        manage_screen_dissociate_switch!!.isChecked=manage_screen_dissociate!!
+
+        manage_screen_dissociate_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
+            val editor=sharedPreferences.edit()
+            editor.putBoolean("dissociate_screen",isChecked)
+            editor.apply()
+            manage_screen_dissociate=isChecked
+            if(isChecked){
+                manage_screen_dissociate_textView!!.visibility=View.VISIBLE
+                manage_screen_dissociate_cl!!.visibility=View.VISIBLE
+            }else{
+
+                manage_screen_dissociate_textView!!.visibility=View.GONE
+                manage_screen_dissociate_cl!!.visibility=View.GONE
+            }
+        }
         tv_zero = findViewById(R.id.activity_settings_imageView_0_contact)
         tv_one = findViewById(R.id.activity_settings_imageView_1_contact)
         tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
@@ -188,7 +218,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_four!!.background = null
             tv_five!!.background = null
             tv_six!!.background = null
-            changeGridColumn()
+            if (!manage_screen_dissociate!!){
+                changeGridColumnHomeAndGroup()
+            }else {
+                changeGridColumn()
+            }
         }
         tv_one?.setOnClickListener {
             nbGrid = 1
@@ -200,7 +234,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_four!!.background = null
             tv_five!!.background = null
             tv_six!!.background = null
-            changeGridColumn()
+            if (!manage_screen_dissociate!!){
+                changeGridColumnHomeAndGroup()
+            }else {
+                changeGridColumn()
+            }
         }
         tv_three?.setOnClickListener {
             nbGrid = 3
@@ -212,7 +250,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_five!!.background = null
             tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
             tv_six!!.background = null
-            changeGridColumn()
+            if (!manage_screen_dissociate!!){
+                changeGridColumnHomeAndGroup()
+            }else {
+                changeGridColumn()
+            }
         }
         tv_four?.setOnClickListener {
             nbGrid = 4
@@ -224,7 +266,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_five!!.background = null
             tv_six!!.background = null
             tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            changeGridColumn()
+            if (!manage_screen_dissociate!!){
+                changeGridColumnHomeAndGroup()
+            }else {
+                changeGridColumn()
+            }
         }
         tv_five?.setOnClickListener {
             nbGrid = 5
@@ -236,7 +282,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_four!!.background = null
             tv_six!!.background = null
             tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            changeGridColumn()
+            if (!manage_screen_dissociate!!){
+                changeGridColumnHomeAndGroup()
+            }else {
+                changeGridColumn()
+            }
         }
         tv_six?.setOnClickListener {
             nbGrid = 6
@@ -248,7 +298,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
             tv_four!!.background = null
             tv_five!!.background = null
             tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            changeGridColumn()
+            if (!manage_screen_dissociate!!){
+                changeGridColumnHomeAndGroup()
+            }else {
+                changeGridColumn()
+            }
         }
 
 
@@ -378,6 +432,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
     }
 
+
     //region ========================================== Functions ===========================================
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -419,10 +474,27 @@ class ManageMyScreenActivity : AppCompatActivity() {
     }
     private fun changeGridColumnGroup() {
         val loginIntent = Intent(this@ManageMyScreenActivity, GroupActivity::class.java)
-        val sharedPreferences: SharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
+        val sharedPreferencesGroup: SharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
+        val editGroup: SharedPreferences.Editor = sharedPreferencesGroup.edit()
+        editGroup.putInt("gridview", nbGrid)
+        editGroup.apply()
+        startActivity(loginIntent)
+        finish()
+    }
+
+
+    private fun changeGridColumnHomeAndGroup() {
+        val loginIntent = Intent(this@ManageMyScreenActivity, MainActivity::class.java)
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val edit: SharedPreferences.Editor = sharedPreferences.edit()
         edit.putInt("gridview", nbGrid)
         edit.apply()
+
+        val sharedPreferencesGroup: SharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
+        val editGroup: SharedPreferences.Editor = sharedPreferencesGroup.edit()
+        editGroup.putInt("gridview", nbGrid)
+        editGroup.apply()
+
         startActivity(loginIntent)
         finish()
     }

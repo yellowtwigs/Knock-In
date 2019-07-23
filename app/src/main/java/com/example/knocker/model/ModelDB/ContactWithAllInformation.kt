@@ -110,7 +110,6 @@ class ContactWithAllInformation {
         if( !groupList!!.isEmpty()) {
             return contactRoom!!.GroupsDao().getGroup(groupList!!.get(0).idGroup)
         }else{
-
             return null
         }
     }
