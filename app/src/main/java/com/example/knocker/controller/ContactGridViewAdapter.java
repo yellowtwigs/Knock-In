@@ -447,12 +447,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 main_mDbWorkerThread.start() ;
                 ArrayList<Integer> listPosition = new ArrayList<Integer>();
                 System.out.println("list contact grid size"+gestionnaireContact.getContacts().size());
-                for(int i = 0;i<gestionnaireContact.getContacts().size();i++) {
-                    if(gestionnaireContact.getContacts().get(i).getFirstGroup(context).getId().equals(gestionnaireContact.getContacts().get(position).getFirstGroup(context).getId())){
-                        System.out.println("id egale a l'autre ");
-                        listPosition.add(i);
-                    }else{
-                        System.out.println(gestionnaireContact.getContacts().get(i).getFirstGroup(context).getId()+" id different a "+gestionnaireContact.getContacts().get(position).getFirstGroup(context).getId());
+                for (int i = 0; i < gestionnaireContact.getContacts().size(); i++) {
+                    if (gestionnaireContact.getContacts().get(i).getFirstGroup(context) != null) {
+                        if (gestionnaireContact.getContacts().get(i).getFirstGroup(context).getId().equals(gestionnaireContact.getContacts().get(position).getFirstGroup(context).getId())) {
+                            System.out.println("id egale a l'autre ");
+                            listPosition.add(i);
+                        } else {
+                            System.out.println(gestionnaireContact.getContacts().get(i).getFirstGroup(context).getId() + " id different a " + gestionnaireContact.getContacts().get(position).getFirstGroup(context).getId());
+                        }
                     }
                 }
                 ((GroupActivity) context).clickGroup(len,listPosition,((GridView)parent).getFirstVisiblePosition(),getItem(position).getFirstGroup(context).getId().intValue());
