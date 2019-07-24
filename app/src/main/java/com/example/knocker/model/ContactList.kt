@@ -114,6 +114,16 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         contacts = listChangement
     }
 
+    fun sortContactByLastname() {
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByLastNameAZ() }
+        val result = executorService.submit(callDb)
+        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
+        listChangement.addAll(result.get())
+        listChangement.retainAll(contacts)
+        contacts = listChangement
+    }
+
     fun sortContactByPriority() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByPriority20() }

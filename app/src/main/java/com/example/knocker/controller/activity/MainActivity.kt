@@ -858,7 +858,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             R.id.trie_par_lastname -> {
                 if (!item.isChecked) {
                     item.isChecked = true
-                    ////gestionnaireContacts!!.sortContactByGroup()
+                    gestionnaireContacts!!.sortContactByLastname()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     if (len > 1) {

@@ -631,12 +631,15 @@ class GroupActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_group, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
+        val sortLastname = menu.findItem(R.id.trie_par_lastname)
         val triPrio = menu.findItem(R.id.tri_par_priorite)
         val triGroup = menu.findItem(R.id.trie_par_group)
         val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
         if (tri == "nom") {
             triNom.isChecked = true
+        } else if (tri == "lastname") {
+            sortLastname.isChecked = true
         } else if (tri == "priorite") {
             triPrio.isChecked = true
         } else {
@@ -847,6 +850,25 @@ class GroupActivity : AppCompatActivity() {
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putString("tri", "group")
+                    edit.apply()
+                }
+            }
+            R.id.trie_par_lastname -> {
+                if (!item.isChecked) {
+                    item.setChecked(true)
+                    gestionnaireContacts!!.sortContactByLastname()
+                    val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
+                    val len = sharedPreferences.getInt("gridview", 4)
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
+                        group_GridView!!.adapter = gridViewAdapter
+                    } else {
+                        group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
+                        recyclerViewAdapter!!.notifyDataSetChanged()
+                    }
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putString("tri", "lastname")
                     edit.apply()
                 }
             }
