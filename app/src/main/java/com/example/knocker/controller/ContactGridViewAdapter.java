@@ -416,7 +416,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }else{
                    firstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
                 }
-                System.out.println("selection"+firstPosVis);
                 if(context instanceof MainActivity) {
                     ((MainActivity) context).longGridItemClick(len, position,firstPosVis);
                 }else{

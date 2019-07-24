@@ -57,6 +57,7 @@
     <string name="main_change_format_phone_book">Help</string>
     <string name="main_tri_title">sort:</string>
     <string name="main_tri_par_nom">Firstname</string>
+    <string name="main_tri_par_lastname">Lastname</string>
     <string name="main_tri_par_priorite">Priority</string>
     <string name="main_tri_par_groupe">Group</string>
     <string name="main_filtre_title">filter by:</string>
