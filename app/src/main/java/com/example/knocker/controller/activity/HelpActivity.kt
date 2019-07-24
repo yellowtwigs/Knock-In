@@ -65,12 +65,10 @@ class HelpActivity : AppCompatActivity() {
         // Drawerlayout
         help_activity_DrawerLayout = findViewById(R.id.help_drawer_layout)
 
-        val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
+        val navigationView = findViewById<NavigationView>(R.id.help_nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_notif_config)
+        val nav_item = menu.findItem(R.id.nav_help)
         nav_item.isChecked = true
-
-        navigationView!!.menu.getItem(3).isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true

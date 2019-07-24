@@ -205,9 +205,12 @@
     <string name="manage_my_screen_toolbar_title">Display</string>
     <string name="manage_my_screen_theme">Change theme</string>
     <string name="manage_my_screen_theme_long_text">Enable dark theme</string>
-    <string name="manage_my_screen_number_of_line">Select a contacts display</string>
-    <string name="manage_my_screen_number_of_line_group">Select a groups display</string>
+    <string name="manage_my_screen_number_of_column">Select a contacts display</string>
+    <string name="manage_my_screen_number_of_column_group">Select a groups display</string>
+    <string name="manage_my_screen_dissociate_number_of_column_title">Dissociate display of contacts</string>
+    <string name="manage_my_screen_dissociate_number_of_column_long_text">Dissociate number of contact per column for home and group screen</string>
     <string name="manage_my_screen_toast_grid">You have selected %1$d contacts per row</string>
+
     <string name="manage_my_screen_toast_list">List mode selected</string>
     <string name="manage_my_screen_toast_list_smaller">Compact list mode selected</string>
     <string name="manage_my_screen_contact_popup">Phone call popup</string>
@@ -276,15 +279,15 @@
 
     <!-- endregion -->
 
-    <!-- region Synchronize Contact -->
+    <!-- region Import Contacts -->
 
-    <string name="synchronise_contact_title">Synchronize contacts</string>
-    <string name="synchronise_contact_synchronise_long_text">Synchronize your phone contacts to import their details in Knocker. You will be able to easily communicate with them and change their priotity</string>
-    <string name="synchronise_contact_synchronise_button_yes">Synchronize</string>
-    <string name="synchronise_contact_synchronise_button_no">Do not synchronize</string>
-    <string name="synchronise_contact_synchronise_toast">Contacts are synchronized</string>
-    <string name="synchronise_contact_alert_dialog">You can synchronize your contacts later from the navigation menu via the "Synchronize your contacts" tab</string>
-    <string name="synchronise_contact_validate">ok</string>
+    <string name="import_contacts_title">Import contacts</string>
+    <string name="import_contacts_long_text">Import your phone contacts to import their details in Knocker. You will be able to easily communicate with them and change their priotity</string>
+    <string name="import_contacts_button_yes">Import</string>
+    <string name="import_contacts_button_no">Do not import</string>
+    <string name="import_contacts_toast">Contacts imported</string>
+    <string name="import_contacts_alert_dialog">You can import your contacts later from the navigation menu via the "Import your contacts" tab</string>
+
     <!-- endregion -->
 
     <!-- region First Launch -->

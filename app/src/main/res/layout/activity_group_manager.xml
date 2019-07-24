@@ -8,14 +8,13 @@
     tools:openDrawer="start">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLyout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:background="?attr/backgroundColor"
             android:clickable="true"
             android:focusable="true"
@@ -63,11 +62,10 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/group_list_view_id"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="?attr/backgroundColor"
                 android:columnWidth="120dp"
@@ -78,7 +76,62 @@
                 app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/group_manager_floating_button_gmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="35dp"
+            android:background="@color/colorPrimary"
+            android:backgroundTint="@color/lightColor"
+            android:drawableTint="@color/lightColor"
+            android:src="@drawable/ic_gmail_floating"
+            android:tint="@color/lightColor"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_sms"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:targetApi="P" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/group_manager_floating_button_sms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="35dp"
+            android:background="@color/colorPrimary"
+            android:backgroundTint="@color/lightColor"
+            android:drawableTint="@color/lightColor"
+            android:src="@drawable/ic_message_floating"
+            android:tint="@color/lightColor"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_send_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:targetApi="P" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/group_manager_floating_button_send_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/floating_button_margin"
+            android:layout_marginBottom="80dp"
+            android:background="@color/colorPrimary"
+            android:backgroundTint="@color/lightColor"
+            android:drawableTint="@color/lightColor"
+            android:src="@drawable/ic_exchange_arrows"
+            android:tint="@color/lightColor"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:targetApi="P" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

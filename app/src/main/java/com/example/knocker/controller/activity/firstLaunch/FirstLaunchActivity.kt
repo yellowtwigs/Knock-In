@@ -25,7 +25,7 @@ class FirstLaunchActivity : AppCompatActivity() {
         buttonAccept.setOnClickListener {
             edit.putBoolean("first_launch", false)
             edit.apply()
-            startActivity(Intent(this@FirstLaunchActivity, SynchronizeContactActivity::class.java))
+            startActivity(Intent(this@FirstLaunchActivity, ImportContactsActivity::class.java))
             finish()
         }
     }

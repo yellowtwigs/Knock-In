@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightColor"
-    tools:context=".controller.activity.firstLaunch.SynchronizeContactActivity">
+    tools:context=".controller.activity.firstLaunch.ImportContactsActivity">
 
     <TextView
-        android:id="@+id/synchronise_contact_title"
+        android:id="@+id/import_contacts_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
-        android:text="@string/synchronise_contact_title"
+        android:text="@string/import_contacts_title"
         android:textColor="@color/colorPrimary"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/import_contacts_long_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -41,33 +41,32 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:textAlignment="center"
-        android:text="@string/synchronise_contact_synchronise_long_text"
+        android:text="@string/import_contacts_long_text"
         android:maxWidth="300dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/synchronise_contact_title" />
+        app:layout_constraintTop_toBottomOf="@+id/import_contacts_title" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/synchronise_contact_accept_button"
+        android:id="@+id/import_contacts_accept_button"
         android:layout_width="185dp"
         android:layout_height="65dp"
         android:layout_marginTop="100dp"
-        android:text="@string/synchronise_contact_synchronise_button_yes"
-        app:icon="@drawable/ic_synchronization_arrows"
-        app:layout_constraintBottom_toTopOf="@+id/synchronise_contact_not_accept_button"
+        android:text="@string/import_contacts_button_yes"
+        app:icon="@drawable/ic_import"
+        app:layout_constraintBottom_toTopOf="@+id/import_contacts_not_accept_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/import_contacts_long_text" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/synchronise_contact_not_accept_button"
+        android:id="@+id/import_contacts_not_accept_button"
         android:layout_width="185dp"
         android:layout_height="65dp"
         android:layout_marginTop="10dp"
-        android:text="@string/synchronise_contact_synchronise_button_no"
-        app:icon="@drawable/ic_turn_synchronization_off"
+        android:text="@string/import_contacts_button_no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/synchronise_contact_accept_button" />
+        app:layout_constraintTop_toBottomOf="@+id/import_contacts_accept_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

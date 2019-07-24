@@ -53,14 +53,13 @@ import static java.sql.DriverManager.println;
  */
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
     private List<ContactWithAllInformation> listContacts;
-    private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
     private View view;
     private ContactList gestionnaireContacts;
     private Boolean modeMultiSelect = false;
 
-    ConstraintLayout lastSelectMenuLen1 = null;
+    private ConstraintLayout lastSelectMenuLen1;
 
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
@@ -68,14 +67,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
-    private final int PERMISSION_CALL_RESULT = 1;
     private String numberForPermission = "";
 
     public ContactRecyclerViewAdapter(Context context, ContactList gestionnaireContacts, Integer len) {
         this.context = context;
         this.listContacts = gestionnaireContacts.getContacts();
         this.len = len;
-        this.layoutInflater = LayoutInflater.from(context);
         this.gestionnaireContacts = gestionnaireContacts;
         lastSelectMenuLen1 = null;
     }
@@ -481,6 +478,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     public void callPhone(final String phoneNumber) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            int PERMISSION_CALL_RESULT = 1;
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_RESULT);
             numberForPermission = phoneNumber;
         } else {
@@ -518,11 +516,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
     }
 
-    public class ContactViewHolder extends RecyclerView.ViewHolder {
-        public TextView contactFirstNameView;
+    class ContactViewHolder extends RecyclerView.ViewHolder {
+        TextView contactFirstNameView;
         ConstraintLayout constraintLayout;
         ConstraintLayout constraintLayoutMenu;
-        public CircularImageView contactRoundedImageView;
+        CircularImageView contactRoundedImageView;
         ConstraintLayout constraintLayoutSmaller;
         ConstraintLayout constraintLayoutMenuSmaller;
 

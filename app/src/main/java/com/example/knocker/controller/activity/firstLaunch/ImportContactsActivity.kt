@@ -10,36 +10,37 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
+import com.example.knocker.controller.activity.TutorialActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.DbWorkerThread
 
 
-class SynchronizeContactActivity : AppCompatActivity() {
+class ImportContactsActivity : AppCompatActivity() {
 
     private var main_loadingPanel: RelativeLayout? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
-    private var synchronise_contact_accept_button: Button? = null
-    private var synchronise_contact_not_accept_button: Button? = null
-    private var textView2: TextView? = null
-    private var synchronise_contact_title: TextView? = null
+    private var import_contacts_accept_button: Button? = null
+    private var import_contacts_not_accept_button: Button? = null
+    private var import_contacts_LongText: TextView? = null
+    private var import_contacts_Title: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_synchronize_contact)
-        synchronise_contact_accept_button = findViewById(R.id.synchronise_contact_accept_button)
-        synchronise_contact_not_accept_button = findViewById(R.id.synchronise_contact_not_accept_button)
+        setContentView(R.layout.activity_import_contacts)
+        import_contacts_accept_button = findViewById(R.id.import_contacts_accept_button)
+        import_contacts_not_accept_button = findViewById(R.id.import_contacts_not_accept_button)
         main_loadingPanel = findViewById(R.id.loadingPanel)
-        textView2 = findViewById(R.id.textView2)
-        synchronise_contact_title = findViewById(R.id.synchronise_contact_title)
+        import_contacts_LongText = findViewById(R.id.import_contacts_long_text)
+        import_contacts_Title = findViewById(R.id.import_contacts_title)
 
 
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
 
-        synchronise_contact_accept_button!!.setOnClickListener {
+        import_contacts_accept_button!!.setOnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_READ_CONTACT)
         }
-        synchronise_contact_not_accept_button!!.setOnClickListener {
+        import_contacts_not_accept_button!!.setOnClickListener {
             overlayAlertDialog().show()
         }
     }
@@ -48,15 +49,15 @@ class SynchronizeContactActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, R.string.synchronise_contact_synchronise_toast, Toast.LENGTH_LONG).show()
-                synchronise_contact_accept_button!!.visibility = View.GONE
-                synchronise_contact_not_accept_button!!.visibility = View.GONE
-                textView2!!.visibility = View.GONE
-                synchronise_contact_title!!.visibility = View.GONE
+                Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
+                import_contacts_accept_button!!.visibility = View.GONE
+                import_contacts_not_accept_button!!.visibility = View.GONE
+                import_contacts_LongText!!.visibility = View.GONE
+                import_contacts_Title!!.visibility = View.GONE
                 main_loadingPanel!!.visibility = View.VISIBLE
                 val sync = Runnable {
                     ContactList(this).getAllContacsInfoSync(contentResolver)
-                    startActivity(Intent(this@SynchronizeContactActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ImportContactsActivity, TutorialActivity::class.java))
                     finish()
                 }
                 main_mDbWorkerThread.postTask(sync)
@@ -69,10 +70,10 @@ class SynchronizeContactActivity : AppCompatActivity() {
     private fun overlayAlertDialog(): android.app.AlertDialog {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(applicationContext.resources.getString(R.string.app_name))
-        alertDialogBuilder.setMessage(applicationContext.resources.getString(R.string.synchronise_contact_alert_dialog))
-        alertDialogBuilder.setPositiveButton(R.string.synchronise_contact_validate
+        alertDialogBuilder.setMessage(applicationContext.resources.getString(R.string.import_contacts_alert_dialog))
+        alertDialogBuilder.setPositiveButton("ok"
         ) { _, _ ->
-            startActivity(Intent(this@SynchronizeContactActivity, MainActivity::class.java))
+            startActivity(Intent(this@ImportContactsActivity, TutorialActivity::class.java))
         }
 
         return alertDialogBuilder.create()

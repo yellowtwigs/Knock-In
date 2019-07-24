@@ -1,6 +1,5 @@
 package com.example.knocker.controller.activity.group;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -35,20 +34,16 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private boolean mValid = true;
     private int mSectionResourceId;
-    private LayoutInflater mLayoutInflater;
     private RecyclerView.Adapter mBaseAdapter;
-    private SparseArray<Section> mSections = new SparseArray<Section>();
-    private RecyclerView mRecyclerView;
+    private SparseArray<Section> mSections = new SparseArray<>();
 
 
     public SectionGroupAdapter(Context context, int sectionResourceId, RecyclerView recyclerView,
                                RecyclerView.Adapter baseAdapter) {
 
-        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSectionResourceId = sectionResourceId;
         mBaseAdapter = baseAdapter;
         mContext = context;
-        mRecyclerView = recyclerView;
 
 
         mBaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -77,7 +72,8 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
-        final GridLayoutManager layoutManager = (GridLayoutManager) (mRecyclerView.getLayoutManager());
+        final GridLayoutManager layoutManager = (GridLayoutManager) (recyclerView.getLayoutManager());
+        assert layoutManager != null;
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -89,12 +85,12 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public static class SectionViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView titleTv;
-        public ImageView gmailIV;
-        public ImageView smsIV;
+        TextView titleTv;
+        ImageView gmailIV;
+        ImageView smsIV;
         public ImageView menu;
 
-        public SectionViewHolder(View view) {
+        SectionViewHolder(View view) {
             super(view);
             titleTv = view.findViewById(R.id.section_text);
             gmailIV = view.findViewById(R.id.section_gmail_imageview);

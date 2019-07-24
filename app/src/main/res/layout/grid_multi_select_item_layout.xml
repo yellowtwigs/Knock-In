@@ -5,7 +5,7 @@
     android:id="@+id/multi_select_contact_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="?attr/backgroundColor">
+    android:background="@drawable/selector_relative_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/grid_adapter_wording_group_constraint_layout"
@@ -64,10 +64,8 @@
         android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contactRoundedImageView"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/contactRoundedImageView">
 
         <TextView
             android:id="@+id/grid_adapter_contactFirstName"
@@ -77,6 +75,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Bla bla"
+            android:textAlignment="center"
             android:textColor="?attr/textColor"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,8 +89,10 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Bla bla"
+            android:textAlignment="center"
             android:textColor="?attr/textColor"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/grid_adapter_contactFirstName" />

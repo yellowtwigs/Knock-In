@@ -204,8 +204,10 @@
     <string name="manage_my_screen_toolbar_title">Affichage</string>
     <string name="manage_my_screen_theme">Changer le thème</string>
     <string name="manage_my_screen_theme_long_text">Activer thème foncé</string>
-    <string name="manage_my_screen_number_of_line">Choix affichages des contacts</string>
-    <string name="manage_my_screen_number_of_line_group">Choix affichages des groupes</string>
+    <string name="manage_my_screen_number_of_column">Choix de l\'affichage des contacts</string>
+    <string name="manage_my_screen_number_of_column_group">Choix l\'affichage des groupes</string>
+    <string name="manage_my_screen_dissociate_number_of_column_title">Dissocier l\'affichage des contacts</string>
+    <string name="manage_my_screen_dissociate_number_of_column_long_text">Dissocier le nombre de contacts par colonne pour Accueil et Groupes</string>
     <string name="manage_my_screen_toast_grid">Vous avez sélectionné %1$d contacts par ligne</string>
     <string name="manage_my_screen_toast_list">Vous avez sélectionné le mode "Liste"</string>
     <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionnez le mode d\'affichage compact</string>
@@ -274,15 +276,14 @@
 
     <!-- endregion -->
 
-    <!-- region Synchronize Contact -->
+    <!-- region Import Contacts -->
 
-    <string name="synchronise_contact_title">Synchronisation des contacts</string>
-    <string name="synchronise_contact_synchronise_long_text">Synchronisez les contacts de votre téléphone et récupérez leurs informations dans Knocker. Vous pourrez alors leurs affecter des priorités et communiquer beaucoup plus facilement et efficacement avec eux </string>
-    <string name="synchronise_contact_synchronise_button_yes">Synchroniser</string>
-    <string name="synchronise_contact_synchronise_button_no">Ne pas synchroniser</string>
-    <string name="synchronise_contact_synchronise_toast">Contacts synchronisés</string>
-    <string name="synchronise_contact_alert_dialog">Vous pourrez toujours synchroniser vos contact dans la bar de navigation latéral avec l\'onglet "Synchroniser vos contact"</string>
-    <string name="synchronise_contact_validate">ok</string>
+    <string name="import_contacts_title">Importation des contacts Android</string>
+    <string name="import_contacts_long_text">Importer les contacts de votre téléphone et récupérez leurs informations dans Knocker. Vous pourrez alors leurs affecter des priorités et communiquer beaucoup plus facilement et efficacement avec eux </string>
+    <string name="import_contacts_button_yes">Importer</string>
+    <string name="import_contacts_button_no">Ne pas importer</string>
+    <string name="import_contacts_toast">Contacts importés</string>
+    <string name="import_contacts_alert_dialog">Vous pourrez toujours importer vos contacts dans le menu de gauche avec l\'onglet "Importer vos contact"</string>
 
     <!-- endregion -->
 

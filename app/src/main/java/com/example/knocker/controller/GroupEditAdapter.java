@@ -22,21 +22,24 @@ import com.example.knocker.model.ModelDB.GroupDB;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.ViewHolder> {
-    ArrayList<GroupDB> listGroup;
+    private ArrayList<GroupDB> listGroup;
     Context context;
-    ContactWithAllInformation contact;
-    public GroupEditAdapter(Context context, ArrayList<GroupDB> listGroup, ContactWithAllInformation contact){
-        this.context=context;
-        this.listGroup=listGroup;
-        this.contact=contact;
+    private ContactWithAllInformation contact;
+
+    public GroupEditAdapter(Context context, ArrayList<GroupDB> listGroup, ContactWithAllInformation contact) {
+        this.context = context;
+        this.listGroup = listGroup;
+        this.contact = contact;
     }
+
     @NonNull
     @Override
     public GroupEditAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater= LayoutInflater.from(context);
-        View view= inflater.inflate(R.layout.group_item_in_edit_contact,parent,false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.group_item_in_edit_contact, parent, false);
         return new ViewHolder(view);
     }
 
@@ -55,7 +58,8 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                                 ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
                                 DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
                                 mDbWorkerThread.start();
-                                ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(),listGroup.get(position).getId().intValue());
+                                assert ContactsDatabase != null;
+                                ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(), Objects.requireNonNull(listGroup.get(position).getId()).intValue());
 
                                 listGroup.remove(position);
                                 notifyDataSetChanged();
@@ -63,26 +67,29 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                         }).setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                        }).show();
+                    }
+                }).show();
 
-               // holder.layoutGroup.setVisibility(View.GONE);
+                // holder.layoutGroup.setVisibility(View.GONE);
             }
         });
-        Drawable drawable= context.getDrawable(R.drawable.rounded_rectangle_group);
+        Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);
+        assert drawable != null;
         drawable.setColorFilter(listGroup.get(position).randomColorGroup(context), PorterDuff.Mode.MULTIPLY);
         holder.layoutGroup.setBackground(drawable);
         holder.groupName.setText(listGroup.get(position).getName());
     }
-    public GroupDB getItem(int position){
+
+    public GroupDB getItem(int position) {
         return listGroup.get(position);
     }
+
     @Override
     public int getItemCount() {
         return listGroup.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView groupName;
         ImageView close;
         ConstraintLayout layoutGroup;

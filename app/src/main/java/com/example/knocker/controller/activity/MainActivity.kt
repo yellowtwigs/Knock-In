@@ -562,7 +562,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         main_MailButton!!.setOnClickListener {
-            var iterator: IntIterator?
+            val iterator: IntIterator?
             val listOfMailContactSelected: ArrayList<String> = ArrayList()
 
             if (len > 1) {
@@ -989,22 +989,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     fun longRecyclerItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
-
-            main_FloatingButtonAdd!!.visibility = View.VISIBLE
-            main_FloatingButtonSend!!.visibility = View.GONE
-            main_SearchBar!!.visibility = View.VISIBLE
-            main_SMSButton!!.visibility = View.GONE
-            main_MailButton!!.visibility = View.GONE
-
         } else {
             listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
-
-            main_FloatingButtonAdd!!.visibility = View.GONE
-            main_FloatingButtonSend!!.visibility = View.VISIBLE
-            main_SearchBar!!.visibility = View.GONE
-            main_SMSButton!!.visibility = View.VISIBLE
-            main_MailButton!!.visibility = View.VISIBLE
-
             verifiedContactsChannel(listOfItemSelected)
         }
 

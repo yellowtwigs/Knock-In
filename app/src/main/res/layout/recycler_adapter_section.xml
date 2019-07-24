@@ -7,9 +7,10 @@
     android:background="@drawable/recycler_section">
 
     <RelativeLayout
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_button_color_grey"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,6 +19,7 @@
             android:id="@+id/section_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_centerInParent="true"
             android:ellipsize="end"
             android:maxLines="1"
@@ -28,22 +30,9 @@
     </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/section_gmail_imageview"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
-        android:layout_marginEnd="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/section_more_imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_rounded_gmail" />
-
-    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/section_sms_imageview"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
         android:focusable="true"
@@ -52,6 +41,19 @@
         app:layout_constraintEnd_toStartOf="@+id/section_gmail_imageview"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_sms" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/section_gmail_imageview"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/section_more_imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_circular_gmail" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/section_more_imageView"

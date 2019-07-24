@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/grid_group_manager_item_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?attr/backgroundColor"
+    android:clickable="true"
+    android:focusable="true">
+
+    <com.example.knocker.controller.CircularImageView
+        android:id="@+id/grid_group_manager_item_RoundedImageView"
+        android:layout_width="@dimen/rounded_image_view_height_width"
+        android:layout_height="@dimen/rounded_image_view_height_width"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/ic_letter_k"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grid_group_manager_item_RoundedImageView">
+
+        <TextView
+            android:id="@+id/grid_group_manager_item_contactFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="1dp"
+            android:text="Bla bla"
+            android:textAlignment="center"
+            android:textColor="?attr/textColor"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/grid_group_manager_item_contactLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:text="Bla bla"
+            android:textAlignment="center"
+            android:textColor="?attr/textColor"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/grid_group_manager_item_contactFirstName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
