@@ -24,7 +24,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
-import com.example.knocker.model.NumberAndMailDB
 import com.example.knocker.R
 import com.example.knocker.controller.MessageListAdapter
 import com.example.knocker.model.Message
@@ -81,7 +80,7 @@ class ComposeMessageActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        supportActionBar!!.setDisplayShowTitleEnabled(false);
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
 
@@ -241,7 +240,7 @@ class ComposeMessageActivity : AppCompatActivity() {
         }
     }
 
-    fun isValidPhone(phone: String): Boolean {
+    private fun isValidPhone(phone: String): Boolean {
         val expression = "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})\$"
         val pattern = Pattern.compile(expression)
         val matcher = pattern.matcher(phone)

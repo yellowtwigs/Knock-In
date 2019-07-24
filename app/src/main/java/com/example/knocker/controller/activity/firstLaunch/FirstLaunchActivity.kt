@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.text.HtmlCompat
 import com.example.knocker.R
 
 class FirstLaunchActivity : AppCompatActivity() {

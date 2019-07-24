@@ -1,13 +1,10 @@
 package com.example.knocker.model
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
 /**
  * L'objet qui permet d'ouvrir messenger, whatsapp et gmail
@@ -15,8 +12,8 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
  */
 object ContactGesture {
 
-    fun putContactIntent(contact: ContactWithAllInformation, context: Context, classToSend: Class<*>): Intent {
-        /*
+    /*fun putContactIntent(contact: ContactWithAllInformation, context: Context, classToSend: Class<*>): Intent {
+        *//*
         intent.putExtra("ContactFirstName", contact.firstName)
         intent.putExtra("ContactLastName", contact.lastName)
         intent.putExtra("ContactPhoneNumber",phoneNumber)
@@ -24,8 +21,8 @@ object ContactGesture {
         intent.putExtra("ContactImage", contact.profilePicture)
         intent.putExtra("ContactId", contact.id)
         intent.putExtra("ContactPriority", contact.contactPriority)
-      */  return Intent(context, classToSend)
-    }
+      *//*  return Intent(context, classToSend)
+    }*/
 
     fun openWhatsapp(contact: CharSequence, context: Context) {
         val url = "https://api.whatsapp.com/send?phone=$contact"
@@ -41,20 +38,20 @@ object ContactGesture {
         }
     }
 
-    fun openMessenger(id: String, context: Context) {
+    /*fun openMessenger(id: String, context: Context) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
-            context.startActivity(intent);
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id))
+            context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
-            context.startActivity(intent);
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id))
+            context.startActivity(intent)
         }
-    }
+    }*/
 
-    fun openGmail(context: Context) {
+    /*fun openGmail(context: Context) {
         val i = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
         i!!.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i)
-    }
+    }*/
 
 }

@@ -23,11 +23,11 @@ import com.google.android.material.navigation.NavigationView
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HelpActivity : AppCompatActivity() {
 
-    var help_activity_FAQ: ConstraintLayout? = null
-    var help_activity_ContactUs: ConstraintLayout? = null
-    var help_activity_Terms: ConstraintLayout? = null
-    var help_activity_Infos: ConstraintLayout? = null
-    var help_activity_DrawerLayout: DrawerLayout? = null
+    private var help_activity_FAQ: ConstraintLayout? = null
+    private var help_activity_ContactUs: ConstraintLayout? = null
+    private var help_activity_Terms: ConstraintLayout? = null
+    private var help_activity_Infos: ConstraintLayout? = null
+    private var help_activity_DrawerLayout: DrawerLayout? = null
 
     @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +103,7 @@ class HelpActivity : AppCompatActivity() {
             if (it.id == help_activity_ContactUs!!.id) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.data = Uri.parse("mailto:")
-                intent.type = "text/html";
+                intent.type = "text/html"
                 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_mail)))
                 intent.putExtra(Intent.EXTRA_SUBJECT, "")
                 intent.putExtra(Intent.EXTRA_TEXT, "")

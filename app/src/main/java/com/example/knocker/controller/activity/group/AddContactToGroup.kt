@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
-import com.example.knocker.controller.activity.NotificationHistoryActivity
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -60,14 +59,14 @@ class AddContactToGroup : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
+    private fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
         listContact.forEach {
             val link = LinkContactGroup(groupId, it.id!!)
             contactsDatabase!!.LinkContactGroupDao().insert(link)
         }
     }
 
-    fun getContactNotInGroupe(groupId: Int): List<ContactWithAllInformation> {
+    private fun getContactNotInGroupe(groupId: Int): List<ContactWithAllInformation> {
         val allInGroup = mutableListOf<ContactWithAllInformation>()
         val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
         val allContact = contactsDatabase!!.contactsDao().getContactAllInfo()

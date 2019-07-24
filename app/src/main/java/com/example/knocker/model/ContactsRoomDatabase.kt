@@ -97,8 +97,8 @@ import com.example.knocker.model.requestDB.*
                 database.execSQL("ALTER TABLE notifications_table " + " ADD COLUMN id_contact INTEGER DEFAULT 0 NOT NULL")
             }
         }
-        fun destroyInstance() {
+        /*fun destroyInstance() {
             INSTANCE = null
-        }
+        }*/
     }
 }

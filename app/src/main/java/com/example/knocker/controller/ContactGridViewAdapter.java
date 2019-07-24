@@ -276,7 +276,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
         //region circular menu
 
@@ -489,30 +489,25 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         return phoneNumber;
     }
 
-    private int randomDefaultImage(int avatarId, String createOrGet) {
-        if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
-        } else if (createOrGet.equals("Get")) {
-            switch (avatarId) {
-                case 0:
-                    return R.drawable.ic_user_purple;
-                case 1:
-                    return R.drawable.ic_user_blue;
-                case 2:
-                    return R.drawable.ic_user_knocker;
-                case 3:
-                    return R.drawable.ic_user_green;
-                case 4:
-                    return R.drawable.ic_user_om;
-                case 5:
-                    return R.drawable.ic_user_orange;
-                case 6:
-                    return R.drawable.ic_user_pink;
-                default:
-                    return R.drawable.ic_user_blue;
-            }
+    private int randomDefaultImage(int avatarId) {
+        switch (avatarId) {
+            case 0:
+                return R.drawable.ic_user_purple;
+            case 1:
+                return R.drawable.ic_user_blue;
+            case 2:
+                return R.drawable.ic_user_knocker;
+            case 3:
+                return R.drawable.ic_user_green;
+            case 4:
+                return R.drawable.ic_user_om;
+            case 5:
+                return R.drawable.ic_user_orange;
+            case 6:
+                return R.drawable.ic_user_pink;
+            default:
+                return R.drawable.ic_user_blue;
         }
-        return -1;
     }
 
     public void callPhone(final String phoneNumber) {

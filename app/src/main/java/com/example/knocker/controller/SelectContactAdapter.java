@@ -235,7 +235,7 @@ public class SelectContactAdapter extends BaseAdapter {
 
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
         if(context instanceof MainActivity || context instanceof GroupActivity){
             if (listSelectedItem.contains(getItem(position))) {
@@ -246,7 +246,7 @@ public class SelectContactAdapter extends BaseAdapter {
 
                     holder.contactRoundedImageView.setImageBitmap(bitmap);
                 } else {
-                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get")); //////////////
+                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
                 }
             }
         }else {
@@ -291,10 +291,7 @@ public class SelectContactAdapter extends BaseAdapter {
         return listSelectedItem;
     }
 
-    private int randomDefaultImage(int avatarId, String createOrGet) {
-        if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
-        } else if (createOrGet.equals("Get")) {
+    private int randomDefaultImage(int avatarId) {
             switch (avatarId) {
                 case 0:
                     return R.drawable.ic_user_purple;
@@ -313,7 +310,5 @@ public class SelectContactAdapter extends BaseAdapter {
                 default:
                     return R.drawable.ic_user_blue;
             }
-        }
-        return -1;
     }
 }

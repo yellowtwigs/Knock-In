@@ -26,9 +26,9 @@ class ContactWithAllInformation {
         var onlyFix = ""
         for (detail in contactDetailList!!) {
             println(detail.content + "matches with regex ?" + detail.content.matches(regex))
-            if (detail.type.equals("phone") && detail.content.matches(regex)) {
+            if (detail.type == "phone" && detail.content.matches(regex)) {
                 return detail.content
-            } else if (detail.type.equals("phone")) {
+            } else if (detail.type == "phone") {
                 onlyFix = detail.content
             }
         }
@@ -38,7 +38,7 @@ class ContactWithAllInformation {
     fun getSecondPhoneNumber(firstPhoneNumber: String): String {
 
         for (detail in contactDetailList!!) {
-            if (detail.type.equals("phone") && !firstPhoneNumber.equals(detail.content)) {
+            if (detail.type == "phone" && firstPhoneNumber != detail.content) {
                 return detail.content
             }
         }
@@ -47,7 +47,7 @@ class ContactWithAllInformation {
 
     fun getSecondPhoneTag(firstPhoneNumber: String): String {
         for (detail in contactDetailList!!) {
-            if (detail.type.equals("phone") && !firstPhoneNumber.equals(detail.content)) {
+            if (detail.type == "phone" && firstPhoneNumber != detail.content) {
                 return detail.tag
             }
         }
@@ -56,7 +56,7 @@ class ContactWithAllInformation {
 
     fun getFirstMail(): String {
         for (detail in contactDetailList!!) {
-            if (detail.type.equals("mail")) {
+            if (detail.type == "mail") {
                 return detail.content
             }
         }
@@ -68,9 +68,9 @@ class ContactWithAllInformation {
         var onlyFix = ""
         for (detail in contactDetailList!!) {
 
-            if (detail.type.equals("phone") && detail.content.matches(regex)) {
+            if (detail.type == "phone" && detail.content.matches(regex)) {
                 return detail.tag
-            } else if (detail.type.equals("phone") && onlyFix.isEmpty()) {
+            } else if (detail.type == "phone" && onlyFix.isEmpty()) {
                 onlyFix = detail.tag
             }
         }
@@ -79,7 +79,7 @@ class ContactWithAllInformation {
 
     fun getMailTag(): String {
         for (detail in contactDetailList!!) {
-            if (detail.type.equals("mail")) {
+            if (detail.type == "mail") {
                 return detail.tag
             }
         }
@@ -93,7 +93,7 @@ class ContactWithAllInformation {
 
     override fun equals(other: Any?): Boolean {
         if (other is ContactWithAllInformation) {
-            if (other.contactDB!!.equals(this.contactDB)) {
+            if (other.contactDB == this.contactDB) {
                 println("is printing true")
                 return true
             } else {
@@ -102,7 +102,6 @@ class ContactWithAllInformation {
         } else {
             return false
         }
-        return super.equals(other)
     }
 
     fun getFirstGroup(context: Context):GroupDB?{

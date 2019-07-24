@@ -8,10 +8,10 @@ import com.example.knocker.R
  * @author Florian Striebel
  */
 object NumberAndMailDB {
-    public fun convertSpinnerStringToChar(type: String, context: Context): String { //récupère la valeur du spinner pour en sortir un caractère
+    fun convertSpinnerStringToChar(type: String, context: Context): String { //récupère la valeur du spinner pour en sortir un caractère
         val array = context.resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
         val arrayMail = context.resources.getStringArray(R.array.add_new_contact_mail_arrays)
-        if (type.equals(context.getString(R.string.edit_contact_phone_number_mobile))) {
+        if (type == context.getString(R.string.edit_contact_phone_number_mobile)) {
             return "mobil"
         } else if (type == array[1]) {
             return "work"
@@ -28,17 +28,17 @@ object NumberAndMailDB {
         }
         return " "
     }
-    public fun convertSpinnerMailStringToChar(type :String,mail:String,context: Context):String {//méthode pour ajouter le champ ou non mail
-        if(mail.equals("")){
+    fun convertSpinnerMailStringToChar(type :String,mail:String,context: Context):String {//méthode pour ajouter le champ ou non mail
+        if(mail == ""){
             return ""
         }else{
-            return convertSpinnerStringToChar(type,context).toString()
+            return convertSpinnerStringToChar(type,context)
         }
     }
-    public fun convertStringToSpinnerString(type:String,context:Context):String{
+    fun convertStringToSpinnerString(type:String,context:Context):String{
         val array = context.resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
         val arrayMail = context.resources.getStringArray(R.array.add_new_contact_mail_arrays)
-        if(type.equals("mobil")){
+        if(type == "mobil"){
             return array[0]
         }else if (type == "work"){
             return array[1]

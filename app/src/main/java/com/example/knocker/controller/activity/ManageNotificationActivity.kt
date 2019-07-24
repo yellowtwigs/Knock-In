@@ -20,7 +20,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationSender
-import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
@@ -288,7 +287,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
 
     private fun hourGetstring(hour: Int, minute: Int): String {
-        var textRemind: String = ""
+        var textRemind = ""
         if (hour < 10) {
             textRemind += "0" + hour
         } else {
@@ -305,7 +304,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     private fun setReminderAlarm(hour: Int, minute: Int) {
-        val calendar = Calendar.getInstance();
+        val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)

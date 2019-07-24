@@ -9,8 +9,6 @@ import com.example.knocker.controller.activity.MainActivity
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
 import java.util.*
@@ -80,7 +78,7 @@ class NotificationSender : BroadcastReceiver() {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
 
-                if (intent.action.equals("NOTIFICAION_TIME"))
+                if (intent.action == "NOTIFICAION_TIME")
                     manager.notify(0, notification.build())
             }
             main_mDbWorkerThread.postTask(runnableSendNotif)
@@ -109,17 +107,17 @@ class NotificationSender : BroadcastReceiver() {
     }//TODO: enlever code duplicate
 
     private fun isMessagingApp(packageName: String): Boolean {
-        if (packageName.equals(NotificationListener.FACEBOOK_PACKAGE)) {
-            return true;
-        } else if (packageName.equals(NotificationListener.MESSENGER_PACKAGE)) {
-            return true;
-        } else if (packageName.equals(NotificationListener.WHATSAPP_SERVICE)) {
+        if (packageName == NotificationListener.FACEBOOK_PACKAGE) {
             return true
-        } else if (packageName.equals(NotificationListener.GMAIL_PACKAGE)) {
+        } else if (packageName == NotificationListener.MESSENGER_PACKAGE) {
             return true
-        } else if (packageName.equals(NotificationListener.MESSAGE_PACKAGE) || packageName.equals(NotificationListener.MESSAGE_SAMSUNG_PACKAGE)) {
+        } else if (packageName == NotificationListener.WHATSAPP_SERVICE) {
             return true
-        } else if (packageName.equals(NotificationListener.TELEGRAM_PACKAGE))
+        } else if (packageName == NotificationListener.GMAIL_PACKAGE) {
+            return true
+        } else if (packageName == NotificationListener.MESSAGE_PACKAGE || packageName == NotificationListener.MESSAGE_SAMSUNG_PACKAGE) {
+            return true
+        } else if (packageName == NotificationListener.TELEGRAM_PACKAGE)
             return true
         return false
     }

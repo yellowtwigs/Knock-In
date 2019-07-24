@@ -22,7 +22,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -36,13 +35,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.controller.CircularImageView
-import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_edit_informations.*
 import java.io.ByteArrayOutputStream
 
 /**
@@ -80,9 +77,9 @@ class EditInformationsActivity : AppCompatActivity() {
 
     //private var REQUEST_CAMERA: Int? = 1
     private var SELECT_FILE: Int? = 0
-    var add_new_contact_ImgString: String? = "";
+    private var add_new_contact_ImgString: String? = ""
 
-    var imageUri: Uri? = null
+    private var imageUri: Uri? = null
     private val IMAGE_CAPTURE_CODE = 1001
 
     //endregion
@@ -253,7 +250,7 @@ class EditInformationsActivity : AppCompatActivity() {
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
-    fun getRealPathFromUri(context: Context, contentUri: Uri): String {
+    private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
         var cursor: Cursor? = null
         try {
             val proj = arrayOf(MediaStore.Images.Media.DATA)
@@ -275,9 +272,9 @@ class EditInformationsActivity : AppCompatActivity() {
             if (requestCode == IMAGE_CAPTURE_CODE) {
 
                 val matrix = Matrix()
-                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!));
+                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                val rotationInDegrees = exifToDegrees(rotation);
+                val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
@@ -294,7 +291,7 @@ class EditInformationsActivity : AppCompatActivity() {
                 val selectedImageUri = data!!.data
                 val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                val rotationInDegrees = exifToDegrees(rotation);
+                val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
@@ -311,7 +308,7 @@ class EditInformationsActivity : AppCompatActivity() {
         }
     }
 
-    fun exifToDegrees(exifOrientation: Int): Int {
+    private fun exifToDegrees(exifOrientation: Int): Int {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90
         } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
@@ -322,15 +319,15 @@ class EditInformationsActivity : AppCompatActivity() {
         return 0
     }
 
-    fun bitmapToBase64(bitmap: Bitmap): String {
+    private fun bitmapToBase64(bitmap: Bitmap): String {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
-    fun base64ToBitmap(base64: String): Bitmap {
+    private fun base64ToBitmap(base64: String): Bitmap {
         val imageBytes = Base64.decode(base64, 0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }

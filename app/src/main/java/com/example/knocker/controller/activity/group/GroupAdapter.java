@@ -20,7 +20,6 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.SimpleViewHolder> {

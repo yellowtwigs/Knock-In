@@ -22,8 +22,6 @@ import com.example.knocker.model.ModelDB.GroupDB;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
 
 public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.ViewHolder> {
     ArrayList<GroupDB> listGroup;

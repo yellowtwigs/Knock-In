@@ -42,9 +42,9 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                         .getContactAllInfo()
             }
             val result = executorService.submit(callDb)
-            val tmp: ArrayList<ContactWithAllInformation> = arrayListOf<ContactWithAllInformation>()
+            val tmp: ArrayList<ContactWithAllInformation> = arrayListOf()
             tmp.addAll(result.get())
-            if (tmp!!.isEmpty()) {
+            if (tmp.isEmpty()) {
                 contacts = buildContactListFromJson(context)
             } else {
                 contacts = tmp
@@ -52,7 +52,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         }
     }
 
-    fun synchronizedList() {
+    /*fun synchronizedList() {
 
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().getContactAllInfo() }
@@ -61,7 +61,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         contacts.addAll(result.get())
         //TODO verifiy with Ryan
 
-    }
+    }*/
 
     /*fun getDetailsOfPlatform(name: String, platform: String): String {
         // on init WorkerThread
@@ -100,7 +100,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                 return contact
             }
         }
-        return null;
+        return null
     }
 
 
@@ -147,9 +147,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                 listTmp.add(i)
             }
         }
-        println("---list group:---")
-        for (i in listTmp)
-            println("contact "+i.contactDB)
         val listOfContactWithGroup:ArrayList<ContactWithAllInformation> = ArrayList()
         listOfContactWithGroup.addAll(listChangement)
         listOfContactWithGroup.removeAll(listTmp)
@@ -162,7 +159,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         contacts=listChangement
     }
 
-    private fun selector(contact:ContactWithAllInformation):GroupDB?=contact.getFirstGroup(this.context)
+    /*private fun selector(contact:ContactWithAllInformation):GroupDB?=contact.getFirstGroup(this.context)*/
 
 
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
@@ -204,7 +201,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return allFilters[i]
     }
 
-    fun allContactIntersect(firstList: List<ContactWithAllInformation>, secondList: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
+    private fun allContactIntersect(firstList: List<ContactWithAllInformation>, secondList: List<ContactWithAllInformation>): List<ContactWithAllInformation> {
         val filter = arrayListOf<ContactWithAllInformation>()
         firstList.forEach { first ->
             secondList.forEach {
@@ -215,7 +212,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return filter
     }
 
-    fun getContactByName(name: String): List<ContactWithAllInformation> {
+    private fun getContactByName(name: String): List<ContactWithAllInformation> {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         var callDb = Callable { contactsDatabase?.contactsDao()?.getContactByName(name) }
         var result = executorService.submit(callDb)
@@ -286,7 +283,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     //region region Creation FakeContact
 
 
-    fun loadJSONFromAsset(context: Context): String {
+    private fun loadJSONFromAsset(context: Context): String {
         var json = ""
         try {
             json = context.assets.open("premiers_contacts.json").bufferedReader().use {
@@ -299,7 +296,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return json
     }
 
-    fun buildContactListFromJson(context: Context): ArrayList<ContactWithAllInformation> {
+    private fun buildContactListFromJson(context: Context): ArrayList<ContactWithAllInformation> {
         var listContacts = arrayListOf<ContactWithAllInformation>()
         var contactString = loadJSONFromAsset(context)
         try {
@@ -313,7 +310,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return listContacts
     }
 
-    fun getContactFromJSONObject(json: JSONObject, id: Int): ContactWithAllInformation {
+    private fun getContactFromJSONObject(json: JSONObject, id: Int): ContactWithAllInformation {
         val firstName: String = json.getString("first_name")
         val lastName: String = json.getString("last_name")
 
@@ -327,12 +324,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return contactInfo
     }
 
-    fun getContactDeatailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
+    private fun getContactDeatailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
         val phoneNumber: String = json.getString("phone_number")
         val mail: String = json.getString("mail")
         val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0)
         val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1)
-        return mutableListOf<ContactDetailDB>(contactDetails, contactDetails2)
+        return mutableListOf(contactDetails, contactDetails2)
     }
 
     //endregion
@@ -400,7 +397,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
     private fun isDuplicateNumber(idAndPhoneNumber: Map<Int, Any>, contactPhoneNumber: List<Map<Int, Any>>): Boolean {
@@ -559,75 +556,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return lastSyncList
     }
 
-//    fun getLastSync(applicationContext: Context): List<Pair<Int, String>> {
-//        val lastSyncList = arrayListOf<Pair<Int, String>>()
-//        var idAndName: Pair<Int, String>
-//        val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
-//        val lastSync = sharedPreferences.getString("last_sync", "")
-//        if (lastSync != null && lastSync != "" && lastSync.contains("|")) {
-//            val lastSyncSplit = lastSync.split("|")
-//            lastSyncSplit.forEach {
-//                if (it != "") {
-//                    val idAndNameSplit = it.split(":")
-//                    idAndName = Pair(idAndNameSplit[0].toInt(), idAndNameSplit[1])
-//                    lastSyncList.add(idAndName)
-//                }
-//            }
-//        } else if (lastSync != null && lastSync != "") {
-//            val idAndNameSplit = lastSync.split(":")
-//            idAndName = Pair(idAndNameSplit[0].toInt(), idAndNameSplit[1])
-//            lastSyncList.add(idAndName)
-//        }
-//        return lastSyncList
-//    }
-
-    fun storeLastSync(contactsList: List<ContactDB>, applicationContext: Context, lastSync: List<Pair<Int, String>>, isFirstTime: Boolean) {
-        val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-        var name = ""
-        if (isFirstTime == true) {
-            contactsList.forEach {
-                name += it.id.toString() + ":" + it.firstName + " " + it.lastName + "|"
-            }
-            println("FIRST TIME LIST = " + name)
-            edit.putString("last_sync", name)
-            edit.apply()
-        } else {
-            contactsList.forEach {
-                if (it.id == null) {
-                    var i = 0
-                    while (i != (lastSync.size) - 1 && it.firstName + " " + it.lastName != lastSync[i].second) {
-                        i++
-                    }
-                    if (i != (lastSync.size) && it.firstName + " " + it.lastName == lastSync[i].second) {
-                        name += lastSync[i].first.toString() + ":" + it.firstName + " " + it.lastName + "|"
-                    }
-                } else {
-                    name += it.id.toString() + ":" + it.firstName + " " + it.lastName + "|"
-                }
-            }
-            println("LIST = " + name)
-            edit.putString("last_sync", name)
-            edit.apply()
-        }
-    }
-
-    fun deleteDeletedContactFromPhone(lastSync: List<Pair<Int, String>>, newSync: List<ContactDB>) {
-        var contactsDatabase: ContactsRoomDatabase? = null
-        //var id: Int? = null
-        var isDelete: Boolean
-        lastSync.forEach { old ->
-            isDelete = true
-            newSync.forEach {
-                if (it.firstName + " " + it.lastName == old.second)
-                    isDelete = false
-            }
-            if (isDelete == true) {
-                contactsDatabase?.contactsDao()?.deleteContactById(old.first)
-            }
-        }
-    }
-
     private fun getDetailsById(id: Int, contactNumberAndPic: List<Map<Int, Any>>): List<ContactDetailDB> {
         val contactDetails = arrayListOf<ContactDetailDB>()
         var fieldPosition = 0
@@ -652,7 +580,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return contactGroups
     }
 
-    fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, gestionnaireContacts: ContactList) {
+    private fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, gestionnaireContacts: ContactList) {
         val phoneContactsList = arrayListOf<ContactDB>()
         val lastId = arrayListOf<Int>()
         val applicationContext = this.context
@@ -766,7 +694,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         gestionnaireContacts.contacts.addAll(syncContact!!)
     }
 
-    fun deleteContactFromLastSync(lastSync: String, id: Int): String {
+    private fun deleteContactFromLastSync(lastSync: String, id: Int): String {
         val list = mutableListOf<Pair<Int, Int>>()
         val allId = sliceLastSync(lastSync)
         var newList = ""
@@ -841,7 +769,6 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             val allId = sliceLastSync(lastSync)
             allId.forEach { Id ->
                 if (allcontacts!!.first == Id.first) {
-                    println("TRUE = " + allcontacts!!.first + " " + Id.first)
                     return true
                 }
             }

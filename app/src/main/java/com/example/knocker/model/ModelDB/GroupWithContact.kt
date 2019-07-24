@@ -8,7 +8,7 @@ import com.example.knocker.model.ContactsRoomDatabase
 class GroupWithContact {
     fun getListContact(context: Context):ArrayList<ContactWithAllInformation>{
         val contactRoom=ContactsRoomDatabase.getDatabase(context)
-        val listContact:ArrayList<ContactWithAllInformation> = arrayListOf<ContactWithAllInformation>()
+        val listContact:ArrayList<ContactWithAllInformation> = arrayListOf()
         for(idContact in ContactIdList!!) {
             listContact.add(contactRoom!!.contactsDao().getContact(idContact))
         }
@@ -18,7 +18,7 @@ class GroupWithContact {
     @Embedded
     var groupDB: GroupDB? = null
 
-    @Relation(parentColumn = "id", entityColumn = "id_group", entity = LinkContactGroup::class,projection = arrayOf("id_contact"))
+    @Relation(parentColumn = "id", entityColumn = "id_group", entity = LinkContactGroup::class,projection = ["id_contact"])
     var ContactIdList: List<Int>? = null
 
     //var contactList:List<ContactDB>?= null

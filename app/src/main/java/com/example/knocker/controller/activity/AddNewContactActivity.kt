@@ -53,7 +53,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var gestionnaireContacts: ContactList? = null
     private var avatar: Int = 0
 
-    var imageUri: Uri? = null
+    private var imageUri: Uri? = null
     private val IMAGE_CAPTURE_CODE = 1001
 
     // Database && Thread
@@ -62,7 +62,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //private var REQUEST_CAMERA: Int? = 1
     private var SELECT_FILE: Int? = 0
-    var add_new_contact_ImgString: String? = "";
+    private var add_new_contact_ImgString: String? = ""
 
     //endregion
 
@@ -270,7 +270,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             isDuplicate = true
                     }
 
-                    if (isDuplicate == false) {
+                    if (!isDuplicate) {
                         main_ContactsDatabase?.contactsDao()?.insert(contactData)
                         val listContacts: List<ContactDB>? = main_ContactsDatabase?.contactsDao()!!.getAllContacts()
                         val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
@@ -353,7 +353,7 @@ class AddNewContactActivity : AppCompatActivity() {
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
-    fun getRealPathFromUri(context: Context, contentUri: Uri): String {
+    private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
         var cursor: Cursor? = null
         try {
             val proj = arrayOf(MediaStore.Images.Media.DATA)
@@ -375,9 +375,9 @@ class AddNewContactActivity : AppCompatActivity() {
             if (requestCode == IMAGE_CAPTURE_CODE) {
 
                 val matrix = Matrix()
-                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!));
+                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                val rotationInDegrees = exifToDegrees(rotation);
+                val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
@@ -392,7 +392,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 val selectedImageUri = data!!.data
                 val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                val rotationInDegrees = exifToDegrees(rotation);
+                val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
@@ -405,7 +405,7 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
-    fun exifToDegrees(exifOrientation: Int): Int {
+    private fun exifToDegrees(exifOrientation: Int): Int {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90
         } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
@@ -416,22 +416,22 @@ class AddNewContactActivity : AppCompatActivity() {
         return 0
     }
 
-    fun bitmapToBase64(bitmap: Bitmap): String {
+    private fun bitmapToBase64(bitmap: Bitmap): String {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
-    fun base64ToBitmap(base64: String): Bitmap {
+    private fun base64ToBitmap(base64: String): Bitmap {
         val imageBytes = Base64.decode(base64, 0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
     //endregion
 
-    fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
+    private fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
 
         if (name.contains(" ")) {
             listContact!!.forEach { dbContact ->

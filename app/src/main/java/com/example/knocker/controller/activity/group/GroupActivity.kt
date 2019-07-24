@@ -8,8 +8,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -19,7 +17,6 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -48,7 +45,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_group.*
-import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -72,7 +68,7 @@ class GroupActivity : AppCompatActivity() {
     internal var group_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var group_SearchBar: EditText? = null
-    var scaleGestureDetectore: ScaleGestureDetector? = null
+    private var scaleGestureDetectore: ScaleGestureDetector? = null
 
     // Database && Thread
     private var group_ContactsDatabase: ContactsRoomDatabase? = null
@@ -820,7 +816,7 @@ class GroupActivity : AppCompatActivity() {
             }
             R.id.tri_par_priorite -> {
                 if (!item.isChecked) {
-                    item.setChecked(true);
+                    item.setChecked(true)
                     gestionnaireContacts!!.sortContactByPriority()
                     val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
@@ -841,7 +837,7 @@ class GroupActivity : AppCompatActivity() {
             }
             R.id.trie_par_group -> {
                 if (!item.isChecked) {
-                    item.setChecked(true);
+                    item.setChecked(true)
                     gestionnaireContacts!!.sortContactByGroup()
                     val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
@@ -1036,7 +1032,7 @@ class GroupActivity : AppCompatActivity() {
         }
     }
 
-    fun recyclerItemClick(len: Int, position: Int) {
+    /*fun recyclerItemClick(len: Int, position: Int) {
         if (!firstClick) {
             val l = len
             val m = position
@@ -1053,9 +1049,9 @@ class GroupActivity : AppCompatActivity() {
 //            }
         }
         firstClick = false
-    }
+    }*/
 
-    private fun appIsInstalled(): Boolean {
+    /*private fun appIsInstalled(): Boolean {
         val pm = this.packageManager
         return try {
             pm.getApplicationInfo("com.whatsapp", 0)
@@ -1063,7 +1059,7 @@ class GroupActivity : AppCompatActivity() {
         } catch (e: Exception) {
             false
         }
-    }
+    }*/
 
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
@@ -1072,31 +1068,6 @@ class GroupActivity : AppCompatActivity() {
             message += ";" + listOfPhoneNumber[i]
         }
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
-    }
-
-    private fun base64ToBitmap(base64: String): Bitmap {
-
-        val decodedString = Base64.decode(base64, Base64.DEFAULT)
-        val options = BitmapFactory.Options()
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size, options)
-    }
-
-    private fun randomDefaultImage(avatarId: Int, createOrGet: String): Int {
-        if (createOrGet == "Create") {
-            return Random().nextInt(7)
-        } else if (createOrGet == "Get") {
-            return when (avatarId) {
-                0 -> R.drawable.ic_user_purple
-                1 -> R.drawable.ic_user_blue
-                2 -> R.drawable.ic_user_knocker
-                3 -> R.drawable.ic_user_green
-                4 -> R.drawable.ic_user_om
-                5 -> R.drawable.ic_user_orange
-                6 -> R.drawable.ic_user_pink
-                else -> R.drawable.ic_user_blue
-            }
-        }
-        return -1
     }
 
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {

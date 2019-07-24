@@ -1,17 +1,14 @@
 package com.example.knocker.model.ModelDB
 
-import androidx.annotation.NonNull
 import androidx.room.*
-import com.example.knocker.model.ModelDB.ContactDB
-import com.example.knocker.model.ModelDB.GroupDB
 
 /**
  * Data class qui représente un lien entre un contact et un groupe
  * @author Ryan Granet
  */
 @Entity(tableName = "link_contact_group_table",
-        primaryKeys = arrayOf("id_group","id_contact"),
-        foreignKeys = arrayOf(
+        primaryKeys = ["id_group","id_contact"],
+        foreignKeys = [
                 ForeignKey(entity = GroupDB::class,
                         parentColumns = arrayOf("id"),
                         childColumns = arrayOf("id_group"),
@@ -21,8 +18,8 @@ import com.example.knocker.model.ModelDB.GroupDB
                         parentColumns = arrayOf("id"),
                         childColumns = arrayOf("id_contact"),
                         onDelete = ForeignKey.CASCADE
-                ))
-        ,indices = arrayOf(Index(value = arrayOf("id_group", "id_contact"), unique = true)))
+                )]
+        ,indices = [Index(value = arrayOf("id_group", "id_contact"), unique = true)])
 data class LinkContactGroup(
         /**
          * Id du [groupe][GroupDB] auquel appartient le contact.

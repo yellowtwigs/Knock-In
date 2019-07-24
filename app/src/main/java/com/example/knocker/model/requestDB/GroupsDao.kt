@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.knocker.model.ModelDB.GroupDB
 import com.example.knocker.model.ModelDB.GroupWithContact
+import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table groups

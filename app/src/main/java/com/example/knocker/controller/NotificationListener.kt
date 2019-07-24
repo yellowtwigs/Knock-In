@@ -1,11 +1,8 @@
 package com.example.knocker.controller
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.KeyguardManager
-import android.app.Notification
 import android.content.*
-import android.content.pm.PackageManager
 import android.graphics.PixelFormat
 import android.os.Build
 import android.service.notification.NotificationListenerService
@@ -13,12 +10,8 @@ import android.service.notification.StatusBarNotification
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.Log
 import android.view.*
-import android.view.View.X
-import android.view.View.Y
 import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.PopupWindow
-import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.knocker.R
 import com.example.knocker.controller.activity.NotificationAlarmActivity
@@ -40,8 +33,8 @@ class NotificationListener : NotificationListenerService() {
     private lateinit var notification_listener_mDbWorkerThread: DbWorkerThread
     private var oldPosX: Float = 0.0f
     private var oldPosY: Float = 0.0f
-    var popupView: View? = null
-    var windowManager: WindowManager? = null
+    private var popupView: View? = null
+    private var windowManager: WindowManager? = null
 
     /**
      * La première fois que le service est crée nous définnissons les valeurs pour les threads
@@ -64,12 +57,12 @@ class NotificationListener : NotificationListenerService() {
     /**
      * Permet de relance le service
      */
-    fun toggleNotificationListenerService() {
+    /*fun toggleNotificationListenerService() {
         val pm = packageManager
         val cmpName = ComponentName(this, NotificationListener::class.java)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-    }
+    }*/
 
     /**
      * Si le service à été déconnecté on demande d'être reconnecter
@@ -96,7 +89,7 @@ class NotificationListener : NotificationListenerService() {
             val name = sbp.statusBarNotificationInfo.get("android.title").toString()
             val app = this.convertPackageToString(sbp.appNotifier!!)
 
-            val gestionnaireContact: ContactList = ContactList(this)
+            val gestionnaireContact = ContactList(this)
             val addNotification = Runnable {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
@@ -145,7 +138,7 @@ class NotificationListener : NotificationListenerService() {
                         }
                     } else {
                         println("I don't know this contact" + contact)
-                        if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || sbn.packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
+                        if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE) {
                             val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
                             if (screenListener.isKeyguardLocked) {
                                 println("screenIsLocked")
@@ -189,15 +182,13 @@ class NotificationListener : NotificationListenerService() {
     private fun saveNotfication(sbp: StatusBarParcelable, contactId: Int): NotificationDB? {
         if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"] != null) {
 
-            val notif =
-                    NotificationDB(null,
+            return NotificationDB(null,
                             sbp.tickerText.toString(),
                             sbp.statusBarNotificationInfo["android.title"]!!.toString(),
                             sbp.statusBarNotificationInfo["android.text"]!!.toString(),
                             sbp.appNotifier!!, false,
                             Calendar.getInstance().timeInMillis.toString().toLong(), 0,
                             contactId)
-            return notif
         } else {
             return null
         }
@@ -331,7 +322,7 @@ class NotificationListener : NotificationListenerService() {
     }//TODO:améliorer l'algorithmie
 
 
-    fun appNotifiable(sbp: StatusBarParcelable): Boolean {
+    private fun appNotifiable(sbp: StatusBarParcelable): Boolean {
         return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
                 sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
@@ -339,15 +330,15 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun convertPackageToString(packageName: String): String {
-        if (packageName.equals(FACEBOOK_PACKAGE)) {
-            return "Facebook";
-        } else if (packageName.equals(MESSENGER_PACKAGE)) {
-            return "Messenger";
-        } else if (packageName.equals(WHATSAPP_SERVICE)) {
+        if (packageName == FACEBOOK_PACKAGE) {
+            return "Facebook"
+        } else if (packageName == MESSENGER_PACKAGE) {
+            return "Messenger"
+        } else if (packageName == WHATSAPP_SERVICE) {
             return "WhatsApp"
-        } else if (packageName.equals(GMAIL_PACKAGE)) {
+        } else if (packageName == GMAIL_PACKAGE) {
             return "gmail"
-        } else if (packageName.equals(MESSAGE_PACKAGE) || packageName.equals(MESSAGE_SAMSUNG_PACKAGE) || packageName.equals(XIAOMI_MESSAGE_PACKAGE)) {
+        } else if (packageName == MESSAGE_PACKAGE || packageName == MESSAGE_SAMSUNG_PACKAGE || packageName == XIAOMI_MESSAGE_PACKAGE) {
             return "message"
         }
         return ""
@@ -358,20 +349,16 @@ class NotificationListener : NotificationListenerService() {
         return title.matches(pregMatchString.toRegex())
     }
 
-    private fun movablePopup() {
-
-    }
-
     companion object {
         var TAG = NotificationListener::class.java.simpleName
-        val FACEBOOK_PACKAGE = "com.facebook.katana"
-        val MESSENGER_PACKAGE = "com.facebook.orca"
-        val WHATSAPP_SERVICE = "com.whatsapp"
-        val GMAIL_PACKAGE = "com.google.android.gm"
-        val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
-        val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
-        val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
-        val TELEGRAM_PACKAGE = "org.telegram.messenger"
+        const val FACEBOOK_PACKAGE = "com.facebook.katana"
+        const val MESSENGER_PACKAGE = "com.facebook.orca"
+        const val WHATSAPP_SERVICE = "com.whatsapp"
+        const val GMAIL_PACKAGE = "com.google.android.gm"
+        const val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
+        const val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
+        const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+        const val TELEGRAM_PACKAGE = "org.telegram.messenger"
 
         // var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
         @SuppressLint("StaticFieldLeak")

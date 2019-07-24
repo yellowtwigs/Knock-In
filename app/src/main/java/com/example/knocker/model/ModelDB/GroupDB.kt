@@ -24,8 +24,7 @@ data class GroupDB(
         @ColumnInfo(name = "profile_picture_str") val profilePicture: String        //image de profile du groupe
 ){
     fun randomColorGroup(context: Context): Int {
-        println("id group" + this.id!!.toInt() + "modulo 3 égale" + this.id!!.toInt() % 5)
-        when (this.id.toInt() % 5) {
+        when (this.id!!.toInt() % 5) {
             0 -> {
                 return context.resources.getColor(R.color.red_tag_group)
             }

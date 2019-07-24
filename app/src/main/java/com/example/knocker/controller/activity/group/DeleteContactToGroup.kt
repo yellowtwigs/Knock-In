@@ -1,6 +1,5 @@
 package com.example.knocker.controller.activity.group
 
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.model.ContactsRoomDatabase
-import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.LinkContactGroup
@@ -59,7 +57,7 @@ class DeleteContactToGroup : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun deleteToGroup(listContact: List<ContactDB>, groupId: Int) {
+    private fun deleteToGroup(listContact: List<ContactDB>, groupId: Int) {
         var message=""
         if(listContact.size==0){
             message= resources.getString(R.string.delete_contact_0_contact)
@@ -85,8 +83,7 @@ class DeleteContactToGroup : AppCompatActivity() {
 
     }
 
-    fun getContactInGroupe(groupId: Int): List<ContactWithAllInformation> {
-        val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
-        return groupMember
+    private fun getContactInGroupe(groupId: Int): List<ContactWithAllInformation> {
+       return contactsDatabase!!.contactsDao().getContactForGroup(groupId)
     }
 }

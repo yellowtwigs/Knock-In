@@ -14,11 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.CircularImageView;
@@ -77,7 +73,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             System.out.println(contact.getProfilePicture());
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture(), "Get"));
+            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
         if (contactName.length() > 15) {
@@ -104,10 +100,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
 
     public List<ContactDB> getAllSelectContact() { return selectContact; }
 
-    private int randomDefaultImage(int avatarId, String createOrGet) {
-        if (createOrGet.equals("Create")) {
-            return new Random().nextInt(7);
-        } else if (createOrGet.equals("Get")) {
+    private int randomDefaultImage(int avatarId) {
             switch (avatarId) {
                 case 0:
                     return R.drawable.ic_user_purple;
@@ -126,8 +119,6 @@ public class AddContactToGroupAdapter extends BaseAdapter {
                 default:
                     return R.drawable.ic_user_blue;
             }
-        }
-        return -1;
     }
 
     private Bitmap base64ToBitmap(String base64) {

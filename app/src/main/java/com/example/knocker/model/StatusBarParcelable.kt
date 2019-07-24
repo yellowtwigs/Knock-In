@@ -17,7 +17,7 @@ class StatusBarParcelable : Parcelable {
         private set
     var tickerText: String? = ""
         private set
-    var tailleList: Int = 0
+    private var tailleList: Int = 0
         private set
     val key = ArrayList<String>()
 
@@ -89,7 +89,7 @@ class StatusBarParcelable : Parcelable {
     }
 
     private fun getContactNameFromString(): String {
-        val pregMatchString: String = ".*\\([0-9]*\\)"
+        val pregMatchString = ".*\\([0-9]*\\)"
         val NameFromNotif: String = "" + this.statusBarNotificationInfo.get("android.title")
         if (NameFromNotif.matches(pregMatchString.toRegex())) {
             return NameFromNotif.substring(0, TextUtils.lastIndexOf(NameFromNotif, '(')).dropLast(1)

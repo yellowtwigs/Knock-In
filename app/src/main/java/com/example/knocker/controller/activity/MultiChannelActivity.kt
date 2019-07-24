@@ -1,7 +1,6 @@
 package com.example.knocker.controller.activity
 
 import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -185,7 +184,7 @@ class MultiChannelActivity : AppCompatActivity() {
         startActivity(intent);
     }
 
-    private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {
+    /*private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {
 
         val intent = Intent(Intent.ACTION_VIEW)
 
@@ -198,13 +197,13 @@ class MultiChannelActivity : AppCompatActivity() {
             intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
         }
         startActivity(intent)
-    }
+    }*/
 
-    private fun converter06To33(phoneNumber: String): String {
+    /*private fun converter06To33(phoneNumber: String): String {
         return if (phoneNumber[0] == '0') {
             "+33$phoneNumber"
         } else phoneNumber
-    }
+    }*/
 
     //endregion
 }

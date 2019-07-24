@@ -3,7 +3,6 @@ package com.example.knocker.controller.activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -15,7 +14,6 @@ import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -209,26 +207,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     //region ========================================== Functions ==========================================
 
-    private fun goToYoutube() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://youtube.com/")))
-        }
-    }
-
-    private fun goToSpotify() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("spotify://spotify"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://spotify.com/")))
-        }
-    }
-
     private fun goToSkype() {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
         try {
@@ -298,11 +276,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private fun openMessenger(id: String, context: Context) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
-            context.startActivity(intent);
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id))
+            context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id));
-            context.startActivity(intent);
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id))
+            context.startActivity(intent)
         }
     }
 
@@ -499,7 +477,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
                 val listNotif: ArrayList<NotificationDB> = arrayListOf()
                 listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
-                listNotif.retainAll(notification_history_ListOfNotificationDB);
+                listNotif.retainAll(notification_history_ListOfNotificationDB)
                 val adapter = NotificationHistoryAdapter(this, listNotif)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = adapter

@@ -15,15 +15,15 @@ import android.os.*
 
 class NotificationAlarmActivity : AppCompatActivity() {
 
-    var notification_Alarm_Sender_TextView:TextView?=null
-    var notification_Alarm_Content_TextView:TextView?= null
-    var notification_Alarm_Button_close: FloatingActionButton?= null
-    var notification_Alarm_Button_response:FloatingActionButton?= null
-    var isOpen=true
+    private var notification_Alarm_Sender_TextView:TextView?=null
+    private var notification_Alarm_Content_TextView:TextView?= null
+    private var notification_Alarm_Button_close: FloatingActionButton?= null
+    private var notification_Alarm_Button_response:FloatingActionButton?= null
+    private var isOpen=true
     //val sound=MediaPlayer.create(this,R.string.phone_log_toast_wait_permission)
 
-    var notification_alarm_sender:String=""
-    var notification_alarm_content:String=""
+    private var notification_alarm_sender:String=""
+    private var notification_alarm_content:String=""
     @SuppressLint("InvalidWakeLockTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
             val thread = Thread{
                 val timeWhenLaunch=System.currentTimeMillis()
                 while (isOpen && System.currentTimeMillis()-timeWhenLaunch<45*1000 ) {
-                    vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                    vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
                     Thread.sleep(1000)
                     println("test")
                 }
@@ -74,7 +74,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
             thread.start()
         } else {
             //deprecated in API 26
-            vibration.vibrate(500);
+            vibration.vibrate(500)
         }
       //endregion
         notification_Alarm_Button_close!!.setOnClickListener({
@@ -92,10 +92,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             if(fullWakeLock.isHeld()){
-                fullWakeLock.release();
+                fullWakeLock.release()
             }
             if(partialWakeLock.isHeld()){
-                partialWakeLock.release();
+                partialWakeLock.release()
             }
             isOpen=false
             finish()

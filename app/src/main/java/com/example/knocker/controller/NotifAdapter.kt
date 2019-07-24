@@ -16,13 +16,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import com.example.knocker.R
 import com.example.knocker.model.ContactList
-import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.StatusBarParcelable
 import java.util.*
@@ -34,7 +32,7 @@ import java.util.*
  */
 class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
 
-    private val TAG = NotificationListener::class.java.simpleName
+    /*private val TAG = NotificationListener::class.java.simpleName*/
     private lateinit var notification_adapter_mDbWorkerThread: DbWorkerThread
     private val FACEBOOK_PACKAGE = "com.facebook.katana"
     private val MESSENGER_PACKAGE = "com.facebook.orca"
@@ -114,8 +112,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     openWhatsapp(contact!!.getFirstPhoneNumber())
                 }
                 "Gmail" -> {
-                    val appIntent = Intent(Intent.ACTION_VIEW);
-                    appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
+                    val appIntent = Intent(Intent.ACTION_VIEW)
+                    appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail")
                     try {
                         context.startActivity(appIntent)
                     } catch (e: ActivityNotFoundException) {
@@ -321,7 +319,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //        return false
 //    }
 
-    private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
+    /*private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
 
         if ((sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE)) {
             return R.drawable.ic_facebook
@@ -331,7 +329,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             return R.drawable.ic_whatsapp_circle_menu
         }
         return R.drawable.ic_sms_selector
-    }
+    }*/
 
 
     /////****** code dupliqué faire attention trouvé un moyen de ne plus en avoir *******//////

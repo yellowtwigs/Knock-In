@@ -18,10 +18,10 @@ import java.util.*
  * @author Florian Striebel
  */
 class NotificationHistoryAdapter(private val context: Context, private val notifications: List<NotificationDB>) : BaseAdapter() {
-    var notification_history_adapter_expediteur: TextView? = null
-    var notification_history_adapter_contenue: TextView? = null
-    var notification_history_adapter_Date: TextView? = null
-    var notification_history_adapter_App: ImageView? = null
+    private var notification_history_adapter_expediteur: TextView? = null
+    private var notification_history_adapter_contenue: TextView? = null
+    private var notification_history_adapter_Date: TextView? = null
+    private var notification_history_adapter_App: ImageView? = null
 
 
     override fun getItem(position: Int): NotificationDB {
@@ -53,7 +53,6 @@ class NotificationHistoryAdapter(private val context: Context, private val notif
         notification_history_adapter_contenue!!.text = notif.description
         notification_history_adapter_Date!!.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notif.timestamp))
 
-        println("Date(notif.timestamp.toLong()).toString()" + Date(notif.timestamp.toLong()).toString())
         val pckManager = context.packageManager
         val icon = pckManager.getApplicationIcon(notif.platform)
         notification_history_adapter_App!!.setImageDrawable(icon)

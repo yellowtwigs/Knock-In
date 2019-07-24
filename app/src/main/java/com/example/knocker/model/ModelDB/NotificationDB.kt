@@ -53,7 +53,7 @@ data class NotificationDB(
         override fun equals(other: Any?): Boolean {
 
                 if(other is NotificationDB ){
-                        if(other.contactName.equals(contactName) && other.description.equals(description) && other.timestamp.equals(timestamp)){
+                        if(other.contactName == contactName && other.description == description && other.timestamp == timestamp){
                                 return true
                         }
                 }else{

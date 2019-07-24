@@ -5,13 +5,10 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.CallLog
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.Menu
@@ -31,14 +28,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.regex.Pattern
 import com.example.knocker.R
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
-import com.example.knocker.model.PhoneLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_phone_log.*
 import java.util.ArrayList
 
 /**
@@ -50,7 +44,7 @@ class PhoneLogActivity : AppCompatActivity() {
     //region ========================================== Var or Val ==========================================
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
-    private val PERMISSIONS_REQUEST_READ_CALL_LOG = 100
+    /*private val PERMISSIONS_REQUEST_READ_CALL_LOG = 100*/
 
     private var phone_log_DrawerLayout: DrawerLayout? = null
 
@@ -97,7 +91,7 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_ButtonAddContact: ImageView? = null
 
     //    private var phone_log_Calls: TextView? = null
-    private var phone_log_CallsListView: ListView? = null
+    /*private var phone_log_CallsListView: ListView? = null*/
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -336,7 +330,7 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_SendMessage!!.setOnClickListener {
             if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
                 val phone = phone_log_PhoneNumberEditText!!.text.toString()
-                val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null));
+                val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null))
                 startActivity(i)
             } else {
                 Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
@@ -455,8 +449,8 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_CallKeyboard_1!!.setOnLongClickListener {
             val telecomManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             if (ContextCompat.checkSelfPermission(this@PhoneLogActivity, Manifest.permission.READ_PHONE_STATE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this@PhoneLogActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0);
+                    != PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this@PhoneLogActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
             } else {
                 val numberVoiceMail = telecomManager.voiceMailNumber
                 val dial = "tel:$numberVoiceMail"
@@ -579,8 +573,8 @@ class PhoneLogActivity : AppCompatActivity() {
     }
 
     private fun goToGmail() {
-        val appIntent = Intent(Intent.ACTION_VIEW);
-        appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
+        val appIntent = Intent(Intent.ACTION_VIEW)
+        appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail")
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
@@ -617,16 +611,6 @@ class PhoneLogActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://skype.com/")))
-        }
-    }
-
-    private fun goToSpotify() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("spotify://spotify"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://spotify.com/")))
         }
     }
 
@@ -674,19 +658,6 @@ class PhoneLogActivity : AppCompatActivity() {
         }
     }
 
-    private fun showListPhoneCalls() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.READ_CALL_LOG) != PERMISSION_GRANTED) {
-            requestPermissions(Array<String?>(1) { Manifest.permission.READ_CALL_LOG }, PERMISSIONS_REQUEST_READ_CALL_LOG)
-        } else {
-        }
-    }
-
-    private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) == PERMISSION_GRANTED) {
-        }
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
@@ -706,11 +677,11 @@ class PhoneLogActivity : AppCompatActivity() {
         }//pas besoin de vérification du numéro de téléphonne
     }
 
-    fun isValidPhone(phone: String): Boolean {
+    /*fun isValidPhone(phone: String): Boolean {
         val expression = "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})\$"
         val pattern = Pattern.compile(expression)
         val matcher = pattern.matcher(phone)
         return matcher.matches()
-    }
+    }*/
     //endregion
 }

@@ -6,7 +6,6 @@ import androidx.room.Query
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import com.example.knocker.model.ModelDB.GroupDB
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table contact
@@ -88,7 +87,6 @@ interface ContactsDao {
      * @param id Int     Id du contact sélectionné
      * @param firstName String  Prénom du contact
      * @param lastName String   Nom du contact
-     * @param profilePicture Int    avatar du contact
      * @param profilePicture64 String   image du contact
      * @param priority Int  priorité du contact
      */
@@ -99,7 +97,6 @@ interface ContactsDao {
      * @param id Int     Id du contact sélectionné
      * @param firstName String  Prénom du contact
      * @param lastName String   Nom du contact
-     * @param profilePicture Int    avatar du contact
      */
     @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, contact_priority = :priority WHERE id = :id")
     fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, priority: Int)

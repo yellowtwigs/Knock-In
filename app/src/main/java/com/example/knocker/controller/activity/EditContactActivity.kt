@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
-import com.example.knocker.controller.CustomAdapterEditText
 import com.example.knocker.controller.GroupEditAdapter
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDetailDB
@@ -91,10 +90,10 @@ class EditContactActivity : AppCompatActivity() {
 
     private var isChanged = false
 
-    var imageUri: Uri? = null
+    private var imageUri: Uri? = null
     private var SELECT_FILE: Int? = 0
     private val IMAGE_CAPTURE_CODE = 1001
-    private var edit_contact_imgString: String? = null;
+    private var edit_contact_imgString: String? = null
 
     private var havePhone: Boolean = false
     private var haveMail: Boolean = false
@@ -176,7 +175,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_mail_property = tmpMail.tag
             edit_contact_priority = contact.contactDB!!.contactPriority
             edit_contact_image64 = contact.contactDB!!.profilePicture64
-            edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64.toString()))
+            edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64))
         } else {
 
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -356,7 +355,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
 
         recyclerGroup = findViewById(R.id.edit_contact_recycler)
-        val layoutMananger: LinearLayoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         recyclerGroup!!.layoutManager = layoutMananger
         //edit_contact_ContactsDatabase.contactsDao()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -390,7 +389,7 @@ class EditContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun getListOfFields(): ArrayList<String> {
+    /*private fun getListOfFields(): ArrayList<String> {
         val edit_contact_ListOfFields = ArrayList<String>()
 
         edit_contact_ListOfFields.add("Phone Number")
@@ -406,10 +405,10 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_ListOfFields.add("Anniversary")
         edit_contact_ListOfFields.add("Relationship")
 
-        return edit_contact_ListOfFields;
-    }
+        return edit_contact_ListOfFields
+    }*/
 
-    private fun getListOfEditText(position: Int): ArrayList<EditTextModel> {
+    /*private fun getListOfEditText(position: Int): ArrayList<EditTextModel> {
         val edit_contact_ListOfEditText = ArrayList<EditTextModel>()
         val edit_contact_ListOfFields = getListOfFields()
 
@@ -417,21 +416,20 @@ class EditContactActivity : AppCompatActivity() {
         editModel.editTextValue = edit_contact_ListOfFields[position]
         edit_contact_ListOfEditText.add(editModel)
 
-        return edit_contact_ListOfEditText;
-    }
+        return edit_contact_ListOfEditText
+    }*/
 
     private fun getPosItemSpinner(item: String, spinner: Spinner): Int {
         val tailleSpinner: Int = spinner.adapter.count
         //println("taille spinner" + tailleSpinner)
         for (x in 0 until tailleSpinner) {
-            if (spinner.getItemAtPosition(x).toString().equals(NumberAndMailDB.convertStringToSpinnerString(item, this))) {
-                println(" return in edit" + x)
+            if (spinner.getItemAtPosition(x).toString() == NumberAndMailDB.convertStringToSpinnerString(item, this)) {
                 return x
             } else {
                 println(spinner.getItemAtPosition(x).toString() + "est diférent de " + NumberAndMailDB.convertStringToSpinnerString(item, this))
             }
         }
-        return 0;
+        return 0
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -633,27 +631,28 @@ class EditContactActivity : AppCompatActivity() {
                 //println("image URI = " + imageUri)
 
                 val matrix = Matrix()
-                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!));
+                //check la rotation de base du téléphone pour l'appliquer à la photo pour qu'elle soit tout le temps dans le bon sens
+                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                val rotationInDegrees = exifToDegrees(rotation);
+                val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
+                //convert l'imageUri en bitmap
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+                //set l'image et la convertit en base64 pour la mettre plus tard dans la DB
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmap.bitmapToBase64()
 
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
                 val selectedImageUri = data!!.data
-                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!));
+                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                val rotationInDegrees = exifToDegrees(rotation);
+                val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
-
-                //matrix.postRotate(90f)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmap.bitmapToBase64()
@@ -677,47 +676,13 @@ class EditContactActivity : AppCompatActivity() {
         compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
 
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
     private fun base64ToBitmap(base64: String): Bitmap {
         val imageBytes = Base64.decode(base64, 0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
-
-//    private fun addField() {
-//        val editText = EditText(this)
-//        val edit_contact_MiddleName = TextInputLayout(this@EditContactActivity)
-//
-//        val paramsEditText = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT)
-//
-//        val paramsTextLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                R.dimen.edit_text_height)
-////        paramsTextLayout.(0, 5, 0, 0)
-//
-//        editText.maxLines = 1
-//        editText.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-//        editText.background = ContextCompat.getDrawable(this@EditContactActivity, R.drawable.custom_edit_text)
-//        editText.setTextColor(ContextCompat.getColor(this@EditContactActivity, R.color.textColorDark))
-//
-//        edit_contact_MiddleName.id = R.id.edit_contact_middle_name_id
-//        edit_contact_MiddleName.hint = resources.getString(R.string.edit_contact_first_name)
-//        edit_contact_MiddleName.layoutParams = paramsTextLayout
-//        edit_contact_MiddleName.addView(editText, paramsEditText)
-//
-////        val constraintSet = ConstraintSet()
-////        constraintSet.clone(edit_contact_ParentLayout);
-////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.TOP, edit_contact_ParentLayout!!.id, ConstraintSet.TOP, 18);
-////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.LEFT, edit_contact_ParentLayout!!.id, ConstraintSet.LEFT, 18);
-////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.RIGHT, edit_contact_ParentLayout!!.id, ConstraintSet.RIGHT, 18);
-////        constraintSet.connect(edit_contact_MiddleName.id, ConstraintSet.BOTTOM, edit_contact_ParentLayout!!.id, ConstraintSet.BOTTOM, 18);
-////
-////        constraintSet.applyTo(edit_contact_ParentLayout);
-//
-////                            edit_contact_MiddleName.requestLayout()
-//        edit_contact_ParentLayout!!.addView(edit_contact_MiddleName)
-//    }
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): android.app.AlertDialog {

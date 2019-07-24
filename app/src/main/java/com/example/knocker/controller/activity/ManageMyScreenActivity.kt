@@ -13,7 +13,6 @@ import com.example.knocker.R
 import com.google.android.material.navigation.NavigationView
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -441,7 +440,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    fun refreshActivity() {
+    private fun refreshActivity() {
         val i = Intent(applicationContext, ManageMyScreenActivity::class.java)
         startActivity(i)
         finish()

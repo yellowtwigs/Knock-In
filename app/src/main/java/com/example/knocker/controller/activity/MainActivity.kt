@@ -5,8 +5,6 @@ import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -24,7 +22,6 @@ import androidx.core.app.ActivityCompat
 import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -39,7 +36,6 @@ import com.example.knocker.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.example.knocker.model.ModelDB.*
-import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -72,7 +68,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
-    var scaleGestureDetectore: ScaleGestureDetector? = null
+    private var scaleGestureDetectore: ScaleGestureDetector? = null
 
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
@@ -304,7 +300,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         main_FloatingButtonSend!!.visibility = View.GONE
                         main_SearchBar!!.visibility = View.VISIBLE
-                        main_GridView!!.setSelection(pos);
+                        main_GridView!!.setSelection(pos)
 
                         Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
@@ -837,7 +833,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.tri_par_priorite -> {
                 if (!item.isChecked) {
-                    item.isChecked = true;
+                    item.isChecked = true
                     gestionnaireContacts!!.sortContactByPriority()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)

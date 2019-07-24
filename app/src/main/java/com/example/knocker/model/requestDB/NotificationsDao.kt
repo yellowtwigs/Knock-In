@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.knocker.model.ModelDB.NotificationDB
-import java.sql.Date
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table notification
