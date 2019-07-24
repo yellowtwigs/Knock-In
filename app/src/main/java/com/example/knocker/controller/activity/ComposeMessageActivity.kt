@@ -131,21 +131,21 @@ class ComposeMessageActivity : AppCompatActivity() {
 
         //region ==================================== SetOnClickListener ====================================
 
-        compose_message_Attachement!!.setOnClickListener(View.OnClickListener {
+        compose_message_Attachement!!.setOnClickListener{
             compose_message_layout_Attachement!!.visibility = View.VISIBLE
             compose_message_Attachement_Blue!!.visibility = View.VISIBLE
             compose_message_Attachement!!.visibility = View.INVISIBLE
             compose_message_Attachement!!.isClickable = false
             compose_message_Attachement_Blue!!.isClickable = true
-        })
+        }
 
-        compose_message_Attachement_Blue!!.setOnClickListener(View.OnClickListener {
+        compose_message_Attachement_Blue!!.setOnClickListener {
             compose_message_layout_Attachement!!.visibility = View.GONE
             compose_message_Attachement!!.visibility = View.VISIBLE
             compose_message_Attachement_Blue!!.visibility = View.INVISIBLE
             compose_message_Attachement!!.isClickable = true
             compose_message_Attachement_Blue!!.isClickable = false
-        })
+        }
 
         compose_message_send_Button!!.setOnClickListener {
             val msg = compose_message_MessageEditText!!.text.toString()

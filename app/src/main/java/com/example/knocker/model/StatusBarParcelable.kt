@@ -11,14 +11,10 @@ import java.util.ArrayList
 import java.util.HashMap
 
 class StatusBarParcelable : Parcelable {
-    var id: Int = 0
-        private set
-    var appNotifier: String? = ""
-        private set
-    var tickerText: String? = ""
-        private set
+    private var id: Int = 0
+    private var appNotifier: String? = ""
+    private var tickerText: String? = ""
     private var tailleList: Int = 0
-        private set
     val key = ArrayList<String>()
 
 

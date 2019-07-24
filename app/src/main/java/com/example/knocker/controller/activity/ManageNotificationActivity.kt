@@ -135,7 +135,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-        switchMaskNotif.setOnCheckedChangeListener(){_,_ ->
+        switchMaskNotif.setOnCheckedChangeListener{_,_ ->
             val edit:SharedPreferences.Editor= sharedPreferences.edit()
             if (switchMaskNotif.isChecked){
                 if (!isNotificationServiceEnabled) {
