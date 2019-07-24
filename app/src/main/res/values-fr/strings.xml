@@ -200,8 +200,8 @@
     <string name="manage_my_screen_toolbar_title">Affichage</string>
     <string name="manage_my_screen_theme">Changer le thème</string>
     <string name="manage_my_screen_theme_long_text">Activer thème foncé</string>
-    <string name="manage_my_screen_number_of_line">Nombre de contacts par ligne</string>
-    <string name="manage_my_screen_number_of_line_group">Nombre de contacts par ligne section groupe</string>
+    <string name="manage_my_screen_number_of_line">Choix affichages des contacts</string>
+    <string name="manage_my_screen_number_of_line_group">Choix affichages des groupes</string>
     <string name="manage_my_screen_toast_grid">Vous avez sélectionné %1$d contacts par ligne</string>
     <string name="manage_my_screen_toast_list">Vous avez sélectionné le mode "Liste"</string>
     <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionnez le mode d\'affichage compact</string>
@@ -209,7 +209,8 @@
     <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
     <string name="manage_my_screen_searchbar_pos">Position de la Barre de recherche</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
-
+    <string name="manage_my_screen_display_for_group_title">Activer affichage différent pour les groupes</string>
+    <string name="manage_my_screen_display_for_group_subtitle">Choix d\'un affichage spécifique pour les groupes </string>
     <!-- endregion -->
 
     <!-- region Notification Manager -->

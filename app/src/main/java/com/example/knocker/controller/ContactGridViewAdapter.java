@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -40,20 +39,16 @@ import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
-import com.example.knocker.model.ModelDB.GroupWithContact;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import static java.sql.DriverManager.println;
 
 
 /**
@@ -182,6 +177,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
+                holder.groupWordingConstraint.setBackground(roundedLayout);
+            }else{
+                Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             }
 
@@ -457,7 +456,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                         }
                     }
                 }
-                ((GroupActivity) context).clickGroup(len,listPosition,((GridView)parent).getFirstVisiblePosition(),getItem(position).getFirstGroup(context).getId().intValue());
+                ((GroupActivity) context).clickGroupGrid(len,listPosition,((GridView)parent).getFirstVisiblePosition());
             }
         });
         holder.gridContactItemLayout.setOnLongClickListener(longClick);

@@ -9,16 +9,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +34,8 @@ import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
+import com.example.knocker.model.ContactsRoomDatabase;
+import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
@@ -133,30 +130,14 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
 
-
-        String contactName = contact.getFirstName() + " " + contact.getLastName();
-
-        if (len == 0) {
-            if (contactName.length() > 14) {
-
-                Spannable spanFistName = new SpannableString(contactName);
-                spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactFirstNameView.setText(spanFistName);
-
-                contactName = contact.getFirstName() + " " + contact.getLastName();
-                contactName = contactName.substring(0, 13) + "..";
-            }
-        } else {
-            if (contactName.length() > 25) {
-
-                Spannable spanFistName = new SpannableString(contactName);
-                spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactFirstNameView.setText(spanFistName);
-
-                contactName = contact.getFirstName() + " " + contact.getLastName();
-                contactName = contactName.substring(0, 24) + "..";
+        if(listOfItemSelected.contains(getItem(position))){
+            if(context instanceof GroupActivity && len==0) {
+                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+            }else{
+                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
             }
         }
+        String contactName = contact.getFirstName() + " " + contact.getLastName();
 
         holder.contactFirstNameView.setText(contactName);
         String group = "";
@@ -175,6 +156,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
                 System.out.println(" black color");
+            }else{
+                Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
+                holder.groupWordingConstraint.setBackground(roundedLayout);
             }
             //Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             //roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
@@ -256,7 +241,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         }
                     } else {
                         listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                        if(context instanceof GroupActivity && len==0) {
+                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                        }else{
+                            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                        }
                     }
 
                     if (context instanceof GroupActivity) {
@@ -300,19 +289,34 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     assert contact != null;
 
                     holder.contactFirstNameView.setText(contact.getFirstName());
-
                     if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
                         listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
 
-                        if (!contact.getProfilePicture64().equals("")) {
-                            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                            holder.contactRoundedImageView.setImageBitmap(bitmap);
-                        } else {
-                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+
+                        if(context instanceof GroupActivity && len==0) {
+                            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+                            if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+                                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColorDark));
+                            } else {
+                                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor));
+                            };
+                        }else{
+                            if (!contact.getProfilePicture64().equals("")) {
+                                Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                                holder.contactRoundedImageView.setImageBitmap(bitmap);
+                            } else {
+                                holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+                            }
                         }
+
                     } else {
+
                         listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                        if(context instanceof GroupActivity && len==0) {
+                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                        }else{
+                            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                        }
                     }
 
                     if (context instanceof GroupActivity) {
@@ -396,6 +400,33 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }else{
             System.out.println("is gone"+holder.contactFirstNameView.getText());
         }*/
+
+       holder.groupWordingConstraint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+                DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+                main_mDbWorkerThread.start();
+                ArrayList<Integer> listPosition = new ArrayList<Integer>();
+                System.out.println("list contact grid size" + gestionnaireContacts.getContacts().size());
+                if (!modeMultiSelect) {
+                    modeMultiSelect = true;
+                    for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
+                        if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
+                            if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context).getId().equals(gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
+                                if (!listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+                                    System.out.println(getItem(i).getContactDB().getFirstName() + " " + getItem(i).getContactDB().getLastName());
+                                    ((GroupActivity) context).longRecyclerItemClick(i);
+                                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(i));
+                                }
+                            }
+                        }
+                    }
+                    notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override
@@ -474,6 +505,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }
     }//code duplicate à mettre dans contactAllInfo
+
+
 
     private boolean whatsappIsNotInstalled() {
         PackageManager pm = context.getPackageManager();

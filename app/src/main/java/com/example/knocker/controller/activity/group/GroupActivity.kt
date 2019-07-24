@@ -47,6 +47,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_group.*
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -300,6 +301,7 @@ class GroupActivity : AppCompatActivity() {
                         group_MailButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
                         group_groupButton!!.visibility = View.GONE
+                        group_floating_button_send_id!!.visibility=View.GONE
                     }
                 }
                 firstClick = false
@@ -345,6 +347,7 @@ class GroupActivity : AppCompatActivity() {
                         group_MailButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
                         group_groupButton!!.visibility = View.GONE
+                        group_floating_button_send_id!!.visibility=View.GONE
                     }
                 }
                 firstClick = false
@@ -580,6 +583,7 @@ class GroupActivity : AppCompatActivity() {
                 group_MailButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
                 group_groupButton!!.visibility = View.GONE
+                group_floating_button_send_id!!.visibility=View.GONE
             } else {
                 group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                 group_SearchBar!!.visibility = View.VISIBLE
@@ -588,6 +592,7 @@ class GroupActivity : AppCompatActivity() {
                 group_MailButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
                 group_groupButton!!.visibility = View.GONE
+                group_floating_button_send_id!!.visibility=View.GONE
             }
             saveGroupMultiSelect(listOfItemSelected, len)
            // recreate()
@@ -841,6 +846,7 @@ class GroupActivity : AppCompatActivity() {
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                     } else {
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
@@ -908,19 +914,19 @@ class GroupActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
-    fun clickGroup(len:Int,positions:List<Int>,firstPosVis:Int, groupId:Int){
+    fun clickGroupGrid(len:Int, positions:List<Int>, firstPosVis:Int){
         group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         group_GridView!!.adapter = adapter
         adapter.notifyDataSetChanged()
         group_SearchBar!!.visibility = View.GONE
         firstClick = true
-        val group=group_ContactsDatabase!!.GroupsDao().getGroupWithContact(groupId)
-        val list= group.getListContact(this)
-        println("taille list 1 "+ list.size+" taille list 2 "+positions.size)
-        for(contact in list){
+        //val group=group_ContactsDatabase!!.GroupsDao().getGroupWithContact(groupId)
+       // val list= group.getListContact(this)
+       // println("taille list 1 "+ list.size+" taille list 2 "+positions.size)
+        /*for(contact in list){
             listOfItemSelected.add(contact)
-        }
+        }*/
         for(position in positions){
             adapter.itemSelected(position)
         }
@@ -954,6 +960,7 @@ class GroupActivity : AppCompatActivity() {
         this.windowManager.defaultDisplay.getMetrics(metrics)
         val margin = (0.5 * metrics.densityDpi).toInt()
         println("metric smartphone" + metrics.densityDpi)
+        group_floating_button_send_id!!.visibility=View.VISIBLE
         if (allContactsHavePhoneNumber) {
             group_SMSButton!!.visibility = View.VISIBLE
             i++
@@ -982,9 +989,14 @@ class GroupActivity : AppCompatActivity() {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
+            if(listOfItemSelected.size==0){
             group_SearchBar!!.visibility = View.VISIBLE
             group_SMSButton!!.visibility = View.GONE
             group_MailButton!!.visibility = View.GONE
+            group_groupButton!!.visibility = View.GONE
+            group_floating_button_send_id!!.visibility= View.GONE
+
+            }
 
         } else {
             listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
@@ -1100,6 +1112,7 @@ class GroupActivity : AppCompatActivity() {
         group_MailButton!!.visibility = View.GONE
         group_SMSButton!!.visibility = View.GONE
         group_groupButton!!.visibility = View.GONE
+        group_floating_button_send_id!!.visibility=View.GONE
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {

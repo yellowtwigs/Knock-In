@@ -176,14 +176,13 @@ class MultiChannelActivity : AppCompatActivity() {
 
         val intent = Intent(Intent.ACTION_SEND)
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
-
         intent.putExtra(Intent.EXTRA_EMAIL, contact);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
+        intent.data = Uri.parse("mailto:")
+        intent.type = "text/plain"
+      //  intent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
         intent.putExtra(Intent.EXTRA_TEXT, msg)
 
-        intent.type = "message/rfc822";
-
-        startActivity(Intent.createChooser(intent, "Select Email Sending App :"));
+        startActivity(intent);
     }
 
     private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {

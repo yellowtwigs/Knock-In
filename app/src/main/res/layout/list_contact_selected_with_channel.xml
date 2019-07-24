@@ -30,12 +30,16 @@
 
         <TextView
             android:id="@+id/multi_channel_list_item_contactFirstName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="bla bla"
+            android:layout_marginEnd="8dp"
+            android:text="bla bla bla bla bla bla bla bla "
             android:textSize="20sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@+id/multi_channel_list_item_contactRoundedImageView"
+            app:layout_constraintEnd_toStartOf="@+id/multi_channel_list_item_menu"
             app:layout_constraintStart_toEndOf="@+id/multi_channel_list_item_contactRoundedImageView"
             app:layout_constraintTop_toTopOf="@+id/multi_channel_list_item_contactRoundedImageView" />
 
@@ -73,15 +77,15 @@
                 app:srcCompat="@drawable/ic_circular_gmail" />
 
             <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/list_contact_item_messenger_iv"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_messenger" />
+                android:id="@+id/list_contact_item_messenger_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_messenger" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

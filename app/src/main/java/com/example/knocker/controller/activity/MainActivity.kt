@@ -906,6 +906,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     fun longGridItemClick(len: Int, position: Int, firstPosVis: Int) {
         main_GridView!!.setSelection(firstPosVis)
+        gridViewAdapter!!.closeMenu()
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         main_GridView!!.adapter = adapter
         adapter.itemSelected(position)

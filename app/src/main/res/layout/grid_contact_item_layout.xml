@@ -24,12 +24,14 @@
 
         <TextView
             android:id="@+id/grid_adapter_wording_group_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Bla bla"
             android:textAlignment="center"
             android:textColor="@color/textColorLight"
@@ -63,9 +65,11 @@
 
         <TextView
             android:id="@+id/grid_adapter_contactFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="18dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Bla bla"
             android:textAlignment="center"
             android:textColor="?attr/textColor"
@@ -76,8 +80,10 @@
 
         <TextView
             android:id="@+id/grid_adapter_contactLastName"
-            android:layout_width="wrap_content"
-            android:layout_height="18dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Bla bla"
             android:textAlignment="center"
             android:textColor="?attr/textColor"
