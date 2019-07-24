@@ -377,23 +377,23 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
-            //check les permissions
             drawerLayout!!.closeDrawers()
             main_GridView!!.visibility = View.GONE
             main_RecyclerView!!.visibility = View.GONE
+            //check les permissions
             val sync = Runnable {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
                 }
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                    /////////////////////////////////////////////////////////////////
-
-                    //Synchronise tout les contacts du carnet android
+                    //on affiche le loading
                     val displayLoading = Runnable {
                         main_loadingPanel!!.visibility = View.VISIBLE
                     }
                     runOnUiThread(displayLoading)
+                    //on effectue la sync
                     gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                    //on get tout les contact qui on été modifié lors de la last sync et on les stock dans une arrayList
                     val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1
                     var stringSet = listOf<String>()
@@ -405,19 +405,23 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
                     }
+                    //pour chaque contact changé on affiche une popup avec un choix ( garder la version Android ou Knocker
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this)
                                 .setTitle(R.string.main_edited_contact)
                                 .setMessage(this.resources.getString(R.string.main_content_edited_contact) + changedContact.first.firstName + " " + changedContact.first.lastName + this.resources.getString(R.string.main_content_edited_contact_2))
                                 .setPositiveButton(R.string.main_knocker_edited_contact) { _, _ ->
+                                    // on garde la version Knocker
                                 }
                                 .setNegativeButton(R.string.main_android_edited_contact) { _, _ ->
+
                                     val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
+                                    //on get les idAndroid et idKnocker du contact modifier
                                     allId.forEach {
                                         if (changedContact.first.id == it.first)
                                             changedContact.first.id = it.second
                                     }
-
+                                    //grâce à l'id on update avec les details récupéré dans save_last_sync
                                     main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!, changedContact.first.firstName, changedContact.first.lastName)
                                     main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
                                     changedContact.second.forEach {
@@ -425,6 +429,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                         main_ContactsDatabase!!.contactDetailsDao().insert(it)
                                     }
                                     val displaySync = Runnable {
+                                        //on update soit la grid ou soit la list view en fonction de celle séléctionné
                                         gestionnaireContacts!!.contacts.clear()
                                         val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                                         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -493,20 +498,25 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             true
         }
-
+        //création du listener de la searchbar
         main_SearchBar!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
 
             override fun beforeTextChanged(s: CharSequence, start: Int,
                                            count: Int, after: Int) {
             }
-
+            //fonction appellé à chaque charactère tapé
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+                //ferme circular
                 gridViewAdapter!!.closeMenu()
+                //convertir en string le contenu de la searchbar
                 main_search_bar_value = main_SearchBar!!.text.toString()
+                //get le type d'affichage selectionné
                 val sharedPref = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val length = sharedPref.getInt("gridview", 4)
+                //on get la list des contacts en appliquant les filtres et la search bar
                 val filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
+                // on get la list des contacts en appliquant le tri
                 val contactListDb = ContactList(this@MainActivity)
                 if (sharedPref.getString("tri", "nom") == "nom") {
                     contactListDb.sortContactByFirstNameAZ()
@@ -517,6 +527,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
                 gestionnaireContacts!!.contacts.clear()
                 gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                //en fonction de l'affichage on update soit la grid soit la list view
                 if (length > 1) {
                     gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
                     main_GridView!!.adapter = gridViewAdapter
@@ -673,6 +684,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 return true
             }
             R.id.item_help -> {
+                ////click sur le bouton help
                 MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.help)
                         .setMessage(this.resources.getString(R.string.help_main))
@@ -681,15 +693,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 return true
             }
             R.id.sms_filter -> {
+                //clique sur la checkbox filtre SMS
+                //on regarde si la checkbox est coché oui ou non
                 if (item.isChecked) {
+                    //on décoche la checkbox
                     item.isChecked = false
+                    //on enleve sms de la list de filtre
                     main_filter.remove("sms")
-                    // duplicate
+                    /// duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
-
+                    //on récup la taille de la gridview dans la sharedpref
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
+                    //on récup tout les contacts avec les filtres appliqués
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
+                    // on regarde le quel tri est activé pour l'appliquer
                     val contactListDb = ContactList(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
@@ -698,9 +716,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     } else {
                         contactListDb.sortContactByGroup()
                     }
+                    //on garde uniquement les contact en commun avec les filtres et tris
                     contactListDb.contacts.retainAll(filteredContact)
                     gestionnaireContacts!!.contacts.clear()
                     gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                    //on check si on est en grid ou list view pour savoir laquelle update
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
@@ -709,9 +729,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                     }
                 } else {
+                    //on coche la checkbox
                     item.isChecked = true
+                    //et on fais les memes étapes que plus haut |duplicata|
                     main_filter.add("sms")
-                    // duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
 
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
@@ -738,6 +759,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 return true
             }
             R.id.mail_filter -> {
+                //clique sur la checkbox filtre MAIL
+                //exactement comme pour le filtre SMS
                 if (item.isChecked) {
                     item.isChecked = false
                     main_filter.remove("mail")

@@ -158,8 +158,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
         var filter: List<ContactWithAllInformation>?
-        //val allContacts = contactsDatabase?.contactsDao()!!.getContactAllInfo()
-        println(filterList)
+        //check si la list contient sms,mail ou rien
         if (filterList.contains("sms")) {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
             val callDb = Callable { contactsDatabase?.contactsDao()?.getContactWithPhoneNumber() }
@@ -181,7 +180,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         if (filterList.isEmpty())
             return null
         var i = 0
-
+        //contient plus de 1 filtre rentre dans le if, 0 filtre dans le else if , 1 filtre dans le else
         if (allFilters.size > 1) {
             while (i < allFilters.size - 1) {
                 allFilters[i + 1] = allContactIntersect(allFilters[i], allFilters[i + 1])
@@ -262,10 +261,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     fun getContactConcernByFilter(filterList: ArrayList<String>, name: String): List<ContactWithAllInformation> {
+        //get tout les contact en appliquant les filtres
         val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
-
+        //get tout les contact en appliquant la searchbar
         val contactList = getContactByName(name)
         if (contactFilterList != null) {
+            //get uniquement les contact en commun dans les 2 list
             return intersectContactWithAllInformation(contactList, contactFilterList)
         }
         return contactList
@@ -906,9 +907,9 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val phoneStructName = getStructuredNameSync(main_contentResolver)
         //récupère tout les numéros de téléphone et l'image de profil de chaque contact
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
-        //récupère tout les mail de chaque contact
+        //récupère tout les mails de chaque contact
         val contactMail = getContactMailSync(main_contentResolver)
-        //récupère tout les groupe de chaque contact
+        //récupère tout les groupes de chaque contact
         val contactGroup = getContactGroupSync(main_contentResolver)
         //fusionne dans contactDetail la list contactNumberAndPic et contactMail
         val contactDetail = contactNumberAndPic.union(contactMail)
@@ -997,6 +998,4 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             result.get()
         }
     }
-
-
 }
