@@ -644,8 +644,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
+        val triLastname = menu.findItem(R.id.trie_par_lastname)
         val triPrio = menu.findItem(R.id.tri_par_priorite)
-        val triGroup = menu.findItem(R.id.trie_par_group)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
         if (tri == "nom") {
@@ -653,7 +653,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         } else if (tri == "priorite") {
             triPrio.isChecked = true
         } else {
-            triGroup.isChecked = true
+            triLastname.isChecked = true
         }
         return true
     }
@@ -855,10 +855,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     edit.apply()
                 }
             }
-            R.id.trie_par_group -> {
+            R.id.trie_par_lastname -> {
                 if (!item.isChecked) {
                     item.isChecked = true
-                    gestionnaireContacts!!.sortContactByGroup()
+                    ////gestionnaireContacts!!.sortContactByGroup()
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     if (len > 1) {
@@ -870,7 +870,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putString("tri", "group")
+                    edit.putString("tri", "lastname")
                     edit.apply()
                 }
             }

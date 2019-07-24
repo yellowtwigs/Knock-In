@@ -57,6 +57,7 @@
     <string name="main_change_format_phone_book">Aide</string>
     <string name="main_tri_title">Trier par :</string>
     <string name="main_tri_par_nom">Prénom</string>
+    <string name="main_tri_par_lastname">Nom</string>
     <string name="main_tri_par_priorite">Priorité</string>
     <string name="main_tri_par_groupe">Groupe</string>
     <string name="main_filtre_title">Filtrer par :</string>

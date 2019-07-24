@@ -629,7 +629,7 @@ class GroupActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_main, menu)
+        inflater.inflate(R.menu.menu_group, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
         val triPrio = menu.findItem(R.id.tri_par_priorite)
         val triGroup = menu.findItem(R.id.trie_par_group)
