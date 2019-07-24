@@ -569,13 +569,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
                 iterator = (0 until adapter.listContactSelect.size).iterator()
 
-                for (i in iterator!!) {
+                for (i in iterator) {
                     listOfMailContactSelected.add(adapter.listContactSelect[i].getFirstMail())
                 }
             } else {
                 iterator = (0 until listOfItemSelected.size).iterator()
 
-                for (i in iterator!!) {
+                for (i in iterator) {
                     listOfMailContactSelected.add(listOfItemSelected[i].getFirstMail())
                 }
             }
@@ -990,8 +990,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     fun longRecyclerItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+            verifiedContactsChannel(listOfItemSelected)
         } else {
             listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+
+            main_FloatingButtonAdd!!.visibility = View.GONE
+            main_FloatingButtonSend!!.visibility = View.VISIBLE
+            main_SearchBar!!.visibility = View.GONE
+
             verifiedContactsChannel(listOfItemSelected)
         }
 

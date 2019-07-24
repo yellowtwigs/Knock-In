@@ -111,7 +111,6 @@ class GroupActivity : AppCompatActivity() {
     /**
      * @param Bundle @type
      */
-
     @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -297,7 +296,7 @@ class GroupActivity : AppCompatActivity() {
                         group_MailButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
                         group_groupButton!!.visibility = View.GONE
-                        group_floating_button_send_id!!.visibility=View.GONE
+                        group_floating_button_send_id!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -343,7 +342,7 @@ class GroupActivity : AppCompatActivity() {
                         group_MailButton!!.visibility = View.GONE
                         group_SMSButton!!.visibility = View.GONE
                         group_groupButton!!.visibility = View.GONE
-                        group_floating_button_send_id!!.visibility=View.GONE
+                        group_floating_button_send_id!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -355,7 +354,6 @@ class GroupActivity : AppCompatActivity() {
         //endregion
 
         //region ======================================== Listeners =========================================
-
 
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
@@ -579,7 +577,7 @@ class GroupActivity : AppCompatActivity() {
                 group_MailButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
                 group_groupButton!!.visibility = View.GONE
-                group_floating_button_send_id!!.visibility=View.GONE
+                group_floating_button_send_id!!.visibility = View.GONE
             } else {
                 group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                 group_SearchBar!!.visibility = View.VISIBLE
@@ -588,10 +586,10 @@ class GroupActivity : AppCompatActivity() {
                 group_MailButton!!.visibility = View.GONE
                 group_SMSButton!!.visibility = View.GONE
                 group_groupButton!!.visibility = View.GONE
-                group_floating_button_send_id!!.visibility=View.GONE
+                group_floating_button_send_id!!.visibility = View.GONE
             }
             saveGroupMultiSelect(listOfItemSelected, len)
-           // recreate()
+            // recreate()
         }
         //endregion
 
@@ -932,7 +930,7 @@ class GroupActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
-    fun clickGroupGrid(len:Int, positions:List<Int>, firstPosVis:Int){
+    fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int) {
         group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         group_GridView!!.adapter = adapter
@@ -940,12 +938,12 @@ class GroupActivity : AppCompatActivity() {
         group_SearchBar!!.visibility = View.GONE
         firstClick = true
         //val group=group_ContactsDatabase!!.GroupsDao().getGroupWithContact(groupId)
-       // val list= group.getListContact(this)
-       // println("taille list 1 "+ list.size+" taille list 2 "+positions.size)
+        // val list= group.getListContact(this)
+        // println("taille list 1 "+ list.size+" taille list 2 "+positions.size)
         /*for(contact in list){
             listOfItemSelected.add(contact)
         }*/
-        for(position in positions){
+        for (position in positions) {
             adapter.itemSelected(position)
         }
         /*
@@ -978,7 +976,7 @@ class GroupActivity : AppCompatActivity() {
         this.windowManager.defaultDisplay.getMetrics(metrics)
         val margin = (0.5 * metrics.densityDpi).toInt()
         println("metric smartphone" + metrics.densityDpi)
-        group_floating_button_send_id!!.visibility=View.VISIBLE
+        group_floating_button_send_id!!.visibility = View.VISIBLE
         if (allContactsHavePhoneNumber) {
             group_SMSButton!!.visibility = View.VISIBLE
             i++
@@ -1007,12 +1005,12 @@ class GroupActivity : AppCompatActivity() {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
-            if(listOfItemSelected.size==0){
-            group_SearchBar!!.visibility = View.VISIBLE
-            group_SMSButton!!.visibility = View.GONE
-            group_MailButton!!.visibility = View.GONE
-            group_groupButton!!.visibility = View.GONE
-            group_floating_button_send_id!!.visibility= View.GONE
+            if (listOfItemSelected.size == 0) {
+                group_SearchBar!!.visibility = View.VISIBLE
+                group_SMSButton!!.visibility = View.GONE
+                group_MailButton!!.visibility = View.GONE
+                group_groupButton!!.visibility = View.GONE
+                group_floating_button_send_id!!.visibility = View.GONE
 
             }
 
@@ -1105,7 +1103,7 @@ class GroupActivity : AppCompatActivity() {
         group_MailButton!!.visibility = View.GONE
         group_SMSButton!!.visibility = View.GONE
         group_groupButton!!.visibility = View.GONE
-        group_floating_button_send_id!!.visibility=View.GONE
+        group_floating_button_send_id!!.visibility = View.GONE
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
