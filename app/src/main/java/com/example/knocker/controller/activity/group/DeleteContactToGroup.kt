@@ -59,10 +59,10 @@ class DeleteContactToGroup : AppCompatActivity() {
 
     private fun deleteToGroup(listContact: List<ContactDB>, groupId: Int) {
         var message=""
-        if(listContact.size==0){
+        if(listContact.isEmpty()){
             message= resources.getString(R.string.delete_contact_0_contact)
         }else if(listContact.size==1){
-            message= String.format(resources.getString(R.string.delete_contact)," "+listContact.get(0).firstName+" "+listContact.get(0).lastName+" ")
+            message= String.format(resources.getString(R.string.delete_contact)," "+listContact[0].firstName+" "+listContact[0].lastName+" ")
                     //resources.getString(R.string.delete_contact)+" "+listContact.get(0).firstName+" "+listContact.get(0).lastName+
         }else{
             message= String.format(resources.getString(R.string.delete_contact),"")+" :"

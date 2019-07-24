@@ -167,10 +167,10 @@ class EditContactActivity : AppCompatActivity() {
             val contact = contactList.getContactById(edit_contact_id!!)!!
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
-            val tmpPhone = contact.contactDetailList!!.get(0)
+            val tmpPhone = contact.contactDetailList!![0]
             edit_contact_phone_number = tmpPhone.content
             edit_contact_phone_property = tmpPhone.tag
-            val tmpMail = contact.contactDetailList!!.get(1)
+            val tmpMail = contact.contactDetailList!![1]
             edit_contact_mail = tmpMail.content
             edit_contact_mail_property = tmpMail.tag
             edit_contact_priority = contact.contactDB!!.contactPriority
@@ -488,9 +488,9 @@ class EditContactActivity : AppCompatActivity() {
                                 if (havePhone) {
                                     //println("------------il a un numéro ------")
                                     if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition })).get(i).id!!)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition }))[i].id!!)
                                     } else
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![i].id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
                                     //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
                                     if (!haveMail && edit_contact_Mail!!.editText!!.text.toString() != "") {
                                         //println("------------et à ajouter un mail------")
@@ -500,9 +500,9 @@ class EditContactActivity : AppCompatActivity() {
                                 } else {
                                     //println("------------il a un seulement un mail ------")
                                     if (haveMail && edit_contact_Mail!!.editText!!.text.toString() == "")
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition })).get(i).id!!)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition }))[i].id!!)
                                     else
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![i].id!!, "" + edit_contact_Mail!!.editText!!.text)
                                     if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
                                         //println("------------et à ajouter un numéro------")
                                         val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
@@ -511,9 +511,9 @@ class EditContactActivity : AppCompatActivity() {
                                 }
                             } else if (i == 1) {
                                 if (edit_contact_Mail!!.editText!!.text.toString() == "") {
-                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition })).get(i).id!!)
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition }))[i].id!!)
                                 }
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!!.get(i).id!!, "" + edit_contact_Mail!!.editText!!.text)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![i].id!!, "" + edit_contact_Mail!!.editText!!.text)
                             }
 
                         }//TODO change for the listView

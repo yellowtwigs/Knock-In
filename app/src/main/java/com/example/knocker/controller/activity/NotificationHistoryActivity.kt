@@ -309,7 +309,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private fun firstContactPrio0(notifList: List<NotificationDB>): Int {
         for (i in 0..notifList.size - 1) {
-            val contact = notification_history_NotificationsDatabase!!.contactsDao().getContact(notifList.get(i).idContact)
+            val contact = notification_history_NotificationsDatabase!!.contactsDao().getContact(notifList[i].idContact)
             if (contact.contactDB!!.contactPriority == 0) {
                 return i
             }
@@ -418,7 +418,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             listTmp.addAll(notification_history_ListOfNotificationDB)
-            if (!stringSearch.isEmpty()) {
+            if (stringSearch.isNotEmpty()) {
                 val regex = (".*(" + stringSearch + ").*").toRegex()
                 listTmp.forEach {
                     if (!(it.contactName.toLowerCase().matches(regex) || it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
@@ -439,7 +439,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             val listTmp = mutableListOf<NotificationDB>()
             val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             listTmp.addAll(notification_history_ListOfNotificationDB)
-            if (!stringSearch.isEmpty()) {
+            if (stringSearch.isNotEmpty()) {
                 val regex = (".*" + stringSearch + ".*").toRegex()
                 listTmp.forEach {
                     if (!it.contactName.toLowerCase().matches(regex) && !it.description.toLowerCase().matches(regex)) {

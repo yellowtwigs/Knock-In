@@ -612,7 +612,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                             //on regarde si le contact possède un middle name
                             if (fullName.second.second == "") {
                                 //on créé un objet ContactDB que l'on remplis avec les info récolté avant
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString())
                                 //on recupere la liste des contacts récuperer lors de la derniere synchro sous format idAndroid:id
                                 lastSync = sharedPreferences.getString("last_sync_2", "")!!
                                 //on regarde si on a pas deja enregistré le contact lors de la dernière synchro
@@ -668,7 +668,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                 }
                                 phoneContactsList.add(contacts)
                             } else if (fullName.second.second != "") {
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4]!!.toString())
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString())
                                 phoneContactsList.add(contacts)
                                 if (!isDuplicate(allcontacts, contacts)) {
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -786,7 +786,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             val groupName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups.TITLE))
             //récupère les membres du groupe
             val groupMembers = getMemberOfGroup(main_contentResolver, groupId.toString(), groupName)
-            if (!groupMembers.isEmpty() && !allGroupMembers.isEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {
+            if (groupMembers.isNotEmpty() && allGroupMembers.isNotEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {
                 //ajoute un membre au groupe
                 allGroupMembers = allGroupMembers.union(groupMembers).toList()
             } else if (allGroupMembers.isEmpty())

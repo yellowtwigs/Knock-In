@@ -51,8 +51,8 @@ class NotificationSender : BroadcastReceiver() {
                     }
                 } else {
                     var i = 0
-                    while (i <= list.size - 1 && calendar.time.before(Date(list.get(i).timestamp))) {
-                        if (isMessagingApp(list.get(i).platform)) {
+                    while (i <= list.size - 1 && calendar.time.before(Date(list[i].timestamp))) {
+                        if (isMessagingApp(list[i].platform)) {
                             nbOfnotif++
                         }
                         i++
