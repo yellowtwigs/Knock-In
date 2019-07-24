@@ -984,6 +984,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_MailButton!!.visibility = View.GONE
         }
 
+
     }
 
     fun longRecyclerItemClick(position: Int) {
