@@ -209,10 +209,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
-                if (v.getId() == holder.editCl.getId()) {
-                    Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId", contact.getId());
-                    context.startActivity(intent);
+                if(len!=0) {
+                    if (v.getId() == holder.editCl.getId()) {
+                        Intent intent = new Intent(context, EditContactActivity.class);
+                        intent.putExtra("ContactId", contact.getId());
+                        context.startActivity(intent);
+                    }
                 }
             }
         };
