@@ -78,6 +78,8 @@
     <string name="main_android_edited_contact">Android</string>
     <string name="main_knocker_edited_contact">Knocker</string>
 
+    <string name="main_contact_grid_title">Voulez-vous appeler ce contact ?</string>
+    <string name="main_contact_grid_message">Vous pouvez désactiver cette validation depuis les options</string>
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->
@@ -181,7 +183,8 @@
     <string name="edit_contact_alert_dialog_delete_contact_title">Supprimer un contact</string>
     <string name="edit_contact_alert_dialog_delete_contact_message">Êtes-vous sûr de vouloir supprimer ce contact ?</string>
     <string name="edit_contact">Editer le contact</string>
-
+    <string name="edit_contact_alert_dialog_group_title">Enlever du groupe</string>
+    <string name="edit_contact_alert_dialog_group_message">Vous allez enlever %1s du groupe %2s </string>
     <!-- endregion !-->
 
     <!-- region Edit My Informations !-->
@@ -221,7 +224,7 @@
     <string name="notification_manager_stop_service">Activez le service de notification</string>
     <string name="notification_manager_horaire">Choisissez l\'horaire de rappel des notifications de la journée</string>
     <string name="notification_manager_prio_1">Masquez les notification standard (priorité 1)</string>
-    <string name="notification_reminder">m\'envoyer un rappel pour regarder les messages traité par knocker</string>
+    <string name="notification_reminder">Envoyer un rappel pour regarder les messages traité par knocker</string>
     <!-- endregion -->
 
     <!-- region Phone Log -->
@@ -279,6 +282,7 @@
     <string name="synchronise_contact_synchronise_button_no">Ne pas synchroniser</string>
     <string name="synchronise_contact_synchronise_toast">Contacts synchronisés</string>
     <string name="synchronise_contact_alert_dialog">Vous pourrez toujours synchroniser vos contact dans la bar de navigation latéral avec l\'onglet "Synchroniser vos contact"</string>
+    <string name="synchronise_contact_validate">ok</string>
 
     <!-- endregion -->
 
@@ -322,6 +326,8 @@
 
     <string name="alert_dialog_yes">Oui</string>
     <string name="alert_dialog_no">Non</string>
+    <string name="alert_dialog_cancel">annuler</string>
+    <string name="alert_dialog_validate">valider</string>
 
     <!-- endregion !-->
 
@@ -363,5 +369,22 @@
     <!-- region delete contact to group-->
     <string name="delete_contact_0_contact">vous n\'allez supprimer aucun contact</string>
     <string name="delete_contact">vous allez supprimmer%1s de ce groupe</string>
+    <string name="delete_contact_title">Suppression de contact</string>
+    <string name="delete_contact_cancel">annuler</string>
+    <!-- endregion-->
+    <!-- region delete contact to group-->
+    <string name="compose_message_toast_send">Message envoyé</string>
+    <string name="compose_message_toast_permission_denied">Permission refusé</string>
+    <string name="compose_message_toast_miss_phone">Entrer un message et un numéro de téléphone</string>
+    <!-- endregion -->
+
+    <!-- region multiSelect -->
+    <string name="multi_select_contact">contact :</string>
+    <string name="multi_select_contacts">contacts :</string>
+    <!-- endregion-->
+
+    <!-- region notifAdapter-->
+    <string name="notif_adapter">Votre message ne doit pas être vide</string>
+    <string name="notif_adapter_message_sent">Message envoyé</string>
     <!-- endregion-->
 </resources>

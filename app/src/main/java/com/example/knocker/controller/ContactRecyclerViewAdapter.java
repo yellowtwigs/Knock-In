@@ -490,8 +490,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup && numberForPermission.isEmpty()) {
                 new AlertDialog.Builder(context)
-                        .setTitle("Voulez-vous appeler ce contact ?")
-                        .setMessage("Vous pouvez désactiver cette validation depuis les options")
+                        .setTitle(R.string.main_contact_grid_title)
+                        .setMessage(R.string.main_contact_grid_message)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));

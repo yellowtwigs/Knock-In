@@ -46,9 +46,10 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
             @Override
             public void onClick(View v) {
                 System.out.println("click close");
+                String test=context.getString(R.string.edit_contact_alert_dialog_group_message);
                 new MaterialAlertDialogBuilder(context)
-                        .setTitle("Enlever du groupe")
-                        .setMessage("Vous allez enlever "+ contact.getContactDB().getFirstName()+" "+contact.getContactDB().getLastName()+" du groupe "+listGroup.get(position).getName())
+                        .setTitle(R.string.edit_contact_alert_dialog_group_title)
+                        .setMessage(String.format(context.getString(R.string.edit_contact_alert_dialog_group_message),contact.getContactDB().getFirstName()+" "+contact.getContactDB().getLastName(),listGroup.get(position).getName()))
                         .setPositiveButton(R.string.edit_contact_validate, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
@@ -59,7 +60,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                                 listGroup.remove(position);
                                 notifyDataSetChanged();
                             }
-                        }).setNegativeButton("annuler", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }

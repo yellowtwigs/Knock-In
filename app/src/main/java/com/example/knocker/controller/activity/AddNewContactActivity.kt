@@ -94,7 +94,7 @@ class AddNewContactActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar.title = "Ajouter un nouveau contact"
+        actionbar.title = resources.getString(R.string.add_new_contact_title)
 
         //endregion
 

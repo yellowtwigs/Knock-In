@@ -71,7 +71,7 @@ class DeleteContactToGroup : AppCompatActivity() {
             }
         }
         MaterialAlertDialogBuilder(this)
-                .setTitle("Suppression de contact")
+                .setTitle(R.string.delete_contact_title)
                 .setMessage(message)
                 .setPositiveButton(R.string.edit_contact_validate) { dialog, which ->
                     listContact.forEach {
@@ -79,7 +79,7 @@ class DeleteContactToGroup : AppCompatActivity() {
                         contactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it.id!!,groupId)
                         startActivity(Intent(this, GroupManagerActivity::class.java))
                     }
-                }.setNegativeButton("annuler") { dialog, which -> }.show()
+                }.setNegativeButton(R.string.delete_contact_cancel) { dialog, which -> }.show()
 
     }
 

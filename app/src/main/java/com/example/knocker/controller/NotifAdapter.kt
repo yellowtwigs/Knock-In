@@ -149,7 +149,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
         buttonSend.setOnClickListener {
             if (editText.text.toString() == "") {
-                Toast.makeText(context, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.notif_adapter, Toast.LENGTH_SHORT).show()
             } else {
 
                 when (convertPackageToString(sbp.appNotifier!!)) {
@@ -273,7 +273,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val smsManager = SmsManager.getDefault()
         smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
 
-        Toast.makeText(context, "Message Sent",
+        Toast.makeText(context, R.string.notif_adapter_message_sent,
                 Toast.LENGTH_LONG).show()
     }
 

@@ -70,7 +70,7 @@ class SynchronizeContactActivity : AppCompatActivity() {
         val alertDialogBuilder = android.app.AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(applicationContext.resources.getString(R.string.app_name))
         alertDialogBuilder.setMessage(applicationContext.resources.getString(R.string.synchronise_contact_alert_dialog))
-        alertDialogBuilder.setPositiveButton("ok"
+        alertDialogBuilder.setPositiveButton(R.string.synchronise_contact_validate
         ) { _, _ ->
             startActivity(Intent(this@SynchronizeContactActivity, MainActivity::class.java))
         }

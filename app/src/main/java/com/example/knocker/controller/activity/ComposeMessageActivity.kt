@@ -168,12 +168,12 @@ class ComposeMessageActivity : AppCompatActivity() {
                     compose_message_ListViewMessage!!.adapter = MessageListAdapter(this, compose_message_listOfMessage)
 
                     compose_message_MessageEditText!!.text.clear()
-                    Toast.makeText(this, "Message envoyé", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.compose_message_toast_send), Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@ComposeMessageActivity, "Permission denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ComposeMessageActivity,getString(R.string.compose_message_toast_permission_denied), Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this@ComposeMessageActivity, "Enter a message and a phone number", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ComposeMessageActivity, getString(R.string.compose_message_toast_miss_phone), Toast.LENGTH_SHORT).show()
             }
         }
 

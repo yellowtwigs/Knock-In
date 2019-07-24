@@ -119,19 +119,19 @@ class MultiSelectActivity : AppCompatActivity() {
         if (contactList.size == 0) {
             message = applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
         } else if (contactList.size == 1) {
-            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, "contact :")
+            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, getString(R.string.multi_select_contact))
             if (contactList.size == 1) {
                 val contact = contactList[0]
                 message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
         } else {
-            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, "contacts :")
+            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, getString(R.string.multi_select_contacts))
             for (contact in contactList) {
                 message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
         }
         alertDialogBuilder.setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
-        alertDialogBuilder.setPositiveButton("oui"
+        alertDialogBuilder.setPositiveButton(R.string.alert_dialog_yes
         ) { _, _ ->
             val gestionnaireContact = ContactList(contactList, this)
             if (contactList.isNotEmpty()) {
@@ -139,7 +139,7 @@ class MultiSelectActivity : AppCompatActivity() {
             }
             startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
         }
-        alertDialogBuilder.setNegativeButton("non"
+        alertDialogBuilder.setNegativeButton(R.string.alert_dialog_no
         ) { _, _ ->
         }
         return alertDialogBuilder.create()

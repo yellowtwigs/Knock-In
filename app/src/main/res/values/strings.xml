@@ -78,6 +78,9 @@
     <string name="main_android_edited_contact">Android</string>
     <string name="main_knocker_edited_contact">Knocker</string>
 
+    <string name="main_contact_grid_title">Do you want to call this contact ?</string>
+    <string name="main_contact_grid_message">You can disable this in settings</string>
+
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->
@@ -181,7 +184,8 @@
     <string name="edit_contact_alert_dialog_delete_contact_title">Remove a contact</string>
     <string name="edit_contact_alert_dialog_delete_contact_message">Do you really want to remove this contact?</string>
     <string name="edit_contact">Editer le contact</string>
-
+    <string name="edit_contact_alert_dialog_group_title">delete of the group</string>
+    <string name="edit_contact_alert_dialog_group_message">You will delete %1s of the groupe %2s </string>
     <!-- endregion !-->
 
     <!-- region Edit My Informations !-->
@@ -280,7 +284,7 @@
     <string name="synchronise_contact_synchronise_button_no">Do not synchronize</string>
     <string name="synchronise_contact_synchronise_toast">Contacts are synchronized</string>
     <string name="synchronise_contact_alert_dialog">You can synchronize your contacts later from the navigation menu via the "Synchronize your contacts" tab</string>
-
+    <string name="synchronise_contact_validate">ok</string>
     <!-- endregion -->
 
     <!-- region First Launch -->
@@ -321,7 +325,8 @@
 
     <string name="alert_dialog_yes">Yes</string>
     <string name="alert_dialog_no">No</string>
-
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_validate">Validate</string>
     <!-- endregion !-->
 
     <!-- region AlertDialog permission overlay !-->
@@ -362,5 +367,22 @@
     <!-- region delete contact to group-->
     <string name="delete_contact_0_contact">to Translate</string>
     <string name="delete_contact">you will delete%1sfrom this group</string>
+    <string name="delete_contact_title">delete contact</string>
+    <string name="delete_contact_cancel">cancel</string>
+    <!-- endregion-->
+
+    <!-- region delete contact to group-->
+    <string name="compose_message_toast_send">Message send</string>
+    <string name="compose_message_toast_permission_denied">Permission denied</string>
+    <string name="compose_message_toast_miss_phone">Enter a message and a phone number</string>
+    <!-- endregion -->
+
+    <!-- region multiSelect -->
+    <string name="multi_select_contact">contact</string>
+    <string name="multi_select_contacts">contacts</string>
+    <!-- endregion-->
+    <!-- region notifAdapter-->
+    <string name="notif_adapter">Your message need to not be empty</string>
+    <string name="notif_adapter_message_sent">Message sent</string>
     <!-- endregion-->
 </resources>
