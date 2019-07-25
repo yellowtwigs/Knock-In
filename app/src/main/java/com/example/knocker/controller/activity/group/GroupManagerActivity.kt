@@ -52,6 +52,7 @@ class GroupManagerActivity : AppCompatActivity() {
 
     private var firstClick: Boolean = true
 
+    private var floating_add_new_group:FloatingActionButton?= null
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +94,7 @@ class GroupManagerActivity : AppCompatActivity() {
         group_manager_FloatingButtonSMS = findViewById(R.id.group_manager_floating_button_sms)
         group_manager_FloatingButtonSend = findViewById(R.id.group_manager_floating_button_send_id)
         group_manager_FloatingButtonMail = findViewById(R.id.group_manager_floating_button_gmail)
-
+        floating_add_new_group = findViewById(R.id.group_manager_floating_button_add)
         //endregion
 
         group_manager_RecyclerView!!.setHasFixedSize(true)
@@ -218,6 +219,10 @@ class GroupManagerActivity : AppCompatActivity() {
                 listOfMailContactSelected.add(listOfItemSelected[i].getFirstMail())
             }
             monoChannelMailClick(listOfMailContactSelected)
+        }
+        floating_add_new_group!!.setOnClickListener {
+            val intent=Intent(this@GroupManagerActivity, AddNewGroupActivity::class.java)
+            startActivity(intent)
         }
 
         //endregion

@@ -12,8 +12,8 @@ import java.util.HashMap
 
 class StatusBarParcelable : Parcelable {
     private var id: Int = 0
-    private var appNotifier: String? = ""
-    private var tickerText: String? = ""
+    var appNotifier: String? = ""
+    var tickerText: String? = ""
     private var tailleList: Int = 0
     val key = ArrayList<String>()
 
