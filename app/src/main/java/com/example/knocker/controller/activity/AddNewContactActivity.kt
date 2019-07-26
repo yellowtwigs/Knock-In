@@ -237,7 +237,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     alertDialog.show()
                 }
             }
-            R.id.nav_validate -> if (isEmptyField(add_new_contact_FirstName)) {
+            R.id.nav_validate -> {/*if (isEmptyField(add_new_contact_FirstName)) {
 
                 MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.add_new_contact_alert_dialog_title)
@@ -251,7 +251,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
 
                 Toast.makeText(this, R.string.add_new_contact_toast, Toast.LENGTH_SHORT).show()
-            } else {
+            } else {*/
                 //if (isValidMobile(add_new_contact_PhoneNumber!!.text.toString())) {
                 val printContacts = Runnable {
                     //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
@@ -298,7 +298,6 @@ class AddNewContactActivity : AppCompatActivity() {
                 //   Toast.makeText(this, "Votre numéro de téléphone n'est pas valide !", Toast.LENGTH_SHORT).show()
                 //}
             }
-
         }
         return super.onOptionsItemSelected(item)
     }
