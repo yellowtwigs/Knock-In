@@ -185,6 +185,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     System.out.println("delete contact");
                                     break;
                                 case R.id.menu_group_delete_group:
+                                    //groupManagerActivity = GroupManagerActivity;
                                     ContactsRoomDatabase contactsDatabase;
                                     DbWorkerThread mDbWorkerThread;
                                     mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
@@ -193,6 +194,8 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     assert contactsDatabase != null;
                                     System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
                                     contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
+                                    if (mContext instanceof GroupManagerActivity)
+                                        ((GroupManagerActivity)mContext).refreshList();
                                     break;
                                 default:
                                     System.out.println("always in default");

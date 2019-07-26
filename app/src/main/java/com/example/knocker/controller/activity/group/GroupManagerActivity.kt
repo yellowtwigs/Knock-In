@@ -333,6 +333,36 @@ class GroupManagerActivity : AppCompatActivity() {
 
     }
 
+    fun refreshList() {
+        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        val group: ArrayList<GroupWithContact> = ArrayList()
+        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 4)
+        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
+        val sections = ArrayList<SectionGroupAdapter.Section>()
+        var position = 0
+        for (i in group) {
+            val list = i.getListContact(this)
+            listContactGroup.addAll(list)
+            sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id))
+            position += list.size
+        }
+        val adapter: GroupAdapter
+        if (len >= 3) {
+            adapter = GroupAdapter(this, listContactGroup, len)
+            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
+        } else {
+            adapter = GroupAdapter(this, listContactGroup, 4)
+            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
+        }
+        val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
+        val sectionAdapter = SectionGroupAdapter(this, R.layout.recycler_adapter_section, group_manager_RecyclerView, adapter)
+        sectionAdapter.setSections(sections.toArray(sectionList))
+        group_manager_RecyclerView!!.adapter = sectionAdapter
+
+    }
+
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
         var message = "smsto:" + listOfPhoneNumber[0]
