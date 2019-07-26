@@ -3,6 +3,8 @@ package com.example.knocker.controller.activity.group;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -11,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -89,6 +93,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageView gmailIV;
         ImageView smsIV;
         public ImageView menu;
+        RelativeLayout holderName;
 
         SectionViewHolder(View view) {
             super(view);
@@ -96,7 +101,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             gmailIV = view.findViewById(R.id.section_gmail_imageview);
             smsIV = view.findViewById(R.id.section_sms_imageview);
             menu = view.findViewById(R.id.section_more_imageView);
-
+            holderName = view.findViewById(R.id.recycler_group_name_relative);
         }
     }
 
@@ -131,6 +136,11 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ((SectionViewHolder) sectionViewHolder).smsIV.setVisibility(View.GONE);
                 }
             }
+            Drawable roundedLayout = mContext.getDrawable(R.drawable.rounded_button_color_grey);
+            ContactsRoomDatabase contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(mContext);
+            //DbWorkerThread main_mDbWorkerThread;
+            roundedLayout.setColorFilter(contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).randomColorGroup(mContext), PorterDuff.Mode.MULTIPLY);
+            ((SectionViewHolder) sectionViewHolder).holderName.setBackground(roundedLayout);
             ((SectionViewHolder) sectionViewHolder).gmailIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

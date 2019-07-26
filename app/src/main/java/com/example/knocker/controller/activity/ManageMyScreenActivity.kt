@@ -200,12 +200,12 @@ class ManageMyScreenActivity : AppCompatActivity() {
             6 -> tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
         }
         when (nbGrid_group){
-            0 -> tv_zero_group!!.setBackgroundColor(R.drawable.border_selected_image_view)
-            1 -> tv_one_group!!.setBackgroundColor(R.drawable.border_selected_image_view)
-            3 -> tv_three_group!!.setBackgroundColor(R.drawable.border_selected_image_view)
-            4 -> tv_four_group!!.setBackgroundColor(R.drawable.border_selected_image_view)
-            5 -> tv_five_group!!.setBackgroundColor(R.drawable.border_selected_image_view)
-            6 -> tv_six_group!!.setBackgroundColor(R.drawable.border_selected_image_view)
+           0 -> tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            1 -> tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            3 -> tv_three_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            4 -> tv_four_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            5 -> tv_five_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            6 -> tv_six_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
         }
         tv_zero?.setOnClickListener {
             nbGrid = 0

@@ -997,6 +997,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         if (listOfItemSelected.size == 1 && firstClick) {
             Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+            main_FloatingButtonAdd!!.visibility = View.GONE
+            main_FloatingButtonSend!!.visibility = View.VISIBLE
+            main_SearchBar!!.visibility = View.GONE
             firstClick = false
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()

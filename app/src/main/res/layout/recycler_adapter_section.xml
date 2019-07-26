@@ -7,6 +7,7 @@
     android:background="@drawable/recycler_section">
 
     <RelativeLayout
+        android:id="@+id/recycler_group_name_relative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_button_color_grey"
@@ -36,7 +37,7 @@
         android:layout_marginEnd="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/section_gmail_imageview"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,7 +50,7 @@
         android:layout_marginEnd="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/section_more_imageView"
         app:layout_constraintTop_toTopOf="parent"
