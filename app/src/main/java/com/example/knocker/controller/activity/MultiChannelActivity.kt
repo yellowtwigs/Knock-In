@@ -17,6 +17,7 @@ import com.example.knocker.controller.ContactListViewAdapter
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import android.telephony.SmsManager
+import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -36,7 +37,7 @@ class MultiChannelActivity : AppCompatActivity() {
     private var multi_channel_listViewAdapter: ContactListViewAdapter? = null
 
     private var multi_channel_SendMessageEditText: AppCompatEditText? = null
-    private var multi_channel_SendMessageButton: AppCompatImageView? = null
+    private var multi_channel_SendMessageButton: RelativeLayout? = null
 
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
