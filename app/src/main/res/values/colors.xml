@@ -39,7 +39,7 @@
     <!-- region Rounded Button Colors -->
 
     <color name="rounded_button_focused_blue">#649bc8</color>
-    <color name="rounded_button_color_blue">#3baae6</color>
+    <color name="rounded_button_color_blue">#3BAAE6</color>
     <color name="rounded_button_pressed_blue">#5a91be</color>
 
     <color name="rounded_button_focused_white">#AAf6f6f6</color>

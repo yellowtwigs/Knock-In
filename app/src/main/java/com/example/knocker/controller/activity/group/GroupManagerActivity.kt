@@ -52,6 +52,7 @@ class GroupManagerActivity : AppCompatActivity() {
 
     private var firstClick: Boolean = true
 
+    private var floating_add_new_group:FloatingActionButton?= null
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +94,7 @@ class GroupManagerActivity : AppCompatActivity() {
         group_manager_FloatingButtonSMS = findViewById(R.id.group_manager_floating_button_sms)
         group_manager_FloatingButtonSend = findViewById(R.id.group_manager_floating_button_send_id)
         group_manager_FloatingButtonMail = findViewById(R.id.group_manager_floating_button_gmail)
-
+        floating_add_new_group = findViewById(R.id.group_manager_floating_button_add)
         //endregion
 
         group_manager_RecyclerView!!.setHasFixedSize(true)
@@ -219,6 +220,10 @@ class GroupManagerActivity : AppCompatActivity() {
             }
             monoChannelMailClick(listOfMailContactSelected)
         }
+        floating_add_new_group!!.setOnClickListener {
+            val intent=Intent(this@GroupManagerActivity, AddNewGroupActivity::class.java)
+            startActivity(intent)
+        }
 
         //endregion
     }
@@ -325,6 +330,36 @@ class GroupManagerActivity : AppCompatActivity() {
             println("false mail")
             group_manager_FloatingButtonMail!!.visibility = View.GONE
         }
+
+    }
+
+    fun refreshList() {
+        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        val group: ArrayList<GroupWithContact> = ArrayList()
+        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 4)
+        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
+        val sections = ArrayList<SectionGroupAdapter.Section>()
+        var position = 0
+        for (i in group) {
+            val list = i.getListContact(this)
+            listContactGroup.addAll(list)
+            sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id))
+            position += list.size
+        }
+        val adapter: GroupAdapter
+        if (len >= 3) {
+            adapter = GroupAdapter(this, listContactGroup, len)
+            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
+        } else {
+            adapter = GroupAdapter(this, listContactGroup, 4)
+            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
+        }
+        val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
+        val sectionAdapter = SectionGroupAdapter(this, R.layout.recycler_adapter_section, group_manager_RecyclerView, adapter)
+        sectionAdapter.setSections(sections.toArray(sectionList))
+        group_manager_RecyclerView!!.adapter = sectionAdapter
 
     }
 

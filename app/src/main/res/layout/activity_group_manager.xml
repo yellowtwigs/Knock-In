@@ -130,6 +130,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:targetApi="P" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/group_manager_floating_button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/floating_button_margin"
+            android:layout_marginBottom="40dp"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_add"
+            android:tint="@color/lightColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:backgroundTint="@color/colorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -140,7 +153,7 @@
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
         app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/navigation_color"
-        app:itemTextColor="@color/navigation_color"
+        app:itemIconTint="?attr/textColor"
+        app:itemTextColor="?attr/textColor"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

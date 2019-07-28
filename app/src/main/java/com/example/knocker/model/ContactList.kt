@@ -297,8 +297,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     private fun buildContactListFromJson(context: Context): ArrayList<ContactWithAllInformation> {
-        var listContacts = arrayListOf<ContactWithAllInformation>()
-        var contactString = loadJSONFromAsset(context)
+        val listContacts = arrayListOf<ContactWithAllInformation>()
+        val contactString = loadJSONFromAsset(context)
         try {
             val jsArray = JSONArray(contactString)
             for (x in 0 until jsArray.length()) {
@@ -587,7 +587,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val sharedPreferences = applicationContext.getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
         val edit: SharedPreferences.Editor = sharedPreferences.edit()
         var ContactLinksGroup: Pair<LinkContactGroup, GroupDB>
-        var listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
+        val listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         var lastSyncId = ""
         var lastSync = ""

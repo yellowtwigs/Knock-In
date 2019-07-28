@@ -711,6 +711,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
+                    android:layout_alignParentTop="true"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -742,11 +743,11 @@
                             android:layout_below="@+id/phone_log_tv_0"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
-                            android:layout_marginTop="2dp"
                             android:text="+"
                             android:textAlignment="center"
                             android:textColor="@color/greyColor"
-                            android:textSize="10sp"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_0" />
@@ -850,8 +851,10 @@
             android:layout_gravity="bottom"
             android:alpha="0.70"
             android:background="?attr/backgroundColor"
-            app:itemIconTint="@color/navigation_color"
-            app:itemTextColor="@color/navigation_color"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="20dp"
+            app:itemIconTint="@color/text_link_selector"
+            app:itemTextColor="@color/text_link_selector"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/main_navigation_view" />
     </RelativeLayout>
@@ -863,7 +866,7 @@
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
         app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/navigation_color"
-        app:itemTextColor="@color/navigation_color"
+        app:itemIconTint="?attr/textColor"
+        app:itemTextColor="?attr/textColor"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

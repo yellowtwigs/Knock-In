@@ -424,7 +424,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(intent);
                 }
-                selectMenu.close(true);
+                selectMenu.close(false);
             }
         };
 
@@ -639,7 +639,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
         System.out.println("menu select");
         if (selectMenu != null) {
-            selectMenu.close(true);
+            selectMenu.close(false);
         }
         selectMenu = floatingActionMenu;
 
