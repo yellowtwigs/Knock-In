@@ -90,10 +90,12 @@ class MultiChannelActivity : AppCompatActivity() {
 
 
         multi_channel_SendMessageButton!!.setOnClickListener {
+            var isTrue = false
             if (multi_channel_SendMessageEditText!!.text.toString() != "") {
                 if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
                     if (checkPermission(Manifest.permission.SEND_SMS)) {
                         multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
+                        isTrue = true
                     } else {
                         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
                         Toast.makeText(this, "No Permission", Toast.LENGTH_SHORT).show()
@@ -102,9 +104,17 @@ class MultiChannelActivity : AppCompatActivity() {
 
                 if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
                     multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+                    isTrue = true
                 }
 
-                refreshActivity()
+                if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
+                    Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
+                    isTrue = false
+                }
+
+                if (isTrue) {
+                    refreshActivity()
+                }
             } else {
                 Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
             }
@@ -178,7 +188,7 @@ class MultiChannelActivity : AppCompatActivity() {
         intent.putExtra(Intent.EXTRA_EMAIL, contact)
         intent.data = Uri.parse("mailto:")
         intent.type = "text/plain"
-      //  intent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
+        //  intent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
         intent.putExtra(Intent.EXTRA_TEXT, msg)
 
         startActivity(intent)

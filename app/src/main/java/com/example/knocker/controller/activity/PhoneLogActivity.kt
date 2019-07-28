@@ -235,7 +235,6 @@ class PhoneLogActivity : AppCompatActivity() {
 
         //endregion
 
-
         //region ========================================== Listener ========================================
 
         if (!listApp.contains("com.facebook.katana")) {

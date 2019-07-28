@@ -34,8 +34,8 @@ class TutorialActivity : AppCompatActivity() {
 
         //region =========================================== Uri ============================================
 
-        tutorial_ListOfTutorialVideo.add(Uri.parse("android.resource://" + (packageName + "/" + R.raw.activate_notif)))
-        tutorial_ListOfTutorialVideo.add(Uri.parse("android.resource://" + (packageName + "/" + R.raw.multichannel)))
+        tutorial_ListOfTutorialVideo.add(Uri.parse("android.resource://" + (packageName + "/" + R.raw.notif_tuto)))
+//        tutorial_ListOfTutorialVideo.add(Uri.parse("android.resource://" + (packageName + "/" + R.raw.multichannel)))
 
         //endregion
 

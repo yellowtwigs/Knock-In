@@ -453,7 +453,7 @@ class GroupActivity : AppCompatActivity() {
                             gridViewAdapter!!.notifyDataSetChanged()
                         } else {
                             group_RecyclerView!!.visibility = View.VISIBLE
-                            recyclerViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                            recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                             recyclerViewAdapter!!.notifyDataSetChanged()
                         }
                         drawerLayout!!.closeDrawers()

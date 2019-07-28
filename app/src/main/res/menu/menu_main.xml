@@ -15,7 +15,8 @@
 
     <group
         android:id="@+id/group_tri"
-        android:checkableBehavior="single">
+        android:checkableBehavior="single"
+        app:srcCompat="@drawable/ic_more_vert_black_24dp">
         <item
             android:id="@+id/tri_par_nom"
             android:checked="true"

@@ -23,7 +23,6 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * La Classe qui permet de remplir la listview avec les bon éléments
@@ -33,14 +32,12 @@ import java.util.Random;
 public class ContactListViewAdapter extends BaseAdapter {
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
-    private Context context;
     private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<>();
     private ArrayList<String> listOfNumberSelected = new ArrayList<>();
     private ArrayList<String> listOfMailSelected = new ArrayList<>();
     private Boolean messageSend;
 
     public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, boolean messageSend) {
-        this.context = context;
         this.listContacts = listContacts;
         this.messageSend = messageSend;
         layoutInflater = LayoutInflater.from(context);
@@ -163,29 +160,24 @@ public class ContactListViewAdapter extends BaseAdapter {
     }
 
     private int randomDefaultImage(int avatarId) {
-        if ("Get".equals("Create")) {
-            return new Random().nextInt(7);
-        } else if ("Get".equals("Get")) {
-            switch (avatarId) {
-                case 0:
-                    return R.drawable.ic_user_purple;
-                case 1:
-                    return R.drawable.ic_user_blue;
-                case 2:
-                    return R.drawable.ic_user_knocker;
-                case 3:
-                    return R.drawable.ic_user_green;
-                case 4:
-                    return R.drawable.ic_user_om;
-                case 5:
-                    return R.drawable.ic_user_orange;
-                case 6:
-                    return R.drawable.ic_user_pink;
-                default:
-                    return R.drawable.ic_user_blue;
-            }
+        switch (avatarId) {
+            case 0:
+                return R.drawable.ic_user_purple;
+            case 1:
+                return R.drawable.ic_user_blue;
+            case 2:
+                return R.drawable.ic_user_knocker;
+            case 3:
+                return R.drawable.ic_user_green;
+            case 4:
+                return R.drawable.ic_user_om;
+            case 5:
+                return R.drawable.ic_user_orange;
+            case 6:
+                return R.drawable.ic_user_pink;
+            default:
+                return R.drawable.ic_user_blue;
         }
-        return -1;
     }
 
     private Bitmap base64ToBitmap(String base64) {

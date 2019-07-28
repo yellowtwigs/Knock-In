@@ -248,7 +248,7 @@ class EditContactActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
         actionbar.title = this.resources.getString(R.string.edit_contact)
 
         //endregion
@@ -686,6 +686,7 @@ class EditContactActivity : AppCompatActivity() {
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     private fun OverlayAlertDialog(): android.app.AlertDialog {
+
         val alertDialogBuilder = android.app.AlertDialog.Builder(this, R.style.AlertDialog)
         alertDialogBuilder.setTitle(R.string.alert_dialog_overlay_title)
         alertDialogBuilder.setMessage(R.string.alert_dialog_overlay_message)

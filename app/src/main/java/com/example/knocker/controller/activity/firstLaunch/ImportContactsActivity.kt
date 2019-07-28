@@ -57,7 +57,9 @@ class ImportContactsActivity : AppCompatActivity() {
                 main_loadingPanel!!.visibility = View.VISIBLE
                 val sync = Runnable {
                     ContactList(this).getAllContacsInfoSync(contentResolver)
-                    startActivity(Intent(this@ImportContactsActivity, TutorialActivity::class.java))
+                    val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+                    intent.putExtra("fromImportContact", true)
+                    startActivity(intent)
                     finish()
                 }
                 main_mDbWorkerThread.postTask(sync)
@@ -73,7 +75,9 @@ class ImportContactsActivity : AppCompatActivity() {
         alertDialogBuilder.setMessage(applicationContext.resources.getString(R.string.import_contacts_alert_dialog))
         alertDialogBuilder.setPositiveButton("ok"
         ) { _, _ ->
-            startActivity(Intent(this@ImportContactsActivity, TutorialActivity::class.java))
+            val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+            intent.putExtra("fromImportContact", true)
+            startActivity(intent)
         }
 
         return alertDialogBuilder.create()

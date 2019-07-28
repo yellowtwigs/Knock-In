@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,7 +57,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var drawerLayout: DrawerLayout? = null
 
     private var main_GridView: GridView? = null
-    private var main_ListView: ListView? = null
     private var main_RecyclerView: RecyclerView? = null
 
     private var main_FloatingButtonAdd: FloatingActionButton? = null
@@ -118,12 +118,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
@@ -132,6 +138,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
+
         val decorView = window.decorView
 //        val window = window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -236,7 +243,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //affiche tout les contacts de la Database
 
         main_GridView = findViewById(R.id.main_grid_view_id)
-        main_ListView = findViewById(R.id.main_list_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
 
         //region commentaire
@@ -295,7 +301,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     verifiedContactsChannel(listOfItemSelected)
 
                     if (adapter.listContactSelect.size == 0) {
-                        val pos=main_GridView!!.firstVisiblePosition
+                        val pos = main_GridView!!.firstVisiblePosition
                         main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         main_FloatingButtonSend!!.visibility = View.GONE
@@ -367,7 +373,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
 
                 startActivity(intent)
-                finish()
+                refreshActivity()
             }
         }
 
@@ -474,7 +480,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             gridViewAdapter!!.notifyDataSetChanged()
                         } else {
                             main_RecyclerView!!.visibility = View.VISIBLE
-                            recyclerViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                            recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                             recyclerViewAdapter!!.notifyDataSetChanged()
                         }
                         drawerLayout!!.closeDrawers()
@@ -494,6 +500,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             true
         }
+
         //création du listener de la searchbar
         main_SearchBar!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
@@ -501,6 +508,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             override fun beforeTextChanged(s: CharSequence, start: Int,
                                            count: Int, after: Int) {
             }
+
             //fonction appellé à chaque charactère tapé
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
                 //ferme circular
@@ -559,6 +567,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
             }
             monoChannelSmsClick(listOfPhoneNumberContactSelected)
+            refreshActivity()
         }
 
         main_MailButton!!.setOnClickListener {
@@ -602,13 +611,74 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
 
             scaleGestureDetectore = ScaleGestureDetector(this, MyOnScaleGestureListener())
+            refreshActivity()
         }
         //endregion
 
+        //region ========================================= Tutorial =========================================
+
+        if (intent != null && intent.getBooleanExtra("fromImportContact", false)) {
+            openTutorialForNotif()
+        }
+
+        //endregion
+
+    }
+    //region ========================================== Functions ===========================================
+
+    private fun refreshActivity() {
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 4)
+        if (len > 1) {
+            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            main_GridView!!.adapter = gridViewAdapter
+        } else {
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            main_RecyclerView!!.adapter = recyclerViewAdapter
+        }
+
+        main_FloatingButtonAdd!!.visibility = View.VISIBLE
+        main_MailButton!!.visibility = View.GONE
+        main_SMSButton!!.visibility = View.GONE
+        main_FloatingButtonSend!!.visibility = View.GONE
     }
 
+    private fun openTutorialForNotif() {
+        val tuto_linear_layout = findViewById<LinearLayout>(R.id.tuto_linear_layout)
+        val content_frame = findViewById<LinearLayout>(R.id.content_frame)
+        val alert_dialog_tutorial_notification_content = findViewById<VideoView>(R.id.alert_dialog_tutorial_notification_content)
+        val alert_dialog_tutorial_notification_close = findViewById<ImageView>(R.id.alert_dialog_tutorial_notification_close)
 
-    //region ========================================== Functions ===========================================
+        MaterialAlertDialogBuilder(this)
+                .setTitle("Tutoriel")
+                .setMessage("Vous voulez activer le tutoriel ?")
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                    tuto_linear_layout.visibility = View.VISIBLE
+                    main_FloatingButtonAdd!!.visibility = View.GONE
+                    content_frame!!.visibility = View.GONE
+                    main_BottomNavigationView!!.visibility = View.GONE
+
+                    alert_dialog_tutorial_notification_content.setVideoURI(Uri.parse("android.resource://" + (packageName + "/" + R.raw.notif_tuto)));
+
+                    val mediaController = MediaController(this)
+                    alert_dialog_tutorial_notification_content.setMediaController(mediaController)
+                    mediaController.setAnchorView(alert_dialog_tutorial_notification_content)
+
+                    alert_dialog_tutorial_notification_content.start()
+
+                    alert_dialog_tutorial_notification_close.setOnClickListener {
+                        tuto_linear_layout.visibility = View.GONE
+                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                        content_frame.visibility = View.VISIBLE
+                        main_BottomNavigationView!!.visibility = View.VISIBLE
+                    }
+                }
+                .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
+                    closeContextMenu()
+                }
+                .show()
+    }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         scaleGestureDetectore?.onTouchEvent(event)
@@ -681,11 +751,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.item_help -> {
                 ////click sur le bouton help
-                MaterialAlertDialogBuilder(this)
-                        .setTitle(R.string.help)
-                        .setMessage(this.resources.getString(R.string.help_main))
-                        .setBackground(getDrawable(R.color.backgroundColor))
-                        .show()
+//                MaterialAlertDialogBuilder(this)
+//                        .setTitle(R.string.help)
+//                        .setMessage(this.resources.getString(R.string.help_main))
+//                        .setBackground(getDrawable(R.color.backgroundColor))
+//                        .show()
+                startActivity(Intent(this@MainActivity, TutorialActivity::class.java))
                 return true
             }
             R.id.sms_filter -> {
@@ -983,8 +1054,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false mail")
             main_MailButton!!.visibility = View.GONE
         }
-
-
     }
 
     fun longRecyclerItemClick(position: Int) {
