@@ -2,6 +2,7 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
@@ -24,6 +25,7 @@ import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -126,6 +128,7 @@ class EditContactActivity : AppCompatActivity() {
         val intent = intent
         edit_contact_id = intent.getIntExtra("ContactId", 1)
         gestionnaireContacts = ContactList(this.applicationContext)
+
         //endregion
 
         //region ======================================= FindViewById =======================================
@@ -248,7 +251,7 @@ class EditContactActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
         actionbar.title = this.resources.getString(R.string.edit_contact)
 
         //endregion
@@ -334,7 +337,7 @@ class EditContactActivity : AppCompatActivity() {
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (!Settings.canDrawOverlays(applicationContext)) {
                             val alertDialog = OverlayAlertDialog()
-                            alertDialog.show()
+                            alertDialog!!.show()
                         }
                     }
                 }
@@ -685,30 +688,32 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
-    private fun OverlayAlertDialog(): android.app.AlertDialog {
-        val alertDialogBuilder = android.app.AlertDialog.Builder(this, R.style.AlertDialog)
-        alertDialogBuilder.setTitle(R.string.alert_dialog_overlay_title)
-        alertDialogBuilder.setMessage(R.string.alert_dialog_overlay_message)
-        alertDialogBuilder.setPositiveButton(R.string.alert_dialog_yes
-        ) { _, _ ->
-            val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-            startActivity(intentPermission)
-            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-            edit.putBoolean("serviceNotif", false)
-            edit.apply()
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun OverlayAlertDialog(): AlertDialog? {
 
-        }
-        alertDialogBuilder.setNegativeButton(R.string.alert_dialog_no)
-        { _, _ ->
-            val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-            edit.putBoolean("serviceNotif", true)
-            edit.apply()
-        }
-        return alertDialogBuilder.create()
+        return MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.alert_dialog_overlay_title)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setMessage(this.resources.getString(R.string.alert_dialog_overlay_message))
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+                    startActivity(intentPermission)
+                    val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+                    edit.putBoolean("serviceNotif", false)
+                    edit.apply()
+                }
+                .setNegativeButton(R.string.alert_dialog_no)
+                { _, _ ->
+                    val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+                    edit.putBoolean("serviceNotif", true)
+                    edit.apply()
+                }
+                .show()
     }
 
     //endregion

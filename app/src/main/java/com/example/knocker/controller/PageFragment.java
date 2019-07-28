@@ -27,7 +27,6 @@ import java.util.Objects;
 public class PageFragment extends Fragment {
 
     // 1 - Create keys for our Bundle
-    private LinearLayout page_fragment_Layout;
     private VideoView page_fragment_VideoView;
     private TextView page_fragment_Title;
     private Uri uri;
@@ -44,7 +43,7 @@ public class PageFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        page_fragment_Layout = view.findViewById(R.id.fragment_page_rootview);
+//        page_fragment_Layout = view.findViewById(R.id.fragment_page_rootview);
         page_fragment_VideoView = view.findViewById(R.id.fragment_page_content);
         page_fragment_Title = view.findViewById(R.id.fragment_page_title);
 
@@ -56,12 +55,7 @@ public class PageFragment extends Fragment {
 
         page_fragment_Title.setText(title);
 
-        page_fragment_VideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-            }
-        });
+        page_fragment_VideoView.setOnPreparedListener(mp -> mp.setLooping(true));
 
         return view;
     }

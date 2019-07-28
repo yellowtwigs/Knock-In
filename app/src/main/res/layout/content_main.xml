@@ -21,6 +21,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/navigation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -90,18 +91,6 @@
                     android:indeterminate="true" />
             </RelativeLayout>
 
-            <ListView
-                android:id="@+id/main_list_view_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="?attr/backgroundColor"
-                android:columnWidth="120dp"
-                android:gravity="center"
-                android:numColumns="auto_fit"
-                android:visibility="gone" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_recycler_view_id"
                 android:layout_width="match_parent"
@@ -113,6 +102,62 @@
                 android:gravity="center"
                 android:numColumns="auto_fit"
                 android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tuto_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:background="#BB646464"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/alert_dialog_tutorial_notification_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Tutoriel Notification"
+                    android:textColor="@color/lightColor"
+                    android:textSize="25sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/alert_dialog_tutorial_notification_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="100dp"
+                    android:layout_toEndOf="@+id/alert_dialog_tutorial_notification_title"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_cross" />
+            </RelativeLayout>
+
+            <VideoView
+                android:id="@+id/alert_dialog_tutorial_notification_content"
+                android:layout_width="400dp"
+                android:layout_height="650dp"
+                android:layout_margin="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="15dp" />
+
+            <MediaController
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -139,7 +184,7 @@
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
         app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="?attr/textColor"
-        app:itemTextColor="?attr/textColor"
+        app:itemIconTint="@color/navigation_color"
+        app:itemTextColor="@color/navigation_color"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

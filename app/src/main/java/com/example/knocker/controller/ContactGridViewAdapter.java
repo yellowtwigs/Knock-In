@@ -535,7 +535,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 System.out.println("list contact grid size" + gestionnaireContact.getContacts().size());
                 for (int i = 0; i < gestionnaireContact.getContacts().size(); i++) {
                     if (gestionnaireContact.getContacts().get(i).getFirstGroup(context) != null) {
-                        if (gestionnaireContact.getContacts().get(i).getFirstGroup(context).getId().equals(gestionnaireContact.getContacts().get(position).getFirstGroup(context).getId())) {
+                        if (Objects.equals(gestionnaireContact.getContacts().get(i).getFirstGroup(context).getId(), Objects.requireNonNull(gestionnaireContact.getContacts().get(position).getFirstGroup(context)).getId())) {
                             System.out.println("id egale a l'autre ");
                             listPosition.add(i);
                         } else {
@@ -566,8 +566,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             }
         });
         return gridview;
-
-
     }
 
     private String converter06To33(String phoneNumber) {

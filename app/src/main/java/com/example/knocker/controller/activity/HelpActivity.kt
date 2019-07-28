@@ -3,8 +3,13 @@ package com.example.knocker.controller.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -21,33 +26,53 @@ import com.google.android.material.navigation.NavigationView
  * @author Kenzy Suon
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class HelpActivity : AppCompatActivity() {
+class HelpActivity : AppCompatActivity(), SensorEventListener {
+
+    //region ========================================== Val or Var ==========================================
 
     private var help_activity_FAQ: ConstraintLayout? = null
     private var help_activity_ContactUs: ConstraintLayout? = null
     private var help_activity_Terms: ConstraintLayout? = null
     private var help_activity_Infos: ConstraintLayout? = null
     private var help_activity_DrawerLayout: DrawerLayout? = null
+    private var sensorManager: SensorManager? = null
+
+    //endregion
 
     @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_help)
 
         //region ========================================== Toolbar =========================================
 
-        // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+
+        //endregion
+
+        //region ========================================== Sensor Manager =========================================
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensors = sensorManager!!.getSensorList(Sensor.TYPE_ALL)
+        for (sensor in sensors) {
+            Log.i("DEBUG", sensor.name + " --- " + sensor.vendor)
+        }
 
         //endregion
 
@@ -123,7 +148,50 @@ class HelpActivity : AppCompatActivity() {
         //endregion
     }
 
-    // Intent to return to the MainActivity
+    //region ========================================== Functions ===========================================
+
+    override fun onResume() {
+        super.onResume()
+//        sensorManager!!.registerListener(this., sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER))
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    /**
+     * Called when there is a new sensor event.  Note that "on changed"
+     * is somewhat of a misnomer, as this will also be called if we have a
+     * new reading from a sensor with the exact same sensor values (but a
+     * newer timestamp).
+     *
+     *
+     * See [SensorManager][android.hardware.SensorManager]
+     * for details on possible sensor types.
+     *
+     * See also [SensorEvent][android.hardware.SensorEvent].
+     *
+     *
+     * **NOTE:** The application doesn't own the
+     * [event][android.hardware.SensorEvent]
+     * object passed as a parameter and therefore cannot hold on to it.
+     * The object may be part of an internal pool and may be reused by
+     * the framework.
+     *
+     * @param event the [SensorEvent][android.hardware.SensorEvent].
+     */
+    override fun onSensorChanged(event: SensorEvent?) {
+        val x = event!!.values[0]
+        val y = event.values[1]
+        val z = event.values[2]
+
+//        Log.i("DEBUG", x + " - " + y + " - " + z)
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -133,4 +201,6 @@ class HelpActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    //endregion
 }

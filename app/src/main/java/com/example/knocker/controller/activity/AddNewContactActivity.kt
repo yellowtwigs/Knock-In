@@ -77,7 +77,7 @@ class AddNewContactActivity : AppCompatActivity() {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_add_new_contact)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")

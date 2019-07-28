@@ -81,7 +81,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return listContacts.get(position);
     }
 
-    public void setGestionnairecontact(ContactList gestionnaireContact) {
+    public void setGestionnaireContact(ContactList gestionnaireContact) {
         this.gestionnaireContacts = gestionnaireContact;
     }
 
@@ -101,7 +101,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     public void onBindViewHolder(@NonNull final ContactViewHolder holder, final int position) {
         final ContactDB contact = getItem(position).getContactDB();
         assert contact != null;
-
 
         if (len == 0) {
             if (contact.getContactPriority() == 0) {
@@ -127,13 +126,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
 
-        if(listOfItemSelected.contains(getItem(position))){
-            if(context instanceof GroupActivity && len==0) {
-                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
-            }else{
-                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-            }
-        }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
 
         holder.contactFirstNameView.setText(contactName);
@@ -149,12 +141,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+                Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
                 System.out.println(" black color");
-            }else{
-                Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            } else {
+                Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             }
@@ -209,7 +201,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                     context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
                 }
-                if(len!=0) {
+                if (len != 0) {
                     if (v.getId() == holder.editCl.getId()) {
                         Intent intent = new Intent(context, EditContactActivity.class);
                         intent.putExtra("ContactId", contact.getId());
@@ -240,9 +232,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         }
                     } else {
                         listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                        if(context instanceof GroupActivity && len==0) {
+                        if (context instanceof GroupActivity && len == 0) {
                             holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
-                        }else{
+                        } else {
                             holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                         }
                     }
@@ -292,14 +284,15 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                         listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
 
 
-                        if(context instanceof GroupActivity && len==0) {
+                        if (context instanceof GroupActivity && len == 0) {
                             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
                             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                                 holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColorDark));
                             } else {
                                 holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor));
-                            };
-                        }else{
+                            }
+                            ;
+                        } else {
                             if (!contact.getProfilePicture64().equals("")) {
                                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
                                 holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -311,9 +304,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     } else {
 
                         listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                        if(context instanceof GroupActivity && len==0) {
+                        if (context instanceof GroupActivity && len == 0) {
                             holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
-                        }else{
+                        } else {
                             holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                         }
                     }
@@ -400,7 +393,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             System.out.println("is gone"+holder.contactFirstNameView.getText());
         }*/
 
-       holder.groupWordingConstraint.setOnClickListener(new View.OnClickListener() {
+        holder.groupWordingConstraint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -505,7 +498,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }
     }//code duplicate à mettre dans contactAllInfo
-
 
 
     private boolean whatsappIsNotInstalled() {
