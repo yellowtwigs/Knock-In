@@ -1,26 +1,27 @@
 package com.example.knocker.controller.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.telephony.SmsManager
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.knocker.R
 import com.example.knocker.controller.ContactListViewAdapter
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import android.telephony.SmsManager
-import android.widget.RelativeLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-
 
 class MultiChannelActivity : AppCompatActivity() {
 
@@ -41,21 +42,13 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
+    private val SPLASH_DISPLAY_LENGHT = 10000
 
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi_channel)
-
-        intent_listOfContactSelected = intent.getIntegerArrayListExtra("ListContactsSelected")
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
-            }
-        }
 
         //region ========================================== Toolbar =========================================
 
@@ -76,6 +69,10 @@ class MultiChannelActivity : AppCompatActivity() {
 
         //endregion
 
+        //region ================================= GetContactByIdFromIntent =================================
+
+        intent_listOfContactSelected = intent.getIntegerArrayListExtra("ListContactsSelected")
+
         gestionnaireContacts = ContactList(this.applicationContext)
         gestionnaireContacts!!.sortContactByFirstNameAZ()
 
@@ -85,55 +82,82 @@ class MultiChannelActivity : AppCompatActivity() {
             multi_channel_listOfContactSelected.add(gestionnaireContacts!!.getContactById(intent_listOfContactSelected[i]))
         }
 
-        multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected, false)
+        //endregion
 
+        //region ================================== ContactListViewAdapter ==================================
+
+        multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected)
         multi_channel_Listview!!.adapter = multi_channel_listViewAdapter
 
+        //endregion
+
+        //region ======================================== Listeners =========================================
 
         multi_channel_SendMessageButton!!.setOnClickListener {
-            var isTrue = false
+            var sendValidate = false
+            var sendValidateWithDelay = false
             if (multi_channel_SendMessageEditText!!.text.toString() != "") {
                 if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
                     if (checkPermission(Manifest.permission.SEND_SMS)) {
                         multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
-                        isTrue = true
+                        sendValidate = true
                     } else {
                         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
-                        Toast.makeText(this, "No Permission", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.multi_channel_no_permission), Toast.LENGTH_SHORT).show()
+
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+                            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
+                            } else {
+                                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
+                            }
+                        }
                     }
                 }
 
                 if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
                     multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
-                    isTrue = true
+                    sendValidate = false
+                    sendValidateWithDelay = true
                 }
 
-                if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
-                    Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
-                    isTrue = false
+                if (multi_channel_listViewAdapter!!.listOfMailSelected.size == 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
+                    Toast.makeText(this, getString(R.string.multi_channel_list_of_channel_selected_empty), Toast.LENGTH_SHORT).show()
+                    sendValidate = false
                 }
 
-                if (isTrue) {
+                if (sendValidate) {
                     refreshActivity()
+                } else if (sendValidateWithDelay) {
+                    refreshActivityWithDelay()
                 }
+                hideKeyboard()
             } else {
-                Toast.makeText(this, "Votre message ne doit pas être vide", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.multi_channel_empty_field), Toast.LENGTH_SHORT).show()
+                hideKeyboard()
             }
         }
+
+        //endregion
     }
 
     //region ======================================= Functions ==============================================
 
     private fun refreshActivity() {
-        multi_channel_SendMessageEditText!!.text!!.clear()
-        multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected, true)
-        multi_channel_Listview!!.adapter = multi_channel_listViewAdapter
+        startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        finish()
+    }
+
+    private fun refreshActivityWithDelay() {
+        Handler().postDelayed({
+            startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            finish()
+        }, SPLASH_DISPLAY_LENGHT.toLong())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java))
+                startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 finish()
             }
         }
@@ -159,40 +183,33 @@ class MultiChannelActivity : AppCompatActivity() {
     }
 
     private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
-//        var numbers = "" + listOfPhoneNumber[0]
         for (i in 0 until listOfPhoneNumber.size) {
             val smsManager = SmsManager.getDefault()
             smsManager.sendTextMessage(listOfPhoneNumber[i], null, msg, null, null)
         }
-        Toast.makeText(applicationContext, "Message Sent",
+        Toast.makeText(applicationContext, getString(R.string.multi_channel_message_sent),
                 Toast.LENGTH_LONG).show()
     }
 
     private fun multiChannelMailClick(listOfMail: ArrayList<String>, msg: String) {
-
-//        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
-//        val emailIntent = Intent(Intent.ACTION_SEND)
-//
-//        emailIntent.type = "text/plain"
-//        emailIntent.putExtra(Intent.EXTRA_EMAIL, contact)
-//        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
-//        emailIntent.putExtra(Intent.EXTRA_TEXT, msg)
-//
-//        try {
-//            startActivity(Intent.createChooser(emailIntent, "Send email using..."))
-//        } catch (ex: ActivityNotFoundException) {
-//            Toast.makeText(this, "No email clients installed.", Toast.LENGTH_SHORT).show()
-//        }
-
         val intent = Intent(Intent.ACTION_SEND)
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         intent.putExtra(Intent.EXTRA_EMAIL, contact)
         intent.data = Uri.parse("mailto:")
         intent.type = "text/plain"
-        //  intent.putExtra(Intent.EXTRA_SUBJECT, "Send from Knocker")
         intent.putExtra(Intent.EXTRA_TEXT, msg)
 
         startActivity(intent)
+    }
+
+    private fun hideKeyboard() {
+        // Check if no view has focus:
+        val view = this.currentFocus
+
+        view?.let { v ->
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
     }
 
     /*private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {

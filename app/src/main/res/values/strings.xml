@@ -342,6 +342,10 @@
     <!-- region Multi Channel -->
 
     <string name="multi_channel_empty_field">Your message cannot be empty</string>
+    <string name="multi_channel_no_permission">You have not the permission to send SMS</string>
+    <string name="multi_channel_empty_field">Your messaging field can not be empty</string>
+    <string name="multi_channel_list_of_channel_selected_empty">You have chosen no channel of communication</string>
+    <string name="multi_channel_message_sent">Message Sent</string>
 
     <!-- endregion -->
 
@@ -368,30 +372,38 @@
     <!--endregion -->
 
     <!-- region delete contact to group-->
-    <string name="delete_contact_0_contact">You will not remove any contact</string>
-    <string name="delete_contact">You are about to remove %1s from this group</string>
-    <string name="delete_contact_title">Contact removed</string>
+    <string name="delete_contact_0_contact">to Translate</string>
+    <string name="delete_contact">you will delete%1sfrom this group</string>
+    <string name="delete_contact_title">delete contact</string>
     <string name="delete_contact_cancel">Cancel</string>
     <!-- endregion-->
     <!-- region delete contact to group-->
-    <string name="compose_message_toast_send">Message sent</string>
+
+    <string name="compose_message_toast_send">Message send</string>
     <string name="compose_message_toast_permission_denied">Permission denied</string>
     <string name="compose_message_toast_miss_phone">Enter a message and a phone number</string>
+
     <!-- endregion -->
 
     <!-- region multiSelect -->
-    <string name="multi_select_contact">Contact :</string>
-    <string name="multi_select_contacts">Contacts :</string>
+
+    <string name="multi_select_contact">contact</string>
+    <string name="multi_select_contacts">contacts</string>
+
     <!-- endregion-->
 
     <!-- region notifAdapter-->
-    <string name="notif_adapter">Your message cannot be empty</string>
+
+    <string name="notif_adapter">Your message need to not be empty</string>
     <string name="notif_adapter_message_sent">Message sent</string>
+
     <!-- endregion-->
 
     <!-- region addNewGroup -->
-    <string name="add_new_contact_toast_group_name">You must chose a name for the group</string>
-    <string name="add_new_contact_toast_nb_contact">You must select at least 1 contact</string>
+
+    <string name="add_new_contact_toast_group_name">You need to choose a group name</string>
+    <string name="add_new_contact_toast_nb_contact">You need to select minimum one contact </string>
     <string name="add_new_contact_hint_nom_group">Group name</string>
+
     <!-- endregion -->
 </resources>

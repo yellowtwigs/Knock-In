@@ -35,11 +35,9 @@ public class ContactListViewAdapter extends BaseAdapter {
     private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<>();
     private ArrayList<String> listOfNumberSelected = new ArrayList<>();
     private ArrayList<String> listOfMailSelected = new ArrayList<>();
-    private Boolean messageSend;
 
-    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts, boolean messageSend) {
+    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts) {
         this.listContacts = listContacts;
-        this.messageSend = messageSend;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -88,47 +86,39 @@ public class ContactListViewAdapter extends BaseAdapter {
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
 
-        if (contactName.length() > 15) {
-
-            Spannable spanFistName = new SpannableString(contactName);
-            spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(spanFistName);
-
-            contactName = contact.getFirstName() + " " + contact.getLastName();
-            contactName = contactName.substring(0, 15) + "..";
-        }
+//        if (contactName.length() > 15) {
+//
+//            Spannable spanFistName = new SpannableString(contactName);
+//            spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            holder.contactFirstNameView.setText(spanFistName);
+//
+//            contactName = contact.getFirstName() + " " + contact.getLastName();
+//            contactName = contactName.substring(0, 15) + "..";
+//        }
 
         holder.contactFirstNameView.setText(contactName);
 
-        if (messageSend) {
-            holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
-            holder.mailCl.setImageResource(R.drawable.ic_email);
-        }
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == holder.smsCl.getId()) {
-                    if (listItemChannelSelected.contains(holder.smsCl)) {
-                        listItemChannelSelected.remove(holder.smsCl);
-                        holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
-                        listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
-                    } else {
-                        listItemChannelSelected.add(holder.smsCl);
-                        holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
-                        listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
-                    }
+        View.OnClickListener listener = v -> {
+            if (v.getId() == holder.smsCl.getId()) {
+                if (listItemChannelSelected.contains(holder.smsCl)) {
+                    listItemChannelSelected.remove(holder.smsCl);
+                    holder.smsCl.setImageResource(R.drawable.ic_circular_gmail);
+                    listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
+                } else {
+                    listItemChannelSelected.add(holder.smsCl);
+                    holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
+                    listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
                 }
-                if (v.getId() == holder.mailCl.getId()) {
-                    if (listItemChannelSelected.contains(holder.mailCl)) {
-                        listItemChannelSelected.remove(holder.mailCl);
-                        holder.mailCl.setImageResource(R.drawable.ic_email);
-                        listOfMailSelected.remove(listContacts.get(position).getFirstMail());
-                    } else {
-                        listItemChannelSelected.add(holder.mailCl);
-                        holder.mailCl.setImageResource(R.drawable.ic_contact_selected);
-                        listOfMailSelected.add(listContacts.get(position).getFirstMail());
-                    }
+            }
+            if (v.getId() == holder.mailCl.getId()) {
+                if (listItemChannelSelected.contains(holder.mailCl)) {
+                    listItemChannelSelected.remove(holder.mailCl);
+                    holder.mailCl.setImageResource(R.drawable.ic_circular_gmail);
+                    listOfMailSelected.remove(listContacts.get(position).getFirstMail());
+                } else {
+                    listItemChannelSelected.add(holder.mailCl);
+                    holder.mailCl.setImageResource(R.drawable.ic_contact_selected);
+                    listOfMailSelected.add(listContacts.get(position).getFirstMail());
                 }
             }
         };
