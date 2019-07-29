@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_margin="5dp"
-        android:background="#ecede6"
+        android:background="@drawable/custom_shape_layout_notif_adapter"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,27 +81,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notification_adapter_top_bar" />
 
-        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="15dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:visibility="visible"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content">-->
-
-        <!--<androidx.appcompat.widget.AppCompatEditText-->
-        <!--android:id="@+id/notification_adapter_message_to_send"-->
-        <!--android:layout_width="220dp"-->
-        <!--android:layout_height="35dp"-->
-        <!--android:layout_margin="15dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:background="@drawable/layout_rounded_form"-->
-
-
         <EditText
             android:id="@+id/notification_adapter_message_to_send"
             android:layout_width="220dp"
@@ -111,6 +90,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/layout_rounded_form"
             android:inputType="textShortMessage"
+            android:hint="@string/notif_adapter_edit_text_hint"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="@color/textColorDark"
@@ -118,42 +98,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <RelativeLayout
             android:id="@+id/notification_adapter_send"
-            android:layout_width="30dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="10dp"
+            android:background="@drawable/selector_relative_layout"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_right_arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/notification_adapter_message_to_send"
-            app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content" />
-        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:inputType="textShortMessage"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_right_arrow" />
+        </RelativeLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

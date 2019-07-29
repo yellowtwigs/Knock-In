@@ -139,7 +139,6 @@ class MultiChannelActivity : AppCompatActivity() {
 
         //endregion
     }
-
     //region ======================================= Functions ==============================================
 
     private fun refreshActivity() {

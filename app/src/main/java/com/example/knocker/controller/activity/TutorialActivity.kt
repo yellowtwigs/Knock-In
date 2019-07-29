@@ -38,6 +38,7 @@ class TutorialActivity : AppCompatActivity() {
 
         tutorial_ListOfTutorialVideo.add(Uri.parse("android.resource://" + (packageName + "/" + R.raw.monochannel_sms)))
         tutorial_ListOfTutorialVideo.add(Uri.parse("android.resource://" + (packageName + "/" + R.raw.multichannel_sms)))
+        tutorial_ListOfTutorialVideo.add(Uri.parse("android.resource://" + (packageName + "/" + R.raw.tutorial_priority)))
 
         //endregion
 

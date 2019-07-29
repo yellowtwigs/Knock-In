@@ -323,6 +323,12 @@
 
     <!-- endregion -->
 
+    <!-- region NotifAdapter -->
+
+    <string name="notif_adapter_edit_text_hint">Ecrivez votre message</string>
+
+    <!-- endregion -->
+
     <!-- region alert Dialog button !-->
 
     <string name="alert_dialog_yes">Oui</string>

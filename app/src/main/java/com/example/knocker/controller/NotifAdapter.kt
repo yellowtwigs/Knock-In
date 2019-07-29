@@ -1,7 +1,9 @@
 package com.example.knocker.controller
 
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -18,6 +20,8 @@ import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.example.knocker.R
 import com.example.knocker.model.ContactList
@@ -40,6 +44,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private val GMAIL_PACKAGE = "com.google.android.gm"
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
     private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+
+    private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
+    private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
 
     override fun getCount(): Int {
         return notifications.size
@@ -75,7 +82,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
-        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as AppCompatImageView
+        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as RelativeLayout
         val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as EditText
 
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
@@ -160,8 +167,20 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     "Gmail" -> {
                     }
                     "Message" -> {
-                        sendMessageWithAndroidMessage(contact!!.getFirstPhoneNumber(), editText.text.toString())
-                        closeNotification()
+                        if (checkPermission(Manifest.permission.SEND_SMS)) {
+                            sendMessageWithAndroidMessage(contact!!.getFirstPhoneNumber(), editText.text.toString())
+                            closeNotification()
+                        } else {
+                            ActivityCompat.requestPermissions(Activity(), arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
+                            Toast.makeText(context, context.getString(R.string.multi_channel_no_permission), Toast.LENGTH_SHORT).show()
+
+                            if (ContextCompat.checkSelfPermission(Activity(), Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(Activity(), Manifest.permission.RECEIVE_SMS)) {
+                                } else {
+                                    ActivityCompat.requestPermissions(Activity(), arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -276,6 +295,23 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         Toast.makeText(context, R.string.notif_adapter_message_sent,
                 Toast.LENGTH_LONG).show()
     }
+
+    private fun checkPermission(permission: String): Boolean {
+        val checkPermission = ContextCompat.checkSelfPermission(context, permission)
+        return checkPermission == PackageManager.PERMISSION_GRANTED
+    }
+
+//    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+//        when (requestCode) {
+//            SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            }
+//            MY_PERMISSIONS_REQUEST_RECEIVE_SMS -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                Toast.makeText(context, "Thank You for permitting !", Toast.LENGTH_SHORT).show()
+//            } else {
+//                Toast.makeText(context, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
     private fun converter06To33(phoneNumber: String): String {
         return if (phoneNumber[0].toString() == "0") {
