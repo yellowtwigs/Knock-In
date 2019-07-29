@@ -1079,8 +1079,7 @@ class GroupActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.alert_dialog_no, null)
                 .setPositiveButton(R.string.alert_dialog_yes
                 ) { _, _ ->
-                    var nameGroup = ""
-                    nameGroup = if (editText.text.isNotEmpty()) {
+                    val nameGroup = if (editText.text.isNotEmpty()) {
                         editText.text.toString()
                     } else {
                         editText.hint.toString()

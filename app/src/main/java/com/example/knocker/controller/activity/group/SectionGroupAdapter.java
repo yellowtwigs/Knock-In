@@ -139,20 +139,19 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Drawable roundedLayout = mContext.getDrawable(R.drawable.rounded_button_color_grey);
             ContactsRoomDatabase contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(mContext);
             //DbWorkerThread main_mDbWorkerThread;
+            assert roundedLayout != null;
+            assert contactsDatabase != null;
             roundedLayout.setColorFilter(contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).randomColorGroup(mContext), PorterDuff.Mode.MULTIPLY);
             ((SectionViewHolder) sectionViewHolder).holderName.setBackground(roundedLayout);
-            ((SectionViewHolder) sectionViewHolder).gmailIV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int i = position + 1;
-                    ArrayList<String> groupMail = new ArrayList<>();
-                    while (!isSectionHeaderPosition(i) && i < getItemCount()) {
-                        ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i));
-                        groupMail.add(contact.getFirstMail());
-                        i++;
-                    }
-                    monoChannelMailClick(groupMail);
+            ((SectionViewHolder) sectionViewHolder).gmailIV.setOnClickListener(v -> {
+                int i1 = position + 1;
+                ArrayList<String> groupMail = new ArrayList<>();
+                while (!isSectionHeaderPosition(i1) && i1 < getItemCount()) {
+                    ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i1));
+                    groupMail.add(contact.getFirstMail());
+                    i1++;
                 }
+                monoChannelMailClick(groupMail);
             });
             ((SectionViewHolder) sectionViewHolder).smsIV.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -205,7 +204,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
                                     contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
                                     if (mContext instanceof GroupManagerActivity)
-                                        ((GroupManagerActivity)mContext).refreshList();
+                                        ((GroupManagerActivity) mContext).refreshList();
                                     break;
                                 default:
                                     System.out.println("always in default");

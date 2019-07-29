@@ -22,7 +22,7 @@ data class GroupDB(
          * Image du groupe convertis en base 64.
          */
         @ColumnInfo(name = "profile_picture_str") val profilePicture: String        //image de profile du groupe
-){
+) {
     fun randomColorGroup(context: Context): Int {
         when (this.id!!.toInt() % 5) {
             0 -> {

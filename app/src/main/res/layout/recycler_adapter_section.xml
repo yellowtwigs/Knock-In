@@ -10,8 +10,8 @@
         android:id="@+id/recycler_group_name_relative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_button_color_grey"
         android:layout_marginStart="8dp"
+        android:background="@drawable/rounded_button_color_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,12 +20,12 @@
             android:id="@+id/section_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:layout_centerInParent="true"
+            android:layout_margin="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="test"
-            android:textColor="@color/darkColor"
+            android:textColor="@color/lightColor"
             android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>

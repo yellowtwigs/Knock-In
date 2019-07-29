@@ -780,19 +780,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
-            <!--android:id="@+id/phone_log_incoming_call_button"-->
-            <!--android:layout_width="60dp"-->
-            <!--android:layout_height="60dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginBottom="8dp"-->
-            <!--android:src="@drawable/ic_incoming_call"-->
-            <!--android:tint="@color/lightColor"-->
-            <!--app:backgroundTint="#27b769"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/phone_log_incoming_call_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_incoming_call"
+            android:tint="@color/lightColor"
+            app:backgroundTint="#27b769"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/phone_log_button_close_id"
@@ -808,18 +808,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--android:id="@+id/phone_log_button_open_id"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_above="@+id/navigation"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_marginEnd="20dp"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:tint="@color/lightColor"-->
-        <!--android:visibility="gone"-->
-        <!--app:backgroundTint="#27b769"-->
-        <!--app:srcCompat="@drawable/ic_phone_keypad" />-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/phone_log_button_open_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/navigation"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:tint="@color/lightColor"
+        android:visibility="gone"
+        app:backgroundTint="#27b769"
+        app:srcCompat="@drawable/ic_phone_keypad" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
@@ -838,14 +838,14 @@
             app:menu="@menu/main_navigation_view" />
     </RelativeLayout>
 
-    <!--<com.google.android.material.navigation.NavigationView-->
-    <!--android:id="@+id/phone_log_nav_view"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="start"-->
-    <!--android:background="?attr/backgroundColor"-->
-    <!--app:headerLayout="@layout/nav_header_drawer"-->
-    <!--app:itemIconTint="@color/navigation_color"-->
-    <!--app:itemTextColor="@color/navigation_color"-->
-    <!--app:menu="@menu/activity_main_drawer" />-->
+    <com.google.android.material.navigation.NavigationView
+    android:id="@+id/phone_log_nav_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="?attr/backgroundColor"
+    app:headerLayout="@layout/nav_header_drawer"
+    app:itemIconTint="@color/navigation_color"
+    app:itemTextColor="@color/navigation_color"
+    app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>
