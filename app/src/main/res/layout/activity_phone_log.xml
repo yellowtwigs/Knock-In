@@ -256,21 +256,19 @@
 
             <TableRow>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_1"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_1"
@@ -298,23 +296,21 @@
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_1"
                             app:srcCompat="@drawable/ic_voicemail" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_2"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_2"
@@ -344,23 +340,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_2" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_3"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_3"
@@ -391,26 +385,24 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_3" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
             </TableRow>
 
             <TableRow>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_4"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_4"
@@ -441,23 +433,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_4" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_5"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_5"
@@ -488,23 +478,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_5" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_6"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_6"
@@ -535,16 +523,17 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_6" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
             </TableRow>
 
             <TableRow>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_7"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -553,10 +542,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_7"
@@ -587,23 +573,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_7" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_8"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_8"
@@ -634,24 +618,22 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_8" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_9"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_9"
@@ -682,7 +664,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_9" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
             </TableRow>
 
@@ -706,22 +688,19 @@
                         android:textSize="25sp" />
                 </RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:id="@+id/phone_log_call_keyboard_0"
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:layout_alignParentTop="true"
+                    android:background="@drawable/selector_relative_layout"
                     android:clickable="true"
                     android:focusable="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_centerInParent="true">
 
                         <TextView
                             android:id="@+id/phone_log_tv_0"
@@ -752,7 +731,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_0" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
 
 
                 <RelativeLayout
@@ -801,19 +780,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/phone_log_incoming_call_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_incoming_call"
-                android:tint="@color/lightColor"
-                app:backgroundTint="#27b769"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/phone_log_incoming_call_button"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--android:src="@drawable/ic_incoming_call"-->
+            <!--android:tint="@color/lightColor"-->
+            <!--app:backgroundTint="#27b769"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent" />-->
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/phone_log_button_close_id"
@@ -829,18 +808,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/phone_log_button_open_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/navigation"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:tint="@color/lightColor"
-            android:visibility="gone"
-            app:backgroundTint="#27b769"
-            app:srcCompat="@drawable/ic_phone_keypad" />
+        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--android:id="@+id/phone_log_button_open_id"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@+id/navigation"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_marginEnd="20dp"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:tint="@color/lightColor"-->
+        <!--android:visibility="gone"-->
+        <!--app:backgroundTint="#27b769"-->
+        <!--app:srcCompat="@drawable/ic_phone_keypad" />-->
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
@@ -859,14 +838,14 @@
             app:menu="@menu/main_navigation_view" />
     </RelativeLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/phone_log_nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="?attr/backgroundColor"
-        app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/navigation_color"
-        app:itemTextColor="@color/navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+    <!--<com.google.android.material.navigation.NavigationView-->
+    <!--android:id="@+id/phone_log_nav_view"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="start"-->
+    <!--android:background="?attr/backgroundColor"-->
+    <!--app:headerLayout="@layout/nav_header_drawer"-->
+    <!--app:itemIconTint="@color/navigation_color"-->
+    <!--app:itemTextColor="@color/navigation_color"-->
+    <!--app:menu="@menu/activity_main_drawer" />-->
 </androidx.drawerlayout.widget.DrawerLayout>

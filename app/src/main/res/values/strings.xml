@@ -71,7 +71,7 @@
     <string name="main_toast_multi_select_deactived">Diasable Multi-Select mode</string>
 
     <string name="main_alert_dialog_group_title">Group creation</string>
-    <string name="main_alert_dialog_group_subtitle">Chose a name for your group</string>
+    <string name="main_alert_dialog_group_subtitle">Choose a name for your group</string>
     <string name="main_edited_contact">Modified contact</string>
     <string name="main_content_edited_contact">The contact </string>
     <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knocker one?</string>

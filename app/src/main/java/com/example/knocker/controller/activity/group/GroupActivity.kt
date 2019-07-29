@@ -1074,6 +1074,7 @@ class GroupActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.main_alert_dialog_group_title)
                 .setMessage(R.string.main_alert_dialog_group_subtitle)
+                .setBackground(getDrawable(R.color.backgroundColor))
                 .setView(editText)
                 .setNegativeButton(R.string.alert_dialog_no, null)
                 .setPositiveButton(R.string.alert_dialog_yes

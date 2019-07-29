@@ -84,9 +84,9 @@ class ManageNotificationActivity : AppCompatActivity() {
         //region ======================================= DrawerLayout =======================================
 
         // Drawerlayout
-        drawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.drawer_layout_manage_notif)
 
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val navigationView = findViewById<NavigationView>(R.id.nav_view_manage_notif)
         val menu = navigationView.menu
         val nav_item = menu.findItem(R.id.nav_notif_config)
         nav_item.isChecked = true
@@ -112,7 +112,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 R.id.nav_help -> startActivity(Intent(this@ManageNotificationActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_manage_notif)
             drawer.closeDrawer(GravityCompat.START)
             true
         }
