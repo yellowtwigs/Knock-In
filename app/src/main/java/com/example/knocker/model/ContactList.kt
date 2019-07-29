@@ -22,6 +22,7 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+
 /**
  * La Classe qui contient toute les fonctions qui touche à la synchronisation des contacts, les filtre et searchbar
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
@@ -134,29 +135,29 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         contacts = listChangement
     }
 
-    fun sortContactByGroup(){
+    fun sortContactByGroup() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
         val result = executorService.submit(callDb)
         val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
-        val listTmp:ArrayList<ContactWithAllInformation> = ArrayList()
+        val listTmp: ArrayList<ContactWithAllInformation> = ArrayList()
         //listTmp.addAll(listChangement)
-        for(i in listChangement){
-            if(i.getFirstGroup(context)==null){
+        for (i in listChangement) {
+            if (i.getFirstGroup(context) == null) {
                 listTmp.add(i)
             }
         }
-        val listOfContactWithGroup:ArrayList<ContactWithAllInformation> = ArrayList()
+        val listOfContactWithGroup: ArrayList<ContactWithAllInformation> = ArrayList()
         listOfContactWithGroup.addAll(listChangement)
         listOfContactWithGroup.removeAll(listTmp)
-        listOfContactWithGroup.sortBy{it.getFirstGroup(context)?.name?.toUpperCase()}//selector(listChangement.get(i))}
+        listOfContactWithGroup.sortBy { it.getFirstGroup(context)?.name?.toUpperCase() }//selector(listChangement.get(i))}
         listChangement.removeAll(listOfContactWithGroup)
         println("------------------------list group 2:--------------------------------------------------------------")
         for (i in listOfContactWithGroup)
-            println("contact "+i.contactDB)
-        listChangement.addAll(0,listOfContactWithGroup)
-        contacts=listChangement
+            println("contact " + i.contactDB)
+        listChangement.addAll(0, listOfContactWithGroup)
+        contacts = listChangement
     }
 
     /*private fun selector(contact:ContactWithAllInformation):GroupDB?=contact.getFirstGroup(this.context)*/
@@ -849,6 +850,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     private fun getContactGroupSync(main_contentResolver: ContentResolver): List<Triple<Int, String?, String?>> {
         val phoneContact = main_contentResolver.query(ContactsContract.Groups.CONTENT_URI, null, null, null, ContactsContract.Groups.TITLE + " ASC")
         var allGroupMembers = listOf<Triple<Int, String?, String?>>()
+        println(phoneContact.columnNames)
         while (phoneContact.moveToNext()) {
             //récupère l'id du groupe
             val groupId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups._ID))
@@ -888,12 +890,14 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     private fun isDuplicateGroup(member: List<Triple<Int, String?, String?>>, groupMembers: List<Triple<Int, String?, String?>>): Boolean {
         groupMembers.forEach {
-        groupMembers.forEachIndexed { index, it ->
-            if (it.third == member[1].third)
-                return true
+            groupMembers.forEachIndexed { index, it ->
+                if (it.third == member[0].third)
+                    return true
+            }
         }
         return false
     }
+
 
     private fun saveGroupsAndLinks(listLinkAndGroup: List<Pair<LinkContactGroup, GroupDB>>) {
         listLinkAndGroup.forEach {
