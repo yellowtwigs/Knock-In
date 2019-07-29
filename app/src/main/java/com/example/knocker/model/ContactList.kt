@@ -336,6 +336,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     //region region ContactSync
 
+    /**
+     * fonction qui permet de vérifier si le numéro de téléphone n'est pas déja enregister.
+     * @param idAndPhoneNumber Map<Int, Any>
+     * @param contactPhoneNumber List<Map<Int, Any>>
+     * @return Boolean
+     */
     private fun isDuplicate(id: Int, contactPhoneNumber: List<Pair<Int, Triple<String, String, String?>>>): Boolean {
         contactPhoneNumber.forEach {
             if (it.first == id)
@@ -344,6 +350,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return false
     }
 
+    /**
+     * fonction qui permet de récuper les noms entier des contacts du carnet Android.
+     * @param main_contentResolver ContentResolver
+     * @return List<Pair<Int, Triple<String, String, String>>>?
+     */
     private fun getStructuredNameSync(main_contentResolver: ContentResolver): List<Pair<Int, Triple<String, String, String>>>? {
         val phoneContactsList = arrayListOf<Pair<Int, Triple<String, String, String>>>()
         var idAndName: Pair<Int, Triple<String, String, String>>
@@ -392,6 +403,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return phoneContactsList
     }
 
+    /**
+     * fonction qui permet de convertir un bitmap en base64.
+     * @param bitmap Bitmap
+     * @return String
+     */
     private fun bitmapToBase64(bitmap: Bitmap): String {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
@@ -400,6 +416,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
+    /**
+     * fonction qui permet de vérifier si le numéro de téléphone n'est pas déja enregister.
+     * @param idAndPhoneNumber Map<Int, Any>
+     * @param contactPhoneNumber List<Map<Int, Any>>
+     * @return Boolean
+     */
     private fun isDuplicateNumber(idAndPhoneNumber: Map<Int, Any>, contactPhoneNumber: List<Map<Int, Any>>): Boolean {
         contactPhoneNumber.forEach {
             if (it[1] == idAndPhoneNumber[1] && it[2].toString().replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString().replace("\\s".toRegex(), "")) {
@@ -410,6 +432,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return false
     }
 
+    /**
+     * fonction qui permet de récuper la photo des contacts du carnet Android.
+     * @param contactId Long
+     * @param main_contentResolver ContentResolver
+     * @return InputStream?
+     */
     private fun openPhoto(contactId: Long, main_contentResolver: ContentResolver): InputStream? {
         //on recupert l'uri du contact grace à l'id du contact
         val contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId)
@@ -432,6 +460,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return null
     }
 
+    /**
+     * fonction qui permet de récuper les emails des contacts du carnet Android.
+     * @param main_contentResolver ContentResolver
+     * @return List<Map<Int, Any>>
+     */
     private fun getContactMailSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactDetails = arrayListOf<Map<Int, Any>>()
         var idAndMail = mapOf<Int, Any>()
@@ -459,6 +492,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return contactDetails
     }
 
+    /**
+     * fonction qui permet de récuper les numéro de téléphone des contacts du carnet Android.
+     * @param main_contentResolver ContentResolver
+     * @return List<Map<Int, Any>>
+     */
     private fun getPhoneNumberSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactPhoneNumber = arrayListOf<Map<Int, Any>>()
         var idAndPhoneNumber = mapOf<Int, Any>()
@@ -496,6 +534,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return contactPhoneNumber
     }
 
+    /**
+     * fonction qui permet de récuper le tag d'un email du carnet de contact Android.
+     * @param intTag Int
+     * @return String
+     */
     private fun assignTagEmail(intTag: Int): String {
         var tag = "other"
         when (intTag) {
@@ -505,6 +548,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return tag
     }
 
+    /**
+     * fonction qui permet de récuper le tag d'un numero de téléphone du carnet de contact Android.
+     * @param intTag Int
+     * @return String
+     */
     private fun assignTagNumber(intTag: Int): String {
         var tag = "other"
         when (intTag) {
@@ -515,6 +563,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return tag
     }
 
+    /**
+     * fonction qui permet de donner un avatar de façon random à un contact ou de recupérer son avatar à l'aide d'un nombre .
+     * @param avatarId Int
+     * @param createOrGet String
+     * @return Int
+     */
     fun randomDefaultImage(avatarId: Int, createOrGet: String): Int {
         if (createOrGet == "Create") {
             return kotlin.random.Random.nextInt(0, 7)
@@ -542,6 +596,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return false//TODO
     }
 
+    /**
+     * fonction qui permet de deserializer les contacts de la dernière sync.
+     * @param lastSync String
+     * @return List<Pair<Int, Int>>
+     */
     fun sliceLastSync(lastSync: String): List<Pair<Int, Int>> {
         val lastSyncList = arrayListOf<Pair<Int, Int>>()
         var AllId: Pair<Int, Int>
@@ -556,6 +615,12 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return lastSyncList
     }
 
+    /**
+     * fonction qui permet de deserializer les contacts de la dernière sync.
+     * @param id Int
+     * @param contactNumberAndPic List<Map<Int, Any>>
+     * @return List<ContactDetailDB>
+     */
     private fun getDetailsById(id: Int, contactNumberAndPic: List<Map<Int, Any>>): List<ContactDetailDB> {
         val contactDetails = arrayListOf<ContactDetailDB>()
         var fieldPosition = 0
@@ -776,6 +841,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return false
     }
 
+    /**
+     * fonction qui permet de récuper les numéro de téléphone des contacts du carnet Android.
+     * @param main_contentResolver ContentResolver
+     * @return List<Triple<Int, String?, String?>>
+     */
     private fun getContactGroupSync(main_contentResolver: ContentResolver): List<Triple<Int, String?, String?>> {
         val phoneContact = main_contentResolver.query(ContactsContract.Groups.CONTENT_URI, null, null, null, ContactsContract.Groups.TITLE + " ASC")
         var allGroupMembers = listOf<Triple<Int, String?, String?>>()
@@ -818,6 +888,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     private fun isDuplicateGroup(member: List<Triple<Int, String?, String?>>, groupMembers: List<Triple<Int, String?, String?>>): Boolean {
         groupMembers.forEach {
+        groupMembers.forEachIndexed { index, it ->
             if (it.third == member[1].third)
                 return true
         }
@@ -839,6 +910,10 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         }
     }
 
+    /**
+     * fonction qui permet de récuper tout les info des contacts du carnet Android.
+     * @param main_contentResolver ContentResolver
+     */
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver) {
         //récupère le prénom et nom complet de tout les contacts
         val phoneStructName = getStructuredNameSync(main_contentResolver)
