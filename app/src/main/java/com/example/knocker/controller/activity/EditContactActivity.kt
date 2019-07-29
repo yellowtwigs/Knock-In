@@ -98,6 +98,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_imgString: String? = null
 
     private var havePhone: Boolean = false
+    private var haveSecondPhone: Boolean = false
     private var haveMail: Boolean = false
 
     private var recyclerGroup: RecyclerView? = null
@@ -210,8 +211,13 @@ class EditContactActivity : AppCompatActivity() {
             val mail = contact.getFirstMail()
             edit_contact_mail = mail
             edit_contact_mail_property = tagMail
+
+            println("fix number egale à " + fixNumber)
             if (phoneNumber != "") {
                 havePhone = true
+            }
+            if (fixNumber != "") {
+                haveSecondPhone = true
             }
             if (mail != "") { ///// havemail toujour false
                 haveMail = true
@@ -476,51 +482,107 @@ class EditContactActivity : AppCompatActivity() {
                     if (edit_contact_FirstName!!.editText!!.toString() != "" || edit_contact_LastName!!.editText!!.toString() != "") {
                         val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString(), this)
                         val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), this)
+
+                        val spinnerFixChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Fix_Property!!.selectedItem.toString(), this)
+
                         var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         val nbDetail = contact!!.contactDetailList!!.size - 1
+                        //   for (i in 0..nbDetail) {
+                        if (havePhone) {
+                            //println("------------il a un numéro ------")
+                            //println("contact content number "+contact.contactDetailList!![i].content)
+                            val firstNumber = contact.getFirstPhoneNumber()
+                            var counter = 0
+                            while (counter < contact.contactDetailList!!.size) {
+                                if (contact.contactDetailList!!.get(counter).content == (firstNumber)) {
+                                    if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
+                                        counter = contact.contactDetailList!!.size
+                                    } else {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, edit_contact_PhoneNumber!!.editText!!.text.toString())
+                                        //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
+                                        counter = contact.contactDetailList!!.size
+                                    }
+                                }
+                                counter++
+                            }
+                            if (!haveMail && edit_contact_Mail!!.editText!!.text.toString() != "") {
+                                //println("------------et à ajouter un mail------")
+                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                            } else {
+                                println("have mail")
+                            }
+                            if (!haveSecondPhone && edit_contact_Mail!!.editText!!.text.toString() != "") {
+                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
+                                edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                            } else {
+                                println("have second phone number")
+                            }
+
+                        } else if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                            //println("------------et à ajouter un numéro------")
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        }
+                        if (haveSecondPhone) {
+                            val SecondNumber = contact.getSecondPhoneNumber(contact.getFirstPhoneNumber())
+                            var counter = 0
+                            while (counter < contact.contactDetailList!!.size) {
+                                if (contact.contactDetailList!!.get(counter).content.equals(SecondNumber)) {
+                                    if (edit_contact_FixNumber!!.editText!!.text.toString() == "") {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
+                                        counter = contact.contactDetailList!!.size
+                                    } else {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, "" + edit_contact_FixNumber!!.editText!!.text)
+                                        //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
+                                        counter = contact.contactDetailList!!.size
+                                    }
+                                }
+                                counter++
+                            }
+
+
+                        } else if (!haveSecondPhone && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        }
+                        if (haveMail) {
+                            val firstMail = contact.getFirstMail()
+                            var counter = 0
+                            while (counter < contact.contactDetailList!!.size) {
+                                if (contact.contactDetailList!!.get(counter).content == firstMail) {
+                                    println("contact content mail" + contact.contactDetailList!!.get(counter).content)
+                                    if (edit_contact_Mail!!.editText!!.text.toString() == "") {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
+                                        counter = contact.contactDetailList!!.size
+                                    } else {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, "" + edit_contact_Mail!!.editText!!.text)
+                                        //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
+                                        counter = contact.contactDetailList!!.size
+                                    }
+                                } else {
+                                    println("contact content mail" + firstMail + "différent de" + contact.contactDetailList!!.get(counter).content + "r")
+                                }
+                                counter++
+                            }
+                        } else if (edit_contact_Mail!!.editText!!.text.toString() != "") {
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        }
+                        // }//TODO change for the listView
                         if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 1)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (nbDetail == -1 && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
                             val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
-                        for (i in 0..nbDetail) {
-                            if (i == 0) {
-                                if (havePhone) {
-                                    //println("------------il a un numéro ------")
-                                    if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition }))[i].id!!)
-                                    } else
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![i].id!!, "" + edit_contact_PhoneNumber!!.editText!!.text)
-                                    //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
-                                    if (!haveMail && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                                        //println("------------et à ajouter un mail------")
-                                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 1)
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                                    }
-                                } else {
-                                    //println("------------il a un seulement un mail ------")
-                                    if (haveMail && edit_contact_Mail!!.editText!!.text.toString() == "")
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition }))[i].id!!)
-                                    else
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![i].id!!, "" + edit_contact_Mail!!.editText!!.text)
-                                    if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                                        //println("------------et à ajouter un numéro------")
-                                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                                    }
-                                }
-                            } else if (i == 1) {
-                                if (edit_contact_Mail!!.editText!!.text.toString() == "") {
-                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.sortedWith(compareBy({ it.fieldPosition }))[i].id!!)
-                                }
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![i].id!!, "" + edit_contact_Mail!!.editText!!.text)
-                            }
-
-                        }//TODO change for the listView
-
+                        if (nbDetail == -1 && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 1)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        }
                         if (edit_contact_imgString != null) {
 
                             //println("edit contact rounded != null "+edit_contact_rounded_image )

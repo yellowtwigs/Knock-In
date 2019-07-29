@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:text="TextView"
-        android:textColor="@color/lightColor"
+        android:textColor="@color/textColorDark"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/notification_alarm_description"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Message"
-        android:textColor="@color/lightColor"
+        android:textColor="@color/textColorDark"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
         app:backgroundTint="#00dd00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_sms_selector" />
+        app:srcCompat="@drawable/ic_send" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/notification_alarm_floating_button_close"

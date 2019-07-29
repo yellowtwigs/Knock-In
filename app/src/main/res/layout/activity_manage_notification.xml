@@ -231,7 +231,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
+<!--
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -242,6 +242,6 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/navigation_color"
         app:itemTextColor="@color/navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer" /> -->
 
 </androidx.drawerlayout.widget.DrawerLayout>

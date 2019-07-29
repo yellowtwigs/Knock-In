@@ -21,7 +21,9 @@
             android:background="?attr/transparentColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/help"
+            app:titleTextColor="?attr/backgroundColor"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/help_activity_tutorial"
