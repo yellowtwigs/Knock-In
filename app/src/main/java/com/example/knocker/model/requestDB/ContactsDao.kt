@@ -67,7 +67,7 @@ interface ContactsDao {
      * @param name String     nom ou prénom du contact
      * @return List&lt[ContactWithAllInformation]&gt
      */
-    @Query("SELECT * FROM contacts_table WHERE instr(lower(first_name), lower(:name)) > 0 OR instr(lower(last_name), lower(:name)) > 0")
+    @Query("SELECT * FROM contacts_table WHERE instr(lower(first_name||' '||last_name), lower(:name)) > 0")
     fun getContactByName(name: String): List<ContactWithAllInformation>
     /**
      * Sauvegarde dans la base de données un [contacts][ContactDB]
