@@ -289,7 +289,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (isNotificationServiceEnabled) {
                 edit.putBoolean("serviceNotif", true)
-                edit.putBoolean("mask_prio_1", true)
+                edit.putBoolean("mask_prio_1", switchMaskNotif!!.isChecked)
                 edit.apply()
 
                 isTrue = true

@@ -18,12 +18,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.example.knocker.R
+import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.StatusBarParcelable
@@ -103,7 +103,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                         context.startActivity(Intent(Intent.ACTION_VIEW,
                                 Uri.parse("http://facebook.com/")))
                     }
-                    closeNotification()
+                    closeNotificationPopup()
                 }
                 "Messenger" -> {
                     try {
@@ -113,7 +113,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/"))
                         context.startActivity(intent)
                     }
-                    closeNotification()
+                    closeNotificationPopup()
                 }
                 "WhatsApp" -> {
                     openWhatsapp(contact!!.getFirstPhoneNumber())
@@ -127,11 +127,11 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                         context.startActivity(Intent(Intent.ACTION_VIEW,
                                 Uri.parse("https://gmail.com/")))
                     }
-                    closeNotification()
+                    closeNotificationPopup()
                 }
                 "Message" -> {
                     openSms(contact!!.getFirstPhoneNumber())
-                    closeNotification()
+                    closeNotificationPopup()
                 }
             }
         }
@@ -162,14 +162,14 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 when (convertPackageToString(sbp.appNotifier!!)) {
                     "WhatsApp" -> {
                         sendMessageWithWhatsapp(contact!!.getFirstPhoneNumber(), editText.text.toString())
-                        closeNotification()
+                        closeNotificationPopup()
                     }
                     "Gmail" -> {
                     }
                     "Message" -> {
                         if (checkPermission(Manifest.permission.SEND_SMS)) {
                             sendMessageWithAndroidMessage(contact!!.getFirstPhoneNumber(), editText.text.toString())
-                            closeNotification()
+                            //closeNotificationPopup()
                         } else {
                             ActivityCompat.requestPermissions(Activity(), arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
                             Toast.makeText(context, context.getString(R.string.multi_channel_no_permission), Toast.LENGTH_SHORT).show()
@@ -183,6 +183,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                         }
                     }
                 }
+                editText.setText("")
+                notifications.removeAt(position)
+                notifyDataSetChanged()
             }
         }
 
@@ -198,7 +201,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             e.printStackTrace()
         }
 
-        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" || sbp.statusBarNotificationInfo["android.largeIcon"]!= null) {//image de l'expediteur provenant l'application source
+        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"]!= null) {//image de l'expediteur provenant l'application source
             println("bitmap :" + sbp.statusBarNotificationInfo["android.largeIcon"]!!)
             val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
             senderImg.setImageBitmap(bitmap)
@@ -210,23 +213,23 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //            when (appName) {
 //                "Facebook" -> {
 //                    ContactGesture.openMessenger("", context)//TODO modifier si modification pour accès au post fb
-//                    closeNotification()
+//                    closeNotificationPopup()
 //                }
 //                "Messenger" -> {
 //                    ContactGesture.openMessenger("", context)
-//                    closeNotification()
+//                    closeNotificationPopup()
 //                }
 //                "WhatsApp" -> {
 //                    notification_adapeter_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
-//                    closeNotification()
+//                    closeNotificationPopup()
 //                }
 //                "Gmail" -> {
 //                    ContactGesture.openGmail(context)
-//                    closeNotification()
+//                    closeNotificationPopup()
 //                }
 //                "Message" -> {
 //                    openSms(sbp)
-//                    closeNotification()
+//                    closeNotificationPopup()
 //                }
 //            }
 //        }
@@ -273,6 +276,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
 
         val intent = Intent(Intent.ACTION_VIEW)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         val message = "phone=" + converter06To33(phoneNumber)
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
 
@@ -322,7 +326,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         }
     }
 
-    private fun closeNotification() {
+    private fun closeNotificationPopup() {
         windowManager.removeView(view)
         val sharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
