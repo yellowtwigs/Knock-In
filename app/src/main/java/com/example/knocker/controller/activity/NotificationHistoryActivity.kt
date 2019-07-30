@@ -440,6 +440,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
             }else{
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
+                println("notification list after request"+notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
             }
             val listTmp = mutableListOf<NotificationDB>()
             listTmp.addAll(notification_history_ListOfNotificationDB)
