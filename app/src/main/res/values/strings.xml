@@ -346,7 +346,6 @@
     <!-- endregion !-->
 
     <!-- region Multi Channel -->
-
     <string name="multi_channel_no_permission">You have not the permission to send SMS</string>
     <string name="multi_channel_empty_field">Your messaging field can not be empty</string>
     <string name="multi_channel_list_of_channel_selected_empty">You have chosen no channel of communication</string>
