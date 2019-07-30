@@ -21,6 +21,7 @@ import com.example.knocker.model.ModelDB.NotificationDB
 import java.util.*
 import kotlin.collections.ArrayList
 import android.util.DisplayMetrics
+import com.example.knocker.controller.activity.NotificationHistoryActivity
 
 /**
  * Service qui nous permet de traiter les notifications
@@ -97,6 +98,7 @@ class NotificationListener : NotificationListenerService() {
                 if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier != "com.samsung.android.incallui") {
                     if (notification.platform != this.packageName) {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
+
                     }
 
                     if (isPhoneNumber(name)) {
