@@ -198,7 +198,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             e.printStackTrace()
         }
 
-        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "") {//image de l'expediteur provenant l'application source
+        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" || sbp.statusBarNotificationInfo["android.largeIcon"]!= null) {//image de l'expediteur provenant l'application source
             println("bitmap :" + sbp.statusBarNotificationInfo["android.largeIcon"]!!)
             val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
             senderImg.setImageBitmap(bitmap)
