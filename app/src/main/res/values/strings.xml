@@ -227,6 +227,9 @@
     <string name="notification_manager_horaire"> Select recall daily time to view all your notifications</string>
     <string name="notification_manager_prio_1"> Hide priority 1 notifications</string>
     <string name="notification_reminder">Send a reminder to view all the received notifications</string>
+
+    <string name="notification_alert_dialog_title">Selection of VIP contacts</string>
+    <string name="notification_alert_dialog_message">Do you want to choose your priority contacts?</string>
     <!-- endregion -->
 
     <!-- region Phone Log -->
@@ -311,6 +314,12 @@
     <string name="multi_select_alert_dialog_0_contact">You have selected 0 contact </string>
     <string name="multi_select_validate_selection">\n Do you want to validate your selection?</string>
 
+    <string name="multi_select_contact">Contact :</string>
+    <string name="multi_select_contacts">Contacts :</string>
+
+    <string name="multi_select_validate">Validate</string>
+    <string name="multi_select_skip">Skip</string>
+
     <!-- endregion -->
 
     <!-- endregion  in   -->
@@ -346,6 +355,7 @@
     <!-- endregion !-->
 
     <!-- region Multi Channel -->
+
     <string name="multi_channel_no_permission">You have not the permission to send SMS</string>
     <string name="multi_channel_empty_field">Your messaging field can not be empty</string>
     <string name="multi_channel_list_of_channel_selected_empty">You have chosen no channel of communication</string>
@@ -388,13 +398,6 @@
     <string name="compose_message_toast_miss_phone">Enter a message and a phone number</string>
 
     <!-- endregion -->
-
-    <!-- region multiSelect -->
-
-    <string name="multi_select_contact">contact</string>
-    <string name="multi_select_contacts">contacts</string>
-
-    <!-- endregion-->
 
     <!-- region notifAdapter-->
 

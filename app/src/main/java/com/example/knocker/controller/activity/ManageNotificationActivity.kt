@@ -34,20 +34,20 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    // Show on the Main Layout
     private var drawerLayout: DrawerLayout? = null
-    private var activityVisible:Boolean=false
-    private var switchPopupNotif:Switch?=null
-    private var switchservice:Switch?=null
-    private var switchMaskNotif:Switch?=null
+    private var activityVisible: Boolean = false
+    private var switchPopupNotif: Switch? = null
+    private var switchservice: Switch? = null
+    private var switchMaskNotif: Switch? = null
+    private var isTrue = false
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if(sharedThemePreferences.getBoolean("darkTheme",false)){
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
-        }else{
+        } else {
             setTheme(R.style.AppTheme)
         }
         setContentView(R.layout.activity_manage_notification)
@@ -56,24 +56,25 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
-        switchMaskNotif= this.findViewById<Switch>(R.id.switch_manage_notif_prio_1)
+        switchMaskNotif = this.findViewById<Switch>(R.id.switch_manage_notif_prio_1)
         val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
         switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
         switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
-        switchMaskNotif!!.isChecked = sharedPreferences.getBoolean("mask_prio_1",false)
-        switchReminder.isChecked= sharedPreferences.getBoolean("reminder",true)
-        if(!switchReminder.isChecked){
-            viewHour.isEnabled=false
-            viewHour.background= getDrawable(R.color.greyColor)
+        switchMaskNotif!!.isChecked = sharedPreferences.getBoolean("mask_prio_1", false)
+        switchReminder.isChecked = sharedPreferences.getBoolean("reminder", true)
+        if (!switchReminder.isChecked) {
+            viewHour.isEnabled = false
+            viewHour.background = getDrawable(R.color.greyColor)
         }
         var hour = sharedPreferences.getInt("remindHour", 18)
         var minute = sharedPreferences.getInt("remindMinute", 0)
 
-        remindHour.setText(hourGetstring(hour, minute))
+        remindHour.text = hourGetstring(hour, minute)
         setReminderAlarm(hour, minute)
+
         //region ========================================== Toolbar =========================================
 
         // Toolbar
@@ -87,7 +88,6 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //region ======================================= DrawerLayout =======================================
 
-        // Drawerlayout
         drawerLayout = findViewById(R.id.drawer_layout_manage_notif)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view_manage_notif)
@@ -139,20 +139,20 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-        switchMaskNotif!!.setOnCheckedChangeListener{_,_ ->
-            val edit:SharedPreferences.Editor= sharedPreferences.edit()
-            if (switchMaskNotif!!.isChecked){
+        switchMaskNotif!!.setOnCheckedChangeListener { _, _ ->
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            if (switchMaskNotif!!.isChecked) {
                 /*if (!isNotificationServiceEnabled) {
                    // buildNotificationServiceAlertDialog().show()
                 }else{*/
-                    switchservice!!.setChecked(true)
-                    edit.putBoolean("serviceNotif", true)
-                    edit.putBoolean("mask_prio_1", true)
-                    edit.apply()
+                switchservice!!.setChecked(true)
+                edit.putBoolean("serviceNotif", true)
+                edit.putBoolean("mask_prio_1", true)
+                edit.apply()
                 //}
             } else {
                 edit.putBoolean("mask_prio_1", false)
-                edit.commit()
+                edit.apply()
             }
         }
         switchservice!!.setOnCheckedChangeListener { _, _ ->
@@ -160,7 +160,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             if (switchservice!!.isChecked) {
                 if (!isNotificationServiceEnabled) {
                     buildNotificationServiceAlertDialog().show()
-                }else {
+                } else {
                     edit.putBoolean("serviceNotif", true)
                     edit.apply()
                 }
@@ -174,35 +174,32 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-        switchReminder.setOnCheckedChangeListener{ _, _ ->
-            val edit=sharedPreferences.edit()
-            if(switchReminder.isChecked){
-                edit.putBoolean("reminder",true)
-                viewHour.isEnabled=true
-                if(sharedThemePreferences.getBoolean("darkTheme",false)){
-                    viewHour.background= getDrawable(R.color.backgroundColorDark)
-                }else{
-                    viewHour.background= getDrawable(R.color.backgroundColor)
+        switchReminder.setOnCheckedChangeListener { _, _ ->
+            val edit = sharedPreferences.edit()
+            if (switchReminder.isChecked) {
+                edit.putBoolean("reminder", true)
+                viewHour.isEnabled = true
+                if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+                    viewHour.background = getDrawable(R.color.backgroundColorDark)
+                } else {
+                    viewHour.background = getDrawable(R.color.backgroundColor)
                 }
-            }else{
-                edit.putBoolean("reminder",false)
-                viewHour.isEnabled=false
-                viewHour.background= getDrawable(R.color.greyColor)
+            } else {
+                edit.putBoolean("reminder", false)
+                viewHour.isEnabled = false
+                viewHour.background = getDrawable(R.color.greyColor)
             }
             edit.apply()
         }
 
-
-
-
         viewHour.setOnClickListener {
             val timePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener(
-                    function = { view, h, m ->
+                    function = { _, h, m ->
                         val editor = sharedPreferences.edit()
                         editor.putInt("remindHour", h)
                         editor.putInt("remindMinute", m)
-                        editor.commit()
-                        remindHour.setText(hourGetstring(h, m))
+                        editor.apply()
+                        remindHour.text = hourGetstring(h, m)
                         hour = h
                         minute = m
                         setReminderAlarm(hour, minute)
@@ -255,26 +252,48 @@ class ManageNotificationActivity : AppCompatActivity() {
         return alertDialog
     }
 
+    private fun buildMultiSelectAlertDialog(): androidx.appcompat.app.AlertDialog {
+        val alertDialog = MaterialAlertDialogBuilder(this)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setTitle(getString(R.string.notification_alert_dialog_title))
+                .setMessage(getString(R.string.notification_alert_dialog_message))
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    startActivity(Intent(this@ManageNotificationActivity, MultiSelectActivity::class.java))
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.apply()
+                    closeContextMenu()
+                }
+                .setNegativeButton(R.string.alert_dialog_no)
+                { _, _ ->
+                    closeContextMenu()
+
+                }
+                .show()
+
+
+        return alertDialog
+    }
+
     private fun positiveAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.example.knocker.notificationExemple")
         alertDialog.cancel()
-        val thread =Thread {
+        val thread = Thread {
             activityVisible = false
             while (!isNotificationServiceEnabled && !activityVisible) {
             }
             val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (isNotificationServiceEnabled) {
-                val runnable = Runnable {
-                    switchservice!!.setChecked(true)
-            }
-                runOnUiThread(runnable)
                 edit.putBoolean("serviceNotif", true)
                 edit.putBoolean("mask_prio_1", true)
                 edit.apply()
-            }else{
+
+                isTrue = true
+            } else {
                 val runnable = Runnable {
                     switchMaskNotif!!.setChecked(false)
                     switchPopupNotif!!.setChecked(false)
@@ -291,6 +310,11 @@ class ManageNotificationActivity : AppCompatActivity() {
         switchPopupNotif!!.setChecked(false)
         switchservice!!.setChecked(false)
         alertDialog.cancel()
+    }
+
+    private fun refreshActivity() {
+        startActivity(Intent(this@ManageNotificationActivity, ManageNotificationActivity::class.java))
+        finish()
     }
 
     private val isNotificationServiceEnabled: Boolean
@@ -343,13 +367,14 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     }
 
-    //endregion
-
-
-
     override fun onResume() {
         super.onResume()
         activityVisible = true
+
+        if (isTrue) {
+            buildMultiSelectAlertDialog()
+            isTrue = false
+        }
     }
 
     override fun onPause() {
@@ -361,4 +386,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         super.onStart()
         activityVisible = true
     }
+
+
+    //endregion
 }

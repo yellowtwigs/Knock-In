@@ -610,11 +610,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.main_contact_grid_title)
                         .setMessage(R.string.main_contact_grid_message)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
-                            }
-                        })
+                        .setPositiveButton(android.R.string.yes, (dialog, id) -> context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))))
                         .setNegativeButton(android.R.string.no, null)
                         .show();
             } else {

@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.firstLaunch
+package com.example.knocker.controller.activity
 
 import android.content.Context
 import android.content.Intent
@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.SelectContactAdapter
-import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -39,6 +38,8 @@ class MultiSelectActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi_select)
 
+        overlayAlertDialogPermission()
+
         //region ========================================= Toolbar ==========================================
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -46,6 +47,7 @@ class MultiSelectActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.title = getString(R.string.multi_select_title)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
 
         //endregion
 
@@ -97,12 +99,10 @@ class MultiSelectActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= 23) {
                 while (!Settings.canDrawOverlays(applicationContext) && !activityVisible) {
                 }
-                finish()
                 val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                 edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
                 edit.apply()
-                startActivity(Intent(this@MultiSelectActivity, MultiSelectActivity::class.java))
             }
         }
         thread.start()
@@ -113,10 +113,10 @@ class MultiSelectActivity : AppCompatActivity() {
         alertDialog.cancel()
     }
 
-    private fun overlayAlertDialog(contactList: ArrayList<ContactWithAllInformation>): android.app.AlertDialog {
-        val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Knocker")
+    private fun overlayAlertDialog(contactList: ArrayList<ContactWithAllInformation>): MaterialAlertDialogBuilder {
+
         var message = ""
+
         if (contactList.size == 0) {
             message = applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
         } else if (contactList.size == 1) {
@@ -131,19 +131,21 @@ class MultiSelectActivity : AppCompatActivity() {
                 message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
             }
         }
-        alertDialogBuilder.setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
-        alertDialogBuilder.setPositiveButton(R.string.alert_dialog_yes
-        ) { _, _ ->
-            val gestionnaireContact = ContactList(contactList, this)
-            if (contactList.isNotEmpty()) {
-                gestionnaireContact.setToContactInListPriority2()
-            }
-            startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
-        }
-        alertDialogBuilder.setNegativeButton(R.string.alert_dialog_no
-        ) { _, _ ->
-        }
-        return alertDialogBuilder.create()
+
+        return MaterialAlertDialogBuilder(this)
+                .setTitle("Knocker")
+                .setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    val gestionnaireContact = ContactList(contactList, this)
+                    if (contactList.isNotEmpty()) {
+                        gestionnaireContact.setToContactInListPriority2()
+                    }
+                    startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
+                    finish()
+                }
+                .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -154,10 +156,13 @@ class MultiSelectActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            android.R.id.home -> {
+                startActivity(Intent(this@MultiSelectActivity, ManageNotificationActivity::class.java))
+                finish()
+            }
             R.id.nav_validate -> {
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (!Settings.canDrawOverlays(applicationContext)) {
-                        overlayAlertDialogPermission().show()
                     } else {
                         val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
                         val edit: SharedPreferences.Editor = sharedPreferences.edit()

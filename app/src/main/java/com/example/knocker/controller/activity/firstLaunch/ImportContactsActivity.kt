@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.controller.activity.TutorialActivity
+import com.example.knocker.controller.activity.MultiSelectActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.DbWorkerThread
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class ImportContactsActivity : AppCompatActivity() {
@@ -41,7 +43,7 @@ class ImportContactsActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_READ_CONTACT)
         }
         import_contacts_not_accept_button!!.setOnClickListener {
-            overlayAlertDialog().show()
+            overlayAlertDialog()!!.show()
         }
     }
 
@@ -57,30 +59,32 @@ class ImportContactsActivity : AppCompatActivity() {
                 main_loadingPanel!!.visibility = View.VISIBLE
                 val sync = Runnable {
                     ContactList(this).getAllContacsInfoSync(contentResolver)
-                    val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
-                    intent.putExtra("fromImportContact", true)
-                    startActivity(intent)
-                    finish()
+                    intentToMain()
                 }
                 main_mDbWorkerThread.postTask(sync)
             } else {
-                overlayAlertDialog().show()
+                overlayAlertDialog()!!.show()
             }
         }
     }
 
-    private fun overlayAlertDialog(): android.app.AlertDialog {
-        val alertDialogBuilder = android.app.AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle(applicationContext.resources.getString(R.string.app_name))
-        alertDialogBuilder.setMessage(applicationContext.resources.getString(R.string.import_contacts_alert_dialog))
-        alertDialogBuilder.setPositiveButton("ok"
-        ) { _, _ ->
-            val intent = Intent(this@ImportContactsActivity, MultiSelectActivity::class.java)
-            intent.putExtra("fromImportContact", true)
-            startActivity(intent)
-        }
+    fun intentToMain() {
+        val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+        intent.putExtra("fromImportContact", true)
+        startActivity(intent)
+        finish()
+    }
 
-        return alertDialogBuilder.create()
+    private fun overlayAlertDialog(): AlertDialog? {
+
+        return MaterialAlertDialogBuilder(this)
+                .setTitle(applicationContext.resources.getString(R.string.app_name))
+                .setMessage(applicationContext.resources.getString(R.string.import_contacts_alert_dialog))
+                .setPositiveButton("Ok"
+                ) { _, _ ->
+                    intentToMain()
+                }
+                .show()
     }
 
     override fun onBackPressed() {

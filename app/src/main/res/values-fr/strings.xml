@@ -227,6 +227,9 @@
     <string name="notification_manager_horaire">Choisir l\'horaire de rappel des notifications de la journée</string>
     <string name="notification_manager_prio_1">Masquer les notifications standard (priorité 1)</string>
     <string name="notification_reminder">Envoyer un rappel pour regarder les messages traités par knocker</string>
+
+    <string name="notification_alert_dialog_title">Sélection des contacts VIP</string>
+    <string name="notification_alert_dialog_message">Voulez vous choisir vos contacts prioritaires ?</string>
     <!-- endregion -->
 
     <!-- region Phone Log -->
@@ -311,6 +314,12 @@
     <string name="multi_select_alert_dialog_0_contact">Vous avez sélectionné 0 contact </string>
     <string name="multi_select_validate_selection">\n Voulez-vous valider votre sélection ?</string>
 
+    <string name="multi_select_contact">Contact :</string>
+    <string name="multi_select_contacts">Contacts :</string>
+
+    <string name="multi_select_validate">Valider</string>
+    <string name="multi_select_skip">Passer</string>
+
     <!-- endregion -->
 
     <!-- endregion  in   -->
@@ -368,7 +377,7 @@
     <string name="menu_group_delete_contacts">Enlever des contacts du groupe</string>
     <string name="menu_group_delete_group">Supprimer le groupe</string>
 
-    <!--endregion -->
+    <!--region Manage Group -->
 
     <!-- region delete contact to group-->
     <string name="delete_contact_0_contact">Vous n\'allez supprimer aucun contact</string>
@@ -376,25 +385,27 @@
     <string name="delete_contact_title">Suppression de contact</string>
     <string name="delete_contact_cancel">Annuler</string>
     <!-- endregion-->
+
     <!-- region delete contact to group-->
     <string name="compose_message_toast_send">Message envoyé</string>
     <string name="compose_message_toast_permission_denied">Permission refusée</string>
     <string name="compose_message_toast_miss_phone">Entrer un message et un numéro de téléphone</string>
     <!-- endregion -->
 
-    <!-- region multiSelect -->
-    <string name="multi_select_contact">Contact :</string>
-    <string name="multi_select_contacts">Contacts :</string>
-    <!-- endregion-->
-
-    <!-- region notifAdapter-->
-    <string name="notif_adapter">Votre message ne doit pas être vide</string>
-    <string name="notif_adapter_message_sent">Message envoyé</string>
-    <!-- endregion-->
-
     <!-- region addNewGroup -->
     <string name="add_new_contact_toast_group_name">Vous devez choisir un nom pour le groupe</string>
     <string name="add_new_contact_toast_nb_contact">Vous devez sélectionner au minimum 1 contact</string>
     <string name="add_new_contact_hint_nom_group">Nom du groupe</string>
     <!-- endregion -->
+
+    <!--endregion -->
+
+
+    <!--endregion -->
+
+
+    <!-- region notifAdapter-->
+    <string name="notif_adapter">Votre message ne doit pas être vide</string>
+    <string name="notif_adapter_message_sent">Message envoyé</string>
+    <!-- endregion-->
 </resources>

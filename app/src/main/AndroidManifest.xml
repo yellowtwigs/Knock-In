@@ -37,13 +37,8 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.AddNewGroupActivity"></activity>
+        <activity android:name=".controller.activity.AddNewGroupActivity" />
         <activity android:name=".controller.activity.TutorialActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".controller.activity.group.DeleteContactToGroup" />
         <activity android:name=".controller.activity.group.AddContactToGroup" />
@@ -52,8 +47,9 @@
         <activity
             android:name=".controller.activity.NotificationAlarmActivity"
             android:showOnLockScreen="true"
-            android:turnScreenOn="true" />
-        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
+            android:turnScreenOn="true"
+            tools:targetApi="o_mr1" />
+        <activity android:name=".controller.activity.MultiSelectActivity" />
         <activity android:name=".controller.activity.group.GroupManagerActivity" />
         <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
         <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity" />
