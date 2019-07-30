@@ -885,61 +885,93 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.tri_par_nom -> {
                 if (!item.isChecked) {
-                    item.isChecked = true
-                    gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    val len = sharedPreferences.getInt("gridview", 4)
-                    if (len > 1) {
-                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_GridView!!.adapter = gridViewAdapter
-                    } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
+                    main_GridView!!.visibility = View.GONE
+                    main_RecyclerView!!.visibility = View.GONE
+                    main_loadingPanel!!.visibility = View.VISIBLE
+                    val sortByName = Runnable {
+                        gestionnaireContacts!!.sortContactByFirstNameAZ()
+                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                        val len = sharedPreferences.getInt("gridview", 4)
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putString("tri", "nom")
+                        edit.apply()
+                        runOnUiThread {
+                            item.isChecked = true
+                            if (len > 1) {
+                                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_GridView!!.adapter = gridViewAdapter
+                                main_GridView!!.visibility = View.VISIBLE
+                            } else {
+                                recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_RecyclerView!!.adapter = recyclerViewAdapter
+                                recyclerViewAdapter!!.notifyDataSetChanged()
+                                main_RecyclerView!!.visibility = View.VISIBLE
+                            }
+                            main_loadingPanel!!.visibility = View.GONE
+                        }
                     }
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putString("tri", "nom")
-                    edit.apply()
+                    main_mDbWorkerThread.postTask(sortByName)
                 }
             }
             R.id.tri_par_priorite -> {
-                if (!item.isChecked) {
-                    item.isChecked = true
-                    gestionnaireContacts!!.sortContactByPriority()
-                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    val len = sharedPreferences.getInt("gridview", 4)
-                    if (len > 1) {
-                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_GridView!!.adapter = gridViewAdapter
-                    } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
+                main_GridView!!.visibility = View.GONE
+                main_RecyclerView!!.visibility = View.GONE
+                main_loadingPanel!!.visibility = View.VISIBLE
+                val sortByPriority = Runnable {
+                    if (!item.isChecked) {
+                        gestionnaireContacts!!.sortContactByPriority()
+                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                        val len = sharedPreferences.getInt("gridview", 4)
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putString("tri", "priorite")
+                        edit.apply()
+                        runOnUiThread {
+                            item.isChecked = true
+                            if (len > 1) {
+                                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_GridView!!.adapter = gridViewAdapter
+                                main_GridView!!.visibility = View.VISIBLE
+                            } else {
+                                recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_RecyclerView!!.adapter = recyclerViewAdapter
+                                recyclerViewAdapter!!.notifyDataSetChanged()
+                                main_RecyclerView!!.visibility = View.VISIBLE
+                            }
+                            main_loadingPanel!!.visibility = View.GONE
+                        }
                     }
-
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putString("tri", "priorite")
-                    edit.apply()
                 }
+                main_mDbWorkerThread.postTask(sortByPriority)
             }
             R.id.trie_par_lastname -> {
-                if (!item.isChecked) {
-                    item.isChecked = true
-                    gestionnaireContacts!!.sortContactByLastname()
-                    val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    val len = sharedPreferences.getInt("gridview", 4)
-                    if (len > 1) {
-                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_GridView!!.adapter = gridViewAdapter
-                    } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
+                main_GridView!!.visibility = View.GONE
+                main_RecyclerView!!.visibility = View.GONE
+                main_loadingPanel!!.visibility = View.VISIBLE
+                val sortByLastname = Runnable {
+                    if (!item.isChecked) {
+                        gestionnaireContacts!!.sortContactByLastname()
+                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                        val len = sharedPreferences.getInt("gridview", 4)
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putString("tri", "lastname")
+                        edit.apply()
+                        runOnUiThread {
+                            item.isChecked = true
+                            if (len > 1) {
+                                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_GridView!!.adapter = gridViewAdapter
+                                main_GridView!!.visibility = View.VISIBLE
+                            } else {
+                                recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_RecyclerView!!.adapter = recyclerViewAdapter
+                                recyclerViewAdapter!!.notifyDataSetChanged()
+                                main_RecyclerView!!.visibility = View.VISIBLE
+                            }
+                            main_loadingPanel!!.visibility = View.GONE
+                        }
                     }
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putString("tri", "lastname")
-                    edit.apply()
                 }
+                main_mDbWorkerThread.postTask(sortByLastname)
             }
         }
         return super.onOptionsItemSelected(item)
