@@ -2,6 +2,7 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -28,6 +29,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
@@ -87,6 +89,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var firstClick: Boolean = true
 
     private val PERMISSION_CALL_RESULT = 1
+
+    private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
+    private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -619,6 +624,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         if (intent != null && intent.getBooleanExtra("fromImportContact", false)) {
             openTutorialForNotif()
+            openAlertDialogRequestSMS()
         }
 
         //endregion
@@ -678,6 +684,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     closeContextMenu()
                 }
                 .show()
+    }
+
+    private fun openAlertDialogRequestSMS() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
+        Toast.makeText(this, getString(R.string.multi_channel_no_permission), Toast.LENGTH_SHORT).show()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
+            }
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -1162,13 +1180,24 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-
-            PERMISSION_CALL_RESULT -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (main_GridView!!.visibility == View.VISIBLE) {
-                    gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
+        if (intent.getBooleanExtra("fromImportContact", false)) {
+            when (requestCode) {
+                SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+                MY_PERMISSIONS_REQUEST_RECEIVE_SMS -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Thank You for permitting !", Toast.LENGTH_SHORT).show()
                 } else {
-                    recyclerViewAdapter!!.callPhone(recyclerViewAdapter!!.phonePermission)
+                    Toast.makeText(this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            when (requestCode) {
+                PERMISSION_CALL_RESULT -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (main_GridView!!.visibility == View.VISIBLE) {
+                        gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
+                    } else {
+                        recyclerViewAdapter!!.callPhone(recyclerViewAdapter!!.phonePermission)
+                    }
                 }
             }
         }

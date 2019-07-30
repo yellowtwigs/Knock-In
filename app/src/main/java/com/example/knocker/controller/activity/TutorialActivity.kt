@@ -86,7 +86,6 @@ class TutorialActivity : YouTubeBaseActivity() {
     }
 
     private fun playVideo(videoId: String, youTubePlayerView: YouTubePlayerView) {
-        //initialize youtube player view
         youTubePlayerView.initialize("YOUR API KEY HERE",
                 object : YouTubePlayer.OnInitializedListener {
                     override fun onInitializationSuccess(provider: YouTubePlayer.Provider,

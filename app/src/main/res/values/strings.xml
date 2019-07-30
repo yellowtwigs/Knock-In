@@ -230,6 +230,7 @@
 
     <string name="notification_alert_dialog_title">Selection of VIP contacts</string>
     <string name="notification_alert_dialog_message">Do you want to choose your priority contacts?</string>
+
     <!-- endregion -->
 
     <!-- region Phone Log -->

@@ -602,8 +602,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_RESULT);
             numberForPermission = phoneNumber;
         } else {
-            //Intent intent=new Intent(Intent.ACTION_CALL);
-            //intent.setData(Uri.parse(getItem(position).getFirstPhoneNumber()));
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
             Boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup && numberForPermission.isEmpty()) {
