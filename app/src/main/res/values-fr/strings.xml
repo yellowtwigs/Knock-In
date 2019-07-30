@@ -215,7 +215,7 @@
     <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
     <string name="manage_my_screen_searchbar_pos">Position de la Barre de recherche</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
-    <string name="manage_my_screen_display_for_group_title">Activer l'affichage différent pour les groupes</string>
+    <string name="manage_my_screen_display_for_group_title">Activer l\'affichage différent pour les groupes</string>
     <string name="manage_my_screen_display_for_group_subtitle">Choix d\'un affichage spécifique pour les groupes </string>
     <!-- endregion -->
 
