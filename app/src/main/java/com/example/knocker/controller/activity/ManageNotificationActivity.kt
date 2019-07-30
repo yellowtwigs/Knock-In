@@ -24,6 +24,7 @@ import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 
 /**
  * La Classe qui permet d'activer ou desactiver les notifications de knocker
@@ -36,6 +37,9 @@ class ManageNotificationActivity : AppCompatActivity() {
     // Show on the Main Layout
     private var drawerLayout: DrawerLayout? = null
     private var activityVisible:Boolean=false
+    private var switchPopupNotif:Switch?=null
+    private var switchservice:Switch?=null
+    private var switchMaskNotif:Switch?=null
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,16 +54,16 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
 
-        val switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
-        val switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
-        val switchMaskNotif= this.findViewById<Switch>(R.id.switch_manage_notif_prio_1)
+        switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
+        switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
+        switchMaskNotif= this.findViewById<Switch>(R.id.switch_manage_notif_prio_1)
         val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
-        switchPopupNotif.isChecked = sharedPreferences.getBoolean("popupNotif", false)
-        switchservice.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
-        switchMaskNotif.isChecked = sharedPreferences.getBoolean("mask_prio_1",false)
+        switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
+        switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
+        switchMaskNotif!!.isChecked = sharedPreferences.getBoolean("mask_prio_1",false)
         switchReminder.isChecked= sharedPreferences.getBoolean("reminder",true)
         if(!switchReminder.isChecked){
             viewHour.isEnabled=false
@@ -119,13 +123,13 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //endregion
 
-        switchPopupNotif.setOnCheckedChangeListener { _, _ ->
+        switchPopupNotif!!.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            if (switchPopupNotif.isChecked) {
-                if (!isNotificationServiceEnabled) {
-                    buildNotificationServiceAlertDialog().show()
-                }
-                switchservice.setChecked(true)
+            if (switchPopupNotif!!.isChecked) {
+                /*if (!isNotificationServiceEnabled) {
+                   // buildNotificationServiceAlertDialog().show()
+                }*/
+                switchservice!!.setChecked(true)
                 edit.putBoolean("serviceNotif", true)
                 edit.putBoolean("popupNotif", true)
                 edit.apply()
@@ -135,41 +139,35 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-        switchMaskNotif.setOnCheckedChangeListener{_,_ ->
+        switchMaskNotif!!.setOnCheckedChangeListener{_,_ ->
             val edit:SharedPreferences.Editor= sharedPreferences.edit()
-            if (switchMaskNotif.isChecked){
-                if (!isNotificationServiceEnabled) {
-                    buildNotificationServiceAlertDialog().show()
-                }else{
-                    switchservice.setChecked(true)
+            if (switchMaskNotif!!.isChecked){
+                /*if (!isNotificationServiceEnabled) {
+                   // buildNotificationServiceAlertDialog().show()
+                }else{*/
+                    switchservice!!.setChecked(true)
                     edit.putBoolean("serviceNotif", true)
                     edit.putBoolean("mask_prio_1", true)
                     edit.apply()
-                }
-                val thread =Thread {
-                   while (!isNotificationServiceEnabled || !activityVisible) {
-                   }
-                    if (!isNotificationServiceEnabled) {
-                        switchservice.setChecked(true)
-                        edit.putBoolean("serviceNotif", true)
-                        edit.putBoolean("mask_prio_1", true)
-                        edit.apply()
-                    }
-                }
+                //}
             } else {
                 edit.putBoolean("mask_prio_1", false)
                 edit.commit()
             }
         }
-        switchservice.setOnCheckedChangeListener { _, _ ->
+        switchservice!!.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            if (switchservice.isChecked) {
-                edit.putBoolean("serviceNotif", true)
-                edit.apply()
+            if (switchservice!!.isChecked) {
+                if (!isNotificationServiceEnabled) {
+                    buildNotificationServiceAlertDialog().show()
+                }else {
+                    edit.putBoolean("serviceNotif", true)
+                    edit.apply()
+                }
             } else {
 
-                switchPopupNotif.setChecked(false)
-                switchMaskNotif.setChecked(false)
+                switchPopupNotif!!.setChecked(false)
+                switchMaskNotif!!.setChecked(false)
                 edit.putBoolean("serviceNotif", false)
                 edit.putBoolean("popupNotif", false)
                 edit.putBoolean("mask_prio_1", false)
@@ -262,9 +260,32 @@ class ManageNotificationActivity : AppCompatActivity() {
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.example.knocker.notificationExemple")
         alertDialog.cancel()
+        val thread =Thread {
+            while (!isNotificationServiceEnabled && !activityVisible) {
+            }
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            if (isNotificationServiceEnabled) {
+                switchservice!!.setChecked(true)
+                edit.putBoolean("serviceNotif", true)
+                edit.putBoolean("mask_prio_1", true)
+                edit.apply()
+            }else{
+                val runnable = Runnable {
+                    switchMaskNotif!!.setChecked(false)
+                    switchPopupNotif!!.setChecked(false)
+                    switchservice!!.setChecked(false)
+                }
+                runOnUiThread(runnable)
+            }
+        }
+        thread.start()
     }
 
     private fun negativeAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
+        switchMaskNotif!!.setChecked(false)
+        switchPopupNotif!!.setChecked(false)
+        switchservice!!.setChecked(false)
         alertDialog.cancel()
     }
 
