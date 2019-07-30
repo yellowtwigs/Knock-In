@@ -261,12 +261,16 @@ class ManageNotificationActivity : AppCompatActivity() {
         intentFilter.addAction("com.example.knocker.notificationExemple")
         alertDialog.cancel()
         val thread =Thread {
+            activityVisible = false
             while (!isNotificationServiceEnabled && !activityVisible) {
             }
             val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (isNotificationServiceEnabled) {
-                switchservice!!.setChecked(true)
+                val runnable = Runnable {
+                    switchservice!!.setChecked(true)
+            }
+                runOnUiThread(runnable)
                 edit.putBoolean("serviceNotif", true)
                 edit.putBoolean("mask_prio_1", true)
                 edit.apply()
