@@ -53,7 +53,7 @@
             android:name=".controller.activity.NotificationAlarmActivity"
             android:showOnLockScreen="true"
             android:turnScreenOn="true" />
-        <activity android:name=".controller.activity.MultiSelectActivity" />
+        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
         <activity android:name=".controller.activity.group.GroupManagerActivity" />
         <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
         <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity" />

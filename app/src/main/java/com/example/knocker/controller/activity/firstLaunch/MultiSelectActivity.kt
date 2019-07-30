@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.example.knocker.controller.activity.firstLaunch
 
 import android.content.Context
 import android.content.Intent
@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.SelectContactAdapter
+import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

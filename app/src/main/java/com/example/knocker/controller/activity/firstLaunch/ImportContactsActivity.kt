@@ -75,7 +75,7 @@ class ImportContactsActivity : AppCompatActivity() {
         alertDialogBuilder.setMessage(applicationContext.resources.getString(R.string.import_contacts_alert_dialog))
         alertDialogBuilder.setPositiveButton("ok"
         ) { _, _ ->
-            val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+            val intent = Intent(this@ImportContactsActivity, MultiSelectActivity::class.java)
             intent.putExtra("fromImportContact", true)
             startActivity(intent)
         }

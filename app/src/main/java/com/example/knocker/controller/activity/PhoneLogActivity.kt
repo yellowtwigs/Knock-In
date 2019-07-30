@@ -60,17 +60,17 @@ class PhoneLogActivity : AppCompatActivity() {
     private var phone_log_ButtonClose: ImageView? = null
 
     // Keyboard Pad
-    private var phone_log_CallKeyboard_1: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_2: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_3: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_4: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_5: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_6: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_7: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_8: ConstraintLayout? = null
-    private var phone_log_CallKeyboard_9: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_1: RelativeLayout? = null
+    private var phone_log_CallKeyboard_2: RelativeLayout? = null
+    private var phone_log_CallKeyboard_3: RelativeLayout? = null
+    private var phone_log_CallKeyboard_4: RelativeLayout? = null
+    private var phone_log_CallKeyboard_5: RelativeLayout? = null
+    private var phone_log_CallKeyboard_6: RelativeLayout? = null
+    private var phone_log_CallKeyboard_7: RelativeLayout? = null
+    private var phone_log_CallKeyboard_8: RelativeLayout? = null
+    private var phone_log_CallKeyboard_9: RelativeLayout? = null
     private var phone_log_CallKeyboard_Star: RelativeLayout? = null
-    private var phone_log_CallKeyboard_0: ConstraintLayout? = null
+    private var phone_log_CallKeyboard_0: RelativeLayout? = null
     private var phone_log_CallKeyboard_Sharp: RelativeLayout? = null
 
     //social network
