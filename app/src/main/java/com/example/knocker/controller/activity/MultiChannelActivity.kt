@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.knocker.R
 import com.example.knocker.controller.ContactListViewAdapter
+import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
@@ -42,7 +43,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
-    private val SPLASH_DISPLAY_LENGHT = 10000
+    private var sendValidate = false
 
     //endregion
 
@@ -94,8 +95,6 @@ class MultiChannelActivity : AppCompatActivity() {
         //region ======================================== Listeners =========================================
 
         multi_channel_SendMessageButton!!.setOnClickListener {
-            var sendValidate = false
-            var sendValidateWithDelay = false
             if (multi_channel_SendMessageEditText!!.text.toString() != "") {
                 if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
                     if (checkPermission(Manifest.permission.SEND_SMS)) {
@@ -116,8 +115,8 @@ class MultiChannelActivity : AppCompatActivity() {
 
                 if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
                     multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
-                    sendValidate = false
-                    sendValidateWithDelay = true
+                    sendValidate = true
+
                 }
 
                 if (multi_channel_listViewAdapter!!.listOfMailSelected.size == 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
@@ -125,11 +124,6 @@ class MultiChannelActivity : AppCompatActivity() {
                     sendValidate = false
                 }
 
-                if (sendValidate) {
-                    refreshActivity()
-                } else if (sendValidateWithDelay) {
-                    refreshActivityWithDelay()
-                }
                 hideKeyboard()
             } else {
                 Toast.makeText(this, getString(R.string.multi_channel_empty_field), Toast.LENGTH_SHORT).show()
@@ -142,15 +136,13 @@ class MultiChannelActivity : AppCompatActivity() {
     //region ======================================= Functions ==============================================
 
     private fun refreshActivity() {
-        startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-        finish()
-    }
-
-    private fun refreshActivityWithDelay() {
-        Handler().postDelayed({
+        if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
             startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             finish()
-        }, SPLASH_DISPLAY_LENGHT.toLong())
+        } else {
+            startActivity(Intent(this@MultiChannelActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            finish()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -209,6 +201,18 @@ class MultiChannelActivity : AppCompatActivity() {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (sendValidate) {
+            refreshActivity()
+        }
+    }
+
+    override fun onBackPressed() {
+        refreshActivity()
     }
 
     /*private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {

@@ -670,17 +670,9 @@ class PhoneLogActivity : AppCompatActivity() {
         if (!TextUtils.isEmpty(phoneNumberEntered)) {
             val dial = "tel:$phoneNumberEntered"
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
-            Toast.makeText(this, R.string.phone_log_toast_number_valid, Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }//pas besoin de vérification du numéro de téléphonne
     }
-
-    /*fun isValidPhone(phone: String): Boolean {
-        val expression = "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})\$"
-        val pattern = Pattern.compile(expression)
-        val matcher = pattern.matcher(phone)
-        return matcher.matches()
-    }*/
     //endregion
 }

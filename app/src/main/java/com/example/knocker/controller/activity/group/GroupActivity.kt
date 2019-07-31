@@ -355,6 +355,35 @@ class GroupActivity : AppCompatActivity() {
 
         //region ======================================== Listeners =========================================
 
+        group_FloatingButtonSend!!.setOnClickListener {
+            val intent = Intent(this@GroupActivity, MultiChannelActivity::class.java)
+            val iterator: IntIterator?
+            val listOfIdContactSelected: ArrayList<Int> = ArrayList()
+
+            if (len > 1) {
+                val adapter: SelectContactAdapter = (group_GridView!!.adapter as SelectContactAdapter)
+                iterator = (0 until adapter.listContactSelect.size).iterator()
+
+                for (i in iterator) {
+                    listOfIdContactSelected.add(adapter.listContactSelect[i].getContactId())
+                }
+                intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+
+                startActivity(intent)
+                finish()
+            } else {
+                iterator = (0 until listOfItemSelected.size).iterator()
+
+                for (i in iterator) {
+                    listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
+                }
+                intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+
+                startActivity(intent)
+                refreshActivity()
+            }
+        }
+
         //Sync contact
         nav_sync_contact.setOnMenuItemClickListener {
             //check les permissions
@@ -1125,8 +1154,22 @@ class GroupActivity : AppCompatActivity() {
         intent.putExtra(Intent.EXTRA_TEXT, "")
         startActivity(intent)
     }
-    //endregion
 
+    private fun refreshActivity() {
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 4)
+        if (len > 1) {
+            gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
+            group_GridView!!.adapter = gridViewAdapter
+        } else {
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
+            group_RecyclerView!!.adapter = recyclerViewAdapter
+        }
+
+        group_MailButton!!.visibility = View.GONE
+        group_SMSButton!!.visibility = View.GONE
+        group_FloatingButtonSend!!.visibility = View.GONE
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -1140,6 +1183,8 @@ class GroupActivity : AppCompatActivity() {
             }
         }
     }
+
+    //endregion
 }
 
 

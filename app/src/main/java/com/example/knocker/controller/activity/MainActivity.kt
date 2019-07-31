@@ -662,7 +662,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val tuto_linear_layout = findViewById<LinearLayout>(R.id.tuto_linear_layout)
         val content_frame = findViewById<LinearLayout>(R.id.content_frame)
         val alert_dialog_tutorial_notification_content = findViewById<VideoView>(R.id.alert_dialog_tutorial_notification_content)
-        val alert_dialog_tutorial_notification_close = findViewById<ImageView>(R.id.alert_dialog_tutorial_notification_close)
+        val alert_dialog_tutorial_notification_close = findViewById<ImageView>(R.id.main_tutorial_close)
 
         MaterialAlertDialogBuilder(this)
                 .setTitle("Tutoriel")

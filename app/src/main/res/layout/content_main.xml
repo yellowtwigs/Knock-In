@@ -135,7 +135,7 @@
                     android:textSize="25sp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/alert_dialog_tutorial_notification_close"
+                    android:id="@+id/main_tutorial_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -156,6 +156,15 @@
             <MediaController
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <!--<com.google.android.youtube.player.YouTubePlayerView-->
+            <!--android:id="@+id/main_tutorial_youtube_player_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_margin="20dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent" />-->
+
         </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
