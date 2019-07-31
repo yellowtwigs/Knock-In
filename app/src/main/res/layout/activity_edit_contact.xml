@@ -110,7 +110,8 @@
                 android:id="@+id/edit_contact_phone_number_spinner_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorSurface">
+                android:background="?attr/colorSurface"
+                android:visibility="gone">
 
                 <Spinner
                     android:id="@+id/edit_contact_phone_number_spinner"
@@ -163,7 +164,8 @@
                 android:id="@+id/edit_contact_phone_number_fix_spinner_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorSurface">
+                android:background="?attr/colorSurface"
+                android:visibility="gone">
 
                 <Spinner
                     android:id="@+id/edit_contact_phone_number_spinner_fix"
@@ -217,7 +219,8 @@
                 android:id="@+id/edit_contact_mail_spinner_id_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorSurface">
+                android:background="?attr/colorSurface"
+                android:visibility="gone">
 
                 <Spinner
                     android:id="@+id/edit_contact_mail_spinner_id"

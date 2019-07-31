@@ -932,11 +932,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
             }
             R.id.tri_par_priorite -> {
-                main_GridView!!.visibility = View.GONE
-                main_RecyclerView!!.visibility = View.GONE
-                main_loadingPanel!!.visibility = View.VISIBLE
-                val sortByPriority = Runnable {
-                    if (!item.isChecked) {
+                if (!item.isChecked) {
+                    main_GridView!!.visibility = View.GONE
+                    main_RecyclerView!!.visibility = View.GONE
+                    main_loadingPanel!!.visibility = View.VISIBLE
+                    val sortByPriority = Runnable {
                         gestionnaireContacts!!.sortContactByPriority()
                         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                         val len = sharedPreferences.getInt("gridview", 4)
@@ -958,15 +958,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             main_loadingPanel!!.visibility = View.GONE
                         }
                     }
+                    main_mDbWorkerThread.postTask(sortByPriority)
                 }
-                main_mDbWorkerThread.postTask(sortByPriority)
             }
             R.id.trie_par_lastname -> {
-                main_GridView!!.visibility = View.GONE
-                main_RecyclerView!!.visibility = View.GONE
-                main_loadingPanel!!.visibility = View.VISIBLE
-                val sortByLastname = Runnable {
-                    if (!item.isChecked) {
+                if (!item.isChecked) {
+                    main_GridView!!.visibility = View.GONE
+                    main_RecyclerView!!.visibility = View.GONE
+                    main_loadingPanel!!.visibility = View.VISIBLE
+                    val sortByLastname = Runnable {
                         gestionnaireContacts!!.sortContactByLastname()
                         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                         val len = sharedPreferences.getInt("gridview", 4)
@@ -988,8 +988,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             main_loadingPanel!!.visibility = View.GONE
                         }
                     }
+                    main_mDbWorkerThread.postTask(sortByLastname)
                 }
-                main_mDbWorkerThread.postTask(sortByLastname)
             }
         }
         return super.onOptionsItemSelected(item)
