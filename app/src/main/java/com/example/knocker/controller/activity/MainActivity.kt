@@ -44,6 +44,8 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
+import com.google.android.youtube.player.YouTubeBaseActivity
+import com.google.android.youtube.player.YouTubePlayerView
 import kotlin.collections.ArrayList
 
 /**
@@ -92,6 +94,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
+
+    private val main_tutorial_YoutubePlayerView: YouTubePlayerView? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -188,6 +192,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
+
+//        main_tutorial_YoutubePlayerView = findViewById(R.id.main_tutorial_youtube_player_view)
 
         //endregion
 
@@ -355,6 +361,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_FloatingButtonSend!!.setOnClickListener {
             val intent = Intent(this@MainActivity, MultiChannelActivity::class.java)
+            intent.putExtra("fromMainToMultiChannel", true)
             val iterator: IntIterator?
             val listOfIdContactSelected: ArrayList<Int> = ArrayList()
 
@@ -377,8 +384,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
                 intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
 
-                startActivity(intent)
                 refreshActivity()
+                startActivity(intent)
+                finish()
             }
         }
 
@@ -647,6 +655,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_MailButton!!.visibility = View.GONE
         main_SMSButton!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.GONE
+        main_SearchBar!!.visibility = View.VISIBLE
     }
 
     private fun openTutorialForNotif() {
@@ -1179,23 +1188,44 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         startActivity(intent)
     }
 
+    //TODO
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
 
-            PERMISSION_CALL_RESULT ->{ if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (main_GridView!!.visibility == View.VISIBLE) {
-                    gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
-                } else {
-                    Toast.makeText(this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
+            PERMISSION_CALL_RESULT -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (main_GridView!!.visibility == View.VISIBLE) {
+                        gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
+                    } else {
+                        Toast.makeText(this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }}
-            99-> if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            }
+            99 -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 println("permission accept")
                 gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
                 recreate()
             }
         }
     }
+
+//    public void playVideo(final String videoId, YouTubePlayerView youTubePlayerView) {
+//        //initialize youtube player view
+//        youTubePlayerView.initialize("YOUR API KEY HERE",
+//                new YouTubePlayer.OnInitializedListener() {
+//                    @Override
+//                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+//                                                        YouTubePlayer youTubePlayer, boolean b) {
+//                        youTubePlayer.cueVideo(videoId);
+//                    }
+//
+//                    @Override
+//                    public void onInitializationFailure(YouTubePlayer.Provider provider,
+//                                                        YouTubeInitializationResult youTubeInitializationResult) {
+//
+//                    }
+//                });
+//    }
 
     //endregion
 }
