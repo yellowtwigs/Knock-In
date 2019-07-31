@@ -173,153 +173,141 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         if (holder.groupWordingTv != null) {
             holder.groupWordingTv.setText(group);
         }
-        View.OnClickListener listener = new View.OnClickListener() {
-            @SuppressLint("IntentReset")
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == holder.smsCl.getId()) {
-
-                    String phone = getItem(holder.position).getFirstPhoneNumber();
-                    Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
-                    context.startActivity(i);
-                }
-                if (v.getId() == holder.callCl.getId()) {
-                    callPhone(getItem(position).getFirstPhoneNumber());
-                }
-                if (v.getId() == holder.whatsappCl.getId()) {
-                    ContactWithAllInformation contactWithAllInformation = getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
-                }
-                if (v.getId() == holder.mailCl.getId()) {
-                    String mail = getItem(position).getFirstMail();
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setData(Uri.parse("mailto:"));
-                    intent.setType("text/html");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "");
-                    intent.putExtra(Intent.EXTRA_TEXT, "");
-                    println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
-                    context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
-                }
-                if (len != 0) {
-                    if (v.getId() == holder.editCl.getId()) {
-                        Intent intent = new Intent(context, EditContactActivity.class);
-                        intent.putExtra("ContactId", contact.getId());
-                        context.startActivity(intent);
-                    }
+        View.OnClickListener listener = v -> {
+            if (v.getId() == holder.smsCl.getId()) {
+                String phone = getItem(position).getFirstPhoneNumber();
+                context.startActivity(new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null)));
+            }
+            if (v.getId() == holder.callCl.getId()) {
+                callPhone(getItem(position).getFirstPhoneNumber());
+            }
+            if (v.getId() == holder.whatsappCl.getId()) {
+                ContactWithAllInformation contactWithAllInformation = getItem(position);
+                ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
+            }
+            if (v.getId() == holder.mailCl.getId()) {
+                String mail = getItem(position).getFirstMail();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("mailto:"));
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "");
+                intent.putExtra(Intent.EXTRA_TEXT, "");
+                println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
+                context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
+            }
+            if (len == 1) {
+                if (v.getId() == holder.editCl.getId()) {
+                    Intent intent = new Intent(context, EditContactActivity.class);
+                    intent.putExtra("ContactId", contact.getId());
+                    context.startActivity(intent);
                 }
             }
         };
 
-        View.OnLongClickListener longClick = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (!modeMultiSelect) {
-                    view.setTag(holder);
-                    ContactDB contact = gestionnaireContacts.getContacts().get(position).getContactDB();
-                    assert contact != null;
+        View.OnLongClickListener longClick = v -> {
+            if (!modeMultiSelect) {
+                view.setTag(holder);
+                ContactDB contact1 = gestionnaireContacts.getContacts().get(position).getContactDB();
+                assert contact1 != null;
 
-                    holder.contactFirstNameView.setText(contact.getFirstName());
+                holder.contactFirstNameView.setText(contact1.getFirstName());
 
-                    if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
-                        listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
+                if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
+                    listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
 
-                        if (!contact.getProfilePicture64().equals("")) {
-                            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                            holder.contactRoundedImageView.setImageBitmap(bitmap);
-                        } else {
-                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-                        }
+                    if (!contact1.getProfilePicture64().equals("")) {
+                        Bitmap bitmap = base64ToBitmap(contact1.getProfilePicture64());
+                        holder.contactRoundedImageView.setImageBitmap(bitmap);
                     } else {
-                        listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                        if (context instanceof GroupActivity && len == 0) {
-                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
-                        } else {
-                            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-                        }
-                    }
-
-                    if (context instanceof GroupActivity) {
-                        ((GroupActivity) context).longRecyclerItemClick(position);
-                    } else if (context instanceof MainActivity) {
-                        ((MainActivity) context).longRecyclerItemClick(position);
-                    }
-
-                    modeMultiSelect = true;
-                }
-                return true;
-            }
-        };
-
-        View.OnClickListener listItemClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!modeMultiSelect) {
-                    if (len == 0) {
-                        Intent intent = new Intent(context, EditContactActivity.class);
-                        intent.putExtra("ContactId", contact.getId());
-                        context.startActivity(intent);
-                    } else if (len == 1) {
-                        if (holder.constraintLayoutMenu != null) {
-                            if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
-                                holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-                                if (lastSelectMenuLen1 != null)
-                                    lastSelectMenuLen1.setVisibility(View.GONE);
-                                lastSelectMenuLen1 = holder.constraintLayoutMenu;
-                            } else {
-                                holder.constraintLayoutMenu.setVisibility(View.GONE);
-                                Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                                holder.constraintLayoutMenu.startAnimation(slideDown);
-                                lastSelectMenuLen1 = null;
-                            }
-                        }
+                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact1.getProfilePicture()));
                     }
                 } else {
-                    view.setTag(holder);
-                    ContactDB contact = gestionnaireContacts.getContacts().get(position).getContactDB();
-                    assert contact != null;
-
-                    holder.contactFirstNameView.setText(contact.getFirstName());
-                    if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
-                        listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
-
-
-                        if (context instanceof GroupActivity && len == 0) {
-                            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
-                            if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColorDark));
-                            } else {
-                                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor));
-                            }
-                            ;
-                        } else {
-                            if (!contact.getProfilePicture64().equals("")) {
-                                Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                                holder.contactRoundedImageView.setImageBitmap(bitmap);
-                            } else {
-                                holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-                            }
-                        }
-
+                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
+                    if (context instanceof GroupActivity && len == 0) {
+                        holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
                     } else {
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    }
+                }
 
-                        listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                        if (context instanceof GroupActivity && len == 0) {
-                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                if (context instanceof GroupActivity) {
+                    ((GroupActivity) context).longRecyclerItemClick(position);
+                } else if (context instanceof MainActivity) {
+                    ((MainActivity) context).longRecyclerItemClick(position);
+                }
+
+                modeMultiSelect = true;
+            }
+            return true;
+        };
+
+        View.OnClickListener listItemClick = v -> {
+            if (!modeMultiSelect) {
+                if (len == 0) {
+                    Intent intent = new Intent(context, EditContactActivity.class);
+                    intent.putExtra("ContactId", contact.getId());
+                    context.startActivity(intent);
+                } else if (len == 1) {
+                    if (holder.constraintLayoutMenu != null) {
+                        if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
+                            holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
+                            if (lastSelectMenuLen1 != null)
+                                lastSelectMenuLen1.setVisibility(View.GONE);
+                            lastSelectMenuLen1 = holder.constraintLayoutMenu;
                         } else {
-                            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                            holder.constraintLayoutMenu.setVisibility(View.GONE);
+                            Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+                            holder.constraintLayoutMenu.startAnimation(slideDown);
+                            lastSelectMenuLen1 = null;
+                        }
+                    }
+                }
+            } else {
+                view.setTag(holder);
+                ContactDB contact12 = gestionnaireContacts.getContacts().get(position).getContactDB();
+                assert contact12 != null;
+
+                holder.contactFirstNameView.setText(contact12.getFirstName());
+                if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
+                    listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
+
+
+                    if (context instanceof GroupActivity && len == 0) {
+                        SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+                        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColorDark));
+                        } else {
+                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor));
+                        }
+                        ;
+                    } else {
+                        if (!contact12.getProfilePicture64().equals("")) {
+                            Bitmap bitmap = base64ToBitmap(contact12.getProfilePicture64());
+                            holder.contactRoundedImageView.setImageBitmap(bitmap);
+                        } else {
+                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact12.getProfilePicture()));
                         }
                     }
 
-                    if (context instanceof GroupActivity) {
-                        ((GroupActivity) context).longRecyclerItemClick(position);
-                    } else if (context instanceof MainActivity) {
-                        ((MainActivity) context).recyclerItemClick(position);
-                    }
+                } else {
 
-                    if (listOfItemSelected.size() == 0) {
-                        modeMultiSelect = false;
+                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
+                    if (context instanceof GroupActivity && len == 0) {
+                        holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                    } else {
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                     }
+                }
+
+                if (context instanceof GroupActivity) {
+                    ((GroupActivity) context).longRecyclerItemClick(position);
+                } else if (context instanceof MainActivity) {
+                    ((MainActivity) context).recyclerItemClick(position);
+                }
+
+                if (listOfItemSelected.size() == 0) {
+                    modeMultiSelect = false;
                 }
             }
         };
@@ -381,6 +369,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
+
+        if (holder.editCl != null) {
+            holder.editCl.setOnClickListener(listener);
+        }
 
        /* if (holder.groupWordingConstraint.getVisibility()==View.VISIBLE) {
             System.out.println("is visible"+holder.contactFirstNameView.getText());
