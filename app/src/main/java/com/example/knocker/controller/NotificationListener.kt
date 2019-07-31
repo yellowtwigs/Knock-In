@@ -313,7 +313,7 @@ class NotificationListener : NotificationListenerService() {
         val listViews = view.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification
         val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
-
+        imgClose.visibility = View.VISIBLE
         imgClose.setOnClickListener {
             //System.exit(0)
             windowManager?.removeView(view)
