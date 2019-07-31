@@ -390,7 +390,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             //check les permissions
             val sync = Runnable {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 99)
                 }
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                     //on affiche le loading
@@ -1180,15 +1180,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (intent.getBooleanExtra("fromImportContact", false)) {
-            when (requestCode) {
-                SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                }
-                MY_PERMISSIONS_REQUEST_RECEIVE_SMS -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Thank You for permitting !", Toast.LENGTH_SHORT).show()
+        when (requestCode) {
+
+            PERMISSION_CALL_RESULT ->{ if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (main_GridView!!.visibility == View.VISIBLE) {
+                    gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
                 } else {
                     Toast.makeText(this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
                 }
+            }}
+            99-> if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                println("permission accept")
+                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                recreate()
             }
         } else {
             when (requestCode) {

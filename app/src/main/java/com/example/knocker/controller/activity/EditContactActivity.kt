@@ -307,10 +307,25 @@ class EditContactActivity : AppCompatActivity() {
         //endregion
 
         // drop list
-        val priority_list = arrayOf(0, 1, 2)
-        val array_adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priority_list)
-        array_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        edit_contact_Priority!!.adapter = array_adapter
+
+
+
+        val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
+        val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+
+        val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
+        val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+
+        edit_contact_Mail_Property!!.adapter = adapterMailTagList
+        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
+        edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
+
+        val priority_list = arrayOf("0", "1", "2")
+        val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        edit_contact_Priority!!.adapter = priority_adapter
         //println("edit contact prio === " + edit_contact_priority)
         edit_contact_Priority!!.setSelection(edit_contact_priority)
         edit_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -349,20 +364,6 @@ class EditContactActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-        val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
-        val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-
-        val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
-        val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-
-        edit_contact_Mail_Property!!.adapter = adapterMailTagList
-        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
-        edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
-
         recyclerGroup = findViewById(R.id.edit_contact_recycler)
         val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         recyclerGroup!!.layoutManager = layoutMananger

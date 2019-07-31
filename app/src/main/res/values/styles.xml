@@ -20,6 +20,7 @@
         <item name="darkGreyColor">@color/darkGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
+        <item name="spinnerColor">@color/backgroundColor</item>
     </style>
 
     <!-- Dark/Night Mode theme. -->
@@ -41,6 +42,7 @@
         <item name="darkGreyColor">@color/darkGreyColorDark</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
+        <item name="spinnerColor">@color/lightGreyColorDark</item>
     </style>
 
     <style name="windowAnimationTransition">

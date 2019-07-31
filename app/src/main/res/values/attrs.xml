@@ -24,5 +24,6 @@
         <attr name="textColorLight" format="color" />
         <attr name="backgroundPressedColor" format="color" />
         <attr name="lightGreyColor" format="color" />
+        <attr name="spinnerColor" format="color"/>
     </declare-styleable>
 </resources>

@@ -804,7 +804,6 @@ class GroupActivity : AppCompatActivity() {
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -824,7 +823,6 @@ class GroupActivity : AppCompatActivity() {
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
 
@@ -845,7 +843,6 @@ class GroupActivity : AppCompatActivity() {
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -1085,7 +1082,8 @@ class GroupActivity : AppCompatActivity() {
                         editText.hint.toString()
                     }
                     println("name group$nameGroup")
-                    val printContacts = Runnable {
+                    val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+                    var callDb = Callable {
                         if (listContacts.size != 0) {
                             val group = GroupDB(null, nameGroup, "")
                             val idGroup = group_ContactsDatabase?.GroupsDao()!!.insert(group)
@@ -1095,9 +1093,20 @@ class GroupActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    main_mDbWorkerThread.postTask(printContacts)
+                    executorService.submit(callDb).get()!!
+                    if(len<=1){
+                        gestionnaireContacts!!.sortContactByGroup()
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
+                        group_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
+                    }else{
+                       // gridViewAdapter!!.notifyDataSetChanged()
+                        gestionnaireContacts!!.sortContactByGroup()
+                        gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                    }
                 }.show()
-        group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+        gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+        group_GridView!!.adapter = gridViewAdapter
         group_FloatingButtonSend!!.visibility = View.GONE
         group_SearchBar!!.visibility = View.VISIBLE
         group_MailButton!!.visibility = View.GONE

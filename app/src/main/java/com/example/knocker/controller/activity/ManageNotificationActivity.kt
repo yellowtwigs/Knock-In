@@ -60,11 +60,18 @@ class ManageNotificationActivity : AppCompatActivity() {
         val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
+        if(this.isNotificationServiceEnabled) {
+            switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
+            switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
+            switchMaskNotif!!.isChecked = sharedPreferences.getBoolean("mask_prio_1", false)
+            switchReminder.isChecked = sharedPreferences.getBoolean("reminder", false)
+        }else{
 
-        switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
-        switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
-        switchMaskNotif!!.isChecked = sharedPreferences.getBoolean("mask_prio_1", false)
-        switchReminder.isChecked = sharedPreferences.getBoolean("reminder", true)
+            switchPopupNotif!!.isChecked =false
+            switchservice!!.isChecked = false
+            switchMaskNotif!!.isChecked = false
+            switchReminder.isChecked = false
+        }
         if (!switchReminder.isChecked) {
             viewHour.isEnabled = false
             viewHour.background = getDrawable(R.color.greyColor)
