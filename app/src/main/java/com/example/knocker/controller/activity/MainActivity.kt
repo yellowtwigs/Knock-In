@@ -1194,16 +1194,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
                 recreate()
             }
-        } else {
-            when (requestCode) {
-                PERMISSION_CALL_RESULT -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (main_GridView!!.visibility == View.VISIBLE) {
-                        gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
-                    } else {
-                        recyclerViewAdapter!!.callPhone(recyclerViewAdapter!!.phonePermission)
-                    }
-                }
-            }
         }
     }
 
