@@ -106,7 +106,7 @@ class ContactWithAllInformation {
 
     fun getFirstGroup(context: Context):GroupDB?{
         val contactRoom=ContactsRoomDatabase.getDatabase(context)
-        if( groupList!!.isNotEmpty()) {
+        if( groupList!= null && groupList!!.isNotEmpty()) {
             return contactRoom!!.GroupsDao().getGroup(groupList!![0].idGroup)
         }else{
             return null

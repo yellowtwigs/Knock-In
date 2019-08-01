@@ -128,29 +128,39 @@ public class SelectContactAdapter extends BaseAdapter {
         final ContactDB contact = getItem(position).getContactDB();
 
         assert contact != null;
-        ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-        main_mDbWorkerThread.start();
-        List<GroupDB> listDB = main_ContactsDatabase.GroupsDao().getGroupForContact(contact.getId());
-        //endregion
 
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
         String group = "";
+        ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+        main_mDbWorkerThread.start();
+        GroupDB firstGroup = getItem(position).getFirstGroup(context);
         if (context instanceof GroupActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
-
+            if (len == 0) {
+                holder.contactRoundedImageView.setVisibility(View.INVISIBLE);
+            }
         }
-        if (listDB.isEmpty()) {
-            System.out.println("no group");
-            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
-            holder.groupWordingConstraint.setBackground(roundedLayout);
+        if (firstGroup == null) {
+            System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
+            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+            if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+                Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
+                holder.groupWordingConstraint.setBackground(roundedLayout);
+                System.out.println(" black color");
+            }else {
+                Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
+                holder.groupWordingConstraint.setBackground(roundedLayout);
+            }
+
         } else {
             System.out.println("have group");
-            GroupDB firstGroup = listDB.get(0);
             group = firstGroup.getName();
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
+            assert roundedLayout != null;
             roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }
