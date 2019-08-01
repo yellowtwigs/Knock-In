@@ -102,7 +102,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             if (v.getId() == holder.smsCl.getId()) {
                 if (listItemChannelSelected.contains(holder.smsCl)) {
                     listItemChannelSelected.remove(holder.smsCl);
-                    holder.smsCl.setImageResource(R.drawable.ic_circular_gmail);
+                    holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
                     listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
                 } else {
                     listItemChannelSelected.add(holder.smsCl);
