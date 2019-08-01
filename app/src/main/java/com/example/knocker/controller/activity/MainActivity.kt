@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
 
-//        main_tutorial_YoutubePlayerView = findViewById(R.id.main_tutorial_youtube_player_view)
+//        main_ al_YoutubePlayerView = findViewById(R.id.main_tutorial_youtube_player_view)
 
         //endregion
 

@@ -418,7 +418,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
                     intent.setData(Uri.parse("mailto:"));
                     //intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length())});
                     intent.putExtra(Intent.EXTRA_SUBJECT, "");
                     intent.putExtra(Intent.EXTRA_TEXT, "");
                     System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());

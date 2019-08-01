@@ -69,7 +69,7 @@ class AddContactToGroup : AppCompatActivity() {
     private fun getContactNotInGroupe(groupId: Int): List<ContactWithAllInformation> {
         val allInGroup = mutableListOf<ContactWithAllInformation>()
         val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
-        val allContact = contactsDatabase!!.contactsDao().getContactAllInfo()
+        val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
         allContact.forEach { all ->
             groupMember.forEach {
                 if (all.contactDB!!.id == it.contactDB!!.id) {

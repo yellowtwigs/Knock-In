@@ -197,14 +197,14 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
             if (v.getId() == holder.mailCl.getId()) {
                 String mail = getItem(position).getFirstMail();
-                Intent intent = new Intent(Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:"));
                 intent.setType("text/html");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() - 1)});
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() )});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
-                context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length() - 1)));
+                context.startActivity(Intent.createChooser(intent, "envoyer un mail à " + mail.substring(0, mail.length())));
             }
             if (len == 1) {
                 if (v.getId() == holder.editCl.getId()) {
