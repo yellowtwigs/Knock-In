@@ -100,7 +100,6 @@ class NotificationListener : NotificationListenerService() {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
 
                     }
-
                     if (isPhoneNumber(name)) {
                         println("is a phone number")
                         contact = gestionnaireContact.getContactFromNumber(name)
@@ -198,7 +197,12 @@ class NotificationListener : NotificationListenerService() {
 
     private fun messagesNotUseless(sbp: StatusBarParcelable): Boolean {
         val pregMatchString = resources.getString(R.string.new_messages)
-        return !(sbp.statusBarNotificationInfo["android.title"].toString().toLowerCase().contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase().contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase().contains(pregMatchString.toLowerCase()))
+        return !(sbp.statusBarNotificationInfo["android.title"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
+                or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
+                or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
+                or sbp.statusBarNotificationInfo["android.title"].toString().equals( "Chat heads active" )
+                or sbp.statusBarNotificationInfo["android.title"].toString().equals("Messenger")
+                or sbp.statusBarNotificationInfo["android.title"].toString().equals("Bulles de discussion activées"))
     }
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {

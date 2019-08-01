@@ -7,5 +7,4 @@
     android:padding="5dp"
     android:singleLine="true"
     android:textAlignment="inherit"
-    android:textColor="?attr/textColor"
     android:textSize="15sp" />
