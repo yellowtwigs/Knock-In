@@ -62,11 +62,11 @@
                 android:id="@+id/edit_contact_first_name_icon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@color/backgroundPressedColor">
+                android:background="@color/transparentColor">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     app:srcCompat="@drawable/ic_avatar" />
             </RelativeLayout>
@@ -109,11 +109,11 @@
                 android:id="@+id/edit_contact_last_name_icon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@color/backgroundPressedColor">
+                android:background="@color/transparentColor">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     app:srcCompat="@drawable/ic_avatar" />
             </RelativeLayout>
@@ -176,11 +176,11 @@
                 android:id="@+id/edit_contact_phone_number_icon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@color/backgroundPressedColor">
+                android:background="@color/transparentColor">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     app:srcCompat="@drawable/ic_phone_call" />
             </RelativeLayout>
@@ -242,11 +242,11 @@
                 android:id="@+id/edit_contact_phone_number_fix_icon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@color/backgroundPressedColor">
+                android:background="@color/transparentColor">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     app:srcCompat="@drawable/ic_phone_call" />
             </RelativeLayout>
@@ -311,11 +311,11 @@
                 android:id="@+id/edit_contact_mail_icon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@color/backgroundPressedColor">
+                android:background="@color/transparentColor">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_centerInParent="true"
                     app:srcCompat="@drawable/ic_email" />
             </RelativeLayout>
@@ -357,6 +357,7 @@
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_contact_priority_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -372,10 +373,8 @@
                 android:padding="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -389,7 +388,7 @@
             android:textColor="?attr/textColor"
             android:textColorHint="?attr/textColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/edit_contact_priority"
+            app:layout_constraintStart_toEndOf="@+id/edit_contact_priority_layout"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout" />
 
         <androidx.appcompat.widget.AppCompatButton

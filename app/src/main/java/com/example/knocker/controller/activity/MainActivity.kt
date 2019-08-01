@@ -686,8 +686,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
                 .show()
 
-        alert_dialog_tutorial_notification_content.setOnCompletionListener {
-            MediaPlayer.OnCompletionListener {
+//        alert_dialog_tutorial_notification_content.setOnCompletionListener {
+//            MediaPlayer.OnCompletionListener {
 
                 //TODO Put text in Strings.xml
                 MaterialAlertDialogBuilder(this)
@@ -709,9 +709,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             closeContextMenu()
                         }
                         .show()
-            }
-        }
-
+//            }
+//        }
     }
 
     private fun openAlertDialogRequestSMS() {
