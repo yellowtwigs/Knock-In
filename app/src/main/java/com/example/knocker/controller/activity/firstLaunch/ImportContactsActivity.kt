@@ -92,6 +92,6 @@ class ImportContactsActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val REQUEST_CODE_READ_CONTACT = 99
+        const val REQUEST_CODE_READ_CONTACT = 2
     }
 }

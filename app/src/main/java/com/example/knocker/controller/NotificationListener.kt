@@ -197,8 +197,8 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun messagesNotUseless(sbp: StatusBarParcelable): Boolean {
-        val pregMatchString = ".*" + resources.getString(R.string.new_messages) + ".*"
-        return !(sbp.statusBarNotificationInfo["android.title"].toString().matches(pregMatchString.toRegex()) or sbp.statusBarNotificationInfo["android.text"].toString().matches(pregMatchString.toRegex()))
+        val pregMatchString = resources.getString(R.string.new_messages)
+        return !(sbp.statusBarNotificationInfo["android.title"].toString().toLowerCase().contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase().contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase().contains(pregMatchString.toLowerCase()))
     }
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {

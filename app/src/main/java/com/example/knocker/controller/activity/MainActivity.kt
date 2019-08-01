@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private val PERMISSION_CALL_RESULT = 1
 
-    private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
+    private val SEND_SMS_PERMISSION_REQUEST_CODE = 3
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
 
     private val main_tutorial_YoutubePlayerView: YouTubePlayerView? = null

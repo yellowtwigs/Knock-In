@@ -173,6 +173,16 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         if (holder.groupWordingTv != null) {
             holder.groupWordingTv.setText(group);
         }
+        if(modeMultiSelect){
+            if(listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))){
+            if (context instanceof GroupActivity && len == 0) {
+                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+            } else {
+                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+            }
+            }
+        }
+
         View.OnClickListener listener = v -> {
             if (v.getId() == holder.smsCl.getId()) {
                 String phone = getItem(position).getFirstPhoneNumber();
