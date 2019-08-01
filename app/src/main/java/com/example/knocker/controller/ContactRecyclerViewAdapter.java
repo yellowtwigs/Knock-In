@@ -59,6 +59,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private ContactList gestionnaireContacts;
     private Boolean modeMultiSelect = false;
     private Boolean secondClick = false;
+    private Boolean fromLibelle = false;
 
     private ConstraintLayout lastSelectMenuLen1;
 
@@ -240,7 +241,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 }
 
                 if (context instanceof GroupActivity) {
-                    ((GroupActivity) context).longRecyclerItemClick(position, false);
+                    ((GroupActivity) context).longRecyclerItemClick(position, false, false);
                 } else if (context instanceof MainActivity) {
                     ((MainActivity) context).longRecyclerItemClick(position);
                 }
@@ -308,7 +309,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 }
 
                 if (context instanceof GroupActivity) {
-                    ((GroupActivity) context).recyclerItemClick(position);
+                    ((GroupActivity) context).recyclerItemClick(position, fromLibelle);
                 } else if (context instanceof MainActivity) {
                     ((MainActivity) context).recyclerItemClick(position);
                 }
@@ -406,7 +407,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                             if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
                                 if (!listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
                                     System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
-                                    ((GroupActivity) context).longRecyclerItemClick(i, secondClick);
+                                    ((GroupActivity) context).longRecyclerItemClick(i, secondClick, true);
                                     listOfItemSelected.add(gestionnaireContacts.getContacts().get(i));
                                 }
                             }
@@ -420,7 +421,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
                         if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
                             if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
-                                ((GroupActivity) context).longRecyclerItemClick(i, secondClick);
+                                ((GroupActivity) context).longRecyclerItemClick(i, secondClick, true);
                                 listOfItemSelected.remove(gestionnaireContacts.getContacts().get(i));
                             }
                         }
@@ -430,6 +431,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 modeMultiSelect = false;
                 notifyDataSetChanged();
             }
+
+            fromLibelle = true;
         });
     }
 

@@ -276,7 +276,7 @@ public class SelectContactAdapter extends BaseAdapter {
             ArrayList<Integer> listPosition = new ArrayList<>();
 
             if (secondClick) {
-                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick);
+                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick, true);
                 secondClick = false;
             }
         });

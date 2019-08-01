@@ -83,6 +83,7 @@ class GroupActivity : AppCompatActivity() {
     private var main_loadingPanel: RelativeLayout? = null
 
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
+    private val listOfItemSelectedFromLibelleClick: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var firstClick: Boolean = true
 
@@ -659,9 +660,9 @@ class GroupActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_filter_group, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
-        val sortLastname = menu.findItem(R.id.trie_par_lastname)
+        val sortLastname = menu.findItem(R.id.tri_par_lastname)
         val triPrio = menu.findItem(R.id.tri_par_priorite)
-        val triGroup = menu.findItem(R.id.trie_par_group)
+        val triGroup = menu.findItem(R.id.tri_par_group)
         val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
         if (tri == "nom") {
@@ -704,7 +705,7 @@ class GroupActivity : AppCompatActivity() {
             R.id.item_help -> {
                 MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.help)
-                        .setMessage(this.resources.getString(R.string.help_main))
+                        .setMessage(this.resources.getString(R.string.help_group))
                         .show()
                 return true
             }
@@ -860,7 +861,7 @@ class GroupActivity : AppCompatActivity() {
                     edit.apply()
                 }
             }
-            R.id.trie_par_group -> {
+            R.id.tri_par_group -> {
                 if (!item.isChecked) {
                     item.setChecked(true)
                     gestionnaireContacts!!.sortContactByGroup()
@@ -879,7 +880,7 @@ class GroupActivity : AppCompatActivity() {
                     edit.apply()
                 }
             }
-            R.id.trie_par_lastname -> {
+            R.id.tri_par_lastname -> {
                 if (!item.isChecked) {
                     item.setChecked(true)
                     gestionnaireContacts!!.sortContactByLastname()
@@ -952,11 +953,10 @@ class GroupActivity : AppCompatActivity() {
         }
 
         verifiedContactsChannel(listOfItemSelected)
-
         Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
-    fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int, secondClickLibelle: Boolean) {
+    fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
         group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         group_GridView!!.adapter = adapter
@@ -971,6 +971,11 @@ class GroupActivity : AppCompatActivity() {
             }
 
             verifiedContactsChannel(listOfItemSelected)
+
+            if (fromLibelleClick && firstClick) {
+                group_groupButton!!.visibility = View.GONE
+            }
+
             Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
         } else {
             group_FloatingButtonSend!!.visibility = View.GONE
@@ -1028,10 +1033,15 @@ class GroupActivity : AppCompatActivity() {
         val params: ViewGroup.MarginLayoutParams = group_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin = margin * i
         group_groupButton!!.layoutParams = params
-        group_groupButton!!.visibility = View.VISIBLE
+
+        if (listOfItemSelected.size == 1) {
+            group_groupButton!!.visibility = View.GONE
+        } else {
+            group_groupButton!!.visibility = View.VISIBLE
+        }
     }
 
-    fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean) {
+    fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
         if (!secondClickLibelle) {
             if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
                 listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
@@ -1048,6 +1058,11 @@ class GroupActivity : AppCompatActivity() {
                 listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
                 group_SearchBar!!.visibility = View.GONE
                 verifiedContactsChannel(listOfItemSelected)
+            }
+
+            if (fromLibelleClick) {
+                group_groupButton!!.visibility = View.GONE
+                firstClick = true
             }
         } else {
             listOfItemSelected.clear()
@@ -1068,21 +1083,34 @@ class GroupActivity : AppCompatActivity() {
         }
     }
 
-    fun recyclerItemClick(position: Int) {
+    fun recyclerItemClick(position: Int, fromLibelleClick: Boolean) {
+
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
             verifiedContactsChannel(listOfItemSelected)
-        } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
 
+        } else {
+            if (fromLibelleClick && firstClick) {
+                var i = 0
+                while (i < listOfItemSelected.size) {
+                    listOfItemSelectedFromLibelleClick.add(listOfItemSelected[i])
+                    i++
+                }
+                firstClick = false
+            }
+
+            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
             verifiedContactsChannel(listOfItemSelected)
         }
 
-        if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
-            firstClick = false
-        } else if (listOfItemSelected.size == 0) {
+        if (checkIfTwoListsAreSame(listOfItemSelected, listOfItemSelectedFromLibelleClick)) {
+            group_groupButton!!.visibility = View.GONE
+        } else {
+            group_groupButton!!.visibility = View.VISIBLE
+        }
+
+        if (listOfItemSelected.size == 0) {
 
             group_FloatingButtonSend!!.visibility = View.GONE
             group_SearchBar!!.visibility = View.VISIBLE
@@ -1104,6 +1132,22 @@ class GroupActivity : AppCompatActivity() {
             false
         }
     }*/
+
+    private fun checkIfTwoListsAreSame(listContactsSelected: ArrayList<ContactWithAllInformation>, listContactsSelectedFromLibelle: ArrayList<ContactWithAllInformation>): Boolean {
+        val iterator = (0 until listContactsSelected.size).iterator()
+        val iterator2 = (0 until listContactsSelectedFromLibelle.size).iterator()
+        var isTrue = false
+
+        for (i in iterator) {
+            for (y in iterator2) {
+                if (listContactsSelected[i] == listContactsSelectedFromLibelle[y]) {
+                    isTrue = true
+                }
+            }
+        }
+
+        return (listContactsSelected.size == listContactsSelectedFromLibelle.size && isTrue)
+    }
 
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
@@ -1203,157 +1247,4 @@ class GroupActivity : AppCompatActivity() {
             }
         }
     }
-
-    //endregion
 }
-
-
-/*
-    private var group_DrawerLayout: DrawerLayout? = null
-    private var group_ContactsDatabase: ContactsRoomDatabase? = null
-    private lateinit var group_mDbWorkerThread: DbWorkerThread
-
-    private var group_NavigationView: NavigationView? = null
-
-    private var recycler: RecyclerView? = null
-
-    //endregion
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_group_manager)
-
-        //region ========================================= Toolbar ==========================================
-
-        val toolbar = findViewById<Toolbar>(R.id.group_toolbar)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        actionbar!!.run {
-            actionbar.title = ""
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-            setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
-        }
-
-        //endregion
-
-        //region ====================================== FindViewById ========================================
-
-        group_DrawerLayout = findViewById(R.id.group_drawer_layout)
-        recycler = findViewById(R.id.group_list_view_id)
-        group_NavigationView = findViewById(R.id.nav_view)
-
-        //endregion
-
-        recycler!!.setHasFixedSize(true)
-
-        //region Navigation
-
-        val menu = group_NavigationView!!.menu
-        val nav_item = menu.findItem(R.id.nav_home)
-        nav_item.isChecked = true
-        val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
-        nav_sync_contact.isVisible = true
-
-        group_NavigationView!!.menu.getItem(1).isChecked = true
-
-        group_NavigationView!!.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            group_DrawerLayout!!.closeDrawers()
-
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    startActivity(Intent(this@GroupActivity, MainActivity::class.java))
-                }
-                R.id.nav_informations -> startActivity(Intent(this@GroupActivity, EditInformationsActivity::class.java))
-                R.id.nav_notif_config -> startActivity(Intent(this@GroupActivity, ManageNotificationActivity::class.java))
-                R.id.nav_screen_config -> startActivity(Intent(this@GroupActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_data_access -> {
-                }
-                R.id.nav_knockons -> startActivity(Intent(this@GroupActivity, ManageKnockonsActivity::class.java))
-                R.id.nav_statistics -> {
-                }
-                R.id.nav_help -> startActivity(Intent(this@GroupActivity, HelpActivity::class.java))
-            }
-
-            val drawer = findViewById<DrawerLayout>(R.id.group_drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)
-            true
-        }
-
-        //endregion
-
-        group_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
-
-        group_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        group_mDbWorkerThread.start()
-        val group: ArrayList<GroupWithContact> = ArrayList()
-        group.addAll(group_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
-        println("group size" + group.size)
-        for (aGroup in group)
-            println("group content" + aGroup.ContactIdList)
-        val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
-        val len = sharedPreferences.getInt("gridview", 4)
-        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
-        val sections = ArrayList<SectionGroupAdapter.Section>()
-        var position = 0
-        for (i in group) {
-            val list = i.getListContact(this)
-            listContactGroup.addAll(list)
-            sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id))
-            position += list.size
-        }
-
-        val adapter: GroupAdapter
-        if (len >= 3) {
-            adapter = GroupAdapter(this, listContactGroup, len)
-            recycler!!.layoutManager = GridLayoutManager(this, len)
-        } else {
-            adapter = GroupAdapter(this, listContactGroup, 4)
-            recycler!!.layoutManager = GridLayoutManager(this, 4)
-        }
-        val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter = SectionGroupAdapter(this, R.layout.recycler_adapter_section, recycler, adapter)
-        sectionAdapter.setSections(sections.toArray(sectionList))
-        println("taille list group " + listContactGroup.size)
-        // val adapter= GroupListViewAdapter(group,this,len)
-        recycler!!.adapter = sectionAdapter
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_help, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    @SuppressLint("ShowToast")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                group_DrawerLayout!!.openDrawer(GravityCompat.START)
-                return true
-            }
-            R.id.item_help -> {
-                MaterialAlertDialogBuilder(this)
-                        .setTitle(R.string.help)
-                        .setMessage(this.resources.getString(R.string.help_phone_log))
-                        .show()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-
-    override fun onDrawerStateChanged(newState: Int) {
-    }
-
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-    }
-
-    override fun onDrawerClosed(drawerView: View) {
-    }
-
-    override fun onDrawerOpened(drawerView: View) {
-    }
-*/

@@ -474,43 +474,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             }
         };
 
-        View.OnClickListener listItemClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (modeMultiSelect) {
-                    v.setTag(holder);
-                    ContactDB contact = gestionnaireContact.getContacts().get(position).getContactDB();
-                    assert contact != null;
-
-                    holder.contactFirstNameView.setText(contact.getFirstName());
-
-                    if (listOfItemSelected.contains(gestionnaireContact.getContacts().get(position))) {
-                        listOfItemSelected.remove(gestionnaireContact.getContacts().get(position));
-
-                        if (!contact.getProfilePicture64().equals("")) {
-                            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                            holder.contactRoundedImageView.setImageBitmap(bitmap);
-                        } else {
-                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-                        }
-                    } else {
-                        listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-                    }
-
-                    if (context instanceof GroupActivity) {
-                        ((GroupActivity) context).longRecyclerItemClick(position, false);
-                    } else if (context instanceof MainActivity) {
-                        ((MainActivity) context).recyclerItemClick(position);
-                    }
-
-                    if (listOfItemSelected.size() == 0) {
-                        modeMultiSelect = false;
-                    }
-                }
-            }
-        };
-
         buttonCall.setOnLongClickListener(v -> {
             String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
             if (!phoneNumber.isEmpty()) {
@@ -536,7 +499,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                         }
                     }
                 }
-                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick);
+                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick, true);
             }
         });
 
