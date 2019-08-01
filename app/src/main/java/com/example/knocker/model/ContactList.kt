@@ -948,6 +948,9 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             "gmail" -> {
                 return getContact(name)
             }
+            "Messenger" ->{
+                return getContact(name)
+            }
         }
         return null
     }
