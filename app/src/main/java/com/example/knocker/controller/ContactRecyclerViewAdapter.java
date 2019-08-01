@@ -220,8 +220,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 ContactDB contact1 = gestionnaireContacts.getContacts().get(position).getContactDB();
                 assert contact1 != null;
 
-                holder.contactFirstNameView.setText(contact1.getFirstName());
-
                 if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
                     listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
 
@@ -277,7 +275,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 ContactDB contact12 = gestionnaireContacts.getContacts().get(position).getContactDB();
                 assert contact12 != null;
 
-                holder.contactFirstNameView.setText(contact12.getFirstName());
                 if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
                     listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
 
@@ -394,30 +391,26 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             System.out.println("is gone"+holder.contactFirstNameView.getText());
         }*/
 
-        holder.groupWordingConstraint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.groupWordingConstraint.setOnClickListener(v -> {
 
-                ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-                DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-                main_mDbWorkerThread.start();
-                ArrayList<Integer> listPosition = new ArrayList<Integer>();
-                System.out.println("list contact grid size" + gestionnaireContacts.getContacts().size());
-                if (!modeMultiSelect) {
-                    modeMultiSelect = true;
-                    for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
-                        if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
-                            if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context).getId().equals(gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
-                                if (!listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
-                                    System.out.println(getItem(i).getContactDB().getFirstName() + " " + getItem(i).getContactDB().getLastName());
-                                    ((GroupActivity) context).longRecyclerItemClick(i);
-                                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(i));
-                                }
+            DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+            main_mDbWorkerThread.start();
+
+            System.out.println("list contact grid size" + gestionnaireContacts.getContacts().size());
+            if (!modeMultiSelect) {
+                modeMultiSelect = true;
+                for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
+                    if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
+                        if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
+                            if (!listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+                                System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
+                                ((GroupActivity) context).longRecyclerItemClick(i);
+                                listOfItemSelected.add(gestionnaireContacts.getContacts().get(i));
                             }
                         }
                     }
-                    notifyDataSetChanged();
                 }
+                notifyDataSetChanged();
             }
         });
     }
@@ -518,8 +511,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         CircularImageView contactRoundedImageView;
         ConstraintLayout constraintLayoutSmaller;
         ConstraintLayout constraintLayoutMenuSmaller;
-
-        int position;
 
         ConstraintLayout callCl;
         ConstraintLayout smsCl;

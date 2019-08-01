@@ -148,8 +148,7 @@ class MultiChannelActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                finish()
+                refreshActivity()
             }
         }
         return super.onOptionsItemSelected(item)
