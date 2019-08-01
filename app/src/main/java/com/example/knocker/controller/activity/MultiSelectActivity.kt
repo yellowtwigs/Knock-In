@@ -111,7 +111,7 @@ class MultiSelectActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_validate, menu)
+        inflater.inflate(R.menu.menu_toolbar_validate_skip, menu)
         return true
     }
 
