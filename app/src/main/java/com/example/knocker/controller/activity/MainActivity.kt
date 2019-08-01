@@ -17,6 +17,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.text.Editable
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -662,6 +663,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val tuto_linear_layout = findViewById<LinearLayout>(R.id.tuto_linear_layout)
         val content_frame = findViewById<LinearLayout>(R.id.content_frame)
         val alert_dialog_tutorial_notification_content = findViewById<VideoView>(R.id.alert_dialog_tutorial_notification_content)
+        val SPLASH_DISPLAY_LENGHT = 36000
 
         MaterialAlertDialogBuilder(this)
                 .setTitle("Tutoriel")
@@ -680,37 +682,37 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     mediaController.setAnchorView(alert_dialog_tutorial_notification_content)
 
                     alert_dialog_tutorial_notification_content.start()
+
+//                    Handler().postDelayed({
+
+                    alert_dialog_tutorial_notification_content.setOnCompletionListener(MediaPlayer.OnCompletionListener {
+                        //TODO Put text in Strings.xml
+                        MaterialAlertDialogBuilder(this)
+                                .setTitle("Fin du tutoriel")
+                                .setMessage("Voulez-vous rejouer le tutoriel ?")
+                                .setBackground(getDrawable(R.color.backgroundColor))
+                                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                    it.start()
+                                    alert_dialog_tutorial_notification_content.start()
+                                }
+                                .setNegativeButton(R.string.alert_dialog_no)
+                                { _, _ ->
+                                    tuto_linear_layout.visibility = View.GONE
+                                    main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                                    content_frame.visibility = View.VISIBLE
+                                    main_BottomNavigationView!!.visibility = View.VISIBLE
+
+                                    closeContextMenu()
+                                }
+                                .show()
+                    })
+
+//                    }, SPLASH_DISPLAY_LENGHT.toLong())
                 }
                 .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
                     closeContextMenu()
                 }
                 .show()
-
-//        alert_dialog_tutorial_notification_content.setOnCompletionListener {
-//            MediaPlayer.OnCompletionListener {
-
-                //TODO Put text in Strings.xml
-                MaterialAlertDialogBuilder(this)
-                        .setTitle("Fin du tutoriel")
-                        .setMessage("Voulez-vous rejouer le tutoriel ?")
-                        .setBackground(getDrawable(R.color.backgroundColor))
-                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                            alert_dialog_tutorial_notification_content.setOnPreparedListener {
-                                it.isLooping = true;
-                            }
-                        }
-                        .setNegativeButton(R.string.alert_dialog_no)
-                        { _, _ ->
-                            tuto_linear_layout.visibility = View.GONE
-                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                            content_frame.visibility = View.VISIBLE
-                            main_BottomNavigationView!!.visibility = View.VISIBLE
-
-                            closeContextMenu()
-                        }
-                        .show()
-//            }
-//        }
     }
 
     private fun openAlertDialogRequestSMS() {
