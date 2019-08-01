@@ -38,8 +38,6 @@ class MultiSelectActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi_select)
 
-        overlayAlertDialogPermission()
-
         //region ========================================= Toolbar ==========================================
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -74,43 +72,6 @@ class MultiSelectActivity : AppCompatActivity() {
 
             true
         }
-    }
-
-    private fun overlayAlertDialogPermission(): AlertDialog {
-        val inflater: LayoutInflater = this.layoutInflater
-        val alertView: View = inflater.inflate(R.layout.alert_dialog_multi_select, null)
-        val alertDialog = MaterialAlertDialogBuilder(this)
-                .setView(alertView)
-                .show()
-        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_multi_select_button_allow_it)
-        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick(alertDialog) }
-
-        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_multi_select_button_dismiss)
-        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick(alertDialog) }
-
-        return alertDialog
-    }
-
-    private fun positiveAlertDialogButtonClick(alertDialog: AlertDialog) {
-        val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-        startActivity(intentPermission)
-        val thread = Thread {
-            activityVisible = false
-            if (Build.VERSION.SDK_INT >= 23) {
-                while (!Settings.canDrawOverlays(applicationContext) && !activityVisible) {
-                }
-                val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-                edit.apply()
-            }
-        }
-        thread.start()
-        alertDialog.cancel()
-    }
-
-    private fun negativeAlertDialogButtonClick(alertDialog: AlertDialog) {
-        alertDialog.cancel()
     }
 
     private fun overlayAlertDialog(contactList: ArrayList<ContactWithAllInformation>): MaterialAlertDialogBuilder {
@@ -156,8 +117,8 @@ class MultiSelectActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
-                startActivity(Intent(this@MultiSelectActivity, ManageNotificationActivity::class.java))
+            R.id.nav_skip -> {
+                startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
                 finish()
             }
             R.id.nav_validate -> {

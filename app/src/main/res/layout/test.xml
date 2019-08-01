@@ -1,27 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#88646464">
+    android:background="@drawable/wallpaper_incoming_call">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@color/backgroundColor">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/tutorial_view_pager"
-            android:layout_width="200dp"
-            android:layout_height="250dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/notification"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/start_activity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="8dp"
+            android:text="Démarrage de Knocker"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <RelativeLayout
+            android:id="@+id/start_activity_importation_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_activity_title">
+
+            <TextView
+                android:id="@+id/start_activity_importation_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:text="Importation des contacts"
+                android:textColor="@color/lightColor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/start_activity_importation_subtitle"
+                android:layout_width="274dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/start_activity_importation_title"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Importer vos contacts Android dans Knocker et communiquer avec eux plus efficacement"
+                android:textColor="@color/textColorLight"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/import_contacts_accept_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:text="@string/import_contacts_button_yes"
+                app:icon="@drawable/ic_import" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/start_activity_notifications_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_activity_importation_layout">
+
+            <TextView
+                android:id="@+id/start_activity_activate_notifications_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:text="Activer les notifications"
+                android:textColor="@color/lightColor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/start_activity_activate_notifications_subtitle"
+                android:layout_width="265dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/start_activity_activate_notifications_title"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Activer le service et recevez des notifications personnalisés"
+                android:textColor="@color/textColorLight"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/start_activity_activate_notifications_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:text="Activer" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/start_activity_superposition_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_activity_notifications_layout">
+
+            <TextView
+                android:id="@+id/start_activity_superposition_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:text="Autoriser la superposition"
+                android:textColor="@color/lightColor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/start_activity_superposition_subtitle"
+                android:layout_width="265dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/start_activity_superposition_title"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Autorisez cette application à se superposer aux autres applications"
+                android:textColor="@color/textColorLight"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/start_activity_superposition_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:text="Autoriser" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/start_activity_permissions_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_activity_superposition_layout">
+
+            <TextView
+                android:id="@+id/start_activity_permissions_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:text="Autorisations"
+                android:textColor="@color/lightColor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/start_activity_permissions_subtitle"
+                android:layout_width="265dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/start_activity_permissions_title"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Vous pourrez effectuer des appels et envoyer des sms depuis Knocker"
+                android:textColor="@color/textColorLight"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/start_activity_permissions_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:text="Autoriser" />
+
+        </RelativeLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+
+
+</ScrollView>

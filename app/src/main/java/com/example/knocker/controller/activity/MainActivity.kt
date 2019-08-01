@@ -96,8 +96,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 3
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
 
-    private val main_tutorial_YoutubePlayerView: YouTubePlayerView? = null
-
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
@@ -623,16 +621,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             refreshActivity()
         }
         //endregion
-
-        //region ========================================= Tutorial =========================================
-
-        if (intent != null && intent.getBooleanExtra("fromImportContact", false)) {
-            openTutorialForNotif()
-            openAlertDialogRequestSMS()
-        }
-
-        //endregion
-
     }
     //region ========================================== Functions ===========================================
 
@@ -652,74 +640,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SMSButton!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.GONE
         main_SearchBar!!.visibility = View.VISIBLE
-    }
-
-    private fun openTutorialForNotif() {
-        val tuto_linear_layout = findViewById<LinearLayout>(R.id.tuto_linear_layout)
-        val content_frame = findViewById<LinearLayout>(R.id.content_frame)
-        val alert_dialog_tutorial_notification_content = findViewById<VideoView>(R.id.alert_dialog_tutorial_notification_content)
-        val SPLASH_DISPLAY_LENGHT = 36000
-
-        MaterialAlertDialogBuilder(this)
-                .setTitle("Tutoriel")
-                .setMessage("Vous voulez activer le tutoriel ?")
-                .setBackground(getDrawable(R.color.backgroundColor))
-                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                    tuto_linear_layout.visibility = View.VISIBLE
-                    main_FloatingButtonAdd!!.visibility = View.GONE
-                    content_frame!!.visibility = View.GONE
-                    main_BottomNavigationView!!.visibility = View.GONE
-
-                    alert_dialog_tutorial_notification_content.setVideoURI(Uri.parse("android.resource://" + (packageName + "/" + R.raw.notif_tuto)));
-
-                    val mediaController = MediaController(this)
-                    alert_dialog_tutorial_notification_content.setMediaController(mediaController)
-                    mediaController.setAnchorView(alert_dialog_tutorial_notification_content)
-
-                    alert_dialog_tutorial_notification_content.start()
-
-//                    Handler().postDelayed({
-
-                    alert_dialog_tutorial_notification_content.setOnCompletionListener(MediaPlayer.OnCompletionListener {
-                        //TODO Put text in Strings.xml
-                        MaterialAlertDialogBuilder(this)
-                                .setTitle(getString(R.string.main_tutorial_alert_dialog_title))
-                                .setMessage(getString(R.string.main_tutorial_alert_dialog_message))
-                                .setBackground(getDrawable(R.color.backgroundColor))
-                                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                    it.start()
-                                    alert_dialog_tutorial_notification_content.start()
-                                }
-                                .setNegativeButton(R.string.alert_dialog_no)
-                                { _, _ ->
-                                    tuto_linear_layout.visibility = View.GONE
-                                    main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                                    content_frame.visibility = View.VISIBLE
-                                    main_BottomNavigationView!!.visibility = View.VISIBLE
-
-                                    closeContextMenu()
-                                }
-                                .show()
-                    })
-
-//                    }, SPLASH_DISPLAY_LENGHT.toLong())
-                }
-                .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                    closeContextMenu()
-                }
-                .show()
-    }
-
-    private fun openAlertDialogRequestSMS() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
-        Toast.makeText(this, getString(R.string.multi_channel_no_permission), Toast.LENGTH_SHORT).show()
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
-            }
-        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
