@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,14 +92,14 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView groupName;
-        ImageView close;
+        AppCompatImageView close;
         ConstraintLayout layoutGroup;
 
         ViewHolder(View itemView) {
             super(itemView);
-            groupName = itemView.findViewById(R.id.adpater_edit_group_name);
-            close = itemView.findViewById(R.id.adpater_edit_close);
-            layoutGroup = itemView.findViewById(R.id.adpater_edit_constraint_layout);
+            groupName = itemView.findViewById(R.id.group_item_in_edit_group_name);
+            close = itemView.findViewById(R.id.group_item_in_edit_close);
+            layoutGroup = itemView.findViewById(R.id.group_item_in_edit_constraint_layout);
         }
 
 /*        @Override

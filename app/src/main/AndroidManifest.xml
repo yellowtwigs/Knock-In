@@ -37,9 +37,9 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".controller.activity.firstLaunch.StartActivty"></activity>
         <activity android:name=".controller.activity.AddNewGroupActivity" />
-        <activity android:name=".controller.activity.TutorialActivity">
-        </activity>
+        <activity android:name=".controller.activity.TutorialActivity"></activity>
         <activity android:name=".controller.activity.group.DeleteContactToGroup" />
         <activity android:name=".controller.activity.group.AddContactToGroup" />
         <activity android:name=".controller.activity.group.GroupActivity" />

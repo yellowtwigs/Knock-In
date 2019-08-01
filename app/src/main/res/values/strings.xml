@@ -80,6 +80,10 @@
 
     <string name="main_contact_grid_title">Do you want to call this contact?</string>
     <string name="main_contact_grid_message">You can disable this validation from the options</string>
+
+    <string name="main_tutorial_alert_dialog_title">End of the tutorial</string>
+    <string name="main_tutorial_alert_dialog_message">Do you want to replay ?</string>
+
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->
@@ -169,6 +173,7 @@
     <string name="edit_contact_delete_contact">Remove contact</string>
     <string name="edit_contact_validate">Validate</string>
     <string name="edit_contact_toast">Name or firstname is required</string>
+    <string name="edit_contact_groups">Groups</string>
 
     <string name="edit_contact_alert_dialog_cancel_title">Warning</string>
     <string name="edit_contact_alert_dialog_cancel_message"> You will lose all our data, do you really want to continue?</string>

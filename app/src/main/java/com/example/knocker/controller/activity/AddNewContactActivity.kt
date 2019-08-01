@@ -137,14 +137,14 @@ class AddNewContactActivity : AppCompatActivity() {
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
 
         //disable keyboard window
-        add_new_contact_layout.setOnTouchListener { v, event ->
+        add_new_contact_layout.setOnTouchListener(View.OnTouchListener { v, event ->
             val view = this@AddNewContactActivity.currentFocus
             val imm = this@AddNewContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (view != null) {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
             }
             true
-        }
+        })
         //
         add_new_contact_Priority!!.adapter = array_adapter
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

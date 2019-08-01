@@ -465,12 +465,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                 }
                                 .show()
                     }
-                    //gestionnaireContacts!!.
-                    //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
-                    //val len = sharedPreferences.getInt("gridview", 4)
-                    /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
-              main_GridView!!.adapter = gridViewAdapter
-  */
+
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
@@ -688,8 +683,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     alert_dialog_tutorial_notification_content.setOnCompletionListener(MediaPlayer.OnCompletionListener {
                         //TODO Put text in Strings.xml
                         MaterialAlertDialogBuilder(this)
-                                .setTitle("Fin du tutoriel")
-                                .setMessage("Voulez-vous rejouer le tutoriel ?")
+                                .setTitle(getString(R.string.main_tutorial_alert_dialog_title))
+                                .setMessage(getString(R.string.main_tutorial_alert_dialog_message))
                                 .setBackground(getDrawable(R.color.backgroundColor))
                                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                     it.start()
@@ -1208,7 +1203,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         startActivity(intent)
     }
 
-    //TODO
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
 

@@ -7,7 +7,6 @@
         <item name="windowNoTitle">true</item>
         <item name="android:itemBackground">@color/lightColor</item>
         <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
-        <item name="android:navigationBarColor">@color/transparentColor</item>
         <item name="darkColor">@color/darkColor</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="backgroundColor">@color/backgroundColor</item>
@@ -30,7 +29,6 @@
         <item name="darkColor">@color/lightColor</item>
         <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
         <item name="android:itemBackground">@color/textColorLight</item>
-        <item name="android:navigationBarColor">@color/transparentColorDark</item>
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="backgroundColor">@color/backgroundColorDark</item>
         <item name="backgroundPressedColor">@color/backgroundPressedColorDark</item>
