@@ -956,31 +956,35 @@ class GroupActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
-    fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int) {
+    fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int, secondClickLibelle: Boolean) {
         group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         group_GridView!!.adapter = adapter
         adapter.notifyDataSetChanged()
-        group_SearchBar!!.visibility = View.GONE
-        firstClick = true
-        //val group=group_ContactsDatabase!!.GroupsDao().getGroupWithContact(groupId)
-        // val list= group.getListContact(this)
-        // println("taille list 1 "+ list.size+" taille list 2 "+positions.size)
-        /*for(contact in list){
-            listOfItemSelected.add(contact)
-        }*/
-        for (position in positions) {
-            adapter.itemSelected(position)
-        }
-        /*
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+
+        if (!secondClickLibelle) {
+            group_SearchBar!!.visibility = View.GONE
+            firstClick = true
+
+            for (position in positions) {
+                adapter.itemSelected(position)
+            }
+
+            verifiedContactsChannel(listOfItemSelected)
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
         } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+            group_FloatingButtonSend!!.visibility = View.GONE
+            group_SearchBar!!.visibility = View.VISIBLE
+            group_SMSButton!!.visibility = View.GONE
+            group_MailButton!!.visibility = View.GONE
+            group_groupButton!!.visibility = View.GONE
+
+            adapter.itemDeselected()
+
+            group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
         }
-  */
-        verifiedContactsChannel(listOfItemSelected)
-        Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
     }
 
     private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
@@ -1027,23 +1031,31 @@ class GroupActivity : AppCompatActivity() {
         group_groupButton!!.visibility = View.VISIBLE
     }
 
-    fun longRecyclerItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+    fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean) {
+        if (!secondClickLibelle) {
+            if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
+                listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
-            if (listOfItemSelected.size == 0) {
-                group_SearchBar!!.visibility = View.VISIBLE
-                group_SMSButton!!.visibility = View.GONE
-                group_MailButton!!.visibility = View.GONE
-                group_groupButton!!.visibility = View.GONE
-                group_floating_button_send_id!!.visibility = View.GONE
+                if (listOfItemSelected.size == 0) {
+                    group_SearchBar!!.visibility = View.VISIBLE
+                    group_SMSButton!!.visibility = View.GONE
+                    group_MailButton!!.visibility = View.GONE
+                    group_groupButton!!.visibility = View.GONE
+                    group_floating_button_send_id!!.visibility = View.GONE
+                }
 
+            } else {
+                listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+                group_SearchBar!!.visibility = View.GONE
+                verifiedContactsChannel(listOfItemSelected)
             }
-
         } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
-            group_SearchBar!!.visibility = View.GONE
-            verifiedContactsChannel(listOfItemSelected)
+            listOfItemSelected.clear()
+            group_SearchBar!!.visibility = View.VISIBLE
+            group_SMSButton!!.visibility = View.GONE
+            group_MailButton!!.visibility = View.GONE
+            group_groupButton!!.visibility = View.GONE
+            group_floating_button_send_id!!.visibility = View.GONE
         }
 
 
@@ -1056,24 +1068,32 @@ class GroupActivity : AppCompatActivity() {
         }
     }
 
-    /*fun recyclerItemClick(len: Int, position: Int) {
-        if (!firstClick) {
-            val l = len
-            val m = position
-//            val adapter = (group_RecyclerView!!.adapter as SelectContactAdapter)
-//            adapter.itemSelected(position)
-//            if (adapter.listContactSelect.size == 0) {
-//                group_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!.contacts, len, gestionnaireContacts)
-//
-//                group_FloatingButtonAdd!!.visibility = View.VISIBLE
-//                group_FloatingButtonSend!!.visibility = View.GONE
-//                group_SearchBar!!.visibility = View.VISIBLE
-//
-//                Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-//            }
+    fun recyclerItemClick(position: Int) {
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+
+            verifiedContactsChannel(listOfItemSelected)
+        } else {
+            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+
+            verifiedContactsChannel(listOfItemSelected)
         }
-        firstClick = false
-    }*/
+
+        if (listOfItemSelected.size == 1 && firstClick) {
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+            firstClick = false
+        } else if (listOfItemSelected.size == 0) {
+
+            group_FloatingButtonSend!!.visibility = View.GONE
+            group_SearchBar!!.visibility = View.VISIBLE
+            group_SMSButton!!.visibility = View.GONE
+            group_MailButton!!.visibility = View.GONE
+            group_groupButton!!.visibility = View.GONE
+
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            firstClick = true
+        }
+    }
 
     /*private fun appIsInstalled(): Boolean {
         val pm = this.packageManager

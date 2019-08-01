@@ -58,6 +58,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private View view;
     private ContactList gestionnaireContacts;
     private Boolean modeMultiSelect = false;
+    private Boolean secondClick = false;
 
     private ConstraintLayout lastSelectMenuLen1;
 
@@ -173,13 +174,13 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         if (holder.groupWordingTv != null) {
             holder.groupWordingTv.setText(group);
         }
-        if(modeMultiSelect){
-            if(listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))){
-            if (context instanceof GroupActivity && len == 0) {
-                holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
-            } else {
-                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-            }
+        if (modeMultiSelect) {
+            if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
+                if (context instanceof GroupActivity && len == 0) {
+                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                } else {
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                }
             }
         }
 
@@ -199,7 +200,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 String mail = getItem(position).getFirstMail();
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:"));
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length() )});
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length())});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
@@ -239,7 +240,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 }
 
                 if (context instanceof GroupActivity) {
-                    ((GroupActivity) context).longRecyclerItemClick(position);
+                    ((GroupActivity) context).longRecyclerItemClick(position, false);
                 } else if (context instanceof MainActivity) {
                     ((MainActivity) context).longRecyclerItemClick(position);
                 }
@@ -307,7 +308,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 }
 
                 if (context instanceof GroupActivity) {
-                    ((GroupActivity) context).longRecyclerItemClick(position);
+                    ((GroupActivity) context).recyclerItemClick(position);
                 } else if (context instanceof MainActivity) {
                     ((MainActivity) context).recyclerItemClick(position);
                 }
@@ -397,19 +398,36 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             main_mDbWorkerThread.start();
 
             System.out.println("list contact grid size" + gestionnaireContacts.getContacts().size());
-            if (!modeMultiSelect) {
-                modeMultiSelect = true;
+            if (!secondClick) {
+                if (!modeMultiSelect) {
+                    modeMultiSelect = true;
+                    for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
+                        if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
+                            if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
+                                if (!listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+                                    System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
+                                    ((GroupActivity) context).longRecyclerItemClick(i, secondClick);
+                                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(i));
+                                }
+                            }
+                        }
+                    }
+                    secondClick = true;
+                    notifyDataSetChanged();
+                }
+            } else {
                 for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
                     if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
                         if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
-                            if (!listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
-                                System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
-                                ((GroupActivity) context).longRecyclerItemClick(i);
-                                listOfItemSelected.add(gestionnaireContacts.getContacts().get(i));
+                            if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+                                ((GroupActivity) context).longRecyclerItemClick(i, secondClick);
+                                listOfItemSelected.remove(gestionnaireContacts.getContacts().get(i));
                             }
                         }
                     }
                 }
+                secondClick = false;
+                modeMultiSelect = false;
                 notifyDataSetChanged();
             }
         });

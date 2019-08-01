@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -32,6 +33,7 @@ import com.example.knocker.model.ModelDB.GroupDB;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class SelectContactAdapter extends BaseAdapter {
@@ -41,6 +43,7 @@ public class SelectContactAdapter extends BaseAdapter {
     private Context context;
     private Integer len;
     private ArrayList<ContactWithAllInformation> listSelectedItem;
+    private Boolean secondClick = true;
 
     public SelectContactAdapter(Context context, ContactList contactList, Integer len, Boolean isNull) {
         this.context = context;
@@ -77,7 +80,7 @@ public class SelectContactAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
-            holder.groupWordingConstraint= gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
+            holder.groupWordingConstraint = gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
             holder.groupWordingTv = gridview.findViewById(R.id.grid_adapter_wording_group_tv);
 //            holder.whatsapp_click_bubbles = gridview.findViewById(R.id.whatsapp_click_bubbles);
 //            holder.messenger_click_bubbles = gridview.findViewById(R.id.messenger_click_bubbles);
@@ -125,29 +128,29 @@ public class SelectContactAdapter extends BaseAdapter {
         final ContactDB contact = getItem(position).getContactDB();
 
         assert contact != null;
-        ContactsRoomDatabase main_ContactsDatabase=ContactsRoomDatabase.Companion.getDatabase(context);
-        DbWorkerThread main_mDbWorkerThread=new DbWorkerThread("dbWorkerThread");
-        main_mDbWorkerThread.start() ;
-        List<GroupDB> listDB=main_ContactsDatabase.GroupsDao().getGroupForContact(contact.getId());
+        ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+        main_mDbWorkerThread.start();
+        List<GroupDB> listDB = main_ContactsDatabase.GroupsDao().getGroupForContact(contact.getId());
         //endregion
 
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
-        String group= "";
-        if(context instanceof GroupActivity){
+        String group = "";
+        if (context instanceof GroupActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
 
         }
-        if(listDB.isEmpty()){
+        if (listDB.isEmpty()) {
             System.out.println("no group");
-            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
-        }else{
+        } else {
             System.out.println("have group");
-            GroupDB firstGroup=listDB.get(0);
+            GroupDB firstGroup = listDB.get(0);
             group = firstGroup.getName();
-            Drawable roundedLayout= context.getDrawable(R.drawable.rounded_rectangle_group);
+            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }
@@ -178,8 +181,8 @@ public class SelectContactAdapter extends BaseAdapter {
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>8)
-                group= group.substring(0,7).concat("..");
+            if (group.length() > 8)
+                group = group.substring(0, 7).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
@@ -201,8 +204,8 @@ public class SelectContactAdapter extends BaseAdapter {
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>9)
-                group= group.substring(0,7).concat("..");
+            if (group.length() > 9)
+                group = group.substring(0, 7).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
@@ -222,8 +225,8 @@ public class SelectContactAdapter extends BaseAdapter {
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if(group.length()>6)
-                group= group.substring(0,5).concat("..");
+            if (group.length() > 6)
+                group = group.substring(0, 5).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
@@ -237,9 +240,9 @@ public class SelectContactAdapter extends BaseAdapter {
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
-        if(context instanceof MainActivity || context instanceof GroupActivity){
+        if (context instanceof MainActivity || context instanceof GroupActivity) {
             if (listSelectedItem.contains(getItem(position))) {
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
             } else {
                 if (!contact.getProfilePicture64().equals("")) {
                     Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -249,13 +252,25 @@ public class SelectContactAdapter extends BaseAdapter {
                     holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
                 }
             }
-        }else {
+        } else {
             if (listSelectedItem.contains(getItem(position))) {
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
             } else {
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor));
             }
         }
+
+        holder.groupWordingConstraint.setOnClickListener(v -> {
+            DbWorkerThread group_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+            group_mDbWorkerThread.start();
+            ArrayList<Integer> listPosition = new ArrayList<>();
+
+            if (secondClick) {
+                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick);
+                secondClick = false;
+            }
+        });
+
         return gridview;
     }
 
@@ -287,28 +302,33 @@ public class SelectContactAdapter extends BaseAdapter {
         }
     }
 
+    public void itemDeselected() {
+
+        listSelectedItem.clear();
+    }
+
     public ArrayList<ContactWithAllInformation> getListContactSelect() {
         return listSelectedItem;
     }
 
     private int randomDefaultImage(int avatarId) {
-            switch (avatarId) {
-                case 0:
-                    return R.drawable.ic_user_purple;
-                case 1:
-                    return R.drawable.ic_user_blue;
-                case 2:
-                    return R.drawable.ic_user_knocker;
-                case 3:
-                    return R.drawable.ic_user_green;
-                case 4:
-                    return R.drawable.ic_user_om;
-                case 5:
-                    return R.drawable.ic_user_orange;
-                case 6:
-                    return R.drawable.ic_user_pink;
-                default:
-                    return R.drawable.ic_user_blue;
-            }
+        switch (avatarId) {
+            case 0:
+                return R.drawable.ic_user_purple;
+            case 1:
+                return R.drawable.ic_user_blue;
+            case 2:
+                return R.drawable.ic_user_knocker;
+            case 3:
+                return R.drawable.ic_user_green;
+            case 4:
+                return R.drawable.ic_user_om;
+            case 5:
+                return R.drawable.ic_user_orange;
+            case 6:
+                return R.drawable.ic_user_pink;
+            default:
+                return R.drawable.ic_user_blue;
+        }
     }
 }

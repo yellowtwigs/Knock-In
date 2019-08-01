@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -28,16 +27,19 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.example.knocker.R;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.controller.activity.group.GroupManagerActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactList;
-import com.example.knocker.model.ContactsRoomDatabase;
 import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
-import com.example.knocker.R;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
@@ -45,11 +47,6 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 
 /**
@@ -66,6 +63,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private FloatingActionMenu selectMenu;
     private String numberForPermission = "";
     private Boolean modeMultiSelect = false;
+    private Boolean secondClick = false;
 
     public ContactGridViewAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
@@ -501,7 +499,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     }
 
                     if (context instanceof GroupActivity) {
-                        ((GroupActivity) context).longRecyclerItemClick(position);
+                        ((GroupActivity) context).longRecyclerItemClick(position, false);
                     } else if (context instanceof MainActivity) {
                         ((MainActivity) context).recyclerItemClick(position);
                     }
@@ -513,25 +511,20 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             }
         };
 
-        buttonCall.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
-                if (!phoneNumber.isEmpty()) {
-                    callPhone(phoneNumber);
-                }
-                return true;
+        buttonCall.setOnLongClickListener(v -> {
+            String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
+            if (!phoneNumber.isEmpty()) {
+                callPhone(phoneNumber);
             }
+            return true;
         });
-        holder.groupWordingConstraint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-                DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-                main_mDbWorkerThread.start();
-                ArrayList<Integer> listPosition = new ArrayList<Integer>();
+        holder.groupWordingConstraint.setOnClickListener(v -> {
+            DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+            main_mDbWorkerThread.start();
+            ArrayList<Integer> listPosition = new ArrayList<>();
+
+            if (!secondClick) {
                 System.out.println("list contact grid size" + gestionnaireContact.getContacts().size());
                 for (int i = 0; i < gestionnaireContact.getContacts().size(); i++) {
                     if (gestionnaireContact.getContacts().get(i).getFirstGroup(context) != null) {
@@ -543,9 +536,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                         }
                     }
                 }
-                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition());
+                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick);
             }
         });
+
         holder.gridContactItemLayout.setOnLongClickListener(gridlongClick);
         holder.contactRoundedImageView.setOnLongClickListener(gridlongClick);
         //buttonMessenger.setOnClickListener(buttonListener);
