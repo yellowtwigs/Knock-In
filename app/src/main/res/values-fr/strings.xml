@@ -6,7 +6,8 @@
     <!-- region Help Tutorial -->
 
     <string name="help">Help</string>
-    <string name="help_main">Sur cet écran vous pouvez voir tous les contacts enregistrés dans le carnet d\'adresses de Knocker</string>
+    <string name="help_main">Pour activer le mode multichannel, faites un long clic sur l\'un de vos contacts</string>
+    <string name="help_group">Pour sélectionner tout un groupe, cliquer sur le libellé</string>
     <string name="help_notification_history">Sur cet écran vous pouvez voir toutes les notifications reçues</string>
     <string name="help_phone_log">Sur cet écran vous pouvez appeler un numéro de téléphone ou envoyer un SMS à une personne qui n\'est pas dans vos contacts. Vous pouvez aussi vous diriger vers un réseau social</string>
     <string name="help_manage_screen">Sur cet écran vous pouvez choisir comment afficher vos contacts et activer/désactiver la popups d\'appel un contact</string>

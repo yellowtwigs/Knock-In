@@ -672,7 +672,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
-        val triLastname = menu.findItem(R.id.trie_par_lastname)
+        val triLastname = menu.findItem(R.id.tri_par_lastname)
         val triPrio = menu.findItem(R.id.tri_par_priorite)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
@@ -712,13 +712,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 return true
             }
             R.id.item_help -> {
-                ////click sur le bouton help
-//                MaterialAlertDialogBuilder(this)
-//                        .setTitle(R.string.help)
-//                        .setMessage(this.resources.getString(R.string.help_main))
-//                        .setBackground(getDrawable(R.color.backgroundColor))
-//                        .show()
-                startActivity(Intent(this@MainActivity, TutorialActivity::class.java))
+                //click sur le bouton help
+                MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.help)
+                        .setMessage(this.resources.getString(R.string.help_main))
+                        .setBackground(getDrawable(R.color.backgroundColor))
+                        .show()
                 return true
             }
             R.id.sms_filter -> {
@@ -905,7 +904,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     main_mDbWorkerThread.postTask(sortByPriority)
                 }
             }
-            R.id.trie_par_lastname -> {
+            R.id.tri_par_lastname -> {
                 if (!item.isChecked) {
                     main_GridView!!.visibility = View.GONE
                     main_RecyclerView!!.visibility = View.GONE

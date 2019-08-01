@@ -837,8 +837,8 @@
             android:background="?attr/backgroundColor"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="20dp"
-            app:itemIconTint="@color/navigation_color"
-            app:itemTextColor="@color/navigation_color"
+            app:itemIconTint="@color/bottom_navigation_color"
+            app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/main_navigation_view" />
     </RelativeLayout>
@@ -850,7 +850,7 @@
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
         app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/navigation_color"
-        app:itemTextColor="@color/navigation_color"
+        app:itemIconTint="@color/drawer_navigation_color"
+        app:itemTextColor="@color/drawer_navigation_color"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

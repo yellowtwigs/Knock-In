@@ -6,7 +6,8 @@
     <!-- region Help Tutorial -->
 
     <string name="help">Help</string>
-    <string name="help_main">In this screen you can see all your Knocker contacts</string>
+    <string name="help_main">To activate the multichannel mode, do a long click on one of your contacts</string>
+    <string name="help_group">To select the entire group, click on the group\'s name</string>
     <string name="help_notification_history">In this screen you can see all the received notifications</string>
     <string name="help_phone_log">From this screen you can call or send an SMS to someone not listed into your address book. You can also connect to email and SoMe</string>
     <string name="help_manage_screen">In this screen you can display your contacts and configure various display options</string>

@@ -239,8 +239,8 @@
         android:background="?attr/backgroundColor"
         android:visibility="visible"
         app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/navigation_color"
-        app:itemTextColor="@color/navigation_color"
+        app:itemIconTint="@color/drawer_navigation_color"
+        app:itemTextColor="@color/drawer_navigation_color"
         app:menu="@menu/activity_main_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
