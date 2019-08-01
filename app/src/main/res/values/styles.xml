@@ -20,7 +20,7 @@
         <item name="darkGreyColor">@color/darkGreyColor</item>
         <item name="android:windowAnimationStyle">@style/noAnimTheme</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
-        <item name="spinnerColor">@color/backgroundColor</item>
+        <item name="spinnerColor">@color/lightGreyColor</item>
     </style>
 
     <!-- Dark/Night Mode theme. -->
@@ -92,11 +92,11 @@
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">#f8b122</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">#f8b122</item>
     </style>
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">

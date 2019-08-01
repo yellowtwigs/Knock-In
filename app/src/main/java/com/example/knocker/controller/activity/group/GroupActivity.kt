@@ -1123,18 +1123,18 @@ class GroupActivity : AppCompatActivity() {
                         }
                     }
                     executorService.submit(callDb).get()!!
-                    if(len<=1){
+                    if (len <= 1) {
                         gestionnaireContacts!!.sortContactByGroup()
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
-                    }else{
-                       // gridViewAdapter!!.notifyDataSetChanged()
+                    } else {
+                        // gridViewAdapter!!.notifyDataSetChanged()
                         gestionnaireContacts!!.sortContactByGroup()
-                        gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                     }
                 }.show()
-        gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
         group_GridView!!.adapter = gridViewAdapter
         group_FloatingButtonSend!!.visibility = View.GONE
         group_SearchBar!!.visibility = View.VISIBLE

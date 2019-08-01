@@ -133,18 +133,6 @@
                     android:text="Tutoriel Notification"
                     android:textColor="@color/lightColor"
                     android:textSize="25sp" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/main_tutorial_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="100dp"
-                    android:layout_toEndOf="@+id/alert_dialog_tutorial_notification_title"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_cross" />
             </RelativeLayout>
 
             <VideoView

@@ -662,7 +662,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val tuto_linear_layout = findViewById<LinearLayout>(R.id.tuto_linear_layout)
         val content_frame = findViewById<LinearLayout>(R.id.content_frame)
         val alert_dialog_tutorial_notification_content = findViewById<VideoView>(R.id.alert_dialog_tutorial_notification_content)
-        val alert_dialog_tutorial_notification_close = findViewById<ImageView>(R.id.main_tutorial_close)
 
         MaterialAlertDialogBuilder(this)
                 .setTitle("Tutoriel")
@@ -681,18 +680,38 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     mediaController.setAnchorView(alert_dialog_tutorial_notification_content)
 
                     alert_dialog_tutorial_notification_content.start()
-
-                    alert_dialog_tutorial_notification_close.setOnClickListener {
-                        tuto_linear_layout.visibility = View.GONE
-                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                        content_frame.visibility = View.VISIBLE
-                        main_BottomNavigationView!!.visibility = View.VISIBLE
-                    }
                 }
                 .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
                     closeContextMenu()
                 }
                 .show()
+
+        alert_dialog_tutorial_notification_content.setOnCompletionListener {
+            MediaPlayer.OnCompletionListener {
+
+                //TODO Put text in Strings.xml
+                MaterialAlertDialogBuilder(this)
+                        .setTitle("Fin du tutoriel")
+                        .setMessage("Voulez-vous rejouer le tutoriel ?")
+                        .setBackground(getDrawable(R.color.backgroundColor))
+                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                            alert_dialog_tutorial_notification_content.setOnPreparedListener {
+                                it.isLooping = true;
+                            }
+                        }
+                        .setNegativeButton(R.string.alert_dialog_no)
+                        { _, _ ->
+                            tuto_linear_layout.visibility = View.GONE
+                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                            content_frame.visibility = View.VISIBLE
+                            main_BottomNavigationView!!.visibility = View.VISIBLE
+
+                            closeContextMenu()
+                        }
+                        .show()
+            }
+        }
+
     }
 
     private fun openAlertDialogRequestSMS() {

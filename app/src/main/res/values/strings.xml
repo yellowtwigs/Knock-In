@@ -350,7 +350,7 @@
 
     <!-- region AlertDialog permission overlay !-->
 
-    <string name="alert_dialog_overlay_title">Knocker</string>
+    <string name="alert_dialog_overlay_title">High priority notifications</string>
     <string name="alert_dialog_overlay_message"> Do you authorize Knocker to display high priority notifications?</string>
 
     <!-- endregion !-->
