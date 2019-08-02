@@ -23,7 +23,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.content.Intent
 import android.os.Build
-
+import com.example.knocker.model.ModelDB.ContactDB
+import com.example.knocker.model.ModelDB.ContactDetailDB
+import kotlinx.android.synthetic.main.activity_start_activity.*
 
 
 class StartActivity : AppCompatActivity() {
@@ -245,11 +247,27 @@ class StartActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                start_activity_ImportContactsLoading!!.visibility = View.GONE
-                start_activity_ImportContactsCheck!!.visibility = View.VISIBLE
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
                 val sync = Runnable {
                     ContactList(this).getAllContacsInfoSync(contentResolver)
+
+                    val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+                    var index = 1
+                    var stringSet = listOf<String>()
+                    if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                    val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
+                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        index++
+                    }
+                    val runnable= Runnable {
+
+                        start_activity_ImportContactsLoading!!.visibility = View.GONE
+                        start_activity_ImportContactsCheck!!.visibility = View.VISIBLE
+                        allIsChecked()
+                    }
+                    runOnUiThread(runnable)
                 }
                 start_activity_mDbWorkerThread.postTask(sync)
             }else{
@@ -300,10 +318,16 @@ class StartActivity : AppCompatActivity() {
         return alertDialog
     }
     private fun buildLeaveAlertDialog(): androidx.appcompat.app.AlertDialog {
+        var message= ""
+        if(start_activity_import_contacts_loading.visibility==View.VISIBLE){
+            message="Knocker importe vos contacts si vous passer maintenant ils ne seront pas tous sauvegardé"
+        }else{
+            message="Si vous sautez cette étape les autorisations vous serons demandé au moment ou vous en aurait besoin"
+        }
         val alertDialog = MaterialAlertDialogBuilder(this)
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setTitle("Passer les autorisations")
-                .setMessage("Si vous sautez cette étape les autorisations vous serons demandé au moment ou vous en aurait besoin")
+                .setMessage(message)
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     startActivity(Intent(this@StartActivity, MainActivity::class.java))
                     val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
