@@ -420,7 +420,9 @@
     <string name="add_new_contact_hint_nom_group">Group name</string>
 
     <!-- endregion -->
+
     <!-- region startActivity -->
+
     <string name="start_activity_title">Démarrage de Knocker</string>
     <string name="start_activity_import_title">Importation des contacts</string>
     <string name="start_activity_import_subtitle">Importer vos contacts Android dans Knocker et communiquer avec eux plus efficacement</string>
@@ -428,12 +430,13 @@
     <string name="start_activity_notification_subtitle">Activer le service et recevez des notifications personnalisés</string>
     <string name="start_activity_button_notification">Activer</string>
     <string name="start_activity_superposition_title">Autoriser la superposition</string>
-    <string name="start_activity_superposition_subtitle">Autorisez cette application à se superposer aux autres applications"</string>
+    <string name="start_activity_superposition_subtitle">Autoriser cette application à se superposer aux autres applications</string>
     <string name="start_activity_button_superposition">Autoriser</string>
-    <string name="start_activity_permission_title">Autoriser la superposition</string>
+    <string name="start_activity_permission_title">Autorisations</string>
     <string name="start_activity_permission_subtitle">Autorisez cette application à se superposer aux autres applications"</string>
     <string name="start_activity_button_permission">Autoriser</string>
-    <string name="start_activity_skip">passer</string>
-    <string name="start_activity_next">suivant</string>
+    <string name="start_activity_skip">Passer</string>
+    <string name="start_activity_next">Suivant</string>
+
     <!-- endregion -->
 </resources>

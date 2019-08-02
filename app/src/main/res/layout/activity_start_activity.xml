@@ -18,7 +18,7 @@
             android:layout_marginEnd="8dp"
             android:text="@string/start_activity_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="30sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,18 +40,20 @@
                 android:layout_marginStart="25dp"
                 android:text="@string/start_activity_import_title"
                 android:textColor="@color/lightColor"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/start_activity_import_contacts_subtitle"
-                android:layout_width="274dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/start_activity_import_contacts_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/start_activity_import_contacts_button"
                 android:text="@string/start_activity_import_subtitle"
                 android:textColor="@color/textColorLight"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_activity_import_contacts_button"
@@ -60,7 +62,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="@string/import_contacts_button_yes" />
+                android:text="@string/import_contacts_button_yes"
+                android:textSize="10sp" />
 
             <ProgressBar
                 android:id="@+id/start_activity_import_contacts_loading"
@@ -102,18 +105,20 @@
                 android:layout_marginStart="25dp"
                 android:text="@string/start_activity_import_title"
                 android:textColor="@color/lightColor"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/start_activity_activate_notifications_subtitle"
-                android:layout_width="265dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/start_activity_activate_notifications_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/start_activity_activate_notifications_button"
                 android:text="@string/start_activity_import_subtitle"
                 android:textColor="@color/textColorLight"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_activity_activate_notifications_button"
@@ -122,7 +127,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="@string/start_activity_button_notification" />
+                android:text="@string/start_activity_button_notification"
+                android:textSize="10sp" />
 
             <ProgressBar
                 android:id="@+id/start_activity_activate_notifications_loading"
@@ -163,18 +169,20 @@
                 android:layout_marginStart="25dp"
                 android:text="@string/start_activity_superposition_title"
                 android:textColor="@color/lightColor"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/start_activity_superposition_subtitle"
-                android:layout_width="265dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/start_activity_superposition_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/start_activity_superposition_button"
                 android:text="@string/start_activity_superposition_subtitle"
                 android:textColor="@color/textColorLight"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_activity_superposition_button"
@@ -183,7 +191,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="@string/start_activity_button_superposition" />
+                android:text="@string/start_activity_button_superposition"
+                android:textSize="10sp" />
 
             <ProgressBar
                 android:id="@+id/start_activity_superposition_loading"
@@ -224,18 +233,20 @@
                 android:layout_marginStart="25dp"
                 android:text="@string/start_activity_permission_title"
                 android:textColor="@color/lightColor"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/start_activity_permissions_subtitle"
-                android:layout_width="265dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/start_activity_permissions_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/start_activity_permissions_button"
                 android:text="@string/start_activity_permission_subtitle"
                 android:textColor="@color/textColorLight"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_activity_permissions_button"
@@ -244,7 +255,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="@string/start_activity_button_permission" />
+                android:text="@string/start_activity_button_permission"
+                android:textSize="10sp" />
 
             <ProgressBar
                 android:id="@+id/start_activity_permissions_loading"
