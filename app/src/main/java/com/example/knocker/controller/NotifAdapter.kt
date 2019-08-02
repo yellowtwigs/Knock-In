@@ -184,7 +184,11 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     }
                 }
                 editText.setText("")
-                notifications.removeAt(position)
+                if(notifications.size>1) {
+                    notifications.removeAt(position)
+                }else{
+                    closeNotificationPopup()
+                }
                 notifyDataSetChanged()
             }
         }
