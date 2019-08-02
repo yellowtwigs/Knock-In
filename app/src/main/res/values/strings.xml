@@ -423,20 +423,25 @@
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Démarrage de Knocker</string>
-    <string name="start_activity_import_title">Importation des contacts</string>
-    <string name="start_activity_import_subtitle">Importer vos contacts Android dans Knocker et communiquer avec eux plus efficacement</string>
-    <string name="start_activity_notification_title">Activer les notifications</string>
-    <string name="start_activity_notification_subtitle">Activer le service et recevez des notifications personnalisés</string>
-    <string name="start_activity_button_notification">Activer</string>
-    <string name="start_activity_superposition_title">Autoriser la superposition</string>
-    <string name="start_activity_superposition_subtitle">Autoriser cette application à se superposer aux autres applications</string>
-    <string name="start_activity_button_superposition">Autoriser</string>
-    <string name="start_activity_permission_title">Autorisations</string>
-    <string name="start_activity_permission_subtitle">Autorisez cette application à se superposer aux autres applications"</string>
-    <string name="start_activity_button_permission">Autoriser</string>
-    <string name="start_activity_skip">Passer</string>
-    <string name="start_activity_next">Suivant</string>
+    <string name="start_activity_title">Starting Knocker</string>
+    <string name="start_activity_import_title">Import your contacts</string>
+    <string name="start_activity_import_subtitle">Import your Android contacts into Knocker and communicate with them more effectively</string>
+    <string name="start_activity_notification_title">Activate notifications</string>
+    <string name="start_activity_notification_subtitle">Activate the service and receive custom notifications</string>
+    <string name="start_activity_button_notification">Activate</string>
+    <string name="start_activity_superposition_title">Allow the superposition</string>
+    <string name="start_activity_superposition_subtitle">Allow this app to display over other apps you\'re using</string>
+    <string name="start_activity_button_superposition">Allow</string>
+    <string name="start_activity_permission_title">Permissions</string>
+    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from Knocker</string>
+    <string name="start_activity_button_permission">Allow</string>
+    <string name="start_activity_skip">Skip</string>
+    <string name="start_activity_next">Next</string>
+
+    <string name="start_activity_skip_alert_dialog_title">Skip permissions</string>
+    <string name="start_activity_skip_alert_dialog_message">If you skip permissions, you could allow them later</string>
+    <string name="start_activity_skip_alert_dialog_message_importation">Knocker import your contacts, if you ignore now, all your contacts will not save</string>
+    <string name="start_activity_skip_alert_dialog_positive_button">Skip</string>
 
     <!-- endregion -->
 </resources>
