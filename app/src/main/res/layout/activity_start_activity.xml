@@ -122,7 +122,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="string/start_activity_button_notification" />
+                android:text="@string/start_activity_button_notification" />
 
             <ProgressBar
                 android:id="@+id/start_activity_activate_notifications_loading"
