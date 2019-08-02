@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:text="Démarrage de Knocker"
             android:textColor="@color/colorPrimary"
@@ -27,7 +27,7 @@
             android:id="@+id/start_activity_import_contacts_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="45dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/start_activity_title">
@@ -267,6 +267,19 @@
                 app:srcCompat="@drawable/ic_check" />
 
         </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_activity_skip"
+            android:layout_width="@dimen/start_activity_button_width"
+            android:layout_height="@dimen/start_activity_button_height"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:text="Passer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_activity_permissions_layout" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_activity_next"

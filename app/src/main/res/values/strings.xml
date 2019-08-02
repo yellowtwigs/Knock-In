@@ -302,7 +302,7 @@
     <string name="first_launch_welcome">Welcome to Knocker</string>
     <string name="first_launch_welcome_long_text"> Enjoy a new way to manage your contacts and to communicate with them</string>
     <string name="first_launch_welcome_accept">Accept and continue</string>
-    <string name="first_launch_confidentiality"> Please read our Terms and Conditions from our site<a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a>To accept them, please click on "Accept and continue"</string>
+    <string name="first_launch_confidentiality"> Please read our Terms and Conditions from our site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a> To accept them, please click on "Accept and continue"</string>
 
     <!-- endregion -->
 
