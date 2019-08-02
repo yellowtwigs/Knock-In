@@ -121,11 +121,8 @@ class StartActivity : AppCompatActivity() {
             val verifiedNotification= Thread{
                 activityVisible=false
                 while(!activityVisible){
-                    println("while")
                 }
-                println("NotificationService"+isNotificationServiceEnabled()+" activity visible"+activityVisible)
                 if(isNotificationServiceEnabled()) {
-                    println("into before delayed")
                //     Handler().postDelayed({
 
                     val displayLoading = Runnable {
@@ -181,7 +178,6 @@ class StartActivity : AppCompatActivity() {
             val verifiedSuperposition= Thread{
                 activityVisible=false
                 while(!activityVisible){
-                    println("while")
                 }
                 println("NotificationService"+isNotificationServiceEnabled()+" activity visible"+activityVisible)
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
