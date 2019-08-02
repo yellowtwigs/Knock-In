@@ -1,13 +1,13 @@
 package com.example.knocker.controller.activity.firstLaunch
 
 import android.Manifest
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.text.TextUtils
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -20,6 +20,11 @@ import com.example.knocker.controller.activity.MultiSelectActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.DbWorkerThread
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import android.content.Intent
+import android.os.Build
+
+
 
 class StartActivity : AppCompatActivity() {
 
@@ -43,6 +48,7 @@ class StartActivity : AppCompatActivity() {
     private var start_activity_PermissionsCheck: AppCompatImageView? = null
 
     private lateinit var start_activity_mDbWorkerThread: DbWorkerThread
+    private var activityVisible= false
 
     //endregion
 
@@ -86,12 +92,16 @@ class StartActivity : AppCompatActivity() {
             start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 3000
-
+            /*
             Handler().postDelayed({
                 start_activity_ImportContactsLoading!!.visibility = View.GONE
                 start_activity_ImportContactsCheck!!.visibility = View.VISIBLE
 
-            }, SPLASH_DISPLAY_LENGHT.toLong())
+            }, SPLASH_DISPLAY_LENGHT.toLong())*/
+            val displayLoading = Runnable {
+                start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
+            }
+            runOnUiThread(displayLoading)
         }
 
         start_activity_ActivateNotifications!!.setOnClickListener {
@@ -99,35 +109,115 @@ class StartActivity : AppCompatActivity() {
             start_activity_ActivateNotifications!!.visibility = View.GONE
             start_activity_ActivateNotificationsLoading!!.visibility = View.VISIBLE
 
-            val SPLASH_DISPLAY_LENGHT = 3000
+            val SPLASH_DISPLAY_LENGHT = 2000
 
-            Handler().postDelayed({
+           /* Handler().postDelayed({
                 start_activity_ActivateNotificationsLoading!!.visibility = View.GONE
                 start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
 
-            }, SPLASH_DISPLAY_LENGHT.toLong())
+            }, SPLASH_DISPLAY_LENGHT.toLong())*/
+            val displayLoading = Runnable {
+                start_activity_ActivateNotificationsLoading!!.visibility = View.VISIBLE
+            }
+            runOnUiThread(displayLoading)
+            val verifiedNotification= Thread{
+                activityVisible=false
+                while(!activityVisible){
+                    println("while")
+                }
+                println("NotificationService"+isNotificationServiceEnabled()+" activity visible"+activityVisible)
+                if(isNotificationServiceEnabled()) {
+                    println("into before delayed")
+               //     Handler().postDelayed({
+
+
+                    val displayLoading = Runnable {
+                        //start_activity_ActivateNotificationsLoading!!.visibility = View.GONE
+                        //start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
+                        Handler().postDelayed({
+                            start_activity_ActivateNotificationsLoading!!.visibility = View.GONE
+                            start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
+
+                        }, SPLASH_DISPLAY_LENGHT.toLong())
+                    }
+                    runOnUiThread(displayLoading)
+
+                  //  }, SPLASH_DISPLAY_LENGHT.toLong())
+                }else{
+                    val displayLoading = Runnable {
+                        start_activity_ActivateNotificationsLoading!!.visibility = View.GONE
+                        start_activity_ActivateNotifications!!.visibility = View.VISIBLE
+                    }
+                    runOnUiThread(displayLoading)
+                }
+            }
+            verifiedNotification.start()
+
         }
 
         start_activity_AuthorizeSuperposition!!.setOnClickListener {
-            val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-            startActivity(intentPermission)
             start_activity_AuthorizeSuperposition!!.visibility = View.GONE
             start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 3000
 
-            Handler().postDelayed({
+           /* Handler().postDelayed({
                 start_activity_AuthorizeSuperpositionLoading!!.visibility = View.GONE
                 start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
 
-            }, SPLASH_DISPLAY_LENGHT.toLong())
+            }, SPLASH_DISPLAY_LENGHT.toLong())*/
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:$packageName"))
+                    startActivity(intent)
+
+            }
+            val displayLoading = Runnable {
+                start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
+            }
+            runOnUiThread(displayLoading)
+            val verifiedSuperposition= Thread{
+                activityVisible=false
+                while(!activityVisible){
+                    println("while")
+                }
+                println("NotificationService"+isNotificationServiceEnabled()+" activity visible"+activityVisible)
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+                    println("into before delayed")
+                    //     Handler().postDelayed({
+
+
+                    val displayLoading = Runnable {
+                        //start_activity_ActivateNotificationsLoading!!.visibility = View.GONE
+                        //start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
+                        Handler().postDelayed({
+                            start_activity_AuthorizeSuperpositionLoading!!.visibility = View.GONE
+                            start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
+
+                        }, SPLASH_DISPLAY_LENGHT.toLong())
+                    }
+                    runOnUiThread(displayLoading)
+
+                    //  }, SPLASH_DISPLAY_LENGHT.toLong())
+                }else{
+                    val displayLoading = Runnable {
+                        start_activity_AuthorizeSuperpositionLoading!!.visibility = View.GONE
+                        start_activity_AuthorizeSuperposition!!.visibility = View.VISIBLE
+                    }
+                    runOnUiThread(displayLoading)
+                }
+            }
+            verifiedSuperposition.start()
+
+
         }
 
         start_activity_Permissions!!.setOnClickListener {
             val arraylistPermission = ArrayList<String>()
             arraylistPermission.add(Manifest.permission.SEND_SMS)
             arraylistPermission.add(Manifest.permission.CALL_PHONE)
-            ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), 2)
+            ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), REQUEST_CODE_SMS_AND_CALL)
             start_activity_Permissions!!.visibility = View.GONE
             start_activity_PermissionsLoading!!.visibility = View.VISIBLE
 
@@ -141,7 +231,14 @@ class StartActivity : AppCompatActivity() {
         }
 
         start_activity_Next!!.setOnClickListener {
-            startActivity(Intent(this@StartActivity, MultiSelectActivity::class.java))
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED && !isNotificationServiceEnabled() ) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+                    buildLeaveAlertDialog()
+                }
+            }else {
+                buildMultiSelectAlertDialog()
+            }
+            //startActivity(Intent(this@StartActivity, MultiSelectActivity::class.java))
         }
 
         //endregion
@@ -153,12 +250,22 @@ class StartActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                start_activity_ImportContactsLoading!!.visibility = View.GONE
+                start_activity_ImportContactsCheck!!.visibility = View.VISIBLE
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
                 val sync = Runnable {
                     ContactList(this).getAllContacsInfoSync(contentResolver)
                 }
                 start_activity_mDbWorkerThread.postTask(sync)
+            }else{
+                start_activity_ImportContactsLoading!!.visibility = View.GONE
+                start_activity_ImportContacts!!.visibility = View.VISIBLE
             }
+        }
+        if(REQUEST_CODE_SMS_AND_CALL==requestCode){
+
+            start_activity_PermissionsLoading!!.visibility = View.GONE
+            start_activity_PermissionsCheck!!.visibility = View.VISIBLE
         }
     }
 
@@ -170,7 +277,84 @@ class StartActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_CODE_READ_CONTACT = 2
+        const val REQUEST_CODE_SMS_AND_CALL=5
+    }
+    private fun buildMultiSelectAlertDialog(): androidx.appcompat.app.AlertDialog {
+        val alertDialog = MaterialAlertDialogBuilder(this)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setTitle(getString(R.string.notification_alert_dialog_title))
+                .setMessage(getString(R.string.notification_alert_dialog_message))
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    startActivity(Intent(this@StartActivity, MultiSelectActivity::class.java))
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.apply()
+                    closeContextMenu()
+                }
+                .setNegativeButton(R.string.alert_dialog_no)
+                { _, _ ->
+                    closeContextMenu()
+                    startActivity(Intent(this@StartActivity, MainActivity::class.java))
+                }
+                .show()
+
+
+        return alertDialog
+    }
+    private fun buildLeaveAlertDialog(): androidx.appcompat.app.AlertDialog {
+        val alertDialog = MaterialAlertDialogBuilder(this)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setTitle("Passer les autorisations")
+                .setMessage("Si vous sautez cette étpae les autorisations vous serons demandé au moment ou vous en avez besoin")
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    startActivity(Intent(this@StartActivity, MainActivity::class.java))
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.apply()
+                    closeContextMenu()
+                }
+                .setNegativeButton(R.string.alert_dialog_cancel)
+                { _, _ ->
+                    closeContextMenu()
+                }
+                .show()
+
+
+        return alertDialog
+    }
+    //endregion
+
+    private fun isNotificationServiceEnabled(): Boolean {
+        val pkgName = packageName
+        val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        if (!TextUtils.isEmpty(str)) {
+            val names = str.split(":")
+            for (i in names.indices) {
+                val cn = ComponentName.unflattenFromString(names[i])
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.packageName)) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 
-    //endregion
+    override fun onStart() {
+        super.onStart()
+        activityVisible=true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activityVisible=true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activityVisible=false
+    }
 }
