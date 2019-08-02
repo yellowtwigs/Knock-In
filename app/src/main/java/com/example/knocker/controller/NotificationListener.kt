@@ -352,7 +352,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun isPhoneNumber(title: String): Boolean {
         println("name equals :"+title)
-        val pregMatchString = "((\\+33|0)[0-9]{9})|(0[0-9]\\s([0-9]{2}\\s){3}[0-9]{2})"
+        val pregMatchString = "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))"
         return title.matches(pregMatchString.toRegex())
     }
 
