@@ -420,4 +420,12 @@
     <string name="add_new_contact_hint_nom_group">Group name</string>
 
     <!-- endregion -->
+    <!-- region startActivity -->
+    <string name="start_activity_title">Démarrage de Knocker</string>
+    <string name="start_activity_import_title">Importation des contacts</string>
+    <string name="start_activity_import_subtitle">Importer vos contacts Android dans Knocker et communiquer avec eux plus efficacement</string>
+    <string name="start_activity_notification_title">Activer les notifications</string>
+    <string name="start_activity_notification_subtitle">Activer le service et recevez des notifications personnalisés</string>
+    <string name="start_activity_button_notification">Activer</string>
+    <!-- endregion -->
 </resources>
