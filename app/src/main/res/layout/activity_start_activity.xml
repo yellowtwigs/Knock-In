@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="25dp"
-                android:text="Importation des contacts"
+                android:text="@string/start_activity_import_title"
                 android:textColor="@color/lightColor"
                 android:textSize="20sp" />
 
@@ -49,7 +49,7 @@
                 android:layout_below="@+id/start_activity_import_contacts_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:text="Importer vos contacts Android dans Knocker et communiquer avec eux plus efficacement"
+                android:text="@string/start_activity_import_subtitle"
                 android:textColor="@color/textColorLight"
                 android:textSize="14sp" />
 
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="25dp"
-                android:text=""
+                android:text="@string/start_activity_import_title"
                 android:textColor="@color/lightColor"
                 android:textSize="20sp" />
 
@@ -111,7 +111,7 @@
                 android:layout_below="@+id/start_activity_activate_notifications_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:text=""
+                android:text="@string/start_activity_import_subtitle"
                 android:textColor="@color/textColorLight"
                 android:textSize="14sp" />
 
@@ -122,7 +122,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="Activer" />
+                android:text="string/start_activity_button_notification" />
 
             <ProgressBar
                 android:id="@+id/start_activity_activate_notifications_loading"
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="25dp"
-                android:text="Autoriser la superposition"
+                android:text="@string/start_activity_superposition_title"
                 android:textColor="@color/lightColor"
                 android:textSize="20sp" />
 
@@ -172,7 +172,7 @@
                 android:layout_below="@+id/start_activity_superposition_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:text="Autorisez cette application à se superposer aux autres applications"
+                android:text="@string/start_activity_superposition_subtitle"
                 android:textColor="@color/textColorLight"
                 android:textSize="14sp" />
 
@@ -183,7 +183,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="Autoriser" />
+                android:text="@string/start_activity_button_superposition" />
 
             <ProgressBar
                 android:id="@+id/start_activity_superposition_loading"
@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="25dp"
-                android:text="Autorisations"
+                android:text="@string/start_activity_permission_title"
                 android:textColor="@color/lightColor"
                 android:textSize="20sp" />
 
@@ -233,7 +233,7 @@
                 android:layout_below="@+id/start_activity_permissions_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:text="Vous pourrez effectuer des appels et envoyer des sms depuis Knocker"
+                android:text="@string/start_activity_permission_subtitle"
                 android:textColor="@color/textColorLight"
                 android:textSize="14sp" />
 
@@ -244,7 +244,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="Autoriser" />
+                android:text="@string/start_activity_button_permission" />
 
             <ProgressBar
                 android:id="@+id/start_activity_permissions_loading"
@@ -276,7 +276,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="8dp"
-            android:text="Passer"
+            android:text="@string/start_activity_skip"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/start_activity_permissions_layout" />
@@ -289,7 +289,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="8dp"
-            android:text="Suivant"
+            android:text="@string/start_activity_next"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
