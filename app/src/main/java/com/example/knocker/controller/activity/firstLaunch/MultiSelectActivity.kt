@@ -1,22 +1,19 @@
-package com.example.knocker.controller.activity
+package com.example.knocker.controller.activity.firstLaunch
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.SelectContactAdapter
+import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -45,7 +42,6 @@ class MultiSelectActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.title = getString(R.string.multi_select_title)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
 
         //endregion
 
@@ -68,9 +64,7 @@ class MultiSelectActivity : AppCompatActivity() {
         multi_select_gridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             adapter!!.itemSelected(position)
             adapter!!.notifyDataSetChanged()
-            multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.getListContactSelect().size)
-
-            true
+            multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
         }
     }
 

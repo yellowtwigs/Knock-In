@@ -20,11 +20,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationSender
+import com.example.knocker.controller.activity.firstLaunch.MultiSelectActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 
 /**
  * La Classe qui permet d'activer ou desactiver les notifications de knocker
