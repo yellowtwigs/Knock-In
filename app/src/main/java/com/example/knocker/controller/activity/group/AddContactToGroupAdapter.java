@@ -68,6 +68,13 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         holder.contactSelect = listview.findViewById(R.id.add_group_contact_checkbox);
 
         assert contact != null;
+
+        if(selectContact.contains(contact)){
+            holder.contactSelect.setChecked(true);
+        }else{
+            holder.contactSelect.setChecked(false);
+        }
+
         if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -89,17 +96,15 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         holder.contactSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if (isChecked)
+                if (!selectContact.contains(contact)) {
                     selectContact.add(contact);
-                else
+                    holder.contactSelect.setChecked(true);
+                } else {
                     selectContact.remove(contact);
+                    holder.contactSelect.setChecked(false);
+                }
             }
         });
-        if(selectContact.contains(contact)){
-            holder.contactSelect.setChecked(true);
-        }else{
-            holder.contactSelect.setChecked(false);
-        }
         return listview;
     }
 
