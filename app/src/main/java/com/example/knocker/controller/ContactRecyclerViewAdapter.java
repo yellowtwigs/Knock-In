@@ -377,7 +377,16 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
-
+        holder.callCl.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
+                if (!phoneNumber.isEmpty()) {
+                    callPhone(phoneNumber);
+                }
+                return true;
+            }
+        });
         if (holder.editCl != null) {
             holder.editCl.setOnClickListener(listener);
         }
