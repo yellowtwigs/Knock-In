@@ -114,7 +114,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 }
                 R.id.nav_groups -> startActivity(Intent(this@ManageNotificationActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
-                R.id.nav_screen_config -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_manage_screen -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@ManageNotificationActivity, ManageKnockonsActivity::class.java))
@@ -136,7 +136,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 /*if (!isNotificationServiceEnabled) {
                    // buildNotificationServiceAlertDialog().show()
                 }*/
-                switchservice!!.setChecked(true)
+                switchservice!!.isChecked = true
                 edit.putBoolean("serviceNotif", true)
                 edit.putBoolean("popupNotif", true)
                 edit.apply()
@@ -152,7 +152,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 /*if (!isNotificationServiceEnabled) {
                    // buildNotificationServiceAlertDialog().show()
                 }else{*/
-                switchservice!!.setChecked(true)
+                switchservice!!.isChecked = true
                 edit.putBoolean("serviceNotif", true)
                 edit.putBoolean("mask_prio_1", true)
                 edit.apply()
@@ -173,8 +173,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                 }
             } else {
 
-                switchPopupNotif!!.setChecked(false)
-                switchMaskNotif!!.setChecked(false)
+                switchPopupNotif!!.isChecked = false
+                switchMaskNotif!!.isChecked = false
                 edit.putBoolean("serviceNotif", false)
                 edit.putBoolean("popupNotif", false)
                 edit.putBoolean("mask_prio_1", false)
@@ -302,9 +302,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 isTrue = true
             } else {
                 val runnable = Runnable {
-                    switchMaskNotif!!.setChecked(false)
-                    switchPopupNotif!!.setChecked(false)
-                    switchservice!!.setChecked(false)
+                    switchMaskNotif!!.isChecked = false
+                    switchPopupNotif!!.isChecked = false
+                    switchservice!!.isChecked = false
                 }
                 runOnUiThread(runnable)
             }
@@ -313,15 +313,10 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     private fun negativeAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
-        switchMaskNotif!!.setChecked(false)
-        switchPopupNotif!!.setChecked(false)
-        switchservice!!.setChecked(false)
+        switchMaskNotif!!.isChecked = false
+        switchPopupNotif!!.isChecked = false
+        switchservice!!.isChecked = false
         alertDialog.cancel()
-    }
-
-    private fun refreshActivity() {
-        startActivity(Intent(this@ManageNotificationActivity, ManageNotificationActivity::class.java))
-        finish()
     }
 
     private val isNotificationServiceEnabled: Boolean
@@ -365,7 +360,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
         val intent = Intent(applicationContext, NotificationSender::class.java)
-        intent.setAction("NOTIFICAION_TIME")
+        intent.action = "NOTIFICAION_TIME"
         val pendingIntent = PendingIntent.getBroadcast(applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)

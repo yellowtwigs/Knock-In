@@ -40,7 +40,7 @@ class MultiSelectActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
+        actionbar!!.setDisplayHomeAsUpEnabled(false)
         actionbar.title = getString(R.string.multi_select_title)
 
         //endregion
@@ -70,7 +70,7 @@ class MultiSelectActivity : AppCompatActivity() {
 
     private fun overlayAlertDialog(contactList: ArrayList<ContactWithAllInformation>): MaterialAlertDialogBuilder {
 
-        var message = ""
+        var message: String
 
         if (contactList.size == 0) {
             message = applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)

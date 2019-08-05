@@ -12,12 +12,14 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.telephony.SmsManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -45,8 +47,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
     private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
 
-    private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
-    private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
+    private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
+
+    private var numberForPermission = ""
 
     override fun getCount(): Int {
         return notifications.size
@@ -78,21 +81,29 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
 
         val app = view!!.findViewById<View>(R.id.notification_adapter_platform) as TextView
-        val layout = view.findViewById<View>(R.id.notification_adapter_layout) as ConstraintLayout
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
         val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
         val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
         val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as RelativeLayout
         val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as EditText
+        val showButton = view.findViewById<View>(R.id.item_notification_show_message) as AppCompatButton
+        val callButton = view.findViewById<View>(R.id.item_notification_call) as AppCompatButton
 
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
         app.text = convertPackageToString(sbp.appNotifier!!)
+
+        if (app.text == "WhatsApp" || app.text == "Message") {
+            callButton.visibility = View.VISIBLE
+        }
+
+
+
         content.text = sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
         //appImg.setImageResource(getApplicationNotifier(sbp));
 
-        content.setOnClickListener {
+        showButton.setOnClickListener {
             when (app.text) {
                 "Facebook" -> {
                     val uri = Uri.parse("facebook:/newsfeed")
@@ -130,7 +141,20 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     closeNotificationPopup()
                 }
                 "Message" -> {
-                    openSms(contact!!.getFirstPhoneNumber())
+                    openSms(contact!!.getFirstPhoneNumber(), "")
+                    closeNotificationPopup()
+                }
+            }
+        }
+
+        callButton.setOnClickListener {
+            when (app.text) {
+                "WhatsApp" -> {
+                    phoneCall(contact!!.getFirstPhoneNumber())
+                    closeNotificationPopup()
+                }
+                "Message" -> {
+                    phoneCall(contact!!.getFirstPhoneNumber())
                     closeNotificationPopup()
                 }
             }
@@ -171,22 +195,16 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                             sendMessageWithAndroidMessage(contact!!.getFirstPhoneNumber(), editText.text.toString())
                             //closeNotificationPopup()
                         } else {
-                            ActivityCompat.requestPermissions(Activity(), arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
-                            Toast.makeText(context, context.getString(R.string.multi_channel_no_permission), Toast.LENGTH_SHORT).show()
-
-                            if (ContextCompat.checkSelfPermission(Activity(), Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-                                if (ActivityCompat.shouldShowRequestPermissionRationale(Activity(), Manifest.permission.RECEIVE_SMS)) {
-                                } else {
-                                    ActivityCompat.requestPermissions(Activity(), arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
-                                }
-                            }
+                            //TODO In english
+                            Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knocker", Toast.LENGTH_LONG).show()
+                            openSms(contact!!.getFirstPhoneNumber(), editText.text.toString())
                         }
                     }
                 }
                 editText.setText("")
-                if(notifications.size>1) {
+                if (notifications.size > 1) {
                     notifications.removeAt(position)
-                }else{
+                } else {
                     closeNotificationPopup()
                 }
                 notifyDataSetChanged()
@@ -205,74 +223,38 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             e.printStackTrace()
         }
 
-        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"]!= null) {//image de l'expediteur provenant l'application source
+        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"] != null) {//image de l'expediteur provenant l'application source
             println("bitmap :" + sbp.statusBarNotificationInfo["android.largeIcon"]!!)
             val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
             senderImg.setImageBitmap(bitmap)
         }
-
-//        val listener = View.OnClickListener { v ->
-//            println("click on constraint layout")
-//            val appName = convertPackageToString(sbp.appNotifier)
-//            when (appName) {
-//                "Facebook" -> {
-//                    ContactGesture.openMessenger("", context)//TODO modifier si modification pour accès au post fb
-//                    closeNotificationPopup()
-//                }
-//                "Messenger" -> {
-//                    ContactGesture.openMessenger("", context)
-//                    closeNotificationPopup()
-//                }
-//                "WhatsApp" -> {
-//                    notification_adapeter_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
-//                    closeNotificationPopup()
-//                }
-//                "Gmail" -> {
-//                    ContactGesture.openGmail(context)
-//                    closeNotificationPopup()
-//                }
-//                "Message" -> {
-//                    openSms(sbp)
-//                    closeNotificationPopup()
-//                }
-//            }
-//        }
-
-//        content.setOnClickListener(listener)
-//        app.setOnClickListener(listener)
-//        app.setOnClickListener(listener)
-
-//        buttonSend.setOnClickListener {
-//            val msg = editText.text.toString()
-//            val phoneNumb = compose_message_PhoneNumberEditText!!.text.toString()
-//
-//            if (!TextUtils.isEmpty(msg) && !TextUtils.isEmpty(phoneNumb)) {
-//                if (checkPermission(Manifest.permission.SEND_SMS)) {
-//                    val smsManager = SmsManager.getDefault()
-//                    smsManager.sendTextMessage(phoneNumb, null, msg, null, null)
-//
-//                    val message = Message(msg, true, "", 0, currentDate, currentHour)
-//
-//                    compose_message_listOfMessage.add(message)
-//
-//                    compose_message_ListViewMessage!!.adapter = MessageListAdapter(this, compose_message_listOfMessage)
-//
-//                    compose_message_MessageEditText!!.text.clear()
-//                    Toast.makeText(this, "Message envoyé", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    Toast.makeText(this@ComposeMessageActivity, "Permission denied", Toast.LENGTH_SHORT).show()
-//                }
-//            } else {
-//                Toast.makeText(this@ComposeMessageActivity, "Enter a message and a phone number", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-
         return view
     }
 
-    private fun openSms(phoneNumber: String) {
+    private fun phoneCall(phoneNumber: String) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
+                numberForPermission = phoneNumber
+            } else {
+                val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
+                intent.flags = FLAG_ACTIVITY_NEW_TASK
+                if (numberForPermission.isEmpty()) {
+                    context.startActivity(intent)
+                } else {
+                    context.startActivity(intent)
+                    numberForPermission = ""
+                }
+            }
+        } else {
+            Toast.makeText(context, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openSms(phoneNumber: String, message: String) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
         intent.flags = FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra("sms_body", message)
 
         context.startActivity(intent)
     }
@@ -280,7 +262,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
 
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
         val message = "phone=" + converter06To33(phoneNumber)
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
 
@@ -308,18 +290,6 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val checkPermission = ContextCompat.checkSelfPermission(context, permission)
         return checkPermission == PackageManager.PERMISSION_GRANTED
     }
-
-//    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//        when (requestCode) {
-//            SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            }
-//            MY_PERMISSIONS_REQUEST_RECEIVE_SMS -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(context, "Thank You for permitting !", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(context, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
     private fun converter06To33(phoneNumber: String): String {
         return if (phoneNumber[0].toString() == "0") {

@@ -87,7 +87,7 @@ class NotificationListener : NotificationListenerService() {
         val sbp = StatusBarParcelable(sbn)
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
             sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
-            val name = sbp.statusBarNotificationInfo.get("android.title").toString()
+            val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val app = this.convertPackageToString(sbp.appNotifier!!)
 
             val gestionnaireContact = ContactList(this)
@@ -138,7 +138,7 @@ class NotificationListener : NotificationListenerService() {
                             }
                         }
                     } else {
-                        println("I don't know this contact" + contact)
+                        println("I don't know this contact$contact")
                         if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE) {
                             val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
                             if (screenListener.isKeyguardLocked) {
@@ -163,11 +163,10 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 
-
     private fun notificationNotDouble(notification: NotificationDB): Boolean {
 
         val lastInsertId = notification_listener_ContactsDatabase!!.notificationsDao().lastInsert()
-        println("dernière insertion " + lastInsertId)
+        println("dernière insertion $lastInsertId")
         val lastInsert = notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
 
         if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp - lastInsert.timestamp < 1000) {
@@ -184,12 +183,12 @@ class NotificationListener : NotificationListenerService() {
         if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"] != null) {
 
             return NotificationDB(null,
-                            sbp.tickerText.toString(),
-                            sbp.statusBarNotificationInfo["android.title"]!!.toString(),
-                            sbp.statusBarNotificationInfo["android.text"]!!.toString(),
-                            sbp.appNotifier!!, false,
-                            Calendar.getInstance().timeInMillis.toString().toLong(), 0,
-                            contactId)
+                    sbp.tickerText.toString(),
+                    sbp.statusBarNotificationInfo["android.title"]!!.toString(),
+                    sbp.statusBarNotificationInfo["android.text"]!!.toString(),
+                    sbp.appNotifier!!, false,
+                    Calendar.getInstance().timeInMillis.toString().toLong(), 0,
+                    contactId)
         } else {
             return null
         }
@@ -200,9 +199,9 @@ class NotificationListener : NotificationListenerService() {
         return !(sbp.statusBarNotificationInfo["android.title"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
                 or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
                 or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
-                or sbp.statusBarNotificationInfo["android.title"].toString().equals( "Chat heads active" )
-                or sbp.statusBarNotificationInfo["android.title"].toString().equals("Messenger")
-                or sbp.statusBarNotificationInfo["android.title"].toString().equals("Bulles de discussion activées"))
+                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Chat heads active")
+                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Messenger")
+                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
     }
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
@@ -247,7 +246,7 @@ class NotificationListener : NotificationListenerService() {
         popupDropable!!.setOnTouchListener { view, event ->
 
             val metrics = DisplayMetrics()
-            windowManager!!.getDefaultDisplay().getMetrics(metrics)
+            windowManager!!.defaultDisplay.getMetrics(metrics)
             when (event.action and MotionEvent.ACTION_MASK) {
 
                 MotionEvent.ACTION_DOWN -> {
@@ -287,7 +286,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun positionXIntoScreen(popupX: Float, deplacementX: Float, popupSizeX: Float): Float {
         val metrics = DisplayMetrics()
-        windowManager!!.getDefaultDisplay().getMetrics(metrics)
+        windowManager!!.defaultDisplay.getMetrics(metrics)
         if (popupX + deplacementX < 0) {
             return 0.0f
         } else if (popupX + deplacementX + popupSizeX < metrics.widthPixels) {
@@ -299,7 +298,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun positionYIntoScreen(popupY: Float, deplacementY: Float, popupSizeY: Float): Float {
         val metrics = DisplayMetrics()
-        windowManager!!.getDefaultDisplay().getMetrics(metrics)
+        windowManager!!.defaultDisplay.getMetrics(metrics)
         if (popupY + deplacementY < 0) {
             return 0.0f
         } else if (popupY + deplacementY + popupSizeY < metrics.heightPixels) {
@@ -351,7 +350,7 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun isPhoneNumber(title: String): Boolean {
-        println("name equals :"+title)
+        println("name equals :" + title)
         val pregMatchString = "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))"
         return title.matches(pregMatchString.toRegex())
     }

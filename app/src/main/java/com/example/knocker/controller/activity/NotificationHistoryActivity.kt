@@ -110,7 +110,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         notification_history_DrawerLayout = findViewById(R.id.notification_history_drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_screen_config)
+        val nav_item = menu.findItem(R.id.nav_manage_screen)
         nav_item.isChecked = true
         navigationView!!.menu.getItem(0).isChecked = true
 
@@ -125,7 +125,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_groups -> startActivity(Intent(this@NotificationHistoryActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this, ManageNotificationActivity::class.java))
-                R.id.nav_screen_config -> startActivity(Intent(this, ManageMyScreenActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@NotificationHistoryActivity, SettingsActivity::class.java))
+                R.id.nav_manage_screen -> startActivity(Intent(this, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this, ManageKnockonsActivity::class.java))

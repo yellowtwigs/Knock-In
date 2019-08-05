@@ -56,14 +56,13 @@ class NotificationSender : BroadcastReceiver() {
                             nbOfnotif++
                         }
                         i++
-                        println("before test nb" + nbOfnotif)
+                        println("before test nb$nbOfnotif")
                     }
                 }
                 println("after")
                 // calendar.time.after(Date(notificationDB.timestamp))
                 println("size of notif" + main_ContactsDatabase.notificationsDao().getIntTime().toString())
-                val intentSender = Intent(context, MainActivity::class.java)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
                 val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_letter_k)

@@ -2,9 +2,12 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +48,8 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     /*private val PERMISSIONS_REQUEST_READ_CALL_LOG = 100*/
+
+    private var numberForPermission = ""
 
     private var phone_log_DrawerLayout: DrawerLayout? = null
 
@@ -219,7 +224,8 @@ class PhoneLogActivity : AppCompatActivity() {
                 R.id.nav_groups -> startActivity(Intent(this@PhoneLogActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@PhoneLogActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@PhoneLogActivity, ManageNotificationActivity::class.java))
-                R.id.nav_screen_config -> startActivity(Intent(this@PhoneLogActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@PhoneLogActivity, SettingsActivity::class.java))
+                R.id.nav_manage_screen -> startActivity(Intent(this@PhoneLogActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@PhoneLogActivity, ManageKnockonsActivity::class.java))
@@ -665,14 +671,23 @@ class PhoneLogActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("ShowToast")
-    private fun phoneCall(phoneNumberEntered: String) {
-        if (!TextUtils.isEmpty(phoneNumberEntered)) {
-            val dial = "tel:$phoneNumberEntered"
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+    private fun phoneCall(phoneNumber: String) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
+                numberForPermission = phoneNumber
+            } else {
+                if (numberForPermission.isEmpty()) {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                } else {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                    numberForPermission = ""
+                }
+            }
         } else {
             Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
-        }//pas besoin de vérification du numéro de téléphonne
+        }
     }
+
     //endregion
 }

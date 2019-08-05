@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      */
 
     @RequiresApi(Build.VERSION_CODES.P)
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -232,7 +232,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_groups -> startActivity(Intent(this@MainActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
-                R.id.nav_screen_config -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                R.id.nav_manage_screen -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
@@ -244,6 +245,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
+        }
+
+        val view = layoutInflater.inflate(R.layout.nav_header_drawer, null)
+        val nav_header_drawer_Copyright = view.findViewById<RelativeLayout>(R.id.nav_header_drawer_copyright)
+        nav_header_drawer_Copyright.setOnClickListener {
+            startActivity(Intent(this@MainActivity, KnockerInfos::class.java))
         }
 
         //endregion

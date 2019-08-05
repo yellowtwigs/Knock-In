@@ -106,13 +106,6 @@ class StartActivity : AppCompatActivity() {
             start_activity_ImportContacts!!.visibility = View.INVISIBLE
             start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
 
-            val SPLASH_DISPLAY_LENGHT = 3000
-            /*
-            Handler().postDelayed({
-                start_activity_ImportContactsLoading!!.visibility = View.INVISIBLE
-                start_activity_ImportContactsCheck!!.visibility = View.VISIBLE
-
-            }, SPLASH_DISPLAY_LENGHT.toLong())*/
             val displayLoading = Runnable {
                 start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
             }
@@ -126,11 +119,6 @@ class StartActivity : AppCompatActivity() {
 
             val SPLASH_DISPLAY_LENGHT = 2000
 
-            /* Handler().postDelayed({
-                 start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
-                 start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
-
-             }, SPLASH_DISPLAY_LENGHT.toLong())*/
             val displayLoading = Runnable {
                 start_activity_ActivateNotificationsLoading!!.visibility = View.VISIBLE
             }
@@ -156,8 +144,6 @@ class StartActivity : AppCompatActivity() {
                         }, SPLASH_DISPLAY_LENGHT.toLong())
                     }
                     runOnUiThread(displayLoading)
-
-                    //  }, SPLASH_DISPLAY_LENGHT.toLong())
                 } else {
                     val displayLoading = Runnable {
                         start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
@@ -175,12 +161,6 @@ class StartActivity : AppCompatActivity() {
             start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 3000
-
-            /* Handler().postDelayed({
-                 start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
-                 start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
-
-             }, SPLASH_DISPLAY_LENGHT.toLong())*/
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -203,8 +183,6 @@ class StartActivity : AppCompatActivity() {
 
 
                     val displayLoading = Runnable {
-                        //start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
-                        //start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
                         Handler().postDelayed({
                             start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
                             start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
@@ -228,8 +206,6 @@ class StartActivity : AppCompatActivity() {
                 }
             }
             verifiedSuperposition.start()
-
-
         }
 
         start_activity_Permissions!!.setOnClickListener {
@@ -239,8 +215,6 @@ class StartActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), REQUEST_CODE_SMS_AND_CALL)
             start_activity_Permissions!!.visibility = View.INVISIBLE
             start_activity_PermissionsLoading!!.visibility = View.VISIBLE
-
-
         }
 
         start_activity_Next!!.setOnClickListener {

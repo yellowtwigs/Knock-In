@@ -192,12 +192,12 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         if (firstGroup == null) {
             System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
+            assert roundedLayout != null;
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             } else {
-                Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             }
@@ -313,8 +313,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonEdit.setId(4);
         buttonMail.setId(5);
 
-        PackageManager pckManager = context.getPackageManager();
-
         //buttonMessenger.setImageDrawable(iconMessenger);
 
         buttonCall.setImageResource(R.drawable.ic_google_call);
@@ -378,100 +376,93 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         final FloatingActionMenu quickMenu = builder.build();
         listCircularMenu.add(quickMenu);
         //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
-        View.OnClickListener buttonListener = new View.OnClickListener() {
-            @SuppressLint("IntentReset")
-            @Override
-            public void onClick(View v) {
+        View.OnClickListener buttonListener = v -> {
 
-               /* if (v.getId() == buttonMessenger.getId()) {
-                    try {
-                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
-                    } catch (ActivityNotFoundException e) {
-                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
-                    }
-                } else*/
-                if (v.getId() == buttonWhatsApp.getId()) {
-
-                    ContactWithAllInformation contactWithAllInformation = getItem(position);
-                    ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
-                } else if (v.getId() == buttonEdit.getId()) {
-
-                    Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId", contact.getId());
-                    context.startActivity(intent);
-
-                } else if (v.getId() == buttonCall.getId()) {
-
-                    callPhone(getItem(position).getFirstPhoneNumber());
-
-                } else if (v.getId() == buttonSMS.getId()) {
-
-                    String phone = getItem(position).getFirstPhoneNumber();
-                    Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
-                    context.startActivity(i);
-
-                } else if (v.getId() == buttonMail.getId()) {
-
-                    String mail = getItem(position).getFirstMail();
-                    Intent intent = new Intent(Intent.ACTION_SENDTO);
-                    intent.setData(Uri.parse("mailto:"));
-                    //intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length())});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "");
-                    intent.putExtra(Intent.EXTRA_TEXT, "");
-                    System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
-                    context.startActivity(intent);
+           /* if (v.getId() == buttonMessenger.getId()) {
+                try {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
+                } catch (ActivityNotFoundException e) {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
                 }
-                selectMenu.close(false);
+            } else*/
+            if (v.getId() == buttonWhatsApp.getId()) {
+
+                ContactWithAllInformation contactWithAllInformation = getItem(position);
+                ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
+            } else if (v.getId() == buttonEdit.getId()) {
+
+                Intent intent = new Intent(context, EditContactActivity.class);
+                intent.putExtra("ContactId", contact.getId());
+                context.startActivity(intent);
+
+            } else if (v.getId() == buttonCall.getId()) {
+
+                callPhone(getItem(position).getFirstPhoneNumber());
+
+            } else if (v.getId() == buttonSMS.getId()) {
+
+                String phone = getItem(position).getFirstPhoneNumber();
+                Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
+                context.startActivity(i);
+
+            } else if (v.getId() == buttonMail.getId()) {
+
+                String mail = getItem(position).getFirstMail();
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                //intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "");
+                intent.putExtra(Intent.EXTRA_TEXT, "");
+                System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
+                context.startActivity(intent);
             }
+            selectMenu.close(false);
         };
 
-        View.OnLongClickListener gridlongClick = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
+        View.OnLongClickListener gridlongClick = v -> {
 
-                if (context instanceof GroupManagerActivity) {
-                    if (!modeMultiSelect) {
-                        v.setTag(holder);
-                        ContactDB contact = gestionnaireContact.getContacts().get(position).getContactDB();
-                        assert contact != null;
+            if (context instanceof GroupManagerActivity) {
+                if (!modeMultiSelect) {
+                    v.setTag(holder);
+                    ContactDB contact1 = gestionnaireContact.getContacts().get(position).getContactDB();
+                    assert contact1 != null;
 
-                        holder.contactFirstNameView.setText(contact.getFirstName());
+                    holder.contactFirstNameView.setText(contact1.getFirstName());
 
-                        if (listOfItemSelected.contains(gestionnaireContact.getContacts().get(position))) {
-                            listOfItemSelected.remove(gestionnaireContact.getContacts().get(position));
+                    if (listOfItemSelected.contains(gestionnaireContact.getContacts().get(position))) {
+                        listOfItemSelected.remove(gestionnaireContact.getContacts().get(position));
 
-                            if (!contact.getProfilePicture64().equals("")) {
-                                Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                                holder.contactRoundedImageView.setImageBitmap(bitmap);
-                            } else {
-                                holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-                            }
+                        if (!contact1.getProfilePicture64().equals("")) {
+                            Bitmap bitmap = base64ToBitmap(contact1.getProfilePicture64());
+                            holder.contactRoundedImageView.setImageBitmap(bitmap);
                         } else {
-                            listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
-                            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact1.getProfilePicture()));
                         }
-
-                        ((GroupManagerActivity) context).gridLongItemClick(position);
-
-                        modeMultiSelect = true;
-                    }
-                } else {
-                    int firstPosVis;
-                    if (position < 2 * len) {
-                        firstPosVis = 0;
                     } else {
-                        firstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
+                        listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                     }
-                    System.out.println("selection" + firstPosVis);
-                    if (context instanceof MainActivity) {
-                        ((MainActivity) context).longGridItemClick(len, position, firstPosVis);
-                    } else {
-                        ((GroupActivity) context).longGridItemClick(len, position, firstPosVis);
-                    }
+
+                    ((GroupManagerActivity) context).gridLongItemClick(position);
+
+                    modeMultiSelect = true;
                 }
-                return true;
+            } else {
+                int firstPosVis;
+                if (position < 2 * len) {
+                    firstPosVis = 0;
+                } else {
+                    firstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
+                }
+                System.out.println("selection" + firstPosVis);
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).longGridItemClick(len, position, firstPosVis);
+                } else {
+                    ((GroupActivity) context).longGridItemClick(len, position, firstPosVis);
+                }
             }
+            return true;
         };
 
         buttonCall.setOnLongClickListener(v -> {
@@ -512,14 +503,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);
 
-        holder.gridContactItemLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (quickMenu.isOpen()) {
-                    quickMenu.close(false);
-                } else {
-                    quickMenu.open(false);
-                }
+        holder.gridContactItemLayout.setOnClickListener(v -> {
+            if (quickMenu.isOpen()) {
+                quickMenu.close(false);
+            } else {
+                quickMenu.open(false);
             }
         });
         return gridview;

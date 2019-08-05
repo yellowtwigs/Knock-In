@@ -1,10 +1,10 @@
 package com.example.knocker.controller;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
@@ -16,12 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.knocker.R;
-import com.example.knocker.controller.CircularImageView;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.model.ContactList;
@@ -32,9 +32,6 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 public class SelectContactAdapter extends BaseAdapter {
 
@@ -68,6 +65,7 @@ public class SelectContactAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View gridview = convertView;
@@ -75,25 +73,17 @@ public class SelectContactAdapter extends BaseAdapter {
 
         if (gridview == null) {
             gridview = layoutInflater.inflate(R.layout.grid_multi_select_item_layout, null);
-//            gridview = layoutInflater.inflate(R.layout.list_contact_item_layout, null);
-
 
             holder = new ViewHolder();
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
             holder.groupWordingConstraint = gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
             holder.groupWordingTv = gridview.findViewById(R.id.grid_adapter_wording_group_tv);
-//            holder.whatsapp_click_bubbles = gridview.findViewById(R.id.whatsapp_click_bubbles);
-//            holder.messenger_click_bubbles = gridview.findViewById(R.id.messenger_click_bubbles);
-//            holder.phone_call_click_bubbles = gridview.findViewById(R.id.phone_call_click_bubbles);
-//            holder.sms_click_bubbles = gridview.findViewById(R.id.sms_click_bubbles);
-
-            SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
 
             holder.contactFirstNameView = gridview.findViewById(R.id.grid_adapter_contactFirstName);
-            ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
+            RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
             ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
             if (len == 3) {
