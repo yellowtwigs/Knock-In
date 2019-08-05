@@ -72,10 +72,11 @@ class AddNewGroupActivity : AppCompatActivity() {
 
     private fun addToGroup(listContact: List<ContactDB>, name: String) {
         val group= GroupDB(null,name,"")
+        println("list is "+ listContact)
         val groupId=contactsDatabase!!.GroupsDao().insert(group)
             listContact.forEach {
                 val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
-                contactsDatabase!!.LinkContactGroupDao().insert(link)
+                println("contact db id"+contactsDatabase!!.LinkContactGroupDao().insert(link))
             }
 
     }

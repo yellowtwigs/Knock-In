@@ -358,18 +358,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_mail_layout" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/add_new_contact_priority"
-            android:layout_width="125dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/add_new_contact_priority_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="?attr/spinnerColor"
+            app:layout_constraintBottom_toBottomOf="@+id/add_new_contact_priority_explain"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_new_contact_add_field_view" />
+            app:layout_constraintTop_toTopOf="@+id/add_new_contact_priority_explain">
+
+            <Spinner
+                android:id="@+id/add_new_contact_priority"
+                android:layout_width="@dimen/spinner_width"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/add_new_contact_priority_explain"
@@ -381,7 +389,7 @@
             android:background="?attr/backgroundColor"
             android:textColor="?attr/textColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/add_new_contact_priority"
+            app:layout_constraintStart_toEndOf="@+id/add_new_contact_priority_layout"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
 
 
