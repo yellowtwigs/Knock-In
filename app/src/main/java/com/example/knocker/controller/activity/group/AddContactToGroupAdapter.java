@@ -95,6 +95,11 @@ public class AddContactToGroupAdapter extends BaseAdapter {
                     selectContact.remove(contact);
             }
         });
+        if(selectContact.contains(contact)){
+            holder.contactSelect.setChecked(true);
+        }else{
+            holder.contactSelect.setChecked(false);
+        }
         return listview;
     }
 
