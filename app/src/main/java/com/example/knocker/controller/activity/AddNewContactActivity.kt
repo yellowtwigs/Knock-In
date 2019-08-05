@@ -44,6 +44,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_FirstName: TextInputLayout? = null
     private var add_new_contact_LastName: TextInputLayout? = null
     private var add_new_contact_PhoneNumber: TextInputLayout? = null
+    private var add_new_contact_fixNumber: TextInputLayout? = null
     private var add_new_contact_Email: TextInputLayout? = null
     private var add_new_contact_RoundedImageView: CircularImageView? = null
     private var add_new_contact_Priority: Spinner? = null
@@ -103,6 +104,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_FirstName = findViewById(R.id.add_new_contact_first_name_id)
         add_new_contact_LastName = findViewById(R.id.add_new_contact_last_name_id)
         add_new_contact_PhoneNumber = findViewById(R.id.add_new_contact_phone_number_id)
+        add_new_contact_fixNumber = findViewById(R.id.add_new_contact_phone_number_fix_id)
         add_new_contact_Email = findViewById(R.id.add_new_contact_mail_id)
         add_new_contact_RoundedImageView = findViewById(R.id.add_new_contact_rounded_image_view_id)
         add_new_contact_Priority = findViewById(R.id.add_new_contact_priority)
@@ -217,7 +219,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                if (isEmptyField(add_new_contact_FirstName) && isEmptyField(add_new_contact_LastName) && isEmptyField(add_new_contact_PhoneNumber) && isEmptyField(add_new_contact_Email)) {
+                if (isEmptyField(add_new_contact_FirstName) && isEmptyField(add_new_contact_LastName) && isEmptyField(add_new_contact_PhoneNumber)&& isEmptyField(add_new_contact_fixNumber) && isEmptyField(add_new_contact_Email)) {
                     val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -279,8 +281,12 @@ class AddNewContactActivity : AppCompatActivity() {
                             contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
+                        if(add_new_contact_fixNumber!!.editText!!.text.toString() !== ""){
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
+                            main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                        }
                         if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 1)
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
 
