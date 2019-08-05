@@ -2,25 +2,44 @@ package com.example.knocker.controller.activity.firstLaunch
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.ActivityInfo
+import android.graphics.Point
 import android.os.Bundle
+import android.os.Handler
 import android.text.method.LinkMovementMethod
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.knocker.R
 
 class FirstLaunchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_first_launch)
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_first_launch_bigger)
+            height in 2000..2499 -> setContentView(R.layout.activity_first_launch)
+            height in 1100..1999 -> setContentView(R.layout.activity_first_launch_smaller_screen)
+            height < 1100 -> setContentView(R.layout.activity_first_launch_mini_screen)
+        }
+
+        println(height)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val buttonAccept: Button = findViewById(R.id.first_launch_accept_politique)
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         val edit = sharedFirstLaunch.edit()
         val textViewCLUF = findViewById<TextView>(R.id.first_launch_politique)
         textViewCLUF.movementMethod = LinkMovementMethod.getInstance()
-        //textViewCLUF.setText(Html.fromHtml(this.getString(R.string.first_launch_confidentiality)))
 
         buttonAccept.setOnClickListener {
             edit.putBoolean("first_launch", false)

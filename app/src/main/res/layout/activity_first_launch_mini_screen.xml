@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/first_launch_welcome_long_text"
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/first_launch_welcome_long_text"
@@ -46,7 +46,7 @@
         android:id="@+id/first_launch_politique"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="80dp"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/first_launch_confidentiality"
@@ -57,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/first_launch_logo" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/first_launch_accept_politique"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

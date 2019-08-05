@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.controller.activity.MultiSelectActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
