@@ -120,6 +120,8 @@
     <string name="add_new_contact_mail">E-mail</string>
     <string name="add_new_contact_mail_mobile">Office</string>
 
+    <string name="add_new_contact_priority_0">Unwanted</string>
+
     <string-array name="add_new_contact_mail_arrays">
         <item>Office</item>
         <item>Home</item>

@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.GroupEditAdapter
+import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -102,6 +103,9 @@ class EditContactActivity : AppCompatActivity() {
     private var haveMail: Boolean = false
 
     private var recyclerGroup: RecyclerView? = null
+
+    private var fromGroupActivity = false
+
     //endregion
 
     @SuppressLint("InflateParams", "ClickableViewAccessibility")
@@ -128,6 +132,7 @@ class EditContactActivity : AppCompatActivity() {
 
         val intent = intent
         edit_contact_id = intent.getIntExtra("ContactId", 1)
+        fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
         gestionnaireContacts = ContactList(this.applicationContext)
 
         //endregion
@@ -212,7 +217,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_mail = mail
             edit_contact_mail_property = tagMail
 
-            println("fix number egale à " + fixNumber)
+            println("fix number egale à $fixNumber")
             if (phoneNumber != "") {
                 havePhone = true
             }
@@ -308,8 +313,6 @@ class EditContactActivity : AppCompatActivity() {
 
         // drop list
 
-
-
         val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
         val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
         //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -322,7 +325,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
         edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
 
-        val priority_list = arrayOf("0", "1", "2")
+        val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
         val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
         //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         edit_contact_Priority!!.adapter = priority_adapter
@@ -451,6 +454,11 @@ class EditContactActivity : AppCompatActivity() {
                             .setMessage(R.string.edit_contact_alert_dialog_cancel_message)
                             .setBackground(getDrawable(R.color.backgroundColor))
                             .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                                if (fromGroupActivity) {
+                                    startActivity(Intent(this@EditContactActivity, GroupActivity::class.java))
+                                } else {
+                                    startActivity(Intent(this@EditContactActivity, MainActivity::class.java))
+                                }
                                 finish()
                             }
                             .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
@@ -593,14 +601,19 @@ class EditContactActivity : AppCompatActivity() {
                             //println("edit contact rounded == null "+edit_contact_rounded_image )
                             edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_Priority!!.selectedItem.toString().toInt())
                         }
-                        contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)!!
                         //println("modify on contact " + contact.contactDB)
-                        val intent = Intent(this@EditContactActivity, MainActivity::class.java)
 
-                        intent.putExtra("ContactId", edit_contact_id!!)
-
-                        startActivity(intent)
-                        finish()
+                        if (fromGroupActivity) {
+                            val intent = Intent(this@EditContactActivity, GroupActivity::class.java)
+                            intent.putExtra("ContactId", edit_contact_id!!)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            val intent = Intent(this@EditContactActivity, MainActivity::class.java)
+                            intent.putExtra("ContactId", edit_contact_id!!)
+                            startActivity(intent)
+                            finish()
+                        }
                     } else {
                         Toast.makeText(this, R.string.edit_contact_toast, Toast.LENGTH_LONG).show()
                     }

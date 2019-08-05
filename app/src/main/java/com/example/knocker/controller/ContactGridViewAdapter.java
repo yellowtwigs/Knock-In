@@ -393,8 +393,12 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
                 Intent intent = new Intent(context, EditContactActivity.class);
                 intent.putExtra("ContactId", contact.getId());
-                context.startActivity(intent);
 
+                if(context instanceof GroupActivity){
+                    intent.putExtra("fromGroupActivity", true);
+                }
+
+                context.startActivity(intent);
             } else if (v.getId() == buttonCall.getId()) {
 
                 callPhone(getItem(position).getFirstPhoneNumber());

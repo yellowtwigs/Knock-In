@@ -134,19 +134,19 @@ class AddNewContactActivity : AppCompatActivity() {
         //endregion
 
         // drop list
-        val priority_list = arrayOf(0, 1, 2)
+        val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
         val array_adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, priority_list)
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
 
         //disable keyboard window
-        add_new_contact_layout.setOnTouchListener(View.OnTouchListener { v, event ->
+        add_new_contact_layout.setOnTouchListener { _, _ ->
             val view = this@AddNewContactActivity.currentFocus
             val imm = this@AddNewContactActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (view != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
             true
-        })
+        }
         //
         add_new_contact_Priority!!.adapter = array_adapter
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -155,25 +155,29 @@ class AddNewContactActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                println("position equals" + position)
-                if (position == 0) {
-                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority0))
-                    add_new_contact_RoundedImageView!!.visibility = View.GONE
-                    add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
-                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
-                } else if (position == 1) {
-                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority1))
-                    add_new_contact_RoundedImageView!!.visibility = View.GONE
-                    add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
-                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
-                } else if (position == 2) {
-                    add_new_contact_PriorityExplain!!.setText(getString(R.string.add_new_contact_priority2))
-                    add_new_contact_RoundedImageView!!.visibility = View.GONE
-                    add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
-                    add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                println("position equals$position")
+                when (position) {
+                    0 -> {
+                        add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority0)
+                        add_new_contact_RoundedImageView!!.visibility = View.GONE
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    }
+                    1 -> {
+                        add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority1)
+                        add_new_contact_RoundedImageView!!.visibility = View.GONE
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority2)
+                        add_new_contact_RoundedImageView!!.visibility = View.GONE
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    }
                 }
                 println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
             }
