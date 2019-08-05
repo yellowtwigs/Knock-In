@@ -44,7 +44,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private var notification_history_DrawerLayout: DrawerLayout? = null
     private var notification_BottomNavigationView: BottomNavigationView? = null
     private var notification_Search_TextView: TextView? = null
-    var notification_Adapter:NotificationHistoryAdapter?=null
+    private var notification_Adapter: NotificationHistoryAdapter? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
@@ -412,36 +412,36 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("filtre_message", true)) {
-        /*    notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+            /*    notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
 
-            val listTmp = mutableListOf<NotificationDB>()
-            listTmp.addAll(notification_history_ListOfNotificationDB)
+                val listTmp = mutableListOf<NotificationDB>()
+                listTmp.addAll(notification_history_ListOfNotificationDB)
 
-            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
-            listTmp.addAll(notification_history_ListOfNotificationDB)
-            if (stringSearch.isNotEmpty()) {
-                val regex = (".*(" + stringSearch + ").*").toRegex()
-                listTmp.forEach {
-                    if (!(it.contactName.toLowerCase().matches(regex) || it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
-                        notification_history_ListOfNotificationDB.remove(it)
+                val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
+                listTmp.addAll(notification_history_ListOfNotificationDB)
+                if (stringSearch.isNotEmpty()) {
+                    val regex = (".*(" + stringSearch + ").*").toRegex()
+                    listTmp.forEach {
+                        if (!(it.contactName.toLowerCase().matches(regex) || it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
+                            notification_history_ListOfNotificationDB.remove(it)
+                        }
+                    }
+                } else {
+                    listTmp.forEach {
+                        if (!isMessagingApp(it.platform)) {
+                            notification_history_ListOfNotificationDB.remove(it)
+                        }
                     }
                 }
-            } else {
-                listTmp.forEach {
-                    if (!isMessagingApp(it.platform)) {
-                        notification_history_ListOfNotificationDB.remove(it)
-                    }
-                }
-            }
-*/
+    */
             notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             if (stringSearch.isEmpty()) {
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
-            }else{
+            } else {
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
-                println("notification list after request"+notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
+                println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
             }
             val listTmp = mutableListOf<NotificationDB>()
             listTmp.addAll(notification_history_ListOfNotificationDB)

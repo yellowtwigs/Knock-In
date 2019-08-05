@@ -29,6 +29,8 @@ import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.StatusBarParcelable
+import com.r0adkll.slidr.Slidr
+import com.r0adkll.slidr.model.SlidrInterface
 import java.util.*
 
 
@@ -50,6 +52,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
 
     private var numberForPermission = ""
+
+    private var slidr : SlidrInterface? = null
 
     override fun getCount(): Int {
         return notifications.size
@@ -89,6 +93,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val showButton = view.findViewById<View>(R.id.item_notification_show_message) as AppCompatButton
         val callButton = view.findViewById<View>(R.id.item_notification_call) as AppCompatButton
 
+//        slidr = Slidr.attach(this.context as Activity)
+
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
@@ -97,8 +103,6 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         if (app.text == "WhatsApp" || app.text == "Message") {
             callButton.visibility = View.VISIBLE
         }
-
-
 
         content.text = sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
         //appImg.setImageResource(getApplicationNotifier(sbp));
@@ -251,6 +255,16 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         }
     }
 
+    //region ========================================== Functions ===========================================
+
+    fun lockSlide(view: View){
+        slidr!!.lock()
+    }
+
+    fun unLockSlide(view: View){
+        slidr!!.unlock()
+    }
+
     private fun openSms(phoneNumber: String, message: String) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
         intent.flags = FLAG_ACTIVITY_NEW_TASK
@@ -383,4 +397,5 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //        return null
 //    }//TODO : trouver une place pour toutes les méthodes des contacts
 
+    //endregion
 }
