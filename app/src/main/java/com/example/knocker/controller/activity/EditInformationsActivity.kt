@@ -128,7 +128,8 @@ class EditInformationsActivity : AppCompatActivity() {
                 }
                 R.id.nav_groups -> startActivity(Intent(this@EditInformationsActivity, GroupManagerActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@EditInformationsActivity, ManageNotificationActivity::class.java))
-                R.id.nav_screen_config -> startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@EditInformationsActivity, SettingsActivity::class.java))
+                R.id.nav_manage_screen -> startActivity(Intent(this@EditInformationsActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@EditInformationsActivity, ManageKnockonsActivity::class.java))

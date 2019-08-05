@@ -37,6 +37,8 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".controller.activity.SettingsActivity"></activity>
+        <activity android:name=".controller.activity.KnockerInfos" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity" />
         <activity android:name=".controller.activity.AddNewGroupActivity" />
         <activity android:name=".controller.activity.group.DeleteContactToGroup" />
@@ -52,10 +54,11 @@
         <activity android:name=".controller.activity.group.GroupManagerActivity" />
         <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
         <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".controller.activity.PhoneLogActivity" />
         <activity android:name=".controller.activity.HelpActivity" />
@@ -73,6 +76,7 @@
         <activity android:name=".controller.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
