@@ -41,6 +41,7 @@
     <string name="left_drawer_my_groups">Manage my groups</string>
     <string name="left_drawer_information">My personal data</string>
     <string name="left_drawer_notif_config">Manage my notifications</string>
+    <string name="left_drawer_settings">Settings</string>
     <string name="left_drawer_my_screen">Display options</string>
 
     <string name="left_drawer_data_access">Data access</string>
@@ -342,6 +343,8 @@
     <!-- region NotifAdapter -->
 
     <string name="notif_adapter_edit_text_hint">Write your message</string>
+    <string name="notif_adapter_show_message_button">Show</string>
+    <string name="notif_adapter_call">Call</string>
 
     <!-- endregion -->
 
