@@ -1,6 +1,7 @@
 package com.example.knocker.controller.activity.group;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -16,6 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,7 @@ import com.example.knocker.R;
 import com.example.knocker.model.ContactsRoomDatabase;
 import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+import com.example.knocker.model.ModelDB.GroupDB;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -170,7 +173,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     System.out.println("BUTTON CLICK");
-                    PopupMenu popupMenu = new PopupMenu(mContext, v);
+                    final PopupMenu popupMenu = new PopupMenu(mContext, v);
                     popupMenu.inflate(R.menu.menu_manage_group);
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
@@ -200,10 +203,11 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     mDbWorkerThread.start();
                                     contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(mContext);
                                     assert contactsDatabase != null;
-                                    System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
-                                    contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
-                                    if (mContext instanceof GroupManagerActivity)
-                                        ((GroupManagerActivity) mContext).refreshList();
+                                   // System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
+                                    alertDialog(mSections.get(position).getIdGroup().intValue(),contactsDatabase);
+                                    //contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
+                                    /*if (mContext instanceof GroupManagerActivity)
+                                        ((GroupManagerActivity) mContext).refreshList();*/
                                     break;
                                 default:
                                     System.out.println("always in default");
@@ -341,5 +345,18 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         intent.putExtra(Intent.EXTRA_SUBJECT, "");
         intent.putExtra(Intent.EXTRA_TEXT, "");
         mContext.startActivity(intent);
+    }
+    private void alertDialog( int idGroup, ContactsRoomDatabase contactsDatabase){
+        new AlertDialog.Builder(mContext)
+                .setTitle("Effacer groupe")
+                .setMessage(" voici le groupe qui va être supprimmer : " + contactsDatabase.GroupsDao().getGroup(idGroup).getName())
+                .setPositiveButton(android.R.string.yes,  (dialog, id) -> {
+                    contactsDatabase.GroupsDao().deleteGroupById(idGroup);
+                    if (mContext instanceof GroupManagerActivity)
+                     ((GroupManagerActivity) mContext).refreshList();
+                }
+                )
+                .setNegativeButton(android.R.string.no, null)
+                .show();
     }
 }
