@@ -303,7 +303,7 @@ class EditContactActivity : AppCompatActivity() {
 //                alert_dialog_FieldAdded.adapter = customAdapterEditText
 //            }
 
-            MaterialAlertDialogBuilder(this)
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle(R.string.edit_contact_add_field)
                     .setView(alertView)
                     .show()
@@ -768,7 +768,7 @@ class EditContactActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun OverlayAlertDialog(): AlertDialog? {
 
-        return MaterialAlertDialogBuilder(this)
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.alert_dialog_overlay_title)
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setMessage(this.resources.getString(R.string.alert_dialog_overlay_message))

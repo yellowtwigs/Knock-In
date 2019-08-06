@@ -171,7 +171,7 @@ class EditInformationsActivity : AppCompatActivity() {
         //region ========================================= Listener =========================================
 
         edit_informations_ProfileImage!!.setOnClickListener {
-            SelectImage()
+            selectImage()
         }
 
         edit_informations_ModeEditionActivated!!.setOnClickListener {
@@ -212,7 +212,7 @@ class EditInformationsActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun SelectImage() {
+    private fun selectImage() {
 
         val items = arrayOf<CharSequence>(getString(R.string.edit_contact_alert_dialog_photo_camera)
                 , getString(R.string.edit_contact_alert_dialog_photo_galery)
@@ -341,7 +341,7 @@ class EditInformationsActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.help)
                         .setMessage(this.resources.getString(R.string.help_my_informations))
                         .show()

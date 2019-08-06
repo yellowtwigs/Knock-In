@@ -232,7 +232,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.help)
                         .setBackground(getDrawable(R.color.backgroundColor))
                         .setMessage(this.resources.getString(R.string.help_notification_manager))
@@ -246,7 +246,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     private fun buildNotificationServiceAlertDialog(): androidx.appcompat.app.AlertDialog {
         val inflater: LayoutInflater = this.layoutInflater
         val alertView: View = inflater.inflate(R.layout.alert_dialog_catch_notification, null)
-        val alertDialog = MaterialAlertDialogBuilder(this)
+        val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setView(alertView)
                 .show()
 
@@ -260,7 +260,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     private fun buildMultiSelectAlertDialog(): androidx.appcompat.app.AlertDialog {
-        val alertDialog = MaterialAlertDialogBuilder(this)
+        val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setTitle(getString(R.string.notification_alert_dialog_title))
                 .setMessage(getString(R.string.notification_alert_dialog_message))

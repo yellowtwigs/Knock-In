@@ -373,7 +373,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.help)
                         .setBackground(getDrawable(R.color.backgroundColor))
                         .setMessage(this.resources.getString(R.string.help_notification_history))

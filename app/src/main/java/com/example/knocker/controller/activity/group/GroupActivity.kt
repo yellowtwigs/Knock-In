@@ -417,7 +417,7 @@ class GroupActivity : AppCompatActivity() {
                         index++
                     }
                     changedContactList.forEach { changedContact ->
-                        MaterialAlertDialogBuilder(this)
+                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle("Contact modifié")
                                 .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'adresse d'Android ou de Knocker ?")
                                 .setPositiveButton("Knocker") { _, _ ->
@@ -704,7 +704,7 @@ class GroupActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.help)
                         .setMessage(this.resources.getString(R.string.help_group))
                         .show()
@@ -1162,7 +1162,7 @@ class GroupActivity : AppCompatActivity() {
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
         val editText = EditText(this)
         editText.hint = "group" + group_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.main_alert_dialog_group_title)
                 .setMessage(R.string.main_alert_dialog_group_subtitle)
                 .setBackground(getDrawable(R.color.backgroundColor))
