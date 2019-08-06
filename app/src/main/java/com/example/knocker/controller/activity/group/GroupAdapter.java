@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -60,7 +61,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.SimpleViewHo
         holder.firstName.setText(contact.getFirstName());
         holder.lastName.setText(contact.getLastName());
 
-        ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.firstName.getLayoutParams();
+        RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.firstName.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.circularImageView.getLayoutParams();
 
 
