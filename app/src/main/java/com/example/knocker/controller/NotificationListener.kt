@@ -36,7 +36,7 @@ class NotificationListener : NotificationListenerService() {
     private var oldPosY: Float = 0.0f
     private var popupView: View? = null
     private var windowManager: WindowManager? = null
-
+    private var listViews:ListView?= null
     /**
      * La première fois que le service est crée nous définnissons les valeurs pour les threads
      */
@@ -218,6 +218,10 @@ class NotificationListener : NotificationListenerService() {
                 Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
                 //notifLayout(sbp, popupView)
                 adapterNotification!!.addNotification(sbp)
+                if(System.currentTimeMillis()-adapterNotification!!.getlastChangeMillis()<3000){
+
+                    listViews!!.setSelection(adapterNotification!!.getlastChangePos()+1)
+                }
             }
         }
     }
@@ -313,7 +317,7 @@ class NotificationListener : NotificationListenerService() {
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
         adapterNotification = NotifAdapter(applicationContext, notifications, windowManager!!, view!!)
-        val listViews = view.findViewById<ListView>(R.id.notification_pop_up_listView)
+        listViews = view.findViewById<ListView>(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification
         val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE

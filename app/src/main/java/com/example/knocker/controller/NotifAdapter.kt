@@ -12,7 +12,9 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.telephony.SmsManager
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +31,7 @@ import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.StatusBarParcelable
-import com.r0adkll.slidr.Slidr
-import com.r0adkll.slidr.model.SlidrInterface
+import java.security.Timestamp
 import java.util.*
 
 
@@ -50,10 +51,12 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
-
     private var numberForPermission = ""
 
-    private var slidr : SlidrInterface? = null
+    private var lastChanged:Long= 0
+    private var lastChangedPosition = 0
+    private var newMessage:Boolean=false
+    private val listOftext: MutableList<String> = mutableListOf()
 
     override fun getCount(): Int {
         return notifications.size
@@ -66,17 +69,28 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     override fun getItemId(position: Int): Long {
         return 0
     }
-
+    fun getlastChangePos():Int{
+        return lastChangedPosition
+    }
+    fun getlastChangeMillis():Long{
+        return lastChanged
+    }
     @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         notification_adapter_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         notification_adapter_mDbWorkerThread.start()
 
 
-        var view = convertView//valeur qui prendra les changement
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_notification_adapter, parent, false)
+        var view = LayoutInflater.from(context).inflate(R.layout.item_notification_adapter, parent, false)
+
+        if(listOftext.isEmpty()){
+            for(i in 1..notifications.size){
+                listOftext.add("")
+            }
+        }else if(listOftext.size!=notifications.size){
+            listOftext.add(0,"")
         }
+
 
         val sbp = getItem(position)
 
@@ -93,12 +107,33 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val showButton = view.findViewById<View>(R.id.item_notification_show_message) as AppCompatButton
         val callButton = view.findViewById<View>(R.id.item_notification_call) as AppCompatButton
 
-//        slidr = Slidr.attach(this.context as Activity)
 
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
         app.text = convertPackageToString(sbp.appNotifier!!)
+
+
+        editText.setText(listOftext.get(position))
+        System.out.println("text content"+listOftext.get(position)+" message"+sbp.statusBarNotificationInfo["android.text"])
+        if( newMessage && System.currentTimeMillis()- NotificationListener.adapterNotification!!.getlastChangeMillis()<=10000){
+            println("last text changed")
+            (parent as ListView).post{
+                parent.requestFocusFromTouch();
+                parent .setSelection(lastChangedPosition+1);
+                parent .requestFocus();
+            }
+            editText.isFocusable=true
+            newMessage=false
+        }else if (newMessage && System.currentTimeMillis()- NotificationListener.adapterNotification!!.getlastChangeMillis()>10000 ){
+            (parent as ListView).post{
+                parent.requestFocusFromTouch();
+                parent .setSelection(0);
+                parent .requestFocus();
+            }
+            newMessage=false
+        }
+
 
         if (app.text == "WhatsApp" || app.text == "Message") {
             callButton.visibility = View.VISIBLE
@@ -213,8 +248,24 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 }
                 notifyDataSetChanged()
             }
-        }
 
+        }
+        editText.addTextChangedListener(object:TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                lastChanged= System.currentTimeMillis()
+                lastChangedPosition=position
+                listOftext.removeAt(position)
+                listOftext.add(position, editText.text.toString())
+                println("text change at"+lastChanged+" at position "+position )
+            }
+
+        })
         val pckg = sbp.appNotifier
         if (sbp.statusBarNotificationInfo["android.icon"] != null) {
             val iconID = Integer.parseInt(sbp.statusBarNotificationInfo["android.icon"]!!.toString())
@@ -257,13 +308,6 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
     //region ========================================== Functions ===========================================
 
-    fun lockSlide(view: View){
-        slidr!!.lock()
-    }
-
-    fun unLockSlide(view: View){
-        slidr!!.unlock()
-    }
 
     private fun openSms(phoneNumber: String, message: String) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
@@ -364,6 +408,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
     fun addNotification(sbp: StatusBarParcelable) {
         notifications.add(0, sbp)
+        newMessage=true
         this.notifyDataSetChanged()
     }
 
