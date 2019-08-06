@@ -2,13 +2,11 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -17,7 +15,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.text.Editable
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,10 +24,10 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
@@ -45,8 +42,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
-import com.google.android.youtube.player.YouTubeBaseActivity
-import com.google.android.youtube.player.YouTubePlayerView
 import kotlin.collections.ArrayList
 
 /**
@@ -332,16 +327,36 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
 
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
+                var lastVisiblePos =main_GridView!!.firstVisiblePosition
                 override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
-
+                    if (gridViewAdapter != null) {
+                        gridViewAdapter!!.closeMenu()
+                    }
                 }
 
                 override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
                     if (gridViewAdapter != null) {
                         gridViewAdapter!!.closeMenu()
                     }
+                   println("last visible pos"+lastVisiblePos+"first visible item "+firstVisibleItem+" visible item count"+visibleItemCount+" total item count "+totalItemCount)
+                    if(lastVisiblePos<firstVisibleItem){
+                       if(main_FloatingButtonAdd!!.visibility== View.VISIBLE) {
+                           val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
+                           main_FloatingButtonAdd!!.startAnimation(disparition)
+                           main_FloatingButtonAdd!!.visibility = View.GONE
+                       }
+                        lastVisiblePos=firstVisibleItem
+                    }else if (lastVisiblePos>firstVisibleItem){
+                        if(main_FloatingButtonAdd!!.visibility==View.GONE){
+                            val apparition = AnimationUtils.loadAnimation(baseContext,R.anim.reapparrition)
+                            main_FloatingButtonAdd!!.startAnimation(apparition)
+                            main_FloatingButtonAdd!!.visibility=View.VISIBLE
+                        }
+                        lastVisiblePos=firstVisibleItem
+                    }
                 }
             })
+
         }
 
         if (main_RecyclerView != null) {
@@ -354,6 +369,31 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             edit.apply()
 
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+            main_RecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    val totalItemCount = recyclerView.layoutManager!!.itemCount
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    println("dx "+dx+ " dy"+ dy)
+                    if(dy>10){
+                        if(main_FloatingButtonAdd!!.visibility== View.VISIBLE) {
+                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
+                            main_FloatingButtonAdd!!.startAnimation(disparition)
+                            main_FloatingButtonAdd!!.visibility = View.GONE
+                        }
+                    }else if (dy<-10){
+                        if(main_FloatingButtonAdd!!.visibility==View.GONE){
+                            val apparition = AnimationUtils.loadAnimation(baseContext,R.anim.reapparrition)
+                            main_FloatingButtonAdd!!.startAnimation(apparition)
+                            main_FloatingButtonAdd!!.visibility=View.VISIBLE
+                        }
+                    }
+                }
+            })
         }
 
         //main_mDbWorkerThread.postTask(printContacts)

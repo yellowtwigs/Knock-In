@@ -600,10 +600,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     }
 
-    public void onScroll() {
+    /*public void onScroll() {
         if (selectMenu != null)
             selectMenu.updateItemPositions();
-    }
+    }*/
 
     static class ViewHolder {
         TextView contactFirstNameView;
