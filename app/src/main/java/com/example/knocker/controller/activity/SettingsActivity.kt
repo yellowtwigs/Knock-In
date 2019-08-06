@@ -110,8 +110,7 @@ class SettingsActivity : AppCompatActivity() {
                 R.id.nav_groups -> startActivity(Intent(this@SettingsActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@SettingsActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@SettingsActivity, ManageNotificationActivity::class.java))
-                R.id.nav_manage_screen -> {
-                }
+                R.id.nav_manage_screen -> startActivity(Intent(this@SettingsActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@SettingsActivity, ManageKnockonsActivity::class.java))

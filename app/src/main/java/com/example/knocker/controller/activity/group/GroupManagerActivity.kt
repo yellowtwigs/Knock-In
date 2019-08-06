@@ -121,6 +121,7 @@ class GroupManagerActivity : AppCompatActivity() {
                 R.id.nav_notif_config -> startActivity(Intent(this@GroupManagerActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@GroupManagerActivity, SettingsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@GroupManagerActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_settings ->startActivity(Intent(this@GroupManagerActivity, SettingsActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@GroupManagerActivity, ManageKnockonsActivity::class.java))

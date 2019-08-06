@@ -115,8 +115,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                 R.id.nav_groups -> startActivity(Intent(this@ManageNotificationActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_data_access -> {
-                }
+                R.id.nav_data_access -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_settings ->startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this@ManageNotificationActivity, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }
