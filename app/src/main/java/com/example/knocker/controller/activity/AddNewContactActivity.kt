@@ -136,7 +136,6 @@ class AddNewContactActivity : AppCompatActivity() {
         // drop list
         val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
         val array_adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, priority_list)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
 
         //disable keyboard window
         add_new_contact_layout.setOnTouchListener { _, _ ->
@@ -182,20 +181,16 @@ class AddNewContactActivity : AppCompatActivity() {
                 println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
             }
         }
-        add_new_contact_Priority!!.setSelection(1)
         add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
         add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
         println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
 
-
         val phoneTagList = resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
         val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         add_new_contact_PhoneProperty!!.adapter = adapterPhoneTagList
 
         val mailTagList = resources.getStringArray(R.array.add_new_contact_mail_arrays)
         val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         add_new_contact_MailProperty!!.adapter = adapterMailTagList
         android.R.layout.simple_spinner_item
     }
