@@ -370,6 +370,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.putString("tri", "contact")
                 editor.apply()
                 updateFilter()
+                item.isChecked = true
             }
             R.id.item_help -> {
                 MaterialAlertDialogBuilder(this)
