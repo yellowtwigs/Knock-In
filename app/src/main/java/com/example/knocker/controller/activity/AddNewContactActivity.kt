@@ -266,7 +266,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
-                            avatar, add_new_contact_Priority!!.selectedItem.toString().toInt(),
+                            avatar, add_new_contact_Priority!!.selectedItemPosition,
                             add_new_contact_ImgString!!)
                     println(contactData)
                     var isDuplicate = false
