@@ -90,11 +90,11 @@
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">#f8b122</item>
+        <item name="android:textColor">#ffb71a</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">#f8b122</item>
+        <item name="android:textColor">#ffb71a</item>
     </style>
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">

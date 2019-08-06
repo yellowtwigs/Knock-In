@@ -428,9 +428,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                     //pour chaque contact changé on affiche une popup avec un choix ( garder la version Android ou Knocker
                     changedContactList.forEach { changedContact ->
-                        MaterialAlertDialogBuilder(this)
+                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle(R.string.main_edited_contact)
-                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + changedContact.first.firstName + " " + changedContact.first.lastName + this.resources.getString(R.string.main_content_edited_contact_2))
+                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + this.resources.getString(R.string.main_content_edited_contact_2))
                                 .setPositiveButton(R.string.main_knocker_edited_contact) { _, _ ->
                                     // on garde la version Knocker
                                 }
@@ -720,7 +720,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             R.id.item_help -> {
                 //click sur le bouton help
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.help)
                         .setMessage(this.resources.getString(R.string.help_main))
                         .setBackground(getDrawable(R.color.backgroundColor))

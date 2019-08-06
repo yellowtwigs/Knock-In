@@ -70,7 +70,7 @@ class DeleteContactToGroup : AppCompatActivity() {
                 message+="\n- "+it.firstName+" "+it.lastName
             }
         }
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.delete_contact_title)
                 .setMessage(message)
                 .setPositiveButton(R.string.edit_contact_validate) { dialog, which ->

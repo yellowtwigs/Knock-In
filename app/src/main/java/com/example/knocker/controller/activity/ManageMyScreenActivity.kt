@@ -427,7 +427,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this)
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(R.string.help)
                         .setMessage(this.resources.getString(R.string.help_manage_screen))
                         .show()

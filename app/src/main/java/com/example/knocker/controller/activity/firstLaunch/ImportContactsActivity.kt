@@ -76,7 +76,7 @@ class ImportContactsActivity : AppCompatActivity() {
 
     private fun overlayAlertDialog(): AlertDialog? {
 
-        return MaterialAlertDialogBuilder(this)
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(applicationContext.resources.getString(R.string.app_name))
                 .setMessage(applicationContext.resources.getString(R.string.import_contacts_alert_dialog))
                 .setPositiveButton("Ok"

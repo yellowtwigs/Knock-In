@@ -128,7 +128,7 @@ class AddNewContactActivity : AppCompatActivity() {
         //region ==================================== SetOnClickListener ====================================
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
-            SelectImage()
+            selectImage()
         }
 
         //endregion
@@ -136,6 +136,7 @@ class AddNewContactActivity : AppCompatActivity() {
         // drop list
         val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
         val array_adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, priority_list)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
 
         //disable keyboard window
         add_new_contact_layout.setOnTouchListener { _, _ ->
@@ -181,16 +182,20 @@ class AddNewContactActivity : AppCompatActivity() {
                 println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
             }
         }
+        add_new_contact_Priority!!.setSelection(1)
         add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
         add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
         println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
 
+
         val phoneTagList = resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
         val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         add_new_contact_PhoneProperty!!.adapter = adapterPhoneTagList
 
         val mailTagList = resources.getStringArray(R.array.add_new_contact_mail_arrays)
         val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
+        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         add_new_contact_MailProperty!!.adapter = adapterMailTagList
         android.R.layout.simple_spinner_item
     }
@@ -317,7 +322,7 @@ class AddNewContactActivity : AppCompatActivity() {
         return field!!.editText!!.text.toString().isEmpty()
     }
 
-    private fun SelectImage() {
+    private fun selectImage() {
 
         val items = arrayOf<CharSequence>(getString(R.string.add_new_contact_alert_dialog_photo_camera)
                 , getString(R.string.add_new_contact_alert_dialog_photo_galery)
@@ -331,17 +336,16 @@ class AddNewContactActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.add_new_contact_alert_dialog_photo_title)
         builder.setItems(items) { dialog, i ->
-            if (items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_camera)) {
-                openCamera()
+            when {
+                items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_camera) -> openCamera()
+                items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_galery) -> {
 
-            } else if (items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_galery)) {
+                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    intent.type = "image/*"
+                    startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
 
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                intent.type = "image/*"
-                startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
-
-            } else if (items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_cancel)) {
-                dialog.dismiss()
+                }
+                items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_cancel) -> dialog.dismiss()
             }
         }
         builder.show()
@@ -360,11 +364,11 @@ class AddNewContactActivity : AppCompatActivity() {
     private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
         var cursor: Cursor? = null
         try {
-            val proj = arrayOf(MediaStore.Images.Media.DATA)
-            cursor = context.contentResolver.query(contentUri, proj, null, null, null)
-            val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            val arrayOfMediaStore = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.contentResolver.query(contentUri, arrayOfMediaStore, null, null, null)
+            val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             cursor.moveToFirst()
-            return cursor.getString(column_index)
+            return cursor.getString(columnIndex)
         } finally {
             if (cursor != null) {
                 cursor.close()
@@ -410,14 +414,12 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     private fun exifToDegrees(exifOrientation: Int): Int {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270
+        when (exifOrientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> return 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> return 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> return 270
+            else -> return 0
         }
-        return 0
     }
 
     private fun bitmapToBase64(bitmap: Bitmap): String {
@@ -454,5 +456,4 @@ class AddNewContactActivity : AppCompatActivity() {
         }
         return null
     }//TODO : trouver une place pour toutes les méthodes des contacts
-
 }

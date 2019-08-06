@@ -286,7 +286,7 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun buildMultiSelectAlertDialog(): androidx.appcompat.app.AlertDialog {
-        return MaterialAlertDialogBuilder(this)
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setTitle(getString(R.string.notification_alert_dialog_title))
                 .setMessage(getString(R.string.notification_alert_dialog_message))
@@ -315,7 +315,7 @@ class StartActivity : AppCompatActivity() {
             getString(R.string.start_activity_skip_alert_dialog_message)
         }
 
-        return MaterialAlertDialogBuilder(this)
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
                 .setMessage(message)
