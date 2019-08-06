@@ -116,12 +116,18 @@ class GroupActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_group)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
@@ -192,10 +198,10 @@ class GroupActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_home)
-        nav_item.isChecked = true
-        val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
-        nav_sync_contact.isVisible = true
+        val navItem = menu.findItem(R.id.nav_home)
+        navItem.isChecked = true
+        val navSyncContact = menu.findItem(R.id.nav_sync_contact)
+        navSyncContact.isVisible = true
 
         navigationView!!.menu.getItem(0).isChecked = true
 
@@ -259,12 +265,10 @@ class GroupActivity : AppCompatActivity() {
         gestionnaireContacts = ContactList(this.applicationContext)
 
         if (group_GridView != null) {
-            if (sharedPreferences.getString("tri", "group") == "nom") {
-                gestionnaireContacts!!.sortContactByFirstNameAZ()
-            } else if (sharedPreferences.getString("tri", "group") == "priorite") {
-                gestionnaireContacts!!.sortContactByPriority()
-            } else {
-                gestionnaireContacts!!.sortContactByGroup()
+            when {
+                sharedPreferences.getString("tri", "group") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+                sharedPreferences.getString("tri", "group") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
+                else -> gestionnaireContacts!!.sortContactByGroup()
             }
 
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
@@ -387,7 +391,7 @@ class GroupActivity : AppCompatActivity() {
         }
 
         //Sync contact
-        nav_sync_contact.setOnMenuItemClickListener {
+        navSyncContact.setOnMenuItemClickListener {
             //check les permissions
             drawerLayout!!.closeDrawers()
             group_GridView!!.visibility = View.GONE

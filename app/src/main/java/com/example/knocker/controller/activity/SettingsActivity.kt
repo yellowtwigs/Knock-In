@@ -94,8 +94,8 @@ class SettingsActivity : AppCompatActivity() {
 
         val navigationView = findViewById<NavigationView>(R.id.settings_nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_manage_screen)
-        nav_item.isChecked = true
+        val navItem = menu.findItem(R.id.nav_manage_screen)
+        navItem.isChecked = true
 
         navigationView!!.menu.getItem(4).isChecked = true
 

@@ -1,5 +1,6 @@
 package com.example.knocker.controller.activity
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,6 +27,18 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var groupName:TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            setTheme(R.style.AppThemeDark)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
+
+        //endregion
+
         setContentView(R.layout.activity_add_new_group)
         main_ListView = findViewById(R.id.list_view_id)
         groupName = findViewById(R.id.add_group_name)

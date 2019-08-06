@@ -4,33 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activity.group.AddContactToGroup">
+    android:background="?attr/backgroundColor"
+    tools:context=".controller.activity.group.AddContactToGroupActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/delete_contact_from_group_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:titleTextColor="?attr/textColor"
         app:itemTextColor="?attr/textColor"
-        android:layout_marginBottom="8dp"
         android:background="?attr/backgroundColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Enlever contact" />
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/delete_contact_from_group_separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/darkColor"
+        android:layout_below="@+id/delete_contact_from_group_toolbar"/>
+
 
     <ListView
-        android:id="@+id/delete_contact_listview"
-        android:layout_width="403dp"
+        android:id="@+id/delete_contact_from_group_listview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="-6dp"
-        android:layout_marginEnd="8dp"
+        android:layout_below="@+id/delete_contact_from_group_separator"
         android:backgroundTint="?attr/backgroundColor"
+        android:layout_centerHorizontal="true"
         android:columnWidth="120dp"
-        android:gravity="center"
         android:numColumns="auto_fit"
         android:visibility="visible" />
-
 </RelativeLayout>

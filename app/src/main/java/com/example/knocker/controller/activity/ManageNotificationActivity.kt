@@ -44,12 +44,18 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_manage_notification)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
@@ -99,8 +105,8 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view_manage_notif)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_notif_config)
-        nav_item.isChecked = true
+        val navItem = menu.findItem(R.id.nav_notif_config)
+        navItem.isChecked = true
 
         navigationView!!.menu.getItem(3).isChecked = true
 

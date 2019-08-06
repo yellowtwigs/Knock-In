@@ -3,7 +3,6 @@ package com.example.knocker.controller.activity.group
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.graphics.Color
@@ -45,6 +44,8 @@ class GroupManagerActivity : AppCompatActivity() {
     private var group_manager_FloatingButtonSend: FloatingActionButton? = null
     private var group_manager_FloatingButtonMail: FloatingActionButton? = null
 
+    private var group_manager_FloatingButtonAddNewGroup: FloatingActionButton? = null
+
     private var group_manager_RecyclerView: RecyclerView? = null
 
     private var gestionnaireContacts: ContactList? = null
@@ -52,7 +53,6 @@ class GroupManagerActivity : AppCompatActivity() {
 
     private var firstClick: Boolean = true
 
-    private var floating_add_new_group:FloatingActionButton?= null
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +73,7 @@ class GroupManagerActivity : AppCompatActivity() {
 
         //region ========================================= Toolbar ==========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.group_toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.group_manager_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.run {
@@ -87,14 +87,15 @@ class GroupManagerActivity : AppCompatActivity() {
 
         //region ====================================== FindViewById ========================================
 
-        group_manager_DrawerLayout = findViewById(R.id.group_drawer_layout)
-        group_manager_RecyclerView = findViewById(R.id.group_list_view_id)
-        group_manager_NavigationView = findViewById(R.id.nav_view)
+        group_manager_DrawerLayout = findViewById(R.id.group_manager_drawer_layout)
+        group_manager_RecyclerView = findViewById(R.id.group_manager_recycler_view)
+        group_manager_NavigationView = findViewById(R.id.group_manager_nav_view)
 
         group_manager_FloatingButtonSMS = findViewById(R.id.group_manager_floating_button_sms)
         group_manager_FloatingButtonSend = findViewById(R.id.group_manager_floating_button_send_id)
         group_manager_FloatingButtonMail = findViewById(R.id.group_manager_floating_button_gmail)
-        floating_add_new_group = findViewById(R.id.group_manager_floating_button_add)
+        group_manager_FloatingButtonAddNewGroup = findViewById(R.id.group_manager_floating_button_add)
+
         //endregion
 
         group_manager_RecyclerView!!.setHasFixedSize(true)
@@ -102,10 +103,10 @@ class GroupManagerActivity : AppCompatActivity() {
         //region ======================================= Navigation =========================================
 
         val menu = group_manager_NavigationView!!.menu
-        val nav_item = menu.findItem(R.id.nav_home)
-        nav_item.isChecked = true
-        val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
-        nav_sync_contact.isVisible = true
+        val navItem = menu.findItem(R.id.nav_home)
+        navItem.isChecked = true
+        val navSyncContact = menu.findItem(R.id.nav_sync_contact)
+        navSyncContact.isVisible = true
 
         group_manager_NavigationView!!.menu.getItem(1).isChecked = true
 
@@ -119,9 +120,8 @@ class GroupManagerActivity : AppCompatActivity() {
                 }
                 R.id.nav_informations -> startActivity(Intent(this@GroupManagerActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@GroupManagerActivity, ManageNotificationActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this@GroupManagerActivity, SettingsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@GroupManagerActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_settings ->startActivity(Intent(this@GroupManagerActivity, SettingsActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@GroupManagerActivity, SettingsActivity::class.java))
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@GroupManagerActivity, ManageKnockonsActivity::class.java))
@@ -130,7 +130,7 @@ class GroupManagerActivity : AppCompatActivity() {
                 R.id.nav_help -> startActivity(Intent(this@GroupManagerActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.group_drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.group_manager_drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
         }
@@ -173,7 +173,7 @@ class GroupManagerActivity : AppCompatActivity() {
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
         }
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter = SectionGroupAdapter(this, R.layout.recycler_adapter_section, group_manager_RecyclerView, adapter)
+        val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapter)
         sectionAdapter.setSections(sections.toArray(sectionList))
         println("taille list group " + listContactGroup.size)
         // val adapter= GroupListViewAdapter(group,this,len)
@@ -222,8 +222,8 @@ class GroupManagerActivity : AppCompatActivity() {
             }
             monoChannelMailClick(listOfMailContactSelected)
         }
-        floating_add_new_group!!.setOnClickListener {
-            val intent=Intent(this@GroupManagerActivity, AddNewGroupActivity::class.java)
+        group_manager_FloatingButtonAddNewGroup!!.setOnClickListener {
+            val intent = Intent(this@GroupManagerActivity, AddNewGroupActivity::class.java)
             startActivity(intent)
         }
 
@@ -359,7 +359,7 @@ class GroupManagerActivity : AppCompatActivity() {
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
         }
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter = SectionGroupAdapter(this, R.layout.recycler_adapter_section, group_manager_RecyclerView, adapter)
+        val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapter)
         sectionAdapter.setSections(sections.toArray(sectionList))
         group_manager_RecyclerView!!.adapter = sectionAdapter
 

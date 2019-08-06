@@ -58,7 +58,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ========================================== Theme ===========================================
+        //region ======================================== Theme Dark ========================================
 
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
@@ -138,8 +138,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         val navigationView = findViewById<NavigationView>(R.id.manage_my_screen_nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_manage_screen)
-        nav_item.isChecked = true
+        val navItem = menu.findItem(R.id.nav_manage_screen)
+        navItem.isChecked = true
 
         navigationView!!.menu.getItem(4).isChecked = true
 

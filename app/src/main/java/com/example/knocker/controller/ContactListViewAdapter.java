@@ -86,16 +86,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
 
-//        if (contactName.length() > 15) {
-//
-//            Spannable spanFistName = new SpannableString(contactName);
-//            spanFistName.setSpan(new RelativeSizeSpan(1.0f), 0, contactName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            holder.contactFirstNameView.setText(spanFistName);
-//
-//            contactName = contact.getFirstName() + " " + contact.getLastName();
-//            contactName = contactName.substring(0, 15) + "..";
-//        }
-
         holder.contactFirstNameView.setText(contactName);
 
         View.OnClickListener listener = v -> {
@@ -148,6 +138,12 @@ public class ContactListViewAdapter extends BaseAdapter {
     public ArrayList<String> getListOfNumberSelected() {
         return listOfNumberSelected;
     }
+
+    public ArrayList<AppCompatImageView> getListItemChannelSelected() {
+        return listItemChannelSelected;
+    }
+
+
 
     private int randomDefaultImage(int avatarId) {
         switch (avatarId) {

@@ -8,7 +8,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.telephony.SmsManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
 import android.widget.RelativeLayout
@@ -43,13 +46,29 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
+
     private var sendValidate = false
+    private var refreshNow = false
 
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            setTheme(R.style.AppThemeDark)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
+
+        //endregion
+
         setContentView(R.layout.activity_multi_channel)
+
+        askForSMSPermissions()
 
         //region ========================================== Toolbar =========================================
 
@@ -97,50 +116,73 @@ class MultiChannelActivity : AppCompatActivity() {
         multi_channel_SendMessageButton!!.setOnClickListener {
             if (multi_channel_SendMessageEditText!!.text.toString() != "") {
                 if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
-                    if (checkPermission(Manifest.permission.SEND_SMS)) {
-                        multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
-                        sendValidate = true
-                    } else {
-                       // ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
-                        Toast.makeText(this, getString(R.string.multi_channel_no_permission), Toast.LENGTH_SHORT).show()
+                    multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
 
-                        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-                            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
-                            } else {
-                                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
-                            }
-                        }*/
+                    if (multi_channel_listViewAdapter!!.listOfMailSelected.size == 0) {
+                        sendValidate = true
+                        refreshNow = true
                     }
                 }
 
                 if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
                     multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+
                     sendValidate = true
+                    refreshNow = false
+
+                    if (multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
+                        sendValidate = true
+                        refreshNow = false
+                    }
 
                 }
 
                 if (multi_channel_listViewAdapter!!.listOfMailSelected.size == 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
-                    Toast.makeText(this, getString(R.string.multi_channel_list_of_channel_selected_empty), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.multi_channel_list_of_channel_selected_empty), Toast.LENGTH_LONG).show()
                     sendValidate = false
+                    refreshNow = false
                 }
 
                 hideKeyboard()
+
+                if (refreshNow) {
+                    refreshActivity()
+                }
+
             } else {
                 Toast.makeText(this, getString(R.string.multi_channel_empty_field), Toast.LENGTH_SHORT).show()
                 hideKeyboard()
             }
         }
 
+        multi_channel_SendMessageEditText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        multi_channel_SendMessageEditText!!.setOnClickListener {
+
+        }
+
         //endregion
     }
+
     //region ======================================= Functions ==============================================
 
     private fun refreshActivity() {
         if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
             startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            hideKeyboard()
             finish()
         } else {
             startActivity(Intent(this@MultiChannelActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            hideKeyboard()
             finish()
         }
     }
@@ -172,6 +214,19 @@ class MultiChannelActivity : AppCompatActivity() {
         }
     }
 
+    private fun askForSMSPermissions() {
+        if (!checkPermission(Manifest.permission.SEND_SMS)) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
+                } else {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
+                }
+            }
+        } else {
+        }
+    }
+
     private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
         for (i in 0 until listOfPhoneNumber.size) {
             val smsManager = SmsManager.getDefault()
@@ -193,7 +248,6 @@ class MultiChannelActivity : AppCompatActivity() {
     }
 
     private fun hideKeyboard() {
-        // Check if no view has focus:
         val view = this.currentFocus
 
         view?.let { v ->
@@ -213,27 +267,6 @@ class MultiChannelActivity : AppCompatActivity() {
     override fun onBackPressed() {
         refreshActivity()
     }
-
-    /*private fun multiChannelWhatsapp(listOfPhoneNumber: ArrayList<String>, msg: String) {
-
-        val intent = Intent(Intent.ACTION_VIEW)
-
-        var message = "phone=" + converter06To33(listOfPhoneNumber[0])
-        for (i in 1 until listOfPhoneNumber.size) {
-            message += "," + converter06To33(listOfPhoneNumber[i])
-        }
-
-        for (i in 0 until listOfPhoneNumber.size) {
-            intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
-        }
-        startActivity(intent)
-    }*/
-
-    /*private fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0] == '0') {
-            "+33$phoneNumber"
-        } else phoneNumber
-    }*/
 
     //endregion
 }

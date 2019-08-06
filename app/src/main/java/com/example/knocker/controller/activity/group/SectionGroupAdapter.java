@@ -1,7 +1,6 @@
 package com.example.knocker.controller.activity.group;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -17,7 +16,6 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +23,12 @@ import com.example.knocker.R;
 import com.example.knocker.model.ContactsRoomDatabase;
 import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
-import com.example.knocker.model.ModelDB.GroupDB;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements PopupMenu.OnMenuItemClickListener {
 
@@ -185,12 +182,12 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             switch (item.getItemId()) {
                                 case R.id.menu_group_add_contacts:
                                     System.out.println("add contact");
-                                    Intent intent = new Intent(mContext, AddContactToGroup.class);
+                                    Intent intent = new Intent(mContext, AddContactToGroupActivity.class);
                                     intent.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
                                     mContext.startActivity(intent);
                                     break;
                                 case R.id.menu_group_delete_contacts:
-                                    Intent intentdelete = new Intent(mContext, DeleteContactToGroup.class);
+                                    Intent intentdelete = new Intent(mContext, DeleteContactFromGroupActivity.class);
                                     intentdelete.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
                                     mContext.startActivity(intentdelete);
                                     System.out.println("delete contact");
@@ -203,8 +200,8 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     mDbWorkerThread.start();
                                     contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(mContext);
                                     assert contactsDatabase != null;
-                                   // System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
-                                    alertDialog(mSections.get(position).getIdGroup().intValue(),contactsDatabase);
+                                    // System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
+                                    alertDialog(mSections.get(position).getIdGroup().intValue(), contactsDatabase);
                                     //contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
                                     /*if (mContext instanceof GroupManagerActivity)
                                         ((GroupManagerActivity) mContext).refreshList();*/
@@ -257,7 +254,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return title;
         }
 
-        public Long getIdGroup() {
+        Long getIdGroup() {
             return idGroup;
         }
     }
@@ -266,12 +263,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setSections(Section[] sections) {
         mSections.clear();
 
-        Arrays.sort(sections, new Comparator<Section>() {
-            @Override
-            public int compare(Section o, Section o1) {
-                return Integer.compare(o.firstPosition, o1.firstPosition);
-            }
-        });
+        Arrays.sort(sections, (o, o1) -> Integer.compare(o.firstPosition, o1.firstPosition));
 
         int offset = 0; // offset positions for the headers we're adding
         for (Section section : sections) {
@@ -294,7 +286,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return position + offset;
     }
 
-    public int sectionedPositionToPosition(int sectionedPosition) {
+    private int sectionedPositionToPosition(int sectionedPosition) {
         if (isSectionHeaderPosition(sectionedPosition)) {
             return RecyclerView.NO_POSITION;
         }
@@ -309,7 +301,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return sectionedPosition + offset;
     }
 
-    public boolean isSectionHeaderPosition(int position) {
+    private boolean isSectionHeaderPosition(int position) {
         return mSections.get(position) != null;
     }
 
@@ -346,15 +338,16 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         intent.putExtra(Intent.EXTRA_TEXT, "");
         mContext.startActivity(intent);
     }
-    private void alertDialog( int idGroup, ContactsRoomDatabase contactsDatabase){
-        new AlertDialog.Builder(mContext)
-                .setTitle(R.string.section_alert_suppress_group)
-                .setMessage(String.format(contactsDatabase.GroupsDao().getGroup(idGroup).getName(), R.string.section_alert_supress_group_text))
-                .setPositiveButton(android.R.string.yes,  (dialog, id) -> {
-                    contactsDatabase.GroupsDao().deleteGroupById(idGroup);
-                    if (mContext instanceof GroupManagerActivity)
-                     ((GroupManagerActivity) mContext).refreshList();
-                }
+
+    private void alertDialog(int idGroup, ContactsRoomDatabase contactsDatabase) {
+        new MaterialAlertDialogBuilder(mContext, R.style.AlertDialog)
+                .setTitle(R.string.section_alert_delete_group_title)
+                .setMessage(String.format(contactsDatabase.GroupsDao().getGroup(idGroup).getName(), R.string.section_alert_delete_group_message))
+                .setPositiveButton(android.R.string.yes, (dialog, id) -> {
+                            contactsDatabase.GroupsDao().deleteGroupById(idGroup);
+                            if (mContext instanceof GroupManagerActivity)
+                                ((GroupManagerActivity) mContext).refreshList();
+                        }
                 )
                 .setNegativeButton(android.R.string.no, null)
                 .show();

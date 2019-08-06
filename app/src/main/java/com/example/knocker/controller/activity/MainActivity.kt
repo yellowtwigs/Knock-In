@@ -182,9 +182,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_BottomNavigationView = findViewById(R.id.navigation)
 
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        //main_BottomNavigationView!!.background= this.getDrawable(R.drawable.border_bottom_nav_view)
 
-        // Search bar
         main_SearchBar = findViewById(R.id.main_search_bar)
         main_layout = findViewById(R.id.content_frame)
         main_loadingPanel = findViewById(R.id.loadingPanel)
@@ -192,14 +190,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
 
-//        main_ al_YoutubePlayerView = findViewById(R.id.main_tutorial_youtube_player_view)
-
         //endregion
 
         //region ========================================== Toolbar =========================================
 
         val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
         setSupportActionBar(toolbar)
+        toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
@@ -214,10 +211,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_home)
-        nav_item.isChecked = true
-        val nav_sync_contact = menu.findItem(R.id.nav_sync_contact)
-        nav_sync_contact.isVisible = true
+        val navItem = menu.findItem(R.id.nav_home)
+        navItem.isChecked = true
+        val navSyncContact = menu.findItem(R.id.nav_sync_contact)
+        navSyncContact.isVisible = true
 
         navigationView!!.menu.getItem(0).isChecked = true
 
@@ -397,7 +394,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         //Sync contact
-        nav_sync_contact.setOnMenuItemClickListener {
+        navSyncContact.setOnMenuItemClickListener {
             drawerLayout!!.closeDrawers()
             main_GridView!!.visibility = View.GONE
             main_RecyclerView!!.visibility = View.GONE
@@ -452,9 +449,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                     val displaySync = Runnable {
                                         //on update soit la grid ou soit la list view en fonction de celle séléctionné
                                         gestionnaireContacts!!.contacts.clear()
-                                        val sharedPreferences = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                                        val shareP = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                                         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                                        if (sharedPreferences.getString("tri", "") == "priorite") {
+                                        if (shareP.getString("tri", "") == "priorite") {
                                             val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByPriority20() }
                                             val result = executorService.submit(callDb)
                                             gestionnaireContacts!!.contacts.addAll(result.get())
@@ -507,10 +504,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         main_layout!!.setOnTouchListener { _, _ ->
-            val view = this@MainActivity.currentFocus
+            val v = this@MainActivity.currentFocus
             val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (view != null) {
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            if (v != null) {
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
             }
             true
         }
@@ -679,16 +676,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
-        val triLastname = menu.findItem(R.id.tri_par_lastname)
-        val triPrio = menu.findItem(R.id.tri_par_priorite)
+        val triLastName = menu.findItem(R.id.tri_par_lastname)
+        val triPriority = menu.findItem(R.id.tri_par_priorite)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val tri = sharedPreferences.getString("tri", "nom")
-        if (tri == "nom") {
-            triNom.isChecked = true
-        } else if (tri == "priorite") {
-            triPrio.isChecked = true
-        } else {
-            triLastname.isChecked = true
+        when (tri) {
+            "nom" -> triNom.isChecked = true
+            "priorite" -> triPriority.isChecked = true
+            else -> triLastName.isChecked = true
         }
         return true
     }

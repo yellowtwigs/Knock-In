@@ -112,8 +112,8 @@ class EditInformationsActivity : AppCompatActivity() {
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_informations)
-        nav_item.isChecked = true
+        val navItem = menu.findItem(R.id.nav_informations)
+        navItem.isChecked = true
 
         navigationView!!.menu.getItem(1).isChecked = true
 

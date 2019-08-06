@@ -1,5 +1,6 @@
 package com.example.knocker.controller.activity.group
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,32 +13,52 @@ import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.LinkContactGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class AddContactToGroup : AppCompatActivity() {
+class AddContactToGroupActivity : AppCompatActivity() {
 
     private var contactsDatabase: ContactsRoomDatabase? = null
-    private var main_ListView: ListView? = null
+    private var addContactToGroupListView: ListView? = null
     private var addContactToGroupAdapter: AddContactToGroupAdapter? = null
     private var groupId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            setTheme(R.style.AppThemeDark)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
+
+        //endregion
+
         setContentView(R.layout.activity_add_contact_to_group)
-        main_ListView = findViewById(R.id.list_view_id)
+
+        addContactToGroupListView = findViewById(R.id.add_contact_to_group_listview)
+
         contactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        //region ========================================= Toolbar ==========================================
+
+        val toolbar = findViewById<Toolbar>(R.id.add_contact_to_group_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
+        actionbar.title = getString(R.string.add_contact_to_group_toolbar_title)
+
+        //endregion
 
         groupId = intent.getIntExtra("GroupId", 0)
         var allContactNotInGroup = listOf<ContactWithAllInformation>()
         if (groupId != 0)
-            allContactNotInGroup = getContactNotInGroupe(groupId)
+            allContactNotInGroup = getContactNotInGroup(groupId)
         addContactToGroupAdapter = AddContactToGroupAdapter(this, allContactNotInGroup)
-        main_ListView!!.adapter = addContactToGroupAdapter
+        addContactToGroupListView!!.adapter = addContactToGroupAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,11 +70,18 @@ class AddContactToGroup : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                refreshActivity()
             }
             R.id.nav_validate -> {
-                addToGroup(addContactToGroupAdapter!!.allSelectContact, groupId)
-                startActivity(Intent(this, GroupManagerActivity::class.java))
+                if (addContactToGroupAdapter!!.allSelectContact.isEmpty()) {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(R.string.add_contact_to_group_alert_dialog_title)
+                            .setMessage(getString(R.string.add_contact_to_group_alert_dialog_message))
+                            .show()
+                } else {
+                    addToGroup(addContactToGroupAdapter!!.allSelectContact, groupId)
+                    refreshActivity()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -66,7 +94,7 @@ class AddContactToGroup : AppCompatActivity() {
         }
     }
 
-    private fun getContactNotInGroupe(groupId: Int): List<ContactWithAllInformation> {
+    private fun getContactNotInGroup(groupId: Int): List<ContactWithAllInformation> {
         val allInGroup = mutableListOf<ContactWithAllInformation>()
         val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
         val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
@@ -78,5 +106,10 @@ class AddContactToGroup : AppCompatActivity() {
             }
         }
         return allContact.minus(allInGroup)
+    }
+
+    private fun refreshActivity() {
+        startActivity(Intent(this@AddContactToGroupActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        finish()
     }
 }

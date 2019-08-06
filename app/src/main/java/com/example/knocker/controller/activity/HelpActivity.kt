@@ -92,8 +92,8 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         val navigationView = findViewById<NavigationView>(R.id.help_nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_help)
-        nav_item.isChecked = true
+        val navItem = menu.findItem(R.id.nav_help)
+        navItem.isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true

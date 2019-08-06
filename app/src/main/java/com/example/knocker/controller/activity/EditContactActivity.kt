@@ -111,12 +111,18 @@ class EditContactActivity : AppCompatActivity() {
     @SuppressLint("InflateParams", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_edit_contact)
 
         // on init WorkerThread

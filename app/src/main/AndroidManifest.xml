@@ -41,8 +41,8 @@
         <activity android:name=".controller.activity.KnockerInfos" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity" />
         <activity android:name=".controller.activity.AddNewGroupActivity" />
-        <activity android:name=".controller.activity.group.DeleteContactToGroup" />
-        <activity android:name=".controller.activity.group.AddContactToGroup" />
+        <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
+        <activity android:name=".controller.activity.group.AddContactToGroupActivity" />
         <activity android:name=".controller.activity.group.GroupActivity" />
         <activity android:name=".controller.activity.MultiChannelActivity" />
         <activity

@@ -125,12 +125,18 @@ class PhoneLogActivity : AppCompatActivity() {
     @SuppressLint("ShowToast", "Recycle", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_phone_log)
         hideKeyboard()
         val listApp = getAppOnPhone()
@@ -210,8 +216,8 @@ class PhoneLogActivity : AppCompatActivity() {
         phone_log_DrawerLayout = findViewById(R.id.phone_log_drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_home)
-        nav_item.isChecked = true
+        val navItem = menu.findItem(R.id.nav_home)
+        navItem.isChecked = true
 
         navigationView!!.menu.getItem(0).isChecked = true
 

@@ -71,12 +71,18 @@ class AddNewContactActivity : AppCompatActivity() {
     @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_add_new_contact)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 

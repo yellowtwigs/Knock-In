@@ -28,15 +28,13 @@ import java.util.Random;
 public class AddContactToGroupAdapter extends BaseAdapter {
 
     private List<ContactWithAllInformation> listContacts;
-    private Context context;
     private LayoutInflater layoutInflater;
     private ArrayList<ContactDB> selectContact;
 
     public AddContactToGroupAdapter(Context context, List<ContactWithAllInformation> listContacts) {
-        this.context = context;
         this.listContacts = listContacts;
         layoutInflater = LayoutInflater.from(context);
-        selectContact = new ArrayList<ContactDB>();
+        selectContact = new ArrayList<>();
     }
 
     @Override
@@ -93,16 +91,13 @@ public class AddContactToGroupAdapter extends BaseAdapter {
             contactName = contactName.substring(0, 15) + "..";
         }
         holder.contactFirstNameView.setText(contactName);
-        holder.contactSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if (!selectContact.contains(contact)) {
-                    selectContact.add(contact);
-                    holder.contactSelect.setChecked(true);
-                } else {
-                    selectContact.remove(contact);
-                    holder.contactSelect.setChecked(false);
-                }
+        holder.contactSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!selectContact.contains(contact)) {
+                selectContact.add(contact);
+                holder.contactSelect.setChecked(true);
+            } else {
+                selectContact.remove(contact);
+                holder.contactSelect.setChecked(false);
             }
         });
         return listview;

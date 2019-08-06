@@ -79,12 +79,18 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
             setTheme(R.style.AppTheme)
         }
+
+        //endregion
+
         setContentView(R.layout.activity_notification_history)
         notification_Search_TextView = findViewById(R.id.notification_history_search_bar)
         notification_BottomNavigationView = findViewById(R.id.navigation)
@@ -110,8 +116,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         notification_history_DrawerLayout = findViewById(R.id.notification_history_drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val nav_item = menu.findItem(R.id.nav_manage_screen)
-        nav_item.isChecked = true
+        val navItem = menu.findItem(R.id.nav_manage_screen)
+        navItem.isChecked = true
         navigationView!!.menu.getItem(0).isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
