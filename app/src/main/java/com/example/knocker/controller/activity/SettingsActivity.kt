@@ -126,7 +126,7 @@ class SettingsActivity : AppCompatActivity() {
 
         //endregion
 
-        if (checkPermission(Manifest.permission.SEND_SMS)) {
+        if (checkPermission(Manifest.permission.SEND_SMS) && checkPermission(Manifest.permission.CALL_PHONE) ) {
             settings_PermissionsPhoneLayout!!.visibility = View.GONE
         } else {
             settings_PermissionsPhoneLayout!!.visibility = View.VISIBLE
@@ -196,9 +196,12 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
+        if (REQUEST_CODE_SMS_AND_CALL == requestCode && checkPermission(Manifest.permission.SEND_SMS) && checkPermission(Manifest.permission.CALL_PHONE)) {
             settings_PermissionsPhoneLoading!!.visibility = View.INVISIBLE
             settings_PermissionsPhoneChecked!!.visibility = View.VISIBLE
+        }else{
+            settings_PermissionsPhoneLoading!!.visibility = View.INVISIBLE
+            settings_PermissionsPhoneMaterialButton!!.visibility = View.VISIBLE  
         }
     }
 
