@@ -4,42 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activity.AddNewGroupActivity">
+    android:backgroundTint="?attr/backgroundColor"
+    tools:context=".controller.activity.group.AddNewGroupActivity">
+
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/group_toolbar"
+        android:id="@+id/add_new_group_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:alpha="0.70"
         android:backgroundTint="?attr/backgroundColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/add_group_name"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:background="?attr/backgroundColor"
-        android:hint="Nom du groupe"
-        android:inputType="textPersonName"
-        android:textColor="?attr/textColor"
-        android:textColorHint="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_toolbar" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/add_new_group_name"
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:background="?attr/backgroundColor"
+            android:hint="@string/add_new_group_hint_group_name"
+            android:inputType="textPersonName"
+            android:textColor="?attr/textColor"
+            android:textColorHint="@color/darkGreyColor"
+            android:textSize="20sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <View
+        android:id="@+id/add_contact_to_group_separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginBottom="5dp"
+        android:background="?attr/darkColor"
+        app:layout_constraintBottom_toTopOf="@+id/add_new_group_list_view"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_group_toolbar" />
+
 
     <ListView
-        android:id="@+id/list_view_id"
+        android:id="@+id/add_new_group_list_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_group_name" />
+        app:layout_constraintTop_toBottomOf="@+id/add_new_group_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

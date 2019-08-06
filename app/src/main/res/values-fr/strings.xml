@@ -409,12 +409,13 @@
 
     <!--endregion -->
 
-    <!-- region addNewGroup -->
-    <string name="add_new_contact_toast_group_name">Vous devez choisir un nom pour le groupe</string>
-    <string name="add_new_contact_toast_nb_contact">Vous devez sélectionner au minimum 1 contact</string>
-    <string name="add_new_contact_hint_nom_group">Nom du groupe</string>
+    <!-- region Add New Group -->
 
-    <!--endregion -->
+    <string name="add_new_group_toast_empty_field">Vous devez choisir un nom pour le groupe</string>
+    <string name="add_new_group_toast_no_contact_selected">Vous devez sélectionner au minimum 1 contact</string>
+    <string name="add_new_group_hint_group_name">Nommez votre groupe</string>
+
+    <!-- endregion -->
 
 
     <!--endregion -->

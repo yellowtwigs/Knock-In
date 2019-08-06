@@ -409,6 +409,14 @@
 
     <!--endregion -->
 
+    <!-- region Add New Group -->
+
+    <string name="add_new_group_toast_empty_field">You have to choose a group name</string>
+    <string name="add_new_group_toast_no_contact_selected">You have to select one contact</string>
+    <string name="add_new_group_hint_group_name">Name the group</string>
+
+    <!-- endregion -->
+
     <!--endregion -->
 
     <!-- region Compose Message -->
@@ -425,14 +433,6 @@
     <string name="notif_adapter_message_sent">Message sent</string>
 
     <!-- endregion-->
-
-    <!-- region addNewGroup -->
-
-    <string name="add_new_contact_toast_group_name">You need to choose a group name</string>
-    <string name="add_new_contact_toast_nb_contact">You need to select minimum one contact </string>
-    <string name="add_new_contact_hint_nom_group">Group name</string>
-
-    <!-- endregion -->
 
     <!-- region startActivity -->
 

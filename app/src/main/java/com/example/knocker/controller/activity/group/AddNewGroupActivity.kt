@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.example.knocker.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
@@ -11,20 +11,23 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
-import com.example.knocker.controller.activity.group.AddContactToGroupAdapter
-import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.GroupDB
 import com.example.knocker.model.ModelDB.LinkContactGroup
-import java.time.Duration
 
 class AddNewGroupActivity : AppCompatActivity() {
+
+    //region ========================================== Val or Var ==========================================
+
     private var contactsDatabase: ContactsRoomDatabase? = null
-    private var main_ListView: ListView? = null
+    private var addNewGroupListView: ListView? = null
     private var createGroupAdapter: AddContactToGroupAdapter? = null
-    private var groupName:TextView? = null
+    private var addNewGroupName:TextView? = null
+
+    //endregion
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,20 +43,25 @@ class AddNewGroupActivity : AppCompatActivity() {
         //endregion
 
         setContentView(R.layout.activity_add_new_group)
-        main_ListView = findViewById(R.id.list_view_id)
-        groupName = findViewById(R.id.add_group_name)
+        addNewGroupListView = findViewById(R.id.add_new_group_list_view)
+        addNewGroupName = findViewById(R.id.add_new_group_name)
         contactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-        val toolbar = findViewById<Toolbar>(R.id.group_toolbar)
+        //region ========================================= Toolbar ==========================================
+
+        val toolbar = findViewById<Toolbar>(R.id.add_new_group_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_cross)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
+        actionbar.title = ""
+
+        //endregion
 
 
         var allContact = contactsDatabase!!.contactsDao().getContactAllInfo()
         createGroupAdapter = AddContactToGroupAdapter(this, allContact)
-        main_ListView!!.adapter = createGroupAdapter
+        addNewGroupListView!!.adapter = createGroupAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,18 +73,18 @@ class AddNewGroupActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                refreshActivity()
             }
             R.id.nav_validate -> {
-                if(!groupName!!.text.isEmpty()) {
-                    if (!createGroupAdapter!!.allSelectContact.isEmpty()){
-                        addToGroup(createGroupAdapter!!.allSelectContact,groupName!!.text.toString())
-                        startActivity(Intent(this, GroupManagerActivity::class.java))
+                if(addNewGroupName!!.text.isNotEmpty()) {
+                    if (createGroupAdapter!!.allSelectContact.isNotEmpty()){
+                        addToGroup(createGroupAdapter!!.allSelectContact,addNewGroupName!!.text.toString())
+                        refreshActivity()
                     }else{
-                        Toast.makeText(this, getString(R.string.add_new_contact_toast_nb_contact), Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, getString(R.string.add_new_group_toast_no_contact_selected), Toast.LENGTH_LONG).show()
                     }
                 }else{
-                    Toast.makeText(this, getString(R.string.add_new_contact_toast_group_name), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.add_new_group_toast_empty_field), Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -85,7 +93,7 @@ class AddNewGroupActivity : AppCompatActivity() {
 
     private fun addToGroup(listContact: List<ContactDB>, name: String) {
         val group= GroupDB(null,name,"")
-        println("list is "+ listContact)
+        println("list is $listContact")
         val groupId=contactsDatabase!!.GroupsDao().insert(group)
             listContact.forEach {
                 val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
@@ -94,7 +102,15 @@ class AddNewGroupActivity : AppCompatActivity() {
 
     }
 
-    private fun getContactNotInGroupe(groupId: Int): List<ContactWithAllInformation> {
+    private fun refreshActivity() {
+        startActivity(Intent(this@AddNewGroupActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        finish()
+    }
+
+    override fun onBackPressed() {
+    }
+
+    private fun getContactNotInGroup(groupId: Int): List<ContactWithAllInformation> {
         val allInGroup = mutableListOf<ContactWithAllInformation>()
         val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
         val allContact = contactsDatabase!!.contactsDao().getContactAllInfo()
