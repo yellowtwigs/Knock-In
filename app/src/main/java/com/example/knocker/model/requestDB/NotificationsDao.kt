@@ -71,4 +71,7 @@ interface NotificationsDao {
 
     @Query("SELECT max(id) from notifications_table ")
     fun lastInsert():Int
+
+    @Query("SELECT * FROM notifications_table where :dateNow- timestamp <500")
+    fun lastInsertByTime(dateNow:Long):List<NotificationDB>
 }

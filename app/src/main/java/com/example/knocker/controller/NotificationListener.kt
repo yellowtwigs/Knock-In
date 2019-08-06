@@ -168,10 +168,19 @@ class NotificationListener : NotificationListenerService() {
         val lastInsertId = notification_listener_ContactsDatabase!!.notificationsDao().lastInsert()
         println("dernière insertion $lastInsertId")
         val lastInsert = notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
-
-        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp - lastInsert.timestamp < 1000) {
-            return false
+        println("voici la liste "+notification_listener_ContactsDatabase!!.notificationsDao().lastInsertByTime(System.currentTimeMillis()))
+        val listLastInsert = notification_listener_ContactsDatabase!!.notificationsDao().lastInsertByTime(System.currentTimeMillis())
+        for(lastNotif in listLastInsert){
+            println("titre"+(lastNotif.title.equals(notification.title)).toString())
+            println(" plateform "+lastNotif.platform.equals(notification.platform))
+            println("description "+lastNotif.description.equals(notification.description))
+            if (lastNotif != null && lastNotif.platform == notification.platform && lastNotif.description == notification.description) {
+                return false
+            }
         }
+        /*if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp - lastInsert.timestamp < 1000) {
+            return false
+        }*/
         return true
     }
     //SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(Calendar.getInstance().timeInMillis.toString().toLong()))    /// timestamp to date
@@ -187,7 +196,7 @@ class NotificationListener : NotificationListenerService() {
                     sbp.statusBarNotificationInfo["android.title"]!!.toString(),
                     sbp.statusBarNotificationInfo["android.text"]!!.toString(),
                     sbp.appNotifier!!, false,
-                    Calendar.getInstance().timeInMillis.toString().toLong(), 0,
+                    System.currentTimeMillis(), 0,
                     contactId)
         } else {
             return null
@@ -218,10 +227,6 @@ class NotificationListener : NotificationListenerService() {
                 Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
                 //notifLayout(sbp, popupView)
                 adapterNotification!!.addNotification(sbp)
-                if(System.currentTimeMillis()-adapterNotification!!.getlastChangeMillis()<3000){
-
-                    listViews!!.setSelection(adapterNotification!!.getlastChangePos()+1)
-                }
             }
         }
     }
