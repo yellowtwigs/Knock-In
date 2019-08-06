@@ -447,13 +447,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                         listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                     }
-
+                    closeMenu();
                     ((GroupManagerActivity) context).gridLongItemClick(position);
 
                     modeMultiSelect = true;
                 }
             } else {
                 int firstPosVis;
+                closeMenu();
                 if (position < 2 * len) {
                     firstPosVis = 0;
                 } else {
