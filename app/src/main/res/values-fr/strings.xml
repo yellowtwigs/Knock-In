@@ -394,7 +394,8 @@
     <string name="menu_group_add_contacts">Ajouter des contacts</string>
     <string name="menu_group_delete_contacts">Enlever des contacts du groupe</string>
     <string name="menu_group_delete_group">Supprimer le groupe</string>
-
+    <string name="section_alert_suppress_group">Effacer groupe</string>
+    <string name="section_alert_supress_group_text">voici le groupe qui va être supprimmer : %1</string>
     <!--region Manage Group -->
 
     <!-- region delete contact to group-->

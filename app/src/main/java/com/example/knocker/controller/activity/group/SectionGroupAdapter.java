@@ -348,8 +348,8 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
     private void alertDialog( int idGroup, ContactsRoomDatabase contactsDatabase){
         new AlertDialog.Builder(mContext)
-                .setTitle("Effacer groupe")
-                .setMessage(" voici le groupe qui va être supprimmer : " + contactsDatabase.GroupsDao().getGroup(idGroup).getName())
+                .setTitle(R.string.section_alert_suppress_group)
+                .setMessage(String.format(contactsDatabase.GroupsDao().getGroup(idGroup).getName(), R.string.section_alert_supress_group_text))
                 .setPositiveButton(android.R.string.yes,  (dialog, id) -> {
                     contactsDatabase.GroupsDao().deleteGroupById(idGroup);
                     if (mContext instanceof GroupManagerActivity)
