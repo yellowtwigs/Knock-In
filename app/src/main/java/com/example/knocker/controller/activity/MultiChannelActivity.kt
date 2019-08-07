@@ -13,11 +13,13 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ListView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -41,8 +43,8 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private var multi_channel_listViewAdapter: ContactListViewAdapter? = null
 
-    private var multi_channel_SendMessageEditText: AppCompatEditText? = null
-    private var multi_channel_SendMessageButton: RelativeLayout? = null
+    private var multi_channel_SendMessageEditText: EditText? = null
+    private var multi_channel_SendMessageButton: AppCompatImageView? = null
 
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
@@ -154,22 +156,6 @@ class MultiChannelActivity : AppCompatActivity() {
                 hideKeyboard()
             }
         }
-
-        multi_channel_SendMessageEditText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
-
-        multi_channel_SendMessageEditText!!.setOnClickListener {
-
-        }
-
         //endregion
     }
 

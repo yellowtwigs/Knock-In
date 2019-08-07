@@ -139,12 +139,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         return listOfNumberSelected;
     }
 
-    public ArrayList<AppCompatImageView> getListItemChannelSelected() {
-        return listItemChannelSelected;
-    }
-
-
-
     private int randomDefaultImage(int avatarId) {
         switch (avatarId) {
             case 0:
