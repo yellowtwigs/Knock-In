@@ -311,7 +311,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                     if (adapter.listContactSelect.size == 0) {
                         val pos = main_GridView!!.firstVisiblePosition
-                        main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        main_GridView!!.adapter = gridViewAdapter
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         main_FloatingButtonSend!!.visibility = View.GONE
                         main_SearchBar!!.visibility = View.VISIBLE
@@ -642,7 +643,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             monoChannelMailClick(listOfMailContactSelected)
 
             if (len >= 3) {
-                main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                main_GridView!!.adapter = gridViewAdapter
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
                 main_FloatingButtonSend!!.visibility = View.GONE
                 main_SearchBar!!.visibility = View.VISIBLE
@@ -1031,7 +1033,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     fun longGridItemClick(len: Int, position: Int, firstPosVis: Int) {
         main_GridView!!.setSelection(firstPosVis)
-        gridViewAdapter!!.closeMenu()
+        //gridViewAdapter!!.closeMenu()
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         main_GridView!!.adapter = adapter
         adapter.itemSelected(position)
