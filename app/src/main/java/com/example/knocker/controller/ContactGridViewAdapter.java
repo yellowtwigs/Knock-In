@@ -174,13 +174,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         } else if (contact.getContactPriority() == 2) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         }
-        //region set libbellé group
-        // ContactsRoomDatabase main_ContactsDatabase=ContactsRoomDatabase.Companion.getDatabase(context);
-        //DbWorkerThread main_mDbWorkerThread=new DbWorkerThread("dbWorkerThread");
-        //main_mDbWorkerThread.start() ;
-        //List<GroupDB> listDB=main_ContactsDatabase.GroupsDao().getGroupForContact(contact.getId());
-        //endregion
-        // getItem(position).getFirstGroup(context);
+
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
         String group = "";

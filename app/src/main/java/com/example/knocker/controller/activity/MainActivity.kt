@@ -25,6 +25,7 @@ import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -218,31 +219,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             drawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                }
+                R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 R.id.nav_groups -> startActivity(Intent(this@MainActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
+                R.id.nav_messenger -> startActivity(Intent(this@MainActivity, MessengerActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_data_access -> {
-                }
+//                R.id.nav_data_access ->
                 R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
-                R.id.nav_statistics -> {
-                }
+//                R.id.nav_statistics ->
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
-        }
-
-        val view = layoutInflater.inflate(R.layout.nav_header_drawer, null)
-        val nav_header_drawer_Copyright = view.findViewById<RelativeLayout>(R.id.nav_header_drawer_copyright)
-        nav_header_drawer_Copyright.setOnClickListener {
-            startActivity(Intent(this@MainActivity, KnockerInfos::class.java))
         }
 
         //endregion
@@ -311,7 +303,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                     if (adapter.listContactSelect.size == 0) {
                         val pos = main_GridView!!.firstVisiblePosition
-                        gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         main_FloatingButtonSend!!.visibility = View.GONE
@@ -328,7 +320,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
 
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
-                var lastVisiblePos =main_GridView!!.firstVisiblePosition
+                var lastVisiblePos = main_GridView!!.firstVisiblePosition
                 override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
                     if (gridViewAdapter != null) {
                         gridViewAdapter!!.closeMenu()
@@ -339,21 +331,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     if (gridViewAdapter != null) {
                         gridViewAdapter!!.closeMenu()
                     }
-                   println("last visible pos"+lastVisiblePos+"first visible item "+firstVisibleItem+" visible item count"+visibleItemCount+" total item count "+totalItemCount)
-                    if(lastVisiblePos<firstVisibleItem){
-                       if(main_FloatingButtonAdd!!.visibility== View.VISIBLE) {
-                           val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
-                           main_FloatingButtonAdd!!.startAnimation(disparition)
-                           main_FloatingButtonAdd!!.visibility = View.GONE
-                       }
-                        lastVisiblePos=firstVisibleItem
-                    }else if (lastVisiblePos>firstVisibleItem){
-                        if(main_FloatingButtonAdd!!.visibility==View.GONE){
-                            val apparition = AnimationUtils.loadAnimation(baseContext,R.anim.reapparrition)
-                            main_FloatingButtonAdd!!.startAnimation(apparition)
-                            main_FloatingButtonAdd!!.visibility=View.VISIBLE
+                    println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
+                    if (lastVisiblePos < firstVisibleItem) {
+                        if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
+                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
+                            main_FloatingButtonAdd!!.startAnimation(disparition)
+                            main_FloatingButtonAdd!!.visibility = View.GONE
                         }
-                        lastVisiblePos=firstVisibleItem
+                        lastVisiblePos = firstVisibleItem
+                    } else if (lastVisiblePos > firstVisibleItem) {
+                        if (main_FloatingButtonAdd!!.visibility == View.GONE) {
+                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
+                            main_FloatingButtonAdd!!.startAnimation(apparition)
+                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                        }
+                        lastVisiblePos = firstVisibleItem
                     }
                 }
             })
@@ -379,18 +371,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    println("dx "+dx+ " dy"+ dy)
-                    if(dy>10){
-                        if(main_FloatingButtonAdd!!.visibility== View.VISIBLE) {
+                    println("dx " + dx + " dy" + dy)
+                    if (dy > 10) {
+                        if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
                             val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
                             main_FloatingButtonAdd!!.startAnimation(disparition)
                             main_FloatingButtonAdd!!.visibility = View.GONE
                         }
-                    }else if (dy<-10){
-                        if(main_FloatingButtonAdd!!.visibility==View.GONE){
-                            val apparition = AnimationUtils.loadAnimation(baseContext,R.anim.reapparrition)
+                    } else if (dy < -10) {
+                        if (main_FloatingButtonAdd!!.visibility == View.GONE) {
+                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
                             main_FloatingButtonAdd!!.startAnimation(apparition)
-                            main_FloatingButtonAdd!!.visibility=View.VISIBLE
+                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -1115,25 +1107,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             firstClick = false
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-            firstClick = true
-        }
-    }
-
-    fun recyclerItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
-
-            verifiedContactsChannel(listOfItemSelected)
-        } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
-
-            verifiedContactsChannel(listOfItemSelected)
-        }
-
-        if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
-            firstClick = false
-        } else if (listOfItemSelected.size == 0) {
 
             main_FloatingButtonAdd!!.visibility = View.VISIBLE
             main_FloatingButtonSend!!.visibility = View.GONE
@@ -1141,7 +1114,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_SMSButton!!.visibility = View.GONE
             main_MailButton!!.visibility = View.GONE
 
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
             firstClick = true
         }
     }
@@ -1186,23 +1158,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
     }
 
-//    public void playVideo(final String videoId, YouTubePlayerView youTubePlayerView) {
-//        //initialize youtube player view
-//        youTubePlayerView.initialize("YOUR API KEY HERE",
-//                new YouTubePlayer.OnInitializedListener() {
-//                    @Override
-//                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
-//                                                        YouTubePlayer youTubePlayer, boolean b) {
-//                        youTubePlayer.cueVideo(videoId);
-//                    }
-//
-//                    @Override
-//                    public void onInitializationFailure(YouTubePlayer.Provider provider,
-//                                                        YouTubeInitializationResult youTubeInitializationResult) {
-//
-//                    }
-//                });
-//    }
+    private fun slideUp(view: View) {
+        val height = view.height.toFloat()
+        val animate = TranslateAnimation(
+                0F,                 // fromXDelta
+                0F,                 // toXDelta
+                height,  // fromYDelta
+                0F)               // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        view.startAnimation(animate)
+    }
 
     //endregion
 }

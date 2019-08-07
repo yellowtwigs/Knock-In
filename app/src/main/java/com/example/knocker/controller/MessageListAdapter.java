@@ -121,12 +121,12 @@ public class MessageListAdapter extends BaseAdapter {
         }
         return convertView;
     }
-}
 
-class MessageViewHolder {
-    TextView nameSender;
-    TextView messageContent;
-    ImageView profilePicture;
-    TextView date;
-    TextView hour;
+    class MessageViewHolder {
+        TextView nameSender;
+        TextView messageContent;
+        ImageView profilePicture;
+        TextView date;
+        TextView hour;
+    }
 }

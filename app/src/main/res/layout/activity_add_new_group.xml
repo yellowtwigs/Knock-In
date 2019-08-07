@@ -26,11 +26,9 @@
             android:hint="@string/add_new_group_hint_group_name"
             android:inputType="textPersonName"
             android:textColor="?attr/textColor"
-            android:textColorHint="@color/darkGreyColor"
             android:textSize="20sp" />
 
     </androidx.appcompat.widget.Toolbar>
-
 
     <View
         android:id="@+id/add_contact_to_group_separator"
@@ -40,7 +38,6 @@
         android:background="?attr/darkColor"
         app:layout_constraintBottom_toTopOf="@+id/add_new_group_list_view"
         app:layout_constraintTop_toBottomOf="@+id/add_new_group_toolbar" />
-
 
     <ListView
         android:id="@+id/add_new_group_list_view"

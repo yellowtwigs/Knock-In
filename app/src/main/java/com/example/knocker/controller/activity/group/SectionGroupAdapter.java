@@ -85,7 +85,6 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
     }
 
-
     public static class SectionViewHolder extends RecyclerView.ViewHolder {
 
         TextView titleTv;
