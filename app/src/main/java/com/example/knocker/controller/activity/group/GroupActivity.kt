@@ -294,7 +294,8 @@ class GroupActivity : AppCompatActivity() {
                     verifiedContactsChannel(listOfItemSelected)
 
                     if (adapter.listContactSelect.size == 0) {
-                        group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        gridViewAdapter= ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        group_GridView!!.adapter = gridViewAdapter
                         group_SearchBar!!.visibility = View.VISIBLE
 
                         Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
@@ -605,7 +606,8 @@ class GroupActivity : AppCompatActivity() {
                 }
             }
             if (len >= 3) {
-                group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                group_GridView!!.adapter = gridViewAdapter
                 group_SearchBar!!.visibility = View.VISIBLE
 
 
@@ -623,7 +625,7 @@ class GroupActivity : AppCompatActivity() {
                 group_groupButton!!.visibility = View.GONE
                 group_floating_button_send_id!!.visibility = View.GONE
             }
-            saveGroupMultiSelect(listOfItemSelected, len)
+            //saveGroupMultiSelect(listOfItemSelected, len)
             // recreate()
         }
         //endregion
@@ -990,8 +992,8 @@ class GroupActivity : AppCompatActivity() {
             group_groupButton!!.visibility = View.GONE
 
             adapter.itemDeselected()
-
-            group_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+            gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+            group_GridView!!.adapter =gridViewAdapter
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
         }
@@ -1039,11 +1041,11 @@ class GroupActivity : AppCompatActivity() {
         params.bottomMargin = margin * i
         group_groupButton!!.layoutParams = params
 
-        if (listOfItemSelected.size == 1) {
+     /*   if (listOfItemSelected.size == 1) {
             group_groupButton!!.visibility = View.GONE
         } else {
             group_groupButton!!.visibility = View.VISIBLE
-        }
+        }*/
     }
 
     fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
@@ -1089,7 +1091,6 @@ class GroupActivity : AppCompatActivity() {
     }
 
     fun recyclerItemClick(position: Int, fromLibelleClick: Boolean) {
-
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
 
@@ -1098,33 +1099,34 @@ class GroupActivity : AppCompatActivity() {
         } else {
             if (fromLibelleClick && firstClick) {
                 var i = 0
-                while (i < listOfItemSelected.size) {
-                    listOfItemSelectedFromLibelleClick.add(listOfItemSelected[i])
-                    i++
-                }
-                firstClick = false
+                /*     while (i < listOfItemSelected.size) {
+                         listOfItemSelectedFromLibelleClick.add(listOfItemSelected[i])
+                         i++
+                     }
+                     firstClick = false
+                 }*/
+
+                listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+                verifiedContactsChannel(listOfItemSelected)
             }
 
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
-            verifiedContactsChannel(listOfItemSelected)
-        }
+            /* if (checkIfTwoListsAreSame(listOfItemSelected, listOfItemSelectedFromLibelleClick)) {
+                 group_groupButton!!.visibility = View.GONE
+             } else {
+                 group_groupButton!!.visibility = View.VISIBLE
+             }*/
 
-        if (checkIfTwoListsAreSame(listOfItemSelected, listOfItemSelectedFromLibelleClick)) {
-            group_groupButton!!.visibility = View.GONE
-        } else {
-            group_groupButton!!.visibility = View.VISIBLE
-        }
+            if (listOfItemSelected.size == 0) {
 
-        if (listOfItemSelected.size == 0) {
+                group_FloatingButtonSend!!.visibility = View.GONE
+                group_SearchBar!!.visibility = View.VISIBLE
+                group_SMSButton!!.visibility = View.GONE
+                group_MailButton!!.visibility = View.GONE
+                group_groupButton!!.visibility = View.GONE
 
-            group_FloatingButtonSend!!.visibility = View.GONE
-            group_SearchBar!!.visibility = View.VISIBLE
-            group_SMSButton!!.visibility = View.GONE
-            group_MailButton!!.visibility = View.GONE
-            group_groupButton!!.visibility = View.GONE
-
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-            firstClick = true
+                Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+                firstClick = true
+            }
         }
     }
 
@@ -1163,7 +1165,7 @@ class GroupActivity : AppCompatActivity() {
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
     }
 
-    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
+ /*   private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
         val editText = EditText(this)
         editText.hint = "group" + group_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -1211,7 +1213,7 @@ class GroupActivity : AppCompatActivity() {
         group_SMSButton!!.visibility = View.GONE
         group_groupButton!!.visibility = View.GONE
         group_floating_button_send_id!!.visibility = View.GONE
-    }
+    }*/
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))

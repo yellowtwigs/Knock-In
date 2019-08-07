@@ -59,7 +59,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         //endregion
 
 
-        val allContact = contactsDatabase!!.contactsDao().getContactAllInfo()
+        var allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
         createGroupAdapter = AddContactToGroupAdapter(this, allContact)
         addNewGroupListView!!.adapter = createGroupAdapter
     }

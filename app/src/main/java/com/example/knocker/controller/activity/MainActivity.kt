@@ -42,6 +42,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
+import kotlinx.android.synthetic.main.activity_group.*
 import kotlin.collections.ArrayList
 
 /**
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var main_SMSButton: FloatingActionButton? = null
     private var main_MailButton: FloatingActionButton? = null
+    private var main_groupButton: FloatingActionButton?= null
 
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
@@ -184,6 +186,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
+        main_groupButton = findViewById(R.id.main_group_button)
 
         //endregion
 
@@ -322,6 +325,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                         main_MailButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
+                        main_groupButton!!.visibility = View.GONE
                     }
                 }
                 firstClick = false
@@ -341,14 +345,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                    println("last visible pos"+lastVisiblePos+"first visible item "+firstVisibleItem+" visible item count"+visibleItemCount+" total item count "+totalItemCount)
                     if(lastVisiblePos<firstVisibleItem){
-                       if(main_FloatingButtonAdd!!.visibility== View.VISIBLE) {
+                       if(main_FloatingButtonAdd!!.visibility== View.VISIBLE && main_FloatingButtonSend!!.visibility== View.GONE) {
                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
                            main_FloatingButtonAdd!!.startAnimation(disparition)
                            main_FloatingButtonAdd!!.visibility = View.GONE
                        }
                         lastVisiblePos=firstVisibleItem
                     }else if (lastVisiblePos>firstVisibleItem){
-                        if(main_FloatingButtonAdd!!.visibility==View.GONE){
+                        if(main_FloatingButtonAdd!!.visibility==View.GONE && main_FloatingButtonSend!!.visibility== View.GONE){
                             val apparition = AnimationUtils.loadAnimation(baseContext,R.anim.reapparrition)
                             main_FloatingButtonAdd!!.startAnimation(apparition)
                             main_FloatingButtonAdd!!.visibility=View.VISIBLE
@@ -652,6 +656,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 main_MailButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
+                main_groupButton!!.visibility = View.GONE
             } else {
                 main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
@@ -661,10 +666,52 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 main_MailButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
+                main_groupButton!!.visibility = View.GONE
             }
 
             scaleGestureDetectore = ScaleGestureDetector(this, MyOnScaleGestureListener())
             refreshActivity()
+        }
+        main_groupButton!!.setOnClickListener {
+            val iterator: IntIterator?
+            val listOfContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
+
+            if (len > 1) {
+                val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
+                iterator = (0 until adapter.listContactSelect.size).iterator()
+
+                for (i in iterator) {
+                    listOfContactSelected.add(adapter.listContactSelect[i])
+                }
+            } else {
+                iterator = (0 until listOfItemSelected.size).iterator()
+
+                for (i in iterator) {
+                    listOfContactSelected.add(listOfItemSelected[i])
+                }
+            }
+            if (len >= 3) {
+                gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                main_GridView!!.adapter = gridViewAdapter
+                main_SearchBar!!.visibility = View.VISIBLE
+
+
+                main_MailButton!!.visibility = View.GONE
+                main_SMSButton!!.visibility = View.GONE
+                main_groupButton!!.visibility = View.GONE
+                main_FloatingButtonSend!!.visibility = View.GONE
+            } else {
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
+                main_SearchBar!!.visibility = View.VISIBLE
+
+
+                main_MailButton!!.visibility = View.GONE
+                main_SMSButton!!.visibility = View.GONE
+                main_groupButton!!.visibility = View.GONE
+                main_FloatingButtonSend!!.visibility = View.GONE
+            }
+            saveGroupMultiSelect(listOfItemSelected, len)
+            // recreate()
         }
         //endregion
     }
@@ -684,6 +731,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_FloatingButtonAdd!!.visibility = View.VISIBLE
         main_MailButton!!.visibility = View.GONE
         main_SMSButton!!.visibility = View.GONE
+        main_groupButton!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.GONE
         main_SearchBar!!.visibility = View.VISIBLE
     }
@@ -1091,6 +1139,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false mail")
             main_MailButton!!.visibility = View.GONE
         }
+        main_groupButton!!.visibility=View.VISIBLE
+        val params: ViewGroup.MarginLayoutParams = main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
+        params.bottomMargin = margin * i
+        main_groupButton!!.layoutParams = params
+
     }
 
     fun longRecyclerItemClick(position: Int) {
@@ -1140,6 +1193,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_SearchBar!!.visibility = View.VISIBLE
             main_SMSButton!!.visibility = View.GONE
             main_MailButton!!.visibility = View.GONE
+            main_groupButton!!.visibility =View.GONE
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
             firstClick = true
@@ -1205,4 +1259,53 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 //    }
 
     //endregion
+
+    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
+        val editText = EditText(this)
+        editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setTitle(R.string.main_alert_dialog_group_title)
+                .setMessage(R.string.main_alert_dialog_group_subtitle)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setView(editText)
+                .setNegativeButton(R.string.alert_dialog_no, null)
+                .setPositiveButton(R.string.alert_dialog_yes
+                ) { _, _ ->
+                    val nameGroup = if (editText.text.isNotEmpty()) {
+                        editText.text.toString()
+                    } else {
+                        editText.hint.toString()
+                    }
+                    println("name group$nameGroup")
+                    val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+                    var callDb = Callable {
+                        if (listContacts.size != 0) {
+                            val group = GroupDB(null, nameGroup, "")
+                            val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
+                            for (contact in listContacts) {
+                                val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
+                                main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
+                            }
+                        }
+                    }
+                    executorService.submit(callDb).get()!!
+                    if (len <= 1) {
+                        gestionnaireContacts!!.sortContactByGroup()
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
+                    } else {
+                        // gridViewAdapter!!.notifyDataSetChanged()
+                        gestionnaireContacts!!.sortContactByGroup()
+                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+                    }
+                }.show()
+        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+        main_GridView!!.adapter = gridViewAdapter
+        main_FloatingButtonSend!!.visibility = View.GONE
+        main_SearchBar!!.visibility = View.VISIBLE
+        main_MailButton!!.visibility = View.GONE
+        main_SMSButton!!.visibility = View.GONE
+        main_groupButton!!.visibility = View.GONE
+    }
 }

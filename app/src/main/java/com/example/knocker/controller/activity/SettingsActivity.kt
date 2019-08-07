@@ -46,8 +46,6 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-
         //region ======================================== Theme Dark ========================================
 
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
@@ -58,6 +56,8 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         //endregion
+
+        setContentView(R.layout.activity_settings)
 
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
         callPopup = sharedPreferencePopup.getBoolean("popup", true)
