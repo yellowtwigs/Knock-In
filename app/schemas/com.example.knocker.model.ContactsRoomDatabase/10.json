@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "ceefbde968c735942265363362e248f4",
+    "identityHash": "0bbb24145ccd2c0bb598a71a5b50bde2",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -156,7 +156,7 @@
       },
       {
         "tableName": "contact_details_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `content` TEXT NOT NULL, `type` TEXT NOT NULL, `tag` TEXT NOT NULL, `field_position` INTEGER NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `content` TEXT NOT NULL, `type` TEXT NOT NULL, `tag` TEXT NOT NULL, `field_position` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -191,6 +191,12 @@
           {
             "fieldPath": "fieldPosition",
             "columnName": "field_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -248,7 +254,7 @@
               "id_group",
               "id_contact"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_link_contact_group_table_id_group_id_contact` ON `${TABLE_NAME}` (`id_group`, `id_contact`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_link_contact_group_table_id_group_id_contact` ON `${TABLE_NAME}` (`id_group`, `id_contact`)"
           }
         ],
         "foreignKeys": [
@@ -280,7 +286,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ceefbde968c735942265363362e248f4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0bbb24145ccd2c0bb598a71a5b50bde2')"
     ]
   }
 }

@@ -288,15 +288,15 @@ class AddNewContactActivity : AppCompatActivity() {
                         val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
                         var contactDetailDB: ContactDetailDB
                         if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0, false)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
                         if(add_new_contact_fixNumber!!.editText!!.text.toString() !== ""){
-                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1, false)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
                         if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
+                            contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2, false)
                             main_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
 

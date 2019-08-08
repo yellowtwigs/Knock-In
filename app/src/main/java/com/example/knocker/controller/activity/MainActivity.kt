@@ -674,6 +674,26 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             refreshActivity()
         }
+
+        main_ToolbarMultiSelectModeClose!!.setOnClickListener {
+            listOfItemSelected.clear()
+
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+
+            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+            main_FloatingButtonSend!!.visibility = View.GONE
+            main_SearchBar!!.visibility = View.VISIBLE
+            main_SMSButton!!.visibility = View.GONE
+            main_MailButton!!.visibility = View.GONE
+
+            main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+            main_ToolbarLayout!!.visibility = View.VISIBLE
+
+            firstClick = true
+
+            recyclerViewAdapter!!.checkListOfItemSelected()
+        }
+
         //endregion
     }
     //region ========================================== Functions ===========================================
@@ -1092,6 +1112,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             verifiedContactsChannel(listOfItemSelected)
         }
 
+        val i = listOfItemSelected.size
+        main_ToolbarMultiSelectModeTitle!!.text = "$i sélectionné"
+
         if (listOfItemSelected.size == 1 && firstClick) {
             Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
             main_FloatingButtonAdd!!.visibility = View.GONE
@@ -1100,7 +1123,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             firstClick = false
             multiChannelMode = true
             main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
-            main_ToolbarLayout!!.visibility = View.INVISIBLE
+            main_ToolbarLayout!!.visibility = View.GONE
+
+            val i = listOfItemSelected.size
+
+            main_ToolbarMultiSelectModeTitle!!.text = "$i sélectionné"
+
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 

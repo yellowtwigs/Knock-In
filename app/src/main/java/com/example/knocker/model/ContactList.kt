@@ -328,8 +328,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     private fun getContactDeatailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
         val phoneNumber: String = json.getString("phone_number")
         val mail: String = json.getString("mail")
-        val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0)
-        val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1)
+        val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0, false)
+        val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1, false)
         return mutableListOf(contactDetails, contactDetails2)
     }
 
