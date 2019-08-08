@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
+import com.example.knocker.controller.activity.ContactDetailsActivity;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
@@ -210,7 +211,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
             if (len == 1) {
                 if (v.getId() == holder.editCl.getId()) {
-                    Intent intent = new Intent(context, EditContactActivity.class);
+                    Intent intent = new Intent(context, ContactDetailsActivity.class);
                     intent.putExtra("ContactId", contact.getId());
                     context.startActivity(intent);
                 }
@@ -269,7 +270,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     lastClick = false;
                 } else {
                     if (len == 0) {
-                        Intent intent = new Intent(context, EditContactActivity.class);
+                        Intent intent = new Intent(context, ContactDetailsActivity.class);
                         intent.putExtra("ContactId", contact.getId());
                         context.startActivity(intent);
                     } else if (len == 1) {

@@ -29,6 +29,8 @@ import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
@@ -69,7 +71,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
-    private var scaleGestureDetectore: ScaleGestureDetector? = null
+    private var main_ToolbarLayout: ConstraintLayout? = null
+
+    private var main_ToolbarMultiSelectModeLayout: RelativeLayout? = null
+    private var main_ToolbarMultiSelectModeClose: AppCompatImageView? = null
+    private var main_ToolbarMultiSelectModeTitle: TextView? = null
+    private var main_ToolbarMultiSelectModeDelete: AppCompatImageView? = null
+    private var main_ToolbarMultiSelectModeMenu: AppCompatImageView? = null
 
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
@@ -86,11 +94,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var firstClick: Boolean = true
+    private var multiChannelMode: Boolean = false
 
     private val PERMISSION_CALL_RESULT = 1
-
-    private val SEND_SMS_PERMISSION_REQUEST_CODE = 3
-    private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -185,6 +191,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_MailButton = findViewById(R.id.main_gmail_button)
         main_SMSButton = findViewById(R.id.main_sms_button)
+
+        main_ToolbarLayout = findViewById(R.id.main_toolbar_layout)
+
+        main_ToolbarMultiSelectModeLayout = findViewById(R.id.main_toolbar_multi_select_mode_layout)
+        main_ToolbarMultiSelectModeClose = findViewById(R.id.main_toolbar_multi_select_mode_close)
+        main_ToolbarMultiSelectModeTitle = findViewById(R.id.main_toolbar_multi_select_mode_tv)
+        main_ToolbarMultiSelectModeDelete = findViewById(R.id.main_toolbar_multi_select_mode_delete)
+        main_ToolbarMultiSelectModeMenu = findViewById(R.id.main_toolbar_multi_select_mode_menu)
 
         //endregion
 
@@ -314,6 +328,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                         main_MailButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
+
+                        main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+                        main_ToolbarLayout!!.visibility = View.VISIBLE
                     }
                 }
                 firstClick = false
@@ -655,7 +672,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_SMSButton!!.visibility = View.GONE
             }
 
-            scaleGestureDetectore = ScaleGestureDetector(this, MyOnScaleGestureListener())
             refreshActivity()
         }
         //endregion
@@ -678,32 +694,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SMSButton!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.GONE
         main_SearchBar!!.visibility = View.VISIBLE
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        scaleGestureDetectore?.onTouchEvent(event)
-        return true
-    }
-
-    inner class MyOnScaleGestureListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            val scaleFactor = detector.scaleFactor
-            if (scaleFactor > 1) {
-                println("Zooming Out$scaleFactor")
-            } else {
-                println("Zooming In$scaleFactor")
-            }
-            return true
-        }
-
-        override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
-            println("begin")
-            return true
-        }
-
-        override fun onScaleEnd(detector: ScaleGestureDetector) {
-            println("end")
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -1044,6 +1034,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         verifiedContactsChannel(listOfItemSelected)
 
         Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+
+        main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
+        main_ToolbarLayout!!.visibility = View.GONE
     }
 
     private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
@@ -1105,6 +1098,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_FloatingButtonSend!!.visibility = View.VISIBLE
             main_SearchBar!!.visibility = View.GONE
             firstClick = false
+            multiChannelMode = true
+            main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
+            main_ToolbarLayout!!.visibility = View.INVISIBLE
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
@@ -1113,6 +1109,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_SearchBar!!.visibility = View.VISIBLE
             main_SMSButton!!.visibility = View.GONE
             main_MailButton!!.visibility = View.GONE
+
+            main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+            main_ToolbarLayout!!.visibility = View.VISIBLE
 
             firstClick = true
         }
@@ -1156,18 +1155,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 recreate()
             }
         }
-    }
-
-    private fun slideUp(view: View) {
-        val height = view.height.toFloat()
-        val animate = TranslateAnimation(
-                0F,                 // fromXDelta
-                0F,                 // toXDelta
-                height,  // fromYDelta
-                0F)               // toYDelta
-        animate.duration = 500
-        animate.fillAfter = true
-        view.startAnimation(animate)
     }
 
     //endregion
