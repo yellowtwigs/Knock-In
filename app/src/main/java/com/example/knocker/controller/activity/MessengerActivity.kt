@@ -52,7 +52,7 @@ class MessengerActivity : AppCompatActivity() {
 
         //region ========================================= Toolbar ==========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.messenger_toolbar_layout)
+        val toolbar = findViewById<Toolbar>(R.id.messenger_toolbar)
         setSupportActionBar(toolbar)
         toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         val actionbar = supportActionBar

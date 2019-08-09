@@ -181,7 +181,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             val callDb = Callable { contactsDatabase?.contactsDao()?.getContactWithMail() }
             val result = executorService.submit(callDb)
             filter = result.get()
-            if (filter != null && filter.isEmpty() == false) {
+            if (filter != null && filter.isNotEmpty()) {
                 allFilters.add(filter)
             }
         }
@@ -321,15 +321,17 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr)
         val contactInfo = ContactWithAllInformation()
         contactInfo.contactDB = contact
-        contactInfo.contactDetailList = getContactDeatailFromJSONObject(json, id)
+        contactInfo.contactDetailList = getContactDetailFromJSONObject(json, id)
         return contactInfo
     }
 
-    private fun getContactDeatailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
+    private fun getContactDetailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
         val phoneNumber: String = json.getString("phone_number")
         val mail: String = json.getString("mail")
-        val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0, false)
-        val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1, false)
+//        val favorite: Boolean = json.getBoolean("mail")
+
+        val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0, 0)
+        val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1, 0)
         return mutableListOf(contactDetails, contactDetails2)
     }
 
@@ -468,7 +470,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
      */
     private fun getContactMailSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactDetails = arrayListOf<Map<Int, Any>>()
-        var idAndMail = mapOf<Int, Any>()
+        var idAndMail: Map<Int, Any>
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC")
         while (phonecontact.moveToNext()) {
             //recupert l'id du contact
@@ -494,13 +496,13 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récuper les numéro de téléphone des contacts du carnet Android.
+     * fonction qui permet de récupérer les numéros de téléphone des contacts du carnet Android.
      * @param main_contentResolver ContentResolver
      * @return List<Map<Int, Any>>
      */
     private fun getPhoneNumberSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactPhoneNumber = arrayListOf<Map<Int, Any>>()
-        var idAndPhoneNumber = mapOf<Int, Any>()
+        var idAndPhoneNumber: Map<Int, Any>
         //requete pour récuperer les numéros de téléphone des contacts
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
         while (phonecontact.moveToNext()) {
@@ -627,7 +629,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         var fieldPosition = 0
         contactNumberAndPic.forEach {
             if (it[1] == id) {
-                contactDetails.add(ContactDetailDB(null, null, it[2].toString(), it[5].toString(), it[3].toString(), fieldPosition))
+                contactDetails.add(ContactDetailDB(null, null, it[2].toString(), it[5].toString(), it[3].toString(), fieldPosition, 0))
                 fieldPosition++
             }
         }
@@ -777,9 +779,9 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     fun setToContactList(contactset: List<String>): Pair<ContactDB, List<ContactDetailDB>> {
         val allContacts: Pair<ContactDB, List<ContactDetailDB>>
         val detailList = arrayListOf<ContactDetailDB>()
-        for (i in 3..contactset.size - 1) {
+        for (i in 3 until contactset.size - 1) {
             val contactSetSplite = contactset.elementAt(i).split(":")
-            detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2))
+            detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2, 0))
         }
         allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), 0, 0, ""), detailList)
         return allContacts

@@ -25,7 +25,6 @@ import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.AnimationUtils
-import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -285,12 +284,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gestionnaireContacts = ContactList(this.applicationContext)
 
         if (main_GridView != null) {
-            if (sharedPreferences.getString("tri", "nom") == "nom") {
-                gestionnaireContacts!!.sortContactByFirstNameAZ()
-            } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
-                gestionnaireContacts!!.sortContactByPriority()
-            } else {
-                gestionnaireContacts!!.sortContactByGroup()
+            when {
+                sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+                sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
+                else -> gestionnaireContacts!!.sortContactByGroup()
             }
 
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
@@ -351,8 +348,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
                     if (lastVisiblePos < firstVisibleItem) {
                         if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
-                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
-                            main_FloatingButtonAdd!!.startAnimation(disparition)
+                            val disappear = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
+                            main_FloatingButtonAdd!!.startAnimation(disappear)
                             main_FloatingButtonAdd!!.visibility = View.GONE
                         }
                         lastVisiblePos = firstVisibleItem
@@ -381,17 +378,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
             main_RecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    val totalItemCount = recyclerView.layoutManager!!.itemCount
-                }
-
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    println("dx " + dx + " dy" + dy)
+                    println("dx $dx dy$dy")
                     if (dy > 10) {
                         if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
-                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
+                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
                             main_FloatingButtonAdd!!.startAnimation(disparition)
                             main_FloatingButtonAdd!!.visibility = View.GONE
                         }
@@ -691,7 +683,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             firstClick = true
 
-            recyclerViewAdapter!!.checkListOfItemSelected()
+//            recyclerViewAdapter!!.checkListOfItemSelected()
+
+            gridViewAdapter!!.notifyDataSetChanged()
         }
 
         //endregion
@@ -731,7 +725,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         return true
     }
-
 
     //check les checkbox si elle ont été check apres une recherche
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -1091,7 +1084,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             params.bottomMargin = margin * i
             main_MailButton!!.layoutParams = params
             println("height of floating mail" + main_MailButton!!.height)
-            i++
         } else {
             println("false mail")
             main_MailButton!!.visibility = View.GONE
@@ -1124,8 +1116,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             multiChannelMode = true
             main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
             main_ToolbarLayout!!.visibility = View.GONE
-
-            val i = listOfItemSelected.size
 
             main_ToolbarMultiSelectModeTitle!!.text = "$i sélectionné"
 

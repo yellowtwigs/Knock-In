@@ -38,7 +38,7 @@ data class ContactDetailDB(
          */
         @ColumnInfo(name = "field_position") val fieldPosition: Int,
         /**
-         * La position du champ lors de l'edition d'un contact
+         * Le champ si Oui = 1 ou Non = 0, ce contact est un favori
          */
-        @ColumnInfo(name = "favorite") val favorite: Boolean
+        @ColumnInfo(name = "is_favorite") val favorite: Int
 )
