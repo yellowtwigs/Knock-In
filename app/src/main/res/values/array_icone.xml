@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="icone_ressource">
+        <item>@drawable/ic_red_cross</item>
+        <item>@drawable/ic_family_silhouette</item>
+        <item>@drawable/ic_employee</item>
+        <item>@drawable/ic_woman</item>
+        <item>@drawable/ic_man</item>
+        <item>@drawable/ic_money</item>
+        <item>@drawable/ic_school</item>
+        <item>@drawable/ic_icons8_tennis</item>
+    </integer-array>
+</resources>

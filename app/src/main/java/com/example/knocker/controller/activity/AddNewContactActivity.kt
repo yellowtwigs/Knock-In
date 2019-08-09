@@ -23,11 +23,14 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
@@ -330,31 +333,36 @@ class AddNewContactActivity : AppCompatActivity() {
 
     private fun selectImage() {
 
-        val items = arrayOf<CharSequence>(getString(R.string.add_new_contact_alert_dialog_photo_camera)
-                , getString(R.string.add_new_contact_alert_dialog_photo_galery)
-                , getString(R.string.add_new_contact_alert_dialog_photo_cancel))
-        //            ActionBar.DisplayOptions[]
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-        }
-
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(R.string.add_new_contact_alert_dialog_photo_title)
-        builder.setItems(items) { dialog, i ->
-            when {
-                items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_camera) -> openCamera()
-                items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_galery) -> {
-
-                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                    intent.type = "image/*"
-                    startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
-
-                }
-                items[i] == this.getString(R.string.add_new_contact_alert_dialog_photo_cancel) -> dialog.dismiss()
+        val builderBottom = BottomSheetDialog(this)
+        builderBottom.setContentView(R.layout.alert_dialog_picture)
+        val gallerie = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_gallerie_view)
+        val camera =builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_camera_view)
+        val recylcer = builderBottom.findViewById<RecyclerView>(R.id.alert_picture_recycler_view)
+        val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        recylcer!!.layoutManager=layoutMananger
+        val adapter = ContactIconeAdapter(this)
+        recylcer!!.adapter= adapter
+        gallerie!!.setOnClickListener{
+            if ( ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                builderBottom.dismiss()
+            }else {
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                intent.type = "image/*"
+                startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
+                builderBottom.dismiss()
             }
         }
-        builder.show()
+        camera!!.setOnClickListener{
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 2)
+                builderBottom.dismiss()
+            }else {
+                openCamera()
+                builderBottom.dismiss()
+            }
+        }
+        builderBottom.show()
     }
 
     private fun openCamera() {
@@ -462,4 +470,23 @@ class AddNewContactActivity : AppCompatActivity() {
         }
         return null
     }//TODO : trouver une place pour toutes les méthodes des contacts
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode ==1 && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/*"
+            startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
+        }else if(requestCode==2 &&ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED  ){
+            openCamera()
+        }
+    }
+    public fun addContactIcone(bitmap: Bitmap){
+
+     /*   var bitmap = BitmapFactory.decodeResource(resources,iconeId)*/
+        //bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+        //bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
+        add_new_contact_ImgString = bitmapToBase64(bitmap)
+    }
 }

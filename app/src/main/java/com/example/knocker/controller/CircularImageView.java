@@ -31,7 +31,7 @@ import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
 public class CircularImageView extends AppCompatImageView {
 
     // Default Values
-    private static final float DEFAULT_BORDER_WIDTH = 6;
+    private static final float DEFAULT_BORDER_WIDTH = 5;
     private static final float DEFAULT_SHADOW_RADIUS = 8.0f;
 
     // Properties
@@ -87,9 +87,9 @@ public class CircularImageView extends AppCompatImageView {
             setBorderWidth(attributes.getDimension(R.styleable.CircularImageView_civ_border_width, defaultBorderSize));
             setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
-            if(sharedThemePreferences.getBoolean("darkTheme",false)){
+            if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, getResources().getColor(R.color.backgroundColorDark)));
-            }else{
+            } else {
                 setBetweenBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, getResources().getColor(R.color.backgroundColor)));
             }
         }
@@ -417,3 +417,5 @@ public class CircularImageView extends AppCompatImageView {
 
     }
 }
+
+
