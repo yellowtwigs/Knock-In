@@ -34,10 +34,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/custom_shadow_background"
-                android:elevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:elevation="10dp">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/main_toolbar"
@@ -65,6 +62,59 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/main_toolbar_multi_select_mode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/backgroundColor"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/main_toolbar_multi_select_mode_close"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/ic_close" />
+
+                <TextView
+                    android:id="@+id/main_toolbar_multi_select_mode_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="35dp"
+                    android:layout_toEndOf="@+id/main_toolbar_multi_select_mode_close"
+                    android:text="1 sélectionné"
+                    android:textColor="?attr/textColor"
+                    android:textSize="21sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/main_toolbar_multi_select_mode_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@+id/main_toolbar_multi_select_mode_menu"
+                    app:srcCompat="@drawable/ic_garbage" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/main_toolbar_multi_select_mode_menu"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    app:srcCompat="@drawable/ic_toolbar_menu" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.05dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="?attr/darkGreyColor" />
+
+            </RelativeLayout>
+
 
             <GridView
                 android:id="@+id/main_grid_view_id"
@@ -122,13 +172,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="?attr/backgroundColor"
-        app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/drawer_navigation_color"
-        app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+    android:id="@+id/nav_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="?attr/backgroundColor"
+    app:headerLayout="@layout/nav_header_drawer"
+    app:itemIconTint="@color/drawer_navigation_color"
+    app:itemTextColor="@color/drawer_navigation_color"
+    app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

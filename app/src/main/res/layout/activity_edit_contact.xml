@@ -351,7 +351,6 @@
             android:divider="@null"
             android:textColor="?attr/textColor"
             android:textColorHint="?attr/textColor"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout" />

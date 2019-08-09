@@ -32,6 +32,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.knocker.R;
+import com.example.knocker.controller.activity.ContactDetailsActivity;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
@@ -174,13 +175,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         } else if (contact.getContactPriority() == 2) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         }
-        //region set libbellé group
-        // ContactsRoomDatabase main_ContactsDatabase=ContactsRoomDatabase.Companion.getDatabase(context);
-        //DbWorkerThread main_mDbWorkerThread=new DbWorkerThread("dbWorkerThread");
-        //main_mDbWorkerThread.start() ;
-        //List<GroupDB> listDB=main_ContactsDatabase.GroupsDao().getGroupForContact(contact.getId());
-        //endregion
-        // getItem(position).getFirstGroup(context);
+
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
         String group = "";
@@ -367,6 +362,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             builder.addSubActionView(builderIcon.setContentView(buttonSMS, layoutParams).build(), diametreBoutton, diametreBoutton)
                     .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
+        if (!getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber()).equals("")) {
+            builder.addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
+        }
 
        /* if( appIsInstalled( "com.facebook.orca")){
             builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton);
@@ -391,7 +389,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
             } else if (v.getId() == buttonEdit.getId()) {
 
-                Intent intent = new Intent(context, EditContactActivity.class);
+                Intent intent = new Intent(context, ContactDetailsActivity.class);
                 intent.putExtra("ContactId", contact.getId());
 
                 if(context instanceof GroupActivity){

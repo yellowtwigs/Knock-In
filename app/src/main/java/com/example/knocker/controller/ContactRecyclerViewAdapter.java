@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
+import com.example.knocker.controller.activity.ContactDetailsActivity;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
@@ -59,7 +61,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private ContactList gestionnaireContacts;
     private Boolean modeMultiSelect = false;
     private Boolean secondClick = false;
-    private Boolean fromLibelle = false;
+    private Boolean lastClick = false;
 
     private ConstraintLayout lastSelectMenuLen1;
 
@@ -201,7 +203,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 String mail = getItem(position).getFirstMail();
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:"));
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail.substring(0, mail.length())});
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
@@ -209,7 +211,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
             if (len == 1) {
                 if (v.getId() == holder.editCl.getId()) {
-                    Intent intent = new Intent(context, EditContactActivity.class);
+                    Intent intent = new Intent(context, ContactDetailsActivity.class);
                     intent.putExtra("ContactId", contact.getId());
                     context.startActivity(intent);
                 }
@@ -217,105 +219,76 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         };
 
         View.OnLongClickListener longClick = v -> {
-            if (!modeMultiSelect) {
-                view.setTag(holder);
-                ContactDB contact1 = gestionnaireContacts.getContacts().get(position).getContactDB();
-                assert contact1 != null;
-
-                if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
-                    listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
-
-                    if (!contact1.getProfilePicture64().equals("")) {
-                        Bitmap bitmap = base64ToBitmap(contact1.getProfilePicture64());
-                        holder.contactRoundedImageView.setImageBitmap(bitmap);
-                    } else {
-                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact1.getProfilePicture()));
-                    }
-                } else {
-                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                    if (context instanceof GroupActivity && len == 0) {
-                        holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
-                    } else {
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-                    }
-                }
-
-                if (context instanceof GroupActivity) {
-                    ((GroupActivity) context).longRecyclerItemClick(position, false, false);
-                } else if (context instanceof MainActivity) {
-                    ((MainActivity) context).longRecyclerItemClick(position);
-                }
-
-                modeMultiSelect = true;
+            if (listOfItemSelected.size() == 0 && len == 1 && holder.constraintLayoutMenu != null) {
+                holder.constraintLayoutMenu.setVisibility(View.GONE);
             }
-            return true;
+
+            view.setTag(holder);
+            ContactDB contact1 = gestionnaireContacts.getContacts().get(position).getContactDB();
+            assert contact1 != null;
+
+            if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
+                listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
+
+                if (!contact1.getProfilePicture64().equals("")) {
+                    Bitmap bitmap = base64ToBitmap(contact1.getProfilePicture64());
+                    holder.contactRoundedImageView.setImageBitmap(bitmap);
+                } else {
+                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact1.getProfilePicture()));
+                }
+            } else {
+                listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
+                if (context instanceof GroupActivity && len == 0) {
+                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                } else {
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                }
+            }
+
+            if (context instanceof GroupActivity) {
+                ((GroupActivity) context).longRecyclerItemClick(position, false, false);
+            } else if (context instanceof MainActivity) {
+                ((MainActivity) context).longRecyclerItemClick(position);
+            }
+
+            if (listOfItemSelected.size() > 0) {
+                modeMultiSelect = true;
+                lastClick = false;
+            } else {
+                modeMultiSelect = false;
+                lastClick = true;
+            }
+
+            return modeMultiSelect;
         };
 
         View.OnClickListener listItemClick = v -> {
-            if (!modeMultiSelect) {
-                if (len == 0) {
-                    Intent intent = new Intent(context, EditContactActivity.class);
-                    intent.putExtra("ContactId", contact.getId());
-                    context.startActivity(intent);
-                } else if (len == 1) {
-                    if (holder.constraintLayoutMenu != null) {
-                        if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
-                            holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-                            if (lastSelectMenuLen1 != null)
-                                lastSelectMenuLen1.setVisibility(View.GONE);
-                            lastSelectMenuLen1 = holder.constraintLayoutMenu;
-                        } else {
-                            holder.constraintLayoutMenu.setVisibility(View.GONE);
-                            Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                            holder.constraintLayoutMenu.startAnimation(slideDown);
-                            lastSelectMenuLen1 = null;
-                        }
-                    }
-                }
+            if (modeMultiSelect) {
+
             } else {
-                view.setTag(holder);
-                ContactDB contact12 = gestionnaireContacts.getContacts().get(position).getContactDB();
-                assert contact12 != null;
-
-                if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
-                    listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
-
-
-                    if (context instanceof GroupActivity && len == 0) {
-                        SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
-                        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColorDark));
-                        } else {
-                            holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.backgroundColor));
-                        }
-                        ;
-                    } else {
-                        if (!contact12.getProfilePicture64().equals("")) {
-                            Bitmap bitmap = base64ToBitmap(contact12.getProfilePicture64());
-                            holder.contactRoundedImageView.setImageBitmap(bitmap);
-                        } else {
-                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact12.getProfilePicture()));
-                        }
-                    }
-
+                if (lastClick) {
+                    lastClick = false;
                 } else {
-
-                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
-                    if (context instanceof GroupActivity && len == 0) {
-                        holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
-                    } else {
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    if (len == 0) {
+                        Intent intent = new Intent(context, ContactDetailsActivity.class);
+                        intent.putExtra("ContactId", contact.getId());
+                        context.startActivity(intent);
+                    } else if (len == 1) {
+                        if (holder.constraintLayoutMenu != null) {
+                            if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
+                                holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
+                                slideUp(holder.constraintLayoutMenu);
+                                if (lastSelectMenuLen1 != null)
+                                    lastSelectMenuLen1.setVisibility(View.GONE);
+                                lastSelectMenuLen1 = holder.constraintLayoutMenu;
+                            } else {
+                                holder.constraintLayoutMenu.setVisibility(View.GONE);
+                                Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+                                holder.constraintLayoutMenu.startAnimation(slideDown);
+                                lastSelectMenuLen1 = null;
+                            }
+                        }
                     }
-                }
-
-                if (context instanceof GroupActivity) {
-                    ((GroupActivity) context).recyclerItemClick(position, fromLibelle);
-                } else if (context instanceof MainActivity) {
-                    ((MainActivity) context).recyclerItemClick(position);
-                }
-
-                if (listOfItemSelected.size() == 0) {
-                    modeMultiSelect = false;
                 }
             }
         };
@@ -366,7 +339,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
         if (holder.constraintLayout != null) {
             holder.constraintLayout.setOnLongClickListener(longClick);
-
             holder.constraintLayout.setOnClickListener(listItemClick);
         } else {
             holder.constraintLayoutSmaller.setOnLongClickListener(longClick);
@@ -377,30 +349,16 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         holder.whatsappCl.setOnClickListener(listener);
         holder.callCl.setOnClickListener(listener);
         holder.smsCl.setOnClickListener(listener);
-        holder.callCl.setOnLongClickListener(new View.OnLongClickListener(){
-            @Override
-            public boolean onLongClick(View v) {
-                String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
-                if (!phoneNumber.isEmpty()) {
-                    callPhone(phoneNumber);
-                }
-                return true;
+        holder.callCl.setOnLongClickListener(v -> {
+            String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
+            if (!phoneNumber.isEmpty()) {
+                callPhone(phoneNumber);
             }
+            return true;
         });
         if (holder.editCl != null) {
             holder.editCl.setOnClickListener(listener);
         }
-
-       /* if (holder.groupWordingConstraint.getVisibility()==View.VISIBLE) {
-            System.out.println("is visible"+holder.contactFirstNameView.getText());
-            if (lastSelectMenuLen1.getId() != holder.groupWordingConstraint.getId()) {
-                holder.groupWordingConstraint.setVisibility(View.GONE);
-            }else{
-                System.out.println("id are equals"+lastSelectMenuLen1.getId()+"="+holder.groupWordingConstraint.getId());
-            }
-        }else{
-            System.out.println("is gone"+holder.contactFirstNameView.getText());
-        }*/
 
         holder.groupWordingConstraint.setOnClickListener(v -> {
 
@@ -440,8 +398,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 modeMultiSelect = false;
                 notifyDataSetChanged();
             }
-
-            fromLibelle = true;
         });
     }
 
@@ -509,11 +465,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.main_contact_grid_title)
                         .setMessage(R.string.main_contact_grid_message)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)));
-                            }
-                        })
+                        .setPositiveButton(android.R.string.yes, (dialog, id) -> context.startActivity(new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))))
                         .setNegativeButton(android.R.string.no, null)
                         .show();
             } else {
@@ -532,6 +484,18 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         } catch (Exception e) {
             return true;
         }
+    }
+
+    private void slideUp(View view) {
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                view.getHeight(),  // fromYDelta
+                0);                // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
     }
 
     class ContactViewHolder extends RecyclerView.ViewHolder {

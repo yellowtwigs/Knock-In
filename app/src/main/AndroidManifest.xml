@@ -37,7 +37,9 @@
         android:roundIcon="@drawable/ic_letter_k"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.SettingsActivity"></activity>
+        <activity android:name=".controller.activity.ContactDetailsActivity"></activity>
+        <activity android:name=".controller.activity.MessengerActivity" />
+        <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.KnockerInfos" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity" />
         <activity android:name=".controller.activity.group.AddNewGroupActivity" />

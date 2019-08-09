@@ -25,9 +25,12 @@ import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
@@ -70,7 +73,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
-    private var scaleGestureDetectore: ScaleGestureDetector? = null
+    private var main_ToolbarLayout: ConstraintLayout? = null
+
+    private var main_ToolbarMultiSelectModeLayout: RelativeLayout? = null
+    private var main_ToolbarMultiSelectModeClose: AppCompatImageView? = null
+    private var main_ToolbarMultiSelectModeTitle: TextView? = null
+    private var main_ToolbarMultiSelectModeDelete: AppCompatImageView? = null
+    private var main_ToolbarMultiSelectModeMenu: AppCompatImageView? = null
 
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
@@ -87,11 +96,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var firstClick: Boolean = true
+    private var multiChannelMode: Boolean = false
 
     private val PERMISSION_CALL_RESULT = 1
-
-    private val SEND_SMS_PERMISSION_REQUEST_CODE = 3
-    private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -188,6 +195,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SMSButton = findViewById(R.id.main_sms_button)
         main_groupButton = findViewById(R.id.main_group_button)
 
+        main_ToolbarLayout = findViewById(R.id.main_toolbar_layout)
+
+        main_ToolbarMultiSelectModeLayout = findViewById(R.id.main_toolbar_multi_select_mode_layout)
+        main_ToolbarMultiSelectModeClose = findViewById(R.id.main_toolbar_multi_select_mode_close)
+        main_ToolbarMultiSelectModeTitle = findViewById(R.id.main_toolbar_multi_select_mode_tv)
+        main_ToolbarMultiSelectModeDelete = findViewById(R.id.main_toolbar_multi_select_mode_delete)
+        main_ToolbarMultiSelectModeMenu = findViewById(R.id.main_toolbar_multi_select_mode_menu)
+
         //endregion
 
         //region ========================================== Toolbar =========================================
@@ -221,31 +236,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             drawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                }
+                R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 R.id.nav_groups -> startActivity(Intent(this@MainActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
+                R.id.nav_messenger -> startActivity(Intent(this@MainActivity, MessengerActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_data_access -> {
-                }
+//                R.id.nav_data_access ->
                 R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
-                R.id.nav_statistics -> {
-                }
+//                R.id.nav_statistics ->
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
-        }
-
-        val view = layoutInflater.inflate(R.layout.nav_header_drawer, null)
-        val nav_header_drawer_Copyright = view.findViewById<RelativeLayout>(R.id.nav_header_drawer_copyright)
-        nav_header_drawer_Copyright.setOnClickListener {
-            startActivity(Intent(this@MainActivity, KnockerInfos::class.java))
         }
 
         //endregion
@@ -314,7 +320,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                     if (adapter.listContactSelect.size == 0) {
                         val pos = main_GridView!!.firstVisiblePosition
-                        gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                         main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         main_FloatingButtonSend!!.visibility = View.GONE
@@ -325,6 +331,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                         main_MailButton!!.visibility = View.GONE
                         main_SMSButton!!.visibility = View.GONE
+
+                        main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+                        main_ToolbarLayout!!.visibility = View.VISIBLE
                         main_groupButton!!.visibility = View.GONE
                     }
                 }
@@ -332,7 +341,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
 
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
-                var lastVisiblePos =main_GridView!!.firstVisiblePosition
+                var lastVisiblePos = main_GridView!!.firstVisiblePosition
                 override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
                     if (gridViewAdapter != null) {
                         gridViewAdapter!!.closeMenu()
@@ -343,21 +352,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     if (gridViewAdapter != null) {
                         gridViewAdapter!!.closeMenu()
                     }
-                   println("last visible pos"+lastVisiblePos+"first visible item "+firstVisibleItem+" visible item count"+visibleItemCount+" total item count "+totalItemCount)
-                    if(lastVisiblePos<firstVisibleItem){
-                       if(main_FloatingButtonAdd!!.visibility== View.VISIBLE && main_FloatingButtonSend!!.visibility== View.GONE) {
-                           val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
-                           main_FloatingButtonAdd!!.startAnimation(disparition)
-                           main_FloatingButtonAdd!!.visibility = View.GONE
-                       }
-                        lastVisiblePos=firstVisibleItem
-                    }else if (lastVisiblePos>firstVisibleItem){
-                        if(main_FloatingButtonAdd!!.visibility==View.GONE && main_FloatingButtonSend!!.visibility== View.GONE){
-                            val apparition = AnimationUtils.loadAnimation(baseContext,R.anim.reapparrition)
-                            main_FloatingButtonAdd!!.startAnimation(apparition)
-                            main_FloatingButtonAdd!!.visibility=View.VISIBLE
+                    println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
+                    if (lastVisiblePos < firstVisibleItem) {
+                        if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
+                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
+                            main_FloatingButtonAdd!!.startAnimation(disparition)
+                            main_FloatingButtonAdd!!.visibility = View.GONE
                         }
-                        lastVisiblePos=firstVisibleItem
+                        lastVisiblePos = firstVisibleItem
+                    } else if (lastVisiblePos > firstVisibleItem) {
+                        if (main_FloatingButtonAdd!!.visibility == View.GONE) {
+                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
+                            main_FloatingButtonAdd!!.startAnimation(apparition)
+                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                        }
+                        lastVisiblePos = firstVisibleItem
                     }
                 }
             })
@@ -383,18 +392,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    println("dx "+dx+ " dy"+ dy)
-                    if(dy>10){
-                        if(main_FloatingButtonAdd!!.visibility== View.VISIBLE) {
+                    println("dx " + dx + " dy" + dy)
+                    if (dy > 10) {
+                        if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
                             val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disparition)
                             main_FloatingButtonAdd!!.startAnimation(disparition)
                             main_FloatingButtonAdd!!.visibility = View.GONE
                         }
-                    }else if (dy<-10){
-                        if(main_FloatingButtonAdd!!.visibility==View.GONE){
-                            val apparition = AnimationUtils.loadAnimation(baseContext,R.anim.reapparrition)
+                    } else if (dy < -10) {
+                        if (main_FloatingButtonAdd!!.visibility == View.GONE) {
+                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
                             main_FloatingButtonAdd!!.startAnimation(apparition)
-                            main_FloatingButtonAdd!!.visibility=View.VISIBLE
+                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -669,7 +678,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_groupButton!!.visibility = View.GONE
             }
 
-            scaleGestureDetectore = ScaleGestureDetector(this, MyOnScaleGestureListener())
             refreshActivity()
         }
         main_groupButton!!.setOnClickListener {
@@ -734,32 +742,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_groupButton!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.GONE
         main_SearchBar!!.visibility = View.VISIBLE
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        scaleGestureDetectore?.onTouchEvent(event)
-        return true
-    }
-
-    inner class MyOnScaleGestureListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            val scaleFactor = detector.scaleFactor
-            if (scaleFactor > 1) {
-                println("Zooming Out$scaleFactor")
-            } else {
-                println("Zooming In$scaleFactor")
-            }
-            return true
-        }
-
-        override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
-            println("begin")
-            return true
-        }
-
-        override fun onScaleEnd(detector: ScaleGestureDetector) {
-            println("end")
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -1100,6 +1082,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         verifiedContactsChannel(listOfItemSelected)
 
         Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+
+        main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
+        main_ToolbarLayout!!.visibility = View.GONE
     }
 
     private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
@@ -1166,27 +1151,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_FloatingButtonSend!!.visibility = View.VISIBLE
             main_SearchBar!!.visibility = View.GONE
             firstClick = false
+            multiChannelMode = true
+            main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
+            main_ToolbarLayout!!.visibility = View.INVISIBLE
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-            firstClick = true
-        }
-    }
-
-    fun recyclerItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
-
-            verifiedContactsChannel(listOfItemSelected)
-        } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
-
-            verifiedContactsChannel(listOfItemSelected)
-        }
-
-        if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
-            firstClick = false
-        } else if (listOfItemSelected.size == 0) {
 
             main_FloatingButtonAdd!!.visibility = View.VISIBLE
             main_FloatingButtonSend!!.visibility = View.GONE
@@ -1195,7 +1164,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_MailButton!!.visibility = View.GONE
             main_groupButton!!.visibility =View.GONE
 
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+            main_ToolbarLayout!!.visibility = View.VISIBLE
+
             firstClick = true
         }
     }
@@ -1239,24 +1210,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
         }
     }
-
-//    public void playVideo(final String videoId, YouTubePlayerView youTubePlayerView) {
-//        //initialize youtube player view
-//        youTubePlayerView.initialize("YOUR API KEY HERE",
-//                new YouTubePlayer.OnInitializedListener() {
-//                    @Override
-//                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
-//                                                        YouTubePlayer youTubePlayer, boolean b) {
-//                        youTubePlayer.cueVideo(videoId);
-//                    }
-//
-//                    @Override
-//                    public void onInitializationFailure(YouTubePlayer.Provider provider,
-//                                                        YouTubeInitializationResult youTubeInitializationResult) {
-//
-//                    }
-//                });
-//    }
 
     //endregion
 

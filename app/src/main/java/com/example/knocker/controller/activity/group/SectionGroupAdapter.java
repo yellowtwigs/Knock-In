@@ -34,7 +34,6 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final Context mContext;
     private static final int SECTION_TYPE = 0;
-
     private boolean mValid = true;
     private int mSectionResourceId;
     private RecyclerView.Adapter mBaseAdapter;
@@ -84,7 +83,6 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
     }
-
 
     public static class SectionViewHolder extends RecyclerView.ViewHolder {
 
@@ -152,69 +150,60 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 monoChannelMailClick(groupMail);
             });
-            ((SectionViewHolder) sectionViewHolder).smsIV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int i = position + 1;
-                    ArrayList<String> groupSms = new ArrayList<>();
-                    while (!isSectionHeaderPosition(i) && i < getItemCount()) {
-                        ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i));
-                        groupSms.add(contact.getFirstPhoneNumber());
-                        i++;
-                    }
-                    monoChannelSmsClick(groupSms);
+            ((SectionViewHolder) sectionViewHolder).smsIV.setOnClickListener(v -> {
+                int i12 = position + 1;
+                ArrayList<String> groupSms = new ArrayList<>();
+                while (!isSectionHeaderPosition(i12) && i12 < getItemCount()) {
+                    ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i12));
+                    groupSms.add(contact.getFirstPhoneNumber());
+                    i12++;
                 }
+                monoChannelSmsClick(groupSms);
             });
 
-            ((SectionViewHolder) sectionViewHolder).menu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("BUTTON CLICK");
-                    final PopupMenu popupMenu = new PopupMenu(mContext, v);
-                    popupMenu.inflate(R.menu.menu_manage_group);
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            System.out.println("VALUES = " + item.getItemId());
-                            System.out.println("ok = " + R.id.menu_group_add_contacts);
-                            System.out.println("ok = " + R.id.menu_group_delete_contacts);
-                            System.out.println("ok = " + R.id.menu_group_delete_group);
-                            switch (item.getItemId()) {
-                                case R.id.menu_group_add_contacts:
-                                    System.out.println("add contact");
-                                    Intent intent = new Intent(mContext, AddContactToGroupActivity.class);
-                                    intent.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
-                                    mContext.startActivity(intent);
-                                    break;
-                                case R.id.menu_group_delete_contacts:
-                                    Intent intentdelete = new Intent(mContext, DeleteContactFromGroupActivity.class);
-                                    intentdelete.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
-                                    mContext.startActivity(intentdelete);
-                                    System.out.println("delete contact");
-                                    break;
-                                case R.id.menu_group_delete_group:
-                                    //groupManagerActivity = GroupManagerActivity;
-                                    ContactsRoomDatabase contactsDatabase;
-                                    DbWorkerThread mDbWorkerThread;
-                                    mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-                                    mDbWorkerThread.start();
-                                    contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(mContext);
-                                    assert contactsDatabase != null;
-                                    // System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
-                                    alertDialog(mSections.get(position).getIdGroup().intValue(), contactsDatabase);
-                                    //contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
-                                    /*if (mContext instanceof GroupManagerActivity)
-                                        ((GroupManagerActivity) mContext).refreshList();*/
-                                    break;
-                                default:
-                                    System.out.println("always in default");
-                                    break;
-                            }
-                            return true;
-                        }
-                    });
-                    popupMenu.show();
-                }
+            ((SectionViewHolder) sectionViewHolder).menu.setOnClickListener(v -> {
+                System.out.println("BUTTON CLICK");
+                final PopupMenu popupMenu = new PopupMenu(mContext, v);
+                popupMenu.inflate(R.menu.menu_manage_group);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    System.out.println("VALUES = " + item.getItemId());
+                    System.out.println("ok = " + R.id.menu_group_add_contacts);
+                    System.out.println("ok = " + R.id.menu_group_delete_contacts);
+                    System.out.println("ok = " + R.id.menu_group_delete_group);
+                    switch (item.getItemId()) {
+                        case R.id.menu_group_add_contacts:
+                            System.out.println("add contact");
+                            Intent intent = new Intent(mContext, AddContactToGroupActivity.class);
+                            intent.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
+                            mContext.startActivity(intent);
+                            break;
+                        case R.id.menu_group_delete_contacts:
+                            Intent intentdelete = new Intent(mContext, DeleteContactFromGroupActivity.class);
+                            intentdelete.putExtra("GroupId", mSections.get(position).getIdGroup().intValue());
+                            mContext.startActivity(intentdelete);
+                            System.out.println("delete contact");
+                            break;
+                        case R.id.menu_group_delete_group:
+                            //groupManagerActivity = GroupManagerActivity;
+                            ContactsRoomDatabase contactsDatabase1;
+                            DbWorkerThread mDbWorkerThread;
+                            mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+                            mDbWorkerThread.start();
+                            contactsDatabase1 = ContactsRoomDatabase.Companion.getDatabase(mContext);
+                            assert contactsDatabase1 != null;
+                            // System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
+                            alertDialog(mSections.get(position).getIdGroup().intValue(), contactsDatabase1);
+                            //contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
+                            /*if (mContext instanceof GroupManagerActivity)
+                                ((GroupManagerActivity) mContext).refreshList();*/
+                            break;
+                        default:
+                            System.out.println("always in default");
+                            break;
+                    }
+                    return true;
+                });
+                popupMenu.show();
             });
         } else {
             // System.out.println("position non section"+position);
@@ -229,14 +218,12 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return false;
     }
 
-
     @Override
     public int getItemViewType(int position) {
         return isSectionHeaderPosition(position)
                 ? SECTION_TYPE
                 : mBaseAdapter.getItemViewType(sectionedPositionToPosition(position)) + 1;
     }
-
 
     public static class Section {
         int firstPosition;
@@ -258,7 +245,6 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return idGroup;
         }
     }
-
 
     public void setSections(Section[] sections) {
         mSections.clear();
@@ -304,7 +290,6 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private boolean isSectionHeaderPosition(int position) {
         return mSections.get(position) != null;
     }
-
 
     @Override
     public long getItemId(int position) {
