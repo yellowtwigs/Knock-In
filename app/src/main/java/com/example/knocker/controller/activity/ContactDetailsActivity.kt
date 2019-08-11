@@ -249,11 +249,16 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         var counter = 0
 
+        val contactList = ContactList(this)
+        val contact = contactList.getContactById(contact_details_ContactId!!)!!
         while (counter < contact_details_ContactsDatabase!!.contactDetailsDao().getDetailsForAContact(contact_details_ContactId!!).size) {
-            if (contact!!.contactDetailList!![counter].favorite == 1) {
+
+            if (contact.contactDetailList!![counter].favorite == 1) {
                 contact_details_RemoveContactFromFavorite!!.visibility = View.VISIBLE
-            } else if (contact!!.contactDetailList!![counter].favorite == 0) {
                 contact_details_AddContactToFavorite!!.visibility = View.INVISIBLE
+            } else if (contact.contactDetailList!![counter].favorite == 0) {
+                contact_details_AddContactToFavorite!!.visibility = View.VISIBLE
+                contact_details_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
             }
             counter++
         }
@@ -299,6 +304,18 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         contact_details_Return!!.setOnClickListener {
             backOnPressed()
+
+            val contactDetails = Runnable {
+                val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
+                val nbDetail = contact!!.contactDetailList!!.size - 1
+
+                if (nbDetail == -1) {
+                    val detail = ContactDetailDB(null, contact.getContactId(), contact_details_mail, "mail", "3", 2, isFavorite)
+                    contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                    contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
+                }
+            }
+            contact_details_mDbWorkerThread.postTask(contactDetails)
         }
 
         contact_details_DeleteContact!!.setOnClickListener {
@@ -384,12 +401,10 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     private fun addToFavorite() {
         isFavorite = 1
-        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
     }
 
     private fun removeFromFavorite() {
         isFavorite = 0
-        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
     }
 
     private fun appIsInstalled(): Boolean {
