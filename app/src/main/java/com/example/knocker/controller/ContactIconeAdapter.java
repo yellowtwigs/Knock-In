@@ -22,14 +22,16 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
     private Context context;
     private int[] iconeList;
 
-    public ContactIconeAdapter(Context context){
-        this.context= context;
-        TypedArray array =context.getResources().obtainTypedArray(R.array.icone_ressource);
-        iconeList= new int[array.length()];
-        for(int i = 0; i < array.length();i++){
-                iconeList[i]= array.getResourceId(i,0);;
+    public ContactIconeAdapter(Context context) {
+        this.context = context;
+        TypedArray array = context.getResources().obtainTypedArray(R.array.icone_ressource);
+        iconeList = new int[array.length()];
+        for (int i = 0; i < array.length(); i++) {
+            iconeList[i] = array.getResourceId(i, 0);
+            ;
         }
     }
+
     @NonNull
     @Override
     public ContactIconeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,17 +45,17 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
     @Override
     public void onBindViewHolder(@NonNull ContactIconeAdapter.ViewHolder holder, final int position) {
 
-        for (int i=0; i<iconeList.length ;i++){
-            System.out.println("icone list"+iconeList[i]);
+        for (int i = 0; i < iconeList.length; i++) {
+            System.out.println("icone list" + iconeList[i]);
         }
         holder.imageViewIcone.setImageResource(iconeList[position]);
         holder.iconeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(context instanceof EditContactActivity){
+                if (context instanceof EditContactActivity) {
                     Drawable drawable = context.getDrawable(iconeList[position]);
                     Bitmap bitmap = null;
-                    if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+                    if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
                         bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
                     } else {
                         bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -63,10 +65,10 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
                     drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                     drawable.draw(canvas);
                     ((EditContactActivity) context).addContactIcone(bitmap);
-                }else if(context instanceof AddNewContactActivity){
+                } else if (context instanceof AddNewContactActivity) {
                     Drawable drawable = context.getDrawable(iconeList[position]);
                     Bitmap bitmap = null;
-                    if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+                    if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
                         bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
                     } else {
                         bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -84,13 +86,14 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
 
     @Override
     public int getItemCount() {
-        System.out.println("icone list length"+iconeList.length);
+        System.out.println("icone list length" + iconeList.length);
         return iconeList.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout iconeLayout;
         ImageView imageViewIcone;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             iconeLayout = itemView.findViewById(R.id.icone_adapter_relativelayout);

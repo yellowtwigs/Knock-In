@@ -73,6 +73,9 @@
     <string name="main_toast_multi_select_actived">Enable Multi-Select mode</string>
     <string name="main_toast_multi_select_deactived">Diasable Multi-Select mode</string>
 
+    <string name="main_toast_multi_select_mode_selected">%1s selected</string>
+    <string name="main_toast_multi_select_mode_selected_more_than_one">%1s selected</string>
+
     <string name="main_alert_dialog_group_title">Group creation</string>
     <string name="main_alert_dialog_group_subtitle">Choose a name for your group</string>
     <string name="main_edited_contact">Modified contact</string>

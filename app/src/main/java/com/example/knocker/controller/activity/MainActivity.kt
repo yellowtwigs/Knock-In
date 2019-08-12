@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var main_SMSButton: FloatingActionButton? = null
     private var main_MailButton: FloatingActionButton? = null
-    private var main_groupButton: FloatingActionButton?= null
+    private var main_groupButton: FloatingActionButton? = null
 
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
@@ -153,7 +153,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         val decorView = window.decorView
-//        val window = window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
@@ -273,16 +272,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
 
-        //region commentaire
-//        val listParams = main_GridView!!.layoutParams
-//        if (!hasMenuKey && !hasBackKey) {
-//            listParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - resources.getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")) - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
-//        } else {
-//            listParams.height = height - main_BottomNavigationView!!.getMeasuredHeight() - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"))
-//        }
-//        main_ListView!!.layoutParams = listParams
-
-        //endregion
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
 
@@ -311,42 +300,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_GridView!!.setSelection(index)
             edit.apply()
-
-           /* main_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                if (main_GridView!!.adapter is SelectContactAdapter && !firstClick) {
-                    val adapter = (main_GridView!!.adapter as SelectContactAdapter)
-                    adapter.itemSelected(position)
-                    adapter.notifyDataSetChanged()
-
-                    if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-                        listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
-                    } else {
-                        listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
-                    }
-
-                    verifiedContactsChannel(listOfItemSelected)
-
-                    if (adapter.listContactSelect.size == 0) {
-                        val pos = main_GridView!!.firstVisiblePosition
-                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                        main_GridView!!.adapter = gridViewAdapter
-                        main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                        main_FloatingButtonSend!!.visibility = View.GONE
-                        main_SearchBar!!.visibility = View.VISIBLE
-                        main_GridView!!.setSelection(pos)
-
-                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-
-                        main_MailButton!!.visibility = View.GONE
-                        main_SMSButton!!.visibility = View.GONE
-
-                        main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
-                        main_ToolbarLayout!!.visibility = View.VISIBLE
-                        main_groupButton!!.visibility = View.GONE
-                    }
-                }
-                firstClick = false
-            }*/
 
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
                 var lastVisiblePos = main_GridView!!.firstVisiblePosition
@@ -378,7 +331,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                 }
             })
-
         }
 
         if (main_RecyclerView != null) {
@@ -414,8 +366,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             })
         }
 
-        //main_mDbWorkerThread.postTask(printContacts)
-
         //endregion
 
         //region ======================================== Listeners =========================================
@@ -426,68 +376,57 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val iterator: IntIterator?
             val listOfIdContactSelected: ArrayList<Int> = ArrayList()
 
-                iterator = (0 until listOfItemSelected.size).iterator()
+            iterator = (0 until listOfItemSelected.size).iterator()
 
-                for (i in iterator) {
-                    listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
-                }
-                intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+            for (i in iterator) {
+                listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
+            }
+            intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
 
-                refreshActivity()
-                startActivity(intent)
-                finish()
-            //}
+            refreshActivity()
+            startActivity(intent)
+            finish()
         }
-        main_ToolbarMultiSelectModeClose!!.setOnClickListener() {
-
-           /* if (len > 1) {
-                val adapter = (main_GridView!!.adapter as ContactGridViewAdapter)
-                adapter.listOfItemSelected.clear()
-                adapter.notifyDataSetChanged()
-
-            } else {
-                val adapter = (main_GridView!!.adapter as ContactRecyclerViewAdapter)
-                adapter.listOfItemSelected.clear()
-                listOfItemSelected.clear()
-                adapter.notifyDataSetChanged()
-            }*/
+        main_ToolbarMultiSelectModeClose!!.setOnClickListener {
             listOfItemSelected.clear()
             switchMultiSelectToNormalMode()
             refreshActivity()
 
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
         }
-        main_ToolbarMultiSelectModeDelete!!.setOnClickListener(){
-            var supressWarning =" "
-            if(listOfItemSelected.size>1) {
+        main_ToolbarMultiSelectModeDelete!!.setOnClickListener {
+            var supressWarning = " "
+            if (listOfItemSelected.size > 1) {
                 supressWarning = " :"
                 for (contact in listOfItemSelected) {
-                    val contactDb= contact.contactDB
-                    supressWarning+="\n-"+contactDb!!.firstName+" "+contactDb!!.lastName
+                    val contactDb = contact.contactDB
+                    supressWarning += "\n-" + contactDb!!.firstName + " " + contactDb!!.lastName
                 }
-            }else{
-                val contact= listOfItemSelected.get(0).contactDB
-                supressWarning+= contact!!.firstName+" "+contact!!.lastName
+            } else {
+                val contact = listOfItemSelected.get(0).contactDB
+                supressWarning += contact!!.firstName + " " + contact!!.lastName
             }
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle("supression_contact")
-                    .setMessage(String.format(resources.getString(R.string.main_delete_contact),supressWarning))
+                    .setMessage(String.format(resources.getString(R.string.main_delete_contact), supressWarning))
                     .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
-                        System.out.println("size of list "+listOfItemSelected.size+"-----")
+                        System.out.println("size of list " + listOfItemSelected.size + "-----")
                         listOfItemSelected.forEach {
                             main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
-                            System.out.println("contact "+it.contactDB!!+" son id "+it.contactDB!!.id!!)
+                            System.out.println("contact " + it.contactDB!! + " son id " + it.contactDB!!.id!!)
                         }
                         listOfItemSelected.clear()
                         switchMultiSelectToNormalMode()
                         refreshActivity()
                         finish();
-                        overridePendingTransition( 0, 0);
+                        overridePendingTransition(0, 0);
                         startActivity(getIntent());
-                        overridePendingTransition( 0, 0);
+                        overridePendingTransition(0, 0);
 
                     }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
 
         }
+
         //Sync contact
         navSyncContact.setOnMenuItemClickListener {
             drawerLayout!!.closeDrawers()
@@ -656,10 +595,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SMSButton!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfPhoneNumberContactSelected: ArrayList<String> = ArrayList()
-             iterator = (0 until listOfItemSelected.size).iterator()
-             for (i in iterator) {
-                 listOfPhoneNumberContactSelected.add(listOfItemSelected[i].getFirstPhoneNumber())
-             }
+            iterator = (0 until listOfItemSelected.size).iterator()
+            for (i in iterator) {
+                listOfPhoneNumberContactSelected.add(listOfItemSelected[i].getFirstPhoneNumber())
+            }
             monoChannelSmsClick(listOfPhoneNumberContactSelected)
             refreshActivity()
         }
@@ -667,21 +606,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_MailButton!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfMailContactSelected: ArrayList<String> = ArrayList()
+            iterator = (0 until listOfItemSelected.size).iterator()
 
-          /*  if (len > 1) {
-                val adapter: SelectContactAdapter = (main_GridView!!.adapter as SelectContactAdapter)
-                iterator = (0 until adapter.listContactSelect.size).iterator()
-
-                for (i in iterator) {
-                    listOfMailContactSelected.add(adapter.listContactSelect[i].getFirstMail())
-                }
-            } else {*/
-                iterator = (0 until listOfItemSelected.size).iterator()
-
-                for (i in iterator) {
-                    listOfMailContactSelected.add(listOfItemSelected[i].getFirstMail())
-                }
-            //}
+            for (i in iterator) {
+                listOfMailContactSelected.add(listOfItemSelected[i].getFirstMail())
+            }
             monoChannelMailClick(listOfMailContactSelected)
 
             if (len >= 3) {
@@ -689,7 +618,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_GridView!!.adapter = gridViewAdapter
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
                 main_FloatingButtonSend!!.visibility = View.GONE
-
 
                 main_MailButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
@@ -699,7 +627,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_FloatingButtonAdd!!.visibility = View.VISIBLE
                 main_FloatingButtonSend!!.visibility = View.GONE
 
-
                 main_MailButton!!.visibility = View.GONE
                 main_SMSButton!!.visibility = View.GONE
                 main_groupButton!!.visibility = View.GONE
@@ -707,17 +634,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             refreshActivity()
         }
+
         main_groupButton!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
-                iterator = (0 until listOfItemSelected.size).iterator()
+            iterator = (0 until listOfItemSelected.size).iterator()
 
-                for (i in iterator) {
-                    listOfContactSelected.add(listOfItemSelected[i])
-                }
+            for (i in iterator) {
+                listOfContactSelected.add(listOfItemSelected[i])
+            }
             if (len >= 3) {
-                gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                 main_GridView!!.adapter = gridViewAdapter
 
 
@@ -735,10 +663,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_FloatingButtonSend!!.visibility = View.GONE
             }
             saveGroupMultiSelect(listOfItemSelected, len)
-            // recreate()
         }
         //endregion
     }
+
     //region ========================================== Functions ===========================================
 
     private fun refreshActivity() {
@@ -1105,10 +1033,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     fun longGridItemClick(position: Int) {
         //main_GridView!!.setSelection(firstPosVis)
         //gridViewAdapter!!.closeMenu()
-       // val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
-       // main_GridView!!.adapter = adapter
-       // adapter.itemSelected(position)
-       // adapter.notifyDataSetChanged()
+        // val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
+        // main_GridView!!.adapter = adapter
+        // adapter.itemSelected(position)
+        // adapter.notifyDataSetChanged()
         main_FloatingButtonAdd!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.VISIBLE
         //firstClick = true
@@ -1135,7 +1063,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             switchMultiSelectToNormalMode()
             main_groupButton!!.visibility = View.GONE
-        }else if (listOfItemSelected.size == 1 ) {
+        } else if (listOfItemSelected.size == 1) {
             firstClick = false
             main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
             main_ToolbarLayout!!.visibility = View.GONE
@@ -1178,7 +1106,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false mail")
             main_MailButton!!.visibility = View.GONE
         }
-        main_groupButton!!.visibility=View.VISIBLE
+        main_groupButton!!.visibility = View.VISIBLE
         val params: ViewGroup.MarginLayoutParams = main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin = margin * i
         main_groupButton!!.layoutParams = params
@@ -1199,7 +1127,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         val i = listOfItemSelected.size
-        main_ToolbarMultiSelectModeTitle!!.text = "$i sélectionné"
 
         if (listOfItemSelected.size == 1 && firstClick) {
             Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
@@ -1210,7 +1137,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
             main_ToolbarLayout!!.visibility = View.GONE
 
-            main_ToolbarMultiSelectModeTitle!!.text = "$i sélectionné"
 
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
@@ -1219,12 +1145,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_FloatingButtonSend!!.visibility = View.GONE
             main_SMSButton!!.visibility = View.GONE
             main_MailButton!!.visibility = View.GONE
-            main_groupButton!!.visibility =View.GONE
+            main_groupButton!!.visibility = View.GONE
 
             main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
             main_ToolbarLayout!!.visibility = View.VISIBLE
 
             firstClick = true
+        }
+
+        if (listOfItemSelected.size == 1) {
+            main_ToolbarMultiSelectModeTitle!!.text = getString(R.string.main_toast_multi_select_mode_selected)
+        } else if (listOfItemSelected.size > 1) {
+            main_ToolbarMultiSelectModeTitle!!.text = getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
 
@@ -1312,18 +1244,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }.show()
         gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
         main_GridView!!.adapter = gridViewAdapter
-      /*  main_FloatingButtonSend!!.visibility = View.GONE
-        main_SearchBar!!.visibility = View.VISIBLE
-        main_MailButton!!.visibility = View.GONE
-        main_SMSButton!!.visibility = View.GONE
-        main_groupButton!!.visibility = View.GONE*/
+        /*  main_FloatingButtonSend!!.visibility = View.GONE
+          main_SearchBar!!.visibility = View.VISIBLE
+          main_MailButton!!.visibility = View.GONE
+          main_SMSButton!!.visibility = View.GONE
+          main_groupButton!!.visibility = View.GONE*/
         switchMultiSelectToNormalMode()
         listOfItemSelected.clear()
     }
-    private fun switchMultiSelectToNormalMode(){
+
+    private fun switchMultiSelectToNormalMode() {
         main_FloatingButtonSend!!.visibility = View.GONE
-        main_ToolbarMultiSelectModeLayout!!.visibility=View.GONE
-        main_ToolbarLayout!!.visibility= View.VISIBLE
+        main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+        main_ToolbarLayout!!.visibility = View.VISIBLE
         main_MailButton!!.visibility = View.GONE
         main_SMSButton!!.visibility = View.GONE
         main_groupButton!!.visibility = View.GONE
