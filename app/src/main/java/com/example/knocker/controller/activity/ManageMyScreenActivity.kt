@@ -447,7 +447,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
     }
 
     private fun changeGridColumnGroup() {
-        val loginIntent = Intent(this@ManageMyScreenActivity, GroupActivity::class.java)
+        val loginIntent = Intent(this@ManageMyScreenActivity, GroupManagerActivity::class.java)
         val sharedPreferencesGroup: SharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
         val editGroup: SharedPreferences.Editor = sharedPreferencesGroup.edit()
         editGroup.putInt("gridview", nbGrid)

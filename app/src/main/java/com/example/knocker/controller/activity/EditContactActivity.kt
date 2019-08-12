@@ -37,6 +37,7 @@ import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.GroupEditAdapter
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -462,7 +463,7 @@ class EditContactActivity : AppCompatActivity() {
                             .setBackground(getDrawable(R.color.backgroundColor))
                             .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
                                 if (fromGroupActivity) {
-                                    startActivity(Intent(this@EditContactActivity, GroupActivity::class.java))
+                                    startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                                 } else {
                                     startActivity(Intent(this@EditContactActivity, MainActivity::class.java))
                                 }
@@ -611,7 +612,7 @@ class EditContactActivity : AppCompatActivity() {
                         //println("modify on contact " + contact.contactDB)
 
                         if (fromGroupActivity) {
-                            val intent = Intent(this@EditContactActivity, GroupActivity::class.java)
+                            val intent = Intent(this@EditContactActivity, GroupManagerActivity::class.java)
                             intent.putExtra("ContactId", edit_contact_id!!)
                             startActivity(intent)
                             finish()

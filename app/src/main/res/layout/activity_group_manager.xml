@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/backgroundColor"
@@ -23,6 +23,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -63,18 +64,41 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/group_manager_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="2dp"
                 android:background="?attr/backgroundColor"
                 android:columnWidth="120dp"
                 android:gravity="center"
                 android:numColumns="auto_fit"
                 android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/navigation"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </LinearLayout>
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navigation"
+                style="@style/BottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.70"
+                android:background="?attr/backgroundColor"
+                android:fadingEdge="horizontal"
+                android:fadingEdgeLength="20dp"
+                app:itemIconTint="@color/bottom_navigation_color"
+                app:itemTextColor="@color/bottom_navigation_color"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:menu="@menu/main_navigation_view" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/group_manager_floating_button_gmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,10 +106,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="35dp"
             android:background="@color/colorPrimary"
-            android:backgroundTint="@color/lightColor"
-            android:drawableTint="@color/lightColor"
             android:src="@drawable/ic_gmail_floating"
-            android:tint="@color/lightColor"
             android:visibility="gone"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_sms"
@@ -100,10 +121,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="35dp"
             android:background="@color/colorPrimary"
-            android:backgroundTint="@color/lightColor"
-            android:drawableTint="@color/lightColor"
             android:src="@drawable/ic_message_floating"
-            android:tint="@color/lightColor"
             android:visibility="gone"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_send_id"
@@ -118,10 +136,7 @@
             android:layout_marginEnd="@dimen/floating_button_margin"
             android:layout_marginBottom="80dp"
             android:background="@color/colorPrimary"
-            android:backgroundTint="@color/lightColor"
-            android:drawableTint="@color/lightColor"
             android:src="@drawable/ic_exchange_arrows"
-            android:tint="@color/lightColor"
             android:visibility="gone"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -137,12 +152,10 @@
             android:layout_marginBottom="40dp"
             android:background="@color/colorPrimary"
             android:src="@drawable/ic_add"
-            android:tint="@color/lightColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:backgroundTint="@color/colorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/group_manager_nav_view"

@@ -86,6 +86,7 @@
     <string name="main_tutorial_alert_dialog_title">End of the tutorial</string>
     <string name="main_tutorial_alert_dialog_message">Do you want to replay ?</string>
 
+    <string name="main_delete_contact">You will delete %1s</string>
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->

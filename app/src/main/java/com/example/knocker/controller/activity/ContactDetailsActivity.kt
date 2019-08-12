@@ -39,6 +39,7 @@ import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.GroupEditAdapter
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -294,7 +295,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             startActivity(Intent(this@ContactDetailsActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             finish()
         } else {
-            startActivity(Intent(this@ContactDetailsActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            startActivity(Intent(this@ContactDetailsActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             finish()
         }
     }

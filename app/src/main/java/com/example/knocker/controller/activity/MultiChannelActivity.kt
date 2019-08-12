@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import com.example.knocker.R
 import com.example.knocker.controller.ContactListViewAdapter
 import com.example.knocker.controller.activity.group.GroupActivity
+import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 
@@ -167,7 +168,7 @@ class MultiChannelActivity : AppCompatActivity() {
             hideKeyboard()
             finish()
         } else {
-            startActivity(Intent(this@MultiChannelActivity, GroupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            startActivity(Intent(this@MultiChannelActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             hideKeyboard()
             finish()
         }

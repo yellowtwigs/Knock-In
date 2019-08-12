@@ -86,7 +86,7 @@
     <string name="main_tutorial_alert_dialog_title">Fin du tutoriel</string>
     <string name="main_tutorial_alert_dialog_message">Voulez-vous rejouer le tutoriel ?</string>
 
-
+    <string name="main_delete_contact">Vous allez supprimer %1s</string>
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->

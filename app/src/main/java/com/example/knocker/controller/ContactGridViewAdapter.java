@@ -51,7 +51,7 @@ import java.util.Objects;
 
 
 /**
- * La Classe qui permet de remplir la gridview avec les bon éléments
+ * La Classe qui permet de remplir la convertView avec les bon éléments
  *
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
@@ -65,6 +65,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private String numberForPermission = "";
     private Boolean modeMultiSelect = false;
     private Boolean secondClick = false;
+    private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     public ContactGridViewAdapter(Context context, ContactList contactList, Integer len) {
         this.context = context;
@@ -77,7 +78,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         return listOfItemSelected;
     }
 
-    private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     public void setGestionnairecontact(ContactList gestionnaireContact) {
         this.gestionnaireContact = gestionnaireContact;
@@ -102,71 +102,66 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
-        View gridview = convertView;
+        convertView = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
         final ViewHolder holder;
 
-        if (gridview == null) {
-            if (context instanceof GroupManagerActivity) {
+        convertView = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
 
-                gridview = layoutInflater.inflate(R.layout.grid_group_manager_item_layout, null);
+        holder = new ViewHolder();
+        holder.contactRoundedImageView = convertView.findViewById(R.id.contactRoundedImageView);
+        holder.gridContactItemLayout = convertView.findViewById(R.id.grid_contact_item_layout);
+        holder.groupWordingConstraint = convertView.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
+        holder.groupWordingTv = convertView.findViewById(R.id.grid_adapter_wording_group_tv);
 
-                holder = new ViewHolder();
-                holder.contactRoundedImageView = gridview.findViewById(R.id.grid_group_manager_item_RoundedImageView);
-                holder.gridContactItemLayout = gridview.findViewById(R.id.grid_group_manager_item_layout);
-                holder.contactFirstNameView = gridview.findViewById(R.id.grid_group_manager_item_contactFirstName);
-                holder.contactLastNameView = gridview.findViewById(R.id.grid_group_manager_item_contactLastName);
+        //SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
-                gridview.setTag(holder);
-            } else {
-                gridview = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
+        //int len = sharedPreferences.getInt("convertView", 4);
+        int height = holder.contactRoundedImageView.getLayoutParams().height;
+        int width = holder.contactRoundedImageView.getLayoutParams().width;
 
-                holder = new ViewHolder();
-                holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
-                holder.gridContactItemLayout = gridview.findViewById(R.id.grid_contact_item_layout);
-                holder.groupWordingConstraint = gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
-                holder.groupWordingTv = gridview.findViewById(R.id.grid_adapter_wording_group_tv);
-
-                //SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
-
-                //int len = sharedPreferences.getInt("gridview", 4);
-                int height = holder.contactRoundedImageView.getLayoutParams().height;
-                int width = holder.contactRoundedImageView.getLayoutParams().width;
-
-                holder.contactFirstNameView = gridview.findViewById(R.id.grid_adapter_contactFirstName);
-                ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
-                ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
-
-                if (len == 3) {
-                    holder.contactRoundedImageView.getLayoutParams().height -= height * 0.05;
-                    holder.contactRoundedImageView.getLayoutParams().width -= height * 0.05;
-                    layoutParamsTV.topMargin = 30;
-                    layoutParamsIV.topMargin = 10;
-                } else if (len == 4) {
-                    holder.contactRoundedImageView.getLayoutParams().height -= height * 0.25;
-                    holder.contactRoundedImageView.getLayoutParams().width -= width * 0.25;
-                    layoutParamsTV.topMargin = 10;
-                    layoutParamsIV.topMargin = 10;
-                } else if (len == 5) {
-                    holder.contactRoundedImageView.getLayoutParams().height -= height * 0.40;
-                    holder.contactRoundedImageView.getLayoutParams().width -= width * 0.40;
-                    layoutParamsTV.topMargin = 0;
-                    layoutParamsIV.topMargin = 0;
-                } else if (len == 6) {
-                    holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50;
-                    holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
-                    layoutParamsTV.topMargin = 0;
-                    layoutParamsIV.topMargin = 0;
-                }
-
-                holder.contactLastNameView = gridview.findViewById(R.id.grid_adapter_contactLastName);
-
-                gridview.setTag(holder);
-            }
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+        holder.contactFirstNameView = convertView.findViewById(R.id.grid_adapter_contactFirstName);
+        ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
         final ContactDB contact = this.gestionnaireContact.getContacts().get(position).getContactDB();
+        if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContacts().get(position))) {
+            if (!contact.getProfilePicture64().equals("")) {
+                Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                holder.contactRoundedImageView.setImageBitmap(bitmap);
+            } else {
+                holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+            }
+        } else {
+           // listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
+            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+        }
+        if (len == 3) {
+            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.05;
+            holder.contactRoundedImageView.getLayoutParams().width -= height * 0.05;
+            layoutParamsTV.topMargin = 30;
+            layoutParamsIV.topMargin = 10;
+        } else if (len == 4) {
+            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.25;
+            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.25;
+            layoutParamsTV.topMargin = 10;
+            layoutParamsIV.topMargin = 10;
+        } else if (len == 5) {
+            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.40;
+            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.40;
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
+        } else if (len == 6) {
+            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50;
+            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
+        }
+
+        holder.contactLastNameView = convertView.findViewById(R.id.grid_adapter_contactLastName);
+
+        convertView.setTag(holder);
+
+
         assert contact != null;
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
@@ -184,6 +179,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
 
         }
+
         if (firstGroup == null) {
             System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
@@ -285,14 +281,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.groupWordingTv.setText(spanGroup);
         }
-        if (!contact.getProfilePicture64().equals("")) {
+     /*   if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
 
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
-        //region circular menu
+       */ //region circular menu
 
         //final ImageView buttonMessenger = new ImageView(context);
         final ImageView buttonCall = new ImageView(context);
@@ -362,9 +358,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             builder.addSubActionView(builderIcon.setContentView(buttonSMS, layoutParams).build(), diametreBoutton, diametreBoutton)
                     .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
-        if (!getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber()).equals("")) {
+        /*if (!getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber()).equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
-        }
+        }*/
 
        /* if( appIsInstalled( "com.facebook.orca")){
             builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton);
@@ -392,7 +388,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 Intent intent = new Intent(context, ContactDetailsActivity.class);
                 intent.putExtra("ContactId", contact.getId());
 
-                if(context instanceof GroupActivity){
+                if (context instanceof GroupActivity) {
                     intent.putExtra("fromGroupActivity", true);
                 }
 
@@ -424,35 +420,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         View.OnLongClickListener gridlongClick = v -> {
 
-            if (context instanceof GroupManagerActivity) {
-                if (!modeMultiSelect) {
-                    v.setTag(holder);
-                    ContactDB contact1 = gestionnaireContact.getContacts().get(position).getContactDB();
-                    assert contact1 != null;
-
-                    holder.contactFirstNameView.setText(contact1.getFirstName());
-
-                    if (listOfItemSelected.contains(gestionnaireContact.getContacts().get(position))) {
-                        listOfItemSelected.remove(gestionnaireContact.getContacts().get(position));
-
-                        if (!contact1.getProfilePicture64().equals("")) {
-                            Bitmap bitmap = base64ToBitmap(contact1.getProfilePicture64());
-                            holder.contactRoundedImageView.setImageBitmap(bitmap);
-                        } else {
-                            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact1.getProfilePicture()));
-                        }
-                    } else {
-                        listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
-                    }
-                    closeMenu();
-                    ((GroupManagerActivity) context).gridLongItemClick(position);
-
-                    modeMultiSelect = true;
-                }
-            } else {
+            if (!modeMultiSelect) {
                 int firstPosVis;
                 closeMenu();
+                modeMultiSelect = true;
+                System.out.println("test in long click");
+                listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
+
                 if (position < 2 * len) {
                     firstPosVis = 0;
                 } else {
@@ -460,14 +434,41 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }
                 System.out.println("selection" + firstPosVis);
                 if (context instanceof MainActivity) {
-                    ((MainActivity) context).longGridItemClick(len, position, firstPosVis);
+                    ((MainActivity) context).longGridItemClick(position);
                 } else {
                     ((GroupActivity) context).longGridItemClick(len, position, firstPosVis);
                 }
+                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
             }
             return true;
         };
+        View.OnClickListener gridItemClick = v -> {
+            if (modeMultiSelect) {
+                if (listOfItemSelected.contains(gestionnaireContact.getContacts().get(position))) {
+                    listOfItemSelected.remove(gestionnaireContact.getContacts().get(position));
 
+                    if (!contact.getProfilePicture64().equals("")) {
+                        Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                        holder.contactRoundedImageView.setImageBitmap(bitmap);
+                    } else {
+                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+                    }
+                    if (listOfItemSelected.isEmpty()) {
+                        modeMultiSelect = false;
+                    }
+                } else {
+                    listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                }
+                ((MainActivity) context).longGridItemClick(position);
+            } else {
+                if (quickMenu.isOpen()) {
+                    quickMenu.close(false);
+                } else {
+                    quickMenu.open(false);
+                }
+            }
+        };
         buttonCall.setOnLongClickListener(v -> {
             String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
             if (!phoneNumber.isEmpty()) {
@@ -499,6 +500,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         holder.gridContactItemLayout.setOnLongClickListener(gridlongClick);
         holder.contactRoundedImageView.setOnLongClickListener(gridlongClick);
+
+        holder.gridContactItemLayout.setOnClickListener(gridItemClick);
+        holder.contactRoundedImageView.setOnClickListener(gridItemClick);
         //buttonMessenger.setOnClickListener(buttonListener);
         buttonWhatsApp.setOnClickListener(buttonListener);
         buttonCall.setOnClickListener(buttonListener);
@@ -513,7 +517,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 quickMenu.open(false);
             }
         });
-        return gridview;
+        return convertView;
     }
 
     private String converter06To33(String phoneNumber) {
@@ -583,6 +587,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
         selectMenu = floatingActionMenu;
 
+        if (modeMultiSelect) {
+            floatingActionMenu.close(false);
+            selectMenu = null;
+        }
+
     }
 
     @Override
@@ -625,6 +634,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean multiSelectMode() {
+        return modeMultiSelect;
     }
 
     public String getPhonePermission() {
