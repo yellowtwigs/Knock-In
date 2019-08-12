@@ -181,13 +181,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val listOfAllContactsFavorite : List<ContactDB> = emptyList()
         var position = 0
 
-        for (i in listOfAllContacts) {
+       /* for (i in listOfAllContacts) {
             if (i.favorite == 1) {
                 listOfAllContactsFavorite[position] == i
             }
             sections.add(SectionFavoriteAdapter.Section())
             position ++
-        }
+        }*/
 
         //endregion
 

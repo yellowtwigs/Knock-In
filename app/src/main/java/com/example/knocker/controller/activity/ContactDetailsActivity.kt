@@ -396,9 +396,6 @@ class ContactDetailsActivity : AppCompatActivity() {
         isFavorite = 1
 
         val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
-        val detail = ContactDetailDB(null, contact!!.getContactId(), contact_details_mail, "mail", "3", 2)
-        contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
-        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
 
         var counter = 0
         var alreadyExist = false
@@ -412,7 +409,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.add(contact.contactDB)
+        listContact.add(contact!!.contactDB)
 
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
@@ -425,10 +422,6 @@ class ContactDetailsActivity : AppCompatActivity() {
         isFavorite = 0
 
         val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
-        val detail = ContactDetailDB(null, contact!!.getContactId(), contact_details_mail, "mail", "3", 2)
-        contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
-        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
-
         var counter = 0
 
         while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
@@ -439,9 +432,9 @@ class ContactDetailsActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.add(contact.contactDB)
+        listContact.remove(contact!!.contactDB)
 
-        removeContactFromGroup(listContact, groupId)
+        removeContactFromGroup(contact_details_ContactId!!, groupId)
     }
 
     //endregion
@@ -465,10 +458,9 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeContactFromGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
-        listContact.forEach {
-            contact_details_ContactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it!!.id!!, groupId!!.toInt())
-        }
+    private fun removeContactFromGroup(contactId:Int, groupId: Long?) {
+        contact_details_ContactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(contactId, groupId!!.toInt())
+
     }
 
     //endregion
