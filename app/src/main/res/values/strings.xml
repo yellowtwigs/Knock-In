@@ -61,6 +61,7 @@
     <string name="main_tri_par_nom">Firstname</string>
     <string name="main_tri_par_lastname">Name</string>
     <string name="main_tri_par_priorite">Priority</string>
+    <string name="main_tri_par_favoris">Favorite</string>
     <string name="main_tri_par_groupe">Group</string>
     <string name="main_filtre_title">Notification filter:</string>
     <string name="notif_filtre_app">Application</string>

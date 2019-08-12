@@ -151,6 +151,7 @@ class GroupManagerActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
         val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
+
         val sections = ArrayList<SectionGroupAdapter.Section>()
         var position = 0
         for (i in group) {
@@ -176,7 +177,6 @@ class GroupManagerActivity : AppCompatActivity() {
         val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapter)
         sectionAdapter.setSections(sections.toArray(sectionList))
         println("taille list group " + listContactGroup.size)
-        // val adapter= GroupListViewAdapter(group,this,len)
         group_manager_RecyclerView!!.adapter = sectionAdapter
 
         //endregion

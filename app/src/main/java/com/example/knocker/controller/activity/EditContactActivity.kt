@@ -370,7 +370,7 @@ class EditContactActivity : AppCompatActivity() {
                     println("yellow color choosen")
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (!Settings.canDrawOverlays(applicationContext)) {
-                            val alertDialog = OverlayAlertDialog()
+                            val alertDialog = overlayAlertDialog()
                             alertDialog!!.show()
                         }
                     }
@@ -527,13 +527,13 @@ class EditContactActivity : AppCompatActivity() {
                             }
                             if (!haveMail && edit_contact_Mail!!.editText!!.text.toString() != "") {
                                 //println("------------et à ajouter un mail------")
-                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2, 0)
+                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
                                 edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                             } else {
                                 println("have mail")
                             }
                             if (!haveSecondPhone && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1, 0)
+                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
                                 edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                             } else {
                                 println("have second phone number")
@@ -541,7 +541,7 @@ class EditContactActivity : AppCompatActivity() {
 
                         } else if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
                             //println("------------et à ajouter un numéro------")
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0, 0)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (haveSecondPhone) {
@@ -563,7 +563,7 @@ class EditContactActivity : AppCompatActivity() {
 
 
                         } else if (!haveSecondPhone && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1, isFavorite)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (haveMail) {
@@ -586,20 +586,20 @@ class EditContactActivity : AppCompatActivity() {
                                 counter++
                             }
                         } else if (edit_contact_Mail!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2, isFavorite)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         // }//TODO change for the listView
                         if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2, isFavorite)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (nbDetail == -1 && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0, isFavorite)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (nbDetail == -1 && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 1, isFavorite)
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 1)
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (edit_contact_imgString != null) {
@@ -740,9 +740,11 @@ class EditContactActivity : AppCompatActivity() {
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
+
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+//                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmap.bitmapToBase64()
             }
@@ -750,14 +752,12 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     private fun exifToDegrees(exifOrientation: Int): Int {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270
+        return when (exifOrientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
         }
-        return 0
     }
 
     private fun Bitmap.bitmapToBase64(): String {
@@ -776,7 +776,7 @@ class EditContactActivity : AppCompatActivity() {
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun OverlayAlertDialog(): AlertDialog? {
+    private fun overlayAlertDialog(): AlertDialog? {
 
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.alert_dialog_overlay_title)

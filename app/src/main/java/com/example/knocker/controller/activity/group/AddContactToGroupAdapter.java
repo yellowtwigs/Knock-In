@@ -38,7 +38,9 @@ public class AddContactToGroupAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() { return listContacts.size(); }
+    public int getCount() {
+        return listContacts.size();
+    }
 
     @Override
     public long getItemId(int position) {
@@ -67,9 +69,9 @@ public class AddContactToGroupAdapter extends BaseAdapter {
 
         assert contact != null;
 
-        if(selectContact.contains(contact)){
+        if (selectContact.contains(contact)) {
             holder.contactSelect.setChecked(true);
-        }else{
+        } else {
             holder.contactSelect.setChecked(false);
         }
 
@@ -103,27 +105,33 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         return listview;
     }
 
-    public List<ContactDB> getAllSelectContact() { return selectContact; }
+    public List<ContactDB> getAllSelectContact() {
+        return selectContact;
+    }
+
+    public void setAllSelectContact(ArrayList<ContactDB> selectContact) {
+        this.selectContact = selectContact;
+    }
 
     private int randomDefaultImage(int avatarId) {
-            switch (avatarId) {
-                case 0:
-                    return R.drawable.ic_user_purple;
-                case 1:
-                    return R.drawable.ic_user_blue;
-                case 2:
-                    return R.drawable.ic_user_knocker;
-                case 3:
-                    return R.drawable.ic_user_green;
-                case 4:
-                    return R.drawable.ic_user_om;
-                case 5:
-                    return R.drawable.ic_user_orange;
-                case 6:
-                    return R.drawable.ic_user_pink;
-                default:
-                    return R.drawable.ic_user_blue;
-            }
+        switch (avatarId) {
+            case 0:
+                return R.drawable.ic_user_purple;
+            case 1:
+                return R.drawable.ic_user_blue;
+            case 2:
+                return R.drawable.ic_user_knocker;
+            case 3:
+                return R.drawable.ic_user_green;
+            case 4:
+                return R.drawable.ic_user_om;
+            case 5:
+                return R.drawable.ic_user_orange;
+            case 6:
+                return R.drawable.ic_user_pink;
+            default:
+                return R.drawable.ic_user_blue;
+        }
     }
 
     private Bitmap base64ToBitmap(String base64) {

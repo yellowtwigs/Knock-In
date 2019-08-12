@@ -134,6 +134,15 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         listChangement.retainAll(contacts)
         contacts = listChangement
     }
+    fun sortContactByFavorite() {
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFavorite() }
+        val result = executorService.submit(callDb)
+        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
+        listChangement.addAll(result.get())
+        listChangement.retainAll(contacts)
+        contacts = listChangement
+    }
 
     fun sortContactByGroup() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -318,7 +327,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val profilPicture: Int = R.drawable.img_avatar
         val contactPriority: Int = json.getInt("contact_priority")
         val profilPictureStr: String = json.getString("profile_picture_str")
-        val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr)
+        val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr, 0)
         val contactInfo = ContactWithAllInformation()
         contactInfo.contactDB = contact
         contactInfo.contactDetailList = getContactDetailFromJSONObject(json, id)
@@ -330,8 +339,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val mail: String = json.getString("mail")
 //        val favorite: Boolean = json.getBoolean("mail")
 
-        val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0, 0)
-        val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1, 0)
+        val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0)
+        val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1)
         return mutableListOf(contactDetails, contactDetails2)
     }
 
@@ -629,7 +638,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         var fieldPosition = 0
         contactNumberAndPic.forEach {
             if (it[1] == id) {
-                contactDetails.add(ContactDetailDB(null, null, it[2].toString(), it[5].toString(), it[3].toString(), fieldPosition, 0))
+                contactDetails.add(ContactDetailDB(null, null, it[2].toString(), it[5].toString(), it[3].toString(), fieldPosition))
                 fieldPosition++
             }
         }
@@ -680,7 +689,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                             //on regarde si le contact possède un middle name
                             if (fullName.second.second == "") {
                                 //on créé un objet ContactDB que l'on remplis avec les info récolté avant
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString())
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0)
                                 //on recupere la liste des contacts récuperer lors de la derniere synchro sous format idAndroid:id
                                 lastSync = sharedPreferences.getString("last_sync_2", "")!!
                                 //on regarde si on a pas deja enregistré le contact lors de la dernière synchro
@@ -736,7 +745,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                 }
                                 phoneContactsList.add(contacts)
                             } else if (fullName.second.second != "") {
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString())
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0)
                                 phoneContactsList.add(contacts)
                                 if (!isDuplicate(allcontacts, contacts)) {
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -781,9 +790,9 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val detailList = arrayListOf<ContactDetailDB>()
         for (i in 3 until contactset.size - 1) {
             val contactSetSplite = contactset.elementAt(i).split(":")
-            detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2, 0))
+            detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2))
         }
-        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), 0, 0, ""), detailList)
+        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), 0, 0, "", 0), detailList)
         return allContacts
     }
 

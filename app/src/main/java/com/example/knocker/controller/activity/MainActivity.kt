@@ -44,6 +44,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
+import com.example.knocker.controller.activity.group.SectionGroupAdapter
 import kotlin.collections.ArrayList
 
 /**
@@ -169,10 +170,24 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
 
-        //endregion
-
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+
+        val sections = ArrayList<SectionFavoriteAdapter.Section>()
+
+        val listOfAllContacts = main_ContactsDatabase!!.contactsDao().getAllContacts()
+        val listOfAllContactsFavorite : List<ContactDB> = emptyList()
+        var position = 0
+
+        for (i in listOfAllContacts) {
+            if (i.favorite == 1) {
+                listOfAllContactsFavorite[position] == i
+            }
+            sections.add(SectionFavoriteAdapter.Section())
+            position ++
+        }
+
+        //endregion
 
         //region ======================================= FindViewById =======================================
 
@@ -239,9 +254,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
-//                R.id.nav_data_access ->
                 R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
-//                R.id.nav_statistics ->
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
@@ -369,6 +382,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (main_RecyclerView != null) {
             recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
+
+            val sectionFavoriteAdapterRecycler = SectionFavoriteAdapter(this, main_RecyclerView, recyclerViewAdapter)
+            main_RecyclerView!!.adapter = sectionFavoriteAdapterRecycler
+
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_RecyclerView!!.scrollToPosition(index)
@@ -716,11 +733,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val triNom = menu.findItem(R.id.tri_par_nom)
         val triLastName = menu.findItem(R.id.tri_par_lastname)
         val triPriority = menu.findItem(R.id.tri_par_priorite)
+        val triFavorite = menu.findItem(R.id.tri_par_favoris)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        val tri = sharedPreferences.getString("tri", "nom")
-        when (tri) {
+        when (sharedPreferences.getString("tri", "favoris")) {
             "nom" -> triNom.isChecked = true
             "priorite" -> triPriority.isChecked = true
+            "favoris" -> triFavorite.isChecked = true
             else -> triLastName.isChecked = true
         }
         return true
@@ -971,6 +989,36 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         }
                     }
                     main_mDbWorkerThread.postTask(sortByLastname)
+                }
+            }
+            R.id.tri_par_favoris -> {
+                if (!item.isChecked) {
+                    main_GridView!!.visibility = View.GONE
+                    main_RecyclerView!!.visibility = View.GONE
+                    main_loadingPanel!!.visibility = View.VISIBLE
+                    val sortByFavorite = Runnable {
+                        gestionnaireContacts!!.sortContactByFavorite()
+                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                        val len = sharedPreferences.getInt("gridview", 4)
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putString("tri", "favoris")
+                        edit.apply()
+                        runOnUiThread {
+                            item.isChecked = true
+                            if (len > 1) {
+                                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_GridView!!.adapter = gridViewAdapter
+                                main_GridView!!.visibility = View.VISIBLE
+                            } else {
+                                recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_RecyclerView!!.adapter = recyclerViewAdapter
+                                recyclerViewAdapter!!.notifyDataSetChanged()
+                                main_RecyclerView!!.visibility = View.VISIBLE
+                            }
+                            main_loadingPanel!!.visibility = View.GONE
+                        }
+                    }
+                    main_mDbWorkerThread.postTask(sortByFavorite)
                 }
             }
         }

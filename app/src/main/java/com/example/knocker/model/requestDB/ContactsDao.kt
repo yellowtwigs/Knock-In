@@ -56,6 +56,13 @@ interface ContactsDao {
     fun sortContactByPriority20(): List<ContactWithAllInformation>
 
     /**
+     * Récupere les [contacts][ContactDB] trier par favoris
+     * @return List&lt[ContactDB]&gt
+     */
+    @Query("SELECT * FROM contacts_table ORDER BY is_favorite DESC,first_name COLLATE NOCASE ASC")
+    fun sortContactByFavorite(): List<ContactWithAllInformation>
+
+    /**
      * Récupere tout les [contacts][ContactDB] de la base de données
      * @return List&lt[ContactDB]&gt
      */
@@ -127,11 +134,19 @@ interface ContactsDao {
      * @param id Int     Id du contact sélectionné
      */
 
-    @Query("UPDATE contacts_table SET contact_priority=2 WHERE id= :id ")
+    @Query("UPDATE contacts_table SET contact_priority = 2 WHERE id= :id ")
     fun setPriority2(id: Int)
 
     /**
      * UPDATE la priorité d'un contact en priorité 2
+     * @param id Int    Id du contact sélectionné
+     */
+
+    @Query("UPDATE contacts_table SET is_favorite = 1 WHERE id = :id ")
+    fun setIsFavorite(id: Int)
+
+    /**
+     * UPDATE si le contact est un favori ou non
      * @param id Int    Id du contact sélectionné
      */
 

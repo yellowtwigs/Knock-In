@@ -31,6 +31,10 @@
             android:id="@+id/tri_par_priorite"
             android:title="@string/main_tri_par_priorite"
             app:showAsAction="collapseActionView" />
+        <item
+            android:id="@+id/tri_par_favoris"
+            android:title="@string/main_tri_par_favoris"
+            app:showAsAction="collapseActionView" />
     </group>
     <item
         android:id="@+id/filtre"

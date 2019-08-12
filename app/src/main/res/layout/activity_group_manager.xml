@@ -143,7 +143,6 @@
             app:backgroundTint="@color/colorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/group_manager_nav_view"
         android:layout_width="wrap_content"

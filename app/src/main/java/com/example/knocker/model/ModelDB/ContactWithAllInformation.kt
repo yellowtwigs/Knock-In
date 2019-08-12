@@ -91,16 +91,21 @@ class ContactWithAllInformation {
         println("test getContactID $test")
     }
 
+    fun setIsFavorite(contactsDatabase: ContactsRoomDatabase?) {
+        val test = contactsDatabase!!.contactsDao().setIsFavorite(this.getContactId())
+        println("test getContactID $test")
+    }
+
     override fun equals(other: Any?): Boolean {
-        if (other is ContactWithAllInformation) {
+        return if (other is ContactWithAllInformation) {
             if (other.contactDB == this.contactDB) {
                 println("is printing true")
-                return true
+                true
             } else {
-                return false
+                false
             }
         } else {
-            return false
+            false
         }
     }
 

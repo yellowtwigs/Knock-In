@@ -40,11 +40,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.GroupEditAdapter
+import com.example.knocker.controller.activity.group.AddContactToGroupAdapter
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDetailDB
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import com.example.knocker.model.ModelDB.GroupDB
+import com.example.knocker.model.ModelDB.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
@@ -67,7 +66,6 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_RoundedImageView: CircularImageView? = null
     private var contact_details_ContactName: TextView? = null
     private var contact_details_Mail: TextView? = null
-
 
     private var contact_details_PhoneNumber: TextView? = null
     private var contact_details_FixNumber: TextView? = null
@@ -94,6 +92,8 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_rounded_image: Int = 0
     private var contact_details_image64: String = ""
 
+    private var contact_details_CreateGroupAdapter: AddContactToGroupAdapter? = null
+
     // Database && Thread
     private var contact_details_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
@@ -104,7 +104,12 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     private var fromGroupActivity = false
 
+    private var addContactToGroupAdapter: AddContactToGroupAdapter? = null
+    private var groupId: Long = 0
+
     private var isFavorite = 0
+
+    private var listContact: ArrayList<ContactDB?> = ArrayList()
 
     private var contact: ContactWithAllInformation? = null
 
@@ -223,7 +228,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             if (fixNumber != "") {
                 haveSecondPhone = true
             }
-            if (mail != "") { ///// havemail toujour false
+            if (mail != "") {
                 haveMail = true
             }
 
@@ -247,20 +252,17 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         //region ========================================= Others ===========================================
 
-        var counter = 0
-
         val contactList = ContactList(this)
         val contact = contactList.getContactById(contact_details_ContactId!!)!!
-        while (counter < contact_details_ContactsDatabase!!.contactDetailsDao().getDetailsForAContact(contact_details_ContactId!!).size) {
 
-            if (contact.contactDetailList!![counter].favorite == 1) {
-                contact_details_RemoveContactFromFavorite!!.visibility = View.VISIBLE
-                contact_details_AddContactToFavorite!!.visibility = View.INVISIBLE
-            } else if (contact.contactDetailList!![counter].favorite == 0) {
-                contact_details_AddContactToFavorite!!.visibility = View.VISIBLE
-                contact_details_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
-            }
-            counter++
+        contact.setIsFavorite(contact_details_ContactsDatabase)
+
+        if (contact.contactDB!!.favorite == 1) {
+            contact_details_RemoveContactFromFavorite!!.visibility = View.VISIBLE
+            contact_details_AddContactToFavorite!!.visibility = View.INVISIBLE
+        } else if (contact.contactDB!!.favorite == 0) {
+            contact_details_AddContactToFavorite!!.visibility = View.VISIBLE
+            contact_details_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
         }
 
         if (contact_details_phone_number != "") {
@@ -304,18 +306,6 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         contact_details_Return!!.setOnClickListener {
             backOnPressed()
-
-            val contactDetails = Runnable {
-                val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
-                val nbDetail = contact!!.contactDetailList!!.size - 1
-
-                if (nbDetail == -1) {
-                    val detail = ContactDetailDB(null, contact.getContactId(), contact_details_mail, "mail", "3", 2, isFavorite)
-                    contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                    contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
-                }
-            }
-            contact_details_mDbWorkerThread.postTask(contactDetails)
         }
 
         contact_details_DeleteContact!!.setOnClickListener {
@@ -399,13 +389,88 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
+    //region ========================================== Favorites ===========================================
+
     private fun addToFavorite() {
         isFavorite = 1
+
+        val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
+        val detail = ContactDetailDB(null, contact!!.getContactId(), contact_details_mail, "mail", "3", 2)
+        contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
+        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
+
+        var counter = 0
+        var alreadyExist = false
+
+        while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                alreadyExist = true
+                break
+            }
+            counter++
+        }
+
+        listContact.add(contact.contactDB)
+
+        if (alreadyExist) {
+            addContactToGroup(listContact, groupId)
+        } else {
+            createGroup(listContact, "Favorites")
+        }
     }
 
     private fun removeFromFavorite() {
         isFavorite = 0
+
+        val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
+        val detail = ContactDetailDB(null, contact!!.getContactId(), contact_details_mail, "mail", "3", 2)
+        contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
+        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
+
+        var counter = 0
+
+        while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                break
+            }
+            counter++
+        }
+
+        listContact.add(contact.contactDB)
+
+        removeContactFromGroup(listContact, groupId)
     }
+
+    //endregion
+
+    //region =========================================== Groups =============================================
+
+    private fun createGroup(listContact: ArrayList<ContactDB?>, name: String) {
+        val group = GroupDB(null, name, "")
+
+        val groupId = contact_details_ContactsDatabase!!.GroupsDao().insert(group)
+        listContact.forEach {
+            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
+            println("contact db id" + contact_details_ContactsDatabase!!.LinkContactGroupDao().insert(link))
+        }
+    }
+
+    private fun addContactToGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
+        listContact.forEach {
+            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
+            contact_details_ContactsDatabase!!.LinkContactGroupDao().insert(link)
+        }
+    }
+
+    private fun removeContactFromGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
+        listContact.forEach {
+            contact_details_ContactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it!!.id!!, groupId!!.toInt())
+        }
+    }
+
+    //endregion
 
     private fun appIsInstalled(): Boolean {
         val pm = this.packageManager
