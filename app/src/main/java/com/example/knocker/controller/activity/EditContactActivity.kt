@@ -749,7 +749,7 @@ class EditContactActivity : AppCompatActivity() {
                 matrix.postRotate(rotationInDegrees.toFloat())
 
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-//                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
