@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.*
@@ -33,23 +34,25 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
 import com.example.knocker.controller.GroupEditAdapter
+import com.example.knocker.controller.activity.group.AddContactToGroupAdapter
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDetailDB
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import com.example.knocker.model.ModelDB.GroupDB
+import com.example.knocker.model.ModelDB.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
 
 /**
  * La Classe qui permet d'éditer un contact choisi
@@ -63,9 +66,10 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     private var contact_details_RoundedImageView: CircularImageView? = null
     private var contact_details_ContactName: TextView? = null
+    private var contact_details_Mail: TextView? = null
+
     private var contact_details_PhoneNumber: TextView? = null
     private var contact_details_FixNumber: TextView? = null
-    private var contact_details_Mail: TextView? = null
 
     private var contact_details_PhoneCall: RelativeLayout? = null
     private var contact_details_SendSMS: RelativeLayout? = null
@@ -89,6 +93,8 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_rounded_image: Int = 0
     private var contact_details_image64: String = ""
 
+    private var contact_details_CreateGroupAdapter: AddContactToGroupAdapter? = null
+
     // Database && Thread
     private var contact_details_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
@@ -99,7 +105,18 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     private var fromGroupActivity = false
 
-    private var isFavorite: Boolean? = null
+    private var addContactToGroupAdapter: AddContactToGroupAdapter? = null
+    private var groupId: Long = 0
+
+    private var isFavorite = 0
+
+    private var listContact: ArrayList<ContactDB?> = ArrayList()
+
+    private var contact: ContactWithAllInformation? = null
+
+    private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
+
+    private var numberForPermission = ""
 
     //endregion
 
@@ -117,9 +134,6 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
 
         //endregion
-
-        val sharedFavoritePreferences = getSharedPreferences("Knocker_Contact_Favorite", Context.MODE_PRIVATE)
-        isFavorite = sharedFavoritePreferences.getBoolean("contactFavorite", false)
 
         setContentView(R.layout.activity_contact_details)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
@@ -142,11 +156,17 @@ class ContactDetailsActivity : AppCompatActivity() {
         //region ======================================= FindViewById =======================================
 
         contact_details_ContactName = findViewById(R.id.contact_details_contact_name)
-//        contact_details_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
-//        contact_details_FixNumber = findViewById(R.id.edit_contact_phone_number_fix_id)
         contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view)
         contact_details_Mail = findViewById(R.id.edit_contact_mail_id)
         contact_details_RecyclerGroup = findViewById(R.id.contact_details_recycler_group)
+
+        contact_details_PhoneCall = findViewById(R.id.contact_details_phone_call_layout)
+        contact_details_SendSMS = findViewById(R.id.contact_details_sms_layout)
+        contact_details_Whatsapp = findViewById(R.id.contact_details_whatsapp_layout)
+        contact_details_SendMail = findViewById(R.id.contact_details_mail_layout)
+
+//        contact_details_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
+//        contact_details_FixNumber = findViewById(R.id.edit_contact_phone_number_fix_id)
 
         //endregion
 
@@ -171,14 +191,14 @@ class ContactDetailsActivity : AppCompatActivity() {
         if (contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!.toInt()) == null) {
 
             val contactList = ContactList(this)
-            val contact = contactList.getContactById(contact_details_ContactId!!)!!
-            contact_details_first_name = contact.contactDB!!.firstName
-            contact_details_last_name = contact.contactDB!!.lastName
-            val tmpPhone = contact.contactDetailList!![0]
+            contact = contactList.getContactById(contact_details_ContactId!!)!!
+            contact_details_first_name = contact!!.contactDB!!.firstName
+            contact_details_last_name = contact!!.contactDB!!.lastName
+            val tmpPhone = contact!!.contactDetailList!![0]
             contact_details_phone_number = tmpPhone.content
-            val tmpMail = contact.contactDetailList!![1]
+            val tmpMail = contact!!.contactDetailList!![1]
             contact_details_mail = tmpMail.content
-            contact_details_image64 = contact.contactDB!!.profilePicture64
+            contact_details_image64 = contact!!.contactDB!!.profilePicture64
             contact_details_RoundedImageView!!.setImageBitmap(base64ToBitmap(contact_details_image64))
         } else {
 
@@ -209,7 +229,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             if (fixNumber != "") {
                 haveSecondPhone = true
             }
-            if (mail != "") { ///// havemail toujour false
+            if (mail != "") {
                 haveMail = true
             }
 
@@ -228,6 +248,41 @@ class ContactDetailsActivity : AppCompatActivity() {
 //        contact_details_PhoneNumber!!.text = contact_details_phone_number
 //        contact_details_FixNumber!!.text = contact_details_fix_number
 //        contact_details_Mail!!.text = contact_details_mail
+
+        //endregion
+
+        //region ========================================= Others ===========================================
+
+        val contactList = ContactList(this)
+        val contact = contactList.getContactById(contact_details_ContactId!!)!!
+
+        contact.setIsFavorite(contact_details_ContactsDatabase)
+
+        if (contact.contactDB!!.favorite == 1) {
+            contact_details_RemoveContactFromFavorite!!.visibility = View.VISIBLE
+            contact_details_AddContactToFavorite!!.visibility = View.INVISIBLE
+        } else if (contact.contactDB!!.favorite == 0) {
+            contact_details_AddContactToFavorite!!.visibility = View.VISIBLE
+            contact_details_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
+        }
+
+        if (contact_details_phone_number != "") {
+            contact_details_PhoneCall!!.visibility = View.VISIBLE
+            contact_details_SendSMS!!.visibility = View.VISIBLE
+        }
+
+        if (contact_details_phone_number == "" && contact_details_fix_number != "") {
+            contact_details_PhoneCall!!.visibility = View.VISIBLE
+            contact_details_SendSMS!!.visibility = View.GONE
+        }
+
+        if (contact_details_phone_number != "" && appIsInstalled()) {
+            contact_details_Whatsapp!!.visibility = View.VISIBLE
+        }
+
+        if (contact_details_mail != "") {
+            contact_details_SendMail!!.visibility = View.VISIBLE
+        }
 
         //endregion
 
@@ -273,21 +328,56 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
 
         contact_details_EditContact!!.setOnClickListener {
-            startActivity(Intent(this@ContactDetailsActivity, EditContactActivity::class.java))
+            val intentToEditContact = Intent(this@ContactDetailsActivity, EditContactActivity::class.java)
+            intentToEditContact.putExtra("isFavorite", isFavorite)
+            intentToEditContact.putExtra("ContactId", contact_details_ContactId!!)
+            startActivity(intentToEditContact)
+        }
+
+        contact_details_PhoneCall!!.setOnClickListener {
+            phoneCall(contact_details_phone_number)
+        }
+
+        contact_details_SendSMS!!.setOnClickListener {
+            val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact_details_phone_number, null))
+            i.putExtra("fromKnocker", "envoyé depuis Knocker")
+            startActivity(i)
+        }
+
+        contact_details_Whatsapp!!.setOnClickListener {
+            ContactGesture.openWhatsapp(converter06To33(contact_details_phone_number), this)
+        }
+
+        contact_details_SendMail!!.setOnClickListener {
+            val intentSendMailTo = Intent(Intent.ACTION_SENDTO)
+            intentSendMailTo.data = Uri.parse("mailto:")
+            //intent.setType("text/plain");
+            intentSendMailTo.putExtra(Intent.EXTRA_EMAIL, arrayOf(contact_details_mail))
+            intentSendMailTo.putExtra(Intent.EXTRA_SUBJECT, "")
+            intentSendMailTo.putExtra(Intent.EXTRA_TEXT, "Envoyé depuis Knocker")
+            startActivity(intentSendMailTo)
         }
 
         //endregion
-
     }
 
     //region ========================================== Functions ===========================================
 
     private fun deleteContact() {
-        contact_details_ContactsDatabase!!.contactsDao().deleteContactById(contact_details_ContactId!!)
-        val mainIntent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
-        mainIntent.putExtra("isDelete", true)
-        startActivity(mainIntent)
-        finish()
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setTitle(getString(R.string.edit_contact_delete_contact))
+                .setMessage(getString(R.string.edit_contact_delete_contact))
+                .setPositiveButton("Supprimer") { _, _ ->
+                    contact_details_ContactsDatabase!!.contactsDao().deleteContactById(contact_details_ContactId!!)
+                    val mainIntent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
+                    mainIntent.putExtra("isDelete", true)
+                    startActivity(mainIntent)
+                    finish()
+                }
+                .setNegativeButton("Cancel") { _, _ ->
+                }
+
+
     }
 
     private fun backOnPressed() {
@@ -300,20 +390,98 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
+    //region ========================================== Favorites ===========================================
+
     private fun addToFavorite() {
-        val sharedFavoritePreferences = getSharedPreferences("Knocker_Contact_Favorite", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedFavoritePreferences.edit()
-        edit.putBoolean("contactFavorite", true)
-        edit.apply()
+        isFavorite = 1
+
+        val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
+        val detail = ContactDetailDB(null, contact!!.getContactId(), contact_details_mail, "mail", "3", 2)
+        contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
+        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
+
+        var counter = 0
+        var alreadyExist = false
+
+        while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                alreadyExist = true
+                break
+            }
+            counter++
+        }
+
+        listContact.add(contact.contactDB)
+
+        if (alreadyExist) {
+            addContactToGroup(listContact, groupId)
+        } else {
+            createGroup(listContact, "Favorites")
+        }
     }
 
     private fun removeFromFavorite() {
-        val sharedFavoritePreferences = getSharedPreferences("Knocker_Contact_Favorite", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedFavoritePreferences.edit()
-        edit.putBoolean("contactFavorite", false)
-        edit.apply()
+        isFavorite = 0
+
+        val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
+        val detail = ContactDetailDB(null, contact!!.getContactId(), contact_details_mail, "mail", "3", 2)
+        contact_details_ContactsDatabase!!.contactDetailsDao().insert(detail)
+        contact_details_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact_details_ContactId!!, isFavorite.toString())
+
+        var counter = 0
+
+        while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                break
+            }
+            counter++
+        }
+
+        listContact.add(contact.contactDB)
+
+        removeContactFromGroup(listContact, groupId)
     }
 
+    //endregion
+
+    //region =========================================== Groups =============================================
+
+    private fun createGroup(listContact: ArrayList<ContactDB?>, name: String) {
+        val group = GroupDB(null, name, "")
+
+        val groupId = contact_details_ContactsDatabase!!.GroupsDao().insert(group)
+        listContact.forEach {
+            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
+            println("contact db id" + contact_details_ContactsDatabase!!.LinkContactGroupDao().insert(link))
+        }
+    }
+
+    private fun addContactToGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
+        listContact.forEach {
+            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
+            contact_details_ContactsDatabase!!.LinkContactGroupDao().insert(link)
+        }
+    }
+
+    private fun removeContactFromGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
+        listContact.forEach {
+            contact_details_ContactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it!!.id!!, groupId!!.toInt())
+        }
+    }
+
+    //endregion
+
+    private fun appIsInstalled(): Boolean {
+        val pm = this.packageManager
+        return try {
+            pm.getApplicationInfo("com.whatsapp", 0)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 
     private fun base64ToBitmap(base64: String): Bitmap {
         val imageBytes = Base64.decode(base64, 0)
@@ -321,6 +489,37 @@ class ContactDetailsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {}
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }
+        }
+    }
+
+    private fun converter06To33(phoneNumber: String): String {
+        return if (phoneNumber[0] == '0') {
+            "+33$phoneNumber"
+        } else phoneNumber
+    }
+
+    private fun phoneCall(phoneNumber: String) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
+                numberForPermission = phoneNumber
+            } else {
+                if (numberForPermission.isEmpty()) {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                } else {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                    numberForPermission = ""
+                }
+            }
+        } else {
+            Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     //endregion
 }

@@ -24,7 +24,7 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var contactsDatabase: ContactsRoomDatabase? = null
     private var addNewGroupListView: ListView? = null
     private var createGroupAdapter: AddContactToGroupAdapter? = null
-    private var addNewGroupName:TextView? = null
+    private var addNewGroupName: TextView? = null
 
     //endregion
 
@@ -76,14 +76,13 @@ class AddNewGroupActivity : AppCompatActivity() {
                 refreshActivity()
             }
             R.id.nav_validate -> {
-                if(addNewGroupName!!.text.isNotEmpty()) {
-                    if (createGroupAdapter!!.allSelectContact.isNotEmpty()){
-                        addToGroup(createGroupAdapter!!.allSelectContact,addNewGroupName!!.text.toString())
-                        refreshActivity()
-                    }else{
+                if (addNewGroupName!!.text.isNotEmpty()) {
+                    if (createGroupAdapter!!.allSelectContact.isNotEmpty()) {
+                        addToGroup(createGroupAdapter!!.allSelectContact, addNewGroupName!!.text.toString())
+                    } else {
                         Toast.makeText(this, getString(R.string.add_new_group_toast_no_contact_selected), Toast.LENGTH_LONG).show()
                     }
-                }else{
+                } else {
                     Toast.makeText(this, getString(R.string.add_new_group_toast_empty_field), Toast.LENGTH_LONG).show()
                 }
             }
@@ -92,14 +91,31 @@ class AddNewGroupActivity : AppCompatActivity() {
     }
 
     private fun addToGroup(listContact: List<ContactDB>, name: String) {
-        val group= GroupDB(null,name,"")
-        println("list is $listContact")
-        val groupId=contactsDatabase!!.GroupsDao().insert(group)
+        val group = GroupDB(null, name, "")
+
+        var counter = 0
+        var alreadyExist = false
+
+        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (name == contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name) {
+                alreadyExist = true
+                break
+            }
+            counter++
+        }
+
+        if (alreadyExist) {
+            Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
+        } else {
+            println("list is $listContact")
+            val groupId = contactsDatabase!!.GroupsDao().insert(group)
             listContact.forEach {
                 val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
-                println("contact db id"+contactsDatabase!!.LinkContactGroupDao().insert(link))
+                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
             }
 
+            refreshActivity()
+        }
     }
 
     private fun refreshActivity() {

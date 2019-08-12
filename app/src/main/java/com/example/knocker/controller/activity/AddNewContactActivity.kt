@@ -276,7 +276,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
                             avatar, add_new_contact_Priority!!.selectedItemPosition,
-                            add_new_contact_ImgString!!)
+                            add_new_contact_ImgString!!, 0)
                     println(contactData)
                     var isDuplicate = false
                     val allcontacts = main_ContactsDatabase?.contactsDao()?.getAllContacts()
@@ -406,8 +406,6 @@ class AddNewContactActivity : AppCompatActivity() {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 add_new_contact_ImgString = bitmapToBase64(bitmap)
-                println("convert to = " + base64ToBitmap(bitmapToBase64(bitmap)))
-                println("is the same ? result: " + bitmap.sameAs(base64ToBitmap(bitmapToBase64(bitmap))))
 
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
@@ -418,8 +416,6 @@ class AddNewContactActivity : AppCompatActivity() {
                 matrix.postRotate(rotationInDegrees.toFloat())
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
-//                var matrix = Matrix()
-//                matrix.postRotate(90f)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 add_new_contact_ImgString = bitmapToBase64(bitmap)
@@ -428,11 +424,11 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     private fun exifToDegrees(exifOrientation: Int): Int {
-        when (exifOrientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> return 90
-            ExifInterface.ORIENTATION_ROTATE_180 -> return 180
-            ExifInterface.ORIENTATION_ROTATE_270 -> return 270
-            else -> return 0
+        return when (exifOrientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
         }
     }
 
@@ -448,8 +444,6 @@ class AddNewContactActivity : AppCompatActivity() {
         val imageBytes = Base64.decode(base64, 0)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
-
-    //endregion
 
     private fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
 
@@ -489,4 +483,6 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
         add_new_contact_ImgString = bitmapToBase64(bitmap)
     }
+
+    //endregion
 }

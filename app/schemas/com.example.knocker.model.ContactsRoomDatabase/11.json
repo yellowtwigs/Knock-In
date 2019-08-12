@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 10,
-    "identityHash": "f9071b8a24f2671735f22d21583fe62c",
+    "version": 11,
+    "identityHash": "2929ac9bfe889ddc86a8d99c98c64cbb",
     "entities": [
       {
         "tableName": "contacts_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -42,6 +42,12 @@
             "fieldPath": "profilePicture64",
             "columnName": "profile_picture_str",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "is_favorite",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -156,7 +162,7 @@
       },
       {
         "tableName": "contact_details_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `content` TEXT NOT NULL, `type` TEXT NOT NULL, `tag` TEXT NOT NULL, `field_position` INTEGER NOT NULL, `is_favorite` INTEGER NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_contact` INTEGER, `content` TEXT NOT NULL, `type` TEXT NOT NULL, `tag` TEXT NOT NULL, `field_position` INTEGER NOT NULL, FOREIGN KEY(`id_contact`) REFERENCES `contacts_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -191,12 +197,6 @@
           {
             "fieldPath": "fieldPosition",
             "columnName": "field_position",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "favorite",
-            "columnName": "is_favorite",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -286,7 +286,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f9071b8a24f2671735f22d21583fe62c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2929ac9bfe889ddc86a8d99c98c64cbb')"
     ]
   }
 }

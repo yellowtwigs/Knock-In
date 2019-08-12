@@ -31,6 +31,10 @@ data class ContactDB(
         /**
          * Image de profile du contact convertis en base 64.
          */
-        @ColumnInfo(name = "profile_picture_str") val profilePicture64: String
+        @ColumnInfo(name = "profile_picture_str") val profilePicture64: String,
+        /**
+         * Le champ si Oui = 1 ou Non = 0, ce contact est un favori
+         */
+        @ColumnInfo(name = "is_favorite") val favorite: Int
 
 )

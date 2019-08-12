@@ -69,6 +69,29 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return listOfItemSelected;
     }
 
+    public void checkListOfItemSelected() {
+
+        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+        main_mDbWorkerThread.start();
+
+        System.out.println("list contact grid size" + gestionnaireContacts.getContacts().size());
+        modeMultiSelect = true;
+        for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
+            if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
+                if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(i).getFirstGroup(context).getId())) {
+                    if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+                        System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
+                        ((MainActivity) context).longRecyclerItemClick(i);
+//                        ((MainActivity) context).longRecyclerItemClick(i, true);
+                        listOfItemSelected.remove(gestionnaireContacts.getContacts().get(i));
+                    }
+                }
+            }
+        }
+        secondClick = true;
+        notifyDataSetChanged();
+    }
+
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     private String numberForPermission = "";
@@ -249,6 +272,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 ((GroupActivity) context).longRecyclerItemClick(position, false, false);
             } else if (context instanceof MainActivity) {
                 ((MainActivity) context).longRecyclerItemClick(position);
+//                ((MainActivity) context).longRecyclerItemClick(position, false);
             }
 
             if (listOfItemSelected.size() > 0) {

@@ -108,6 +108,8 @@ class EditContactActivity : AppCompatActivity() {
 
     private var fromGroupActivity = false
 
+    private var isFavorite = 0
+
     //endregion
 
     @SuppressLint("InflateParams", "ClickableViewAccessibility")
@@ -142,6 +144,8 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_id = intent.getIntExtra("ContactId", 1)
         fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
         gestionnaireContacts = ContactList(this.applicationContext)
+
+        isFavorite = intent.getIntExtra("isFavorite", 0)
 
         //endregion
 
@@ -368,7 +372,7 @@ class EditContactActivity : AppCompatActivity() {
                     println("yellow color choosen")
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (!Settings.canDrawOverlays(applicationContext)) {
-                            val alertDialog = OverlayAlertDialog()
+                            val alertDialog = overlayAlertDialog()
                             alertDialog!!.show()
                         }
                     }
@@ -502,7 +506,7 @@ class EditContactActivity : AppCompatActivity() {
 
                         val spinnerFixChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Fix_Property!!.selectedItem.toString(), this)
 
-                        var contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
+                        val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                         val nbDetail = contact!!.contactDetailList!!.size - 1
                         //   for (i in 0..nbDetail) {
                         if (havePhone) {
@@ -511,14 +515,14 @@ class EditContactActivity : AppCompatActivity() {
                             val firstNumber = contact.getFirstPhoneNumber()
                             var counter = 0
                             while (counter < contact.contactDetailList!!.size) {
-                                if (contact.contactDetailList!!.get(counter).content == (firstNumber)) {
-                                    if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
-                                        counter = contact.contactDetailList!!.size
+                                if (contact.contactDetailList!![counter].content == (firstNumber)) {
+                                    counter = if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!![counter].id!!)
+                                        contact.contactDetailList!!.size
                                     } else {
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, edit_contact_PhoneNumber!!.editText!!.text.toString())
                                         //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
-                                        counter = contact.contactDetailList!!.size
+                                        contact.contactDetailList!!.size
                                     }
                                 }
                                 counter++
@@ -543,17 +547,17 @@ class EditContactActivity : AppCompatActivity() {
                             edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                         }
                         if (haveSecondPhone) {
-                            val SecondNumber = contact.getSecondPhoneNumber(contact.getFirstPhoneNumber())
+                            val secondNumber = contact.getSecondPhoneNumber(contact.getFirstPhoneNumber())
                             var counter = 0
                             while (counter < contact.contactDetailList!!.size) {
-                                if (contact.contactDetailList!!.get(counter).content.equals(SecondNumber)) {
-                                    if (edit_contact_FixNumber!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
-                                        counter = contact.contactDetailList!!.size
+                                if (contact.contactDetailList!![counter].content == secondNumber) {
+                                    counter = if (edit_contact_FixNumber!!.editText!!.text.toString() == "") {
+                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!![counter].id!!)
+                                        contact.contactDetailList!!.size
                                     } else {
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, "" + edit_contact_FixNumber!!.editText!!.text)
                                         //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
-                                        counter = contact.contactDetailList!!.size
+                                        contact.contactDetailList!!.size
                                     }
                                 }
                                 counter++
@@ -568,8 +572,8 @@ class EditContactActivity : AppCompatActivity() {
                             val firstMail = contact.getFirstMail()
                             var counter = 0
                             while (counter < contact.contactDetailList!!.size) {
-                                if (contact.contactDetailList!!.get(counter).content == firstMail) {
-                                    println("contact content mail" + contact.contactDetailList!!.get(counter).content)
+                                if (contact.contactDetailList!![counter].content == firstMail) {
+                                    println("contact content mail" + contact.contactDetailList!![counter].content)
                                     if (edit_contact_Mail!!.editText!!.text.toString() == "") {
                                         edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
                                         counter = contact.contactDetailList!!.size
@@ -743,9 +747,11 @@ class EditContactActivity : AppCompatActivity() {
                 val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 val rotationInDegrees = exifToDegrees(rotation)
                 matrix.postRotate(rotationInDegrees.toFloat())
+
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+//                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
                 edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmap.bitmapToBase64()
             }
@@ -753,14 +759,12 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     private fun exifToDegrees(exifOrientation: Int): Int {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270
+        return when (exifOrientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
         }
-        return 0
     }
 
     private fun Bitmap.bitmapToBase64(): String {
@@ -779,7 +783,7 @@ class EditContactActivity : AppCompatActivity() {
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun OverlayAlertDialog(): AlertDialog? {
+    private fun overlayAlertDialog(): AlertDialog? {
 
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.alert_dialog_overlay_title)

@@ -3,7 +3,7 @@ package com.example.knocker.model.ModelDB
 import androidx.room.*
 
 /**
- * Data class qui représente un détails d'un contact par exemple un mail, numero de téléphone, etc...
+ * Data class qui représente un détail d'un contact par exemple un mail, numero de téléphone, etc...
  * @author Ryan Granet
  */
 @Entity(tableName = "contact_details_table",

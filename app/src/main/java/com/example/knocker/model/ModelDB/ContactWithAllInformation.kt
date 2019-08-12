@@ -88,27 +88,32 @@ class ContactWithAllInformation {
 
     fun setPriority2(contactsDatabase: ContactsRoomDatabase?) {
         val test = contactsDatabase!!.contactsDao().setPriority2(this.getContactId())
-        println("test getContactID " + test)
+        println("test getContactID $test")
+    }
+
+    fun setIsFavorite(contactsDatabase: ContactsRoomDatabase?) {
+        val test = contactsDatabase!!.contactsDao().setIsFavorite(this.getContactId())
+        println("test getContactID $test")
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is ContactWithAllInformation) {
+        return if (other is ContactWithAllInformation) {
             if (other.contactDB == this.contactDB) {
                 println("is printing true")
-                return true
+                true
             } else {
-                return false
+                false
             }
         } else {
-            return false
+            false
         }
     }
 
-    fun getFirstGroup(context: Context):GroupDB?{
-        val contactRoom=ContactsRoomDatabase.getDatabase(context)
-        if( groupList!= null && groupList!!.isNotEmpty()) {
+    fun getFirstGroup(context: Context): GroupDB? {
+        val contactRoom = ContactsRoomDatabase.getDatabase(context)
+        if (groupList != null && groupList!!.isNotEmpty()) {
             return contactRoom!!.GroupsDao().getGroup(groupList!![0].idGroup)
-        }else{
+        } else {
             return null
         }
     }
