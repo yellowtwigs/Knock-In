@@ -96,6 +96,11 @@ class ContactWithAllInformation {
         println("test getContactID $test")
     }
 
+    fun setIsNotFavorite(contactsDatabase: ContactsRoomDatabase?) {
+        val test = contactsDatabase!!.contactsDao().setIsNotFavorite(this.getContactId())
+        println("test getContactID $test")
+    }
+
     override fun equals(other: Any?): Boolean {
         return if (other is ContactWithAllInformation) {
             if (other.contactDB == this.contactDB) {

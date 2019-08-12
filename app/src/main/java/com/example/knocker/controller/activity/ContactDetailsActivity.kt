@@ -93,8 +93,6 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_rounded_image: Int = 0
     private var contact_details_image64: String = ""
 
-    private var contact_details_CreateGroupAdapter: AddContactToGroupAdapter? = null
-
     // Database && Thread
     private var contact_details_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var contact_details_mDbWorkerThread: DbWorkerThread
@@ -105,10 +103,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     private var fromGroupActivity = false
 
-    private var addContactToGroupAdapter: AddContactToGroupAdapter? = null
     private var groupId: Long = 0
-
-    private var isFavorite = 0
 
     private var listContact: ArrayList<ContactDB?> = ArrayList()
 
@@ -186,7 +181,6 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_ContactId = intent.getIntExtra("ContactId", 1)
         fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
 
-
         //TODO wash the code
         if (contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!.toInt()) == null) {
 
@@ -255,8 +249,6 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         val contactList = ContactList(this)
         val contact = contactList.getContactById(contact_details_ContactId!!)!!
-
-        contact.setIsFavorite(contact_details_ContactsDatabase)
 
         if (contact.contactDB!!.favorite == 1) {
             contact_details_RemoveContactFromFavorite!!.visibility = View.VISIBLE
@@ -329,7 +321,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         contact_details_EditContact!!.setOnClickListener {
             val intentToEditContact = Intent(this@ContactDetailsActivity, EditContactActivity::class.java)
-            intentToEditContact.putExtra("isFavorite", isFavorite)
+//            intentToEditContact.putExtra("isFavorite", isFavorite)
             intentToEditContact.putExtra("ContactId", contact_details_ContactId!!)
             startActivity(intentToEditContact)
         }
@@ -351,7 +343,6 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_SendMail!!.setOnClickListener {
             val intentSendMailTo = Intent(Intent.ACTION_SENDTO)
             intentSendMailTo.data = Uri.parse("mailto:")
-            //intent.setType("text/plain");
             intentSendMailTo.putExtra(Intent.EXTRA_EMAIL, arrayOf(contact_details_mail))
             intentSendMailTo.putExtra(Intent.EXTRA_SUBJECT, "")
             intentSendMailTo.putExtra(Intent.EXTRA_TEXT, "Envoyé depuis Knocker")
@@ -393,9 +384,9 @@ class ContactDetailsActivity : AppCompatActivity() {
     //region ========================================== Favorites ===========================================
 
     private fun addToFavorite() {
-        isFavorite = 1
-
         val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
+
+        contact!!.setIsFavorite(contact_details_ContactsDatabase)
 
         var counter = 0
         var alreadyExist = false
@@ -419,9 +410,10 @@ class ContactDetailsActivity : AppCompatActivity() {
     }
 
     private fun removeFromFavorite() {
-        isFavorite = 0
-
         val contact = contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!)
+
+        contact!!.setIsNotFavorite(contact_details_ContactsDatabase)
+
         var counter = 0
 
         while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {

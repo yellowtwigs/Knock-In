@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var main_GridView: GridView? = null
     private var main_RecyclerView: RecyclerView? = null
+    private var main_RecyclerViewFavorite: RecyclerView? = null
 
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonSend: FloatingActionButton? = null
@@ -175,19 +176,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-        val sections = ArrayList<SectionFavoriteAdapter.Section>()
-
-        val listOfAllContacts = main_ContactsDatabase!!.contactsDao().getAllContacts()
-        val listOfAllContactsFavorite : List<ContactDB> = emptyList()
-        var position = 0
-
-       /* for (i in listOfAllContacts) {
-            if (i.favorite == 1) {
-                listOfAllContactsFavorite[position] == i
-            }
-            sections.add(SectionFavoriteAdapter.Section())
-            position ++
-        }*/
+//        val listOfAllContacts = main_ContactsDatabase!!.contactsDao().getAllContacts()
+//        val listOfAllContactsFavorite : List<ContactDB> = emptyList()
+//        var position = 0
+//
+//        for (i in listOfAllContacts) {
+//            if (i.favorite == 1) {
+//                listOfAllContactsFavorite[position] == i
+//            }
+//            position ++
+//        }
 
         //endregion
 
@@ -386,9 +384,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (main_RecyclerView != null) {
             recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
-
-            val sectionFavoriteAdapterRecycler = SectionFavoriteAdapter(this, main_RecyclerView, recyclerViewAdapter)
-            main_RecyclerView!!.adapter = sectionFavoriteAdapterRecycler
 
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()

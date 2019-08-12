@@ -35,8 +35,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
+import com.example.knocker.controller.ContactIconeAdapter
 import com.example.knocker.controller.GroupEditAdapter
-import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactDetailDB

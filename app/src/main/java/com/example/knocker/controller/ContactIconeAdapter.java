@@ -1,11 +1,9 @@
-package com.example.knocker.controller.activity;
+package com.example.knocker.controller;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
-import com.example.knocker.controller.GroupEditAdapter;
-
-import java.util.ArrayList;
+import com.example.knocker.controller.activity.AddNewContactActivity;
+import com.example.knocker.controller.activity.EditContactActivity;
 
 public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapter.ViewHolder> {
     private Context context;
@@ -66,7 +63,7 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
                     drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                     drawable.draw(canvas);
                     ((EditContactActivity) context).addContactIcone(bitmap);
-                }else if(context instanceof  AddNewContactActivity){
+                }else if(context instanceof AddNewContactActivity){
                     Drawable drawable = context.getDrawable(iconeList[position]);
                     Bitmap bitmap = null;
                     if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {

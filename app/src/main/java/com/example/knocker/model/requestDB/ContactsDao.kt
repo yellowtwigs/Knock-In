@@ -150,6 +150,14 @@ interface ContactsDao {
      * @param id Int    Id du contact sélectionné
      */
 
+    @Query("UPDATE contacts_table SET is_favorite = 0 WHERE id = :id ")
+    fun setIsNotFavorite(id: Int)
+
+    /**
+     * UPDATE si le contact est un favori ou non
+     * @param id Int    Id du contact sélectionné
+     */
+
     @Query("DELETE FROM contacts_table WHERE id = :id")
     fun deleteContactById(id: Int)
 
