@@ -66,24 +66,19 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     private Boolean secondClick = false;
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
     private GridView parentGrid;
+    private ArrayList<Integer> sectionPos;
 
-  /*  public static class SimpleViewHolder extends RecyclerView.ViewHolder {
-        public final TextView firstName;
-        public final TextView lastName;
-        final CircularImageView circularImageView;
 
-        SimpleViewHolder(View view) {
-            super(view);
-            firstName = view.findViewById(R.id.grid_group_manager_item_contactFirstName);
-            lastName = view.findViewById(R.id.grid_group_manager_item_contactLastName);
-            circularImageView = view.findViewById(R.id.grid_group_manager_item_RoundedImageView);
-        }
-    }*/
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
 
     public GroupAdapter(Context context, ContactList contactList, Integer len)  {
         this.context = context;
         this.contactList = contactList;
         this.len = len;
+        this.sectionPos=new ArrayList<Integer>();
     }
 
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
@@ -303,11 +298,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
         int startAngle;
         int endAngle;
-        if (position % len == 0) {
+        if ((position-getSectionnedPosition(position) )% len == 0) {
             System.out.println("position vaut " + position + " modulo" + len + " vaut" + position % len);
             startAngle = 90;
             endAngle = -90;
-        } else if (position % len == len - 1) {
+        } else if ((position-getSectionnedPosition(position) ) % len == len - 1) {
             System.out.println("position vaut " + position + " modulo" + len + " vaut" + position % len);
             startAngle = 90;
             endAngle = 270;
@@ -651,6 +646,17 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         } catch (Exception e) {
             return false;
         }
+    }
+    public void setSectionPos(ArrayList<Integer> position){
+        sectionPos=position;
+    }
+    private int getSectionnedPosition(int position)  {
+        for(int i =(sectionPos.size()-1); i>0;i--){
+            if(sectionPos.get(i)<=position){
+                return sectionPos.get(i);
+            }
+        }
+        return 0;
     }
 
 }

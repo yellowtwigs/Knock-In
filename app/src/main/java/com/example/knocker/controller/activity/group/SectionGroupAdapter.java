@@ -105,6 +105,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NotNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int typeView) {
+
         if (typeView == SECTION_TYPE) {
             final View view = LayoutInflater.from(mContext).inflate(mSectionResourceId, parent, false);
             view.setBackgroundResource(R.drawable.recycler_section);
@@ -160,7 +161,6 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 monoChannelSmsClick(groupSms);
             });
-
             ((SectionViewHolder) sectionViewHolder).menu.setOnClickListener(v -> {
                 System.out.println("BUTTON CLICK");
                 final PopupMenu popupMenu = new PopupMenu(mContext, v);
@@ -210,7 +210,13 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position));
             //System.out.println("contact "+((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(position)).getContactDB()+ " position "+position);
         }
-
+        ArrayList<Integer> list= new ArrayList<Integer>();
+        for (int i=0; i<getItemCount();i++) {
+            if (isSectionHeaderPosition(i)) {
+                list.add(sectionedPositionToPosition(i+1));
+            }
+        }
+        ((GroupAdapter)mBaseAdapter).setSectionPos(list);
     }
 
     @Override
@@ -271,7 +277,14 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         return position + offset;
     }
-
+    public int getPositionSection(int position){
+        for (int i=0; i>0;i--){
+            if(isSectionHeaderPosition(position)){
+                return position;
+            }
+        }
+        return 0;
+    }
     private int sectionedPositionToPosition(int sectionedPosition) {
         if (isSectionHeaderPosition(sectionedPosition)) {
             return RecyclerView.NO_POSITION;
