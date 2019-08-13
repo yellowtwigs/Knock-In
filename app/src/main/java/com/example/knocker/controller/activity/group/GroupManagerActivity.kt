@@ -20,6 +20,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.knocker.R
 import com.example.knocker.controller.ContactGridViewAdapter
 import com.example.knocker.controller.activity.*
@@ -125,7 +126,6 @@ class GroupManagerActivity : AppCompatActivity() {
 
         group_BottomNavigationView = findViewById(R.id.navigation)
         //endregion
-
 
         //region ======================================= Navigation =========================================
 

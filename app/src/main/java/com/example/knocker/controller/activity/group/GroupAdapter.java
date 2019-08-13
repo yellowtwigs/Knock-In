@@ -67,6 +67,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
     private GridView parentGrid;
     private ArrayList<Integer> sectionPos;
+    private int heightWidthImage;
 
 
     @Override
@@ -89,7 +90,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
         System.out.println(parent.getClass());
         //parentGrid=((GridView) parent);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+        heightWidthImage=holder.contactRoundedImageView.getLayoutParams().height;
+        return holder;
     }
 
     @SuppressLint("ResourceType")
@@ -99,30 +102,29 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         //SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
 
         //int len = sharedPreferences.getInt("gridview", 4);
-        int height = holder.contactRoundedImageView.getLayoutParams().height;
-        int width = holder.contactRoundedImageView.getLayoutParams().width;
-
+        int height = heightWidthImage;
+        int width = heightWidthImage;
+        System.out.println(" layout params height "+height+" width "+ width);
         ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
-
         if (len == 3) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.05;
-            holder.contactRoundedImageView.getLayoutParams().width -= height * 0.05;
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.05));
+            holder.contactRoundedImageView.getLayoutParams().width  = (int) (heightWidthImage - (heightWidthImage * 0.05));
             layoutParamsTV.topMargin = 30;
             layoutParamsIV.topMargin = 10;
         } else if (len == 4) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.25;
-            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.25;
+            holder.contactRoundedImageView.getLayoutParams().height  = (int) (heightWidthImage - (heightWidthImage * 0.25));
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.25));
             layoutParamsTV.topMargin = 10;
             layoutParamsIV.topMargin = 10;
         } else if (len == 5) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.40;
-            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.40;
+            holder.contactRoundedImageView.getLayoutParams().height  = (int) (heightWidthImage - (heightWidthImage * 0.40));;
+            holder.contactRoundedImageView.getLayoutParams().width  = (int) (heightWidthImage - (heightWidthImage * 0.40));;
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         } else if (len == 6) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50;
-            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
+            holder.contactRoundedImageView.getLayoutParams().height  = (int) (heightWidthImage - (heightWidthImage * 0.50));;
+            holder.contactRoundedImageView.getLayoutParams().width  = (int) (heightWidthImage - (heightWidthImage * 0.50));;
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         };
@@ -416,6 +418,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     } else {
                         listOfItemSelected.add(contactList.getContacts().get(position));
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                        notifyDataSetChanged();
                     }
                     closeMenu();
                     ((GroupManagerActivity) context).gridLongItemClick(position);
@@ -437,9 +440,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     if (listOfItemSelected.isEmpty()) {
                         modeMultiSelect = false;
                     }
+                    notifyDataSetChanged();
                 } else {
                     listOfItemSelected.add(contactList.getContacts().get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    notifyDataSetChanged();
                 }
                 ((GroupManagerActivity) context).gridLongItemClick(position);
             }else{
@@ -572,6 +577,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             groupWordingTv = view.findViewById(R.id.grid_adapter_wording_group_tv);
             contactFirstNameView = view.findViewById(R.id.grid_adapter_contactFirstName);
             contactLastNameView = view.findViewById(R.id.grid_adapter_contactLastName);
+            heightWidthImage=contactRoundedImageView.getHeight();
         }
 
 /*        @Override
