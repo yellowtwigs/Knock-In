@@ -9,6 +9,7 @@ import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.knocker.controller.activity.firstLaunch.ImportContactsActivity
 import com.example.knocker.controller.activity.firstLaunch.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
@@ -40,7 +41,7 @@ class FirstLaunchActivity : AppCompatActivity() {
         buttonAccept.setOnClickListener {
             edit.putBoolean("first_launch", false)
             edit.apply()
-            startActivity(Intent(this@FirstLaunchActivity, StartActivity::class.java))
+            startActivity(Intent(this@FirstLaunchActivity, ImportContactsActivity::class.java))
             finish()
         }
     }

@@ -34,12 +34,15 @@ android {
     productFlavors {
         onlyContact{
             applicationId "com.example.knocker.contact"
+            resValue "string","app_name","contacter"
         }
         contactAndHistory{
             applicationId "com.example.knocker.contactAndHistory"
+            resValue "string","app_name","converser"
         }
         appComplete{
             applicationId "com.example.knocker"
+            resValue "string","app_name","Knocker"
         }
 
     }
