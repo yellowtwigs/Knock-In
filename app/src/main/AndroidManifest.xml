@@ -55,7 +55,7 @@
         <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
         <activity android:name=".controller.activity.group.GroupManagerActivity" />
         <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
-        <activity android:name=".controller.activity.firstLaunch.FirstLaunchActivity">
+        <activity android:name=".FirstLaunchActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->

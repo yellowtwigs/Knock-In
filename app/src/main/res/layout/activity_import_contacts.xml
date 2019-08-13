@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/backgroundColor">
+        android:background="@drawable/wallpaper_incoming_call">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/first_launch_in_scroll"
@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="55dp"
                 android:text="@string/import_contacts_title"
+                android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,16 +51,16 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="50dp"
-                android:layout_marginBottom="8dp"
                 android:maxWidth="300dp"
                 android:text="@string/import_contacts_long_text"
-                android:textAlignment="center"
+                android:justificationMode="inter_word"
+                android:textColor="@color/textColorLight"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/import_contacts_title" />
 
-            <com.google.android.material.button.MaterialButton
+          <com.google.android.material.button.MaterialButton
                 android:id="@+id/import_contacts_accept_button"
                 android:layout_width="185dp"
                 android:layout_height="65dp"

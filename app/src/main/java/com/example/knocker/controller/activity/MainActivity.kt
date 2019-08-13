@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.*
 import com.example.knocker.controller.*
-import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
+import com.example.knocker.FirstLaunchActivity
 import com.example.knocker.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -42,10 +42,7 @@ import com.example.knocker.model.ModelDB.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
-import kotlinx.android.synthetic.main.activity_group.*
-import kotlinx.android.synthetic.main.alert_dialog_add_field.*
 import kotlin.collections.ArrayList
 
 /**

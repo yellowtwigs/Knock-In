@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wallpaper_incoming_call"
-    tools:context=".controller.activity.firstLaunch.FirstLaunchActivity">
+    tools:context=".FirstLaunchActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/first_launch_in_scroll"

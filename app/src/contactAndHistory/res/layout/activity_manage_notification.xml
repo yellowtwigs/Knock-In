@@ -76,7 +76,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="204dp">
+            tools:layout_editor_absoluteY="204dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView_manage_notif"
@@ -86,9 +87,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="left"
-                android:visibility="gone"
                 android:text="@string/notification_manager_stop_popup"
                 android:textColor="?attr/textColor"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -113,11 +114,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="204dp">
+            tools:layout_editor_absoluteY="204dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView_manage_notif_prio_1"
@@ -127,7 +128,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="left"
-                android:visibility="gone"
                 android:text="@string/notification_manager_prio_1"
                 android:textColor="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"

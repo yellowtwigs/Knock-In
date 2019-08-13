@@ -1,19 +1,15 @@
-package com.example.knocker.controller.activity.firstLaunch
+package com.example.knocker
 
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
-import android.os.Handler
 import android.text.method.LinkMovementMethod
-import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.knocker.R
+import com.example.knocker.controller.activity.firstLaunch.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
 

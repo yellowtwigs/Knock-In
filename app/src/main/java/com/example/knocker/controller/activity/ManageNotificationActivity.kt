@@ -24,6 +24,7 @@ import com.example.knocker.controller.activity.firstLaunch.MultiSelectActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_manage_notification.*
 import java.util.*
 
 /**
@@ -379,7 +380,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         super.onResume()
         activityVisible = true
 
-        if (isTrue) {
+        if (isTrue && manage_notif_prio_1_layout.visibility != View.GONE) {
             buildMultiSelectAlertDialog()
             isTrue = false
         }

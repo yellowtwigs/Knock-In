@@ -35,7 +35,7 @@ import com.example.knocker.controller.ContactRecyclerViewAdapter
 import com.example.knocker.controller.NotificationListener
 import com.example.knocker.controller.SelectContactAdapter
 import com.example.knocker.controller.activity.*
-import com.example.knocker.controller.activity.firstLaunch.FirstLaunchActivity
+import com.example.knocker.FirstLaunchActivity
 import com.example.knocker.model.ContactList
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
