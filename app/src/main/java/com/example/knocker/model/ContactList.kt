@@ -134,6 +134,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         listChangement.retainAll(contacts)
         contacts = listChangement
     }
+
     fun sortContactByFavorite() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFavorite() }
@@ -854,7 +855,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récuper les numéro de téléphone des contacts du carnet Android.
+     * fonction qui permet de récuperer les numéro de téléphone des contacts du carnet Android.
      * @param main_contentResolver ContentResolver
      * @return List<Triple<Int, String?, String?>>
      */
@@ -865,9 +866,14 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         while (phoneContact.moveToNext()) {
             //récupère l'id du groupe
             val groupId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups._ID))
+
             //récupère le nom du groupe
-            val groupName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups.TITLE))
+            var groupName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups.TITLE))
+
             //récupère les membres du groupe
+            if (groupName == "Starred in Android") {
+                groupName = "Favorites"
+            }
             val groupMembers = getMemberOfGroup(main_contentResolver, groupId.toString(), groupName)
             if (groupMembers.isNotEmpty() && allGroupMembers.isNotEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {
                 //ajoute un membre au groupe
@@ -912,7 +918,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     private fun saveGroupsAndLinks(listLinkAndGroup: List<Pair<LinkContactGroup, GroupDB>>) {
         listLinkAndGroup.forEach {
-            val dbGroup = contactsDatabase?.GroupsDao()!!.getGroupWhithName(it.second.name)
+            val dbGroup = contactsDatabase?.GroupsDao()!!.getGroupWithName(it.second.name)
             var groupId = 0
             if (dbGroup == null) {
                 groupId = contactsDatabase?.GroupsDao()!!.insert(it.second)!!.toInt()
@@ -948,7 +954,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 //endregion
 
     fun getContactWithName(name: String, platform: String): ContactWithAllInformation? {
-        println("test platform " + platform + " test name " + name)
+        println("test platform $platform test name $name")
         when (platform) {
             "message" -> {
                 return getContact(name)
@@ -959,7 +965,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             "gmail" -> {
                 return getContact(name)
             }
-            "Messenger" ->{
+            "Messenger" -> {
                 return getContact(name)
             }
         }
