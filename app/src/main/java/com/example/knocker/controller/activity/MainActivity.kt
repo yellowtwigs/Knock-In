@@ -640,6 +640,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             for (i in iterator) {
                 listOfContactSelected.add(listOfItemSelected[i])
+                println("test contact:"+listOfItemSelected[i])
             }
             if (len >= 3) {
                 gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
@@ -659,7 +660,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_groupButton!!.visibility = View.GONE
                 main_FloatingButtonSend!!.visibility = View.GONE
             }
-            saveGroupMultiSelect(listOfItemSelected, len)
+            saveGroupMultiSelect(listOfContactSelected, len)
         }
         //endregion
     }
