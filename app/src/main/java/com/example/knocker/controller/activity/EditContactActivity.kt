@@ -814,6 +814,16 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
         edit_contact_imgString = bitmap.bitmapToBase64()
     }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode ==1 && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/*"
+            startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
+        }else if(requestCode==2 &&ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED  && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            openCamera()
+        }
+    }
 
     //endregion
 }

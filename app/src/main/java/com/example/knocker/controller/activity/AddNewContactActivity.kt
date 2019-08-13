@@ -356,7 +356,7 @@ class AddNewContactActivity : AppCompatActivity() {
         }
         camera!!.setOnClickListener{
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 2)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE), 2)
                 builderBottom.dismiss()
             }else {
                 openCamera()
@@ -472,7 +472,7 @@ class AddNewContactActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = "image/*"
             startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
-        }else if(requestCode==2 &&ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED  ){
+        }else if(requestCode==2 &&ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED  && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             openCamera()
         }
     }
