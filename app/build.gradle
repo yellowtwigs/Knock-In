@@ -33,11 +33,13 @@ android {
     flavorDimensions "default"
     productFlavors {
         onlyContact{
+            applicationId "com.example.knocker.contact"
         }
         contactAndHistory{
-
+            applicationId "com.example.knocker.contactAndHistory"
         }
         appComplete{
+            applicationId "com.example.knocker"
         }
 
     }
