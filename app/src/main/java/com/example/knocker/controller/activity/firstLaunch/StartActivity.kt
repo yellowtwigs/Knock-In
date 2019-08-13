@@ -302,7 +302,9 @@ class StartActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.alert_dialog_no)
                 { _, _ ->
                     closeContextMenu()
-                    startActivity(Intent(this@StartActivity, MainActivity::class.java))
+                    val intent = Intent(this@StartActivity, MainActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
                     finish()
                 }
                 .show()
@@ -320,7 +322,9 @@ class StartActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
                 .setMessage(message)
                 .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                    startActivity(Intent(this@StartActivity, MainActivity::class.java))
+                    val intent = Intent(this@StartActivity, MainActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
                     val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putBoolean("view", true)

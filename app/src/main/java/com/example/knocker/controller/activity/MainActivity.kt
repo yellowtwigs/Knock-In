@@ -172,16 +172,25 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-//        val listOfAllContacts = main_ContactsDatabase!!.contactsDao().getAllContacts()
-//        val listOfAllContactsFavorite : List<ContactDB> = emptyList()
-//        var position = 0
-//
-//        for (i in listOfAllContacts) {
-//            if (i.favorite == 1) {
-//                listOfAllContactsFavorite[position] == i
-//            }
-//            position ++
-//        }
+        val intent = intent
+        val fromStartActivity = intent.getBooleanExtra("fromStartActivity", false)
+
+        if (fromStartActivity) {
+            var counter = 0
+
+            while (counter < main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ().size) {
+                if (main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                    var secondCounter = 0
+                    while (secondCounter < main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(this).size) {
+                        main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(this)[secondCounter].setIsFavorite(main_ContactsDatabase)
+
+                        secondCounter++
+                    }
+                    break
+                }
+                counter++
+            }
+        }
 
         //endregion
 
@@ -439,8 +448,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_loadingPanel!!.visibility = View.VISIBLE
                     }
                     runOnUiThread(displayLoading)
+
                     //on effectue la sync
                     gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+
                     //on get tout les contact qui on été modifié lors de la last sync et on les stock dans une arrayList
                     val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1
@@ -453,7 +464,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
                     }
-                    //pour chaque contact changé on affiche une popup avec un choix ( garder la version Android ou Knocker
+
+                    //pour chaque contact changé on affiche une popup avec un choix "garder la version Android ou Knocker"
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle(R.string.main_edited_contact)
@@ -639,7 +651,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             for (i in iterator) {
                 listOfContactSelected.add(listOfItemSelected[i])
-                println("test contact:"+listOfItemSelected[i])
+                println("test contact:" + listOfItemSelected[i])
             }
             if (len >= 3) {
                 gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)

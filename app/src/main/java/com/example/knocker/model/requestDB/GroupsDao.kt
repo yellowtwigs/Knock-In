@@ -22,7 +22,7 @@ interface GroupsDao {
     fun getAllGroupsByNameAZ(): List<GroupWithContact>
 
     @Query("SELECT * FROM groups_table WHERE name = :groupName")
-    fun getGroupWhithName(groupName: String): GroupDB
+    fun getGroupWithName(groupName: String): GroupDB
 
     //get touts les groupes de la database trié par nom de Z à A
     @Query("SELECT * FROM groups_table ORDER BY name DESC")

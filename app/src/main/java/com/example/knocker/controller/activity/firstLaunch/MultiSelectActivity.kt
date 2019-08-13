@@ -96,7 +96,9 @@ class MultiSelectActivity : AppCompatActivity() {
                     if (contactList.isNotEmpty()) {
                         gestionnaireContact.setToContactInListPriority2()
                     }
-                    startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
+                    val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
                     finish()
                 }
                 .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
@@ -112,7 +114,9 @@ class MultiSelectActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java))
+                val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
+                intent.putExtra("fromStartActivity", true)
+                startActivity(intent)
                 finish()
             }
             R.id.nav_validate -> {
