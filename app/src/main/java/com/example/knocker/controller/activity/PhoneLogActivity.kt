@@ -227,7 +227,6 @@ class PhoneLogActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java))
-                R.id.nav_groups -> startActivity(Intent(this@PhoneLogActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@PhoneLogActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@PhoneLogActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@PhoneLogActivity, SettingsActivity::class.java))

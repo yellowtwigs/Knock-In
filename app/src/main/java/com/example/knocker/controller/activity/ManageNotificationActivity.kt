@@ -109,8 +109,6 @@ class ManageNotificationActivity : AppCompatActivity() {
         val navItem = menu.findItem(R.id.nav_notif_config)
         navItem.isChecked = true
 
-        navigationView!!.menu.getItem(3).isChecked = true
-
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
@@ -119,7 +117,6 @@ class ManageNotificationActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
                 }
-                R.id.nav_groups -> startActivity(Intent(this@ManageNotificationActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))

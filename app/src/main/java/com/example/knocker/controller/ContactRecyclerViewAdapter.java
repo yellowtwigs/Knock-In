@@ -21,9 +21,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -384,6 +386,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             holder.editCl.setOnClickListener(listener);
         }
 
+        if (contact.getFavorite() == 1) {
+            holder.listContactItemFavoriteShine.setVisibility(View.VISIBLE);
+        } else {
+            holder.listContactItemFavoriteShine.setVisibility(View.GONE);
+        }
+
         holder.groupWordingConstraint.setOnClickListener(v -> {
 
             DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
@@ -524,8 +532,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView contactFirstNameView;
-        ConstraintLayout constraintLayout;
+        RelativeLayout constraintLayout;
         ConstraintLayout constraintLayoutMenu;
+        AppCompatImageView listContactItemFavoriteShine;
         CircularImageView contactRoundedImageView;
         ConstraintLayout constraintLayoutSmaller;
         ConstraintLayout constraintLayoutMenuSmaller;
@@ -554,6 +563,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_item_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_item_wording_group_tv);
+                listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
                 open = false;
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
@@ -567,6 +577,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 mailCl = view.findViewById(R.id.list_contact_item_constraint_mail);
                 groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
                 groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
+                listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
                 open = false;
             }
         }

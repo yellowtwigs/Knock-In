@@ -128,7 +128,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
                 }
-                R.id.nav_groups -> startActivity(Intent(this@NotificationHistoryActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@NotificationHistoryActivity, SettingsActivity::class.java))

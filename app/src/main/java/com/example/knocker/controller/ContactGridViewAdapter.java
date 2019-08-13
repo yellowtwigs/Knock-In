@@ -27,6 +27,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -98,24 +99,20 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         return position;
     }
 
-    @SuppressLint({"InflateParams", "ResourceType"})
+    @SuppressLint({"InflateParams", "ResourceType", "ViewHolder"})
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-
-        convertView = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
         final ViewHolder holder;
 
         convertView = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
 
         holder = new ViewHolder();
         holder.contactRoundedImageView = convertView.findViewById(R.id.contactRoundedImageView);
+        holder.gridAdapterFavoriteShine = convertView.findViewById(R.id.grid_adapter_favorite_shine);
         holder.gridContactItemLayout = convertView.findViewById(R.id.grid_contact_item_layout);
         holder.groupWordingConstraint = convertView.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
         holder.groupWordingTv = convertView.findViewById(R.id.grid_adapter_wording_group_tv);
 
-        //SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
-
-        //int len = sharedPreferences.getInt("convertView", 4);
         int height = holder.contactRoundedImageView.getLayoutParams().height;
         int width = holder.contactRoundedImageView.getLayoutParams().width;
 
@@ -125,6 +122,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         final ContactDB contact = this.gestionnaireContact.getContacts().get(position).getContactDB();
         if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContacts().get(position))) {
+            assert contact != null;
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
                 holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -132,7 +130,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
             }
         } else {
-           // listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
+            // listOfItemSelected.add(gestionnaireContact.getContacts().get(position));
             holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
         }
         if (len == 3) {
@@ -161,7 +159,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         convertView.setTag(holder);
 
-
         assert contact != null;
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
@@ -177,7 +174,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         GroupDB firstGroup = getItem(position).getFirstGroup(context);
         if (context instanceof GroupActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
-
         }
 
         if (firstGroup == null) {
@@ -305,6 +301,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonMail.setId(5);
 
         //buttonMessenger.setImageDrawable(iconMessenger);
+        if (contact.getFavorite() == 1) {
+            holder.gridAdapterFavoriteShine.setVisibility(View.VISIBLE);
+        } else {
+            holder.gridAdapterFavoriteShine.setVisibility(View.GONE);
+        }
 
         buttonCall.setImageResource(R.drawable.ic_google_call);
         buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp);
@@ -570,7 +571,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
     }
 
-
     private Bitmap base64ToBitmap(String base64) {
 
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
@@ -591,7 +591,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             floatingActionMenu.close(false);
             selectMenu = null;
         }
-
     }
 
     @Override
@@ -617,6 +616,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         TextView contactFirstNameView;
         TextView contactLastNameView;
         CircularImageView contactRoundedImageView;
+        AppCompatImageView gridAdapterFavoriteShine;
         ConstraintLayout gridContactItemLayout;
         ConstraintLayout groupWordingConstraint;
         TextView groupWordingTv;

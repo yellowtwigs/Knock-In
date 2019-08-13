@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/list_contact_item_contactFirstName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -33,10 +33,21 @@
             android:textColor="?attr/textColor"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/list_contact_item_menu_smaller"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/list_contact_item_favorite_shine"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/list_contact_item_menu_smaller"
+            app:layout_constraintStart_toEndOf="@+id/list_contact_item_contactFirstName"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428" />
+            app:srcCompat="@drawable/ic_star_shine" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/list_contact_item_menu_smaller"

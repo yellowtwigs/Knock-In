@@ -89,6 +89,11 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
     }
 
     private fun deleteFromGroup(listContact: List<ContactDB>, groupId: Int) {
+
+        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
+            removeFromFavorite()
+        }
+
         var message: String
         when {
             listContact.isEmpty() -> {
@@ -117,11 +122,33 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
                         listContact.forEach {
                             contactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it.id!!, groupId)
                         }
+                        var counter = 0
+
+                        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+//                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" || contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
+                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
+                                contactsDatabase?.GroupsDao()!!.deleteGroupById(contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
+                                break
+                            }
+//                            }
+                            counter++
+                        }
+
                         startActivity(Intent(this, GroupManagerActivity::class.java))
                     }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
-
         }
 
+    }
+
+    private fun removeFromFavorite() {
+        var counter = 0
+
+        while (counter < deleteContactFromGroupAdapter!!.allSelectContact.size) {
+            val contact = contactsDatabase?.contactsDao()?.getContact(deleteContactFromGroupAdapter!!.allSelectContact[counter].id!!)
+            contact!!.setIsNotFavorite(contactsDatabase)
+
+            counter++
+        }
     }
 
     private fun getContactInGroup(groupId: Int): List<ContactWithAllInformation> {

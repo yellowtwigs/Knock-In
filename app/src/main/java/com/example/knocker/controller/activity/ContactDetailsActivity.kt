@@ -4,10 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -18,12 +15,14 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Base64
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -68,15 +67,30 @@ class ContactDetailsActivity : AppCompatActivity() {
     private var contact_details_ContactName: TextView? = null
     private var contact_details_Mail: TextView? = null
 
-    private var contact_details_PhoneNumber: TextView? = null
-    private var contact_details_FixNumber: TextView? = null
-
     private var contact_details_PhoneCall: RelativeLayout? = null
     private var contact_details_SendSMS: RelativeLayout? = null
     private var contact_details_Whatsapp: RelativeLayout? = null
     private var contact_details_SendMail: RelativeLayout? = null
 
     private var contact_details_RecyclerGroup: RecyclerView? = null
+
+    private var contact_details_PhoneNumberLayout: RelativeLayout? = null
+    private var contact_details_PhoneNumber_text: TextView? = null
+
+    private var contact_details_FixNumberLayout: RelativeLayout? = null
+    private var contact_details_FixNumber_text: TextView? = null
+
+    private var contact_details_EmailLayout: RelativeLayout? = null
+    private var contact_details_Email_text: TextView? = null
+
+    private var contact_details_VocalCallWhatsappLayout: RelativeLayout? = null
+    private var contact_details_VocalCallWhatsapp_text: TextView? = null
+
+    private var contact_details_VideoCallWhatsappLayout: RelativeLayout? = null
+    private var contact_details_VideoCallWhatsapp_text: TextView? = null
+
+    private var contact_details_MessageWhatsappLayout: RelativeLayout? = null
+    private var contact_details_MessageWhatsapp_text: TextView? = null
 
     private var contact_details_Return: AppCompatImageView? = null
     private var contact_details_DeleteContact: AppCompatImageView? = null
@@ -153,15 +167,29 @@ class ContactDetailsActivity : AppCompatActivity() {
         contact_details_ContactName = findViewById(R.id.contact_details_contact_name)
         contact_details_RoundedImageView = findViewById(R.id.contact_details_rounded_image_view)
         contact_details_Mail = findViewById(R.id.edit_contact_mail_id)
-        contact_details_RecyclerGroup = findViewById(R.id.contact_details_recycler_group)
 
         contact_details_PhoneCall = findViewById(R.id.contact_details_phone_call_layout)
         contact_details_SendSMS = findViewById(R.id.contact_details_sms_layout)
         contact_details_Whatsapp = findViewById(R.id.contact_details_whatsapp_layout)
         contact_details_SendMail = findViewById(R.id.contact_details_mail_layout)
 
-//        contact_details_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
+//        contact_details_PhoneNumberLayout = findViewById(R.id.edit_contact_phone_number_id)
 //        contact_details_FixNumber = findViewById(R.id.edit_contact_phone_number_fix_id)
+
+        contact_details_PhoneNumberLayout = findViewById(R.id.contact_details_phone_number_layout)
+        contact_details_FixNumberLayout = findViewById(R.id.contact_details_phone_number_fix_layout)
+        contact_details_EmailLayout = findViewById(R.id.contact_details_mail_relative_layout)
+        contact_details_VocalCallWhatsappLayout = findViewById(R.id.contact_details_vocal_call_whatsapp_relative_layout)
+        contact_details_VideoCallWhatsappLayout = findViewById(R.id.contact_details_video_call_whatsapp_relative_layout)
+        contact_details_MessageWhatsappLayout = findViewById(R.id.contact_details_message_whatsapp_relative_layout)
+
+
+        contact_details_PhoneNumber_text = findViewById(R.id.contact_details_phone_number)
+        contact_details_FixNumber_text = findViewById(R.id.contact_details_phone_number_fix)
+        contact_details_Email_text = findViewById(R.id.contact_details_mail_relative_layout_mail)
+        contact_details_VideoCallWhatsapp_text = findViewById(R.id.contact_details_video_call_whatsapp_relative_layout_phone_number)
+        contact_details_VocalCallWhatsapp_text = findViewById(R.id.contact_details_vocal_call_whatsapp_relative_layout_phone_number)
+        contact_details_MessageWhatsapp_text = findViewById(R.id.contact_details_message_whatsapp_relative_layout_phone_number)
 
         //endregion
 
@@ -261,37 +289,50 @@ class ContactDetailsActivity : AppCompatActivity() {
         if (contact_details_phone_number != "") {
             contact_details_PhoneCall!!.visibility = View.VISIBLE
             contact_details_SendSMS!!.visibility = View.VISIBLE
+            contact_details_PhoneNumberLayout!!.visibility = View.VISIBLE
+
+            contact_details_PhoneNumber_text!!.text = contact_details_phone_number
+        }
+
+        if (contact_details_fix_number != "") {
+            contact_details_PhoneCall!!.visibility = View.VISIBLE
+            contact_details_FixNumberLayout!!.visibility = View.VISIBLE
+
+            contact_details_FixNumber_text!!.text = contact_details_fix_number
+        }
+
+
+//        if (contact_details_phone_number != "" && appIsInstalled()) {
+        if (contact_details_phone_number != "") {
+            contact_details_Whatsapp!!.visibility = View.VISIBLE
+            contact_details_VideoCallWhatsappLayout!!.visibility = View.VISIBLE
+            contact_details_VocalCallWhatsappLayout!!.visibility = View.VISIBLE
+            contact_details_MessageWhatsappLayout!!.visibility = View.VISIBLE
+
+            contact_details_VideoCallWhatsapp_text!!.text = "Appel vocal du " + converter06To33(contact_details_phone_number)
+            contact_details_VocalCallWhatsapp_text!!.text = "Appel vidéo du " + converter06To33(contact_details_phone_number)
+            contact_details_MessageWhatsapp_text!!.text = "Message au " + converter06To33(contact_details_phone_number)
         }
 
         if (contact_details_phone_number == "" && contact_details_fix_number != "") {
             contact_details_PhoneCall!!.visibility = View.VISIBLE
             contact_details_SendSMS!!.visibility = View.GONE
-        }
+            contact_details_PhoneNumberLayout!!.visibility = View.GONE
+            contact_details_FixNumberLayout!!.visibility = View.VISIBLE
+            contact_details_VideoCallWhatsappLayout!!.visibility = View.GONE
+            contact_details_VocalCallWhatsappLayout!!.visibility = View.GONE
+            contact_details_MessageWhatsappLayout!!.visibility = View.GONE
 
-        if (contact_details_phone_number != "" && appIsInstalled()) {
-            contact_details_Whatsapp!!.visibility = View.VISIBLE
+            contact_details_PhoneNumber_text!!.text = contact_details_phone_number
+            contact_details_fix_number
         }
 
         if (contact_details_mail != "") {
             contact_details_SendMail!!.visibility = View.VISIBLE
+            contact_details_EmailLayout!!.visibility = View.VISIBLE
+
+            contact_details_Email_text!!.text = contact_details_mail
         }
-
-        //endregion
-
-        //region ========================================= Groups ===========================================
-
-        val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        contact_details_RecyclerGroup!!.layoutManager = layoutMananger
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDbGroup = Callable { contact_details_ContactsDatabase!!.GroupsDao().getGroupForContact(contact_details_ContactId!!) }
-        val resultGroup = executorService.submit(callDbGroup)
-        val listGroup: ArrayList<GroupDB> = ArrayList()
-        listGroup.addAll(resultGroup.get())
-        val callDBContact = Callable { contact_details_ContactsDatabase!!.contactsDao().getContact(contact_details_ContactId!!) }
-        val resultContact = executorService.submit(callDBContact)
-
-        val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
-        contact_details_RecyclerGroup!!.adapter = adapter
 
         //endregion
 
@@ -340,6 +381,14 @@ class ContactDetailsActivity : AppCompatActivity() {
             ContactGesture.openWhatsapp(converter06To33(contact_details_phone_number), this)
         }
 
+        contact_details_MessageWhatsappLayout!!.setOnClickListener {
+            ContactGesture.openWhatsapp(converter06To33(contact_details_phone_number), this)
+        }
+
+        contact_details_VocalCallWhatsappLayout!!.setOnClickListener {
+            whatsappCall()
+        }
+
         contact_details_SendMail!!.setOnClickListener {
             val intentSendMailTo = Intent(Intent.ACTION_SENDTO)
             intentSendMailTo.data = Uri.parse("mailto:")
@@ -365,10 +414,6 @@ class ContactDetailsActivity : AppCompatActivity() {
                     startActivity(mainIntent)
                     finish()
                 }
-                .setNegativeButton("Cancel") { _, _ ->
-                }
-
-
     }
 
     private fun backOnPressed() {
@@ -400,7 +445,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.add(contact!!.contactDB)
+        listContact.add(contact.contactDB)
 
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
@@ -424,9 +469,19 @@ class ContactDetailsActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.remove(contact!!.contactDB)
+        listContact.remove(contact.contactDB)
 
         removeContactFromGroup(contact_details_ContactId!!, groupId)
+
+        counter = 0
+
+        while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
+                contact_details_ContactsDatabase?.GroupsDao()!!.deleteGroupById(contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
+                break
+            }
+            counter++
+        }
     }
 
     //endregion
@@ -450,7 +505,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeContactFromGroup(contactId:Int, groupId: Long?) {
+    private fun removeContactFromGroup(contactId: Int, groupId: Long?) {
         contact_details_ContactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(contactId, groupId!!.toInt())
 
     }
@@ -464,6 +519,35 @@ class ContactDetailsActivity : AppCompatActivity() {
             true
         } catch (e: Exception) {
             false
+        }
+    }
+
+    private fun whatsappCall() {
+        val resolver = contentResolver;
+        val cursor = resolver.query(
+                ContactsContract.Data.CONTENT_URI,
+                null, null, null,
+                ContactsContract.Contacts.DISPLAY_NAME);
+
+        //Now read data from cursor like
+
+        while (cursor.moveToNext()) {
+            val _id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Data._ID))
+            val displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME))
+            val mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE))
+
+            Log.d("Data", "$_id $displayName $mimeType")
+
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+
+            // the _ids you save goes here at the end of /data/12562
+            intent.setDataAndType(Uri.parse("content://com.android.contacts/data/_id"),
+                    "vnd.android.cursor.item/vnd.com.whatsapp.voip.call");
+            intent.setPackage("com.whatsapp")
+
+            startActivity(intent)
+
         }
     }
 

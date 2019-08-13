@@ -245,7 +245,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                R.id.nav_groups -> startActivity(Intent(this@MainActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
                 R.id.nav_messenger -> startActivity(Intent(this@MainActivity, MessengerActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
@@ -1028,16 +1027,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gridViewAdapter!!.closeMenu()
     }
 
+    @SuppressLint("SetTextI18n")
     fun longGridItemClick(position: Int) {
-        //main_GridView!!.setSelection(firstPosVis)
-        //gridViewAdapter!!.closeMenu()
-        // val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
-        // main_GridView!!.adapter = adapter
-        // adapter.itemSelected(position)
-        // adapter.notifyDataSetChanged()
         main_FloatingButtonAdd!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.VISIBLE
-        //firstClick = true
+
         if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
         } else {
@@ -1045,9 +1039,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         verifiedContactsChannel(listOfItemSelected)
-
-        //Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
-
 
         if (gridViewAdapter!!.listOfItemSelected.size == 0) {
             val pos = main_GridView!!.firstVisiblePosition
@@ -1065,6 +1056,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             firstClick = false
             main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
             main_ToolbarLayout!!.visibility = View.GONE
+        }
+
+        val i = listOfItemSelected.size
+
+        if (listOfItemSelected.size == 1) {
+            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
+        } else if (listOfItemSelected.size > 1) {
+            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
 
@@ -1198,8 +1197,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
     }
 
-    //endregion
-
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
         val editText = EditText(this)
         editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
@@ -1259,4 +1256,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_SMSButton!!.visibility = View.GONE
         main_groupButton!!.visibility = View.GONE
     }
+
+    //endregion
 }

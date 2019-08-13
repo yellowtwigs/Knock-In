@@ -121,7 +121,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         //endregion
 
-
         //region ========================================== Toolbar =========================================
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -141,8 +140,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
         val navItem = menu.findItem(R.id.nav_manage_screen)
         navItem.isChecked = true
 
-        navigationView!!.menu.getItem(4).isChecked = true
-
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
@@ -151,7 +148,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
                 }
-                R.id.nav_groups -> startActivity(Intent(this@ManageMyScreenActivity, GroupManagerActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@ManageMyScreenActivity, SettingsActivity::class.java))
@@ -170,8 +166,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
             true
         }
         //endregion
-
-
 
         if (manage_screen_dissociate!!) {
             manage_screen_dissociate_textView!!.visibility = View.VISIBLE

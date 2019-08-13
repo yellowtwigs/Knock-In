@@ -40,6 +40,7 @@
     <string name="left_drawer_home">Accueil-Contacts</string>
     <string name="left_drawer_my_groups">Gérer mes groupes</string>
     <string name="left_drawer_information">Mes informations</string>
+    <string name="left_drawer_chat">Messages</string>
     <string name="left_drawer_notif_config">Gérer mes notifications</string>
     <string name="left_drawer_settings">Paramètres</string>
     <string name="left_drawer_my_screen">Affichage</string>
@@ -73,8 +74,8 @@
     <string name="main_toast_multi_select_actived">Mode Multi-Select activé</string>
     <string name="main_toast_multi_select_deactived">Mode Multi-Select désactivé</string>
 
-    <string name="main_toast_multi_select_mode_selected">%1s sélectionné</string>
-    <string name="main_toast_multi_select_mode_selected_more_than_one">%1s sélectionnés</string>
+    <string name="main_toast_multi_select_mode_selected"> sélectionné</string>
+    <string name="main_toast_multi_select_mode_selected_more_than_one"> sélectionnés</string>
 
     <string name="main_alert_dialog_group_title">Création d\'un groupe</string>
     <string name="main_alert_dialog_group_subtitle">Donner un nom à votre groupe</string>

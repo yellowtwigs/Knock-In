@@ -138,8 +138,6 @@ class GroupManagerActivity : AppCompatActivity() {
         val navSyncContact = menu.findItem(R.id.nav_sync_contact)
         navSyncContact.isVisible = true
 
-        group_manager_NavigationView!!.menu.getItem(1).isChecked = true
-
         group_manager_NavigationView!!.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             group_manager_DrawerLayout!!.closeDrawers()
@@ -194,6 +192,7 @@ class GroupManagerActivity : AppCompatActivity() {
         //endregion
 
         //region ======================================== Adapter ===========================================
+
         gestionnaireContacts = ContactList(this)
         gestionnaireContacts!!.contacts= listContactGroup
         if (len >= 3) {
@@ -383,7 +382,6 @@ class GroupManagerActivity : AppCompatActivity() {
         val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adpaterItem)
         sectionAdapter.setSections(sections.toArray(sectionList))
         group_manager_RecyclerView!!.adapter = sectionAdapter
-
     }
 
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {

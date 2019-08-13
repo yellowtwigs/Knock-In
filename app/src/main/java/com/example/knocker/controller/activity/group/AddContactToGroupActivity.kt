@@ -88,11 +88,30 @@ class AddContactToGroupActivity : AppCompatActivity() {
     }
 
     private fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
+        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
+            addToFavorite()
+        }
+
         listContact.forEach {
             val link = LinkContactGroup(groupId, it.id!!)
             contactsDatabase!!.LinkContactGroupDao().insert(link)
         }
     }
+
+    //region ========================================== Favorites ===========================================
+
+    private fun addToFavorite() {
+        var counter = 0
+
+        while (counter < addContactToGroupAdapter!!.allSelectContact.size) {
+            val contact = contactsDatabase?.contactsDao()?.getContact(addContactToGroupAdapter!!.allSelectContact[counter].id!!)
+            contact!!.setIsFavorite(contactsDatabase)
+
+            counter++
+        }
+    }
+
+    //endregion
 
     private fun getContactNotInGroup(groupId: Int): List<ContactWithAllInformation> {
         val allInGroup = mutableListOf<ContactWithAllInformation>()

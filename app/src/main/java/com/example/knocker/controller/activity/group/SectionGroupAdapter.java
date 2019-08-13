@@ -191,11 +191,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             mDbWorkerThread.start();
                             contactsDatabase1 = ContactsRoomDatabase.Companion.getDatabase(mContext);
                             assert contactsDatabase1 != null;
-                            // System.out.println("id group" + mSections.get(position).getIdGroup().intValue() + " voici le groupe concerné" + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()));
                             alertDialog(mSections.get(position).getIdGroup().intValue(), contactsDatabase1);
-                            //contactsDatabase.GroupsDao().deleteGroupById(mSections.get(position).getIdGroup().intValue());
-                            /*if (mContext instanceof GroupManagerActivity)
-                                ((GroupManagerActivity) mContext).refreshList();*/
                             break;
                         default:
                             System.out.println("always in default");

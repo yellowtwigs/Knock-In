@@ -79,7 +79,6 @@ class MessengerActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@MessengerActivity, MessengerActivity::class.java))
-                R.id.nav_groups -> startActivity(Intent(this@MessengerActivity, GroupManagerActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MessengerActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@MessengerActivity, SettingsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@MessengerActivity, ManageMyScreenActivity::class.java))

@@ -40,6 +40,7 @@
     <string name="left_drawer_home">Home-Address Book</string>
     <string name="left_drawer_my_groups">Manage my groups</string>
     <string name="left_drawer_information">My personal data</string>
+    <string name="left_drawer_chat">Messaging</string>
     <string name="left_drawer_notif_config">Manage my notifications</string>
     <string name="left_drawer_settings">Settings</string>
     <string name="left_drawer_my_screen">Display options</string>
@@ -73,8 +74,8 @@
     <string name="main_toast_multi_select_actived">Enable Multi-Select mode</string>
     <string name="main_toast_multi_select_deactived">Diasable Multi-Select mode</string>
 
-    <string name="main_toast_multi_select_mode_selected">%1s selected</string>
-    <string name="main_toast_multi_select_mode_selected_more_than_one">%1s selected</string>
+    <string name="main_toast_multi_select_mode_selected"> selected</string>
+    <string name="main_toast_multi_select_mode_selected_more_than_one"> selected</string>
 
     <string name="main_alert_dialog_group_title">Group creation</string>
     <string name="main_alert_dialog_group_subtitle">Choose a name for your group</string>

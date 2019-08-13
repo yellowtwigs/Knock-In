@@ -152,6 +152,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="Appel"
+                        android:textColor="?attr/textColor"
                         android:textSize="18sp" />
                 </RelativeLayout>
 
@@ -181,6 +182,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="SMS"
+                        android:textColor="?attr/textColor"
                         android:textSize="18sp" />
                 </RelativeLayout>
 
@@ -208,6 +210,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="8dp"
                         android:text="Whatsapp"
+                        android:textColor="?attr/textColor"
                         android:textSize="18sp" />
                 </RelativeLayout>
 
@@ -237,6 +240,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="Mail"
+                        android:textColor="?attr/textColor"
                         android:textSize="18sp" />
                 </RelativeLayout>
 
@@ -267,17 +271,13 @@
                         android:layout_marginBottom="8dp"
                         android:maxLines="1"
                         android:text="Messenger"
+                        android:textColor="?attr/textColor"
                         android:textSize="18sp" />
                 </RelativeLayout>
 
             </LinearLayout>
 
         </HorizontalScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.05dp"
-            android:background="?attr/darkColor" />
 
         <RelativeLayout
             android:id="@+id/contact_details_phone_number_layout"
@@ -287,6 +287,7 @@
             android:background="@drawable/selector_relative_layout"
             android:clickable="true"
             android:focusable="true"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/contact_details_channels">
 
             <View
@@ -335,12 +336,16 @@
             android:id="@+id/contact_details_phone_number_fix_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@drawable/selector_relative_layout"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/contact_details_channels">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.05dp"
+                android:background="?attr/darkColor" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/contact_details_phone_number_fix_img"
@@ -370,22 +375,125 @@
                 android:textColor="?attr/textColor" />
         </RelativeLayout>
 
-        <View
+        <RelativeLayout
+            android:id="@+id/contact_details_vocal_call_whatsapp_relative_layout"
             android:layout_width="match_parent"
-            android:layout_height="0.05dp"
-            android:layout_marginTop="8dp"
-            android:background="?attr/darkColor"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_phone_number_layout" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_relative_layout"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/contact_details_phone_number_layout">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.05dp"
+                android:background="?attr/darkColor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/contact_details_vocal_call_whatsapp__relative_layout_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="12dp"
+                app:srcCompat="@drawable/ic_circular_whatsapp" />
+
+            <TextView
+                android:id="@+id/contact_details_vocal_call_whatsapp_relative_layout_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/contact_details_vocal_call_whatsapp__relative_layout_img"
+                android:text="Appel vocal du +33 6 58 46 82 58"
+                android:textColor="?attr/textColor"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contact_details_video_call_whatsapp_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_relative_layout"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/contact_details_phone_number_layout">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.05dp"
+                android:background="?attr/darkColor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/contact_details_video_call_whatsapp__relative_layout_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="12dp"
+                app:srcCompat="@drawable/ic_circular_whatsapp" />
+
+            <TextView
+                android:id="@+id/contact_details_video_call_whatsapp_relative_layout_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/contact_details_video_call_whatsapp__relative_layout_img"
+                android:text="Appel vidéo du +33 6 58 46 82 58"
+                android:textColor="?attr/textColor"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contact_details_message_whatsapp_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_relative_layout"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/contact_details_phone_number_layout">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.05dp"
+                android:background="?attr/darkColor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/contact_details_message_whatsapp__relative_layout_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="12dp"
+                app:srcCompat="@drawable/ic_circular_whatsapp" />
+
+            <TextView
+                android:id="@+id/contact_details_message_whatsapp_relative_layout_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/contact_details_message_whatsapp__relative_layout_img"
+                android:text="Message au +33 6 58 46 82 58"
+                android:textColor="?attr/textColor"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/contact_details_mail_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@drawable/selector_relative_layout"
             android:clickable="true"
             android:focusable="true"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/contact_details_phone_number_layout">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.05dp"
+                android:background="?attr/darkColor" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/contact_details_mail_relative_layout_img"
@@ -415,38 +523,6 @@
                 android:textColor="?attr/textColor" />
 
         </RelativeLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/contact_details_group_constraint_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_details_channels">
-
-            <TextView
-                android:id="@+id/contact_details_group_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Groups"
-                android:textColor="?attr/textColor"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/contact_details_recycler_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contact_details_group_tv" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 </ScrollView>
