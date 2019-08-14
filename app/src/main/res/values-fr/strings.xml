@@ -184,6 +184,7 @@
     </string-array>
     <string name="edit_contact_add_field">Ajouter un champ</string>
     <string name="edit_contact_delete_contact">Supprimer un contact</string>
+    <string name="edit_contact_delete_contact_message">Vous allez supprimer ce contact, êtes-vous sûr ?</string>
     <string name="edit_contact_validate">Valider</string>
     <string name="edit_contact_toast">Nom ou prénom requis</string>
     <string name="edit_contact_groups">Groupes</string>

@@ -46,6 +46,7 @@ import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_contact_details.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.concurrent.Callable
@@ -398,6 +399,23 @@ class ContactDetailsActivity : AppCompatActivity() {
             startActivity(intentSendMailTo)
         }
 
+        contact_details_PhoneNumberLayout!!.setOnClickListener {
+            phoneCall(contact_details_phone_number)
+        }
+
+        contact_details_FixNumberLayout!!.setOnClickListener {
+            phoneCall(contact_details_fix_number)
+        }
+
+        contact_details_EmailLayout!!.setOnClickListener {
+            val intentSendMailTo = Intent(Intent.ACTION_SENDTO)
+            intentSendMailTo.data = Uri.parse("mailto:")
+            intentSendMailTo.putExtra(Intent.EXTRA_EMAIL, arrayOf(contact_details_mail))
+            intentSendMailTo.putExtra(Intent.EXTRA_SUBJECT, "")
+            intentSendMailTo.putExtra(Intent.EXTRA_TEXT, "Envoyé depuis Knocker")
+            startActivity(intentSendMailTo)
+        }
+
         //endregion
     }
 
@@ -406,14 +424,14 @@ class ContactDetailsActivity : AppCompatActivity() {
     private fun deleteContact() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(getString(R.string.edit_contact_delete_contact))
-                .setMessage(getString(R.string.edit_contact_delete_contact))
-                .setPositiveButton("Supprimer") { _, _ ->
+                .setMessage(getString(R.string.edit_contact_delete_contact_message))
+                .setPositiveButton("Remove") { _, _ ->
                     contact_details_ContactsDatabase!!.contactsDao().deleteContactById(contact_details_ContactId!!)
                     val mainIntent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
                     mainIntent.putExtra("isDelete", true)
                     startActivity(mainIntent)
                     finish()
-                }
+                }.show()
     }
 
     private fun backOnPressed() {
