@@ -31,6 +31,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
                 android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 app:srcCompat="@drawable/ic_left_arrow" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -41,6 +43,8 @@
                 android:layout_marginEnd="20dp"
                 android:layout_toStartOf="@+id/contact_details_favorite"
                 android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 app:srcCompat="@drawable/ic_garbage" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -51,6 +55,8 @@
                 android:layout_marginEnd="20dp"
                 android:layout_toStartOf="@+id/contact_details_edit_contact"
                 android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 app:srcCompat="@drawable/ic_star_selector" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -61,6 +67,8 @@
                 android:layout_marginEnd="20dp"
                 android:layout_toStartOf="@+id/contact_details_edit_contact"
                 android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:visibility="gone"
                 app:srcCompat="@drawable/ic_star_selector_shine" />
 
@@ -72,6 +80,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="15dp"
                 android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 app:srcCompat="@drawable/ic_pencil_edit" />
 
             <!--<View-->
@@ -371,7 +381,7 @@
                 android:layout_below="@+id/contact_details_phone_number_fix"
                 android:layout_marginTop="4dp"
                 android:layout_toEndOf="@+id/contact_details_phone_number_fix_img"
-                android:text="Mobile"
+                android:text="Fix"
                 android:textColor="?attr/textColor" />
         </RelativeLayout>
 

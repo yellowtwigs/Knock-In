@@ -53,9 +53,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private var numberForPermission = ""
 
-    private var lastChanged:Long= 0
+    private var lastChanged: Long = 0
     private var lastChangedPosition = 0
-    private var newMessage:Boolean=false
+    private var newMessage: Boolean = false
     private val listOftext: MutableList<String> = mutableListOf()
 
     override fun getCount(): Int {
@@ -69,34 +69,34 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     override fun getItemId(position: Int): Long {
         return 0
     }
-    fun getlastChangePos():Int{
+
+    fun getlastChangePos(): Int {
         return lastChangedPosition
     }
-    fun getlastChangeMillis():Long{
+
+    fun getlastChangeMillis(): Long {
         return lastChanged
     }
-    @SuppressLint("SetTextI18n")
+
+    @SuppressLint("SetTextI18n", "ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         notification_adapter_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         notification_adapter_mDbWorkerThread.start()
 
+        val view = LayoutInflater.from(context).inflate(R.layout.item_notification_adapter, parent, false)
 
-        var view = LayoutInflater.from(context).inflate(R.layout.item_notification_adapter, parent, false)
-
-        if(listOftext.isEmpty()){
-            for(i in 1..notifications.size){
+        if (listOftext.isEmpty()) {
+            for (i in 1..notifications.size) {
                 listOftext.add("")
             }
-        }else if(listOftext.size!=notifications.size){
-            listOftext.add(0,"")
+        } else if (listOftext.size != notifications.size) {
+            listOftext.add(0, "")
         }
-
 
         val sbp = getItem(position)
 
         val gestionnaireContacts = ContactList(this.context)
         val contact = gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"].toString())
-
 
         val app = view!!.findViewById<View>(R.id.notification_adapter_platform) as TextView
         val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
@@ -115,23 +115,23 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
 
         editText.setText(listOftext.get(position))
-        System.out.println("text content"+listOftext.get(position)+" message"+sbp.statusBarNotificationInfo["android.text"])
-        if( newMessage && System.currentTimeMillis()- NotificationListener.adapterNotification!!.getlastChangeMillis()<=10000){
+        System.out.println("text content" + listOftext[position] + " message" + sbp.statusBarNotificationInfo["android.text"])
+        if (newMessage && System.currentTimeMillis() - NotificationListener.adapterNotification!!.getlastChangeMillis() <= 10000) {
             println("last text changed")
-            (parent as ListView).post{
+            (parent as ListView).post {
                 parent.requestFocusFromTouch();
-                parent .setSelection(lastChangedPosition+1);
-                parent .requestFocus();
+                parent.setSelection(lastChangedPosition + 1);
+                parent.requestFocus();
             }
-            editText.isFocusable=true
-            newMessage=false
-        }else if (newMessage && System.currentTimeMillis()- NotificationListener.adapterNotification!!.getlastChangeMillis()>10000 ){
-            (parent as ListView).post{
+            editText.isFocusable = true
+            newMessage = false
+        } else if (newMessage && System.currentTimeMillis() - NotificationListener.adapterNotification!!.getlastChangeMillis() > 10000) {
+            (parent as ListView).post {
                 parent.requestFocusFromTouch();
-                parent .setSelection(0);
-                parent .requestFocus();
+                parent.setSelection(0);
+                parent.requestFocus();
             }
-            newMessage=false
+            newMessage = false
         }
 
 
@@ -180,7 +180,11 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     closeNotificationPopup()
                 }
                 "Message" -> {
-                    openSms(contact!!.getFirstPhoneNumber(), "")
+                    if (contact != null) {
+                        openSms(contact.getFirstPhoneNumber(), "")
+                    } else {
+                        openSms(sbp.statusBarNotificationInfo["android.title"].toString(), "")
+                    }
                     closeNotificationPopup()
                 }
             }
@@ -193,7 +197,11 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     closeNotificationPopup()
                 }
                 "Message" -> {
-                    phoneCall(contact!!.getFirstPhoneNumber())
+                    if (contact != null) {
+                        phoneCall(contact.getFirstPhoneNumber())
+                    } else {
+                        phoneCall(sbp.statusBarNotificationInfo["android.title"].toString())
+                    }
                     closeNotificationPopup()
                 }
             }
@@ -250,7 +258,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             }
 
         }
-        editText.addTextChangedListener(object:TextWatcher{
+        editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -258,11 +266,11 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                lastChanged= System.currentTimeMillis()
-                lastChangedPosition=position
+                lastChanged = System.currentTimeMillis()
+                lastChangedPosition = position
                 listOftext.removeAt(position)
                 listOftext.add(position, editText.text.toString())
-                println("text change at"+lastChanged+" at position "+position )
+                println("text change at$lastChanged at position $position")
             }
 
         })
@@ -408,7 +416,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
     fun addNotification(sbp: StatusBarParcelable) {
         notifications.add(0, sbp)
-        newMessage=true
+        newMessage = true
         this.notifyDataSetChanged()
     }
 
