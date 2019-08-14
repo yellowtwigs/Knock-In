@@ -92,7 +92,10 @@
     <string name="main_tutorial_alert_dialog_message">Do you want to replay ?</string>
 
     <string name="main_delete_contact">You will delete %1s</string>
-    <!-- endregion -->
+
+   <string name="menu_main_toolbar_multiselect_all_select">All Select</string>
+
+   <!-- endregion -->
 
     <!--region Bottom Navigation View !-->
 
@@ -290,7 +293,7 @@
     <string name="list_contact_item_sms">Message</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
     <string name="list_contact_item_mail">Mail</string>
-    <string name="list_contact_item_edit">Update</string>
+    <string name="list_contact_item_edit">Details</string>
     <string name="list_contact_item_messenger">Messenger</string>
 
     <!-- endregion -->

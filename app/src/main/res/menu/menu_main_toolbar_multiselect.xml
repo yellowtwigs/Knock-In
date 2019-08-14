@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_main_toolbar_multiselect_all_select"
+        android:orderInCategory="100"
+        android:title="@string/menu_main_toolbar_multiselect_all_select"
+        android:visible="true" />
+    <!--<item-->
+        <!--android:id="@+id/menu_main_toolbar_multiselect_all_select"-->
+        <!--android:enabled="true"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/menu_group_delete_contacts"-->
+        <!--android:visible="true" />-->
+    <!--<item-->
+        <!--android:id="@+id/menu_main_toolbar_multiselect_all_select"-->
+        <!--android:enabled="true"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/menu_group_delete_group" />-->
+</menu>

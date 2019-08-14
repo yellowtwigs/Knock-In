@@ -92,6 +92,9 @@
     <string name="main_tutorial_alert_dialog_message">Voulez-vous rejouer le tutoriel ?</string>
 
     <string name="main_delete_contact">Vous allez supprimer %1s</string>
+
+    <string name="menu_main_toolbar_multiselect_all_select">Tout sélectionner</string>
+
     <!-- endregion -->
 
     <!--region Bottom Navigation View !-->
@@ -289,7 +292,7 @@
     <string name="list_contact_item_sms">Message</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
     <string name="list_contact_item_mail">Mail</string>
-    <string name="list_contact_item_edit">Modifier</string>
+    <string name="list_contact_item_edit">Détails</string>
     <string name="list_contact_item_messenger">Messenger</string>
 
     <!-- endregion -->
