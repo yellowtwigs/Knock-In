@@ -547,7 +547,6 @@ class ContactDetailsActivity : AppCompatActivity() {
             intent.setPackage("com.whatsapp")
 
             startActivity(intent)
-
         }
     }
 
@@ -556,7 +555,9 @@ class ContactDetailsActivity : AppCompatActivity() {
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() {
+        startActivity(Intent(this@ContactDetailsActivity, MainActivity::class.java))
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {

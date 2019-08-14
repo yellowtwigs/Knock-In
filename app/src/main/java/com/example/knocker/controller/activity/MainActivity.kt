@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var main_GridView: GridView? = null
     private var main_RecyclerView: RecyclerView? = null
-    private var main_RecyclerViewFavorite: RecyclerView? = null
 
     private var main_FloatingButtonAdd: FloatingActionButton? = null
     private var main_FloatingButtonSend: FloatingActionButton? = null
@@ -71,6 +70,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: EditText? = null
+
     private var main_ToolbarLayout: ConstraintLayout? = null
 
     private var main_ToolbarMultiSelectModeLayout: RelativeLayout? = null
@@ -392,6 +392,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             startActivity(intent)
             finish()
         }
+
         main_ToolbarMultiSelectModeClose!!.setOnClickListener {
             listOfItemSelected.clear()
             switchMultiSelectToNormalMode()
@@ -399,6 +400,31 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
         }
+
+        main_ToolbarMultiSelectModeClose!!.setOnClickListener {
+            listOfItemSelected.clear()
+            switchMultiSelectToNormalMode()
+            refreshActivity()
+
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+        }
+
+        main_ToolbarMultiSelectModeMenu!!.setOnClickListener {
+            val popupMenu = PopupMenu(this, it)
+            popupMenu.inflate(R.menu.menu_main_toolbar_multiselect)
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_main_toolbar_multiselect_all_select -> {
+
+                    }
+                }
+                false
+            }
+            popupMenu.show();
+
+        }
+
         main_ToolbarMultiSelectModeDelete!!.setOnClickListener {
             var supressWarning = " "
             if (listOfItemSelected.size > 1) {
@@ -412,7 +438,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 supressWarning += contact!!.firstName + " " + contact!!.lastName
             }
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle("supression_contact")
+                    .setTitle("Delete Contact")
                     .setMessage(String.format(resources.getString(R.string.main_delete_contact), supressWarning))
                     .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
                         System.out.println("size of list " + listOfItemSelected.size + "-----")
@@ -1163,9 +1189,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         if (listOfItemSelected.size == 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = getString(R.string.main_toast_multi_select_mode_selected)
+            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
         } else if (listOfItemSelected.size > 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
 
