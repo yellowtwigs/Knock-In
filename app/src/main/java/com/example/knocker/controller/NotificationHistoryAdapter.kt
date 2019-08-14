@@ -25,7 +25,6 @@ class NotificationHistoryAdapter(private val context: Context, private val notif
     private var notification_history_adapter_contenue: TextView? = null
     private var notification_history_adapter_Date: TextView? = null
     private var notification_history_adapter_App: AppCompatImageView? = null
-    private var listOfPhoneNumber = ArrayList<String>()
     private var notif_history_ContactsDatabase: ContactsRoomDatabase? = null
 
     override fun getItem(position: Int): NotificationDB {
@@ -38,10 +37,6 @@ class NotificationHistoryAdapter(private val context: Context, private val notif
 
     override fun getCount(): Int {
         return notifications.size
-    }
-
-    fun getListOfPhoneNumber(): ArrayList<String> {
-        return listOfPhoneNumber
     }
 
     @SuppressLint("SimpleDateFormat")

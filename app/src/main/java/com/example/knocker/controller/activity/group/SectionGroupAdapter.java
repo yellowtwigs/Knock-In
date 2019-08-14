@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements PopupMenu.OnMenuItemClickListener {
 
@@ -206,13 +207,13 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position));
             //System.out.println("contact "+((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(position)).getContactDB()+ " position "+position);
         }
-        ArrayList<Integer> list= new ArrayList<Integer>();
-        for (int i=0; i<getItemCount();i++) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        for (int i = 0; i < getItemCount(); i++) {
             if (isSectionHeaderPosition(i)) {
-                list.add(sectionedPositionToPosition(i+1));
+                list.add(sectionedPositionToPosition(i + 1));
             }
         }
-        ((GroupAdapter)mBaseAdapter).setSectionPos(list);
+        ((GroupAdapter) mBaseAdapter).setSectionPos(list);
     }
 
     @Override
@@ -273,14 +274,16 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         return position + offset;
     }
-    public int getPositionSection(int position){
-        for (int i=0; i>0;i--){
-            if(isSectionHeaderPosition(position)){
+
+    public int getPositionSection(int position) {
+        for (int i = 0; i > 0; i--) {
+            if (isSectionHeaderPosition(position)) {
                 return position;
             }
         }
         return 0;
     }
+
     private int sectionedPositionToPosition(int sectionedPosition) {
         if (isSectionHeaderPosition(sectionedPosition)) {
             return RecyclerView.NO_POSITION;
@@ -338,6 +341,22 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .setTitle(R.string.section_alert_delete_group_title)
                 .setMessage(String.format(contactsDatabase.GroupsDao().getGroup(idGroup).getName(), R.string.section_alert_delete_group_message))
                 .setPositiveButton(android.R.string.yes, (dialog, id) -> {
+
+                            int counter = 0;
+
+                            while (counter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ().size()) {
+                                if (Objects.requireNonNull(contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getGroupDB()).getName().equals("Favorites")) {
+                                    int secondCounter = 0;
+                                    while (secondCounter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getListContact(mContext).size()) {
+                                        contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getListContact(mContext).get(secondCounter).setIsNotFavorite(contactsDatabase);
+
+                                        secondCounter++;
+                                    }
+                                    break;
+                                }
+                                counter++;
+                            }
+
                             contactsDatabase.GroupsDao().deleteGroupById(idGroup);
                             if (mContext instanceof GroupManagerActivity)
                                 ((GroupManagerActivity) mContext).refreshList();

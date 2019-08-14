@@ -77,7 +77,7 @@ class SettingsActivity : AppCompatActivity() {
         settings_PermissionsPhoneChecked = findViewById(R.id.settings_permissions_phone_check)
         val phoneCallAlertTv = findViewById<TextView>(R.id.settings_permissions_phone_subtitle)
 
-        phoneCallAlertTv.setText(String.format(getString(R.string.start_activity_permission_subtitle),getString(R.string.app_name)))
+        phoneCallAlertTv.text = String.format(getString(R.string.start_activity_permission_subtitle),getString(R.string.app_name))
 
         //endregion
 
@@ -100,6 +100,8 @@ class SettingsActivity : AppCompatActivity() {
         val menu = navigationView.menu
         val navItem = menu.findItem(R.id.nav_manage_screen)
         navItem.isChecked = true
+
+        navigationView!!.menu.getItem(3).isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -154,20 +156,6 @@ class SettingsActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-
-//        settings_SearchBarPosSwitch!!.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-//                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-//                edit.putBoolean("searchbarPos", true)
-//                edit.apply()
-//            } else {
-//                val sharedThemePreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-//                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-//                edit.putBoolean("searchbarPos", false)
-//                edit.apply()
-//            }
-//        }
 
         settings_PermissionsPhoneMaterialButton!!.setOnClickListener {
             val arraylistPermission = ArrayList<String>()

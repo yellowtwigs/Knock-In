@@ -61,7 +61,6 @@ class GroupManagerActivity : AppCompatActivity() {
 
     private var group_GridView: RecyclerView?=null
     private var adpaterItem: GroupAdapter?=null
-    //endregion
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -80,6 +79,8 @@ class GroupManagerActivity : AppCompatActivity() {
         }
         false
     }
+
+    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -125,6 +126,7 @@ class GroupManagerActivity : AppCompatActivity() {
         group_GridView = findViewById(R.id.group_manager_recycler_view)
 
         group_BottomNavigationView = findViewById(R.id.navigation)
+
         //endregion
 
         //region ======================================= Navigation =========================================
