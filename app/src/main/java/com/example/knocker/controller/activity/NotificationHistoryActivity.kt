@@ -178,11 +178,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 "com.facebook.orca" -> openMessenger("", this)
 
                 "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
-                    println("into messaging")
                     if (contact != null) {
                         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact.getFirstPhoneNumber(), null))
                         startActivity(intent)
                     } else {
+                        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", notification_history_ListOfNotificationDB[position].contactName, null))
+                        startActivity(intent)
                     }
                     val sendIntent = Intent(Intent.ACTION_VIEW)
                     sendIntent.data = Uri.parse("sms:")
@@ -206,9 +207,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 updateFilter()
             }
-        }
+        })
 
-        )
         //endregion
     }
 

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/backgroundColor">
+    android:background="@drawable/selector_relative_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,30 +15,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/history_adapter_imageView"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.51"
             tools:srcCompat="@tools:sample/avatars[0]" />
 
         <TextView
             android:id="@+id/history_adapter_expediteur"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:text="TextView"
+            android:text="text"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAlignment="viewStart"
             android:textColor="?attr/textColor"
-            app:layout_constraintEnd_toStartOf="@+id/history_adapter_time"
             app:layout_constraintStart_toEndOf="@+id/history_adapter_imageView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +47,6 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="6dp"
             android:layout_marginBottom="2dp"
             android:text="TextView"
             android:ellipsize="end"
@@ -55,8 +54,7 @@
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/history_adapter_imageView"
-            app:layout_constraintTop_toBottomOf="@+id/history_adapter_expediteur"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/history_adapter_expediteur" />
 
         <TextView
             android:id="@+id/history_adapter_time"

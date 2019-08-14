@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import com.example.knocker.model.ModelDB.NotificationDB
 import com.example.knocker.R
+import com.example.knocker.model.ContactsRoomDatabase
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * La Classe qui permet de remplir l'historique des notifications
@@ -21,8 +24,9 @@ class NotificationHistoryAdapter(private val context: Context, private val notif
     private var notification_history_adapter_expediteur: TextView? = null
     private var notification_history_adapter_contenue: TextView? = null
     private var notification_history_adapter_Date: TextView? = null
-    private var notification_history_adapter_App: ImageView? = null
-
+    private var notification_history_adapter_App: AppCompatImageView? = null
+    private var listOfPhoneNumber = ArrayList<String>()
+    private var notif_history_ContactsDatabase: ContactsRoomDatabase? = null
 
     override fun getItem(position: Int): NotificationDB {
         return notifications[position]
@@ -36,8 +40,14 @@ class NotificationHistoryAdapter(private val context: Context, private val notif
         return notifications.size
     }
 
+    fun getListOfPhoneNumber(): ArrayList<String> {
+        return listOfPhoneNumber
+    }
+
     @SuppressLint("SimpleDateFormat")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        notif_history_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
+
         var view = convertView
 
         val notif = getItem(position)
@@ -61,5 +71,4 @@ class NotificationHistoryAdapter(private val context: Context, private val notif
 
         return view
     }
-
 }
