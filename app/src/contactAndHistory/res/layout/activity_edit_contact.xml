@@ -361,6 +361,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:background="?attr/spinnerColor"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/edit_contact_priority_explain"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/edit_contact_priority_explain">
@@ -373,8 +374,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="gone" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -390,7 +390,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edit_contact_priority_layout"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout"
-            tools:visibility="gone" />
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/edit_contact_add_field_button"
