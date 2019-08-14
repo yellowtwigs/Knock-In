@@ -295,7 +295,7 @@
     <string name="list_contact_item_sms">Message</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
     <string name="list_contact_item_mail">Mail</string>
-    <string name="list_contact_item_edit">Details</string>
+    <string name="list_contact_item_edit">Edition</string>
     <string name="list_contact_item_messenger">Messenger</string>
 
     <!-- endregion -->

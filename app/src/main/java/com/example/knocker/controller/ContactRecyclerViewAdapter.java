@@ -244,7 +244,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
             if (len == 1) {
                 if (v.getId() == holder.editCl.getId()) {
-                    Intent intent = new Intent(context, ContactDetailsActivity.class);
+                    Intent intent = new Intent(context, EditContactActivity.class);
                     intent.putExtra("ContactId", contact.getId());
                     context.startActivity(intent);
                 }
@@ -304,7 +304,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     lastClick = false;
                 } else {
                     if (len == 0) {
-                        Intent intent = new Intent(context, ContactDetailsActivity.class);
+                        Intent intent = new Intent(context, EditContactActivity.class);
                         intent.putExtra("ContactId", contact.getId());
                         context.startActivity(intent);
                     } else if (len == 1) {

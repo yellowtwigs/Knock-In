@@ -271,7 +271,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/list_contact_item_edit_tv"
                     app:layout_constraintStart_toStartOf="@+id/list_contact_item_edit_tv"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_circular_details" />
+                    app:srcCompat="@drawable/ic_circular_edit" />
 
                 <TextView
                     android:id="@+id/list_contact_item_edit_tv"
