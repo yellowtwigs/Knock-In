@@ -25,6 +25,7 @@
             android:background="?attr/backgroundColor"
             android:hint="@string/add_new_group_hint_group_name"
             android:inputType="textPersonName"
+            android:textColorHint="?attr/textColor"
             android:textColor="?attr/textColor"
             android:textSize="20sp" />
 

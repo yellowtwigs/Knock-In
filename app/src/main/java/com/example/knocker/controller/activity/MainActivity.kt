@@ -431,11 +431,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 supressWarning = " :"
                 for (contact in listOfItemSelected) {
                     val contactDb = contact.contactDB
-                    supressWarning += "\n-" + contactDb!!.firstName + " " + contactDb!!.lastName
+                    supressWarning += "\n-" + contactDb!!.firstName + " " + contactDb.lastName
                 }
             } else {
                 val contact = listOfItemSelected.get(0).contactDB
-                supressWarning += contact!!.firstName + " " + contact!!.lastName
+                supressWarning += contact!!.firstName + " " + contact.lastName
             }
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle("Delete Contact")
