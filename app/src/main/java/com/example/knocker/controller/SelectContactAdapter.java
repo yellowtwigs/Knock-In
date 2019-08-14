@@ -122,9 +122,9 @@ public class SelectContactAdapter extends BaseAdapter {
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
         String group = "";
-        ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-        main_mDbWorkerThread.start();
+        //ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+        //DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+        //main_mDbWorkerThread.start();
         GroupDB firstGroup = getItem(position).getFirstGroup(context);
         if (context instanceof GroupActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);

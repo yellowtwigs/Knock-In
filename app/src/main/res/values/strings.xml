@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
  <!--   <string name="app_name">Knocker</string>-->
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contacts@yellowtwigs.com</string>
@@ -303,7 +304,7 @@
     <string name="import_contacts_title">Import Android contacts</string>
     <string name="import_contacts_long_text"> Import your Android phone contacts in Knocker. You will be able to easily communicate with them and and change their priotity</string>
     <string name="import_contacts_button_yes">Import</string>
-    <string name="import_contacts_button_no">Do not import</string>
+    <string name="import_contacts_button_no">Skip</string>
     <string name="import_contacts_toast">Contacts imported</string>
     <string name="import_contacts_alert_dialog">You will be able to import your contacts later from the navigation menu via the "Import your contacts" tab</string>
 
@@ -311,7 +312,7 @@
 
     <!-- region First Launch -->
 
-    <string name="first_launch_welcome">Welcome to Knocker</string>
+    <string name="first_launch_welcome">Welcome to %s</string>
     <string name="first_launch_welcome_long_text"> Enjoy a new way to manage your contacts and to communicate with them</string>
     <string name="first_launch_welcome_accept">Accept and continue</string>
     <string name="first_launch_confidentiality"> Please read our Terms and Conditions from our site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a> To accept them, please click on "Accept and continue"</string>
@@ -455,7 +456,7 @@
     <string name="start_activity_superposition_subtitle">Allow this app to display over other apps you\'re using</string>
     <string name="start_activity_button_superposition">Allow</string>
     <string name="start_activity_permission_title">Permissions</string>
-    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from Knocker</string>
+    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from %s</string>
     <string name="start_activity_button_permission">Allow</string>
     <string name="start_activity_skip">Skip</string>
     <string name="start_activity_next">Next</string>

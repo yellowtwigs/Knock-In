@@ -25,7 +25,8 @@
         <item
             android:id="@+id/nav_notif_config"
             android:icon="@drawable/ic_notification"
-            android:title="@string/left_drawer_notif_config"/>
+            android:title="@string/left_drawer_notif_config"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_manage_screen"
             android:icon="@drawable/ic_grid"
@@ -49,7 +50,7 @@
             android:id="@+id/nav_knockons"
             android:enabled="false"
             android:visible="false"
-            android:icon="@drawable/ic_letter_k"
+            android:icon="@drawable/ic_app_image"
             android:title="@string/left_drawer_knockons" />
         <item
             android:id="@+id/nav_statistics"

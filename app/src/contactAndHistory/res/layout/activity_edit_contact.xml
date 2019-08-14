@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_contact_parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".controller.activity.EditContactActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:backgroundTint="?attr/backgroundColor"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:itemTextColor="?attr/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="?attr/textColor" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.05dp"
+            android:background="?attr/darkGreyColor"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <com.example.knocker.controller.CircularImageView
+            android:id="@+id/edit_contact_rounded_image_view_id"
+            android:layout_width="@dimen/rounded_image_view_height_width"
+            android:layout_height="@dimen/rounded_image_view_height_width"
+            android:layout_marginTop="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/img_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <RelativeLayout
+            android:id="@+id/edit_contact_first_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_rounded_image_view_id">
+
+            <RelativeLayout
+                android:id="@+id/edit_contact_first_name_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparentColor">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_avatar" />
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_contact_first_name_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_toEndOf="@+id/edit_contact_first_name_icon"
+                android:hint="@string/edit_contact_first_name"
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_edit_text"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/edit_contact_last_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_first_name_layout">
+
+            <RelativeLayout
+                android:id="@+id/edit_contact_last_name_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparentColor">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_avatar" />
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_contact_last_name_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_toEndOf="@+id/edit_contact_last_name_icon"
+                android:backgroundTint="?attr/backgroundColor"
+                android:hint="@string/edit_contact_last_name"
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_edit_text"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/edit_contact_phone_number_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_last_name_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_contact_phone_number_spinner_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
+                android:visibility="gone">
+
+                <Spinner
+                    android:id="@+id/edit_contact_phone_number_spinner"
+                    android:layout_width="@dimen/spinner_width"
+                    android:layout_height="@dimen/spinner_height"
+                    android:layout_centerVertical="true"
+                    android:entries="@array/edit_contact_phone_number_arrays"
+                    android:prompt="@string/edit_contact_phone_number_mobile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/edit_contact_phone_number_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparentColor">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_phone_call" />
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_contact_phone_number_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/edit_contact_phone_number_icon"
+                android:backgroundTint="?attr/backgroundColor"
+                android:hint="@string/edit_contact_phone_number"
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/custom_edit_text"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/edit_contact_phone_number_fix_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_contact_phone_number_fix_spinner_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
+                android:visibility="gone">
+
+                <Spinner
+                    android:id="@+id/edit_contact_phone_number_spinner_fix"
+                    android:layout_width="@dimen/spinner_width"
+                    android:layout_height="@dimen/spinner_height"
+                    android:layout_centerVertical="true"
+                    android:entries="@array/edit_contact_phone_number_arrays"
+                    android:textColor="?attr/textColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/edit_contact_phone_number_fix_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparentColor">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_phone_call" />
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_contact_phone_number_fix_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/edit_contact_phone_number_fix_icon"
+                android:backgroundTint="?attr/backgroundColor"
+                android:hint="@string/edit_contact_phone_number"
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor"
+                app:layout_constraintStart_toEndOf="@+id/edit_contact_phone_number_fix_spinner_view">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/custom_edit_text"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/edit_contact_phone_mail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_number_fix_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_contact_mail_spinner_id_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
+                android:visibility="gone">
+
+                <Spinner
+                    android:id="@+id/edit_contact_mail_spinner_id"
+                    android:layout_width="@dimen/spinner_width"
+                    android:layout_height="@dimen/spinner_height"
+                    android:layout_centerVertical="true"
+                    android:entries="@array/edit_contact_mail_arrays"
+                    android:prompt="@string/edit_contact_mail_mobile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/edit_contact_mail_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparentColor">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_email" />
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_contact_mail_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/edit_contact_mail_icon"
+                android:backgroundTint="?attr/backgroundColor"
+                android:hint="@string/edit_contact_mail"
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/custom_edit_text"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/edit_contact_field_added"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/backgroundColor"
+            android:divider="@null"
+            android:textColor="?attr/textColor"
+            android:textColorHint="?attr/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_contact_priority_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="?attr/spinnerColor"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_contact_priority_explain"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/edit_contact_priority_explain">
+
+            <Spinner
+                android:id="@+id/edit_contact_priority"
+                android:layout_width="@dimen/spinner_width"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/edit_contact_priority_explain"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="?attr/backgroundColor"
+            android:textColor="?attr/textColor"
+            android:textColorHint="?attr/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/edit_contact_priority_layout"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout"
+            tools:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/edit_contact_add_field_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/backgroundColor"
+            android:text="@string/edit_contact_add_field"
+            android:textColor="?attr/textColor"
+            android:textColorHint="?attr/textColor"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_contact_group_constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain">
+
+            <TextView
+                android:id="@+id/edit_contact_group_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/edit_contact_groups"
+                android:textColor="?attr/textColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/edit_contact_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_contact_group_tv" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

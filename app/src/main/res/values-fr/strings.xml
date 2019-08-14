@@ -302,7 +302,7 @@
     <string name="import_contacts_title">Importation des contacts Android</string>
     <string name="import_contacts_long_text">Importer les contacts de votre téléphone et récupérer leurs informations dans Knocker. Vous pourrez alors leur affecter des priorités et communiquer beaucoup plus facilement et efficacement avec eux </string>
     <string name="import_contacts_button_yes">Importer</string>
-    <string name="import_contacts_button_no">Ne pas importer</string>
+    <string name="import_contacts_button_no">Passer</string>
     <string name="import_contacts_toast">Contacts importés</string>
     <string name="import_contacts_alert_dialog">Vous pourrez toujours importer vos contacts dans le menu de gauche avec l\'onglet "Importer vos contacts"</string>
 
@@ -310,7 +310,7 @@
 
     <!-- region First Launch -->
 
-    <string name="first_launch_welcome">Bienvenue dans Knocker</string>
+    <string name="first_launch_welcome">Bienvenue dans %s</string>
     <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquer avec eux</string>
     <string name="first_launch_welcome_accept">Accepter et continuer</string>
     <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a> Pour les accepter, cliquez sur le bouton ci-dessous</string>
@@ -451,7 +451,7 @@
     <string name="start_activity_superposition_subtitle">Autoriser cette application à se superposer aux autres applications</string>
     <string name="start_activity_button_superposition">Autoriser</string>
     <string name="start_activity_permission_title">Autorisations</string>
-    <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des sms depuis Knocker</string>
+    <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des sms depuis %s</string>
     <string name="start_activity_button_permission">Autoriser</string>
     <string name="start_activity_skip">Passer</string>
     <string name="start_activity_next">Suivant</string>

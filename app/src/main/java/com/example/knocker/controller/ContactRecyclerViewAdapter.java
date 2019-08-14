@@ -134,7 +134,15 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         if (len == 0) {
             if (contact.getContactPriority() == 0) {
                 holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
-            } else if (contact.getContactPriority() == 2) {
+            }else if(contact.getContactPriority() == 1) {
+                SharedPreferences sharedPreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+                if (sharedPreferences.getBoolean("darkTheme", false)) {
+                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight));
+                } else {
+                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorDark));
+                }
+
+            }else if (contact.getContactPriority() == 2) {
                 holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
             }
         } else {

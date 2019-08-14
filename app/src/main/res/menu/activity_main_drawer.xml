@@ -45,7 +45,7 @@
             android:id="@+id/nav_knockons"
             android:enabled="false"
             android:visible="false"
-            android:icon="@drawable/ic_letter_k"
+            android:icon="@drawable/ic_app_image"
             android:title="@string/left_drawer_knockons" />
         <item
             android:id="@+id/nav_statistics"

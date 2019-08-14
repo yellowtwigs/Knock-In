@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -74,6 +75,9 @@ class SettingsActivity : AppCompatActivity() {
         settings_PermissionsPhoneMaterialButton = findViewById(R.id.settings_permissions_phone_button)
         settings_PermissionsPhoneLoading = findViewById(R.id.settings_permissions_phone_loading)
         settings_PermissionsPhoneChecked = findViewById(R.id.settings_permissions_phone_check)
+        val phoneCallAlertTv = findViewById<TextView>(R.id.settings_permissions_phone_subtitle)
+
+        phoneCallAlertTv.setText(String.format(getString(R.string.start_activity_permission_subtitle),getString(R.string.app_name)))
 
         //endregion
 

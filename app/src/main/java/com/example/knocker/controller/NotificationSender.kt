@@ -65,7 +65,7 @@ class NotificationSender : BroadcastReceiver() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
                 val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_letter_k)
+                        .setSmallIcon(R.drawable.ic_app_image)
                         .setContentTitle(context.getString(R.string.notification_sender_content_title))
                         .setContentText(String.format(context.getString(R.string.notification_sender_content_text), nbOfnotif))
                         .setStyle(
