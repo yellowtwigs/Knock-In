@@ -54,7 +54,7 @@
 
     <!-- region Main Activity !-->
 
-    <string name="main_filter_sms">SMS</string>
+    <string name="main_filter_sms">Num téléphone</string>
     <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Rechercher</string>
     <string name="main_change_format_phone_book">Aide</string>

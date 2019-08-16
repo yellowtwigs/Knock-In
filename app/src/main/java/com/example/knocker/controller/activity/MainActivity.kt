@@ -1,50 +1,59 @@
 package com.example.knocker.controller.activity
 
 import android.Manifest
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.core.app.ActivityCompat
-import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.DisplayMetrics
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.knocker.*
-import com.example.knocker.controller.*
 import com.example.knocker.FirstLaunchActivity
-import com.example.knocker.model.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
+import com.example.knocker.R
+import com.example.knocker.controller.ContactGridViewAdapter
+import com.example.knocker.controller.ContactRecyclerViewAdapter
+import com.example.knocker.controller.NotificationListener
+import com.example.knocker.controller.activity.group.GroupManagerActivity
+import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactsRoomDatabase
+import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import com.example.knocker.controller.activity.group.GroupManagerActivity
-import kotlin.collections.ArrayList
 
 /**
  * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
@@ -70,9 +79,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
-    private var main_SearchBar: EditText? = null
+    private var main_SearchBar: AppCompatEditText? = null
 
-    private var main_ToolbarLayout: ConstraintLayout? = null
+    private var main_ToolbarLayout: RelativeLayout? = null
+    private var main_toolbar_Help: AppCompatImageView? = null
 
     private var main_ToolbarMultiSelectModeLayout: RelativeLayout? = null
     private var main_ToolbarMultiSelectModeClose: AppCompatImageView? = null
@@ -174,7 +184,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         val intent = intent
-        val fromStartActivity = intent.getBooleanExtra("fromStartActivity", false)
+        var fromStartActivity = intent.getBooleanExtra("fromStartActivity", false)
 
         if (fromStartActivity) {
             var counter = 0
@@ -191,6 +201,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
                 counter++
             }
+
+            manageBlinkEffet(fromStartActivity)
+            fromStartActivity = false
         }
 
         //endregion
@@ -205,7 +218,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        main_SearchBar = findViewById(R.id.main_search_bar)
+        main_SearchBar = findViewById(R.id.main_toolbar_search)
         main_layout = findViewById(R.id.content_frame)
         main_loadingPanel = findViewById(R.id.loadingPanel)
 
@@ -225,14 +238,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ========================================== Toolbar =========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
+        main_ToolbarLayout = findViewById(R.id.main_toolbar_layout)
+        val main_toolbar_OpenDrawer = findViewById<AppCompatImageView>(R.id.main_toolbar_open_drawer)
+        main_toolbar_Help = findViewById(R.id.main_toolbar_help)
+
+        val main_toolbar_Menu = findViewById<Toolbar>(R.id.main_toolbar_menu)
+        setSupportActionBar(main_toolbar_Menu)
+        main_toolbar_Menu.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+        actionbar!!.setDisplayHomeAsUpEnabled(false)
         actionbar.title = ""
-        actionbar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
 
         //endregion
 
@@ -376,9 +391,24 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================== Listeners =========================================
 
+        main_toolbar_OpenDrawer.setOnClickListener {
+            drawerLayout!!.openDrawer(GravityCompat.START)
+            hideKeyboard()
+        }
+
+        main_toolbar_Help!!.setOnClickListener {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(R.string.help)
+                    .setMessage(this.resources.getString(R.string.help_main))
+                    .setBackground(getDrawable(R.color.backgroundColor))
+                    .show()
+
+            manageBlinkEffet(false)
+        }
+
         main_FloatingButtonSend!!.setOnClickListener {
-            val intent = Intent(this@MainActivity, MultiChannelActivity::class.java)
-            intent.putExtra("fromMainToMultiChannel", true)
+            val intentToMultiChannelActivity = Intent(this@MainActivity, MultiChannelActivity::class.java)
+            intentToMultiChannelActivity.putExtra("fromMainToMultiChannel", true)
             val iterator: IntIterator?
             val listOfIdContactSelected: ArrayList<Int> = ArrayList()
 
@@ -387,10 +417,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             for (i in iterator) {
                 listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
             }
-            intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+            intentToMultiChannelActivity.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
 
             refreshActivity()
-            startActivity(intent)
+            startActivity(intentToMultiChannelActivity)
             finish()
         }
 
@@ -417,7 +447,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_main_toolbar_multiselect_all_select -> {
-
                     }
                 }
                 false
@@ -461,6 +490,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Sync contact
         navSyncContact.setOnMenuItemClickListener {
+            fromStartActivity = true
+
             drawerLayout!!.closeDrawers()
             main_GridView!!.visibility = View.GONE
             main_RecyclerView!!.visibility = View.GONE
@@ -589,7 +620,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                            count: Int, after: Int) {
             }
 
-            //fonction appellé à chaque charactère tapé
+            //fonction appelée à chaque charactère tapé
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
                 //ferme circular
                 gridViewAdapter!!.closeMenu()
@@ -705,6 +736,28 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     //region ========================================== Functions ===========================================
 
+    private fun manageBlinkEffet(fromStartActivity: Boolean) {
+        val anim = ObjectAnimator.ofInt(main_toolbar_Help, "backgroundColor", Color.WHITE, Color.BLUE,
+                Color.YELLOW)
+        anim.duration = 800
+        anim.setEvaluator(ArgbEvaluator())
+        anim.repeatMode = Animation.RESTART
+        anim.repeatCount = Animation.INFINITE
+        anim.start()
+
+        if (!fromStartActivity) {
+            anim.end()
+
+            val animEnd = ObjectAnimator.ofInt(main_toolbar_Help, "backgroundColor", Color.WHITE)
+            animEnd.duration = 800
+            animEnd.setEvaluator(ArgbEvaluator())
+            animEnd.repeatMode = Animation.RESTART
+            animEnd.repeatCount = Animation.INFINITE
+            animEnd.start()
+            animEnd.end()
+        }
+    }
+
     private fun refreshActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
@@ -755,20 +808,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         gridViewAdapter!!.closeMenu()
         when (item.itemId) {
-            android.R.id.home -> {
-                drawerLayout!!.openDrawer(GravityCompat.START)
-                hideKeyboard()
-                return true
-            }
-            R.id.item_help -> {
-                //click sur le bouton help
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(R.string.help)
-                        .setMessage(this.resources.getString(R.string.help_main))
-                        .setBackground(getDrawable(R.color.backgroundColor))
-                        .show()
-                return true
-            }
             R.id.sms_filter -> {
                 //clique sur la checkbox filtre SMS
                 //on regarde si la checkbox est coché oui ou non
@@ -1173,7 +1212,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
             main_ToolbarLayout!!.visibility = View.GONE
 
-
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
@@ -1259,7 +1297,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                     println("name group$nameGroup")
                     val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                    var callDb = Callable {
+                    val callDb = Callable {
                         if (listContacts.size != 0) {
                             val group = GroupDB(null, nameGroup, "")
                             val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)

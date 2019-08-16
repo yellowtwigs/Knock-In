@@ -26,10 +26,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/main_toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="10dp"
@@ -37,31 +37,54 @@
                 android:elevation="10dp">
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/main_toolbar"
+                    android:id="@+id/main_toolbar_menu"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:visibility="visible"
                     android:alpha="0.70"
-                    android:background="@color/transparentColor"
-                    android:backgroundTint="?attr/transparentColor"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:backgroundTint="?attr/backgroundColor" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/main_toolbar_open_drawer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/ic_open_drawer" />
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/main_search_bar"
-                    android:layout_width="185dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="12dp"
+                    android:id="@+id/main_toolbar_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/main_toolbar_help"
+                    android:layout_toEndOf="@+id/main_toolbar_open_drawer"
                     android:background="?attr/backgroundColor"
                     android:hint="@string/main_search_hint"
                     android:inputType="textPersonName"
                     android:textColor="?attr/textColor"
-                    android:textColorHint="?attr/textColor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:textColorHint="?attr/textColor" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/main_toolbar_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="?attr/actionBarItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/ic_help" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/main_toolbar_multi_select_mode_layout"
@@ -88,7 +111,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="35dp"
                     android:layout_toEndOf="@+id/main_toolbar_multi_select_mode_close"
-                    android:text="1 sélectionné"
                     android:textColor="?attr/textColor"
                     android:textSize="21sp" />
 
@@ -136,18 +158,6 @@
                 android:numColumns="auto_fit"
                 android:visibility="gone" />
 
-            <GridView
-                android:id="@+id/main_grid_view_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="?attr/backgroundColor"
-                android:columnWidth="120dp"
-                android:gravity="center"
-                android:numColumns="auto_fit"
-                android:visibility="gone" />
-
             <RelativeLayout
                 android:id="@+id/loadingPanel"
                 android:layout_width="match_parent"
@@ -160,16 +170,6 @@
                     android:layout_height="wrap_content"
                     android:indeterminate="true" />
             </RelativeLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_recycler_view_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="?attr/backgroundColor"
-                android:columnWidth="120dp"
-                android:gravity="center"
-                android:numColumns="auto_fit"
-                android:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_recycler_view_id"

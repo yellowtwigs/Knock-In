@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/main_coordinatorLayout"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".controller.activity.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.activity.MainActivity">
 
-<include layout="@layout/content_main" />
+    <include layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_group_button"
@@ -51,27 +51,27 @@ tools:context=".controller.activity.MainActivity">
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary" />
 
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/main_floating_button_open_id"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_marginEnd="@dimen/floating_button_margin"
-    android:layout_marginBottom="80dp"
-    android:background="@color/colorPrimary"
-    android:src="@drawable/ic_add"
-    android:tint="@color/lightColor"
-    app:backgroundTint="@color/colorPrimary" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_floating_button_open_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/floating_button_margin"
+        android:layout_marginBottom="80dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_add"
+        android:tint="@color/lightColor"
+        app:backgroundTint="@color/colorPrimary" />
 
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/main_floating_button_send_id"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_marginEnd="@dimen/floating_button_margin"
-    android:layout_marginBottom="80dp"
-    android:background="@color/colorPrimary"
-    android:src="@drawable/ic_exchange_arrows"
-    android:visibility="gone"
-    app:backgroundTint="@color/colorPrimary" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_floating_button_send_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/floating_button_margin"
+        android:layout_marginBottom="80dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_exchange_arrows"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimary" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
