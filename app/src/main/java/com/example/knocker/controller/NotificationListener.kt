@@ -95,6 +95,7 @@ class NotificationListener : NotificationListenerService() {
                 val notification = saveNotfication(sbp,
                         gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
+
                 if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier != "com.samsung.android.incallui") {
                     if (notification.platform != this.packageName) {
                         notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database

@@ -34,7 +34,7 @@ class ImportContactsActivity : AppCompatActivity() {
         import_contacts_LongText = findViewById(R.id.import_contacts_long_text)
         import_contacts_Title = findViewById(R.id.import_contacts_title)
 
-
+        import_contacts_LongText!!.setText(String.format(getString(R.string.import_contacts_long_text),getString(R.string.app_name)))
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
 

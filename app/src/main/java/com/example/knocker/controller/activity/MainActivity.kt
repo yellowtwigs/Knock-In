@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -1237,6 +1238,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
         val editText = EditText(this)
+        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            editText.setTextColor(resources.getColor(R.color.textColorLight))
+            editText.setHintTextColor(resources.getColor(R.color.greyColor));
+        }
         editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.main_alert_dialog_group_title)

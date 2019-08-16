@@ -301,7 +301,7 @@
     <!-- region Import Contacts -->
 
     <string name="import_contacts_title">Importation des contacts Android</string>
-    <string name="import_contacts_long_text">Importer les contacts de votre téléphone et récupérer leurs informations dans Knocker. Vous pourrez alors leur affecter des priorités et communiquer beaucoup plus facilement et efficacement avec eux </string>
+    <string name="import_contacts_long_text">Importer les contacts de votre téléphone et récupérer leurs informations dans %s. Vous pourrez alors leur affecter des priorités et communiquer beaucoup plus facilement et efficacement avec eux </string>
     <string name="import_contacts_button_yes">Importer</string>
     <string name="import_contacts_button_no">Passer</string>
     <string name="import_contacts_toast">Contacts importés</string>

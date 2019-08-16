@@ -104,7 +104,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return null
     }
 
-
+//region SortContact
     fun sortContactByFirstNameAZ() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
@@ -172,6 +172,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     /*private fun selector(contact:ContactWithAllInformation):GroupDB?=contact.getFirstGroup(this.context)*/
 
+//endregion
 
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
@@ -843,8 +844,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     private fun isDuplicateContacts(allcontacts: Pair<Int, Triple<String, String, String>>?, lastSync: String?): Boolean {
-        if (lastSync != null || lastSync == "") {
-            val allId = sliceLastSync(lastSync)
+        if (lastSync != null /*|| lastSync != ""*/) {
+            val allId = sliceLastSync(lastSync!!)
             allId.forEach { Id ->
                 if (allcontacts!!.first == Id.first) {
                     return true
