@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -43,7 +44,7 @@ class GroupManagerActivity : AppCompatActivity() {
     private var group_manager_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var group_mDbWorkerThread: DbWorkerThread
 
-    private var group_BottomNavigationView:BottomNavigationView?=null
+    private var group_BottomNavigationView: BottomNavigationView? = null
     private var group_manager_NavigationView: NavigationView? = null
 
     private var group_manager_FloatingButtonSMS: FloatingActionButton? = null
@@ -59,8 +60,8 @@ class GroupManagerActivity : AppCompatActivity() {
 
     private var firstClick: Boolean = true
 
-    private var group_GridView: RecyclerView?=null
-    private var adpaterItem: GroupAdapter?=null
+    private var group_GridView: RecyclerView? = null
+    private var adpaterItem: GroupAdapter? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -100,15 +101,7 @@ class GroupManagerActivity : AppCompatActivity() {
 
         //region ========================================= Toolbar ==========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.group_manager_toolbar)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        actionbar!!.run {
-            actionbar.title = ""
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-            setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
-        }
+        val group_manager_OpenDrawer = findViewById<AppCompatImageView>(R.id.group_manager_open_drawer)
 
         //endregion
 
@@ -196,7 +189,7 @@ class GroupManagerActivity : AppCompatActivity() {
         //region ======================================== Adapter ===========================================
 
         gestionnaireContacts = ContactList(this)
-        gestionnaireContacts!!.contacts= listContactGroup
+        gestionnaireContacts!!.contacts = listContactGroup
         if (len >= 3) {
             adpaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
@@ -213,6 +206,10 @@ class GroupManagerActivity : AppCompatActivity() {
         //endregion
 
         //region ======================================= Listeners ==========================================
+
+        group_manager_OpenDrawer.setOnClickListener {
+            group_manager_DrawerLayout!!.openDrawer(GravityCompat.START)
+        }
 
         group_manager_FloatingButtonSend!!.setOnClickListener {
             val intent = Intent(this@GroupManagerActivity, MultiChannelActivity::class.java)
@@ -264,30 +261,6 @@ class GroupManagerActivity : AppCompatActivity() {
 
     //region ========================================= Functions ============================================
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_help, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    @SuppressLint("ShowToast")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                group_manager_DrawerLayout!!.openDrawer(GravityCompat.START)
-                return true
-            }
-            R.id.item_help -> {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(R.string.help)
-                        .setMessage(this.resources.getString(R.string.help_phone_log))
-                        .show()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     fun gridLongItemClick(position: Int) {
         if (listOfItemSelected.contains(
                         gestionnaireContacts!!.contacts.get(position))) {
@@ -307,11 +280,10 @@ class GroupManagerActivity : AppCompatActivity() {
             group_manager_FloatingButtonSend!!.visibility = View.GONE
             group_manager_FloatingButtonMail!!.visibility = View.GONE
             group_manager_FloatingButtonSMS!!.visibility = View.GONE
-            group_manager_FloatingButtonAddNewGroup!!.visibility =View.GONE
+            group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
             firstClick = true
         }
     }
-
 
 
     private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
@@ -328,8 +300,8 @@ class GroupManagerActivity : AppCompatActivity() {
                 allContactsHavePhoneNumber = false
             }
         }
-        group_manager_FloatingButtonAddNewGroup!!.visibility=View.GONE
-        group_manager_FloatingButtonSend!!.visibility= View.VISIBLE
+        group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
+        group_manager_FloatingButtonSend!!.visibility = View.VISIBLE
         //var i = 2
         val metrics = DisplayMetrics()
         this.windowManager.defaultDisplay.getMetrics(metrics)
@@ -338,7 +310,7 @@ class GroupManagerActivity : AppCompatActivity() {
         println("metric smartphone" + metrics.densityDpi)
         if (allContactsHavePhoneNumber) {
             group_manager_FloatingButtonSMS!!.visibility = View.VISIBLE
-        //    i++
+            //    i++
         } else {
             println("false phoneNumber")
             group_manager_FloatingButtonSMS!!.visibility = View.GONE
@@ -372,7 +344,7 @@ class GroupManagerActivity : AppCompatActivity() {
             position += list.size
         }
         gestionnaireContacts = ContactList(this)
-        gestionnaireContacts!!.contacts= listContactGroup
+        gestionnaireContacts!!.contacts = listContactGroup
         if (len >= 3) {
             adpaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
