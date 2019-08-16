@@ -162,28 +162,13 @@
                 android:backgroundTint="?attr/backgroundColor"
 
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/activity_settings_imageView_0_contact_group"
-                    android:layout_width="70dp"
-                    android:layout_height="65dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_user_green"
-                    app:layout_constraintBottom_toTopOf="@+id/activity_settings_imageView_4_contact_group"
-                    app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_1_contact_group"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/activity_settings_imageView_1_contact_group"
+                    android:id="@+id/activity_settings_imageView_3_contact_group"
                     android:layout_width="70dp"
                     android:layout_height="65dp"
                     android:layout_marginStart="8dp"
@@ -193,35 +178,24 @@
                     android:padding="2dp"
                     android:src="@drawable/ic_user_green"
                     app:layout_constraintBottom_toTopOf="@+id/activity_settings_imageView_5_contact_group"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_4_contact_group"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/activity_settings_imageView_3_contact_group"
-                    android:layout_width="70dp"
-                    android:layout_height="65dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_user_green"
-                    app:layout_constraintBottom_toTopOf="@+id/activity_settings_imageView_6_contact_group"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/activity_settings_imageView_1_contact_group" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/activity_settings_imageView_4_contact_group"
                     android:layout_width="70dp"
                     android:layout_height="65dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="2dp"
                     android:padding="2dp"
                     android:src="@drawable/ic_user_green"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_5_contact_group"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintBottom_toTopOf="@+id/activity_settings_imageView_6_contact_group"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/activity_settings_imageView_5_contact_group"
@@ -233,7 +207,7 @@
                     android:padding="2dp"
                     android:src="@drawable/ic_user_green"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/activity_settings_imageView_6_contact_group"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -247,7 +221,7 @@
                     android:src="@drawable/ic_user_green"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/activity_settings_imageView_5_contact_group" />
+                    app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

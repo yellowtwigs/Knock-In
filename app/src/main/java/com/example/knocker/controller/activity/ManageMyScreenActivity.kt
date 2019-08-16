@@ -37,8 +37,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private var tv_five: ImageView? = null
     private var tv_six: ImageView? = null
 
-    private var tv_zero_group: ImageView? = null
-    private var tv_one_group: ImageView? = null
+  //  private var //tv_zero_group: ImageView? = null
+ //   private var tv_one_group: ImageView? = null
     private var tv_three_group: ImageView? = null
     private var tv_four_group: ImageView? = null
     private var tv_five_group: ImageView? = null
@@ -92,8 +92,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
         tv_five = findViewById(R.id.activity_settings_imageView_5_contact)
         tv_six = findViewById(R.id.activity_settings_imageView_6_contact)
 
-        tv_zero_group = findViewById(R.id.activity_settings_imageView_0_contact_group)
-        tv_one_group = findViewById(R.id.activity_settings_imageView_1_contact_group)
+       // //tv_zero_group = findViewById(R.id.activity_settings_imageView_0_contact_group)
+       // tv_one_group = findViewById(R.id.activity_settings_imageView_1_contact_group)
         tv_three_group = findViewById(R.id.activity_settings_imageView_3_contact_group)
         tv_four_group = findViewById(R.id.activity_settings_imageView_4_contact_group)
         tv_five_group = findViewById(R.id.activity_settings_imageView_5_contact_group)
@@ -112,8 +112,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
         tv_one!!.setImageResource(R.drawable.contactbyline1)
         tv_zero!!.setImageResource(R.drawable.contactbyline0)
 
-        tv_zero_group!!.setImageResource(R.drawable.contactbyline0)
-        tv_one_group!!.setImageResource(R.drawable.contactbyline1)
+        //tv_zero_group!!.setImageResource(R.drawable.contactbyline0)
+        //tv_one_group!!.setImageResource(R.drawable.contactbyline1)
         tv_three_group!!.setImageResource(R.drawable.contactbyline3)
         tv_four_group!!.setImageResource(R.drawable.contactbyline4)
         tv_five_group!!.setImageResource(R.drawable.contactbyline5)
@@ -203,8 +203,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
             6 -> tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
         }
         when (nbGrid_group) {
-            0 -> tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            1 -> tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+           // 0 ->tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+         //   1 -> tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
             3 -> tv_three_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
             4 -> tv_four_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
             5 -> tv_five_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
@@ -306,36 +306,36 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 changeGridColumn()
             }
         }
-        tv_zero_group?.setOnClickListener {
+        /*tv_zero_group?.setOnClickListener {
             nbGrid = 0
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list_smaller), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            //tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
             tv_one_group!!.background = null
             tv_three_group!!.background = null
             tv_four_group!!.background = null
             tv_five_group!!.background = null
             tv_six_group!!.background = null
             changeGridColumnGroup()
-        }
-        tv_one_group?.setOnClickListener {
+        }*/
+        /*tv_one_group?.setOnClickListener {
             nbGrid = 1
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
             tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_zero_group!!.background = null
+            //tv_zero_group!!.background = null
             tv_three_group!!.background = null
             tv_four_group!!.background = null
             tv_five_group!!.background = null
             tv_six_group!!.background = null
             changeGridColumnGroup()
-        }
+        }*/
         tv_three_group?.setOnClickListener {
             nbGrid = 3
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero_group!!.background = null
-            tv_one_group!!.background = null
+            //tv_zero_group!!.background = null
+           // tv_one_group!!.background = null
             tv_four_group!!.background = null
             tv_five_group!!.background = null
             tv_three_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
@@ -346,8 +346,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
             nbGrid = 4
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero_group!!.background = null
-            tv_one_group!!.background = null
+            //tv_zero_group!!.background = null
+          //  tv_one_group!!.background = null
             tv_three_group!!.background = null
             tv_five_group!!.background = null
             tv_six_group!!.background = null
@@ -358,8 +358,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
             nbGrid = 5
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero_group!!.background = null
-            tv_one_group!!.background = null
+            //tv_zero_group!!.background = null
+           // tv_one_group!!.background = null
             tv_three_group!!.background = null
             tv_four_group!!.background = null
             tv_six_group!!.background = null
@@ -370,8 +370,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
             nbGrid = 6
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero_group!!.background = null
-            tv_one_group!!.background = null
+            //tv_zero_group!!.background = null
+            //tv_one_group!!.background = null
             tv_three_group!!.background = null
             tv_four_group!!.background = null
             tv_five_group!!.background = null

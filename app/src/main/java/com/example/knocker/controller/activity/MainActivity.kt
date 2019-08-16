@@ -525,7 +525,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle(R.string.main_edited_contact)
                                 .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + this.resources.getString(R.string.main_content_edited_contact_2))
-                                .setPositiveButton(R.string.main_knocker_edited_contact) { _, _ ->
+                                .setPositiveButton(R.string.app_name) { _, _ ->
                                     // on garde la version Knocker
                                 }
                                 .setNegativeButton(R.string.main_android_edited_contact) { _, _ ->
