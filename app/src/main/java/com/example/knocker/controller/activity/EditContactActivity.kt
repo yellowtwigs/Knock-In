@@ -28,6 +28,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -39,9 +40,7 @@ import com.example.knocker.controller.ContactIconeAdapter
 import com.example.knocker.controller.GroupEditAdapter
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDetailDB
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import com.example.knocker.model.ModelDB.GroupDB
+import com.example.knocker.model.ModelDB.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -76,6 +75,15 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Mail_Property: Spinner? = null
     private var edit_contact_AddFieldButton: Button? = null
 
+    private var edit_contact_Return: AppCompatImageView? = null
+    private var edit_contact_DeleteContact: AppCompatImageView? = null
+    private var edit_contact_AddContactToFavorite: AppCompatImageView? = null
+    private var edit_contact_RemoveContactFromFavorite: AppCompatImageView? = null
+    private var edit_contact_Validate: AppCompatImageView? = null
+
+    private var groupId: Long = 0
+    private var listContact: ArrayList<ContactDB?> = ArrayList()
+
     private var edit_contact_id: Int? = null
     private var edit_contact_first_name: String = ""
     private var edit_contact_last_name: String = ""
@@ -108,7 +116,8 @@ class EditContactActivity : AppCompatActivity() {
 
     private var fromGroupActivity = false
 
-    private var isFavorite = 0
+    private var isFavoriteChanged = false
+    private var isNotFavoriteChanged = false
 
     //endregion
 
@@ -144,8 +153,6 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_id = intent.getIntExtra("ContactId", 1)
         fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
         gestionnaireContacts = ContactList(this.applicationContext)
-
-        isFavorite = intent.getIntExtra("isFavorite", 0)
 
         //endregion
 
@@ -270,12 +277,11 @@ class EditContactActivity : AppCompatActivity() {
 
         //region ========================================= Toolbar ==========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
-        actionbar.title = this.resources.getString(R.string.edit_contact)
+        edit_contact_Return = findViewById(R.id.edit_contact_return)
+        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete)
+        edit_contact_AddContactToFavorite = findViewById(R.id.edit_contact_favorite)
+        edit_contact_RemoveContactFromFavorite = findViewById(R.id.edit_contact_favorite_shine)
+        edit_contact_Validate = findViewById(R.id.edit_contact_edit_contact)
 
         //endregion
 
@@ -296,6 +302,164 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
 
         //region ======================================== Listeners =========================================
+
+        edit_contact_Return!!.setOnClickListener {
+            onBackPressed()
+        }
+
+        edit_contact_DeleteContact!!.setOnClickListener {
+            deleteContact()
+        }
+
+        edit_contact_AddContactToFavorite!!.setOnClickListener {
+            edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
+
+            addToFavorite()
+        }
+
+        edit_contact_RemoveContactFromFavorite!!.setOnClickListener {
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
+            edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
+
+            removeFromFavorite()
+        }
+
+        edit_contact_Validate!!.setOnClickListener {
+            hideKeyboard()
+            val editContact = Runnable {
+                if (edit_contact_FirstName!!.editText!!.toString() != "" || edit_contact_LastName!!.editText!!.toString() != "") {
+                    val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString(), this)
+                    val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), this)
+
+                    val spinnerFixChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Fix_Property!!.selectedItem.toString(), this)
+
+                    val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
+                    val nbDetail = contact!!.contactDetailList!!.size - 1
+                    //   for (i in 0..nbDetail) {
+                    if (havePhone) {
+                        //println("------------il a un numéro ------")
+                        //println("contact content number "+contact.contactDetailList!![i].content)
+                        val firstNumber = contact.getFirstPhoneNumber()
+                        var counter = 0
+                        while (counter < contact.contactDetailList!!.size) {
+                            if (contact.contactDetailList!![counter].content == (firstNumber)) {
+                                counter = if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!![counter].id!!)
+                                    contact.contactDetailList!!.size
+                                } else {
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, edit_contact_PhoneNumber!!.editText!!.text.toString())
+                                    //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
+                                    contact.contactDetailList!!.size
+                                }
+                            }
+                            counter++
+                        }
+                        if (!haveMail && edit_contact_Mail!!.editText!!.text.toString() != "") {
+                            //println("------------et à ajouter un mail------")
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        } else {
+                            println("have mail")
+                        }
+                        if (!haveSecondPhone && edit_contact_Mail!!.editText!!.text.toString() != "") {
+                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
+                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                        } else {
+                            println("have second phone number")
+                        }
+
+                    } else if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                        //println("------------et à ajouter un numéro------")
+                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
+                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                    }
+                    if (haveSecondPhone) {
+                        val secondNumber = contact.getSecondPhoneNumber(contact.getFirstPhoneNumber())
+                        var counter = 0
+                        while (counter < contact.contactDetailList!!.size) {
+                            if (contact.contactDetailList!![counter].content == secondNumber) {
+                                counter = if (edit_contact_FixNumber!!.editText!!.text.toString() == "") {
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!![counter].id!!)
+                                    contact.contactDetailList!!.size
+                                } else {
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, "" + edit_contact_FixNumber!!.editText!!.text)
+                                    //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
+                                    contact.contactDetailList!!.size
+                                }
+                            }
+                            counter++
+                        }
+
+
+                    } else if (!haveSecondPhone && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
+                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
+                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                    }
+                    if (haveMail) {
+                        val firstMail = contact.getFirstMail()
+                        var counter = 0
+                        while (counter < contact.contactDetailList!!.size) {
+                            if (contact.contactDetailList!![counter].content == firstMail) {
+                                println("contact content mail" + contact.contactDetailList!![counter].content)
+                                if (edit_contact_Mail!!.editText!!.text.toString() == "") {
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
+                                    counter = contact.contactDetailList!!.size
+                                } else {
+                                    edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, "" + edit_contact_Mail!!.editText!!.text)
+                                    //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
+                                    counter = contact.contactDetailList!!.size
+                                }
+                            } else {
+                                println("contact content mail" + firstMail + "différent de" + contact.contactDetailList!!.get(counter).content + "r")
+                            }
+                            counter++
+                        }
+                    } else if (edit_contact_Mail!!.editText!!.text.toString() != "") {
+                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
+                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                    }
+                    // }//TODO change for the listView
+                    if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
+                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
+                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                    }
+                    if (nbDetail == -1 && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
+                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                    }
+                    if (nbDetail == -1 && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
+                        val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 1)
+                        edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                    }
+                    if (edit_contact_imgString != null) {
+
+                        //println("edit contact rounded != null "+edit_contact_rounded_image )
+                        edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition) //edit contact rounded maybe not work
+
+                    } else {
+                        //println("edit contact rounded == null "+edit_contact_rounded_image )
+                        edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_Priority!!.selectedItemPosition)
+                    }
+                    //println("modify on contact " + contact.contactDB)
+
+                    if (fromGroupActivity) {
+                        val intent = Intent(this@EditContactActivity, GroupManagerActivity::class.java)
+                        intent.putExtra("ContactId", edit_contact_id!!)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        val intent = Intent(this@EditContactActivity, MainActivity::class.java)
+                        intent.putExtra("ContactId", edit_contact_id!!)
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(this, R.string.edit_contact_toast, Toast.LENGTH_LONG).show()
+                }
+            }
+            edit_contact_mDbWorkerThread.postTask(editContact)
+        }
 
         edit_contact_RoundedImageView!!.setOnClickListener {
             selectImage()
@@ -322,6 +486,17 @@ class EditContactActivity : AppCompatActivity() {
         }
 
         //endregion
+
+        val contactList = ContactList(this)
+        val contact = contactList.getContactById(edit_contact_id!!)!!
+
+        if (contact.contactDB!!.favorite == 1) {
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
+            edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
+        } else if (contact.contactDB!!.favorite == 0) {
+            edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
+        }
 
         // drop list
 
@@ -396,6 +571,34 @@ class EditContactActivity : AppCompatActivity() {
 
     //region ========================================== Functions ===========================================
 
+    override fun onBackPressed() {
+        if (isChanged || isFavoriteChanged || isNotFavoriteChanged) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(R.string.edit_contact_alert_dialog_cancel_title)
+                    .setMessage(R.string.edit_contact_alert_dialog_cancel_message)
+                    .setBackground(getDrawable(R.color.backgroundColor))
+                    .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                        if (isFavoriteChanged) {
+                            removeFromFavorite()
+                        } else if (isNotFavoriteChanged) {
+                            addToFavorite()
+                        }
+                        if (fromGroupActivity) {
+                            startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                        } else {
+                            startActivity(Intent(this@EditContactActivity, MainActivity::class.java))
+                        }
+                        finish()
+                    }
+                    .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
+                    }
+                    .show()
+        } else {
+            finish()
+        }
+        hideKeyboard()
+    }
+
     private fun deleteContact() {
         edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
         val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
@@ -457,190 +660,97 @@ class EditContactActivity : AppCompatActivity() {
         return 0
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                if (isChanged) {
-                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                            .setTitle(R.string.edit_contact_alert_dialog_cancel_title)
-                            .setMessage(R.string.edit_contact_alert_dialog_cancel_message)
-                            .setBackground(getDrawable(R.color.backgroundColor))
-                            .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                                if (fromGroupActivity) {
-                                    startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
-                                } else {
-                                    startActivity(Intent(this@EditContactActivity, MainActivity::class.java))
-                                }
-                                finish()
-                            }
-                            .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                            }
-                            .show()
-                } else {
-                    finish()
-                }
-                hideKeyboard()
+    //region ========================================== Favorites ===========================================
+
+    private fun addToFavorite() {
+        val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
+
+        contact!!.setIsFavorite(edit_contact_ContactsDatabase)
+
+        var counter = 0
+        var alreadyExist = false
+
+        while (counter < edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                alreadyExist = true
+                break
             }
-            R.id.nav_delete -> {
-                val delete = Runnable {
-                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                            .setTitle(R.string.edit_contact_alert_dialog_delete_contact_title)
-                            .setMessage(R.string.edit_contact_alert_dialog_delete_contact_message)
-                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                deleteContact()
-                            }
-                            .setBackground(getDrawable(R.color.backgroundColor))
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-                            }
-                            .show()
-
-                }
-                edit_contact_mDbWorkerThread.postTask(delete)
-            }
-            R.id.nav_validate -> {
-                hideKeyboard()
-                val editContact = Runnable {
-                    if (edit_contact_FirstName!!.editText!!.toString() != "" || edit_contact_LastName!!.editText!!.toString() != "") {
-                        val spinnerPhoneChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Phone_Property!!.selectedItem.toString(), this)
-                        val spinnerMailChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Mail_Property!!.selectedItem.toString(), this)
-
-                        val spinnerFixChar = NumberAndMailDB.convertSpinnerStringToChar(edit_contact_Fix_Property!!.selectedItem.toString(), this)
-
-                        val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
-                        val nbDetail = contact!!.contactDetailList!!.size - 1
-                        //   for (i in 0..nbDetail) {
-                        if (havePhone) {
-                            //println("------------il a un numéro ------")
-                            //println("contact content number "+contact.contactDetailList!![i].content)
-                            val firstNumber = contact.getFirstPhoneNumber()
-                            var counter = 0
-                            while (counter < contact.contactDetailList!!.size) {
-                                if (contact.contactDetailList!![counter].content == (firstNumber)) {
-                                    counter = if (edit_contact_PhoneNumber!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!![counter].id!!)
-                                        contact.contactDetailList!!.size
-                                    } else {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, edit_contact_PhoneNumber!!.editText!!.text.toString())
-                                        //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
-                                        contact.contactDetailList!!.size
-                                    }
-                                }
-                                counter++
-                            }
-                            if (!haveMail && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                                //println("------------et à ajouter un mail------")
-                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                            } else {
-                                println("have mail")
-                            }
-                            if (!haveSecondPhone && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                                val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
-                                edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                            } else {
-                                println("have second phone number")
-                            }
-
-                        } else if (!havePhone && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            //println("------------et à ajouter un numéro------")
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
-                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                        }
-                        if (haveSecondPhone) {
-                            val secondNumber = contact.getSecondPhoneNumber(contact.getFirstPhoneNumber())
-                            var counter = 0
-                            while (counter < contact.contactDetailList!!.size) {
-                                if (contact.contactDetailList!![counter].content == secondNumber) {
-                                    counter = if (edit_contact_FixNumber!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!![counter].id!!)
-                                        contact.contactDetailList!!.size
-                                    } else {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, "" + edit_contact_FixNumber!!.editText!!.text)
-                                        //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
-                                        contact.contactDetailList!!.size
-                                    }
-                                }
-                                counter++
-                            }
-
-
-                        } else if (!haveSecondPhone && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerFixChar, 1)
-                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                        }
-                        if (haveMail) {
-                            val firstMail = contact.getFirstMail()
-                            var counter = 0
-                            while (counter < contact.contactDetailList!!.size) {
-                                if (contact.contactDetailList!![counter].content == firstMail) {
-                                    println("contact content mail" + contact.contactDetailList!![counter].content)
-                                    if (edit_contact_Mail!!.editText!!.text.toString() == "") {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().deleteDetailById(contact.contactDetailList!!.get(counter).id!!)
-                                        counter = contact.contactDetailList!!.size
-                                    } else {
-                                        edit_contact_ContactsDatabase!!.contactDetailsDao().updateContactDetailById(contact.contactDetailList!![counter].id!!, "" + edit_contact_Mail!!.editText!!.text)
-                                        //println("condition = havemail ="+haveMail+" && text = "+edit_contact_Mail!!.editText!!.text.toString())
-                                        counter = contact.contactDetailList!!.size
-                                    }
-                                } else {
-                                    println("contact content mail" + firstMail + "différent de" + contact.contactDetailList!!.get(counter).content + "r")
-                                }
-                                counter++
-                            }
-                        } else if (edit_contact_Mail!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
-                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                        }
-                        // }//TODO change for the listView
-                        if (nbDetail == -1 && edit_contact_Mail!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_Mail!!.editText!!.text.toString(), "mail", spinnerMailChar, 2)
-                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                        }
-                        if (nbDetail == -1 && edit_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 0)
-                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                        }
-                        if (nbDetail == -1 && edit_contact_FixNumber!!.editText!!.text.toString() != "") {
-                            val detail = ContactDetailDB(null, contact.getContactId(), edit_contact_FixNumber!!.editText!!.text.toString(), "phone", spinnerPhoneChar, 1)
-                            edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
-                        }
-                        if (edit_contact_imgString != null) {
-
-                            //println("edit contact rounded != null "+edit_contact_rounded_image )
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition) //edit contact rounded maybe not work
-
-                        } else {
-                            //println("edit contact rounded == null "+edit_contact_rounded_image )
-                            edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_Priority!!.selectedItemPosition)
-                        }
-                        //println("modify on contact " + contact.contactDB)
-
-                        if (fromGroupActivity) {
-                            val intent = Intent(this@EditContactActivity, GroupManagerActivity::class.java)
-                            intent.putExtra("ContactId", edit_contact_id!!)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            val intent = Intent(this@EditContactActivity, MainActivity::class.java)
-                            intent.putExtra("ContactId", edit_contact_id!!)
-                            startActivity(intent)
-                            finish()
-                        }
-                    } else {
-                        Toast.makeText(this, R.string.edit_contact_toast, Toast.LENGTH_LONG).show()
-                    }
-                }
-                edit_contact_mDbWorkerThread.postTask(editContact)
-            }
+            counter++
         }
-        return super.onOptionsItemSelected(item)
+
+        listContact.add(contact.contactDB)
+
+        if (alreadyExist) {
+            addContactToGroup(listContact, groupId)
+        } else {
+            createGroup(listContact, "Favorites")
+        }
+
+        isFavoriteChanged = true
+        isNotFavoriteChanged = false
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_edit_contact, menu)
-        return true
+    private fun removeFromFavorite() {
+        val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
+
+        contact!!.setIsNotFavorite(edit_contact_ContactsDatabase)
+
+        var counter = 0
+
+        while (counter < edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                break
+            }
+            counter++
+        }
+
+        listContact.remove(contact.contactDB)
+
+        removeContactFromGroup(edit_contact_id!!, groupId)
+
+        counter = 0
+
+        while (counter < edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
+                edit_contact_ContactsDatabase?.GroupsDao()!!.deleteGroupById(edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
+                break
+            }
+            counter++
+        }
+
+        isNotFavoriteChanged = true
+        isFavoriteChanged = false
     }
+
+    //endregion
+
+    //region =========================================== Groups =============================================
+
+    private fun createGroup(listContact: ArrayList<ContactDB?>, name: String) {
+        val group = GroupDB(null, name, "")
+
+        val groupId = edit_contact_ContactsDatabase!!.GroupsDao().insert(group)
+        listContact.forEach {
+            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
+            println("contact db id" + edit_contact_ContactsDatabase!!.LinkContactGroupDao().insert(link))
+        }
+    }
+
+    private fun addContactToGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
+        listContact.forEach {
+            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
+            edit_contact_ContactsDatabase!!.LinkContactGroupDao().insert(link)
+        }
+    }
+
+    private fun removeContactFromGroup(contactId: Int, groupId: Long?) {
+        edit_contact_ContactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(contactId, groupId!!.toInt())
+
+    }
+
+    //endregion
 
     private fun textChanged(textInput: TextInputLayout?, txt: String?) {
         textInput!!.editText!!.addTextChangedListener(object : TextWatcher {
@@ -662,37 +772,37 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun selectImage() {
 
-            val builderBottom = BottomSheetDialog(this)
-            builderBottom.setContentView(R.layout.alert_dialog_picture)
-            val gallerie = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_gallerie_view)
-            val camera =builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_camera_view)
-            val recylcer = builderBottom.findViewById<RecyclerView>(R.id.alert_picture_recycler_view)
-            val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-            recylcer!!.layoutManager=layoutMananger
-            val adapter = ContactIconeAdapter(this)
-            recylcer!!.adapter= adapter
-            gallerie!!.setOnClickListener{
-                if ( ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-                    builderBottom.dismiss()
-                }else {
-                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                    intent.type = "image/*"
-                    startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
-                    builderBottom.dismiss()
-                }
+        val builderBottom = BottomSheetDialog(this)
+        builderBottom.setContentView(R.layout.alert_dialog_picture)
+        val gallerie = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_gallerie_view)
+        val camera = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_camera_view)
+        val recylcer = builderBottom.findViewById<RecyclerView>(R.id.alert_picture_recycler_view)
+        val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        recylcer!!.layoutManager = layoutMananger
+        val adapter = ContactIconeAdapter(this)
+        recylcer.adapter = adapter
+        gallerie!!.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                builderBottom.dismiss()
+            } else {
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                intent.type = "image/*"
+                startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
+                builderBottom.dismiss()
             }
-            camera!!.setOnClickListener{
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 2)
-                    builderBottom.dismiss()
-                }else {
-                    openCamera()
-                    builderBottom.dismiss()
-                }
-            }
-            builderBottom.show()
         }
+        camera!!.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 2)
+                builderBottom.dismiss()
+            } else {
+                openCamera()
+                builderBottom.dismiss()
+            }
+        }
+        builderBottom.show()
+    }
 
     private fun openCamera() {
         val values = ContentValues()
@@ -808,19 +918,21 @@ class EditContactActivity : AppCompatActivity() {
                 }
                 .show()
     }
-    public fun addContactIcone(bitmap:Bitmap){
+
+    fun addContactIcone(bitmap: Bitmap) {
         //  add_new_contact_ImgString
 
         edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
         edit_contact_imgString = bitmap.bitmapToBase64()
     }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode ==1 && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 1 && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = "image/*"
             startActivityForResult(Intent.createChooser(intent, this.getString(R.string.add_new_contact_intent_title)), SELECT_FILE!!)
-        }else if(requestCode==2 &&ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED  && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+        } else if (requestCode == 2 && ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             openCamera()
         }
     }
