@@ -10,20 +10,26 @@ import android.widget.TextView
 import com.example.knocker.model.StatusBarParcelable
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.annotation.SuppressLint
+import android.media.SoundPool
 import android.os.*
+import android.view.SoundEffectConstants
+import com.google.android.material.button.MaterialButton
 
 
 class NotificationAlarmActivity : AppCompatActivity() {
 
     private var notification_Alarm_Sender_TextView: TextView? = null
     private var notification_Alarm_Content_TextView: TextView? = null
-    private var notification_Alarm_Button_close: FloatingActionButton? = null
-    private var notification_Alarm_Button_response: FloatingActionButton? = null
+    private var notification_Alarm_Button_close: MaterialButton? = null
+    private var notification_Alarm_Button_response: MaterialButton? = null
     private var isOpen = true
-    //val sound=MediaPlayer.create(this,R.string.phone_log_toast_wait_permission)
+
+//    private var sound : SoundPool
 
     private var notification_alarm_sender: String = ""
     private var notification_alarm_content: String = ""
+
+
     @SuppressLint("InvalidWakeLockTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +49,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         println("sbp" + sbp.TAG)
         println("I'm into alarm")
+
         if (Build.VERSION.SDK_INT >= 27) {
             setTurnScreenOn(true)
             setShowWhenLocked(true)

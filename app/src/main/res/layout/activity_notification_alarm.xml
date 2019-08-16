@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0.70"
-    android:background="@color/transparentColor"
+    android:background="@drawable/wallpaper_incoming_call"
     tools:context=".controller.activity.NotificationAlarmActivity"
     tools:ignore="PrivateResource">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
@@ -28,8 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:text="TextView"
-        android:textColor="@color/textColorDark"
-        android:textSize="30sp"
+        android:textColor="@color/textColorLight"
+        android:textSize="35sp"
         app:layout_constraintBottom_toTopOf="@+id/notification_alarm_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -39,36 +38,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Message"
-        android:textColor="@color/textColorDark"
+        android:textColor="@color/textColorLight"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--android:id="@+id/notification_alarm_floating_button_openMessage"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="50dp"-->
-        <!--android:layout_marginStart="64dp"-->
-        <!--android:layout_marginBottom="52dp"-->
-        <!--android:tint="@color/lightColor"-->
-        <!--app:backgroundTint="#00dd00"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:srcCompat="@drawable/ic_send" />-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--android:id="@+id/notification_alarm_floating_button_close"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_marginEnd="64dp"-->
-        <!--android:layout_marginBottom="48dp"-->
-        <!--android:tint="@color/lightColor"-->
-        <!--app:backgroundTint="#dd0000"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:srcCompat="@drawable/ic_cross" />-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/notification_alarm_floating_button_openMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:tint="@color/lightColor"
+            android:layout_marginEnd="50dp"
+            android:layout_toStartOf="@+id/notification_alarm_view"
+            app:backgroundTint="#00dd00"
+            app:icon="@drawable/ic_send"
+            tools:ignore="RelativeOverlap" />
+
+        <view
+            android:id="@+id/notification_alarm_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/notification_alarm_floating_button_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:tint="@color/lightColor"
+            android:layout_marginStart="50dp"
+            android:layout_toEndOf="@+id/notification_alarm_view"
+            app:backgroundTint="#dd0000"
+            app:icon="@drawable/ic_cross" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
