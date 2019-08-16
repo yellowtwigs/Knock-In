@@ -31,8 +31,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         notification_Alarm_Content_TextView = findViewById(R.id.notification_alarm_description)
         notification_Alarm_Sender_TextView = findViewById(R.id.notification_alarm_contact)
-        notification_Alarm_Button_close = findViewById(R.id.notification_alarm_floating_button_close)
-        notification_Alarm_Button_response = findViewById(R.id.notification_alarm_floating_button_openMessage)
+//        notification_Alarm_Button_close = findViewById(R.id.notification_alarm_floating_button_close)
+//        notification_Alarm_Button_response = findViewById(R.id.notification_alarm_floating_button_openMessage)
 
         val sbp = intent.extras.get("notification") as StatusBarParcelable
         notification_alarm_sender = sbp.statusBarNotificationInfo.get("android.title") as String
@@ -78,12 +78,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
             vibration.vibrate(500)
         }
         //endregion
-        notification_Alarm_Button_close!!.setOnClickListener({
+        notification_Alarm_Button_close!!.setOnClickListener {
             this.finish()
             isOpen = false
             // sound.stop()
-        })
-        notification_Alarm_Button_response!!.setOnClickListener({
+        }
+
+        notification_Alarm_Button_response!!.setOnClickListener {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
             val fullWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, "Loneworker - FULL WAKE LOCK")
             val partialWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PowerManager.PARTIAL_WAKE_LOCK")
@@ -101,6 +102,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
             isOpen = false
             finish()
             // sound.stop()
-        })
+        }
     }
 }
