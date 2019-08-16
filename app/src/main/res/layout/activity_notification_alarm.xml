@@ -65,7 +65,7 @@
             app:icon="@drawable/ic_send"
             tools:ignore="RelativeOverlap" />
 
-        <view
+        <TextView
             android:id="@+id/notification_alarm_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

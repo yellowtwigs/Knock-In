@@ -1,18 +1,16 @@
 package com.example.knocker.controller.activity
 
+import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import com.example.knocker.R
+import android.media.MediaPlayer
+import android.os.*
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.knocker.R
 import com.example.knocker.model.StatusBarParcelable
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import android.annotation.SuppressLint
-import android.media.SoundPool
-import android.os.*
-import android.view.SoundEffectConstants
 import com.google.android.material.button.MaterialButton
 
 
@@ -23,8 +21,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var notification_Alarm_Button_close: MaterialButton? = null
     private var notification_Alarm_Button_response: MaterialButton? = null
     private var isOpen = true
-
-//    private var sound : SoundPool
 
     private var notification_alarm_sender: String = ""
     private var notification_alarm_content: String = ""
@@ -37,12 +33,16 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         notification_Alarm_Content_TextView = findViewById(R.id.notification_alarm_description)
         notification_Alarm_Sender_TextView = findViewById(R.id.notification_alarm_contact)
-//        notification_Alarm_Button_close = findViewById(R.id.notification_alarm_floating_button_close)
-//        notification_Alarm_Button_response = findViewById(R.id.notification_alarm_floating_button_openMessage)
+        notification_Alarm_Button_close = findViewById(R.id.notification_alarm_floating_button_close)
+        notification_Alarm_Button_response = findViewById(R.id.notification_alarm_floating_button_openMessage)
 
         val sbp = intent.extras.get("notification") as StatusBarParcelable
         notification_alarm_sender = sbp.statusBarNotificationInfo.get("android.title") as String
         notification_alarm_content = sbp.statusBarNotificationInfo.get("android.text") as String
+
+        val notification_AlarmSound = MediaPlayer.create(this, R.raw.slap)
+
+        notification_AlarmSound.start()
 
         notification_Alarm_Content_TextView!!.setText(notification_alarm_content)
         notification_Alarm_Sender_TextView!!.setText(notification_alarm_sender)
@@ -62,15 +62,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
                     or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
         }
-        //region sound + vibration
-        /* sound.start()
-         sound.isLooping=true*/
 
         val vibration = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val thread = Thread {
                 val timeWhenLaunch = System.currentTimeMillis()
-                while (isOpen && System.currentTimeMillis() - timeWhenLaunch < 45 * 1000) {
+                while (isOpen && System.currentTimeMillis() - timeWhenLaunch < 10 * 1000) {
                     vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
                     Thread.sleep(1000)
                     println("test")
@@ -85,10 +82,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
             vibration.vibrate(500)
         }
         //endregion
+
         notification_Alarm_Button_close!!.setOnClickListener {
             this.finish()
             isOpen = false
-            // sound.stop()
         }
 
         notification_Alarm_Button_response!!.setOnClickListener {
@@ -100,15 +97,16 @@ class NotificationAlarmActivity : AppCompatActivity() {
             val intent = packageManager.getLaunchIntentForPackage(sbp.appNotifier)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            if (fullWakeLock.isHeld()) {
+            if (fullWakeLock.isHeld) {
                 fullWakeLock.release()
             }
-            if (partialWakeLock.isHeld()) {
+            if (partialWakeLock.isHeld) {
                 partialWakeLock.release()
             }
             isOpen = false
+
+            notification_AlarmSound.stop()
             finish()
-            // sound.stop()
         }
     }
 }
