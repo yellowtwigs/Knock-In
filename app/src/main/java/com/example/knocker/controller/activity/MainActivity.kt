@@ -202,7 +202,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 counter++
             }
 
-            manageBlinkEffet(fromStartActivity)
             fromStartActivity = false
         }
 
@@ -402,8 +401,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     .setMessage(this.resources.getString(R.string.help_main))
                     .setBackground(getDrawable(R.color.backgroundColor))
                     .show()
-
-            manageBlinkEffet(false)
         }
 
         main_FloatingButtonSend!!.setOnClickListener {
@@ -735,28 +732,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     //region ========================================== Functions ===========================================
-
-    private fun manageBlinkEffet(fromStartActivity: Boolean) {
-        val anim = ObjectAnimator.ofInt(main_toolbar_Help, "backgroundColor", Color.WHITE, Color.BLUE,
-                Color.YELLOW)
-        anim.duration = 800
-        anim.setEvaluator(ArgbEvaluator())
-        anim.repeatMode = Animation.RESTART
-        anim.repeatCount = Animation.INFINITE
-        anim.start()
-
-        if (!fromStartActivity) {
-            anim.end()
-
-            val animEnd = ObjectAnimator.ofInt(main_toolbar_Help, "backgroundColor", Color.WHITE)
-            animEnd.duration = 800
-            animEnd.setEvaluator(ArgbEvaluator())
-            animEnd.repeatMode = Animation.RESTART
-            animEnd.repeatCount = Animation.INFINITE
-            animEnd.start()
-            animEnd.end()
-        }
-    }
 
     private fun refreshActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
