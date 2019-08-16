@@ -742,7 +742,25 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                                         lastSync = deleteContactFromLastSync(lastSync, fullName.first)
                                         edit.putString("last_sync_2", lastSync)
                                         edit.apply()
-                                        createListContactsSync(phoneStructName, contactNumberAndPic, contactGroup, gestionnaireContacts)
+                                       // createListContactsSync(phoneStructName, contactNumberAndPic, contactGroup, gestionnaireContacts)
+                                        contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
+                                        //on serialise le nouveau contact ( idAndroid:
+                                        lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
+                                        for (details in contactDetails) {
+                                            //pour chaque details du contact on lui donne l'id du contact
+                                            details.idContact = contacts.id
+                                        }
+                                        for (groups in contactGroups) {
+                                            //pour chaque groupe du contact on lui donne l'id du contact pour crée un link
+                                            val links = LinkContactGroup(0, contacts.id!!.toInt())
+                                            ContactLinksGroup = Pair(links, groups)
+                                            listLinkAndGroup.add(ContactLinksGroup)
+                                        }
+                                        //on sauvegarde dans la database les groupes et les linkcontactGroupe
+                                        saveGroupsAndLinks(listLinkAndGroup)
+                                        listLinkAndGroup.clear()
+                                        //on sauvegarde dans la database les details du contact
+                                        contactsDatabase!!.contactsDao().insertDetails(contactDetails)
                                     }
                                 }
                                 phoneContactsList.add(contacts)
@@ -790,7 +808,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     fun setToContactList(contactset: List<String>): Pair<ContactDB, List<ContactDetailDB>> {
         val allContacts: Pair<ContactDB, List<ContactDetailDB>>
         val detailList = arrayListOf<ContactDetailDB>()
-        for (i in 3 until contactset.size - 1) {
+        for (i in 3..contactset.size - 1) {
             val contactSetSplite = contactset.elementAt(i).split(":")
             detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2))
         }
