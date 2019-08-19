@@ -2,53 +2,30 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.provider.MediaStore
-import android.provider.Settings
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.CircularImageView
-import com.example.knocker.controller.GroupEditAdapter
-import com.example.knocker.controller.activity.group.AddContactToGroupAdapter
-import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_contact_details.*
-import java.io.ByteArrayOutputStream
-import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -62,7 +39,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    private var gestionnaireContacts: ContactList? = null
+    private var gestionnaireContacts: ContactManager? = null
 
     private var contact_details_RoundedImageView: CircularImageView? = null
     private var contact_details_ContactName: TextView? = null
@@ -159,7 +136,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         //on get la base de données
         contact_details_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-        gestionnaireContacts = ContactList(this.applicationContext)
+        gestionnaireContacts = ContactManager(this.applicationContext)
 
         //endregion
 
@@ -213,7 +190,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         //TODO wash the code
         if (contact_details_ContactsDatabase?.contactsDao()?.getContact(contact_details_ContactId!!.toInt()) == null) {
 
-            val contactList = ContactList(this)
+            val contactList = ContactManager(this)
             contact = contactList.getContactById(contact_details_ContactId!!)!!
             contact_details_first_name = contact!!.contactDB!!.firstName
             contact_details_last_name = contact!!.contactDB!!.lastName
@@ -276,7 +253,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         //region ========================================= Others ===========================================
 
-        val contactList = ContactList(this)
+        val contactList = ContactManager(this)
         val contact = contactList.getContactById(contact_details_ContactId!!)!!
 
         if (contact.contactDB!!.favorite == 1) {
@@ -560,7 +537,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             intent.action = Intent.ACTION_VIEW
 
             // the _ids you save goes here at the end of /data/12562
-            intent.setDataAndType(Uri.parse("content://com.android.contacts/data/_id"),
+            intent.setDataAndType(Uri.parse("content://com.android.contactList/data/_id"),
                     "vnd.android.cursor.item/vnd.com.whatsapp.voip.call");
             intent.setPackage("com.whatsapp")
 

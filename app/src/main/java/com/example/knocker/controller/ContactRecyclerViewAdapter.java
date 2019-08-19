@@ -1,11 +1,9 @@
 package com.example.knocker.controller;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -32,13 +30,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
-import com.example.knocker.controller.activity.ContactDetailsActivity;
 import com.example.knocker.controller.activity.EditContactActivity;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.model.ContactGesture;
-import com.example.knocker.model.ContactList;
-import com.example.knocker.model.ContactsRoomDatabase;
+import com.example.knocker.model.ContactManager;
 import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
@@ -60,7 +56,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private Context context;
     private Integer len;
     private View view;
-    private ContactList gestionnaireContacts;
+    private ContactManager gestionnaireContacts;
     private Boolean modeMultiSelect = false;
     private Boolean secondClick = false;
     private Boolean lastClick = false;
@@ -76,16 +72,16 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
         main_mDbWorkerThread.start();
 
-        System.out.println("list contact grid size" + gestionnaireContacts.getContacts().size());
+        System.out.println("list contact grid size" + gestionnaireContacts.getContactList().size());
         modeMultiSelect = true;
-        for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
-            if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
-                if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(i).getFirstGroup(context).getId())) {
-                    if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+        for (int i = 0; i < gestionnaireContacts.getContactList().size(); i++) {
+            if (gestionnaireContacts.getContactList().get(i).getFirstGroup(context) != null) {
+                if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(i).getFirstGroup(context).getId())) {
+                    if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
                         System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
                         ((MainActivity) context).longRecyclerItemClick(i);
 //                        ((MainActivity) context).longRecyclerItemClick(i, true);
-                        listOfItemSelected.remove(gestionnaireContacts.getContacts().get(i));
+                        listOfItemSelected.remove(gestionnaireContacts.getContactList().get(i));
                     }
                 }
             }
@@ -98,9 +94,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     private String numberForPermission = "";
 
-    public ContactRecyclerViewAdapter(Context context, ContactList gestionnaireContacts, Integer len) {
+    public ContactRecyclerViewAdapter(Context context, ContactManager gestionnaireContacts, Integer len) {
         this.context = context;
-        this.listContacts = gestionnaireContacts.getContacts();
+        this.listContacts = gestionnaireContacts.getContactList();
         this.len = len;
         this.gestionnaireContacts = gestionnaireContacts;
         lastSelectMenuLen1 = null;
@@ -110,7 +106,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return listContacts.get(position);
     }
 
-    public void setGestionnaireContact(ContactList gestionnaireContact) {
+    public void setGestionnaireContact(ContactManager gestionnaireContact) {
         this.gestionnaireContacts = gestionnaireContact;
     }
 
@@ -211,7 +207,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             holder.groupWordingTv.setText(group);
         }
         if (modeMultiSelect) {
-            if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
+            if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(position))) {
                 if (context instanceof GroupActivity && len == 0) {
                     holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
                 } else {
@@ -257,11 +253,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
 
             view.setTag(holder);
-            ContactDB contact1 = gestionnaireContacts.getContacts().get(position).getContactDB();
+            ContactDB contact1 = gestionnaireContacts.getContactList().get(position).getContactDB();
             assert contact1 != null;
 
-            if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(position))) {
-                listOfItemSelected.remove(gestionnaireContacts.getContacts().get(position));
+            if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(position))) {
+                listOfItemSelected.remove(gestionnaireContacts.getContactList().get(position));
 
                 if (!contact1.getProfilePicture64().equals("")) {
                     Bitmap bitmap = base64ToBitmap(contact1.getProfilePicture64());
@@ -270,7 +266,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact1.getProfilePicture()));
                 }
             } else {
-                listOfItemSelected.add(gestionnaireContacts.getContacts().get(position));
+                listOfItemSelected.add(gestionnaireContacts.getContactList().get(position));
                 if (context instanceof GroupActivity && len == 0) {
                     holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
                 } else {
@@ -405,17 +401,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
             main_mDbWorkerThread.start();
 
-            System.out.println("list contact grid size" + gestionnaireContacts.getContacts().size());
+            System.out.println("list contact grid size" + gestionnaireContacts.getContactList().size());
             if (!secondClick) {
                 if (!modeMultiSelect) {
                     modeMultiSelect = true;
-                    for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
-                        if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
-                            if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
-                                if (!listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+                    for (int i = 0; i < gestionnaireContacts.getContactList().size(); i++) {
+                        if (gestionnaireContacts.getContactList().get(i).getFirstGroup(context) != null) {
+                            if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(position).getFirstGroup(context).getId())) {
+                                if (!listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
                                     System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
                                     ((GroupActivity) context).longRecyclerItemClick(i, secondClick, true);
-                                    listOfItemSelected.add(gestionnaireContacts.getContacts().get(i));
+                                    listOfItemSelected.add(gestionnaireContacts.getContactList().get(i));
                                 }
                             }
                         }
@@ -424,12 +420,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     notifyDataSetChanged();
                 }
             } else {
-                for (int i = 0; i < gestionnaireContacts.getContacts().size(); i++) {
-                    if (gestionnaireContacts.getContacts().get(i).getFirstGroup(context) != null) {
-                        if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContacts().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContacts().get(position).getFirstGroup(context).getId())) {
-                            if (listOfItemSelected.contains(gestionnaireContacts.getContacts().get(i))) {
+                for (int i = 0; i < gestionnaireContacts.getContactList().size(); i++) {
+                    if (gestionnaireContacts.getContactList().get(i).getFirstGroup(context) != null) {
+                        if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(position).getFirstGroup(context).getId())) {
+                            if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
                                 ((GroupActivity) context).longRecyclerItemClick(i, secondClick, true);
-                                listOfItemSelected.remove(gestionnaireContacts.getContacts().get(i));
+                                listOfItemSelected.remove(gestionnaireContacts.getContactList().get(i));
                             }
                         }
                     }

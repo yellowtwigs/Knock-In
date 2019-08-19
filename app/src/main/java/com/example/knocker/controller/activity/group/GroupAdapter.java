@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,11 +34,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.CircularImageView;
-import com.example.knocker.controller.GroupEditAdapter;
 import com.example.knocker.controller.activity.EditContactActivity;
-import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.model.ContactGesture;
-import com.example.knocker.model.ContactList;
+import com.example.knocker.model.ContactManager;
 import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
@@ -52,12 +49,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> implements FloatingActionMenu.MenuStateChangeListener  {
     private final Context context;
-    private final ContactList contactList;
+    private final ContactManager contactManager;
     private final Integer len;
     private FloatingActionMenu selectMenu;
     private ArrayList<FloatingActionMenu> listCircularMenu = new ArrayList<FloatingActionMenu>();
@@ -75,9 +71,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         super.onBindViewHolder(holder, position, payloads);
     }
 
-    public GroupAdapter(Context context, ContactList contactList, Integer len)  {
+    public GroupAdapter(Context context, ContactManager contactManager, Integer len)  {
         this.context = context;
-        this.contactList = contactList;
+        this.contactManager = contactManager;
         this.len = len;
         this.sectionPos=new ArrayList<Integer>();
     }
@@ -129,7 +125,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             layoutParamsIV.topMargin = 0;
         };
 
-        final ContactDB contact = this.contactList.getContacts().get(position).getContactDB();
+        final ContactDB contact = this.contactManager.getContactList().get(position).getContactDB();
         assert contact != null;
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
@@ -138,7 +134,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         } else if (contact.getContactPriority() == 2) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         }
-        if(modeMultiSelect && listOfItemSelected.contains(contactList.getContacts().get(position))){
+        if(modeMultiSelect && listOfItemSelected.contains(contactManager.getContactList().get(position))){
             holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
         }else{
             if (!contact.getProfilePicture64().equals("")) {
@@ -401,13 +397,13 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
                 if (!modeMultiSelect) {
                     v.setTag(holder);
-                   // ContactDB contact1 = contactList.getContacts().get(position).getContactDB();
+                   // ContactDB contact1 = contactManager.getContactList().get(position).getContactDB();
                     assert contact != null;
 
                     holder.contactFirstNameView.setText(contact.getFirstName());
 
-                    if (listOfItemSelected.contains(contactList.getContacts().get(position))) {
-                        listOfItemSelected.remove(contactList.getContacts().get(position));
+                    if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
+                        listOfItemSelected.remove(contactManager.getContactList().get(position));
 
                         if (!contact.getProfilePicture64().equals("")) {
                             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -416,7 +412,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
                         }
                     } else {
-                        listOfItemSelected.add(contactList.getContacts().get(position));
+                        listOfItemSelected.add(contactManager.getContactList().get(position));
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                         notifyDataSetChanged();
                     }
@@ -428,8 +424,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         };
         View.OnClickListener gridItemClick = v ->{
             if (modeMultiSelect) {
-                if (listOfItemSelected.contains(contactList.getContacts().get(position))) {
-                    listOfItemSelected.remove(contactList.getContacts().get(position));
+                if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
+                    listOfItemSelected.remove(contactManager.getContactList().get(position));
 
                     if (!contact.getProfilePicture64().equals("")) {
                         Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -442,7 +438,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     }
                     notifyDataSetChanged();
                 } else {
-                    listOfItemSelected.add(contactList.getContacts().get(position));
+                    listOfItemSelected.add(contactManager.getContactList().get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
                     notifyDataSetChanged();
                 }
@@ -469,14 +465,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             ArrayList<Integer> listPosition = new ArrayList<>();
 
             if (!secondClick) {
-                System.out.println("list contact grid size" + contactList.getContacts().size());
-                for (int i = 0; i < contactList.getContacts().size(); i++) {
-                    if (contactList.getContacts().get(i).getFirstGroup(context) != null) {
-                        if (Objects.equals(contactList.getContacts().get(i).getFirstGroup(context).getId(), Objects.requireNonNull(contactList.getContacts().get(position).getFirstGroup(context)).getId())) {
+                System.out.println("list contact grid size" + contactManager.getContactList().size());
+                for (int i = 0; i < contactManager.getContactList().size(); i++) {
+                    if (contactManager.getContactList().get(i).getFirstGroup(context) != null) {
+                        if (Objects.equals(contactManager.getContactList().get(i).getFirstGroup(context).getId(), Objects.requireNonNull(contactManager.getContactList().get(position).getFirstGroup(context)).getId())) {
                             System.out.println("id egale a l'autre ");
                             listPosition.add(i);
                         } else {
-                            System.out.println(contactList.getContacts().get(i).getFirstGroup(context).getId() + " id different a " + contactList.getContacts().get(position).getFirstGroup(context).getId());
+                            System.out.println(contactManager.getContactList().get(i).getFirstGroup(context).getId() + " id different a " + contactManager.getContactList().get(position).getFirstGroup(context).getId());
                         }
                     }
                 }
@@ -587,17 +583,17 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     }
 
     public ContactWithAllInformation getItem(int position) {
-        return contactList.getContacts().get(position);
+        return contactManager.getContactList().get(position);
     }
 
     public void removeItem(int position) {
-        contactList.getContacts().remove(position);
+        contactManager.getContactList().remove(position);
         notifyItemRemoved(position);
     }
 
     @Override
     public int getItemCount() {
-        return contactList.getContacts().size();
+        return contactManager.getContactList().size();
     }
     @Override
     public long getItemId(int position) {

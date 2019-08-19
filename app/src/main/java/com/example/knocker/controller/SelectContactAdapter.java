@@ -24,8 +24,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.knocker.R;
 import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
-import com.example.knocker.model.ContactList;
-import com.example.knocker.model.ContactsRoomDatabase;
+import com.example.knocker.model.ContactManager;
 import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
@@ -35,16 +34,16 @@ import java.util.ArrayList;
 
 public class SelectContactAdapter extends BaseAdapter {
 
-    private ContactList gestionnaireContact;
+    private ContactManager gestionnaireContact;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
     private ArrayList<ContactWithAllInformation> listSelectedItem;
     private Boolean secondClick = true;
 
-    public SelectContactAdapter(Context context, ContactList contactList, Integer len, Boolean isNull) {
+    public SelectContactAdapter(Context context, ContactManager contactManager, Integer len, Boolean isNull) {
         this.context = context;
-        this.gestionnaireContact = contactList;
+        this.gestionnaireContact = contactManager;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
         listSelectedItem = new ArrayList<>();
@@ -52,12 +51,12 @@ public class SelectContactAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return gestionnaireContact.getContacts().size();
+        return gestionnaireContact.getContactList().size();
     }
 
     @Override
     public ContactWithAllInformation getItem(int position) {
-        return gestionnaireContact.getContacts().get(position);
+        return gestionnaireContact.getContactList().get(position);
     }
 
     @Override

@@ -28,14 +28,14 @@ interface ContactDetailsDao {
     fun getMailById(id: Int?): ContactDetailDB
 
     /**
-     * Récupère tout les [contacts details][ContactDetailDB] de la table.
+     * Récupère tout les [contactList details][ContactDetailDB] de la table.
      * @return List&lt[ContactDetailDB]&gt
      */
     @Query("SELECT * FROM contact_details_table")
     fun getAllpropertiesEditContact(): List<ContactDetailDB>
 
     /**
-     * Récupère tout les [contacts details][ContactDetailDB] que possède un contact mail grâce à son id.
+     * Récupère tout les [contactList details][ContactDetailDB] que possède un contact mail grâce à son id.
      * @param contactID Int     Id du contact sélectionné
      * @return List&lt[ContactDetailDB]&gt
      */
@@ -43,7 +43,7 @@ interface ContactDetailsDao {
     fun getDetailsForAContact(contactID: Int): List<ContactDetailDB>
 
     /**
-     * Update un [contacts details][ContactDetailDB] grâce à son id.
+     * Update un [contactList details][ContactDetailDB] grâce à son id.
      * @param id Int            Id du contact sélectionné
      * @param contactDetail     détail du contact (mail, numéro de tel, etc...)
      */

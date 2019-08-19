@@ -70,14 +70,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val thread = Thread {
                 val timeWhenLaunch = System.currentTimeMillis()
-                while (isOpen && System.currentTimeMillis() - timeWhenLaunch < 45 * 1000) {
+                while (isOpen && System.currentTimeMillis() - timeWhenLaunch < 10 * 1000) {
                     vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
                     Thread.sleep(1000)
                     println("test")
                 }
-                if (System.currentTimeMillis() - timeWhenLaunch > 10 * 1000) {
                     finish()
-                }
+
             }
             thread.start()
         } else {
@@ -92,20 +91,20 @@ class NotificationAlarmActivity : AppCompatActivity() {
         }
 
         notification_Alarm_Button_response!!.setOnClickListener {
-            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-            val fullWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, "Loneworker - FULL WAKE LOCK")
-            val partialWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PowerManager.PARTIAL_WAKE_LOCK")
+            //val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+            //val fullWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, "Loneworker - FULL WAKE LOCK")
+           // val partialWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PowerManager.PARTIAL_WAKE_LOCK")
 
             println("app notifier " + sbp.appNotifier)
             val intent = packageManager.getLaunchIntentForPackage(sbp.appNotifier)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            if (fullWakeLock.isHeld()) {
+            /*if (fullWakeLock.isHeld()) {
                 fullWakeLock.release()
             }
             if (partialWakeLock.isHeld()) {
                 partialWakeLock.release()
-            }
+            }*/
             isOpen = false
             finish()
             // sound.stop()

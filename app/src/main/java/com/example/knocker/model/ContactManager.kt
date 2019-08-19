@@ -24,10 +24,10 @@ import java.util.concurrent.Executors
 
 
 /**
- * La Classe qui contient toute les fonctions qui touche à la synchronisation des contacts, les filtre et searchbar
+ * La Classe qui contient toute les fonctions qui touche à la synchronisation des contactList, les filtre et searchbar
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var context: Context) {
+class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var context: Context) {
     constructor(context: Context) : this(arrayListOf<ContactWithAllInformation>(), context)
 
     private var mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -36,7 +36,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     init {
         mDbWorkerThread.start()
         contactsDatabase = ContactsRoomDatabase.getDatabase(context)
-        if (contacts.isEmpty()) {
+        if (contactList.isEmpty()) {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
             val callDb = Callable {
                 contactsDatabase!!.contactsDao()
@@ -46,57 +46,20 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             val tmp: ArrayList<ContactWithAllInformation> = arrayListOf()
             tmp.addAll(result.get())
             if (tmp.isEmpty()) {
-                contacts = buildContactListFromJson(context)
+                contactList = buildContactListFromJson(context)
             } else {
-                contacts = tmp
+                contactList = tmp
             }
         }
     }
 
-    /*fun synchronizedList() {
-
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase!!.contactsDao().getContactAllInfo() }
-        val result = executorService.submit(callDb)
-        println("result knocker" + result.get())
-        contacts.addAll(result.get())
-        //TODO verifiy with Ryan
-
-    }*/
-
-    /*fun getDetailsOfPlatform(name: String, platform: String): String {
-        // on init WorkerThread
-
-
-        var info = "Platform Error"
-        when (platform) {
-            "message" -> {
-                info = getPhoneNumberWithName(name)
-            }
-        }
-        return info
-    }
-
-    fun getPhoneNumberWithName(name: String): String {
-        var info = "Name Error"
-        if (name.contains(" ")) {
-            contacts.forEach { dbContact ->
-                if (dbContact.contactDB!!.firstName + " " + dbContact.contactDB!!.lastName == name) {
-                    info = dbContact.contactDetailList!!.get(0).content.dropLast(1)
-                }
-            }
-        } else {
-            contacts.forEach { dbContact ->
-                if (dbContact.contactDB!!.firstName == name && dbContact.contactDB!!.lastName == "" || dbContact.contactDB!!.firstName == "" && dbContact.contactDB!!.lastName == name) {
-                    info = dbContact.contactDetailList!!.get(0).content.dropLast(1)
-                }
-            }
-        }
-        return info
-    }
-*/
+    /**
+     * Renvoie le contact dont on a passé en paramètre l'id
+     * @param id Int
+     * @return [ContactWithAllInformation]
+     */
     fun getContactById(id: Int): ContactWithAllInformation? {
-        for (contact in this.contacts) {
+        for (contact in this.contactList) {
             if (contact.contactDB!!.id == id) {
                 return contact
             }
@@ -104,15 +67,15 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return null
     }
 
-//region SortContact
+//region SortContact Toutes les méthodes nous permetttant de trier les contacts
     fun sortContactByFirstNameAZ() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
         val result = executorService.submit(callDb)
         val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
-        listChangement.retainAll(contacts)
-        contacts = listChangement
+        listChangement.retainAll(contactList)
+        contactList = listChangement
     }
 
     fun sortContactByLastname() {
@@ -121,8 +84,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val result = executorService.submit(callDb)
         val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
-        listChangement.retainAll(contacts)
-        contacts = listChangement
+        listChangement.retainAll(contactList)
+        contactList = listChangement
     }
 
     fun sortContactByPriority() {
@@ -131,8 +94,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val result = executorService.submit(callDb)
         val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
-        listChangement.retainAll(contacts)
-        contacts = listChangement
+        listChangement.retainAll(contactList)
+        contactList = listChangement
     }
 
     fun sortContactByFavorite() {
@@ -141,8 +104,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val result = executorService.submit(callDb)
         val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
         listChangement.addAll(result.get())
-        listChangement.retainAll(contacts)
-        contacts = listChangement
+        listChangement.retainAll(contactList)
+        contactList = listChangement
     }
 
     fun sortContactByGroup() {
@@ -163,21 +126,19 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         listOfContactWithGroup.removeAll(listTmp)
         listOfContactWithGroup.sortBy { it.getFirstGroup(context)?.name?.toUpperCase() }//selector(listChangement.get(i))}
         listChangement.removeAll(listOfContactWithGroup)
-        println("------------------------list group 2:--------------------------------------------------------------")
-        for (i in listOfContactWithGroup)
-            println("contact " + i.contactDB)
-        listChangement.addAll(0, listOfContactWithGroup)
-        contacts = listChangement
+        listChangement.addAll(0, listOfContactWithGroup)//ajouté à l'index 0 la liste de contact avec groupe
+        contactList = listChangement
     }
 
-    /*private fun selector(contact:ContactWithAllInformation):GroupDB?=contact.getFirstGroup(this.context)*/
 
 //endregion
-
+//region Filter
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
         var filter: List<ContactWithAllInformation>?
         //check si la list contient sms,mail ou rien
+        if (filterList.isEmpty())
+            return null
         if (filterList.contains("sms")) {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
             val callDb = Callable { contactsDatabase?.contactsDao()?.getContactWithPhoneNumber() }
@@ -196,8 +157,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                 allFilters.add(filter)
             }
         }
-        if (filterList.isEmpty())
-            return null
+
         var i = 0
         //contient plus de 1 filtre rentre dans le if, 0 filtre dans le else if , 1 filtre dans le else
         if (allFilters.size > 1) {
@@ -224,6 +184,18 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return filter
     }
 
+    fun getContactConcernByFilter(filterList: ArrayList<String>, name: String): List<ContactWithAllInformation> {
+        //get tout les contact en appliquant les filtres
+        val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
+        //get tout les contact en appliquant la searchbar
+        val contactList = getContactByName(name) //TODO inverser avec ligne 189
+        if (contactFilterList != null) {
+            //get uniquement les contact en commun dans les 2 list
+            return intersectContactWithAllInformation(contactList, contactFilterList)
+        }
+        return contactList
+    }
+    //endregion
     private fun getContactByName(name: String): List<ContactWithAllInformation> {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         var callDb = Callable { contactsDatabase?.contactsDao()?.getContactByName(name) }
@@ -279,17 +251,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return listContacts
     }
 
-    fun getContactConcernByFilter(filterList: ArrayList<String>, name: String): List<ContactWithAllInformation> {
-        //get tout les contact en appliquant les filtres
-        val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
-        //get tout les contact en appliquant la searchbar
-        val contactList = getContactByName(name)
-        if (contactFilterList != null) {
-            //get uniquement les contact en commun dans les 2 list
-            return intersectContactWithAllInformation(contactList, contactFilterList)
-        }
-        return contactList
-    }
+
 
 
     //region region Creation FakeContact
@@ -365,7 +327,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récuper les noms entier des contacts du carnet Android.
+     * fonction qui permet de récuper les noms entier des contactList du carnet Android.
      * @param main_contentResolver ContentResolver
      * @return List<Pair<Int, Triple<String, String, String>>>?
      */
@@ -373,7 +335,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val phoneContactsList = arrayListOf<Pair<Int, Triple<String, String, String>>>()
         var idAndName: Pair<Int, Triple<String, String, String>>
         var StructName: Triple<String, String, String>
-        //requete pour récuperer tout les nom/prénom complet contacts dans le carnet android
+        //requete pour récuperer tout les nom/prénom complet contactList dans le carnet android
         val phonecontact = main_contentResolver.query(ContactsContract.Data.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)
         if (phonecontact != null) {
             while (phonecontact.moveToNext()) {
@@ -447,7 +409,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récuper la photo des contacts du carnet Android.
+     * fonction qui permet de récuper la photo des contactList du carnet Android.
      * @param contactId Long
      * @param main_contentResolver ContentResolver
      * @return InputStream?
@@ -475,7 +437,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récuper les emails des contacts du carnet Android.
+     * fonction qui permet de récuper les emails des contactList du carnet Android.
      * @param main_contentResolver ContentResolver
      * @return List<Map<Int, Any>>
      */
@@ -507,14 +469,14 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récupérer les numéros de téléphone des contacts du carnet Android.
+     * fonction qui permet de récupérer les numéros de téléphone des contactList du carnet Android.
      * @param main_contentResolver ContentResolver
      * @return List<Map<Int, Any>>
      */
     private fun getPhoneNumberSync(main_contentResolver: ContentResolver): List<Map<Int, Any>> {
         val contactPhoneNumber = arrayListOf<Map<Int, Any>>()
         var idAndPhoneNumber: Map<Int, Any>
-        //requete pour récuperer les numéros de téléphone des contacts
+        //requete pour récuperer les numéros de téléphone des contactList
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
         while (phonecontact.moveToNext()) {
             //récupère l'id d'un contact
@@ -528,7 +490,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             if (phoneNumber == null)
                 phoneNumber = ""
             //on check si le contact possède une photo
-            if (phonePic == null || phonePic.contains("content://com.android.contacts/contacts/", ignoreCase = true)) {
+            if (phonePic == null || phonePic.contains("content://com.android.contactList/contactList/", ignoreCase = true)) {
                 phonePic = ""
             } else {
                 //on recupert la photo et on la converti en base64
@@ -540,7 +502,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             //on stocke toute les infos d'un contact dans idAndPhoneNumber
             idAndPhoneNumber = mapOf(1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to assignTagNumber(phoneTag.toInt()), 4 to phonePic, 5 to "phone")
             if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(idAndPhoneNumber, contactPhoneNumber)) {
-                //on ajoute le contact dans la liste des contacts
+                //on ajoute le contact dans la liste des contactList
                 contactPhoneNumber.add(idAndPhoneNumber)
             }
         }
@@ -611,7 +573,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de deserializer les contacts de la dernière sync.
+     * fonction qui permet de deserializer les contactList de la dernière sync.
      * @param lastSync String
      * @return List<Pair<Int, Int>>
      */
@@ -630,7 +592,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de deserializer les contacts de la dernière sync.
+     * fonction qui permet de deserializer les contactList de la dernière sync.
      * @param id Int
      * @param contactNumberAndPic List<Map<Int, Any>>
      * @return List<ContactDetailDB>
@@ -659,7 +621,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         return contactGroups
     }
 
-    private fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, gestionnaireContacts: ContactList) {
+    private fun createListContactsSync(phoneStructName: List<Pair<Int, Triple<String, String, String>>>?, contactNumberAndPic: List<Map<Int, Any>>, contactGroup: List<Triple<Int, String?, String?>>, gestionnaireContacts: ContactManager) {
         val phoneContactsList = arrayListOf<ContactDB>()
         val lastId = arrayListOf<Int>()
         val applicationContext = this.context
@@ -671,7 +633,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         var lastSyncId = ""
         var lastSync = ""
         val callDb = Callable {
-            //on récupère tout les contacts de la database
+            //on récupère tout les contactList de la database
             val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             var modifiedContact = 0
             //Pour chaque contact on va recuperer tout les numéro et email associé
@@ -692,7 +654,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                             if (fullName.second.second == "") {
                                 //on créé un objet ContactDB que l'on remplis avec les info récolté avant
                                 val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0)
-                                //on recupere la liste des contacts récuperer lors de la derniere synchro sous format idAndroid:id
+                                //on recupere la liste des contactList récuperer lors de la derniere synchro sous format idAndroid:id
                                 lastSync = sharedPreferences.getString("last_sync_2", "")!!
                                 //on regarde si on a pas deja enregistré le contact lors de la dernière synchro
                                 if (!isDuplicateContacts(fullName, lastSync)) {
@@ -788,7 +750,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
             contactsDatabase?.contactsDao()?.getContactAllInfo()
         }
         val syncContact = executorService.submit(callDb).get()
-        gestionnaireContacts.contacts.addAll(syncContact!!)
+        gestionnaireContacts.contactList.addAll(syncContact!!)
     }
 
     private fun deleteContactFromLastSync(lastSync: String, id: Int): String {
@@ -874,7 +836,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récuperer les numéro de téléphone des contacts du carnet Android.
+     * fonction qui permet de récuperer les numéro de téléphone des contactList du carnet Android.
      * @param main_contentResolver ContentResolver
      * @return List<Triple<Int, String?, String?>>
      */
@@ -951,11 +913,11 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     /**
-     * fonction qui permet de récuper tout les info des contacts du carnet Android.
+     * fonction qui permet de récuper tout les info des contactList du carnet Android.
      * @param main_contentResolver ContentResolver
      */
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver) {
-        //récupère le prénom et nom complet de tout les contacts
+        //récupère le prénom et nom complet de tout les contactList
         val phoneStructName = getStructuredNameSync(main_contentResolver)
         //récupère tout les numéros de téléphone et l'image de profil de chaque contact
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
@@ -965,8 +927,8 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
         val contactGroup = getContactGroupSync(main_contentResolver)
         //fusionne dans contactDetail la list contactNumberAndPic et contactMail
         val contactDetail = contactNumberAndPic.union(contactMail)
-        //clear la liste des contacts de la classe ContactList(ContactWithAllInformation)
-        contacts.clear()
+        //clear la liste des contactList de la classe ContactManager(ContactWithAllInformation)
+        contactList.clear()
         //fonction qui va stocker dans la database tout les element récuperé plus haut
         createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, this)
     }
@@ -994,7 +956,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     // get la priorité grace à la liste
     fun getContact(name: String): ContactWithAllInformation? {
         if (name.contains(" ")) {
-            this.contacts.forEach { dbContact ->
+            this.contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
                 if (contactInfo.firstName + " " + contactInfo.lastName == name || contactInfo.firstName == name || contactInfo.lastName == name) {
@@ -1002,7 +964,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
                 }
             }
         } else {
-            this.contacts.forEach { dbContact ->
+            this.contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
                     return dbContact
@@ -1014,14 +976,14 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
 
     fun getContactId(name: String): Int {
         if (name.contains(" ")) {
-            this.contacts.forEach { dbContact ->
+            this.contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
                 if (contactInfo.firstName + " " + contactInfo.lastName == name) {
                     return contactInfo.id!!
                 }
             }
         } else {
-            this.contacts.forEach { dbContact ->
+            this.contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
                 println("contact " + dbContact.contactDB.toString() + " name of contact =" + name)
@@ -1034,7 +996,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     fun getContactFromNumber(phoneNumber: String): ContactWithAllInformation? {
-        for (contact in this.contacts) {
+        for (contact in this.contactList) {
             if (PhoneNumberUtils.compare(contact.getFirstPhoneNumber(), phoneNumber)) {
                 return contact
             }
@@ -1043,7 +1005,7 @@ class ContactList(var contacts: ArrayList<ContactWithAllInformation>, var contex
     }
 
     fun setToContactInListPriority2() {
-        for (contact in this.contacts) {
+        for (contact in this.contactList) {
             val callDb = Callable {
                 //contactsDatabase!!.contactsDao().setPriority2(contact.getContactId())
                 contact.setPriority2(contactsDatabase)

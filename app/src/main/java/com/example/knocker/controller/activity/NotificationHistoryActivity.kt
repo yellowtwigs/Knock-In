@@ -21,9 +21,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationHistoryAdapter
 import com.example.knocker.controller.NotificationListener
-import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
@@ -161,7 +160,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //region ======================================== Listeners =========================================
 
         notification_history_ListView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val gestionnaireContacts = ContactList(this.applicationContext)
+            val gestionnaireContacts = ContactManager(this.applicationContext)
 
             val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
 

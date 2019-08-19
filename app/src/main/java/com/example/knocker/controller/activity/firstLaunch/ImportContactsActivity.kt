@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -57,7 +57,7 @@ class ImportContactsActivity : AppCompatActivity() {
                 import_contacts_Title!!.visibility = View.GONE
                 main_loadingPanel!!.visibility = View.VISIBLE
                 val sync = Runnable {
-                    ContactList(this).getAllContacsInfoSync(contentResolver)
+                    ContactManager(this).getAllContacsInfoSync(contentResolver)
                     intentToMain()
                 }
                 main_mDbWorkerThread.postTask(sync)

@@ -29,7 +29,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,7 +64,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_FixNumber: TextInputLayout? = null
     private var edit_contact_Mail: TextInputLayout? = null
 
-    private var gestionnaireContacts: ContactList? = null
+    private var gestionnaireContacts: ContactManager? = null
 
     private var edit_contact_RoundedImageView: CircularImageView? = null
     private var edit_contact_Priority: Spinner? = null
@@ -152,7 +151,7 @@ class EditContactActivity : AppCompatActivity() {
         val intent = intent
         edit_contact_id = intent.getIntExtra("ContactId", 1)
         fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
-        gestionnaireContacts = ContactList(this.applicationContext)
+        gestionnaireContacts = ContactManager(this.applicationContext)
 
         //endregion
 
@@ -191,7 +190,7 @@ class EditContactActivity : AppCompatActivity() {
         //TODO wash the code
         if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
 
-            val contactList = ContactList(this)
+            val contactList = ContactManager(this)
             val contact = contactList.getContactById(edit_contact_id!!)!!
             edit_contact_first_name = contact.contactDB!!.firstName
             edit_contact_last_name = contact.contactDB!!.lastName
@@ -487,7 +486,7 @@ class EditContactActivity : AppCompatActivity() {
 
         //endregion
 
-        val contactList = ContactList(this)
+        val contactList = ContactManager(this)
         val contact = contactList.getContactById(edit_contact_id!!)!!
 
         if (contact.contactDB!!.favorite == 1) {

@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.DbWorkerThread
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -237,7 +237,7 @@ class StartActivity : AppCompatActivity() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
                 val sync = Runnable {
-                    ContactList(this).getAllContacsInfoSync(contentResolver)
+                    ContactManager(this).getAllContacsInfoSync(contentResolver)
 
                     val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1

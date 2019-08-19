@@ -1,49 +1,24 @@
 package com.example.knocker.controller;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
 import com.example.knocker.controller.activity.EditContactActivity;
-import com.example.knocker.controller.activity.MainActivity;
-import com.example.knocker.controller.activity.MessengerActivity;
-import com.example.knocker.controller.activity.group.GroupActivity;
-import com.example.knocker.model.ContactGesture;
-import com.example.knocker.model.ContactList;
-import com.example.knocker.model.DbWorkerThread;
+import com.example.knocker.model.ContactManager;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
-import com.example.knocker.model.ModelDB.GroupDB;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static java.sql.DriverManager.println;
 
 /**
  * La Classe qui permet de remplir la RecyclerView avec les bon éléments
@@ -54,7 +29,7 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
     private List<ContactWithAllInformation> listContacts;
     private Context context;
     private View view;
-    private ContactList gestionnaireContacts;
+    private ContactManager gestionnaireContacts;
     private Boolean modeMultiSelect = false;
     private Boolean lastClick = false;
 
@@ -64,9 +39,9 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
 
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
-    public MessengerRecyclerViewAdapter(Context context, ContactList gestionnaireContacts) {
+    public MessengerRecyclerViewAdapter(Context context, ContactManager gestionnaireContacts) {
         this.context = context;
-        this.listContacts = gestionnaireContacts.getContacts();
+        this.listContacts = gestionnaireContacts.getContactList();
         this.gestionnaireContacts = gestionnaireContacts;
     }
 
@@ -89,7 +64,7 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
 
         View.OnLongClickListener longClick = v -> {
             view.setTag(holder);
-            ContactDB contact1 = gestionnaireContacts.getContacts().get(position).getContactDB();
+            ContactDB contact1 = gestionnaireContacts.getContactList().get(position).getContactDB();
             assert contact1 != null;
 
 //            if (context instanceof MessengerActivity) {

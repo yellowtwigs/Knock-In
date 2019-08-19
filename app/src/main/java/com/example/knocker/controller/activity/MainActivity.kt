@@ -1,8 +1,6 @@
 package com.example.knocker.controller.activity
 
 import android.Manifest
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
@@ -10,7 +8,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,7 +20,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -43,7 +39,7 @@ import com.example.knocker.controller.ContactGridViewAdapter
 import com.example.knocker.controller.ContactRecyclerViewAdapter
 import com.example.knocker.controller.NotificationListener
 import com.example.knocker.controller.activity.group.GroupManagerActivity
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.*
@@ -56,7 +52,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
- * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contacts
+ * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contactList
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -96,7 +92,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var main_BottomNavigationView: BottomNavigationView? = null
 
-    private var gestionnaireContacts: ContactList? = null
+    private var gestionnaireContacts: ContactManager? = null
     private var gridViewAdapter: ContactGridViewAdapter? = null
     private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
     private var main_layout: LinearLayout? = null
@@ -287,7 +283,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ========================================= Runnable =========================================
 
-        //affiche tout les contacts de la Database
+        //affiche tout les contactList de la Database
 
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
@@ -304,7 +300,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         main_GridView!!.numColumns = len // permet de changer
-        gestionnaireContacts = ContactList(this.applicationContext)
+        gestionnaireContacts = ContactManager(this.applicationContext)
 
         if (main_GridView != null) {
             when {
@@ -545,17 +541,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                     }
                                     val displaySync = Runnable {
                                         //on update soit la grid ou soit la list view en fonction de celle séléctionné
-                                        gestionnaireContacts!!.contacts.clear()
+                                        gestionnaireContacts!!.contactList.clear()
                                         val shareP = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                                         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
                                         if (shareP.getString("tri", "") == "priorite") {
                                             val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByPriority20() }
                                             val result = executorService.submit(callDb)
-                                            gestionnaireContacts!!.contacts.addAll(result.get())
+                                            gestionnaireContacts!!.contactList.addAll(result.get())
                                         } else {
                                             val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
                                             val result = executorService.submit(callDb)
-                                            gestionnaireContacts!!.contacts.addAll(result.get())
+                                            gestionnaireContacts!!.contactList.addAll(result.get())
                                         }
                                         gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
                                         gridViewAdapter!!.notifyDataSetChanged()
@@ -626,19 +622,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 //get le type d'affichage selectionné
                 val sharedPref = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val length = sharedPref.getInt("gridview", 4)
-                //on get la list des contacts en appliquant les filtres et la search bar
+                //on get la list des contactList en appliquant les filtres et la search bar
                 val filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                // on get la list des contacts en appliquant le tri
-                val contactListDb = ContactList(this@MainActivity)
+                // on get la list des contactList en appliquant le tri
+                val contactListDb = ContactManager(this@MainActivity)
                 if (sharedPref.getString("tri", "nom") == "nom") {
                     contactListDb.sortContactByFirstNameAZ()
-                    contactListDb.contacts.retainAll(filteredList)
+                    contactListDb.contactList.retainAll(filteredList)
                 } else {
                     contactListDb.sortContactByPriority()
-                    contactListDb.contacts.retainAll(filteredList)
+                    contactListDb.contactList.retainAll(filteredList)
                 }
-                gestionnaireContacts!!.contacts.clear()
-                gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                gestionnaireContacts!!.contactList.clear()
+                gestionnaireContacts!!.contactList.addAll(contactListDb.contactList)
                 //en fonction de l'affichage on update soit la grid soit la list view
                 if (length > 1) {
                     gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
@@ -796,10 +792,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     //on récup la taille de la gridview dans la sharedpref
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
-                    //on récup tout les contacts avec les filtres appliqués
+                    //on récup tout les contactList avec les filtres appliqués
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     // on regarde le quel tri est activé pour l'appliquer
-                    val contactListDb = ContactList(this)
+                    val contactListDb = ContactManager(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
                     } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
@@ -808,9 +804,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         contactListDb.sortContactByGroup()
                     }
                     //on garde uniquement les contact en commun avec les filtres et tris
-                    contactListDb.contacts.retainAll(filteredContact)
-                    gestionnaireContacts!!.contacts.clear()
-                    gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                    contactListDb.contactList.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.clear()
+                    gestionnaireContacts!!.contactList.addAll(contactListDb.contactList)
                     //on check si on est en grid ou list view pour savoir laquelle update
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
@@ -836,7 +832,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
-                    gestionnaireContacts!!.contacts.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.retainAll(filteredContact)
 
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
@@ -861,7 +857,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    val contactListDb = ContactList(this)
+                    val contactListDb = ContactManager(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
                     } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
@@ -869,9 +865,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     } else {
                         contactListDb.sortContactByGroup()
                     }
-                    contactListDb.contacts.retainAll(filteredContact)
-                    gestionnaireContacts!!.contacts.clear()
-                    gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                    contactListDb.contactList.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.clear()
+                    gestionnaireContacts!!.contactList.addAll(contactListDb.contactList)
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
@@ -895,7 +891,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
-                    gestionnaireContacts!!.contacts.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.retainAll(filteredContact)
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
@@ -1085,10 +1081,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_FloatingButtonAdd!!.visibility = View.GONE
         main_FloatingButtonSend!!.visibility = View.VISIBLE
 
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
         } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
         }
 
         verifiedContactsChannel(listOfItemSelected)
@@ -1164,11 +1160,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     fun longRecyclerItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
             verifiedContactsChannel(listOfItemSelected)
         } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
 
             main_FloatingButtonAdd!!.visibility = View.GONE
             main_FloatingButtonSend!!.visibility = View.VISIBLE

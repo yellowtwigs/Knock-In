@@ -22,16 +22,13 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.example.knocker.R
-import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.StatusBarParcelable
-import java.security.Timestamp
 import java.util.*
 
 
@@ -95,7 +92,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
         val sbp = getItem(position)
 
-        val gestionnaireContacts = ContactList(this.context)
+        val gestionnaireContacts = ContactManager(this.context)
         val contact = gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"].toString())
 
         val app = view!!.findViewById<View>(R.id.notification_adapter_platform) as TextView
@@ -274,10 +271,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             }
 
         })
-        val pckg = sbp.appNotifier
-        if (sbp.statusBarNotificationInfo["android.icon"] != null) {
+      /* if (sbp.statusBarNotificationInfo["android.icon"] != null) {
             val iconID = Integer.parseInt(sbp.statusBarNotificationInfo["android.icon"]!!.toString())
-        }
+        }*/
         try {
             val pckManager = context.packageManager
             val icon = pckManager.getApplicationIcon(sbp.appNotifier)
@@ -448,7 +444,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //            }
 //        }
 //        return null
-//    }//TODO : trouver une place pour toutes les méthodes des contacts
+//    }//TODO : trouver une place pour toutes les méthodes des contactList
 
     //endregion
 }

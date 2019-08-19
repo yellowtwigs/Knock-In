@@ -36,7 +36,7 @@ import com.example.knocker.controller.NotificationListener
 import com.example.knocker.controller.SelectContactAdapter
 import com.example.knocker.controller.activity.*
 import com.example.knocker.FirstLaunchActivity
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.*
@@ -76,7 +76,7 @@ class GroupActivity : AppCompatActivity() {
 
     private var group_BottomNavigationView: BottomNavigationView? = null
 
-    private var gestionnaireContacts: ContactList? = null
+    private var gestionnaireContacts: ContactManager? = null
     private var gridViewAdapter: ContactGridViewAdapter? = null
     private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
     private var main_layout: LinearLayout? = null
@@ -234,7 +234,7 @@ class GroupActivity : AppCompatActivity() {
 
         //region ========================================= Runnable =========================================
 
-        //affiche tout les contacts de la Database
+        //affiche tout les contactList de la Database
 
         group_GridView = findViewById(R.id.group_grid_view_id)
         group_RecyclerView = findViewById(R.id.group_recycler_view_id)
@@ -261,7 +261,7 @@ class GroupActivity : AppCompatActivity() {
         }
 
         group_GridView!!.numColumns = len // permet de changer
-        gestionnaireContacts = ContactList(this.applicationContext)
+        gestionnaireContacts = ContactManager(this.applicationContext)
 
         if (group_GridView != null) {
             when {
@@ -284,10 +284,10 @@ class GroupActivity : AppCompatActivity() {
                     adapter.itemSelected(position)
                     adapter.notifyDataSetChanged()
 
-                    if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-                        listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+                    if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+                        listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
                     } else {
-                        listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+                        listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
                     }
 
                     verifiedContactsChannel(listOfItemSelected)
@@ -403,7 +403,7 @@ class GroupActivity : AppCompatActivity() {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                     /////////////////////////////////////////////////////////////////
 
-                    //Synchronise tout les contacts du carnet android
+                    //Synchronise tout les contactList du carnet android
                     val displayLoading = Runnable {
                         main_loadingPanel!!.visibility = View.VISIBLE
                     }
@@ -440,17 +440,17 @@ class GroupActivity : AppCompatActivity() {
                                         group_ContactsDatabase!!.contactDetailsDao().insert(it)
                                     }
                                     val displaySync = Runnable {
-                                        gestionnaireContacts!!.contacts.clear()
+                                        gestionnaireContacts!!.contactList.clear()
                                         val sharedPreferences = applicationContext.getSharedPreferences("group", Context.MODE_PRIVATE)
                                         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
                                         if (sharedPreferences.getString("tri", "") == "priorite") {
                                             val callDb = Callable { group_ContactsDatabase!!.contactsDao().sortContactByPriority20() }
                                             val result = executorService.submit(callDb)
-                                            gestionnaireContacts!!.contacts.addAll(result.get())
+                                            gestionnaireContacts!!.contactList.addAll(result.get())
                                         } else {
                                             val callDb = Callable { group_ContactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
                                             val result = executorService.submit(callDb)
-                                            gestionnaireContacts!!.contacts.addAll(result.get())
+                                            gestionnaireContacts!!.contactList.addAll(result.get())
                                         }
                                         gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
                                         gridViewAdapter!!.notifyDataSetChanged()
@@ -460,7 +460,7 @@ class GroupActivity : AppCompatActivity() {
                                 .show()
                     }
                     //gestionnaireContacts!!.
-                    //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactList
+                    //ContactSync.getAllContact(contentResolver)//TODO put this code into ContactManager
                     //val len = sharedPreferences.getInt("gridview", 4)
                     /*  gridViewAdapter = ContactGridViewAdapter(applicationContext, gestionnaireContacts!!, len)
               group_GridView!!.adapter = gridViewAdapter
@@ -522,16 +522,16 @@ class GroupActivity : AppCompatActivity() {
                 val sharedPref = getSharedPreferences("group", Context.MODE_PRIVATE)
                 val length = sharedPref.getInt("gridview", 4)
                 val filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, group_search_bar_value)
-                val contactListDb = ContactList(this@GroupActivity)
+                val contactListDb = ContactManager(this@GroupActivity)
                 if (sharedPref.getString("tri", "nom") == "nom") {
                     contactListDb.sortContactByFirstNameAZ()
-                    contactListDb.contacts.retainAll(filteredList)
+                    contactListDb.contactList.retainAll(filteredList)
                 } else {
                     contactListDb.sortContactByPriority()
-                    contactListDb.contacts.retainAll(filteredList)
+                    contactListDb.contactList.retainAll(filteredList)
                 }
-                gestionnaireContacts!!.contacts.clear()
-                gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                gestionnaireContacts!!.contactList.clear()
+                gestionnaireContacts!!.contactList.addAll(contactListDb.contactList)
                 if (length > 1) {
                     gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, length)
                     group_GridView!!.adapter = gridViewAdapter
@@ -725,7 +725,7 @@ class GroupActivity : AppCompatActivity() {
                     val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, group_search_bar_value)
-                    val contactListDb = ContactList(this)
+                    val contactListDb = ContactManager(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
                     } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
@@ -733,9 +733,9 @@ class GroupActivity : AppCompatActivity() {
                     } else {
                         contactListDb.sortContactByGroup()
                     }
-                    contactListDb.contacts.retainAll(filteredContact)
-                    gestionnaireContacts!!.contacts.clear()
-                    gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                    contactListDb.contactList.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.clear()
+                    gestionnaireContacts!!.contactList.addAll(contactListDb.contactList)
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
@@ -759,7 +759,7 @@ class GroupActivity : AppCompatActivity() {
                     } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
-                    gestionnaireContacts!!.contacts.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.retainAll(filteredContact)
 
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
@@ -782,7 +782,7 @@ class GroupActivity : AppCompatActivity() {
                     val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, group_search_bar_value)
-                    val contactListDb = ContactList(this)
+                    val contactListDb = ContactManager(this)
                     if (sharedPreferences.getString("tri", "nom") == "nom") {
                         contactListDb.sortContactByFirstNameAZ()
                     } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
@@ -790,9 +790,9 @@ class GroupActivity : AppCompatActivity() {
                     } else {
                         contactListDb.sortContactByGroup()
                     }
-                    contactListDb.contacts.retainAll(filteredContact)
-                    gestionnaireContacts!!.contacts.clear()
-                    gestionnaireContacts!!.contacts.addAll(contactListDb.contacts)
+                    contactListDb.contactList.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.clear()
+                    gestionnaireContacts!!.contactList.addAll(contactListDb.contactList)
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
@@ -816,7 +816,7 @@ class GroupActivity : AppCompatActivity() {
                     } else {
                         gestionnaireContacts!!.sortContactByGroup()
                     }
-                    gestionnaireContacts!!.contacts.retainAll(filteredContact)
+                    gestionnaireContacts!!.contactList.retainAll(filteredContact)
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@GroupActivity, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
@@ -952,10 +952,10 @@ class GroupActivity : AppCompatActivity() {
         group_SearchBar!!.visibility = View.GONE
         firstClick = true
 
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
         } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
         }
 
         verifiedContactsChannel(listOfItemSelected)
@@ -1049,8 +1049,8 @@ class GroupActivity : AppCompatActivity() {
 
     fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
         if (!secondClickLibelle) {
-            if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-                listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+            if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+                listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
 
                 if (listOfItemSelected.size == 0) {
                     group_SearchBar!!.visibility = View.VISIBLE
@@ -1061,7 +1061,7 @@ class GroupActivity : AppCompatActivity() {
                 }
 
             } else {
-                listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+                listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
                 group_SearchBar!!.visibility = View.GONE
                 verifiedContactsChannel(listOfItemSelected)
             }
@@ -1090,8 +1090,8 @@ class GroupActivity : AppCompatActivity() {
     }
 
     fun recyclerItemClick(position: Int, fromLibelleClick: Boolean) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contacts[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contacts[position])
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
 
             verifiedContactsChannel(listOfItemSelected)
 
@@ -1105,7 +1105,7 @@ class GroupActivity : AppCompatActivity() {
                      firstClick = false
                  }*/
 
-                listOfItemSelected.add(gestionnaireContacts!!.contacts[position])
+                listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
                 verifiedContactsChannel(listOfItemSelected)
             }
 

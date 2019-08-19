@@ -1,40 +1,29 @@
 package com.example.knocker.controller.activity.group
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.graphics.Color
 import android.net.Uri
 import android.util.DisplayMetrics
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.knocker.R
-import com.example.knocker.controller.ContactGridViewAdapter
 import com.example.knocker.controller.activity.*
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.content_group.*
 
 class GroupManagerActivity : AppCompatActivity() {
 
@@ -55,7 +44,7 @@ class GroupManagerActivity : AppCompatActivity() {
 
     private var group_manager_RecyclerView: RecyclerView? = null
 
-    private var gestionnaireContacts: ContactList? = null
+    private var gestionnaireContacts: ContactManager? = null
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var firstClick: Boolean = true
@@ -188,8 +177,8 @@ class GroupManagerActivity : AppCompatActivity() {
 
         //region ======================================== Adapter ===========================================
 
-        gestionnaireContacts = ContactList(this)
-        gestionnaireContacts!!.contacts = listContactGroup
+        gestionnaireContacts = ContactManager(this)
+        gestionnaireContacts!!.contactList = listContactGroup
         if (len >= 3) {
             adpaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
@@ -263,12 +252,12 @@ class GroupManagerActivity : AppCompatActivity() {
 
     fun gridLongItemClick(position: Int) {
         if (listOfItemSelected.contains(
-                        gestionnaireContacts!!.contacts.get(position))) {
+                        gestionnaireContacts!!.contactList.get(position))) {
             listOfItemSelected.remove(
-                    gestionnaireContacts!!.contacts.get(position))
+                    gestionnaireContacts!!.contactList.get(position))
         } else {
             listOfItemSelected.add(
-                    gestionnaireContacts!!.contacts.get(position))
+                    gestionnaireContacts!!.contactList.get(position))
             verifiedContactsChannel(listOfItemSelected)
         }
 
@@ -343,8 +332,8 @@ class GroupManagerActivity : AppCompatActivity() {
             sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id))
             position += list.size
         }
-        gestionnaireContacts = ContactList(this)
-        gestionnaireContacts!!.contacts = listContactGroup
+        gestionnaireContacts = ContactManager(this)
+        gestionnaireContacts!!.contactList = listContactGroup
         if (len >= 3) {
             adpaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)

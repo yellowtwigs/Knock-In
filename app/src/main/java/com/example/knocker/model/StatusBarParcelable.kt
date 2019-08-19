@@ -10,13 +10,17 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import java.util.ArrayList
 import java.util.HashMap
 
+/**
+ * Classe qui correspond a StatusBarNotification(Qui nous permet d'avoir les attributs de la notification reçu) avec seulement les attributs utile pour notre application
+ * Et celle-ci nous permet de passer l'objet entre les activité
+ * @author Florian Striebel
+ */
 class StatusBarParcelable : Parcelable {
     private var id: Int = 0
-    var appNotifier: String? = ""
-    var tickerText: String? = ""
-    private var tailleList: Int = 0
-    val key = ArrayList<String>()
-
+    var appNotifier: String? = "" // application qui poste la notification
+    var tickerText: String? = "" // ex: Jean-Luc Paulin : Bonjour
+    private var tailleList: Int = 0 //Taille de la list contenant tous les champs de la notification
+    val key = ArrayList<String>() //List des clés des attributs de la notification
 
     val statusBarNotificationInfo = HashMap<String, Any>()
 
@@ -32,7 +36,7 @@ class StatusBarParcelable : Parcelable {
             val ticker = sbn.notification.tickerText
             Log.i(TAG, " $ticker est null")
         }
-        for (keySbn in sbn.notification.extras.keySet()) {
+        for (keySbn in sbn.notification.extras.keySet()) {//Extraction des clés de la sbn vers notre notre classe
             key.add(keySbn)
             if (sbn.notification.extras.get(keySbn) != null) {
                 statusBarNotificationInfo[keySbn] = sbn.notification.extras.get(keySbn)
@@ -50,6 +54,10 @@ class StatusBarParcelable : Parcelable {
         return 0
     }
 
+    /**
+     * Prend un objet StatusBarParcelable est met à l'interieur de l'objet parcel tous les attributs de l'objet
+     * Nous permet de passer l'objet entre les activités
+     */
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(id)
         dest.writeString(appNotifier)
@@ -68,6 +76,9 @@ class StatusBarParcelable : Parcelable {
         //dest.writeMap(statusBarNotificationInfo);
     }
 
+    /**
+     * Prend l'objet Parcel pour affecter les bonnes valeurs au StatusBarParcelable
+     */
     private constructor(`in`: Parcel) {
         id = `in`.readInt()
         appNotifier = `in`.readString()
@@ -84,6 +95,9 @@ class StatusBarParcelable : Parcelable {
         }
     }
 
+    /**
+     * Nous récupérons un nom de contact sans indication superflu
+     */
     private fun getContactNameFromString(): String {
         val pregMatchString = ".*\\([0-9]*\\)"
         val NameFromNotif: String = "" + this.statusBarNotificationInfo.get("android.title")
@@ -95,14 +109,24 @@ class StatusBarParcelable : Parcelable {
         }
     }
 
+    /**
+     * Change le numéro de téléphone par le nom et pr"énom du contact
+     */
     fun changeToContactName(contact: ContactWithAllInformation) {
         statusBarNotificationInfo.put("android.title", contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName)
     }
 
+    /**
+     * Enlève qui nous empecherais de reconnaitre un contact
+     */
     fun castName() {
         statusBarNotificationInfo.put("android.title", getContactNameFromString())
     }
 
+    /**
+     * Nous permet de récupérer l'objet statusBarParcelable depuis un intent
+     * Méthode non appellé par nous directement
+     */
     companion object CREATOR : Parcelable.Creator<StatusBarParcelable> {
         override fun createFromParcel(source: Parcel): StatusBarParcelable {
             return StatusBarParcelable(source)

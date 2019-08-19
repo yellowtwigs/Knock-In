@@ -55,7 +55,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_PhoneProperty: Spinner? = null
     private var add_new_contact_MailProperty: Spinner? = null
     private var add_new_contact_PriorityExplain: TextView? = null
-    private var gestionnaireContacts: ContactList? = null
+    private var gestionnaireContacts: ContactManager? = null
     private var avatar: Int = 0
 
     private var imageUri: Uri? = null
@@ -96,7 +96,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
-        gestionnaireContacts = ContactList(this.applicationContext)
+        gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ========================================== Toolbar =========================================
 
@@ -464,7 +464,7 @@ class AddNewContactActivity : AppCompatActivity() {
             }
         }
         return null
-    }//TODO : trouver une place pour toutes les méthodes des contacts
+    }//TODO : trouver une place pour toutes les méthodes des contactList
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)

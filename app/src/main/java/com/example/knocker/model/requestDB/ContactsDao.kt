@@ -14,63 +14,63 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 @Dao
 interface ContactsDao {
     /**
-     * Récupère les [contacts][ContactWithAllInformation] trier par prénom A->Z
+     * Récupère les [contactList][ContactWithAllInformation] trier par prénom A->Z
      * @return List&lt[ContactWithAllInformation]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY first_name COLLATE NOCASE ASC")
     fun sortContactByFirstNameAZ(): List<ContactWithAllInformation>
 
     /**
-     * Récupère les [contacts][ContactDB] trier par prénom Z->A
+     * Récupère les [contactList][ContactDB] trier par prénom Z->A
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY first_name COLLATE NOCASE DESC")
     fun sortContactByFirstNameZA(): List<ContactWithAllInformation>
 
     /**
-     * Récupère les [contacts][ContactDB] trier par nom A->Z
+     * Récupère les [contactList][ContactDB] trier par nom A->Z
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY last_name COLLATE NOCASE ASC")
     fun sortContactByLastNameAZ(): List<ContactWithAllInformation>
 
     /**
-     * Récupère les [contacts][ContactDB] trier par nom Z->A
+     * Récupère les [contactList][ContactDB] trier par nom Z->A
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY last_name COLLATE NOCASE DESC")
     fun sortContactByLastNameZA(): List<ContactWithAllInformation>
 
     /**
-     * Récupere les [contacts][ContactDB] trier par priorité 0->2
+     * Récupere les [contactList][ContactDB] trier par priorité 0->2
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY contact_priority ASC")
     fun sortContactByPriority02(): List<ContactWithAllInformation>
 
     /**
-     * Récupere les [contacts][ContactDB] trier par priorité 2->0
+     * Récupere les [contactList][ContactDB] trier par priorité 2->0
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY contact_priority DESC,first_name COLLATE NOCASE ASC")
     fun sortContactByPriority20(): List<ContactWithAllInformation>
 
     /**
-     * Récupere les [contacts][ContactDB] trier par favoris
+     * Récupere les [contactList][ContactDB] trier par favoris
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY is_favorite DESC,first_name COLLATE NOCASE ASC")
     fun sortContactByFavorite(): List<ContactWithAllInformation>
 
     /**
-     * Récupere tout les [contacts][ContactDB] de la base de données
+     * Récupere tout les [contactList][ContactDB] de la base de données
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY id ASC")
     fun getAllContacts(): List<ContactDB>
 
     /**
-     * Récupere un [contacts][ContactWithAllInformation] grâce à son id
+     * Récupere un [contactList][ContactWithAllInformation] grâce à son id
      * @param id Int     Id du contact sélectionné
      * @return List&lt[ContactWithAllInformation]&gt
      */
@@ -78,7 +78,7 @@ interface ContactsDao {
     fun getContact(id: Int): ContactWithAllInformation
 
     /**
-     * Récupere les [contacts][ContactDB] grâce à leurs nom ou prénom (pour la searchbar)
+     * Récupere les [contactList][ContactDB] grâce à leurs nom ou prénom (pour la searchbar)
      * @param name String     nom ou prénom du contact
      * @return List&lt[ContactWithAllInformation]&gt
      */
@@ -86,7 +86,7 @@ interface ContactsDao {
     fun getContactByName(name: String): List<ContactWithAllInformation>
 
     /**
-     * Sauvegarde dans la base de données un [contacts][ContactDB]
+     * Sauvegarde dans la base de données un [contactList][ContactDB]
      * @param contactDB ContactDB     Objet [Contact][ContactDB]
      * @return Long id du contact qu'on va sauvegarder
      */
@@ -130,7 +130,7 @@ interface ContactsDao {
     fun updateContactByIdSync(id: Int, firstName: String, lastName: String)
 
     /**
-     * Supprime un [contacts][ContactDB] grâce à son id
+     * Supprime un [contactList][ContactDB] grâce à son id
      * @param id Int     Id du contact sélectionné
      */
 
@@ -162,27 +162,27 @@ interface ContactsDao {
     fun deleteContactById(id: Int)
 
     /**
-     * Supprime tout les [contacts][ContactDB] de la base de données
+     * Supprime tout les [contactList][ContactDB] de la base de données
      */
     @Query("DELETE FROM contacts_table")
     fun deleteAll()
 
     /**
-     * Récupere les [contacts][ContactWithAllInformation] qui possèdent un mail
+     * Récupere les [contactList][ContactWithAllInformation] qui possèdent un mail
      * @return List&lt[ContactWithAllInformation]&gt
      */
     @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE type='mail'")
     fun getContactWithMail(): List<ContactWithAllInformation>
 
     /**
-     * Récupere les [contacts][ContactWithAllInformation] qui possèdent un numéro de téléphone
+     * Récupere les [contactList][ContactWithAllInformation] qui possèdent un numéro de téléphone
      * @return List&lt[ContactWithAllInformation]&gt
      */
     @Query("SELECT contacts_table.* FROM contacts_table INNER JOIN contact_details_table ON contact_details_table.id_contact = contacts_table.id WHERE type='phone'")
     fun getContactWithPhoneNumber(): List<ContactWithAllInformation>
 
     /**
-     * Récupere les [contacts][ContactDB]
+     * Récupere les [contactList][ContactDB]
      * @return List&lt[ContactWithAllInformation]&gt
      */
     @Query("SELECT * FROM contacts_table")

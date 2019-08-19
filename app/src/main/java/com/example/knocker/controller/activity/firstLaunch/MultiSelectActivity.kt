@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.SelectContactAdapter
 import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.model.ContactList
+import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -23,7 +23,7 @@ class MultiSelectActivity : AppCompatActivity() {
     //region ========================================= Var or Val ===========================================
 
     private var multi_select_gridView: GridView? = null
-    private var gestionnaireContact: ContactList? = null
+    private var gestionnaireContact: ContactManager? = null
     private var multi_select_textView: TextView? = null
     private var activityVisible: Boolean = true
     private var adapter: SelectContactAdapter? = null
@@ -49,7 +49,7 @@ class MultiSelectActivity : AppCompatActivity() {
 
         multi_select_gridView = findViewById(R.id.multiSelect_gridView)
         multi_select_textView = findViewById(R.id.multiSelect_Tv_nb_contact)
-        gestionnaireContact = ContactList(this)
+        gestionnaireContact = ContactManager(this)
 
         //endregion
 
@@ -92,7 +92,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 .setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                    val gestionnaireContact = ContactList(contactList, this)
+                    val gestionnaireContact = ContactManager(contactList, this)
                     if (contactList.isNotEmpty()) {
                         gestionnaireContact.setToContactInListPriority2()
                     }

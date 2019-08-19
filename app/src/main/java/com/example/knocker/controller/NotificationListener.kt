@@ -18,10 +18,8 @@ import com.example.knocker.controller.activity.NotificationAlarmActivity
 import com.example.knocker.model.*
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.NotificationDB
-import java.util.*
 import kotlin.collections.ArrayList
 import android.util.DisplayMetrics
-import com.example.knocker.controller.activity.NotificationHistoryActivity
 
 /**
  * Service qui nous permet de traiter les notifications
@@ -42,8 +40,6 @@ class NotificationListener : NotificationListenerService() {
      */
     override fun onCreate() {
         super.onCreate()
-
-        println("on create")
         // on init WorkerThread
         notification_listener_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         notification_listener_mDbWorkerThread.start()
@@ -86,38 +82,34 @@ class NotificationListener : NotificationListenerService() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
         val sbp = StatusBarParcelable(sbn)
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
+
             sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val app = this.convertPackageToString(sbp.appNotifier!!)
 
-            val gestionnaireContact = ContactList(this)
+            val gestionnaireContact = ContactManager(this)
             val addNotification = Runnable {
-                val notification = saveNotfication(sbp,
-                        gestionnaireContact.getContactId(name))
                 val contact: ContactWithAllInformation?
-
+                //region Permet de Changer un numéro de téléphone en Prenom Nom
+                if (isPhoneNumber(name)) {
+                    println("is a phone number")
+                    contact = gestionnaireContact.getContactFromNumber(name)
+                    if (contact != null)
+                        sbp.changeToContactName(contact)
+                } else {
+                    println("not a phone number")
+                    contact = gestionnaireContact.getContactWithName(name, app)
+                }
+                //endregion
+                val notification = saveNotification(sbp,gestionnaireContact.getContactId(name))
                 if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier != "com.samsung.android.incallui") {
-                    if (notification.platform != this.packageName) {
-                        notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
+                    notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
 
-                    }
-                    if (isPhoneNumber(name)) {
-                        println("is a phone number")
-                        contact = gestionnaireContact.getContactFromNumber(name)
-                        if (contact != null)
-                            sbp.changeToContactName(contact)
-                    } else {
-                        println("not a phone number")
-                        contact = gestionnaireContact.getContactWithName(name, app)
-                    }
                     if (contact != null) {
-
-                        println("I know this contact$contact")
                         when {
                             contact.contactDB!!.contactPriority == 2 -> {
                                 val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
                                 if (screenListener.isKeyguardLocked) {
-                                    println("screenIsLocked")
                                     val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
                                     i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                     i.putExtra("notification", sbp)
@@ -189,7 +181,7 @@ class NotificationListener : NotificationListenerService() {
      * Crée une notification qui sera sauvegardé
      *
      */
-    private fun saveNotfication(sbp: StatusBarParcelable, contactId: Int): NotificationDB? {
+    private fun saveNotification(sbp: StatusBarParcelable, contactId: Int): NotificationDB? {
         if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"] != null) {
 
             return NotificationDB(null,
@@ -204,12 +196,17 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 
+    /**
+     * Nous permet de reconnaitre un message inutile
+     *  @param sbp StatusBarParcelable       La notification reçu
+     *  @return Boolean
+     */
     private fun messagesNotUseless(sbp: StatusBarParcelable): Boolean {
         val pregMatchString = resources.getString(R.string.new_messages)
         return !(sbp.statusBarNotificationInfo["android.title"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
                 or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
                 or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase().contains(pregMatchString.toLowerCase())
-                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Chat heads active")
+                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Chat heads active")//Passer ces messages dans des strings
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Messenger")
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
     }
@@ -218,7 +215,7 @@ class NotificationListener : NotificationListenerService() {
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             //this.cancelNotification(sbn.key)
 
-            if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//si nous avons déjà afficher nous ne rentrons pas ici.
+            if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//SharedPref nous permet de savoir si l'adapter a fermé la notification
                 popupView = null
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                 edit.putBoolean("view", true)
@@ -246,6 +243,7 @@ class NotificationListener : NotificationListenerService() {
         parameters.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
         val popupDropable = popupView!!.findViewById<ConstraintLayout>(R.id.notification_dropable)
         val popupContainer = popupView!!.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
