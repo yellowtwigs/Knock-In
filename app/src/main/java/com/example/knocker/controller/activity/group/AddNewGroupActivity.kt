@@ -59,7 +59,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         //endregion
 
 
-        var allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
+        val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
         createGroupAdapter = AddContactToGroupAdapter(this, allContact)
         addNewGroupListView!!.adapter = createGroupAdapter
     }
@@ -91,7 +91,7 @@ class AddNewGroupActivity : AppCompatActivity() {
     }
 
     private fun addToGroup(listContact: List<ContactDB>, name: String) {
-        val group = GroupDB(null, name, "")
+        val group = GroupDB(null, name, "", -500138)
 
         var counter = 0
         var alreadyExist = false

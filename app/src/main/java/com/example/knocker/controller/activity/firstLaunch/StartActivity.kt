@@ -24,6 +24,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
+import com.example.knocker.controller.activity.TutorialActivity
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
@@ -302,7 +303,7 @@ class StartActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.alert_dialog_no)
                 { _, _ ->
                     closeContextMenu()
-                    val intent = Intent(this@StartActivity, MainActivity::class.java)
+                    val intent = Intent(this@StartActivity, TutorialActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     finish()
@@ -322,7 +323,7 @@ class StartActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
                 .setMessage(message)
                 .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                    val intent = Intent(this@StartActivity, MainActivity::class.java)
+                    val intent = Intent(this@StartActivity, TutorialActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)

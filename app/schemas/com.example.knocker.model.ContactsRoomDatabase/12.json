@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 12,
-    "identityHash": "2929ac9bfe889ddc86a8d99c98c64cbb",
+    "identityHash": "d9690a2831a6f68a7839bb0d77958531",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -130,7 +130,7 @@
       },
       {
         "tableName": "groups_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `profile_picture_str` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `profile_picture_str` TEXT NOT NULL, `section_color` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -148,6 +148,12 @@
             "fieldPath": "profilePicture",
             "columnName": "profile_picture_str",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "section_color",
+            "columnName": "section_color",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -286,7 +292,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2929ac9bfe889ddc86a8d99c98c64cbb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd9690a2831a6f68a7839bb0d77958531')"
     ]
   }
 }

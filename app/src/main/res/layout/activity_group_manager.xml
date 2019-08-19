@@ -50,7 +50,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_toEndOf="@+id/group_manager_open_drawer"
                     android:text="Group Manager"
-                    android:textSize="23sp"/>
+                    android:textSize="20sp"/>
 
                 <!--<androidx.appcompat.widget.AppCompatImageView-->
                     <!--android:id="@+id/group_manager_favorite"-->

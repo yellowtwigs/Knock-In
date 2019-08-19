@@ -42,6 +42,11 @@ class TutorialActivity : AppCompatActivity() {
         tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_3)!!)
         tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_4)!!)
         tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_5)!!)
+        tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1)!!)
+        tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2)!!)
+        tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
+        tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4)!!)
+        tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
 
         //region ========================================= Adapter ==========================================
 

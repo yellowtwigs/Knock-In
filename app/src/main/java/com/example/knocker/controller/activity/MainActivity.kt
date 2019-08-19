@@ -1270,7 +1270,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val executorService: ExecutorService = Executors.newFixedThreadPool(1)
                     val callDb = Callable {
                         if (listContacts.size != 0) {
-                            val group = GroupDB(null, nameGroup, "")
+                            val group = GroupDB(null, nameGroup, "", -500138)
                             val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
                             for (contact in listContacts) {
                                 val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())

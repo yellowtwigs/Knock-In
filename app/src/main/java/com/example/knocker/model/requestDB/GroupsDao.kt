@@ -32,23 +32,26 @@ interface GroupsDao {
     @Query("SELECT * FROM groups_table WHERE id = :id")
     fun getGroup(id: Int): GroupDB
 
-
     @Query("SELECT * FROM groups_table WHERE id = :id")
     fun getGroupWithContact(id: Int): GroupWithContact
 
-    @Query("SELECT * FROM groups_table INNER JOIN link_contact_group_table ON groups_table.id=link_contact_group_table.id_group WHERE id_contact=:contactId")
-    fun getGroupForContact(contactId:Int): List<GroupDB>
+    @Query("SELECT * FROM groups_table INNER JOIN link_contact_group_table ON groups_table.id = link_contact_group_table.id_group WHERE id_contact = :contactId")
+    fun getGroupForContact(contactId: Int): List<GroupDB>
 
 
     //get nb of member in a group
 
     //insert le groupe dans la database
     @Insert
-    fun insert(groups: GroupDB):Long?
+    fun insert(groups: GroupDB): Long?
 
-    //update un groupe grace à son id
-    @Query("UPDATE groups_table SET name = :name, profile_picture_str = :profilePicture")
-    fun updateGroupeById(name: String, profilePicture: String)
+    //update le nom du groupe grâce à son id
+    @Query("UPDATE groups_table SET name = :name WHERE id = :id")
+    fun updateGroupNameById(id: Int, name: String)
+
+    //update la section d'un groupe grâce à son id
+    @Query("UPDATE groups_table SET section_color = :section_color WHERE id = :id")
+    fun updateGroupSectionColorById(id: Int, section_color: Int)
 
     //delete un groupe grace à son id
     @Query("DELETE FROM groups_table WHERE id = :id")

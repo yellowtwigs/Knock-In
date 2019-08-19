@@ -484,7 +484,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     //region =========================================== Groups =============================================
 
     private fun createGroup(listContact: ArrayList<ContactDB?>, name: String) {
-        val group = GroupDB(null, name, "")
+        val group = GroupDB(null, name, "", -500138)
 
         val groupId = contact_details_ContactsDatabase!!.GroupsDao().insert(group)
         listContact.forEach {

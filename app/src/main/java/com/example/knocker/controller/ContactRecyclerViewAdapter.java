@@ -191,7 +191,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             group = firstGroup.getName();
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             assert roundedLayout != null;
-            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
+//            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
+            roundedLayout.setColorFilter(firstGroup.getSection_color(), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }
         if (len == 0) {
