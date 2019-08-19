@@ -42,7 +42,13 @@
         <activity android:name=".controller.activity.MessengerActivity" />
         <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.KnockerInfos" />
-        <activity android:name=".controller.activity.firstLaunch.StartActivity" />
+        <activity android:name=".controller.activity.firstLaunch.StartActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
         <activity android:name=".controller.activity.group.AddNewGroupActivity" />
         <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
         <activity android:name=".controller.activity.group.AddContactToGroupActivity" />
@@ -56,7 +62,7 @@
         <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
         <activity android:name=".controller.activity.group.GroupManagerActivity" />
         <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
-        <activity android:name=".FirstLaunchActivity"/>
+        <activity android:name=".FirstLaunchActivity" />
         <activity android:name=".controller.activity.PhoneLogActivity" />
         <activity android:name=".controller.activity.HelpActivity" />
         <activity android:name=".controller.activity.ManageMyScreenActivity" />
@@ -72,9 +78,9 @@
             android:configChanges="orientation|screenSize" />
         <activity android:name=".controller.activity.SplashScreenActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
