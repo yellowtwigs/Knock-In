@@ -57,29 +57,21 @@
             android:id="@+id/notification_alarm_floating_button_openMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="50dp"
             android:tint="@color/lightColor"
-            android:layout_marginEnd="50dp"
-            android:layout_toStartOf="@+id/notification_alarm_view"
             app:backgroundTint="#00dd00"
             app:icon="@drawable/ic_send"
             tools:ignore="RelativeOverlap" />
 
-        <view
-            android:id="@+id/notification_alarm_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/notification_alarm_floating_button_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
             android:tint="@color/lightColor"
-            android:layout_marginStart="50dp"
-            android:layout_toEndOf="@+id/notification_alarm_view"
             app:backgroundTint="#dd0000"
             app:icon="@drawable/ic_cross" />
     </RelativeLayout>

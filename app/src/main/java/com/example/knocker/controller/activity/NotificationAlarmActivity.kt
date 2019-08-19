@@ -37,8 +37,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         notification_Alarm_Content_TextView = findViewById(R.id.notification_alarm_description)
         notification_Alarm_Sender_TextView = findViewById(R.id.notification_alarm_contact)
-//        notification_Alarm_Button_close = findViewById(R.id.notification_alarm_floating_button_close)
-//        notification_Alarm_Button_response = findViewById(R.id.notification_alarm_floating_button_openMessage)
+        notification_Alarm_Button_close = findViewById(R.id.notification_alarm_floating_button_close)
+        notification_Alarm_Button_response = findViewById(R.id.notification_alarm_floating_button_openMessage)
 
         val sbp = intent.extras.get("notification") as StatusBarParcelable
         notification_alarm_sender = sbp.statusBarNotificationInfo.get("android.title") as String
