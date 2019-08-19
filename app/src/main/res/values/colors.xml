@@ -64,11 +64,12 @@
     <color name="priorityOneColor">@color/lightGreyColor</color>
     <color name="priorityTwoColor">@color/colorPrimary</color>
 
-    <color name="blue_tag_group">#303F9F</color>
-    <color name="red_tag_group">#D32F2F</color>
-    <color name="green_tag_group">#388E3C</color>
+    <color name="blue_tag_group">#0084FF</color>
+    <color name="red_tag_group">#d33400</color>
+    <color name="green_tag_group">#25D366</color>
     <color name="orange_tag_group">#FF9100</color>
-    <color name="yellow_tag_group">#FBC02D</color>
+    <color name="yellow_tag_group">#fcd74c</color>
+    <color name="purple_tag_group">#a282ff</color>
     <!-- endregion -->
 
 </resources>

@@ -50,23 +50,20 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
             @Override
             public void onClick(View v) {
                 System.out.println("click close");
-                String test=context.getString(R.string.edit_contact_alert_dialog_group_message);
                 new MaterialAlertDialogBuilder(context)
-                        .setTitle(R.string.edit_contact_alert_dialog_group_title)
-                        .setMessage(String.format(context.getString(R.string.edit_contact_alert_dialog_group_message),contact.getContactDB().getFirstName()+" "+contact.getContactDB().getLastName(),listGroup.get(position).getName()))
-                        .setPositiveButton(R.string.edit_contact_validate, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-                                DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-                                mDbWorkerThread.start();
-                                assert ContactsDatabase != null;
-                                ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(), Objects.requireNonNull(listGroup.get(position).getId()).intValue());
+                        .setTitle(R.string.delete_contact_from_group_alert_dialog_title)
+                        .setMessage(String.format(context.getString(R.string.delete_contact_from_group_alert_dialog_message), Objects.requireNonNull(contact.getContactDB()).getFirstName() + " " + contact.getContactDB().getLastName(), listGroup.get(position).getName()))
+                        .setPositiveButton(R.string.edit_contact_validate, (dialog, which) -> {
+                            ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+                            DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+                            mDbWorkerThread.start();
+                            assert ContactsDatabase != null;
+                            ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(), Objects.requireNonNull(listGroup.get(position).getId()).intValue());
 
-                                listGroup.remove(position);
-                                notifyDataSetChanged();
-                            }
+                            listGroup.remove(position);
+                            notifyDataSetChanged();
                         }).setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {
 
                     }
                 }).show();
@@ -76,7 +73,8 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         });
         Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);
         assert drawable != null;
-        drawable.setColorFilter(listGroup.get(position).randomColorGroup(context), PorterDuff.Mode.MULTIPLY);
+//        drawable.setColorFilter(listGroup.get(position).randomColorGroup(context), PorterDuff.Mode.MULTIPLY);
+        drawable.setColorFilter(listGroup.get(position).getSection_color(), PorterDuff.Mode.MULTIPLY);
         holder.layoutGroup.setBackground(drawable);
         holder.groupName.setText(listGroup.get(position).getName());
     }

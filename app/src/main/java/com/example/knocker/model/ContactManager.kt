@@ -614,7 +614,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         var linkAndGroup: GroupDB
         contactGroup.forEach {
             if (it.first == id) {
-                linkAndGroup = GroupDB(null, it.third!!, "")
+                linkAndGroup = GroupDB(null, it.third!!, "", -500138)
                 contactGroups.add(linkAndGroup)
             }
         }

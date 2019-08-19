@@ -13,7 +13,7 @@ import com.example.knocker.model.requestDB.*
  * La Classe qui permet de créer la base de données et de la garder à jour
  * @author Ryan Granet
  */
-@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class], version = 11)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class], version = 12)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -44,6 +44,7 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                         .addMigrations(MIGRATION_8_9)
                         .addMigrations(MIGRATION_9_10)
                         .addMigrations(MIGRATION_10_11)
+                        .addMigrations(MIGRATION_11_12)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -107,6 +108,13 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN is_favorite INTEGER DEFAULT 0 NOT NULL")
             }
         }
+
+        private val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE groups_table " + " ADD COLUMN section_color INTEGER DEFAULT -500074 NOT NULL")
+            }
+        }
+
         /*fun destroyInstance() {
             INSTANCE = null
         }*/

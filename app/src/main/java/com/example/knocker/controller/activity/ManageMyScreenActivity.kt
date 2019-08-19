@@ -13,6 +13,7 @@ import com.example.knocker.R
 import com.google.android.material.navigation.NavigationView
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -30,19 +31,19 @@ class ManageMyScreenActivity : AppCompatActivity() {
     //region ========================================== Val or Var ==========================================
 
     private var drawerLayout: DrawerLayout? = null
-    private var tv_zero: ImageView? = null
-    private var tv_one: ImageView? = null
-    private var tv_three: ImageView? = null
-    private var tv_four: ImageView? = null
-    private var tv_five: ImageView? = null
-    private var tv_six: ImageView? = null
+    private var tv_zero: AppCompatImageView? = null
+    private var tv_one: AppCompatImageView? = null
+    private var tv_three: AppCompatImageView? = null
+    private var tv_four: AppCompatImageView? = null
+    private var tv_five: AppCompatImageView? = null
+    private var tv_six: AppCompatImageView? = null
 
-  //  private var //tv_zero_group: ImageView? = null
- //   private var tv_one_group: ImageView? = null
-    private var tv_three_group: ImageView? = null
-    private var tv_four_group: ImageView? = null
-    private var tv_five_group: ImageView? = null
-    private var tv_six_group: ImageView? = null
+    //  private var //tv_zero_group: ImageView? = null
+    //   private var tv_one_group: ImageView? = null
+    private var tv_three_group: AppCompatImageView? = null
+    private var tv_four_group: AppCompatImageView? = null
+    private var tv_five_group: AppCompatImageView? = null
+    private var tv_six_group: AppCompatImageView? = null
     private var nbGrid: Int = 4
     private var nbGrid_group: Int = 4
 
@@ -92,8 +93,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
         tv_five = findViewById(R.id.activity_settings_imageView_5_contact)
         tv_six = findViewById(R.id.activity_settings_imageView_6_contact)
 
-       // //tv_zero_group = findViewById(R.id.activity_settings_imageView_0_contact_group)
-       // tv_one_group = findViewById(R.id.activity_settings_imageView_1_contact_group)
+        // //tv_zero_group = findViewById(R.id.activity_settings_imageView_0_contact_group)
+        // tv_one_group = findViewById(R.id.activity_settings_imageView_1_contact_group)
         tv_three_group = findViewById(R.id.activity_settings_imageView_3_contact_group)
         tv_four_group = findViewById(R.id.activity_settings_imageView_4_contact_group)
         tv_five_group = findViewById(R.id.activity_settings_imageView_5_contact_group)
@@ -203,8 +204,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
             6 -> tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
         }
         when (nbGrid_group) {
-           // 0 ->tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-         //   1 -> tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            // 0 ->tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
+            //   1 -> tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
             3 -> tv_three_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
             4 -> tv_four_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
             5 -> tv_five_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
@@ -335,7 +336,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
             //tv_zero_group!!.background = null
-           // tv_one_group!!.background = null
+            // tv_one_group!!.background = null
             tv_four_group!!.background = null
             tv_five_group!!.background = null
             tv_three_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
@@ -347,7 +348,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
             //tv_zero_group!!.background = null
-          //  tv_one_group!!.background = null
+            //  tv_one_group!!.background = null
             tv_three_group!!.background = null
             tv_five_group!!.background = null
             tv_six_group!!.background = null
@@ -359,7 +360,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
             Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
             //tv_zero_group!!.background = null
-           // tv_one_group!!.background = null
+            // tv_one_group!!.background = null
             tv_three_group!!.background = null
             tv_four_group!!.background = null
             tv_six_group!!.background = null

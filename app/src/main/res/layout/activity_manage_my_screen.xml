@@ -54,7 +54,6 @@
                 android:backgroundTint="?attr/backgroundColor"
                 android:orientation="vertical">
 
-
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/activity_settings_imageView_0_contact"
                     android:layout_width="70dp"
