@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.activity.*
@@ -24,8 +25,10 @@ import com.example.knocker.model.ModelDB.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.content_group.*
 
-class GroupManagerActivity : AppCompatActivity() {
+class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
+
 
     //region ========================================= Val or Var ===========================================
 
@@ -50,8 +53,9 @@ class GroupManagerActivity : AppCompatActivity() {
     private var firstClick: Boolean = true
 
     private var group_GridView: RecyclerView? = null
-    private var adpaterItem: GroupAdapter? = null
-
+    private var adapaterItem: GroupAdapter? = null
+    private var sectionAdapter:SectionGroupAdapter? = null
+    var touchHelper:ItemTouchHelper? =null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
@@ -180,15 +184,15 @@ class GroupManagerActivity : AppCompatActivity() {
         gestionnaireContacts = ContactManager(this)
         gestionnaireContacts!!.contactList = listContactGroup
         if (len >= 3) {
-            adpaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
+            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
         } else {
-            adpaterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
+            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
         }
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adpaterItem)
-        sectionAdapter.setSections(sections.toArray(sectionList))
+        sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapaterItem)
+        sectionAdapter!!.setSections(sections.toArray(sectionList))
         println("taille list group " + listContactGroup.size)
         group_manager_RecyclerView!!.adapter = sectionAdapter
 
@@ -244,12 +248,70 @@ class GroupManagerActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        group_manager_RecyclerView!!.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            adapaterItem!!.closeMenu()
+
+        }
+        touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+            override fun onMove(
+                    p0: RecyclerView,
+                    p1: RecyclerView.ViewHolder,
+                    p2: RecyclerView.ViewHolder
+            ): Boolean {
+                val sourcePosition = p1.adapterPosition
+                val targetPosition = p2.adapterPosition
+                //adapaterItem!!.contactManager.contactList.add(targetPosition,adapaterItem!!.getItem(sourcePosition))
+                println("Start Position"+sourcePosition)
+                println("last Position"+targetPosition)
+                return true
+            }
+
+            override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
+            }
+
+        })
+        touchHelper!!.attachToRecyclerView(group_manager_RecyclerView!!)
 
         //endregion
     }
 
     //region ========================================= Functions ============================================
 
+    fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
+        if (!secondClickLibelle) {
+            if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+                listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+
+                if (listOfItemSelected.size == 0) {
+                    group_manager_FloatingButtonSMS!!.visibility = View.GONE
+                    group_manager_FloatingButtonMail!!.visibility = View.GONE
+                    group_manager_FloatingButtonSend!!.visibility = View.GONE
+                }
+
+            } else {
+                listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+                verifiedContactsChannel(listOfItemSelected)
+            }
+
+            if (fromLibelleClick) {
+                firstClick = true
+            }
+        } else {
+            listOfItemSelected.clear()
+            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+            group_manager_FloatingButtonMail!!.visibility = View.GONE
+            group_manager_FloatingButtonSend!!.visibility = View.GONE
+        }
+
+
+        if (listOfItemSelected.size == 1 && firstClick) {
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+            firstClick = false
+        } else if (listOfItemSelected.size == 0) {
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            firstClick = true
+        }
+    }
     fun gridLongItemClick(position: Int) {
         if (listOfItemSelected.contains(
                         gestionnaireContacts!!.contactList.get(position))) {
@@ -335,14 +397,14 @@ class GroupManagerActivity : AppCompatActivity() {
         gestionnaireContacts = ContactManager(this)
         gestionnaireContacts!!.contactList = listContactGroup
         if (len >= 3) {
-            adpaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
+            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
         } else {
-            adpaterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
+            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
         }
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adpaterItem)
+        val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapaterItem)
         sectionAdapter.setSections(sections.toArray(sectionList))
         group_manager_RecyclerView!!.adapter = sectionAdapter
     }
@@ -366,6 +428,20 @@ class GroupManagerActivity : AppCompatActivity() {
         intent.putExtra(Intent.EXTRA_TEXT, "")
         startActivity(intent)
     }
+    override fun onDrawerStateChanged(newState: Int) {
+    }
+
+    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+        adapaterItem!!.closeMenu()
+    }
+
+    override fun onDrawerClosed(drawerView: View) {
+    }
+
+    override fun onDrawerOpened(drawerView: View) {
+        adapaterItem!!.closeMenu()
+    }
+
 
     //endregion
 }

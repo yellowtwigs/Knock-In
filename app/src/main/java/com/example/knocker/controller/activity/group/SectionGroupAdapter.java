@@ -202,6 +202,10 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 });
                 popupMenu.show();
             });
+
+            ((SectionViewHolder) sectionViewHolder).holderName.setOnClickListener(v -> {
+                ((GroupAdapter)mBaseAdapter).SetGroupClick(getGroupPosition(position));
+            });
         } else {
             // System.out.println("position non section"+position);
             mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position));
@@ -276,12 +280,21 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public int getPositionSection(int position) {
-        for (int i = 0; i > 0; i--) {
-            if (isSectionHeaderPosition(position)) {
-                return position;
+        for (int i = position; i > 0; i--) {
+            if (isSectionHeaderPosition(i)) {
+                return i;
             }
         }
         return 0;
+    }
+    public int getGroupPosition(int position){
+        int nbGroup =0;
+        for(int i=position; i>0;i--){
+            if(isSectionHeaderPosition(i)){
+                nbGroup++;
+            }
+        }
+        return nbGroup;
     }
 
     private int sectionedPositionToPosition(int sectionedPosition) {
