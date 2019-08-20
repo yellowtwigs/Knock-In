@@ -471,4 +471,10 @@
     <string name="start_activity_skip_alert_dialog_positive_button">Passer</string>
 
     <!-- endregion -->
+
+    <!-- region Group -->
+
+    <string name="group_name">groupe%s</string>
+    <string name="group_favorites">Favoris</string>
+    <!-- endregion -->
 </resources>

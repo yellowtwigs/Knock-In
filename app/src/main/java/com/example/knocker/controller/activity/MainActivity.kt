@@ -16,10 +16,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.DisplayMetrics
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -47,9 +44,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
 
 /**
  * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contactList
@@ -1246,53 +1245,191 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
-        val editText = EditText(this)
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            editText.setTextColor(resources.getColor(R.color.textColorLight))
-            editText.setHintTextColor(resources.getColor(R.color.greyColor));
+  
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        @SuppressLint("InflateParams") val alertView = inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
+
+        val edit_group_name_EditText = alertView.findViewById<AppCompatEditText>(R.id.manager_group_edit_group_view_edit)
+        val edit_group_name_AlertDialogTitle = alertView.findViewById<TextView>(R.id.manager_group_edit_group_alert_dialog_title)
+
+        val edit_group_name_RedTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_red)
+        val edit_group_name_BlueTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_blue)
+        val edit_group_name_GreenTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_green)
+        val edit_group_name_YellowTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_yellow)
+        val edit_group_name_OrangeTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_orange)
+        val edit_group_name_PurpleTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_purple)
+
+
+        edit_group_name_AlertDialogTitle.setText(this.getString(R.string.main_alert_dialog_group_title)
+                )
+
+        edit_group_name_EditText.setHint(getString(R.string.group_name).format(main_ContactsDatabase!!.GroupsDao().getIdNeverUsed()))
+
+        edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view)
+        var color=this.getColor(R.color.red_tag_group)
+        edit_group_name_RedTag.setOnClickListener { v1 ->
+            edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view)
+            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
+            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
+            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
+            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
+            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.red_tag_group)
         }
-        editText.hint = "group" + main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
+
+        edit_group_name_BlueTag.setOnClickListener { v1 ->
+            edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_image_view)
+            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
+            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
+            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
+            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
+            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.blue_tag_group)
+        }
+
+        edit_group_name_GreenTag.setOnClickListener { v1 ->
+            edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_image_view)
+            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
+            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
+            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
+            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
+            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.green_tag_group)
+        }
+
+        edit_group_name_YellowTag.setOnClickListener { v1 ->
+            edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_image_view)
+            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
+            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
+            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
+            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
+            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.yellow_tag_group)
+        }
+
+        edit_group_name_OrangeTag.setOnClickListener { v1 ->
+            edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_image_view)
+            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
+            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
+            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
+            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
+            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.orange_tag_group)
+        }
+
+        edit_group_name_PurpleTag.setOnClickListener { v1 ->
+            edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_image_view)
+            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
+            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
+            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
+            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
+            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.purple_tag_group)
+        }
+
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle(R.string.main_alert_dialog_group_title)
-                .setMessage(R.string.main_alert_dialog_group_subtitle)
-                .setBackground(getDrawable(R.color.backgroundColor))
-                .setView(editText)
-                .setNegativeButton(R.string.alert_dialog_no, null)
-                .setPositiveButton(R.string.alert_dialog_yes
-                ) { _, _ ->
-                    val nameGroup = if (editText.text.isNotEmpty()) {
-                        editText.text.toString()
+                .setView(alertView)
+                .setPositiveButton(R.string.alert_dialog_validate) { dialog, which ->
+                  /*  println("Name : " + Objects.requireNonNull<Editable>(edit_group_name_EditText.text).toString())
+                    println("Name : " + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup()!!.toInt()).name)
+                    println("Color : $color")
+*/                  var idGroup:Long=0
+                    if (edit_group_name_EditText.text!!.toString() == "Favorites") {
+                        Toast.makeText(this, "Vous ne pouvez pas donner favoris comme nom de groupe", Toast.LENGTH_LONG).show()
                     } else {
-                        editText.hint.toString()
-                    }
-                    println("name group$nameGroup")
-                    val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                    val callDb = Callable {
-                        if (listContacts.size != 0) {
-                            val group = GroupDB(null, nameGroup, "", -500138)
-                            val idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)
-                            for (contact in listContacts) {
-                                val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
-                                main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
+
+                        val nameGroup = if (edit_group_name_EditText.text.toString().isNotEmpty()) {
+                            edit_group_name_EditText.text.toString()
+                        } else {
+                            edit_group_name_EditText.hint.toString()
+                        }
+                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+                        val callDb = Callable {
+                            if (listContacts.size != 0) {
+                                val group = GroupDB(null, nameGroup, "", -500138)
+                                idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)!!
+                                for (contact in listContacts) {
+                                    val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
+                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
+                                }
                             }
                         }
+                        executorService.submit(callDb).get()!!
+                        //                                            Toast.makeText(this, "Vous avez modifié le nom de votre groupe", Toast.LENGTH_LONG).show();
                     }
-                    executorService.submit(callDb).get()!!
-                    if (len <= 1) {
-                        gestionnaireContacts!!.sortContactByGroup()
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
-                    } else {
-                        // gridViewAdapter!!.notifyDataSetChanged()
-                        gestionnaireContacts!!.sortContactByGroup()
-                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+
+                    if (color == 0) {
+                        val r = Random()
+                        val n = r.nextInt(7)
+
+                        when (n) {
+                            0 -> {
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                                color = this.getColor(R.color.green_tag_group)
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            1 -> {
+                                color = this.getColor(R.color.blue_tag_group)
+                                color = this.getColor(R.color.green_tag_group)
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            2 -> {
+                                color = this.getColor(R.color.green_tag_group)
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            3 -> {
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            4 -> {
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            5 -> {
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            6 -> {
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            else -> color = this.getColor(R.color.blue_tag_group)
+                        }
                     }
-                }.show()
+
+                    main_ContactsDatabase!!.GroupsDao().updateGroupSectionColorById(idGroup.toInt(), color)
+                    this.startActivity(Intent(this, GroupManagerActivity::class.java))
+                }
+                .setNegativeButton(R.string.alert_dialog_cancel) { dialog, which -> }
+                .show()
         gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
         main_GridView!!.adapter = gridViewAdapter
-        /*  main_FloatingButtonSend!!.visibility = View.GONE
+        /*main_FloatingButtonSend!!.visibility = View.GONE
           main_SearchBar!!.visibility = View.VISIBLE
           main_MailButton!!.visibility = View.GONE
           main_SMSButton!!.visibility = View.GONE

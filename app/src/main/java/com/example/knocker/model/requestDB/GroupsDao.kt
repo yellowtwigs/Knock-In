@@ -38,7 +38,6 @@ interface GroupsDao {
     @Query("SELECT * FROM groups_table INNER JOIN link_contact_group_table ON groups_table.id = link_contact_group_table.id_group WHERE id_contact = :contactId")
     fun getGroupForContact(contactId: Int): List<GroupDB>
 
-
     //get nb of member in a group
 
     //insert le groupe dans la database
@@ -60,4 +59,8 @@ interface GroupsDao {
     //delete tout les groupes de la database
     @Query("DELETE FROM groups_table")
     fun deleteAll()
+
+    @Query("SELECT MAX(id)  FROM groups_table")
+    fun getIdNeverUsed(): Int
+
 }
