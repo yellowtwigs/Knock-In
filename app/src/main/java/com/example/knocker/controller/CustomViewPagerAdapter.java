@@ -26,6 +26,7 @@ public class CustomViewPagerAdapter extends FragmentStatePagerAdapter {
         return listOfTuto.size();
     }
 
+
     /**
      * Return the Fragment associated with a specified position.
      *

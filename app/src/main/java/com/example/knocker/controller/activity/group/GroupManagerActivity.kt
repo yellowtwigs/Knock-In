@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.activity.*
+import com.example.knocker.controller.activity.firstLaunch.TutorialActivity
 import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.DbWorkerThread
@@ -25,9 +26,8 @@ import com.example.knocker.model.ModelDB.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.content_group.*
 
-class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
+class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 
     //region ========================================= Val or Var ===========================================
@@ -45,6 +45,8 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
 
     private var group_manager_FloatingButtonAddNewGroup: FloatingActionButton? = null
 
+    private var group_manager_ToolbarHelp: AppCompatImageView? = null
+
     private var group_manager_RecyclerView: RecyclerView? = null
 
     private var gestionnaireContacts: ContactManager? = null
@@ -54,8 +56,10 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
 
     private var group_GridView: RecyclerView? = null
     private var adapaterItem: GroupAdapter? = null
-    private var sectionAdapter:SectionGroupAdapter? = null
-    var touchHelper:ItemTouchHelper? =null
+    private var sectionAdapter: SectionGroupAdapter? = null
+
+    var touchHelper: ItemTouchHelper? = null
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
@@ -112,6 +116,8 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
         group_GridView = findViewById(R.id.group_manager_recycler_view)
 
         group_BottomNavigationView = findViewById(R.id.navigation)
+
+        group_manager_ToolbarHelp = findViewById(R.id.group_manager_toolbar_help)
 
         //endregion
 
@@ -204,6 +210,13 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
             group_manager_DrawerLayout!!.openDrawer(GravityCompat.START)
         }
 
+        group_manager_ToolbarHelp!!.setOnClickListener {
+            val intentToTuto = Intent(this@GroupManagerActivity, TutorialActivity::class.java)
+            intentToTuto.putExtra("fromGroupManagerActivity", true)
+            startActivity(intentToTuto)
+            finish()
+        }
+
         group_manager_FloatingButtonSend!!.setOnClickListener {
             val intent = Intent(this@GroupManagerActivity, MultiChannelActivity::class.java)
             val iterator: IntIterator?
@@ -250,8 +263,8 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
 
         group_manager_RecyclerView!!.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             adapaterItem!!.closeMenu()
-
         }
+
         touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
             override fun onMove(
                     p0: RecyclerView,
@@ -261,15 +274,15 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
                 val sourcePosition = p1.adapterPosition
                 val targetPosition = p2.adapterPosition
                 //adapaterItem!!.contactManager.contactList.add(targetPosition,adapaterItem!!.getItem(sourcePosition))
-                println("Start Position"+sourcePosition)
-                println("last Position"+targetPosition)
+                println("Start Position$sourcePosition")
+                println("last Position$targetPosition")
                 return true
             }
 
             override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
             }
-
         })
+
         touchHelper!!.attachToRecyclerView(group_manager_RecyclerView!!)
 
         //endregion
@@ -312,6 +325,7 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
             firstClick = true
         }
     }
+
     fun gridLongItemClick(position: Int) {
         if (listOfItemSelected.contains(
                         gestionnaireContacts!!.contactList.get(position))) {
@@ -335,7 +349,6 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
             firstClick = true
         }
     }
-
 
     private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
         val iterator = (0 until listOfItemSelected.size).iterator()
@@ -428,6 +441,7 @@ class GroupManagerActivity : AppCompatActivity(),DrawerLayout.DrawerListener  {
         intent.putExtra(Intent.EXTRA_TEXT, "")
         startActivity(intent)
     }
+
     override fun onDrawerStateChanged(newState: Int) {
     }
 

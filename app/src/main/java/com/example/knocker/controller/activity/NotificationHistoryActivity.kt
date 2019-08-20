@@ -26,6 +26,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationsHistoryListViewAdapter
 import com.example.knocker.controller.NotificationListener
+import com.example.knocker.controller.activity.firstLaunch.TutorialActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ContactsRoomDatabase
@@ -33,7 +34,6 @@ import com.example.knocker.model.DbWorkerThread
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.NotificationDB
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
 
@@ -407,11 +407,15 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(R.string.help)
-                        .setBackground(getDrawable(R.color.backgroundColor))
-                        .setMessage(this.resources.getString(R.string.help_notification_history))
-                        .show()
+//                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                        .setTitle(R.string.help)
+//                        .setBackground(getDrawable(R.color.backgroundColor))
+//                        .setMessage(this.resources.getString(R.string.help_notification_history))
+//                        .show()
+                val intentToTuto = Intent(this@NotificationHistoryActivity, TutorialActivity::class.java)
+                intentToTuto.putExtra("fromNotificationHistoryActivity", true)
+                startActivity(intentToTuto)
+                finish()
             }
             R.id.messagefilter -> {
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)

@@ -83,13 +83,9 @@
     <string name="main_content_edited_contact">Le contact </string>
     <string name="main_content_edited_contact_2"> a été changé\, souhaitez-vous garder la version du carnet d\'adresse d\'Android ou de Knocker ?</string>
     <string name="main_android_edited_contact">Android</string>
-    <string name="main_knocker_edited_contact">Knocker</string>
 
     <string name="main_contact_grid_title">Voulez-vous appeler ce contact ?</string>
     <string name="main_contact_grid_message">Vous pouvez désactiver cette validation depuis les options</string>
-
-    <string name="main_tutorial_alert_dialog_title">Fin du tutoriel</string>
-    <string name="main_tutorial_alert_dialog_message">Voulez-vous rejouer le tutoriel ?</string>
 
     <string name="main_delete_contact">Vous allez supprimer %1s</string>
 
@@ -476,5 +472,13 @@
 
     <string name="group_name">groupe%s</string>
     <string name="group_favorites">Favoris</string>
+
     <!-- endregion -->
+
+    <!-- region Tutorial Activity -->
+
+    <string name="tutorial_activity_skip">Passer</string>
+    <string name="tutorial_activity_back">Retour</string>
+
+    <!-- endregion-->
 </resources>

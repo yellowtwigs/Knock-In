@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#88646464"
-    tools:context=".controller.activity.TutorialActivity">
+    android:background="@color/backgroundColor"
+    tools:context=".controller.activity.firstLaunch.TutorialActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/backgroundColor">
 
         <androidx.viewpager.widget.ViewPager
@@ -25,11 +28,103 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_no_selected_1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
+            app:srcCompat="@drawable/ic_no_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_selected_1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
+            app:srcCompat="@drawable/ic_item_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_no_selected_2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_no_selected_1"
+            app:srcCompat="@drawable/ic_no_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_selected_2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_selected_1"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_item_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_no_selected_3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_no_selected_2"
+            app:srcCompat="@drawable/ic_no_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_selected_3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_selected_2"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_item_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_no_selected_4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_no_selected_3"
+            app:srcCompat="@drawable/ic_no_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_selected_4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_selected_3"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_item_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_no_selected_5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_no_selected_4"
+            app:srcCompat="@drawable/ic_no_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tutorial_selected_5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@+id/tutorial_selected_4"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_item_selected" />
+    </RelativeLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/tutorial_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="Skip"
-        android:layout_alignParentEnd="true" />
+        android:text="@string/tutorial_activity_skip" />
 </RelativeLayout>

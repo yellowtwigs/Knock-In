@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import com.example.knocker.R
-import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactManager
 import com.example.knocker.model.DbWorkerThread
 import com.google.android.material.button.MaterialButton
@@ -24,7 +23,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
-import com.example.knocker.controller.activity.TutorialActivity
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*

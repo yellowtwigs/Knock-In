@@ -37,7 +37,7 @@
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.TutorialActivity" />
+        <activity android:name=".controller.activity.firstLaunch.TutorialActivity" />
         <activity android:name=".controller.activity.ContactDetailsActivity" />
         <activity android:name=".controller.activity.MessengerActivity" />
         <activity android:name=".controller.activity.SettingsActivity" />
@@ -78,9 +78,9 @@
             android:configChanges="orientation|screenSize" />
         <activity android:name=".controller.activity.SplashScreenActivity">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity

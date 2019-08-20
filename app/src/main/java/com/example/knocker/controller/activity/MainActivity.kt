@@ -35,6 +35,7 @@ import com.example.knocker.R
 import com.example.knocker.controller.ContactGridViewAdapter
 import com.example.knocker.controller.ContactRecyclerViewAdapter
 import com.example.knocker.controller.NotificationListener
+import com.example.knocker.controller.activity.firstLaunch.TutorialActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ContactsRoomDatabase
@@ -391,11 +392,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         main_toolbar_Help!!.setOnClickListener {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(R.string.help)
-                    .setMessage(this.resources.getString(R.string.help_main))
-                    .setBackground(getDrawable(R.color.backgroundColor))
-                    .show()
+//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                    .setTitle(R.string.help)
+//                    .setMessage(this.resources.getString(R.string.help_main))
+//                    .setBackground(getDrawable(R.color.backgroundColor))
+//                    .show()
+            val intentToTuto = Intent(this@MainActivity, TutorialActivity::class.java)
+            intentToTuto.putExtra("fromMainActivity", true)
+            startActivity(intentToTuto)
+            finish()
         }
 
         main_FloatingButtonSend!!.setOnClickListener {

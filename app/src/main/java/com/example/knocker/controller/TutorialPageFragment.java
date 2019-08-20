@@ -32,7 +32,6 @@ public class TutorialPageFragment extends Fragment {
     private AppCompatImageView page_fragment_Images;
 
     private Drawable drawable;
-    private String title;
 
     public TutorialPageFragment(Drawable drawable) {
         this.drawable = drawable;
