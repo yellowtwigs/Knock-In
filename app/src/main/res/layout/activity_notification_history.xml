@@ -39,7 +39,7 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/notification_history_search_bar"
-                android:layout_width="185dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="12dp"
@@ -54,7 +54,70 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ListView
+        <RelativeLayout
+            android:id="@+id/notification_history_toolbar_multi_select_mode_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/backgroundColor"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_history_toolbar_multi_select_mode_close"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/notification_history_toolbar_multi_select_mode_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="35dp"
+                android:layout_toEndOf="@+id/notification_history_toolbar_multi_select_mode_close"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_history_toolbar_multi_select_mode_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/notification_history_toolbar_multi_select_mode_menu"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_garbage" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_history_toolbar_multi_select_mode_menu"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_toolbar_menu" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.05dp"
+                android:layout_alignParentBottom="true"
+                android:background="?attr/darkGreyColor" />
+
+        </RelativeLayout>
+
+        <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/listView_notification_history"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -71,8 +134,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:alpha="0.70"
-            android:fadingEdge="horizontal"
             android:background="?attr/backgroundColor"
+            android:fadingEdge="horizontal"
             android:fadingEdgeLength="20dp"
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
@@ -96,4 +159,5 @@
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
         app:menu="@menu/activity_main_drawer" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

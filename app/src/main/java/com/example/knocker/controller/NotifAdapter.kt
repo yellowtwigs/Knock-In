@@ -236,12 +236,21 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     }
                     "Message" -> {
                         if (checkPermission(Manifest.permission.SEND_SMS)) {
-                            sendMessageWithAndroidMessage(contact!!.getFirstPhoneNumber(), editText.text.toString())
+                            if (contact != null) {
+                                sendMessageWithAndroidMessage(contact.getFirstPhoneNumber(), editText.text.toString())
+                            } else {
+                                sendMessageWithAndroidMessage(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
+                            }
                             //closeNotificationPopup()
                         } else {
                             //TODO In english
                             Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knocker", Toast.LENGTH_LONG).show()
-                            openSms(contact!!.getFirstPhoneNumber(), editText.text.toString())
+
+                            if (contact != null) {
+                                openSms(contact.getFirstPhoneNumber(), editText.text.toString())
+                            } else {
+                                openSms(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
+                            }
                         }
                     }
                 }
@@ -271,9 +280,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             }
 
         })
-      /* if (sbp.statusBarNotificationInfo["android.icon"] != null) {
-            val iconID = Integer.parseInt(sbp.statusBarNotificationInfo["android.icon"]!!.toString())
-        }*/
+        /* if (sbp.statusBarNotificationInfo["android.icon"] != null) {
+              val iconID = Integer.parseInt(sbp.statusBarNotificationInfo["android.icon"]!!.toString())
+          }*/
         try {
             val pckManager = context.packageManager
             val icon = pckManager.getApplicationIcon(sbp.appNotifier)

@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:id="@+id/notification_popup_main_layout"
-        android:layout_height="296dp"
-        android:layout_width="318dp"
+        android:layout_height="300dp"
+        android:layout_width="320dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@drawable/custom_shape_popup_with_border"
         android:orientation="vertical"
