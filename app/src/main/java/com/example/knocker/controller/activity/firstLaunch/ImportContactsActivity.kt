@@ -1,6 +1,7 @@
 package com.example.knocker.controller.activity.firstLaunch
 
 import android.Manifest
+import android.content.ComponentCallbacks2
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.example.knocker.R
 import com.example.knocker.controller.activity.MainActivity
+import com.example.knocker.controller.activity.TutorialActivity
 import com.example.knocker.model.ContactManager
 import com.example.knocker.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -68,7 +70,7 @@ class ImportContactsActivity : AppCompatActivity() {
     }
 
     fun intentToMain() {
-        val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+        val intent = Intent(this@ImportContactsActivity, TutorialActivity::class.java)
         intent.putExtra("fromImportContact", true)
         startActivity(intent)
         finish()

@@ -168,13 +168,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
-        String group = "";
+      /*  String group = "";
         GroupDB firstGroup = getItem(position).getFirstGroup(context);
         if (context instanceof GroupActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
-        }
+        }*/
 
-        if (firstGroup == null) {
+   /*    if (firstGroup == null) {
             System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
@@ -196,7 +196,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             roundedLayout.setColorFilter(firstGroup.getSection_color(), PorterDuff.Mode.MULTIPLY);
             holder.groupWordingConstraint.setBackground(roundedLayout);
         }
-
+*/
         if (len == 3) {
             Spannable spanFistName = new SpannableString(firstname);
             spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -205,11 +205,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
             //holder.contactFirstNameView.;
-            if (group.length() > 12)
-                group = group.substring(0, 11).concat("..");
-            Spannable spanGroup = new SpannableString(group);
-            spanGroup.setSpan(new RelativeSizeSpan(0.95f), 0, group.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
 
         }
         if (len == 4) {
@@ -225,13 +220,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
-
-            if (group.length() > 9)
-                group = group.substring(0, 8).concat("..");
-            Spannable spanGroup = new SpannableString(group);
-            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
-
         }
         if (len == 5) {
             if (contact.getFirstName().length() > 11)
@@ -249,11 +237,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if (group.length() > 6)
-                group = group.substring(0, 5).concat("..");
-            Spannable spanGroup = new SpannableString(group);
-            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
         }
         if (len == 6) {
             if (contact.getFirstName().length() > 8)
@@ -270,11 +253,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-            if (group.length() > 6)
-                group = group.substring(0, 5).concat("..");
-            Spannable spanGroup = new SpannableString(group);
-            spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
         }
      /*   if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());

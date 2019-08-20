@@ -73,7 +73,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 while (isOpen && System.currentTimeMillis() - timeWhenLaunch < 20 * 1000) {
                     vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
                     Thread.sleep(1000)
-                    println("test")
                 }
                     finish()
 
