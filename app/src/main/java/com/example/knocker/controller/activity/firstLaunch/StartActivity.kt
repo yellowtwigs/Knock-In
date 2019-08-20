@@ -23,11 +23,16 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
+import androidx.appcompat.app.AlertDialog
+import com.example.knocker.controller.activity.TutorialActivity
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 
-
+/**
+ * Activité qui nous permet d'importer nos contact et accepter toutes les autorisations liès au notifications appel et message
+ * @author Florian Striebel, Kenzy Suon
+ */
 class StartActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
@@ -60,7 +65,7 @@ class StartActivity : AppCompatActivity() {
         val size = Point()
         display.getSize(size)
         val height = size.y
-
+        // Nous permet d'avoir un écran adapté a différente taille d'écran
         when {
             height > 2500 -> setContentView(R.layout.activity_start_activity_bigger)
             height in 2000..2499 -> setContentView(R.layout.activity_start_activity)
@@ -98,19 +103,19 @@ class StartActivity : AppCompatActivity() {
 
         //endregion
 
-        //region ========================================== Listeners ==========================================
 
+        //region ========================================== Listeners ==========================================
+        //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact puis nous affichons un loading
         start_activity_ImportContacts!!.setOnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), ImportContactsActivity.REQUEST_CODE_READ_CONTACT)
             start_activity_ImportContacts!!.visibility = View.INVISIBLE
-            start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
 
             val displayLoading = Runnable {
                 start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
         }
-
+        //Lors du click sur activateNotification nous demandont l'autorisation d'accès au notification
         start_activity_ActivateNotifications!!.setOnClickListener {
             activateNotificationsClick()
             start_activity_ActivateNotifications!!.visibility = View.INVISIBLE
@@ -122,6 +127,7 @@ class StartActivity : AppCompatActivity() {
                 start_activity_ActivateNotificationsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
+            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans knocker une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
             val verifiedNotification = Thread {
                 activityVisible = false
                 while (!activityVisible) {
@@ -155,22 +161,22 @@ class StartActivity : AppCompatActivity() {
 
         }
 
+        //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
         start_activity_AuthorizeSuperposition!!.setOnClickListener {
             start_activity_AuthorizeSuperposition!!.visibility = View.INVISIBLE
-            start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 3000
-
+            //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:$packageName"))
                 startActivity(intent)
-
             }
             val displayLoading = Runnable {
                 start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
+            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans knocker une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
             val verifiedSuperposition = Thread {
                 activityVisible = false
                 while (!activityVisible) {
@@ -207,6 +213,7 @@ class StartActivity : AppCompatActivity() {
             verifiedSuperposition.start()
         }
 
+        //Lors du click sur activateNotification nous demandont l'autorisation des appels et des SMS
         start_activity_Permissions!!.setOnClickListener {
             val arraylistPermission = ArrayList<String>()
             arraylistPermission.add(Manifest.permission.SEND_SMS)
@@ -215,11 +222,11 @@ class StartActivity : AppCompatActivity() {
             start_activity_Permissions!!.visibility = View.INVISIBLE
             start_activity_PermissionsLoading!!.visibility = View.VISIBLE
         }
-
+        //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
         start_activity_Next!!.setOnClickListener {
             buildMultiSelectAlertDialog()
         }
-        //startActivity(Intent(this@StartActivity, MultiSelectActivity::class.java))
+        //lors du click affichage d'un message de prévention
         start_activity_Skip!!.setOnClickListener {
             buildLeaveAlertDialog()
         }
@@ -229,7 +236,9 @@ class StartActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ==========================================
-
+    /**
+    *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
+    */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
@@ -269,10 +278,15 @@ class StartActivity : AppCompatActivity() {
         }
         allIsChecked()
     }
-
+    /**
+     * Réécriture de la méthode onBackPressed lorsque nous appuyant sur le boutton retour du téléphone rien n'est fait
+     */
     override fun onBackPressed() {
     }
 
+    /**
+     * Lance l'activité d'autorisation des notification
+     */
     private fun activateNotificationsClick() {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
@@ -284,7 +298,11 @@ class StartActivity : AppCompatActivity() {
         const val REQUEST_CODE_SMS_AND_CALL = 5
     }
 
-    private fun buildMultiSelectAlertDialog(): androidx.appcompat.app.AlertDialog {
+    /**
+     * Demande à l'utilisateur si celui-ci désire choisir ses contacts prioritaires
+     * @return [AlertDialog]
+     */
+    private fun buildMultiSelectAlertDialog(): AlertDialog {
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setTitle(getString(R.string.notification_alert_dialog_title))
@@ -309,8 +327,11 @@ class StartActivity : AppCompatActivity() {
                 .show()
     }
 
-    private fun buildLeaveAlertDialog(): androidx.appcompat.app.AlertDialog {
-        val message = if (start_activity_import_contacts_loading.visibility == View.VISIBLE) {
+    /**
+     * Permet à l'utilisateur de passer les demandes d'autorisations
+     */
+    private fun buildLeaveAlertDialog(): AlertDialog {
+        val message = if (start_activity_import_contacts_loading.visibility == View.VISIBLE) {//vérifie que le téléphone ne charge pas les contacts sinon celui-ci prévient l'utilisateur que ces contact ne seront pas tous chargés
             getString(R.string.start_activity_skip_alert_dialog_message_importation)
         } else {
             getString(R.string.start_activity_skip_alert_dialog_message)
@@ -337,6 +358,10 @@ class StartActivity : AppCompatActivity() {
                 .show()
     }
 
+    /**
+     * Vérifie que nous avons l'autorisation de récupérer les notifications
+     * @return  [Boolean]
+     */
     private fun isNotificationServiceEnabled(): Boolean {
         val pkgName = packageName
         val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
@@ -352,8 +377,9 @@ class StartActivity : AppCompatActivity() {
             }
         }
         return false
-    }
+    }//TODO enlever duplicate code
 
+    //ActivityVisible nous permet de savoir lorsque nous retournons dans cette activité
     override fun onStart() {
         super.onStart()
         activityVisible = true
@@ -364,11 +390,9 @@ class StartActivity : AppCompatActivity() {
         activityVisible = true
     }
 
-    override fun onPause() {
-        super.onPause()
-        activityVisible = false
-    }
-
+    /**
+     * Si toutes les autorisations sont validé et que les contact ont fini d'être charger alors nous changons le bouton passer pour un bouton suivant
+     */
     private fun allIsChecked() {
         if (start_activity_PermissionsCheck!!.visibility == View.VISIBLE &&
                 start_activity_ActivateNotificationsCheck!!.visibility == View.VISIBLE &&

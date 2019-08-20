@@ -15,6 +15,10 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+/**
+ * Activité qui nous permet d'ajouter des contacts a un groupe précis
+ * @author Ryan Granet
+ */
 class AddContactToGroupActivity : AppCompatActivity() {
 
     private var contactsDatabase: ContactsRoomDatabase? = null
@@ -61,12 +65,19 @@ class AddContactToGroupActivity : AppCompatActivity() {
         addContactToGroupListView!!.adapter = addContactToGroupAdapter
     }
 
+    /**
+     * Pour le menu de l'activité nous lui affectons la ressource menu [menu_toolbar_validate]
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_toolbar_validate, menu)
         return true
     }
 
+    /**
+     * lorsqu'un élément du menu à été selectionner cette méthode est appelé par le système
+     * @return [Boolean]
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -87,6 +98,11 @@ class AddContactToGroupActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Ajoute la liste des contacts sélectionné au groupe
+     * @param listContact [List<ContactDB>]
+     * @param groupId [Int]
+     */
     private fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
         if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
             addToFavorite()
@@ -99,7 +115,9 @@ class AddContactToGroupActivity : AppCompatActivity() {
     }
 
     //region ========================================== Favorites ===========================================
-
+    /**
+     * Pour le groupe favoris ont ajoute les contact au groupes favoris puis on leurs set la valeur favoris
+     */
     private fun addToFavorite() {
         var counter = 0
 
@@ -113,6 +131,11 @@ class AddContactToGroupActivity : AppCompatActivity() {
 
     //endregion
 
+    /**
+     *récupère tous les contact qui ne sont pas dans le groupe
+     * @param groupId [Int] //id du groupe dont on veut ajouté des contact
+     * @return [List<ContactWithAllInformation>]
+     */
     private fun getContactNotInGroup(groupId: Int): List<ContactWithAllInformation> {
         val allInGroup = mutableListOf<ContactWithAllInformation>()
         val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
@@ -127,6 +150,9 @@ class AddContactToGroupActivity : AppCompatActivity() {
         return allContact.minus(allInGroup)
     }
 
+    /**
+     * Retour vers l'activité groupManager
+     */
     private fun refreshActivity() {
         startActivity(Intent(this@AddContactToGroupActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
         finish()

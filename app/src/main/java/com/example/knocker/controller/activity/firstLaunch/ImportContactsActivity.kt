@@ -14,7 +14,10 @@ import com.example.knocker.model.ContactManager
 import com.example.knocker.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-
+/**
+ * Activité Qui Nous permet d'importer nos contact pour les buildVariant Contacter et Converser
+ * @author Florian Striebel, Kenzy Suon
+ */
 class ImportContactsActivity : AppCompatActivity() {
 
     private var main_loadingPanel: RelativeLayout? = null
@@ -39,18 +42,27 @@ class ImportContactsActivity : AppCompatActivity() {
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
 
+
+        //region Listener
+
+        //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact
         import_contacts_accept_button!!.setOnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_READ_CONTACT)
         }
+        // Lors du click sur passer alors nous affichons une alert dialog pour nous prévenir de la possibilité de synchroniser plus tard
         import_contacts_not_accept_button!!.setOnClickListener {
             overlayAlertDialog()!!.show()
         }
+        //endregion
     }
-
+    /*
+     *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
+     *
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {//Si on a accès au contact on les synchronise sinon on affiche un message pour dire à l'utilisateur qu'il pourra synchroniser plus tard
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
                 import_contacts_accept_button!!.visibility = View.GONE
                 import_contacts_not_accept_button!!.visibility = View.GONE
@@ -67,7 +79,9 @@ class ImportContactsActivity : AppCompatActivity() {
             }
         }
     }
-
+    /**
+     *méthode qui lance  l'activity Tutorial
+     */
     fun intentToTutorial() {
         val intent = Intent(this@ImportContactsActivity, TutorialActivity::class.java)
         intent.putExtra("fromImportContact", true)
@@ -75,6 +89,10 @@ class ImportContactsActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Initialise une alertDialog pour prévenir l'utilisateur que celui-ci pourra autoriser l'accès au contact plus tard
+     * @return alertDialog [AlertDialog]
+     */
     private fun overlayAlertDialog(): AlertDialog? {
 
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -87,9 +105,13 @@ class ImportContactsActivity : AppCompatActivity() {
                 .show()
     }
 
+    /**
+     * Réécriture de la méthode onBackPressed lorsque nous appuyant sur le boutton retour du téléphone rien n'est fait
+     */
     override fun onBackPressed() {
 
     }
+
 
     companion object {
         const val REQUEST_CODE_READ_CONTACT = 2

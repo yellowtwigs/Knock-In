@@ -14,6 +14,9 @@ import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+/**
+ * Activité qui nous permet de supprimmer les contact d'un groupe
+ */
 class DeleteContactFromGroupActivity : AppCompatActivity() {
 
     //region ========================================= Var or Val ===========================================
@@ -88,6 +91,9 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * 
+     */
     private fun deleteFromGroup(listContact: List<ContactDB>, groupId: Int) {
 
         if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {

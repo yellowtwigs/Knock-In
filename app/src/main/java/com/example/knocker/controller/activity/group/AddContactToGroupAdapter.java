@@ -25,12 +25,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Adapter qui nous permet de gérer chaque item de la liste des contact en rapport avec un groupe ces contacts peuvent être supprimer d'un groupe ou utiliser pour créer un groupe
+ * @author Ryan Granet, Florian Striebel
+ */
 public class AddContactToGroupAdapter extends BaseAdapter {
 
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
     private ArrayList<ContactDB> selectContact;
 
+    /**
+     * Constructeur de l'adapteur
+     * @param context //Activité qui lance l'adapter
+     * @param listContacts //List des contact qui ne font pas encore partie du groupe
+     */
     public AddContactToGroupAdapter(Context context, List<ContactWithAllInformation> listContacts) {
         this.listContacts = listContacts;
         layoutInflater = LayoutInflater.from(context);
@@ -52,6 +61,14 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         return listContacts.get(position);
     }
 
+    /**
+     * Gère pour chaque item son affichage en fonction de sa position
+     * Chaque fois que nous affichons de nouveaux éléments sur les écrans nous rappelons cette méthode les item qui sont sorti de l'écran sont détruits
+     * @param position [int]
+     * @param convertView [View]
+     * @param parent [ViewGroup]
+     * @return [View]
+     */
     @SuppressLint({"InflateParams", "ViewHolder"})
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -69,13 +86,13 @@ public class AddContactToGroupAdapter extends BaseAdapter {
 
         assert contact != null;
 
-        if (selectContact.contains(contact)) {
+        if (selectContact.contains(contact)) {//vérifie si le contact avait été selectionner avant de revenir à l'écran si oui on valide la checkbox
             holder.contactSelect.setChecked(true);
         } else {
             holder.contactSelect.setChecked(false);
         }
 
-        if (!contact.getProfilePicture64().equals("")) {
+        if (!contact.getProfilePicture64().equals("")) {// récupère la photo contact et l'affiche
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
@@ -113,6 +130,11 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         this.selectContact = selectContact;
     }
 
+    /**
+     *
+     * @param avatarId [Int]
+     * @return [Int]
+     */
     private int randomDefaultImage(int avatarId) {
         switch (avatarId) {
             case 0:
@@ -134,6 +156,11 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Convertit les image de base64 en Bitmap
+     * @param base64 [String]
+     * @return [Bitmap]
+     */
     private Bitmap base64ToBitmap(String base64) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -141,6 +168,9 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
     }
 
+    /**
+     * class qui permet pour chaque item de la list de différencier leurs items
+     */
     static class ViewHolder {
         TextView contactFirstNameView;
         CircularImageView contactRoundedImageView;

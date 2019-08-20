@@ -52,7 +52,7 @@ import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
 /**
- * La Classe qui permet d'afficher la searchbar, les filtres, la gridview, les floatings buttons dans la page des contactList
+ * Activite qui permet d'afficher et de gérer la homepage
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -384,6 +384,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
+
+        /**
+         *zone qui nous permet de mettre en place les actions lors d'interaction de l'utilisateur
+         */
         //region ======================================== Listeners =========================================
 
         main_toolbar_OpenDrawer.setOnClickListener {
@@ -1250,7 +1254,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
-  
+
         val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         @SuppressLint("InflateParams") val alertView = inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
 

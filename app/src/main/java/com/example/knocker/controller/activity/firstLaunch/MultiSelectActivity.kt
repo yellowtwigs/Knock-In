@@ -18,6 +18,10 @@ import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+/**
+ * Activité qui nous permet de faire un multiSelect sur nos contact afin de les prioriser
+ * @author Florian Striebel, Kenzy Suon
+ */
 class MultiSelectActivity : AppCompatActivity() {
 
     //region ========================================= Var or Val ===========================================
@@ -25,7 +29,6 @@ class MultiSelectActivity : AppCompatActivity() {
     private var multi_select_gridView: GridView? = null
     private var gestionnaireContact: ContactManager? = null
     private var multi_select_textView: TextView? = null
-    private var activityVisible: Boolean = true
     private var adapter: SelectContactAdapter? = null
     private var listItemSelect: ArrayList<ContactWithAllInformation>? = null
 
@@ -61,13 +64,22 @@ class MultiSelectActivity : AppCompatActivity() {
 
         multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
 
+        //region =================================== listener============================================
+
+        //lors d'un click sur un item(Contact) de la gridview Nous l'ajoutons dans la liste des contact sélectionner puis nous modifions le texte du nombre de contact sélectionné
         multi_select_gridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             adapter!!.itemSelected(position)
             adapter!!.notifyDataSetChanged()
             multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
         }
+        //endregion
     }
 
+    /**
+     * Initialise une alertDialog pour prévenir l'utilisateur quelles sont les contact qui vont être prioriser
+     * @param contactList [ArrayList<ContactWithAllInformation>] liste des contact sélectionner
+     * @return alertDialog [MaterialAlertDialog]
+     */
     private fun overlayAlertDialog(contactList: ArrayList<ContactWithAllInformation>): MaterialAlertDialogBuilder {
 
         var message: String
@@ -105,12 +117,19 @@ class MultiSelectActivity : AppCompatActivity() {
                 }
     }
 
+    /**
+     * Pour le menu de l'activité nous affectons la ressource menu [menu_toolbar_validate_skip]
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_toolbar_validate_skip, menu)
         return true
     }
 
+    /**
+     * lorsqu'un élément du menu à été selectionner cette méthode est appelé par le système
+     * @return [Boolean]
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
@@ -136,21 +155,9 @@ class MultiSelectActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onResume() {
-        super.onResume()
-        activityVisible = true
-    }
-
-    override fun onPause() {
-        super.onPause()
-        activityVisible = false
-    }
-
-    override fun onStart() {
-        super.onStart()
-        activityVisible = true
-    }
-
+    /**
+     * Réécriture de la méthode onBackPressed lorsque nous appuyant sur le boutton retour du téléphone rien n'est fait
+     */
     override fun onBackPressed() {
 
     }

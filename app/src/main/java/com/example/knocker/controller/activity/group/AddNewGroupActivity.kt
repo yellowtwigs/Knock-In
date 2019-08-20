@@ -17,6 +17,10 @@ import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.GroupDB
 import com.example.knocker.model.ModelDB.LinkContactGroup
 
+/**
+ * Activité qui nous permet de créer un groupe
+ * @author Florian Striebel
+ */
 class AddNewGroupActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
@@ -64,20 +68,26 @@ class AddNewGroupActivity : AppCompatActivity() {
         addNewGroupListView!!.adapter = createGroupAdapter
     }
 
+    /**
+     * Pour le menu de l'activité nous affectons la ressource menu [menu_toolbar_validate_skip]
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_toolbar_validate, menu)
         return true
     }
-
+    /**
+     * lorsqu'un élément du menu à été selectionner cette méthode est appelé par le système
+     * @return [Boolean]
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 refreshActivity()
             }
-            R.id.nav_validate -> {
-                if (addNewGroupName!!.text.isNotEmpty()) {
-                    if (createGroupAdapter!!.allSelectContact.isNotEmpty()) {
+            R.id.nav_validate -> {//Si l'utilisateur clique sur validé ont crée le groupe avec les contact séléctionner dans l'adapter
+                if (addNewGroupName!!.text.isNotEmpty()) {//Avant de vréer le groupe on vérifie que celui-ci à un nom
+                    if (createGroupAdapter!!.allSelectContact.isNotEmpty()) {//Et qu'il y a des contact dans le groupe
                         addToGroup(createGroupAdapter!!.allSelectContact, addNewGroupName!!.text.toString())
                     } else {
                         Toast.makeText(this, getString(R.string.add_new_group_toast_no_contact_selected), Toast.LENGTH_LONG).show()
@@ -90,13 +100,17 @@ class AddNewGroupActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * crée un groupe et ajoute les contact de la liste a celui-ci
+     * @param listContact [List<ContactDB>]
+     * @param name [String]
+     */
     private fun addToGroup(listContact: List<ContactDB>, name: String) {
-        val group = GroupDB(null, name, "", -500138)
-
+        val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
         var counter = 0
         var alreadyExist = false
 
-        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
             if (name == contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name) {
                 alreadyExist = true
                 break
@@ -104,7 +118,7 @@ class AddNewGroupActivity : AppCompatActivity() {
             counter++
         }
 
-        if (alreadyExist) {
+        if (alreadyExist) {//Si il existe Nous prévenons l'utilisateur sinon nous créons le groupe
             Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
         } else {
             println("list is $listContact")
@@ -126,17 +140,4 @@ class AddNewGroupActivity : AppCompatActivity() {
     override fun onBackPressed() {
     }
 
-    private fun getContactNotInGroup(groupId: Int): List<ContactWithAllInformation> {
-        val allInGroup = mutableListOf<ContactWithAllInformation>()
-        val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
-        val allContact = contactsDatabase!!.contactsDao().getContactAllInfo()
-        allContact.forEach { all ->
-            groupMember.forEach {
-                if (all.contactDB!!.id == it.contactDB!!.id) {
-                    allInGroup.add(all)
-                }
-            }
-        }
-        return allContact.minus(allInGroup)
-    }
 }
