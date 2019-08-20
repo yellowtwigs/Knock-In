@@ -16,7 +16,7 @@ interface NotificationsDao {
      * @return List&lt[NotificationDB]&gt trié par date
      */
     @Query("SELECT * FROM notifications_table ORDER BY timestamp DESC")
-    fun getAllnotifications(): List<NotificationDB>
+    fun getAllNotifications(): List<NotificationDB>
 
     @Query("SELECT * FROM notifications_table WHERE instr(lower(contact_name||' '||description), lower(:name)) > 0")
     fun getNotificationFiltered(name:String): List<NotificationDB>
@@ -53,7 +53,7 @@ interface NotificationsDao {
      * @return Int  L'id de la [notification][NotificationDB] sauvegardée
      */
     @Insert
-    fun insert(notifications: NotificationDB)
+    fun insertNotifications(notifications: NotificationDB)
 
     /**
      * Supprime une [notification][NotificationDB] de la Base de donnée grâce à son id

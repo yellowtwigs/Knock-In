@@ -28,8 +28,10 @@ class ImportContactsActivity : AppCompatActivity() {
     private var import_contacts_Title: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_import_contacts)
+
         import_contacts_accept_button = findViewById(R.id.import_contacts_accept_button)
         import_contacts_not_accept_button = findViewById(R.id.import_contacts_not_accept_button)
         main_loadingPanel = findViewById(R.id.loadingPanel)

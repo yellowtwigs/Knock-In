@@ -10,7 +10,7 @@
     <string name="help_group">Pour sélectionner tout un groupe, cliquer sur le libellé</string>
     <string name="help_notification_history">Sur cet écran vous pouvez voir toutes les notifications reçues</string>
     <string name="help_phone_log">Sur cet écran vous pouvez appeler un numéro de téléphone ou envoyer un SMS à une personne qui n\'est pas dans vos contacts. Vous pouvez aussi vous diriger vers un réseau social</string>
-    <string name="help_manage_screen">Sur cet écran vous pouvez choisir comment afficher vos contacts et activer/désactiver la popups d\'appel un contact</string>
+    <string name="help_manage_screen">Sur cet écran vous pouvez choisir comment afficher vos contacts</string>
     <string name="help_notification_manager">Sur cet écran vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
     <string name="help_my_informations">Sur cette écran vous pouvez modifier vos informations personnelles</string>
     <string name="help_contact_us_intent">Contactez-nous</string>

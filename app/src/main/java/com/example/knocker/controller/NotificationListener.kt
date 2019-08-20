@@ -34,7 +34,7 @@ class NotificationListener : NotificationListenerService() {
     private var oldPosY: Float = 0.0f
     private var popupView: View? = null
     private var windowManager: WindowManager? = null
-    private var listViews:ListView?= null
+    private var listViews: ListView? = null
     /**
      * La première fois que le service est crée nous définnissons les valeurs pour les threads
      */
@@ -101,9 +101,9 @@ class NotificationListener : NotificationListenerService() {
                     contact = gestionnaireContact.getContactWithName(name, app)
                 }
                 //endregion
-                val notification = saveNotification(sbp,gestionnaireContact.getContactId(name))
+                val notification = saveNotification(sbp, gestionnaireContact.getContactId(name))
                 if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier != "com.samsung.android.incallui") {
-                    notification.insert(notification_listener_ContactsDatabase!!)//ajouter notification a la database
+                    notification.insertNotifications(notification_listener_ContactsDatabase!!) //ajouter notification a la database
 
                     if (contact != null) {
                         when {
@@ -161,12 +161,12 @@ class NotificationListener : NotificationListenerService() {
         val lastInsertId = notification_listener_ContactsDatabase!!.notificationsDao().lastInsert()
         println("dernière insertion $lastInsertId")
         val lastInsert = notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
-        println("voici la liste "+notification_listener_ContactsDatabase!!.notificationsDao().lastInsertByTime(System.currentTimeMillis()))
+        println("voici la liste " + notification_listener_ContactsDatabase!!.notificationsDao().lastInsertByTime(System.currentTimeMillis()))
         val listLastInsert = notification_listener_ContactsDatabase!!.notificationsDao().lastInsertByTime(System.currentTimeMillis())
-        for(lastNotif in listLastInsert){
-            println("titre"+(lastNotif.title.equals(notification.title)).toString())
-            println(" plateform "+lastNotif.platform.equals(notification.platform))
-            println("description "+lastNotif.description.equals(notification.description))
+        for (lastNotif in listLastInsert) {
+            println("titre" + (lastNotif.title == notification.title).toString())
+            println(" plateform " + (lastNotif.platform == notification.platform))
+            println("description " + (lastNotif.description == notification.description))
             if (lastNotif != null && lastNotif.platform == notification.platform && lastNotif.description == notification.description) {
                 return false
             }
@@ -182,9 +182,9 @@ class NotificationListener : NotificationListenerService() {
      *
      */
     private fun saveNotification(sbp: StatusBarParcelable, contactId: Int): NotificationDB? {
-        if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"] != null) {
+        return if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"] != null) {
 
-            return NotificationDB(null,
+            NotificationDB(null,
                     sbp.tickerText.toString(),
                     sbp.statusBarNotificationInfo["android.title"]!!.toString(),
                     sbp.statusBarNotificationInfo["android.text"]!!.toString(),
@@ -192,7 +192,7 @@ class NotificationListener : NotificationListenerService() {
                     System.currentTimeMillis(), 0,
                     contactId)
         } else {
-            return null
+            null
         }
     }
 
