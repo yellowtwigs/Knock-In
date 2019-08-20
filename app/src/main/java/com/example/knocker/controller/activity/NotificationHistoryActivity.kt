@@ -11,15 +11,20 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.baoyz.swipemenulistview.SwipeMenu
+import com.baoyz.swipemenulistview.SwipeMenuCreator
+import com.baoyz.swipemenulistview.SwipeMenuItem
+import com.baoyz.swipemenulistview.SwipeMenuListView
 import com.example.knocker.R
-import com.example.knocker.controller.NotificationHistoryAdapter
+import com.example.knocker.controller.NotificationsHistoryListViewAdapter
 import com.example.knocker.controller.NotificationListener
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.example.knocker.model.ContactManager
@@ -42,8 +47,25 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private var notification_history_DrawerLayout: DrawerLayout? = null
     private var notification_BottomNavigationView: BottomNavigationView? = null
+    private var notification_history_ToolbarLayout: ConstraintLayout? = null
+
     private var notification_Search_TextView: TextView? = null
-    private var notification_Adapter: NotificationHistoryAdapter? = null
+    private var notification_history_ToolbarMultiSelectModeLayout: RelativeLayout? = null
+    private var notification_history_ToolbarMultiSelectModeClose: AppCompatImageView? = null
+    private var notification_history_ToolbarMultiSelectModeDelete: AppCompatImageView? = null
+
+    private var notification_Adapter: NotificationsHistoryListViewAdapter? = null
+    private var notification_history_ListView: SwipeMenuListView? = null
+
+    private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
+    private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
+
+    private val notification_history_ListOfNotificationDB = mutableListOf<NotificationDB>()
+    private var listOfItemSelected: ArrayList<NotificationDB> = ArrayList()
+
+    private var firstClick: Boolean = true
+    private var multiSelectMode: Boolean = false
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
@@ -66,14 +88,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
         false
     }
 
-    private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
-    private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
-
-    private val notification_history_ListOfNotificationDB = mutableListOf<NotificationDB>()
-
-    private var notification_history_ListView: ListView? = null
-
-
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,10 +105,17 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //endregion
 
         setContentView(R.layout.activity_notification_history)
+
+        //region ====================================== FindViewById =======================================
+
+        notification_history_ToolbarLayout = findViewById(R.id.notification_history_toolbar_layout)
         notification_Search_TextView = findViewById(R.id.notification_history_search_bar)
-        notification_BottomNavigationView = findViewById(R.id.navigation)
-        notification_BottomNavigationView!!.menu.getItem(2).isChecked = true
-        notification_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        notification_history_ToolbarMultiSelectModeLayout = findViewById(R.id.notification_history_toolbar_multi_select_mode_layout)
+        notification_history_ToolbarMultiSelectModeClose = findViewById(R.id.notification_history_toolbar_multi_select_mode_close)
+        notification_history_ToolbarMultiSelectModeDelete = findViewById(R.id.notification_history_toolbar_multi_select_mode_delete)
+
+        //endregion
 
         //region ========================================= Toolbar ==========================================
 
@@ -146,6 +167,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         //endregion
 
+        //region ====================================== BottomNavigation =======================================
+
+        notification_BottomNavigationView = findViewById(R.id.navigation)
+        notification_BottomNavigationView!!.menu.getItem(2).isChecked = true
+        notification_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        //endregion
+
         //region ====================================== Worker Thread =======================================
 
         notification_history_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -170,6 +199,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                         openWhatsapp(contact.getFirstPhoneNumber())
                     }
                 }
+
                 "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
 
                 "com.facebook.katana" -> goToFacebook()
@@ -282,10 +312,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private fun openMessenger(id: String, context: Context) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + id))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
             context.startActivity(intent)
         }
     }
@@ -388,10 +418,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 val editor = sharedPreferences.edit()
                 if (item.isChecked) {
                     editor.putBoolean("filtre_message", false)
-                    item.setChecked(false)
+                    item.isChecked = false
                 } else {
                     editor.putBoolean("filtre_message", true)
-                    item.setChecked(true)
+                    item.isChecked = true
                 }
                 editor.apply()
                 //  this.recreate()
@@ -418,7 +448,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("filtre_message", true)) {
             /*    notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
 
                 val listTmp = mutableListOf<NotificationDB>()
                 listTmp.addAll(notification_history_ListOfNotificationDB)
@@ -443,7 +473,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             if (stringSearch.isEmpty()) {
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
             } else {
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
                 println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
@@ -457,12 +487,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
         } else {
             notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllnotifications() as ArrayList<NotificationDB>)
+            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
             val listTmp = mutableListOf<NotificationDB>()
             val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             listTmp.addAll(notification_history_ListOfNotificationDB)
             if (stringSearch.isNotEmpty()) {
-                val regex = (".*" + stringSearch + ".*").toRegex()
+                val regex = (".*$stringSearch.*").toRegex()
                 listTmp.forEach {
                     if (!it.contactName.toLowerCase().matches(regex) && !it.description.toLowerCase().matches(regex)) {
                         notification_history_ListOfNotificationDB.remove(it)
@@ -474,10 +504,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
         when {
             sharedPreferences.getString("tri", "date") == "date" -> {
 
-                notification_Adapter = NotificationHistoryAdapter(this, notification_history_ListOfNotificationDB)
+                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = notification_Adapter
-
+                swipeMenuCreator(notification_history_ListView!!)
             }
             sharedPreferences.getString("tri", "date") == "priorite" -> {
 
@@ -490,9 +520,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp.addAll(Math.max(firstContactPrio0(listTmp), 0), listTmp2)
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
-                notification_Adapter = NotificationHistoryAdapter(this, notification_history_ListOfNotificationDB)
+                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = notification_Adapter
+                swipeMenuCreator(notification_history_ListView!!)
 
             }
             sharedPreferences.getString("tri", "date") == "contact" -> {
@@ -500,13 +531,73 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 val listNotif: ArrayList<NotificationDB> = arrayListOf()
                 listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
                 listNotif.retainAll(notification_history_ListOfNotificationDB)
-                notification_Adapter = NotificationHistoryAdapter(this, listNotif)
+                notification_Adapter = NotificationsHistoryListViewAdapter(this, listNotif)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = notification_Adapter
+                swipeMenuCreator(notification_history_ListView!!)
             }
             else -> println("thats a problem test")
 
         }
     }
+
+    fun swipeMenuCreator(listView: SwipeMenuListView) {
+        val creator = SwipeMenuCreator {
+
+            val deleteItem = SwipeMenuItem(applicationContext)
+            deleteItem.width = convertDipToPixels(50F)
+            deleteItem.setBackground(R.drawable.ic_swipe_delete)
+
+            it.addMenuItem(deleteItem)
+        }
+
+        listView.setMenuCreator(creator)
+
+        listView.setOnMenuItemClickListener { position: Int, _: SwipeMenu?, index: Int ->
+            when (index) {
+                0 -> {
+                    notification_history_NotificationsDatabase!!.notificationsDao().deleteNotificationById(notification_history_ListOfNotificationDB[position].id!!)
+                    refreshActivity()
+                }
+            }
+            false
+        }
+    }
+
+    fun convertDipToPixels(dips: Float): Int {
+        return (dips * applicationContext.resources.displayMetrics.density + 0.5F).toInt()
+    }
+
+    fun longNotifHistoryListItemClick(position: Int) {
+        val notifSelected = notification_history_ListOfNotificationDB[position]
+        if (listOfItemSelected.contains(notification_history_NotificationsDatabase!!.notificationsDao().getNotification(notifSelected.id!!))) {
+            listOfItemSelected.remove(notification_history_NotificationsDatabase!!.notificationsDao().getNotification(notifSelected.id))
+        } else {
+            listOfItemSelected.add(notification_history_NotificationsDatabase!!.notificationsDao().getNotification(notifSelected.id))
+        }
+
+        if (listOfItemSelected.size == 1 && firstClick) {
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_LONG).show()
+            firstClick = false
+            multiSelectMode = true
+            notification_history_ToolbarLayout!!.visibility = View.INVISIBLE
+            notification_history_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
+
+        } else if (listOfItemSelected.size == 0) {
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG).show()
+
+            notification_history_ToolbarLayout!!.visibility = View.VISIBLE
+            notification_history_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+
+            firstClick = true
+            multiSelectMode = false
+        }
+    }
+
+    private fun refreshActivity() {
+        startActivity(Intent(this@NotificationHistoryActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        finish()
+    }
+
     //endregion
 }

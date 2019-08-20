@@ -38,7 +38,7 @@ class NotificationSender : BroadcastReceiver() {
             main_mDbWorkerThread.start()
             main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
             val runnableSendNotif = Runnable {
-                val list = main_ContactsDatabase!!.notificationsDao().getAllnotifications()
+                val list = main_ContactsDatabase!!.notificationsDao().getAllNotifications()
                 val calendar = GregorianCalendar()
                 calendar.add(Calendar.DATE, -1)
                 var nbOfnotif = 0

@@ -45,21 +45,21 @@ data class NotificationDB(
          * Id du contact lié à la notification
          */
         @ColumnInfo(name = "id_contact") val idContact: Int
-){
-        fun insert(database: ContactsRoomDatabase){
-                database.notificationsDao().insert(this)
+) {
+    fun insertNotifications(database: ContactsRoomDatabase) {
+        database.notificationsDao().insertNotifications(this)
+    }
+
+    override fun equals(other: Any?): Boolean {
+
+        if (other is NotificationDB) {
+            if (other.contactName == contactName && other.description == description && other.timestamp == timestamp) {
+                return true
+            }
+        } else {
+            return false
         }
 
-        override fun equals(other: Any?): Boolean {
-
-                if(other is NotificationDB ){
-                        if(other.contactName == contactName && other.description == description && other.timestamp == timestamp){
-                                return true
-                        }
-                }else{
-                        return false
-                }
-
-                return false
-        }
+        return false
+    }
 }

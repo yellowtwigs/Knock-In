@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,10 +43,14 @@ import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
+import com.example.knocker.model.ModelDB.NotificationDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -59,12 +64,13 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
-    private ArrayList<FloatingActionMenu> listCircularMenu = new ArrayList<FloatingActionMenu>();
+    private ArrayList<FloatingActionMenu> listCircularMenu = new ArrayList<>();
     private FloatingActionMenu selectMenu;
     private String numberForPermission = "";
     private Boolean modeMultiSelect = false;
     private Boolean secondClick = false;
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
+    private ArrayList<NotificationDB> listOfInteractions = new ArrayList<>();
 
     public ContactGridViewAdapter(Context context, ContactManager contactManager, Integer len) {
         this.context = context;
@@ -360,6 +366,16 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             if (v.getId() == buttonWhatsApp.getId()) {
 
                 ContactWithAllInformation contactWithAllInformation = getItem(position);
+
+                String name = contact.getFirstName() + " " + contact.getLastName();
+
+                Date currentTime = Calendar.getInstance().getTime();
+
+                listOfInteractions.add(new NotificationDB(null, "", name,
+                        "Ouverture de Whatsapp", "com.whatsapp", false, currentTime.getTime(), 0, contact.getId()));
+
+//                notification.insertNotifications
+
                 ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
             } else if (v.getId() == buttonEdit.getId()) {
 
@@ -373,15 +389,36 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 context.startActivity(intent);
             } else if (v.getId() == buttonCall.getId()) {
 
+                String name = contact.getFirstName() + " " + contact.getLastName();
+
+                Date currentTime = Calendar.getInstance().getTime();
+
+                listOfInteractions.add(new NotificationDB(null, "", name,
+                        "Appel sortant vers " + "" + getItem(position).getFirstPhoneNumber(), "com.google.android.apps.messaging", false, currentTime.getTime(), 0, contact.getId()));
+
                 callPhone(getItem(position).getFirstPhoneNumber());
 
             } else if (v.getId() == buttonSMS.getId()) {
+
+                String name = contact.getFirstName() + " " + contact.getLastName();
+
+                Date currentTime = Calendar.getInstance().getTime();
+
+                listOfInteractions.add(new NotificationDB(null, "", name,
+                        "Sms vers " + "" + getItem(position).getFirstPhoneNumber(), "com.google.android.apps.messaging", false, currentTime.getTime(), 0, contact.getId()));
 
                 String phone = getItem(position).getFirstPhoneNumber();
                 Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                 context.startActivity(i);
 
             } else if (v.getId() == buttonMail.getId()) {
+
+                String name = contact.getFirstName() + " " + contact.getLastName();
+
+                Date currentTime = Calendar.getInstance().getTime();
+
+                listOfInteractions.add(new NotificationDB(null, "", name,
+                        "Mail vers " + "" + getItem(position).getFirstMail(), "com.google.android.gm", false, currentTime.getTime(), 0, contact.getId()));
 
                 String mail = getItem(position).getFirstMail();
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
