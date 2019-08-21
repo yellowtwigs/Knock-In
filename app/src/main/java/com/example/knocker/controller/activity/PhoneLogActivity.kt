@@ -32,6 +32,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.knocker.R
+import com.example.knocker.controller.activity.firstLaunch.TutorialActivity
 import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -47,7 +48,6 @@ class PhoneLogActivity : AppCompatActivity() {
     //region ========================================== Var or Val ==========================================
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
-    /*private val PERMISSIONS_REQUEST_READ_CALL_LOG = 100*/
 
     private var numberForPermission = ""
 
@@ -491,10 +491,16 @@ class PhoneLogActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(R.string.help)
-                        .setMessage(this.resources.getString(R.string.help_phone_log))
-                        .show()
+//                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                        .setTitle(R.string.help)
+//                        .setMessage(this.resources.getString(R.string.help_phone_log))
+//                        .show()
+
+
+                val intentToTuto = Intent(this@PhoneLogActivity, TutorialActivity::class.java)
+                intentToTuto.putExtra("fromPhoneLogActivity", true)
+                startActivity(intentToTuto)
+                finish()
                 return true
             }
         }

@@ -63,7 +63,6 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
         notification_history_adapter_Date = view.findViewById(R.id.history_adapter_time)
         notification_history_adapter_App = view.findViewById(R.id.history_adapter_imageView)
         notification_history_adapter_expediteur!!.text = notif.contactName
-        notification_history_adapter_contenue!!.text = notif.description
         notification_history_adapter_Date!!.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notif.timestamp))
 
         val pckManager = context.packageManager
@@ -71,6 +70,10 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
         notification_history_adapter_App!!.setImageDrawable(icon)
 
         println("notification " + position + " " + notif.platform)
+
+        if (notif.description.length > 100) {
+            notification_history_adapter_contenue!!.text = notif.description.substring(0, 99) + ".."
+        }
 
 //        notification_history_adapter_layout!!.setOnLongClickListener {
 //            val notifSelected = notif_history_ContactsDatabase!!.notificationsDao().getNotification(notification_history_ListOfNotificationDB[position].id!!)

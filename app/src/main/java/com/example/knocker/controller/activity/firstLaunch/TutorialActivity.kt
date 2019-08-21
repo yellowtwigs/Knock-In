@@ -12,6 +12,7 @@ import com.example.knocker.R
 import com.example.knocker.controller.CustomViewPagerAdapter
 import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.controller.activity.NotificationHistoryActivity
+import com.example.knocker.controller.activity.PhoneLogActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import kotlinx.android.synthetic.main.alert_dialog_multi_select.*
 import java.util.*
@@ -73,6 +74,7 @@ class TutorialActivity : AppCompatActivity() {
         val fromMainActivity = intent.getBooleanExtra("fromMainActivity", false)
         val fromNotificationHistoryActivity = intent.getBooleanExtra("fromNotificationHistoryActivity", false)
         val fromGroupManagerActivity = intent.getBooleanExtra("fromGroupManagerActivity", false)
+        val fromPhoneLogActivity = intent.getBooleanExtra("fromPhoneLogActivity", false)
 
         when {
             fromImportContact -> {
@@ -113,6 +115,11 @@ class TutorialActivity : AppCompatActivity() {
 
             fromGroupManagerActivity -> {
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
+                tutorial_Skip!!.setText(R.string.tutorial_activity_back)
+            }
+
+            fromPhoneLogActivity -> {
+                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
                 tutorial_Skip!!.setText(R.string.tutorial_activity_back)
             }
         }
@@ -297,6 +304,11 @@ class TutorialActivity : AppCompatActivity() {
 
                 fromGroupManagerActivity -> {
                     startActivity(Intent(this@TutorialActivity, GroupManagerActivity::class.java))
+                    finish()
+                }
+
+                fromPhoneLogActivity -> {
+                    startActivity(Intent(this@TutorialActivity, PhoneLogActivity::class.java))
                     finish()
                 }
             }

@@ -24,13 +24,12 @@ import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AlertDialog
-import com.example.knocker.controller.activity.TutorialActivity
 import com.example.knocker.model.ModelDB.ContactDB
 import com.example.knocker.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 
 /**
- * Activité qui nous permet d'importer nos contact et accepter toutes les autorisations liès au notifications appel et message
+ * Activité qui nous permet d'importer nos contacts et accepter toutes les autorisations liées aux notifications appel et message
  * @author Florian Striebel, Kenzy Suon
  */
 class StartActivity : AppCompatActivity() {
@@ -103,8 +102,8 @@ class StartActivity : AppCompatActivity() {
 
         //endregion
 
-
         //region ========================================== Listeners ==========================================
+
         //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact puis nous affichons un loading
         start_activity_ImportContacts!!.setOnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), ImportContactsActivity.REQUEST_CODE_READ_CONTACT)
@@ -237,8 +236,8 @@ class StartActivity : AppCompatActivity() {
 
     //region ========================================== Functions ==========================================
     /**
-    *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
-    */
+     *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
@@ -278,6 +277,7 @@ class StartActivity : AppCompatActivity() {
         }
         allIsChecked()
     }
+
     /**
      * Réécriture de la méthode onBackPressed lorsque nous appuyant sur le boutton retour du téléphone rien n'est fait
      */

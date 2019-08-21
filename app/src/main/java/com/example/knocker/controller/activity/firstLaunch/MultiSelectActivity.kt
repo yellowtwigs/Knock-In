@@ -108,7 +108,7 @@ class MultiSelectActivity : AppCompatActivity() {
                     if (contactList.isNotEmpty()) {
                         gestionnaireContact.setToContactInListPriority2()
                     }
-                    val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
+                    val intent = Intent(this@MultiSelectActivity, TutorialActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     finish()
@@ -133,7 +133,7 @@ class MultiSelectActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
+                val intent = Intent(this@MultiSelectActivity, TutorialActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
