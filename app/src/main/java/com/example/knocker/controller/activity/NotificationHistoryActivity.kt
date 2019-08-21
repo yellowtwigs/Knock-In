@@ -549,12 +549,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val creator = SwipeMenuCreator {
 
             val deleteItem = SwipeMenuItem(applicationContext)
-            val openItem = SwipeMenuItem(applicationContext)
-
-            openItem.setBackground(R.color.blue_tag_group)
-            openItem.title = "Notif details"
-            openItem.width = convertDipToPixels(50F)
-            it.addMenuItem(openItem)
+//            val openItem = SwipeMenuItem(applicationContext)
+//
+//            openItem.setBackground(R.color.blue_tag_group)
+//            openItem.title = "Notif details"
+//            openItem.width = convertDipToPixels(50F)
+//            it.addMenuItem(openItem)
 
             deleteItem.setBackground(R.drawable.ic_swipe_delete)
             deleteItem.width = convertDipToPixels(50F)
@@ -565,10 +565,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         listView.setOnMenuItemClickListener { position: Int, _: SwipeMenu?, index: Int ->
             when (index) {
+//                0 -> {
+//
+//                }
                 0 -> {
-
-                }
-                1 -> {
                     notification_history_NotificationsDatabase!!.notificationsDao().deleteNotificationById(notification_history_ListOfNotificationDB[position].id!!)
                     refreshActivity()
                 }
