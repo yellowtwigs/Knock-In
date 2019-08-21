@@ -27,6 +27,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
+/**
+ * Activité qui nous affiche les groupes de contact sous forme de section
+ * @author Florian Striebel
+ */
 class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 

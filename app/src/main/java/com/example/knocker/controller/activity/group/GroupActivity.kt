@@ -50,6 +50,9 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
+/**
+ * @author Florian Striebel
+ */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class GroupActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null

@@ -57,7 +57,7 @@ import kotlin.collections.ArrayList
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
-
+    //Dans cette region on crée toutes les variables dont l'activité aura besoin
     //region ========================================== Var or Val ==========================================
 
     // Show on the Main Layout
@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private val PERMISSION_CALL_RESULT = 1
 
+    //On créé un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
@@ -128,6 +129,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     //endregion
 
     /**
+     * Méthode lancé par le système à caque redémarage de l'activité
      * @param Bundle @type
      */
 
@@ -135,9 +137,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     @SuppressLint("ClickableViewAccessibility", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         //region ======================================== Theme Dark ========================================
-
+        //On affecte le Thème light ou le dark en fonction de ce que l'utilisateur à choisi
+        //Ce thème est enregistré dans une sharedPreferences c'est un fichier android qui est sauvegardé par l'application
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
@@ -147,28 +149,36 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
-        setContentView(R.layout.activity_main)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
+        //region =====================================First Launch ==========================================
+        //Si c'est la premiere fois que nous ouvrons l'application alors nous sommes envoyer dans les différents écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         if (sharedFirstLaunch.getBoolean("first_launch", true)) {
             startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
+        //endregion
 
+        setContentView(R.layout.activity_main)//On affecte a notre activity son layout correspondant
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+
+        //region ================================ BottomActionBar color light ===============================
+        // (Bar android avec les boutons retour, home et application en cours)
         val decorView = window.decorView
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//Feature possible a partir de la version Oreo d'android
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
+        //endregion
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
         }
-
+        //region =====================================Relancement du Service de Notification=========================================
         if (isNotificationServiceEnabled()) {
             toggleNotificationListenerService()
         }
+        //endregion
 
         //region ====================================== Worker Thread =======================================
 
@@ -179,6 +189,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
+        //endregion
+
+        //region ============================================setFavorite List ================================
+        //Si l'activité précédente etait StartActivity alors on regarde dans les feoupes si il y en a un qui se nomme favoris
+        //Si oui alors pour tous les contact de ce groupes alors nous les mettons en favoris
         val intent = intent
         var fromStartActivity = intent.getBooleanExtra("fromStartActivity", false)
 
@@ -200,11 +215,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             fromStartActivity = false
         }
-
         //endregion
 
         //region ======================================= FindViewById =======================================
-
+        //Pour tous nos attributs qui sont des vues (TextView, listView , ConstraintLayout, ImageView etc) sur lesquelles notre activité agit nous les récupérons
         main_FloatingButtonAdd = findViewById(R.id.main_floating_button_open_id)
 
         main_FloatingButtonSend = findViewById(R.id.main_floating_button_send_id)
@@ -232,7 +246,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         //region ========================================== Toolbar =========================================
-
+        //La toolbar est la barre d'action en haut de l'écran elle est ici composé d'une searchbar mais ce n'est pas toujours le cas
+        //Dans cette région nous ajoutons à la toolbar tous les menus et affichage qu'elle utiliseras
         main_ToolbarLayout = findViewById(R.id.main_toolbar_layout)
         val main_toolbar_OpenDrawer = findViewById<AppCompatImageView>(R.id.main_toolbar_open_drawer)
         main_toolbar_Help = findViewById(R.id.main_toolbar_help)
@@ -247,22 +262,20 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         //region ======================================= DrawerLayout =======================================
-
+        //On récupère le drawer(menu latéral) pour affecter à chaque option de ce menu une action et modifier ces options d'affichage
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout!!.addDrawerListener(this)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_home)
-        navItem.isChecked = true
+        val navItem = menu.findItem(R.id.nav_home) //On récupère l'option correspondant à cette activité
+        navItem.isChecked = true //Puis nous la mettons en surbrillance par rapport aux autres options
         val navSyncContact = menu.findItem(R.id.nav_sync_contact)
-        navSyncContact.isVisible = true
+        navSyncContact.isVisible = true //Nous affichons dans cette activité la possibilité de synchroniser nos contacts
 
-        navigationView!!.menu.getItem(0).isChecked = true
-
+        //Lorsque l'utilisateur clique sur un des éléments du drawer nous le fermons puis ouvrons un nouvel activité
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
+         //   menuItem.isChecked = true
             drawerLayout!!.closeDrawers()
-
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
@@ -274,23 +287,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)
+           /* val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            drawer.closeDrawer(GravityCompat.START)*/
             true
         }
 
         //endregion
 
         //region ========================================= Runnable =========================================
-
-        //affiche tout les contactList de la Database
+        //affiche tout les contactList de la Database dans une RecyclerView ou dans une GridView
 
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
-
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
 
+        //Vérification du mode d'affichage si inférieur à 1 alors l'affichage est sous forme de liste sinon sous forme de gridView
         if (len <= 1) {
             main_GridView!!.visibility = View.GONE
             main_RecyclerView!!.visibility = View.VISIBLE
@@ -301,14 +313,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_GridView!!.numColumns = len // permet de changer
         gestionnaireContacts = ContactManager(this.applicationContext)
-
-        if (main_GridView != null) {
-            when {
+        //region ==================================================== set ListContact ====================================
+        //Selon le mode d'affichage set pour la list ou pour la grid les contact triés
+        if (main_GridView!!.visibility != View.GONE) {
+            when {//Verification du mode de trie des contact pour afficher le bon tri
                 sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
                 sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
                 else -> gestionnaireContacts!!.sortContactByGroup()
             }
-
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
 
             main_GridView!!.adapter = gridViewAdapter
@@ -316,19 +328,33 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_GridView!!.setSelection(index)
             edit.apply()
-
+            //La gridView va mettre en place un écouteur sur l'action Scroll nous avons alors défini un ensemble d'action à effectuer lorsque la gridView detecte ce scroll
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
                 var lastVisiblePos = main_GridView!!.firstVisiblePosition
+                /**
+                 * Méthode lancer par le listener lors du lancement ou de l'arret d'un scroll
+                 * @param view [AbsListView]
+                 * @param scrollState [Int]
+                 */
+
                 override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
                     if (gridViewAdapter != null) {
                         gridViewAdapter!!.closeMenu()
                     }
                 }
 
+                /**
+                 * méthode appellé par la gridView lorsque il y a un scroll
+                 * Nous affichons et masquons ici le bouton ajout de contact
+                 * @param view [AbsListView]
+                 * @param firstVisibleItem [Int]
+                 * @param visibleItemCount [Int]
+                 * @param totalItemCount [Int]
+                 */
                 override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-                    if (gridViewAdapter != null) {
+                  /* if (gridViewAdapter != null) {
                         gridViewAdapter!!.closeMenu()
-                    }
+                    }*/
                     println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
                     if (lastVisiblePos < firstVisibleItem) {
                         if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
@@ -338,7 +364,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         }
                         lastVisiblePos = firstVisibleItem
                     } else if (lastVisiblePos > firstVisibleItem) {
-                        if (main_FloatingButtonAdd!!.visibility == View.GONE) {
+                        if (main_FloatingButtonAdd!!.visibility == View.GONE && !multiChannelMode) {
                             val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
                             main_FloatingButtonAdd!!.startAnimation(apparition)
                             main_FloatingButtonAdd!!.visibility = View.VISIBLE
@@ -349,7 +375,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             })
         }
 
-        if (main_RecyclerView != null) {
+        if (main_RecyclerView!!.visibility != View.GONE) {
             recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
 
@@ -383,11 +409,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         //endregion
+        //endregion
 
-
-        /**
-         *zone qui nous permet de mettre en place les actions lors d'interaction de l'utilisateur
-         */
+        //zone qui nous permet de mettre en place les actions lors d'interaction de l'utilisateur
         //region ======================================== Listeners =========================================
 
         main_toolbar_OpenDrawer.setOnClickListener {
@@ -1052,6 +1076,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         return false
     }//TODO: enlever code duplicate
 
+    /**
+     * Stop le service et le relance en disant que celui-ci ne doit pas être arreter
+     */
     private fun toggleNotificationListenerService() {
         val pm = packageManager
         val cmpName = ComponentName(this, NotificationListener::class.java)

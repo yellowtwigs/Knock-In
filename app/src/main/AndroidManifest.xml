@@ -76,18 +76,18 @@
         <activity
             android:name=".controller.activity.EditContactActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".controller.activity.SplashScreenActivity">
+        <activity android:name=".controller.activity.SplashScreenActivity"/>
+        <activity
+            android:name=".controller.activity.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".controller.activity.MainActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden" /> <!-- <activity -->
+        </activity> <!-- <activity -->
         <!-- android:name="com.facebook.CustomTabActivity" -->
         <!-- android:exported="true"> -->
         <!-- <intent-filter> -->

@@ -92,7 +92,9 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
     }
 
     /**
-     * 
+     * Supprime du groupe les contacts présent dans la liste
+     * @param listContact [List<ContactDB>]
+     * @param groupId [Int]
      */
     private fun deleteFromGroup(listContact: List<ContactDB>, groupId: Int) {
 
@@ -146,6 +148,9 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Enlever un contact du groupe favoris lui envleve aussi l'attribut favoris
+     */
     private fun removeFromFavorite() {
         var counter = 0
 
@@ -157,6 +162,10 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Récupère tous les contact dans le group
+     * @param groupId [Int]
+     */
     private fun getContactInGroup(groupId: Int): List<ContactWithAllInformation> {
         return contactsDatabase!!.contactsDao().getContactForGroup(groupId)
     }

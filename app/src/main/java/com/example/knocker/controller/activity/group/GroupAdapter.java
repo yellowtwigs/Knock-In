@@ -54,7 +54,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * Adapter qui nous permet d'afficher un contact dans une section
+ * @author Florian Striebel
+ */
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> implements FloatingActionMenu.MenuStateChangeListener {
     private final Context context;
     private final ContactManager contactManager;
@@ -75,15 +78,31 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         super.onBindViewHolder(holder, position, payloads);
     }
 
+    /**
+     * Constructeur de GroupAdapter
+     * @param context [Context]
+     * @param contactManager [ContactManager]
+     * @param len [Integer]
+     */
     public GroupAdapter(Context context, ContactManager contactManager, Integer len)  {
         this.context = context;
         this.contactManager = contactManager;
         this.len = len;
         this.sectionPos = new ArrayList<Integer>();
     }
+
+    /**
+     * renvoi le contact manager de l'adapter
+     * @return [ContactManager]
+     */
     public ContactManager getContactManager(){
         return contactManager;
     }
+
+    /**
+     * renvoie la list des contact qui sont multiselecté
+     * @return [ArrayList<ContactWithAllInformation>]
+     */
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
@@ -98,6 +117,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         return holder;
     }
 
+    /**
+     * Gère les affichages par contact
+     * @param holder
+     * @param position
+     */
     @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
@@ -531,10 +555,18 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         });*/
     }
 
+    /**
+     * renvoie si l'utilisateur est en train de faire un multiselect
+     * @return [Boolean]
+     */
     public boolean multiSelectMode() {
         return modeMultiSelect;
     }
 
+    /**
+     * écoute quand un menuCirculaire à été ouvert et ferme l'ancien menuCirculaire ouvert
+     * @param floatingActionMenu //menu qui est ouvert
+     */
     @Override
     public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
         System.out.println("menu select");
@@ -545,16 +577,20 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             floatingActionMenu.close(false);
         }
         selectMenu = floatingActionMenu;
-
     }
 
+    /**
+     * @param floatingActionMenu
+     */
     @Override
     public void onMenuClosed(FloatingActionMenu floatingActionMenu) {
         System.out.println("menu close");
         selectMenu = null;
     }
 
-
+    /**
+     * Ferme le menu qui est ouvert
+     */
     public void closeMenu() {
 
         if (selectMenu != null)
@@ -562,6 +598,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     }
 
+    /**
+     * appelle le numéro de téléphone passé en paramètre
+     * @param phoneNumber
+     */
     public void callPhone(final String phoneNumber) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             int PERMISSION_CALL_RESULT = 1;
@@ -584,6 +624,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         }
     }
 
+    /**
+     * gère la multiselection d'un groupe par le click sur son libéllé
+     * @param position
+     */
     public void SetGroupClick(int position) {
         DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
         main_mDbWorkerThread.start();
@@ -643,10 +687,19 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         }*/
     }
 
+    /**
+     * Récupère le contact à la position [position]
+     * @param position [Int]
+     * @return [ContactWithAllInformation]
+     */
     public ContactWithAllInformation getItem(int position) {
         return contactManager.getContactList().get(position);
     }
 
+    /**
+     * Supression de la liste l'item à la position [position]
+     * @param position [Int]
+     */
     public void removeItem(int position) {
         contactManager.getContactList().remove(position);
         notifyItemRemoved(position);
@@ -667,13 +720,22 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         return position;
     }
 
+    /**
+     * rajoute un indicatif au numéro
+     * @param phoneNumber [String]
+     * @return [String]
+     */
     private String converter06To33(String phoneNumber) {
         if (phoneNumber.charAt(0) == '0') {
             return "+33" + phoneNumber;
         }
         return phoneNumber;
     }
-
+    /**
+     *Renvoie l'image du contact sous forme de ressource
+     * @param avatarId [Int]
+     * @return [Int]
+     */
     private int randomDefaultImage(int avatarId) {
 
         switch (avatarId) {
@@ -696,14 +758,23 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         }
     }
 
+    /**
+     * Convertit les image de base64 en Bitmap
+     * @param base64
+     * @return
+     */
     private Bitmap base64ToBitmap(String base64) {
 
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         BitmapFactory.Options options = new BitmapFactory.Options();
         //options.inSampleSize = 2;
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
-    }
+    }//TODO enlever code duplicate
 
+    /**
+     * vérifie que le téléphone possède l'application whatsApp
+     * @return [Boolean]
+     */
     private boolean appIsInstalled() {
         PackageManager pm = context.getPackageManager();
         try {
@@ -714,10 +785,19 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         }
     }
 
+    /**
+     *setter sectionPos
+     * @param position ArrayList<Integer>
+     */
     public void setSectionPos(ArrayList<Integer> position) {
         sectionPos = position;
     }
 
+    /**
+     * Retourne la position de la section dont fait partie le contact
+     * @param position [Int]
+     * @return [Int]
+     */
     private int getSectionnedPosition(int position) {
         for (int i = (sectionPos.size() - 1); i > 0; i--) {
             if (sectionPos.get(i) <= position) {
@@ -726,6 +806,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         }
         return 0;
     }
+
+    /**
+     * Ajout des contact faisant partie du groupe dans une list
+     * @param position
+     * @return [List<ContactWithAllInformation>]
+     */
     private List<ContactWithAllInformation> putGroupContactInItemSelected(int position){
         ContactsRoomDatabase contactsDatabase= ContactsRoomDatabase.Companion.getDatabase(context);
         DbWorkerThread main_mDbWorkerThread=new DbWorkerThread("dbWorkerThread");

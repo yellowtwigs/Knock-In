@@ -131,7 +131,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
     }
 
     /**
-     *
+     *Renvoie l'image du contact sous forme de ressource
      * @param avatarId [Int]
      * @return [Int]
      */
