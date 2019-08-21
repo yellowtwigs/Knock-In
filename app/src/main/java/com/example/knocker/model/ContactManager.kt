@@ -494,7 +494,14 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 phonePic = ""
             } else {
                 //on recupert la photo et on la converti en base64
-                phonePic = bitmapToBase64(BitmapFactory.decodeStream(openPhoto(phoneId!!.toLong(), main_contentResolver)))
+                val photo =openPhoto(phoneId!!.toLong(),
+                        main_contentResolver)
+                if(photo!=null) {
+                    phonePic = bitmapToBase64(
+                            BitmapFactory.decodeStream(photo))
+                }else{
+                    phonePic=""
+                }
             }
             if (phoneTag == null) {
                 phoneTag = "0"
