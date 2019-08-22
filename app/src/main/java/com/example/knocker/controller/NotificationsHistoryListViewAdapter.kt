@@ -73,6 +73,8 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
 
         if (notif.description.length > 100) {
             notification_history_adapter_contenue!!.text = notif.description.substring(0, 99) + ".."
+        } else {
+            notification_history_adapter_contenue!!.text = notif.description
         }
 
 //        notification_history_adapter_layout!!.setOnLongClickListener {
