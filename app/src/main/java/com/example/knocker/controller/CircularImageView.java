@@ -43,7 +43,6 @@ public class CircularImageView extends AppCompatImageView {
     private ColorFilter colorFilter;
 
     // Object used to draw
-    private int rien =0;
     private Bitmap image;
     private Drawable drawable;
     private Paint paint;
