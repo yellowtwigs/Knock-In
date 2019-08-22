@@ -53,8 +53,8 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_floating_button_open_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="98dp"
+        android:layout_height="94dp"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/floating_button_margin"
         android:layout_marginBottom="80dp"

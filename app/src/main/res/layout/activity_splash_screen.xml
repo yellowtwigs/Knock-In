@@ -15,12 +15,13 @@
         android:text="@string/app_name"
         android:layout_marginBottom="50dp"
         android:textColor="@color/colorPrimary"/>
+
     <ImageView
         android:id="@+id/knocker_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="313dp"
+        android:layout_height="355dp"
         android:layout_centerInParent="true"
-        app:srcCompat="@drawable/ic_app_image"/>
+        app:srcCompat="@drawable/ic_app_image" />
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_marginTop="50dp"
