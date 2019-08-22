@@ -83,7 +83,8 @@ class NotificationListener : NotificationListenerService() {
         val sbp = StatusBarParcelable(sbn)
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
 
-            sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
+            //permet de récupérer le vrai nom ou numéro du contact
+            sbp.castName()
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val app = this.convertPackageToString(sbp.appNotifier!!)
 

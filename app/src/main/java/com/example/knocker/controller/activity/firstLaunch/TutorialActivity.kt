@@ -41,6 +41,9 @@ class TutorialActivity : AppCompatActivity() {
     private var tutorial_NoSelected_5: AppCompatImageView? = null
     private var tutorial_Selected_5: AppCompatImageView? = null
 
+    private var tutorial_NoSelected_6: AppCompatImageView? = null
+    private var tutorial_Selected_6: AppCompatImageView? = null
+
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +66,8 @@ class TutorialActivity : AppCompatActivity() {
         tutorial_Selected_4 = findViewById(R.id.tutorial_selected_4)
         tutorial_NoSelected_5 = findViewById(R.id.tutorial_no_selected_5)
         tutorial_Selected_5 = findViewById(R.id.tutorial_selected_5)
+        tutorial_NoSelected_6 = findViewById(R.id.tutorial_no_selected_6)
+        tutorial_Selected_6 = findViewById(R.id.tutorial_selected_6)
 
         //endregion
 
@@ -99,11 +104,13 @@ class TutorialActivity : AppCompatActivity() {
             }
 
             fromMainActivity -> {
+                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1)!!)
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_1)!!)
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_2)!!)
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_3)!!)
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_4)!!)
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_5)!!)
+
 
                 tutorial_Skip!!.setText(R.string.tutorial_activity_back)
             }
@@ -130,7 +137,175 @@ class TutorialActivity : AppCompatActivity() {
 
         tutorial_ViewPager!!.adapter = tutorial_CustomViewPagerAdapter
 
-        if (tutorial_CustomViewPagerAdapter!!.count < 2) {
+
+
+        if (tutorial_CustomViewPagerAdapter!!.count >= 6) {
+
+            tutorial_Selected_6!!.visibility = View.INVISIBLE
+            tutorial_NoSelected_6!!.visibility = View.VISIBLE
+
+            tutorial_ViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    when (position) {
+                        0 -> {
+                            tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+                            tutorial_Selected_1!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_6!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_6!!.visibility = View.VISIBLE
+                        }
+                        1 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.INVISIBLE
+                            tutorial_Selected_2!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_6!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_6!!.visibility = View.VISIBLE
+                        }
+                        2 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.INVISIBLE
+                            tutorial_Selected_3!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_6!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_6!!.visibility = View.VISIBLE
+                        }
+                        3 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.INVISIBLE
+                            tutorial_Selected_4!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_6!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_6!!.visibility = View.VISIBLE
+                        }
+                        4 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_6!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_6!!.visibility = View.VISIBLE
+                        }
+                        5 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_6!!.visibility = View.INVISIBLE
+                            tutorial_Selected_6!!.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                override fun onPageSelected(position: Int) {
+
+                    when (position) {
+                        0 -> {
+                            tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+                            tutorial_Selected_1!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        1 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.INVISIBLE
+                            tutorial_Selected_2!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        2 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.INVISIBLE
+                            tutorial_Selected_3!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        3 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.INVISIBLE
+                            tutorial_Selected_4!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        4 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_5!!.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+            })
+        } else if (tutorial_CustomViewPagerAdapter!!.count < 2) {
 
             tutorial_NoSelected_1!!.visibility = View.GONE
             tutorial_Selected_1!!.visibility = View.GONE
@@ -142,145 +317,145 @@ class TutorialActivity : AppCompatActivity() {
             tutorial_Selected_4!!.visibility = View.GONE
             tutorial_NoSelected_5!!.visibility = View.GONE
             tutorial_Selected_5!!.visibility = View.GONE
+        } else {
+            tutorial_ViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    when (position) {
+                        0 -> {
+                            tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+                            tutorial_Selected_1!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        1 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.INVISIBLE
+                            tutorial_Selected_2!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        2 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.INVISIBLE
+                            tutorial_Selected_3!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        3 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.INVISIBLE
+                            tutorial_Selected_4!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        4 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_5!!.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                override fun onPageSelected(position: Int) {
+
+                    when (position) {
+                        0 -> {
+                            tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+                            tutorial_Selected_1!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        1 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.INVISIBLE
+                            tutorial_Selected_2!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        2 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.INVISIBLE
+                            tutorial_Selected_3!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        3 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.INVISIBLE
+                            tutorial_Selected_4!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        4 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_5!!.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+            })
         }
-
-        tutorial_ViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                when (position) {
-                    0 -> {
-                        tutorial_NoSelected_1!!.visibility = View.INVISIBLE
-                        tutorial_Selected_1!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    1 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.INVISIBLE
-                        tutorial_Selected_2!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    2 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.INVISIBLE
-                        tutorial_Selected_3!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    3 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.INVISIBLE
-                        tutorial_Selected_4!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    4 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.INVISIBLE
-                        tutorial_Selected_5!!.visibility = View.VISIBLE
-                    }
-                }
-            }
-            override fun onPageSelected(position: Int) {
-
-                when (position) {
-                    0 -> {
-                        tutorial_NoSelected_1!!.visibility = View.INVISIBLE
-                        tutorial_Selected_1!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    1 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.INVISIBLE
-                        tutorial_Selected_2!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    2 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.INVISIBLE
-                        tutorial_Selected_3!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    3 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.INVISIBLE
-                        tutorial_Selected_4!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    4 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.INVISIBLE
-                        tutorial_Selected_5!!.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-        })
 
         //endregion
 

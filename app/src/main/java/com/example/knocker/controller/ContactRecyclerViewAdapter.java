@@ -67,29 +67,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return listOfItemSelected;
     }
 
-    public void checkListOfItemSelected() {
-
-        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-        main_mDbWorkerThread.start();
-
-        System.out.println("list contact grid size" + gestionnaireContacts.getContactList().size());
-        modeMultiSelect = true;
-        for (int i = 0; i < gestionnaireContacts.getContactList().size(); i++) {
-            if (gestionnaireContacts.getContactList().get(i).getFirstGroup(context) != null) {
-                if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(i).getFirstGroup(context).getId())) {
-                    if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
-                        System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
-                        ((MainActivity) context).longRecyclerItemClick(i);
-//                        ((MainActivity) context).longRecyclerItemClick(i, true);
-                        listOfItemSelected.remove(gestionnaireContacts.getContactList().get(i));
-                    }
-                }
-            }
-        }
-        secondClick = true;
-        notifyDataSetChanged();
-    }
-
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     private String numberForPermission = "";

@@ -8,7 +8,7 @@
     android:background="@drawable/selector_relative_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/history_adapter_layout"
+        android:id="@+id/notif_history_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/history_adapter_imageView"
+            android:id="@+id/notif_history_item_app_image"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="8dp"
@@ -29,7 +29,7 @@
             tools:srcCompat="@tools:sample/avatars[0]" />
 
         <TextView
-            android:id="@+id/history_adapter_expediteur"
+            android:id="@+id/notif_history_item_sender_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -40,11 +40,11 @@
             android:maxLines="1"
             android:textAlignment="viewStart"
             android:textColor="?attr/textColor"
-            app:layout_constraintStart_toEndOf="@+id/history_adapter_imageView"
+            app:layout_constraintStart_toEndOf="@+id/notif_history_item_app_image"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/history_adapter_contenu"
+            android:id="@+id/notif_history_item_notification_content"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -54,11 +54,11 @@
             android:textColor="?attr/textColor"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/history_adapter_imageView"
-            app:layout_constraintTop_toBottomOf="@+id/history_adapter_expediteur" />
+            app:layout_constraintStart_toEndOf="@+id/notif_history_item_app_image"
+            app:layout_constraintTop_toBottomOf="@+id/notif_history_item_sender_name" />
 
         <TextView
-            android:id="@+id/history_adapter_time"
+            android:id="@+id/notif_history_item_notification_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
