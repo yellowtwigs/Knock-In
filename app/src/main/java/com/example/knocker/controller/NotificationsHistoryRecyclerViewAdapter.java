@@ -15,13 +15,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
-import com.example.knocker.model.ContactManager;
 import com.example.knocker.model.ContactsRoomDatabase;
 import com.example.knocker.model.ModelDB.NotificationDB;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * La Classe qui permet de remplir l'historique des notifications
@@ -29,10 +29,8 @@ import java.util.Date;
  * @author Florian Striebel
  */
 public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapter<NotificationsHistoryRecyclerViewAdapter.NotificationHistoryViewHolder> {
-    private ArrayList<NotificationDB> notification_history_ListOfNotificationDB;
+    private List<NotificationDB> notification_history_ListOfNotificationDB;
     private Context context;
-    private View view;
-    private ContactsRoomDatabase notif_history_ContactsDatabase;
 
     private ArrayList<NotificationDB> listOfItemSelected;
 
@@ -40,7 +38,7 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
     private Boolean secondClick = false;
     private Boolean lastClick = false;
 
-    public NotificationsHistoryRecyclerViewAdapter(Context context, ArrayList<NotificationDB> notifications) {
+    public NotificationsHistoryRecyclerViewAdapter(Context context, List<NotificationDB> notifications) {
         this.context = context;
         this.notification_history_ListOfNotificationDB = notifications;
     }
@@ -48,7 +46,7 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
     @NonNull
     @Override
     public NotificationHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_notification_history, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_notification_history, parent, false);
 
         return new NotificationHistoryViewHolder(view);
     }
@@ -60,7 +58,7 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull NotificationHistoryViewHolder holder, int position) {
-        notif_history_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+        ContactsRoomDatabase notif_history_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
         assert notif_history_ContactsDatabase != null;
         notification_history_ListOfNotificationDB.addAll(notif_history_ContactsDatabase.notificationsDao().getAllNotifications());
 //        ArrayList<NotificationDB>

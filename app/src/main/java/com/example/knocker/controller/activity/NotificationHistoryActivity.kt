@@ -12,7 +12,9 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -20,10 +22,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.baoyz.swipemenulistview.SwipeMenu
-import com.baoyz.swipemenulistview.SwipeMenuCreator
-import com.baoyz.swipemenulistview.SwipeMenuItem
-import com.baoyz.swipemenulistview.SwipeMenuListView
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationListener
 import com.example.knocker.controller.NotificationsHistoryRecyclerViewAdapter
@@ -61,7 +59,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
 
-    private val notification_history_ListOfNotificationDB = ArrayList<NotificationDB>()
+    private val notification_history_ListOfNotificationDB = mutableListOf<NotificationDB>()
     private var listOfItemSelected: ArrayList<NotificationDB> = ArrayList()
 
     private var firstClick: Boolean = true
