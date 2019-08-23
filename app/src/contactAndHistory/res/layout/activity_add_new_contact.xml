@@ -16,23 +16,81 @@
         android:focusableInTouchMode="true"
         tools:context=".controller.activity.AddNewContactActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:id="@+id/add_new_contact_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/backgroundColor"
-            android:descendantFocusability="blocksDescendants"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:itemTextColor="?attr/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="?attr/textColor" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_return"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_left_arrow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/add_new_contact_return"
+                android:text="@string/add_new_contact_title"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp"
+                tools:ignore="RelativeOverlap" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/add_new_contact_validate"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_star_selector" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_favorite_shine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/add_new_contact_validate"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_star_selector_shine" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_validate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_validate" />
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.05dp"
             android:background="?attr/darkGreyColor"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_toolbar" />
 
         <com.example.knocker.controller.CircularImageView
             android:id="@+id/add_new_contact_rounded_image_view_id"
