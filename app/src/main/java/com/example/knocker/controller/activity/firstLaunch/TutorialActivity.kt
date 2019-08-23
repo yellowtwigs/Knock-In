@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import com.example.knocker.R
 import com.example.knocker.controller.CustomViewPagerAdapter
+import com.example.knocker.controller.TutorialViewPagerAdapter
 import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.controller.activity.NotificationHistoryActivity
 import com.example.knocker.controller.activity.PhoneLogActivity
@@ -23,7 +24,7 @@ class TutorialActivity : AppCompatActivity() {
 
     private var tutorial_ViewPager: ViewPager? = null
     private var tutorial_Skip: AppCompatButton? = null
-    private var tutorial_CustomViewPagerAdapter: CustomViewPagerAdapter? = null
+    private var tutorial_CustomViewPagerAdapter: TutorialViewPagerAdapter? = null
     private var tutorial_ListOfTutorialImages: ArrayList<Drawable> = ArrayList()
 
     private var tutorial_NoSelected_1: AppCompatImageView? = null
@@ -51,7 +52,6 @@ class TutorialActivity : AppCompatActivity() {
 
         tutorial_ViewPager = findViewById(R.id.tutorial_view_pager)
         tutorial_Skip = findViewById(R.id.tutorial_skip)
-        tutorial_CustomViewPagerAdapter = CustomViewPagerAdapter(supportFragmentManager, tutorial_ListOfTutorialImages)
 
         tutorial_NoSelected_1 = findViewById(R.id.tutorial_no_selected_1)
         tutorial_Selected_1 = findViewById(R.id.tutorial_selected_1)
@@ -83,11 +83,6 @@ class TutorialActivity : AppCompatActivity() {
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4)!!)
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
                 tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_1)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_2)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_3)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_4)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_5)!!)
             }
 
             fromStartActivity -> {
@@ -99,11 +94,7 @@ class TutorialActivity : AppCompatActivity() {
             }
 
             fromMainActivity -> {
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_1)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_2)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_3)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_4)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_5)!!)
+                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.tuto_multi_gif)!!)
 
                 tutorial_Skip!!.setText(R.string.tutorial_activity_back)
             }
@@ -123,6 +114,8 @@ class TutorialActivity : AppCompatActivity() {
                 tutorial_Skip!!.setText(R.string.tutorial_activity_back)
             }
         }
+
+        tutorial_CustomViewPagerAdapter = TutorialViewPagerAdapter(supportFragmentManager, tutorial_ListOfTutorialImages, fromMainActivity)
 
         //endregion
 
