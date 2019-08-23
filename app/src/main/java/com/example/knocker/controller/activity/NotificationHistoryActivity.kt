@@ -345,14 +345,16 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private fun firstContactPrio0(notifList: List<NotificationDB>): Int {
         if (notifList.size>1) {
-            for (i in notifList.size - 1..1) {
+            var i=notifList.size-1
+            while(i>0) {
                 val contact = notification_history_NotificationsDatabase!!.contactsDao().getContact(notifList[i].idContact)
                 if (contact.contactDB!!.contactPriority != 0) {
                     return i + 1
                 }
+                i--
             }
         }
-        return notifList.size
+        return 0
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
