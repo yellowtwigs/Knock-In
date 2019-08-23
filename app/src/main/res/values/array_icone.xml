@@ -9,5 +9,6 @@
         <item>@drawable/ic_money</item>
         <item>@drawable/ic_school</item>
         <item>@drawable/ic_icons8_tennis</item>
+        <item>@drawable/ic_musique_rock</item>
     </integer-array>
 </resources>
