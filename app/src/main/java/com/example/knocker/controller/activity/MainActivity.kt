@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
-    private var main_BottomNavigationView: BottomNavigationView? = null
+    private var bottomNavigationView: BottomNavigationView? = null
 
     private var gestionnaireContacts: ContactManager? = null
     private var gridViewAdapter: ContactGridViewAdapter? = null
@@ -119,8 +119,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@MainActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -224,9 +224,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_FloatingButtonSend = findViewById(R.id.main_floating_button_send_id)
 
-        main_BottomNavigationView = findViewById(R.id.navigation)
+        bottomNavigationView = findViewById(R.id.navigation)
 
-        main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         main_SearchBar = findViewById(R.id.main_toolbar_search)
         main_layout = findViewById(R.id.content_frame)

@@ -63,7 +63,7 @@
         <activity android:name=".controller.activity.group.GroupManagerActivity" />
         <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
         <activity android:name=".FirstLaunchActivity" />
-        <activity android:name=".controller.activity.PhoneLogActivity" />
+        <activity android:name=".controller.activity.CockpitActivity" />
         <activity android:name=".controller.activity.HelpActivity" />
         <activity android:name=".controller.activity.ManageMyScreenActivity" />
         <activity android:name=".controller.activity.EditInformationsActivity" />
@@ -76,7 +76,6 @@
         <activity
             android:name=".controller.activity.EditContactActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".controller.activity.SplashScreenActivity"/>
         <activity
             android:name=".controller.activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

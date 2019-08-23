@@ -11,8 +11,8 @@
     <dimen name="contact_details_logo_size">30dp</dimen>
 
     <!-- Keyboard in Phone Log !-->
-    <dimen name="phone_log_keyboard_height">60dp</dimen>
-    <dimen name="phone_log_keyboard_width">65dp</dimen>
+    <dimen name="cockpit_keyboard_height">60dp</dimen>
+    <dimen name="cockpit_keyboard_width">65dp</dimen>
 
     <!-- Manage My Screen !-->
     <dimen name="settings_title_size">23sp</dimen>

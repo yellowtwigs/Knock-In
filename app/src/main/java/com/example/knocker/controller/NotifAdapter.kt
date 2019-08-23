@@ -285,7 +285,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
           }*/
         try {
             val pckManager = context.packageManager
-            val icon = pckManager.getApplicationIcon(sbp.appNotifier)
+            val icon = pckManager.getApplicationIcon(sbp.appNotifier!!)
             appImg.setImageDrawable(icon)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
@@ -315,7 +315,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 }
             }
         } else {
-            Toast.makeText(context, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }
     }
 

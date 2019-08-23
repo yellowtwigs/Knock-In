@@ -79,8 +79,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             R.id.navigation_notifcations -> {
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@NotificationHistoryActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@NotificationHistoryActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
 

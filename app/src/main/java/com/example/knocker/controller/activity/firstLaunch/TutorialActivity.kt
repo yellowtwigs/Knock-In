@@ -12,7 +12,7 @@ import com.example.knocker.R
 import com.example.knocker.controller.TutorialViewPagerAdapter
 import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.controller.activity.NotificationHistoryActivity
-import com.example.knocker.controller.activity.PhoneLogActivity
+import com.example.knocker.controller.activity.CockpitActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
 import java.util.*
 
@@ -299,7 +299,7 @@ class TutorialActivity : AppCompatActivity() {
                 }
 
                 fromPhoneLogActivity -> {
-                    startActivity(Intent(this@TutorialActivity, PhoneLogActivity::class.java))
+                    startActivity(Intent(this@TutorialActivity, CockpitActivity::class.java))
                     finish()
                 }
             }

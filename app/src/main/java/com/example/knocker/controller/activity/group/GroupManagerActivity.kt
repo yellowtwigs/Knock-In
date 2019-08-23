@@ -74,8 +74,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 startActivity(Intent(this@GroupManagerActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@GroupManagerActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@GroupManagerActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }

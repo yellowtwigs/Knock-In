@@ -102,8 +102,8 @@ class GroupActivity : AppCompatActivity() {
                 startActivity(Intent(this@GroupActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@GroupActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@GroupActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -416,10 +416,10 @@ class GroupActivity : AppCompatActivity() {
                     var index = 1
                     var stringSet = listOf<String>()
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
                     }
@@ -471,7 +471,7 @@ class GroupActivity : AppCompatActivity() {
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         edit.remove(index.toString())
                         index++
                     }

@@ -32,7 +32,7 @@
             android:text="Bla bla"
             android:textAlignment="center"
             android:textColor="@color/textColorLight"
-            android:textSize="16dp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

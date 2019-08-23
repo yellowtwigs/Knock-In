@@ -56,6 +56,8 @@ class EditContactActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
+    private var gestionnaireContacts: ContactManager? = null
+
     private var edit_contact_ParentLayout: ConstraintLayout? = null
 
     private var edit_contact_FirstName: TextInputLayout? = null
@@ -63,8 +65,6 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_PhoneNumber: TextInputLayout? = null
     private var edit_contact_FixNumber: TextInputLayout? = null
     private var edit_contact_Mail: TextInputLayout? = null
-
-    private var gestionnaireContacts: ContactManager? = null
 
     private var edit_contact_RoundedImageView: CircularImageView? = null
     private var edit_contact_Priority: Spinner? = null
@@ -100,8 +100,6 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var edit_contact_mDbWorkerThread: DbWorkerThread
 
-    private var isChanged = false
-
     private var imageUri: Uri? = null
     private var SELECT_FILE: Int? = 0
     private val IMAGE_CAPTURE_CODE = 1001
@@ -115,8 +113,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private var fromGroupActivity = false
 
-    private var isFavoriteChanged = false
-    private var isNotFavoriteChanged = false
+    private var isFavorite = false
 
     //endregion
 
@@ -259,17 +256,14 @@ class EditContactActivity : AppCompatActivity() {
                 0 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    println("red")
                 }
                 1 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    println("no color ")
                 }
                 2 -> {
                     edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    println("yellow")
                 }
             }
         }
@@ -314,14 +308,14 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
             edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
 
-            addToFavorite()
+            isFavorite = true
         }
 
         edit_contact_RemoveContactFromFavorite!!.setOnClickListener {
             edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
             edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
 
-            removeFromFavorite()
+            isFavorite = false
         }
 
         edit_contact_Validate!!.setOnClickListener {
@@ -443,14 +437,14 @@ class EditContactActivity : AppCompatActivity() {
                     //println("modify on contact " + contact.contactDB)
 
                     if (fromGroupActivity) {
-                        val intent = Intent(this@EditContactActivity, GroupManagerActivity::class.java)
-                        intent.putExtra("ContactId", edit_contact_id!!)
-                        startActivity(intent)
+                        val intentToGroupManagerActivity = Intent(this@EditContactActivity, GroupManagerActivity::class.java)
+                        intentToGroupManagerActivity.putExtra("ContactId", edit_contact_id!!)
+                        startActivity(intentToGroupManagerActivity)
                         finish()
                     } else {
-                        val intent = Intent(this@EditContactActivity, MainActivity::class.java)
-                        intent.putExtra("ContactId", edit_contact_id!!)
-                        startActivity(intent)
+                        val intentToMainActivity = Intent(this@EditContactActivity, MainActivity::class.java)
+                        intentToMainActivity.putExtra("ContactId", edit_contact_id!!)
+                        startActivity(intentToMainActivity)
                         finish()
                     }
                 } else {
@@ -530,7 +524,6 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                    println("red color choosen")
                 } else if (position == 1) {
                     edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
                     edit_contact_RoundedImageView!!.visibility = View.GONE
@@ -543,13 +536,6 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
                     edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                     edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                    println("yellow color choosen")
-                    if (Build.VERSION.SDK_INT >= 23) {
-                        if (!Settings.canDrawOverlays(applicationContext)) {
-                            val alertDialog = overlayAlertDialog()
-                            alertDialog!!.show()
-                        }
-                    }
                 }
             }
         }
@@ -691,9 +677,6 @@ class EditContactActivity : AppCompatActivity() {
         } else {
             createGroup(listContact, "Favorites")
         }
-
-        isFavoriteChanged = true
-        isNotFavoriteChanged = false
     }
 
     private fun removeFromFavorite() {
@@ -724,9 +707,6 @@ class EditContactActivity : AppCompatActivity() {
             }
             counter++
         }
-
-        isNotFavoriteChanged = true
-        isFavoriteChanged = false
     }
 
     //endregion
