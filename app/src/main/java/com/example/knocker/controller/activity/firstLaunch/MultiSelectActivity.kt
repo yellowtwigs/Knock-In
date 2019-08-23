@@ -139,15 +139,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 finish()
             }
             R.id.nav_validate -> {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (!Settings.canDrawOverlays(applicationContext)) {
-                    } else {
-                        val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                        edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-                        edit.apply()
-                    }
-                }
+
                 listItemSelect = adapter!!.listContactSelect
                 overlayAlertDialog(listItemSelect!!).show()
             }

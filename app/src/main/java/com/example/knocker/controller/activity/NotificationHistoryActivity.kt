@@ -344,10 +344,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     private fun firstContactPrio0(notifList: List<NotificationDB>): Int {
-        for (i in 0..notifList.size - 1) {
+        for (i in notifList.size - 1..1) {
             val contact = notification_history_NotificationsDatabase!!.contactsDao().getContact(notifList[i].idContact)
-            if (contact.contactDB!!.contactPriority == 0) {
-                return i
+            if (contact.contactDB!!.contactPriority != 0) {
+                return i+1
             }
         }
         return notifList.size
