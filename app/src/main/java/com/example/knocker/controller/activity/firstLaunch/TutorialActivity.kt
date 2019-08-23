@@ -9,7 +9,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import com.example.knocker.R
-import com.example.knocker.controller.CustomViewPagerAdapter
 import com.example.knocker.controller.TutorialViewPagerAdapter
 import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.controller.activity.NotificationHistoryActivity
