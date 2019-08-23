@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var multiChannelMode: Boolean = false
 
     private val PERMISSION_CALL_RESULT = 1
+    private val PERMISSION_READ_CONTACT = 99
 
     //On créé un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -129,7 +130,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     //endregion
 
     /**
-     * Méthode lancé par le système à caque redémarage de l'activité
+     * Méthode lancé par le système à chaque redémarage de l'activité
      * @param Bundle @type
      */
 
@@ -413,18 +414,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //zone qui nous permet de mettre en place les actions lors d'interaction de l'utilisateur
         //region ======================================== Listeners =========================================
-
+        //Lors du click sur le bouton hamburger  dans la toolbar nous ouvrons le drawer
         main_toolbar_OpenDrawer.setOnClickListener {
             drawerLayout!!.openDrawer(GravityCompat.START)
             hideKeyboard()
         }
 
         main_toolbar_Help!!.setOnClickListener {
-//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                    .setTitle(R.string.help)
-//                    .setMessage(this.resources.getString(R.string.help_main))
-//                    .setBackground(getDrawable(R.color.backgroundColor))
-//                    .show()
             val intentToTuto = Intent(this@MainActivity, TutorialActivity::class.java)
             intentToTuto.putExtra("fromMainActivity", true)
             startActivity(intentToTuto)
@@ -523,7 +519,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             //check les permissions
             val sync = Runnable {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 99)
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), PERMISSION_READ_CONTACT)
                 }
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                     //on affiche le loading
@@ -648,7 +644,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             //fonction appelée à chaque charactère tapé
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
                 //ferme circular
-                gridViewAdapter!!.closeMenu()
+                if (gridViewAdapter!=null) {
+                    gridViewAdapter!!.closeMenu()
+                }
                 //convertir en string le contenu de la searchbar
                 main_search_bar_value = main_SearchBar!!.text.toString()
                 //get le type d'affichage selectionné
@@ -760,7 +758,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     //region ========================================== Functions ===========================================
-
+    /**
+     *  Les affichages du modemultiselect sont enlevé pour remettre un affichage comme à l'ouverture de l'activité
+     */
     private fun refreshActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
@@ -775,6 +775,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         switchMultiSelectToNormalMode()
     }
 
+    /**
+     * Comme [MainActivity.onCreate] méthode lancé a chaque lancement de l'activité
+     * On vérifie qu'elle est le dernier tri choisi par l'utilisateur et on l'affecte
+     * @param item [MenuItem]
+     * @return [Boolean]
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
@@ -792,7 +798,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         return true
     }
 
-    //check les checkbox si elle ont été check apres une recherche
+    /**
+     * Vérifie si les checkbox ont été check apres une recherche
+     * @param item [MenuItem]
+     * @return [Boolean]
+     */
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         super.onPrepareOptionsMenu(menu)
         val main_filter = intent.getStringArrayListExtra("Filter")
@@ -807,6 +817,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         return true
     }
 
+    /**
+     * Méthode qui lors de la sélection d'un item du menu effectue les filtres et trie séléctionner dans le menu
+     * @param item [MenuItem]
+     * @return [Boolean]
+     */
     @SuppressLint("ShowToast")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         gridViewAdapter!!.closeMenu()
@@ -1059,6 +1074,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Retourne si on a l'autorisation d'accès aux notification
+     * @return [Boolean]
+     */
     private fun isNotificationServiceEnabled(): Boolean {
         val pkgName = packageName
         val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
@@ -1086,6 +1105,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
     }
 
+    /**
+     *  ferme le keyboard
+     */
     private fun hideKeyboard() {
         // Check if no view has focus:
         val view = this.currentFocus
@@ -1095,22 +1117,50 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
+    //region ======================= Drawer Listener ========================
+    //Cette region est composé d'un ensemble de méthode qui sont appellé lors d'action sur le drawer
 
+    /**
+     *Lors du changement d'état nous ne faisons rien
+     * @param newState [Int]
+     */
     override fun onDrawerStateChanged(newState: Int) {
 
     }
 
+    /**
+     * Lors de l'ouvertur du drawer par le slide nous fermons le circularMenu
+     * @param drawerView [View]
+     * @param slideOffset [Float]
+     */
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        gridViewAdapter!!.closeMenu()
+        if (gridViewAdapter !=null){
+            gridViewAdapter!!.closeMenu()
+        }
     }
 
+    /**
+     * Lorsque le drawer est fermer on ne fait rien
+     * @param drawerView [View]
+     */
     override fun onDrawerClosed(drawerView: View) {
     }
 
+    /**
+     * Lors de l'ouvertur du drawer nous fermons le circularMenu
+     * @param drawerView [View]
+     * @param slideOffset [Float]
+     */
     override fun onDrawerOpened(drawerView: View) {
-        gridViewAdapter!!.closeMenu()
+        if (gridViewAdapter !=null){
+            gridViewAdapter!!.closeMenu()
+        }
     }
-
+    //endregion
+    /**
+     *
+     * @param [Int]
+     */
     @SuppressLint("SetTextI18n")
     fun longGridItemClick(position: Int) {
         main_FloatingButtonAdd!!.visibility = View.GONE
@@ -1151,6 +1201,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
     }
 
+    /**
+     * On regarde dans la liste ce qu'ont comme channel tous les contacts pour vérifier si ils ont un mail ou numéro
+     * Si un des contact n'a pas un de ses channel le boutton correspondant au channel est masqué
+     * @param listOfItemSelected [ArrayList<ContactWithAllInformation>]
+     */
     private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
         val iterator = (0 until listOfItemSelected.size).iterator()
         var allContactsHaveMail = true
@@ -1194,6 +1249,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     }
 
+    /**
+     *
+     * @param position [Int]
+     */
     fun longRecyclerItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
@@ -1239,7 +1298,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
-
+    /**
+     * On ouvre l'application de SMS avec les contact saisit lors du multiselect
+     * @param listOfPhoneNumber [ArrayList<String>]
+     */
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
         var message = "smsto:" + listOfPhoneNumber[0]
@@ -1249,6 +1311,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
     }
 
+    /**
+     * On ouvre l'application de mail choisi par l'utilisateur avec les contact saisit lors du multiselect
+     * @param listOfMail [ArrayList<String>]
+     */
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
@@ -1260,6 +1326,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         startActivity(intent)
     }
 
+    /**
+     * Méthode appellé par le système lorsque l'utilisateur accepte ou refuse une permission
+     * Lorsque l'utilisateur autorise de lire ses contacts nous synchronisons ses contacts android
+     * Lorsque l'utilisateur autorise d'appeler avec Knocker alors nous Passons l'appel qu'il voulait passer avant d'accepter la permission
+     * @param requestCode [Int]
+     * @param permissions [Array<String>]
+     * @param grantResults [IntArray]
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
 
@@ -1272,7 +1346,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                 }
             }
-            99 -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            PERMISSION_READ_CONTACT -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 println("permission accept")
                 gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
                 recreate()
@@ -1280,6 +1354,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
     }
 
+    /**
+     * Nous affichons ici un alertDialog de création du groupe qui nous demande le nom du groupe est sa couleur
+     * Une fois validé nous enregistrons le groupe et ses contacts
+     * @param listContacts[ArrayList<ContactWithAllInformation>]
+     * @param len [Int]
+     */
     private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
 
         val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -1474,6 +1554,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         listOfItemSelected.clear()
     }
 
+    /**
+     *Passer de l'affichage multiselect au mode normal en changeant le laytout
+     */
     private fun switchMultiSelectToNormalMode() {
         main_FloatingButtonSend!!.visibility = View.GONE
         main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
