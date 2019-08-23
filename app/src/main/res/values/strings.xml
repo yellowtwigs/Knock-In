@@ -344,7 +344,7 @@
 
     <string name="notification_sender_content_title">Interactions summary</string>
     <string name="notification_sender_content_text">Knocker has treated %1s messages since yesterday</string>
-    <string name="notification_sender_big_text">Knocker has treated %1s messages since yesterday \n you can view them in "History"</string>
+    <string name="notification_sender_big_text">Knocker has received %1s new unread messages \n you can view them in "Notifications"</string>
 
     <!-- endregion -->
 

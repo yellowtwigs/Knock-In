@@ -341,7 +341,7 @@
 
     <string name="notification_sender_content_title">Résumé des interactions</string>
     <string name="notification_sender_content_text">Knocker a traité %1s messages depuis hier…</string>
-    <string name="notification_sender_big_text">Knocker a traité %1s messages depuis hier \n vous pouvez les consulter depuis l\'application dans "Historique"</string>
+    <string name="notification_sender_big_text">Knocker a traité %1s messages non lus depuis hier \n vous pouvez les lire depuis l\'application dans "Notifications"</string>
 
     <!-- endregion -->
 
