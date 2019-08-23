@@ -21,7 +21,7 @@
             android:id="@+id/notification_dropable"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@drawable/custom_shape_top_bar_popup"
+            android:background="@drawable/notification_popup_top_bar"
             app:layout_constraintBottom_toTopOf="@+id/notification_popup_main_layout">
 
             <androidx.appcompat.widget.AppCompatImageView

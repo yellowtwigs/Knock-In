@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements PopupMenu.OnMenuItemClickListener {
 
@@ -186,7 +185,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((SectionViewHolder) sectionViewHolder).menu.setOnClickListener(v -> {
                 System.out.println("BUTTON CLICK");
                 final PopupMenu popupMenu = new PopupMenu(mContext, v);
-                popupMenu.inflate(R.menu.menu_manage_group);
+                popupMenu.inflate(R.menu.section_menu_group_manager);
                 popupMenu.setOnMenuItemClickListener(item -> {
                     System.out.println("VALUES = " + item.getItemId());
                     System.out.println("ok = " + R.id.menu_group_add_contacts);

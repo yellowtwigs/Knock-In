@@ -4,15 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -39,15 +36,12 @@ import com.example.knocker.controller.activity.MainActivity;
 import com.example.knocker.controller.activity.group.GroupActivity;
 import com.example.knocker.model.ContactGesture;
 import com.example.knocker.model.ContactManager;
-import com.example.knocker.model.DbWorkerThread;
 import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
-import com.example.knocker.model.ModelDB.GroupDB;
 import com.example.knocker.model.ModelDB.NotificationDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -139,7 +133,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             }
         } else {
             // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
-            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+            holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
         if (len == 6) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.50);
@@ -430,7 +424,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 } else {
                     ((GroupActivity) context).longGridItemClick(len, position, firstPosVis);
                 }
-                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
             }
             return true;
         };
@@ -450,7 +444,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     }
                 } else {
                     listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
                 ((MainActivity) context).longGridItemClick(position);
             } else {

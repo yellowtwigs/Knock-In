@@ -212,7 +212,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 if (context instanceof GroupActivity && len == 0) {
                     holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
                 } else {
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
             }
         }
@@ -271,7 +271,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 if (context instanceof GroupActivity && len == 0) {
                     holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
                 } else {
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
             }
 

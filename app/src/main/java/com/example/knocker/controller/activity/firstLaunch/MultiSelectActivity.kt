@@ -1,19 +1,14 @@
 package com.example.knocker.controller.activity.firstLaunch
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.controller.SelectContactAdapter
-import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.model.ContactManager
 import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -122,7 +117,7 @@ class MultiSelectActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_validate_skip, menu)
+        inflater.inflate(R.menu.toolbar_menu_select_vip, menu)
         return true
     }
 

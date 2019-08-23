@@ -81,8 +81,7 @@
                 android:layout_marginEnd="15dp"
                 android:background="?attr/actionBarItemBackground"
                 android:clickable="true"
-                android:focusable="true"
-                app:srcCompat="@drawable/ic_pencil_edit" />
+                android:focusable="true" />
 
             <!--<View-->
             <!--android:layout_width="match_parent"-->
@@ -102,7 +101,7 @@
                 android:layout_height="@dimen/rounded_image_view_height_width"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
-                android:src="@drawable/img_avatar" />
+                android:src="@drawable/ic_user_blue" />
 
             <TextView
                 android:id="@+id/contact_details_contact_name"
@@ -111,7 +110,6 @@
                 android:layout_below="@+id/contact_details_rounded_image_view"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="Michael Jordan"
                 android:textColor="?attr/textColor"
                 android:textSize="26sp" />
         </RelativeLayout>
@@ -140,7 +138,7 @@
                     android:id="@+id/contact_details_phone_call_layout"
                     android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone">
@@ -170,7 +168,7 @@
                     android:id="@+id/contact_details_sms_layout"
                     android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone">
@@ -200,7 +198,7 @@
                     android:id="@+id/contact_details_whatsapp_layout"
                     android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone">
@@ -228,7 +226,7 @@
                     android:id="@+id/contact_details_mail_layout"
                     android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone">
@@ -258,7 +256,7 @@
                     android:id="@+id/contact_details_messenger_layout"
                     android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone">
@@ -294,7 +292,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/selector_relative_layout"
+            android:background="@drawable/background_layout_selector"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"
@@ -346,7 +344,7 @@
             android:id="@+id/contact_details_phone_number_fix_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_relative_layout"
+            android:background="@drawable/background_layout_selector"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"
@@ -389,7 +387,7 @@
             android:id="@+id/contact_details_vocal_call_whatsapp_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_relative_layout"
+            android:background="@drawable/background_layout_selector"
             android:clickable="true"
             android:focusable="true"
             android:visibility="visible"
@@ -414,7 +412,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/contact_details_vocal_call_whatsapp__relative_layout_img"
-                android:text="Appel vocal du +33 6 58 46 82 58"
+                android:text="Appel vocal +33 6 58 46 82 58"
                 android:textColor="?attr/textColor"
                 android:textSize="16sp" />
 
@@ -424,7 +422,7 @@
             android:id="@+id/contact_details_video_call_whatsapp_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_relative_layout"
+            android:background="@drawable/background_layout_selector"
             android:clickable="true"
             android:focusable="true"
             android:visibility="visible"
@@ -449,7 +447,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/contact_details_video_call_whatsapp__relative_layout_img"
-                android:text="Appel vidéo du +33 6 58 46 82 58"
+                android:text="Appel vidéo +33 6 58 46 82 58"
                 android:textColor="?attr/textColor"
                 android:textSize="16sp" />
 
@@ -459,7 +457,7 @@
             android:id="@+id/contact_details_message_whatsapp_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_relative_layout"
+            android:background="@drawable/background_layout_selector"
             android:clickable="true"
             android:focusable="true"
             android:visibility="visible"
@@ -484,7 +482,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/contact_details_message_whatsapp__relative_layout_img"
-                android:text="Message au +33 6 58 46 82 58"
+                android:text="Message +33 6 58 46 82 58"
                 android:textColor="?attr/textColor"
                 android:textSize="16sp" />
 
@@ -494,7 +492,7 @@
             android:id="@+id/contact_details_mail_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_relative_layout"
+            android:background="@drawable/background_layout_selector"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"

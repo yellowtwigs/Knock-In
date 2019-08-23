@@ -778,15 +778,15 @@ class EditContactActivity : AppCompatActivity() {
     private fun selectImage() {
 
         val builderBottom = BottomSheetDialog(this)
-        builderBottom.setContentView(R.layout.alert_dialog_picture)
-        val gallerie = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_gallerie_view)
-        val camera = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_camera_view)
-        val recylcer = builderBottom.findViewById<RecyclerView>(R.id.alert_picture_recycler_view)
+        builderBottom.setContentView(R.layout.alert_dialog_select_contact_picture_layout)
+        val gallery = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_gallery_layout)
+        val camera = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_camera_layout)
+        val recyclerView = builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
         val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        recylcer!!.layoutManager = layoutMananger
+        recyclerView!!.layoutManager = layoutMananger
         val adapter = ContactIconeAdapter(this)
-        recylcer.adapter = adapter
-        gallerie!!.setOnClickListener {
+        recyclerView.adapter = adapter
+        gallery!!.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
                 builderBottom.dismiss()

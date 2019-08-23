@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knocker.R;
@@ -92,7 +93,7 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout iconeLayout;
-        ImageView imageViewIcone;
+        AppCompatImageView imageViewIcone;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

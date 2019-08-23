@@ -19,7 +19,6 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -44,7 +43,6 @@ import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
 import com.example.knocker.model.ModelDB.GroupWithContact;
-import com.example.knocker.model.requestDB.GroupsDao;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
@@ -171,7 +169,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
         }
         if(modeMultiSelect && listOfItemSelected.contains(contactManager.getContactList().get(position))){
-            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+            holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         } else {
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -447,12 +445,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                         holder.contactRoundedImageView.setImageBitmap(bitmap);
                     } else {
                         listOfItemSelected.add(contactManager.getContactList().get(position));
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                         notifyDataSetChanged();
                     }
                 } else {
                     listOfItemSelected.add(contactManager.getContactList().get(position));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                     notifyDataSetChanged();
                 }
                 closeMenu();
@@ -478,7 +476,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     notifyDataSetChanged();
                 } else {
                     listOfItemSelected.add(contactManager.getContactList().get(position));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                     notifyDataSetChanged();
                 }
                 ((GroupManagerActivity) context).gridLongItemClick(position);

@@ -14,7 +14,6 @@ import com.example.knocker.controller.activity.MainActivity
 import com.example.knocker.controller.activity.NotificationHistoryActivity
 import com.example.knocker.controller.activity.PhoneLogActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
-import kotlinx.android.synthetic.main.alert_dialog_multi_select.*
 import java.util.*
 
 class TutorialActivity : AppCompatActivity() {

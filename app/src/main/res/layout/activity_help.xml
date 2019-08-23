@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/selector_relative_layout_with_border"
+            android:background="@drawable/background_layout_selector_with_border"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/selector_relative_layout_with_border"
+            android:background="@drawable/background_layout_selector_with_border"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/help_activity_tutorial">
@@ -102,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/selector_relative_layout_with_border"
+            android:background="@drawable/background_layout_selector_with_border"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/help_activity_contact_us_id">
@@ -138,7 +138,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/selector_relative_layout_with_border"
+            android:background="@drawable/background_layout_selector_with_border"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/help_activity_terms_id">
@@ -180,5 +180,5 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/menu_left_drawer_layout" />
 </androidx.drawerlayout.widget.DrawerLayout>

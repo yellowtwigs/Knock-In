@@ -202,7 +202,7 @@
                 android:layout_marginStart="24dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_plus_selector"
+                android:src="@drawable/ic_circular_button_plus_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -232,7 +232,7 @@
                 android:layout_marginEnd="30dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_back_space_button_selector"
+                android:src="@drawable/ic_backspace_arrow_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -261,7 +261,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -303,7 +303,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -347,7 +347,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -395,7 +395,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -440,7 +440,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -485,7 +485,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -533,7 +533,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -580,7 +580,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -626,7 +626,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -693,7 +693,7 @@
                     android:layout_width="@dimen/phone_log_keyboard_width"
                     android:layout_height="@dimen/phone_log_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -840,7 +840,7 @@
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/main_navigation_view" />
+            app:menu="@menu/bottom_navigation_view" />
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -852,5 +852,5 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/menu_left_drawer_layout" />
 </androidx.drawerlayout.widget.DrawerLayout>

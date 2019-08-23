@@ -86,7 +86,7 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
 //                notification_history_adapter_App!!.setImageDrawable(icon)
 //            } else {
 //                listOfItemSelected.add(notifSelected)
-//                notification_history_adapter_App!!.setImageDrawable(context.getDrawable(R.drawable.ic_contact_selected))
+//                notification_history_adapter_App!!.setImageDrawable(context.getDrawable(R.drawable.ic_item_selected))
 //            }
 //
 //            if (context is NotificationHistoryActivity) {

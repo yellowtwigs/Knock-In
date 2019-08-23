@@ -105,7 +105,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val callButton = view.findViewById<View>(R.id.item_notification_call) as AppCompatButton
 
 
-        val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
+        val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.item_notif_adapter_top_bar)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
         app.text = convertPackageToString(sbp.appNotifier!!)

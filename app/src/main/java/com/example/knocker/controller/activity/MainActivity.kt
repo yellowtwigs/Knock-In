@@ -463,7 +463,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_ToolbarMultiSelectModeMenu!!.setOnClickListener {
             val popupMenu = PopupMenu(this, it)
-            popupMenu.inflate(R.menu.menu_main_toolbar_multiselect)
+            popupMenu.inflate(R.menu.toolbar_menu_main_multiselect_mode)
 
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -783,7 +783,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_main, menu)
+        inflater.inflate(R.menu.toolbar_menu_filter_main, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
         val triLastName = menu.findItem(R.id.tri_par_lastname)
         val triPriority = menu.findItem(R.id.tri_par_priorite)
