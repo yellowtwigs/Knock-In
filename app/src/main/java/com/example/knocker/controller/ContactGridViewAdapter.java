@@ -295,7 +295,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         DisplayMetrics metrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int diametreBoutton = (int) (0.40 * metrics.densityDpi);
-        int radiusMenu = (int) (0.50 * metrics.densityDpi);
+        int radiusMenu = (int) (0.45 * metrics.densityDpi);
         int border = (int) (0.0625 * metrics.densityDpi);
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
