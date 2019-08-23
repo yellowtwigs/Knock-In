@@ -113,7 +113,10 @@ class EditContactActivity : AppCompatActivity() {
 
     private var fromGroupActivity = false
 
-    private var isFavorite = false
+    private var isChanged = false
+
+    private var isFavorite: Boolean? = null
+    private var isFavoriteChanged: Boolean? = null
 
     //endregion
 
@@ -167,6 +170,14 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Fix_Property = findViewById(R.id.edit_contact_phone_number_spinner_fix)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
         edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
+
+        recyclerGroup = findViewById(R.id.edit_contact_recycler)
+
+        edit_contact_Return = findViewById(R.id.edit_contact_return)
+        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete)
+        edit_contact_AddContactToFavorite = findViewById(R.id.edit_contact_favorite)
+        edit_contact_RemoveContactFromFavorite = findViewById(R.id.edit_contact_favorite_shine)
+        edit_contact_Validate = findViewById(R.id.edit_contact_edit_contact)
 
         //endregion
 
@@ -268,17 +279,7 @@ class EditContactActivity : AppCompatActivity() {
             }
         }
 
-        //region ========================================= Toolbar ==========================================
-
-        edit_contact_Return = findViewById(R.id.edit_contact_return)
-        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete)
-        edit_contact_AddContactToFavorite = findViewById(R.id.edit_contact_favorite)
-        edit_contact_RemoveContactFromFavorite = findViewById(R.id.edit_contact_favorite_shine)
-        edit_contact_Validate = findViewById(R.id.edit_contact_edit_contact)
-
-        //endregion
-
-        // Set Resources from MainActivity to ContactDetailsActivity
+        //region ===================================== SetViewDataField =====================================
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         edit_contact_FirstName!!.editText!!.setText(edit_contact_first_name)
@@ -293,6 +294,106 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
         textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
         textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
+
+        //endregion
+
+        //region ======================================== Favorites =========================================
+
+        val contactList = ContactManager(this)
+        val contact = contactList.getContactById(edit_contact_id!!)!!
+
+        if (contact.contactDB!!.favorite == 1) {
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
+            edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
+
+            isFavorite = true
+            isFavoriteChanged = true
+
+        } else if (contact.contactDB!!.favorite == 0) {
+            edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
+
+            isFavorite = false
+            isFavoriteChanged = false
+        }
+
+        //endregion
+
+        //region ========================================== Tags ============================================
+
+        val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
+        val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+
+        val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
+        val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+
+        edit_contact_Mail_Property!!.adapter = adapterMailTagList
+        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
+        edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
+
+        //endregion
+
+        //region ======================================== Priority ==========================================
+
+        val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
+        val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        edit_contact_Priority!!.adapter = priority_adapter
+        //println("edit contact prio === " + edit_contact_priority)
+        edit_contact_Priority!!.setSelection(edit_contact_priority)
+        edit_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (position) {
+                    0 -> {
+                        edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
+                        edit_contact_RoundedImageView!!.visibility = View.GONE
+                        edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
+                        edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        edit_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    }
+                    1 -> {
+                        edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
+                        edit_contact_RoundedImageView!!.visibility = View.GONE
+                        edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
+                        edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        edit_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
+                        edit_contact_RoundedImageView!!.visibility = View.GONE
+                        edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
+                        edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        edit_contact_RoundedImageView!!.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+
+        //endregion
+
+        //region ========================================== Groups ==========================================
+
+        val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        recyclerGroup!!.layoutManager = layoutMananger
+        //edit_contact_ContactsDatabase.contactsDao()
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDbGroup = Callable { edit_contact_ContactsDatabase!!.GroupsDao().getGroupForContact(edit_contact_id!!) }
+        val resultGroup = executorService.submit(callDbGroup)
+        val listGroup: ArrayList<GroupDB> = ArrayList()
+        listGroup.addAll(resultGroup.get())
+        val callDBContact = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
+        val resultContact = executorService.submit(callDBContact)
+        val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
+        recyclerGroup!!.adapter = adapter
+
+        //endregion
 
         //region ======================================== Listeners =========================================
 
@@ -329,6 +430,15 @@ class EditContactActivity : AppCompatActivity() {
 
                     val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
                     val nbDetail = contact!!.contactDetailList!!.size - 1
+
+                    if (isFavoriteChanged != isFavorite) {
+                        if (isFavorite!!) {
+                            addToFavorite()
+                        } else {
+                            removeFromFavorite()
+                        }
+                    }
+
                     //   for (i in 0..nbDetail) {
                     if (havePhone) {
                         //println("------------il a un numéro ------")
@@ -479,95 +589,17 @@ class EditContactActivity : AppCompatActivity() {
         }
 
         //endregion
-
-        val contactList = ContactManager(this)
-        val contact = contactList.getContactById(edit_contact_id!!)!!
-
-        if (contact.contactDB!!.favorite == 1) {
-            edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
-            edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
-        } else if (contact.contactDB!!.favorite == 0) {
-            edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
-            edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
-        }
-
-        // drop list
-
-        val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
-        val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
-        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-
-        val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
-        val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
-        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-
-        edit_contact_Mail_Property!!.adapter = adapterMailTagList
-        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
-        edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
-
-        val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
-        val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
-        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        edit_contact_Priority!!.adapter = priority_adapter
-        //println("edit contact prio === " + edit_contact_priority)
-        edit_contact_Priority!!.setSelection(edit_contact_priority)
-        edit_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position == 0) {
-                    edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
-                    edit_contact_RoundedImageView!!.visibility = View.GONE
-                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                } else if (position == 1) {
-                    edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
-                    edit_contact_RoundedImageView!!.visibility = View.GONE
-                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                } else if (position == 2) {
-                    edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
-                    edit_contact_RoundedImageView!!.visibility = View.GONE
-                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
-                    edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                }
-            }
-        }
-        recyclerGroup = findViewById(R.id.edit_contact_recycler)
-        val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        recyclerGroup!!.layoutManager = layoutMananger
-        //edit_contact_ContactsDatabase.contactsDao()
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDbGroup = Callable { edit_contact_ContactsDatabase!!.GroupsDao().getGroupForContact(edit_contact_id!!) }
-        val resultGroup = executorService.submit(callDbGroup)
-        val listGroup: ArrayList<GroupDB> = ArrayList()
-        listGroup.addAll(resultGroup.get())
-        val callDBContact = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
-        val resultContact = executorService.submit(callDBContact)
-        val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
-        recyclerGroup!!.adapter = adapter
     }
 
     //region ========================================== Functions ===========================================
 
     override fun onBackPressed() {
-        if (isChanged || isFavoriteChanged || isNotFavoriteChanged) {
+        if (isChanged || isFavoriteChanged != isFavorite) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle(R.string.edit_contact_alert_dialog_cancel_title)
                     .setMessage(R.string.edit_contact_alert_dialog_cancel_message)
                     .setBackground(getDrawable(R.color.backgroundColor))
                     .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                        if (isFavoriteChanged) {
-                            removeFromFavorite()
-                        } else if (isNotFavoriteChanged) {
-                            addToFavorite()
-                        }
                         if (fromGroupActivity) {
                             startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                         } else {

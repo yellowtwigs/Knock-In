@@ -486,12 +486,6 @@ class CockpitActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-//                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                        .setTitle(R.string.help)
-//                        .setMessage(this.resources.getString(R.string.help_cockpit))
-//                        .show()
-
-
                 val intentToTuto = Intent(this@CockpitActivity, TutorialActivity::class.java)
                 intentToTuto.putExtra("fromPhoneLogActivity", true)
                 startActivity(intentToTuto)
