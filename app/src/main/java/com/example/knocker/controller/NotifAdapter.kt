@@ -206,19 +206,19 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
         when (convertPackageToString(sbp.appNotifier!!)) {
             "Facebook" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook, null))
             }
             "Messenger" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_messenger))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_messenger, null))
             }
             "WhatsApp" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_whatsapp))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_whatsapp, null))
             }
             "Gmail" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_gmail))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_gmail, null))
             }
             "Message" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorPrimary))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorPrimary, null))
             }
         }
 

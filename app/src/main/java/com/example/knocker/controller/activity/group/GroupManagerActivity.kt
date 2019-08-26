@@ -294,7 +294,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     //region ========================================= Functions ============================================
 
-    fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
+    fun recyclerMultiSelectItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
         if (!secondClickLibelle) {
             if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
                 listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])

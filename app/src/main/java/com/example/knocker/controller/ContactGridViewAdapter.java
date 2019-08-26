@@ -163,11 +163,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         assert contact != null;
         if (contact.getContactPriority() == 0) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
         } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor, null));
         } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
         }
 
         String firstname = contact.getFirstName();
@@ -198,7 +198,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
             if (contact.getLastName().length() > 11)
                 lastName = contact.getLastName().substring(0, 9).concat("..");
 
@@ -420,9 +420,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }
                 System.out.println("selection" + firstPosVis);
                 if (context instanceof MainActivity) {
-                    ((MainActivity) context).longGridItemClick(position);
+                    ((MainActivity) context).gridMultiSelectItemClick(position);
                 } else {
-                    ((GroupActivity) context).longGridItemClick(len, position, firstPosVis);
+                    ((GroupActivity) context).gridMultiSelectItemClick(len, position, firstPosVis);
                 }
                 holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
             }
@@ -446,7 +446,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
-                ((MainActivity) context).longGridItemClick(position);
+                ((MainActivity) context).gridMultiSelectItemClick(position);
             } else {
                 if (quickMenu.isOpen()) {
                     quickMenu.close(false);

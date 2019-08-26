@@ -58,9 +58,12 @@ import kotlin.collections.ArrayList
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
-    //Dans cette region on crée toutes les variables dont l'activité aura besoin
-    // Val pour les valeurs constantes
-    // Var pour les valeurs qui seront modifiés
+
+    /**
+     * Dans cette region on crée toutes les variables dont l'activité aura besoin
+     * Val pour les valeurs constantes
+     * Var pour les valeurs qui seront modifiés
+     */
     //region ========================================== Var or Val ==========================================
 
     // Show on the Main Layout
@@ -111,6 +114,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private val PERMISSION_CALL_RESULT = 1
     private val PERMISSION_READ_CONTACT = 99
+
+    private var idGroup: Long = 0
 
     //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -450,7 +455,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
-        // Partie du code qui permet de mettre en place des actions liées aux interactions de l'utilisateur
+        /**
+         *  Partie du code qui permet de mettre en place des actions liées aux interactions de l'utilisateur
+         */
         //region ======================================== Listeners =========================================
 
         //Sync contact
@@ -772,27 +779,25 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             for (i in iterator) {
                 listOfContactSelected.add(listOfItemSelected[i])
-                println("test contact:" + listOfItemSelected[i])
             }
-            if (len >= 3) {
-                gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                main_GridView!!.adapter = gridViewAdapter
-
-
-                main_FloatingButtonMail!!.visibility = View.GONE
-                main_FloatingButtonSMS!!.visibility = View.GONE
-                main_FloatingButtonGroup!!.visibility = View.GONE
-                main_FloatingButtonMultiChannel!!.visibility = View.GONE
-            } else {
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
-
-
-                main_FloatingButtonMail!!.visibility = View.GONE
-                main_FloatingButtonSMS!!.visibility = View.GONE
-                main_FloatingButtonGroup!!.visibility = View.GONE
-                main_FloatingButtonMultiChannel!!.visibility = View.GONE
-            }
-            saveGroupMultiSelect(listOfContactSelected, len)
+//            if (len >= 3) {
+//                gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+//                main_GridView!!.adapter = gridViewAdapter
+//
+//
+//                main_FloatingButtonMail!!.visibility = View.GONE
+//                main_FloatingButtonSMS!!.visibility = View.GONE
+//                main_FloatingButtonGroup!!.visibility = View.GONE
+//                main_FloatingButtonMultiChannel!!.visibility = View.GONE
+//            } else {
+//                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
+//
+//                main_FloatingButtonMail!!.visibility = View.GONE
+//                main_FloatingButtonSMS!!.visibility = View.GONE
+//                main_FloatingButtonGroup!!.visibility = View.GONE
+//                main_FloatingButtonMultiChannel!!.visibility = View.GONE
+//            }
+            createGroupMultiSelectClick(listOfContactSelected)
         }
 
         //endregion
@@ -1159,7 +1164,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
     }
 
-    //Cette region est composée d'un ensemble de méthodes qui sont appelés lors d'action sur le drawer
+    /**
+     *  Cette region est composée d'un ensemble de méthodes qui sont appelés lors d'action sur le drawer
+     */
     //region ======================================== Drawer Listener =======================================
 
     /**
@@ -1202,12 +1209,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     //endregion
 
     /**
-     * Fonction "Long Click", appelée dans GridViewAdapter, liée au long click sur un contact
-     * Cela permet d'activer le mode Multiselect
+     *  Cette region est composée d'un ensemble de méthodes qui sont liées au Multiselect
+     */
+    //region ====================================== Multi-MonoChannel =======================================
+
+    /**
+     * Fonction Item Click, appelée dans GridViewAdapter, liée au click sur un contact
+     * Cela permet d'activer le mode Multiselect et ensuite de sélectionner d'autres contacts
      * @param position [Int]
      */
     @SuppressLint("SetTextI18n")
-    fun longGridItemClick(position: Int) {
+    fun gridMultiSelectItemClick(position: Int) {
         main_FloatingButtonAddNewContact!!.visibility = View.GONE
         main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE
 
@@ -1247,11 +1259,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * Fonction "Long Click", appelée dans GridViewAdapter, liée au long click sur un contact
-     * Cela permet d'activer le mode Multiselect
+     * Fonction Item Click, appelée dans GridViewAdapter, liée au long click sur un contact
+     * Cela permet d'activer le mode Multiselect et ensuite de sélectionner d'autres contacts
      * @param position [Int]
      */
-    fun longRecyclerItemClick(position: Int) {
+    fun recyclerMultiSelectItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
             verifiedContactsChannel(listOfItemSelected)
@@ -1296,7 +1308,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
-
 
     /**
      * On regarde dans la liste des contacts sélectionnés lors du multiselect tous les channels (SMS, Mail) présents
@@ -1348,7 +1359,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * On ouvre l'application de SMS avec les contact saisit lors du multiselect
+     * On ouvre l'application de SMS avec tous les contacts saisis lors du multiselect
      * @param listOfPhoneNumber [ArrayList<String>]
      */
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
@@ -1361,7 +1372,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * On ouvre l'application de mail choisi par l'utilisateur avec les contact saisit lors du multiselect
+     * On ouvre l'application de mail choisi par l'utilisateur avec tous les contacts saisis lors du multiselect
      * @param listOfMail [ArrayList<String>]
      */
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
@@ -1376,9 +1387,207 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * Méthode appellé par le système lorsque l'utilisateur accepte ou refuse une permission
-     * Lorsque l'utilisateur autorise de lire ses contacts nous synchronisons ses contacts android
-     * Lorsque l'utilisateur autorise d'appeler avec Knocker alors nous Passons l'appel qu'il voulait passer avant d'accepter la permission
+     * Nous affichons ici une Popup de création de groupe qui nous demande d'entrer le nom du groupe et sa couleur
+     * Une fois validé, nous enregistrons le groupe et ses contacts dans la BDD
+     * @param listContacts[ArrayList<ContactWithAllInformation>]
+     * @param len [Int]
+     */
+    private fun createGroupMultiSelectClick(listContacts: ArrayList<ContactWithAllInformation>) {
+
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        @SuppressLint("InflateParams") val alertView = inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
+
+        val mainCreateGroupAlertDialogTitle = alertView.findViewById<TextView>(R.id.manager_group_edit_group_alert_dialog_title)
+        val mainCreateGroupAlertDialogEditText = alertView.findViewById<AppCompatEditText>(R.id.manager_group_edit_group_view_edit)
+
+        val mainCreateGroupAlertDialogRedTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_red)
+        val mainCreateGroupAlertDialogBlueTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_blue)
+        val mainCreateGroupAlertDialogGreenTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_green)
+        val mainCreateGroupAlertDialogYellowTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_yellow)
+        val mainCreateGroupAlertDialogOrangeTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_orange)
+        val mainCreateGroupAlertDialogPurpleTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_purple)
+
+        // Titre de la Popup
+        mainCreateGroupAlertDialogTitle.text = this.getString(R.string.main_alert_dialog_group_title)
+
+        // Text hint de l'EditText
+        mainCreateGroupAlertDialogEditText.hint = getString(R.string.group_name).format(main_ContactsDatabase!!.GroupsDao().getIdNeverUsed())
+
+        mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_image_view)
+        var color = this.getColor(R.color.red_tag_group)
+
+        //region ================================= ClickListenerOnColorTag ==================================
+
+        mainCreateGroupAlertDialogRedTag.setOnClickListener {
+            mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.red_tag_group)
+        }
+
+        mainCreateGroupAlertDialogBlueTag.setOnClickListener {
+            mainCreateGroupAlertDialogBlueTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.blue_tag_group)
+        }
+
+        mainCreateGroupAlertDialogGreenTag.setOnClickListener {
+            mainCreateGroupAlertDialogGreenTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.green_tag_group)
+        }
+
+        mainCreateGroupAlertDialogYellowTag.setOnClickListener {
+            mainCreateGroupAlertDialogYellowTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.yellow_tag_group)
+        }
+
+        mainCreateGroupAlertDialogOrangeTag.setOnClickListener {
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.orange_tag_group)
+        }
+
+        mainCreateGroupAlertDialogPurpleTag.setOnClickListener { v1 ->
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.purple_tag_group)
+        }
+
+        //endregion
+
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setView(alertView)
+                .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
+                    if (mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites" || mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites") {
+                        hideKeyboard()
+                        Toast.makeText(this, getString(R.string.main_alert_dialog_group_favorites_already_exist), Toast.LENGTH_LONG).show()
+                    } else {
+                        val nameGroup = if (mainCreateGroupAlertDialogEditText.text.toString().isNotEmpty()) {
+                            mainCreateGroupAlertDialogEditText.text.toString()
+                        } else {
+                            mainCreateGroupAlertDialogEditText.hint.toString()
+                        }
+                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+                        val callDb = Callable {
+                            if (listContacts.size != 0) {
+                                val group = GroupDB(null, nameGroup, "", -500138)
+                                idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)!!
+                                for (contact in listContacts) {
+                                    val link = LinkContactGroup(idGroup.toInt(), contact.getContactId())
+                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
+                                }
+                            }
+                        }
+                        executorService.submit(callDb).get()!!
+
+                        if (color == 0) {
+                            val r = Random()
+                            when (r.nextInt(7)) {
+                                0 -> {
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                    color = this.getColor(R.color.green_tag_group)
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                1 -> {
+                                    color = this.getColor(R.color.blue_tag_group)
+                                    color = this.getColor(R.color.green_tag_group)
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                2 -> {
+                                    color = this.getColor(R.color.green_tag_group)
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                3 -> {
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                4 -> {
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                5 -> {
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                6 -> {
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                else -> color = this.getColor(R.color.blue_tag_group)
+                            }
+                        }
+                        hideKeyboard()
+                        main_ContactsDatabase!!.GroupsDao().updateGroupSectionColorById(idGroup.toInt(), color)
+                        startActivity(Intent(this, GroupManagerActivity::class.java))
+                    }
+                }
+                .setNegativeButton(R.string.alert_dialog_cancel) { _, _ ->
+                    hideKeyboard()
+                }
+                .show()
+
+//        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+//        main_GridView!!.adapter = gridViewAdapter
+//        switchMultiSelectToNormalMode()
+//        listOfItemSelected.clear()
+    }
+
+    //endregion
+
+    /**
+     * Méthode appelée par le système lorsque l'utilisateur accepte ou refuse une permission
+     * Lorsque l'utilisateur autorise de lire ses contacts, nous synchronisons ses contacts Android
+     * Lorsque l'utilisateur autorise d'appeler avec Knocker, alors nous passons l'appel qu'il voulait passer avant d'accepter la permission
      * @param requestCode [Int]
      * @param permissions [Array<String>]
      * @param grantResults [IntArray]
@@ -1401,207 +1610,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 recreate()
             }
         }
-    }
-
-    /**
-     * Nous affichons ici un alertDialog de création du groupe qui nous demande le nom du groupe est sa couleur
-     * Une fois validé nous enregistrons le groupe et ses contacts
-     * @param listContacts[ArrayList<ContactWithAllInformation>]
-     * @param len [Int]
-     */
-    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
-
-        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        @SuppressLint("InflateParams") val alertView = inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
-
-        val edit_group_name_EditText = alertView.findViewById<AppCompatEditText>(R.id.manager_group_edit_group_view_edit)
-        val edit_group_name_AlertDialogTitle = alertView.findViewById<TextView>(R.id.manager_group_edit_group_alert_dialog_title)
-
-        val edit_group_name_RedTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_red)
-        val edit_group_name_BlueTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_blue)
-        val edit_group_name_GreenTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_green)
-        val edit_group_name_YellowTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_yellow)
-        val edit_group_name_OrangeTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_orange)
-        val edit_group_name_PurpleTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_purple)
-
-
-        edit_group_name_AlertDialogTitle.setText(this.getString(R.string.main_alert_dialog_group_title)
-        )
-
-        edit_group_name_EditText.setHint(getString(R.string.group_name).format(main_ContactsDatabase!!.GroupsDao().getIdNeverUsed()))
-
-        edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view)
-        var color = this.getColor(R.color.red_tag_group)
-        edit_group_name_RedTag.setOnClickListener { v1 ->
-            edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.red_tag_group)
-        }
-
-        edit_group_name_BlueTag.setOnClickListener { v1 ->
-            edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.blue_tag_group)
-        }
-
-        edit_group_name_GreenTag.setOnClickListener { v1 ->
-            edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.green_tag_group)
-        }
-
-        edit_group_name_YellowTag.setOnClickListener { v1 ->
-            edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.yellow_tag_group)
-        }
-
-        edit_group_name_OrangeTag.setOnClickListener { v1 ->
-            edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.orange_tag_group)
-        }
-
-        edit_group_name_PurpleTag.setOnClickListener { v1 ->
-            edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.purple_tag_group)
-        }
-
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setView(alertView)
-                .setPositiveButton(R.string.alert_dialog_validate) { dialog, which ->
-                    /*  println("Name : " + Objects.requireNonNull<Editable>(edit_group_name_EditText.text).toString())
-                      println("Name : " + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup()!!.toInt()).name)
-                      println("Color : $color")
-  */
-                    var idGroup: Long = 0
-                    if (edit_group_name_EditText.text!!.toString() == "Favorites") {
-                        Toast.makeText(this, "Vous ne pouvez pas donner favoris comme nom de groupe", Toast.LENGTH_LONG).show()
-                    } else {
-
-                        val nameGroup = if (edit_group_name_EditText.text.toString().isNotEmpty()) {
-                            edit_group_name_EditText.text.toString()
-                        } else {
-                            edit_group_name_EditText.hint.toString()
-                        }
-                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                        val callDb = Callable {
-                            if (listContacts.size != 0) {
-                                val group = GroupDB(null, nameGroup, "", -500138)
-                                idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)!!
-                                for (contact in listContacts) {
-                                    val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
-                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
-                                }
-                            }
-                        }
-                        executorService.submit(callDb).get()!!
-                        //                                            Toast.makeText(this, "Vous avez modifié le nom de votre groupe", Toast.LENGTH_LONG).show();
-                    }
-
-                    if (color == 0) {
-                        val r = Random()
-                        val n = r.nextInt(7)
-
-                        when (n) {
-                            0 -> {
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                                color = this.getColor(R.color.green_tag_group)
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            1 -> {
-                                color = this.getColor(R.color.blue_tag_group)
-                                color = this.getColor(R.color.green_tag_group)
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            2 -> {
-                                color = this.getColor(R.color.green_tag_group)
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            3 -> {
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            4 -> {
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            5 -> {
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            6 -> {
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            else -> color = this.getColor(R.color.blue_tag_group)
-                        }
-                    }
-
-                    main_ContactsDatabase!!.GroupsDao().updateGroupSectionColorById(idGroup.toInt(), color)
-                    this.startActivity(Intent(this, GroupManagerActivity::class.java))
-                }
-                .setNegativeButton(R.string.alert_dialog_cancel) { dialog, which -> }
-                .show()
-        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-        main_GridView!!.adapter = gridViewAdapter
-        /*main_FloatingButtonMultiChannel!!.visibility = View.GONE
-          main_SearchBar!!.visibility = View.VISIBLE
-          main_FloatingButtonMail!!.visibility = View.GONE
-          main_FloatingButtonSMS!!.visibility = View.GONE
-          main_FloatingButtonGroup!!.visibility = View.GONE*/
-        switchMultiSelectToNormalMode()
-        listOfItemSelected.clear()
     }
 
     /**

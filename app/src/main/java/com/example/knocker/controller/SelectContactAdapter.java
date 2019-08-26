@@ -136,12 +136,12 @@ public class SelectContactAdapter extends BaseAdapter {
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
                 System.out.println(" black color");
             }else {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             }
 
@@ -196,7 +196,7 @@ public class SelectContactAdapter extends BaseAdapter {
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
             if (contact.getLastName().length() > 11)
                 lastName = contact.getLastName().substring(0, 9).concat("..");
 
@@ -254,9 +254,9 @@ public class SelectContactAdapter extends BaseAdapter {
             }
         } else {
             if (listSelectedItem.contains(getItem(position))) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
             } else {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor, null));
             }
         }
 

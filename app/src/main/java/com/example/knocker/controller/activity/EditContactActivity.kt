@@ -265,16 +265,16 @@ class EditContactActivity : AppCompatActivity() {
             }
             when (edit_contact_priority) {
                 0 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor, null))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                 }
                 1 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor, null))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                 }
                 2 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor, null))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                 }
             }
         }
@@ -354,7 +354,7 @@ class EditContactActivity : AppCompatActivity() {
                     0 -> {
                         edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
                         edit_contact_RoundedImageView!!.visibility = View.GONE
-                        edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
+                        edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor, null))
                         edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                         edit_contact_RoundedImageView!!.visibility = View.VISIBLE
                     }
