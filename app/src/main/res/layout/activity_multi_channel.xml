@@ -15,7 +15,8 @@
         android:background="?attr/transparentColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="?attr/textColor" />
 
     <ListView
         android:id="@+id/multi_channel_list_of_contacts_selected"
@@ -42,22 +43,23 @@
             android:id="@+id/multi_channel_chatbox"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginStart="25dp"
-            android:layout_centerVertical="true"
-            android:hint="Ecrivez votre message"
-            android:textSize="18sp"
-            android:background="@android:color/transparent"
-            android:layout_toStartOf="@+id/multi_channel_chatbox_send"
             android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="25dp"
+            android:layout_toStartOf="@+id/multi_channel_chatbox_send"
+            android:background="@android:color/transparent"
+            android:hint="@string/multi_channel_message_edit_text_hint"
             android:inputType="textLongMessage"
-            android:textColor="@color/textColorDark" />
+            android:textColor="?attr/textColor"
+            android:textColorHint="@color/greyColor"
+            android:textSize="18sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/multi_channel_chatbox_send"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="15dp"
             android:clickable="true"
             android:focusable="true"

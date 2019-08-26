@@ -592,19 +592,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // Lors du click sur le bouton Help dans la toolbar, nous ouvrons le Tutorial
         main_toolbar_Help!!.setOnClickListener {
-            val intentToTuto = Intent(this@MainActivity, TutorialActivity::class.java)
-            intentToTuto.putExtra("fromMainActivity", true)
-            startActivity(intentToTuto)
+            startActivity(Intent(this@MainActivity, TutorialActivity::class.java).putExtra("fromMainActivity", true))
             finish()
         }
 
         // En mode Multiselect, le click sur la croix permet de fermer de ce mode
         main_ToolbarMultiSelectModeClose!!.setOnClickListener {
-            listOfItemSelected.clear()
-            switchMultiSelectToNormalMode()
-            refreshActivity()
+            //            listOfItemSelected.clear()
+//            switchMultiSelectToNormalMode()
+//            refreshActivity()
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this@MainActivity, MainActivity::class.java))
+            finish()
         }
 
         // En mode Multiselect, le click sur le menu permettant de faire un Select All
@@ -625,25 +625,23 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // En mode Multiselect, le click sur la poubelle permettant de faire un Delete des contacts séléctionnés
         main_ToolbarMultiSelectModeDelete!!.setOnClickListener {
-            var supressWarning = " "
+            var suppressWarning = " "
             if (listOfItemSelected.size > 1) {
-                supressWarning = " :"
+                suppressWarning = " :"
                 for (contact in listOfItemSelected) {
                     val contactDb = contact.contactDB
-                    supressWarning += "\n-" + contactDb!!.firstName + " " + contactDb.lastName
+                    suppressWarning += "\n- " + contactDb!!.firstName + " " + contactDb.lastName
                 }
             } else {
                 val contact = listOfItemSelected.get(0).contactDB
-                supressWarning += contact!!.firstName + " " + contact.lastName
+                suppressWarning += contact!!.firstName + " " + contact.lastName
             }
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle("Delete Contact")
-                    .setMessage(String.format(resources.getString(R.string.main_delete_contact), supressWarning))
+                    .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
+                    .setMessage(String.format(resources.getString(R.string.main_alert_dialog_delete_contact_message), suppressWarning))
                     .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
-                        System.out.println("size of list " + listOfItemSelected.size + "-----")
                         listOfItemSelected.forEach {
                             main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
-                            System.out.println("contact " + it.contactDB!! + " son id " + it.contactDB!!.id!!)
                         }
                         listOfItemSelected.clear()
                         switchMultiSelectToNormalMode()
@@ -653,7 +651,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         startActivity(getIntent());
                         overridePendingTransition(0, 0);
 
-                    }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
+                    }
+                    .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
+                    .show()
 
         }
 
@@ -817,8 +817,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
         }
-        listOfItemSelected.clear()
-        switchMultiSelectToNormalMode()
     }
 
     /**

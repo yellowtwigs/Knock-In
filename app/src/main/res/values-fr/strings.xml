@@ -89,7 +89,9 @@
     <string name="main_contact_grid_title">Voulez-vous appeler ce contact ?</string>
     <string name="main_contact_grid_message">Vous pouvez désactiver cette validation depuis les options</string>
 
-    <string name="main_delete_contact">Vous allez supprimer %1s</string>
+
+    <string name="main_alert_dialog_delete_contact_title">Supprimer un ou plusieurs contacts</string>
+    <string name="main_alert_dialog_delete_contact_message">Vous allez supprimer %1s</string>
 
     <string name="menu_main_toolbar_multiselect_all_select">Tout sélectionner</string>
 
@@ -184,6 +186,7 @@
     <string name="edit_contact_delete_contact">Supprimer un contact</string>
     <string name="edit_contact_delete_contact_message">Vous allez supprimer ce contact, êtes-vous sûr ?</string>
     <string name="edit_contact_validate">Valider</string>
+    <string name="edit_contact_cancel">Annuler</string>
     <string name="edit_contact_toast">Nom ou prénom requis</string>
     <string name="edit_contact_groups">Groupes</string>
 
@@ -377,6 +380,7 @@
     <string name="multi_channel_empty_field">Votre message ne doit pas être vide</string>
     <string name="multi_channel_list_of_channel_selected_empty">Vous n\'avez sélectionné aucun channel de communication</string>
     <string name="multi_channel_message_sent">Message envoyé</string>
+    <string name="multi_channel_message_edit_text_hint">Ecrivez votre message</string>
 
     <!-- endregion -->
 

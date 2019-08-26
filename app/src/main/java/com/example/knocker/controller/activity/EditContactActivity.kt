@@ -620,13 +620,16 @@ class EditContactActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(getString(R.string.edit_contact_delete_contact))
                 .setMessage(getString(R.string.edit_contact_delete_contact_message))
-                .setPositiveButton("Remove") { _, _ ->
+                .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
                     edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
                     val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
                     mainIntent.putExtra("isDelete", true)
                     startActivity(mainIntent)
                     finish()
-                }.show()
+                }
+                .setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
+                }
+                .show()
     }
 
 
