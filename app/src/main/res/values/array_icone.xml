@@ -2,13 +2,13 @@
 <resources>
     <integer-array name="icone_ressource">
         <item>@drawable/ic_red_cross</item>
-        <item>@drawable/ic_family_silhouette</item>
+        <item>@drawable/ic_family</item>
         <item>@drawable/ic_employee</item>
         <item>@drawable/ic_woman</item>
         <item>@drawable/ic_man</item>
         <item>@drawable/ic_money</item>
         <item>@drawable/ic_school</item>
         <item>@drawable/ic_icons8_tennis</item>
-        <item>@drawable/ic_musique_rock</item>
+        <item>@drawable/ic_guitar</item>
     </integer-array>
 </resources>

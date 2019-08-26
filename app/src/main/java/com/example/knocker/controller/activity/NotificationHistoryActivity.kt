@@ -79,8 +79,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             R.id.navigation_notifcations -> {
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@NotificationHistoryActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@NotificationHistoryActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
 
@@ -359,7 +359,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_filter_notifications, menu)
+        inflater.inflate(R.menu.toolbar_menu_filter_notif_history, menu)
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getString("tri", "date") == "date") {
             menu!!.findItem(R.id.notif_tri_par_date).setChecked(true)

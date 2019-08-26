@@ -2,12 +2,9 @@ package com.example.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -33,9 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.knocker.R
 import com.example.knocker.controller.activity.firstLaunch.TutorialActivity
-import com.example.knocker.controller.activity.group.GroupActivity
 import com.example.knocker.controller.activity.group.GroupManagerActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import java.util.ArrayList
 
@@ -43,7 +38,7 @@ import java.util.ArrayList
  * La Classe qui permet d'afficher la liste des appels reçu
  * @author Kenzy Suon & Ryan Granet
  */
-class PhoneLogActivity : AppCompatActivity() {
+class CockpitActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
@@ -51,32 +46,32 @@ class PhoneLogActivity : AppCompatActivity() {
 
     private var numberForPermission = ""
 
-    private var phone_log_DrawerLayout: DrawerLayout? = null
+    private var cockpit_DrawerLayout: DrawerLayout? = null
 
-    private var main_BottomNavigationView: BottomNavigationView? = null
-    private var phone_log_IncomingCallButton: FloatingActionButton? = null
-    private var phone_log_SendMessage: ImageView? = null
+    private var bottomNavigationView: BottomNavigationView? = null
+    private var cockpit_IncomingCallButton: FloatingActionButton? = null
+    private var cockpit_SendMessage: ImageView? = null
 
-    private var phone_log_ButtonOpen: FloatingActionButton? = null
-    private var phone_log_CallLayout: ConstraintLayout? = null
-    private var phone_log_KeyboardView: TableLayout? = null
-    private var phone_log_EditTextLayout: ConstraintLayout? = null
-    private var phone_log_PhoneNumberEditText: AppCompatEditText? = null
-    private var phone_log_ButtonClose: ImageView? = null
+    private var cockpit_ButtonOpen: FloatingActionButton? = null
+    private var cockpit_CallLayout: ConstraintLayout? = null
+    private var cockpit_KeyboardView: TableLayout? = null
+    private var cockpit_EditTextLayout: ConstraintLayout? = null
+    private var cockpit_PhoneNumberEditText: AppCompatEditText? = null
+    private var cockpit_ButtonClose: ImageView? = null
 
     // Keyboard Pad
-    private var phone_log_CallKeyboard_1: RelativeLayout? = null
-    private var phone_log_CallKeyboard_2: RelativeLayout? = null
-    private var phone_log_CallKeyboard_3: RelativeLayout? = null
-    private var phone_log_CallKeyboard_4: RelativeLayout? = null
-    private var phone_log_CallKeyboard_5: RelativeLayout? = null
-    private var phone_log_CallKeyboard_6: RelativeLayout? = null
-    private var phone_log_CallKeyboard_7: RelativeLayout? = null
-    private var phone_log_CallKeyboard_8: RelativeLayout? = null
-    private var phone_log_CallKeyboard_9: RelativeLayout? = null
-    private var phone_log_CallKeyboard_Star: RelativeLayout? = null
-    private var phone_log_CallKeyboard_0: RelativeLayout? = null
-    private var phone_log_CallKeyboard_Sharp: RelativeLayout? = null
+    private var cockpit_CallKeyboard_1: RelativeLayout? = null
+    private var cockpit_CallKeyboard_2: RelativeLayout? = null
+    private var cockpit_CallKeyboard_3: RelativeLayout? = null
+    private var cockpit_CallKeyboard_4: RelativeLayout? = null
+    private var cockpit_CallKeyboard_5: RelativeLayout? = null
+    private var cockpit_CallKeyboard_6: RelativeLayout? = null
+    private var cockpit_CallKeyboard_7: RelativeLayout? = null
+    private var cockpit_CallKeyboard_8: RelativeLayout? = null
+    private var cockpit_CallKeyboard_9: RelativeLayout? = null
+    private var cockpit_CallKeyboard_Star: RelativeLayout? = null
+    private var cockpit_CallKeyboard_0: RelativeLayout? = null
+    private var cockpit_CallKeyboard_Sharp: RelativeLayout? = null
 
     //social network
     private var link_socials_networks_Messenger: AppCompatImageView? = null
@@ -92,28 +87,28 @@ class PhoneLogActivity : AppCompatActivity() {
     private var link_socials_networks_Linkedin: AppCompatImageView? = null
     private var link_socials_networks_Twitter: AppCompatImageView? = null
 
-    private var phone_log_CallBackSpace: ImageView? = null
-    private var phone_log_ButtonAddContact: ImageView? = null
+    private var cockpit_CallBackSpace: ImageView? = null
+    private var cockpit_ButtonAddContact: ImageView? = null
 
-    //    private var phone_log_Calls: TextView? = null
-    /*private var phone_log_CallsListView: ListView? = null*/
+    //    private var cockpit_Calls: TextView? = null
+    /*private var cockpit_CallsListView: ListView? = null*/
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
-                startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                startActivity(Intent(this@CockpitActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
-                startActivity(Intent(this@PhoneLogActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                startActivity(Intent(this@CockpitActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
-                startActivity(Intent(this@PhoneLogActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                startActivity(Intent(this@CockpitActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@PhoneLogActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@CockpitActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -137,14 +132,14 @@ class PhoneLogActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_phone_log)
+        setContentView(R.layout.activity_cockpit)
         hideKeyboard()
         val listApp = getAppOnPhone()
 
         //region ========================================== Toolbar =========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        val cockpit_Toolbar = findViewById<Toolbar>(R.id.cockpit_toolbar)
+        setSupportActionBar(cockpit_Toolbar)
         val actionbar = supportActionBar
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         actionbar!!.setDisplayHomeAsUpEnabled(true)
@@ -152,36 +147,36 @@ class PhoneLogActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_open_drawer)
         }
-        toolbar.setTitle(R.string.phone_log_toolbar_title)
+        cockpit_Toolbar.setTitle(R.string.cockpit_toolbar_title)
 
         //endregion
 
         //region ======================================= FindViewById =======================================
 
-        phone_log_IncomingCallButton = findViewById(R.id.phone_log_incoming_call_button)
-        main_BottomNavigationView = findViewById(R.id.navigation)
+        cockpit_IncomingCallButton = findViewById(R.id.cockpit_incoming_call_button)
+        bottomNavigationView = findViewById(R.id.navigation)
 
-        phone_log_ButtonOpen = findViewById(R.id.phone_log_button_open_id)
-        phone_log_CallLayout = findViewById(R.id.phone_log_call_layout_id)
-        phone_log_ButtonClose = findViewById(R.id.phone_log_button_close_id)
+        cockpit_ButtonOpen = findViewById(R.id.cockpit_button_open_id)
+        cockpit_CallLayout = findViewById(R.id.cockpit_call_layout_id)
+        cockpit_ButtonClose = findViewById(R.id.cockpit_button_close_id)
 
-        phone_log_SendMessage = findViewById(R.id.phone_log_send_message)
-        phone_log_KeyboardView = findViewById(R.id.phone_log_call_keyboard_view)
-        phone_log_EditTextLayout = findViewById(R.id.phone_log_call_edit_text_layout)
-        phone_log_PhoneNumberEditText = findViewById(R.id.phone_log_call_phone_number_edit_text)
+        cockpit_SendMessage = findViewById(R.id.cockpit_send_message)
+        cockpit_KeyboardView = findViewById(R.id.cockpit_call_keyboard_view)
+        cockpit_EditTextLayout = findViewById(R.id.cockpit_call_edit_text_layout)
+        cockpit_PhoneNumberEditText = findViewById(R.id.cockpit_call_phone_number_edit_text)
 
-        phone_log_CallKeyboard_1 = findViewById(R.id.phone_log_call_keyboard_1)
-        phone_log_CallKeyboard_2 = findViewById(R.id.phone_log_call_keyboard_2)
-        phone_log_CallKeyboard_3 = findViewById(R.id.phone_log_call_keyboard_3)
-        phone_log_CallKeyboard_4 = findViewById(R.id.phone_log_call_keyboard_4)
-        phone_log_CallKeyboard_5 = findViewById(R.id.phone_log_call_keyboard_5)
-        phone_log_CallKeyboard_6 = findViewById(R.id.phone_log_call_keyboard_6)
-        phone_log_CallKeyboard_7 = findViewById(R.id.phone_log_call_keyboard_7)
-        phone_log_CallKeyboard_8 = findViewById(R.id.phone_log_call_keyboard_8)
-        phone_log_CallKeyboard_9 = findViewById(R.id.phone_log_call_keyboard_9)
-        phone_log_CallKeyboard_Star = findViewById(R.id.phone_log_call_keyboard_star)
-        phone_log_CallKeyboard_0 = findViewById(R.id.phone_log_call_keyboard_0)
-        phone_log_CallKeyboard_Sharp = findViewById(R.id.phone_log_call_keyboard_sharp)
+        cockpit_CallKeyboard_1 = findViewById(R.id.cockpit_call_keyboard_1)
+        cockpit_CallKeyboard_2 = findViewById(R.id.cockpit_call_keyboard_2)
+        cockpit_CallKeyboard_3 = findViewById(R.id.cockpit_call_keyboard_3)
+        cockpit_CallKeyboard_4 = findViewById(R.id.cockpit_call_keyboard_4)
+        cockpit_CallKeyboard_5 = findViewById(R.id.cockpit_call_keyboard_5)
+        cockpit_CallKeyboard_6 = findViewById(R.id.cockpit_call_keyboard_6)
+        cockpit_CallKeyboard_7 = findViewById(R.id.cockpit_call_keyboard_7)
+        cockpit_CallKeyboard_8 = findViewById(R.id.cockpit_call_keyboard_8)
+        cockpit_CallKeyboard_9 = findViewById(R.id.cockpit_call_keyboard_9)
+        cockpit_CallKeyboard_Star = findViewById(R.id.cockpit_call_keyboard_star)
+        cockpit_CallKeyboard_0 = findViewById(R.id.cockpit_call_keyboard_0)
+        cockpit_CallKeyboard_Sharp = findViewById(R.id.cockpit_call_keyboard_sharp)
 
         link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
         link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
@@ -196,25 +191,25 @@ class PhoneLogActivity : AppCompatActivity() {
         link_socials_networks_Twitter = findViewById(R.id.twitter_link_socials_networks)
         link_socials_networks_Whatsapp = findViewById(R.id.whatsapp_link_socials_networks)
 
-        phone_log_CallBackSpace = findViewById(R.id.phone_log_call_back_space)
-        phone_log_ButtonAddContact = findViewById(R.id.phone_log_button_add_contact)
+        cockpit_CallBackSpace = findViewById(R.id.cockpit_call_back_space)
+        cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
 
         //endregion
 
-        main_BottomNavigationView!!.menu.getItem(3).isChecked = true
-        main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavigationView!!.menu.getItem(3).isChecked = true
+        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        if (phone_log_PhoneNumberEditText!!.text!!.isEmpty()) {
-            phone_log_EditTextLayout!!.visibility = View.GONE
+        if (cockpit_PhoneNumberEditText!!.text!!.isEmpty()) {
+            cockpit_EditTextLayout!!.visibility = View.GONE
         } else {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
         }
 
         //region ======================================= DrawerLayout =======================================
 
         // Drawerlayout
-        phone_log_DrawerLayout = findViewById(R.id.phone_log_drawer_layout)
-        val navigationView = findViewById<NavigationView>(R.id.phone_log_nav_view)
+        cockpit_DrawerLayout = findViewById(R.id.cockpit_drawer_layout)
+        val navigationView = findViewById<NavigationView>(R.id.cockpit_nav_view)
         val menu = navigationView.menu
         val navItem = menu.findItem(R.id.nav_home)
         navItem.isChecked = true
@@ -223,23 +218,23 @@ class PhoneLogActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            phone_log_DrawerLayout!!.closeDrawers()
+            cockpit_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> startActivity(Intent(this@PhoneLogActivity, MainActivity::class.java))
-                R.id.nav_informations -> startActivity(Intent(this@PhoneLogActivity, EditInformationsActivity::class.java))
-                R.id.nav_notif_config -> startActivity(Intent(this@PhoneLogActivity, ManageNotificationActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this@PhoneLogActivity, SettingsActivity::class.java))
-                R.id.nav_manage_screen -> startActivity(Intent(this@PhoneLogActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_home -> startActivity(Intent(this@CockpitActivity, MainActivity::class.java))
+                R.id.nav_informations -> startActivity(Intent(this@CockpitActivity, EditInformationsActivity::class.java))
+                R.id.nav_notif_config -> startActivity(Intent(this@CockpitActivity, ManageNotificationActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@CockpitActivity, SettingsActivity::class.java))
+                R.id.nav_manage_screen -> startActivity(Intent(this@CockpitActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
-                R.id.nav_knockons -> startActivity(Intent(this@PhoneLogActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_knockons -> startActivity(Intent(this@CockpitActivity, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }
-                R.id.nav_help -> startActivity(Intent(this@PhoneLogActivity, HelpActivity::class.java))
+                R.id.nav_help -> startActivity(Intent(this@CockpitActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.phone_log_drawer_layout)
+            val drawer = findViewById<DrawerLayout>(R.id.cockpit_drawer_layout)
             drawer.closeDrawer(GravityCompat.START)
             true
         }
@@ -250,217 +245,217 @@ class PhoneLogActivity : AppCompatActivity() {
 
         if (!listApp.contains("com.facebook.katana")) {
             link_socials_networks_Messenger!!.setImageResource(R.drawable.ic_facebook_disable)
-            link_socials_networks_Messenger!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_facebook_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Messenger!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_facebook_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
         }
 
         if (!listApp.contains("com.instagram.android")) {
             link_socials_networks_Instagram!!.setImageResource(R.drawable.ic_instagram_disable)
-            link_socials_networks_Instagram!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_instagram_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Instagram!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_instagram_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
         }
 
         if (!listApp.contains("com.whatsapp")) {
             link_socials_networks_Whatsapp!!.setImageResource(R.drawable.ic_whatsapp_disable)
-            link_socials_networks_Whatsapp!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_whatsapp_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Whatsapp!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_whatsapp_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
         }
 
         if (!listApp.contains("com.facebook.orca")) {
             link_socials_networks_Facebook!!.setImageResource(R.drawable.ic_messenger_disable)
-            link_socials_networks_Facebook!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_messenger_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Facebook!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_messenger_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
         }
 
         if (!listApp.contains("com.google.android.youtube")) {
             link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
-            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_youtube_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_youtube_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
         }
 
         if (!listApp.contains("com.google.android.gm")) {
             link_socials_networks_Gmail!!.setImageResource(R.drawable.ic_gmail_disable)
-            link_socials_networks_Gmail!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_gmail_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Gmail!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_gmail_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
         }
 
         if (!listApp.contains("com.snapchat.android")) {
             link_socials_networks_Snapchat!!.setImageResource(R.drawable.ic_snapchat_disable)
-            link_socials_networks_Snapchat!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_snapchat_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Snapchat!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_snapchat_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Snapchat!!.setOnClickListener { goToSnapchat() }
         }
 
         if (!listApp.contains("org.telegram.messenger")) {
             link_socials_networks_Telegram!!.setImageResource(R.drawable.ic_telegram_disable)
-            link_socials_networks_Telegram!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_telegram_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Telegram!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_telegram_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
         }
 
         if (!listApp.contains("com.microsoft.office.outlook")) {
             link_socials_networks_Outlook!!.setImageResource(R.drawable.ic_outlook_disable)
-            link_socials_networks_Outlook!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_outlook_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Outlook!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_outlook_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
         }
 
         if (!listApp.contains("com.skype.raider")) {
             link_socials_networks_Skype!!.setImageResource(R.drawable.ic_skype_disable)
-            link_socials_networks_Skype!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_skype_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Skype!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_skype_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
         }
 
         if (!listApp.contains("com.linkedin.android")) {
             link_socials_networks_Linkedin!!.setImageResource(R.drawable.ic_linkedin_disable)
-            link_socials_networks_Linkedin!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_linkedin_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Linkedin!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_linkedin_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
         }
 
         if (!listApp.contains("com.twitter.android")) {
             link_socials_networks_Twitter!!.setImageResource(R.drawable.ic_twitter_disable)
-            link_socials_networks_Twitter!!.setOnClickListener { Toast.makeText(this, R.string.phone_log_toast_twitter_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Twitter!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_twitter_not_install, Toast.LENGTH_SHORT).show() }
         } else {
             link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
         }
 
 
-        phone_log_IncomingCallButton!!.setOnClickListener {
-            phoneCall(phone_log_PhoneNumberEditText!!.text.toString())
+        cockpit_IncomingCallButton!!.setOnClickListener {
+            phoneCall(cockpit_PhoneNumberEditText!!.text.toString())
         }
 
-        phone_log_SendMessage!!.setOnClickListener {
-            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                val phone = phone_log_PhoneNumberEditText!!.text.toString()
+        cockpit_SendMessage!!.setOnClickListener {
+            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
+                val phone = cockpit_PhoneNumberEditText!!.text.toString()
                 val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null))
                 startActivity(i)
             } else {
-                Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }
         }
 
-        phone_log_ButtonAddContact!!.setOnClickListener {
-            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                val intent = Intent(this@PhoneLogActivity, AddNewContactActivity::class.java)
-                intent.putExtra("ContactPhoneNumber", phone_log_PhoneNumberEditText!!.text.toString())
+        cockpit_ButtonAddContact!!.setOnClickListener {
+            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
+                val intent = Intent(this@CockpitActivity, AddNewContactActivity::class.java)
+                intent.putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString())
                 startActivity(intent)
             } else {
-                Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }
         }
 
-        phone_log_ButtonOpen!!.setOnClickListener {
+        cockpit_ButtonOpen!!.setOnClickListener {
 
             val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
 
-            slideUp(phone_log_EditTextLayout!!)
-            slideUp(phone_log_KeyboardView!!)
-            slideUp(phone_log_CallLayout!!)
-            phone_log_ButtonOpen!!.startAnimation(slideLeft)
+            slideUp(cockpit_EditTextLayout!!)
+            slideUp(cockpit_KeyboardView!!)
+            slideUp(cockpit_CallLayout!!)
+            cockpit_ButtonOpen!!.startAnimation(slideLeft)
 
-            phone_log_CallLayout!!.visibility = View.VISIBLE
-            phone_log_KeyboardView!!.visibility = View.VISIBLE
-            phone_log_ButtonOpen!!.visibility = View.GONE
+            cockpit_CallLayout!!.visibility = View.VISIBLE
+            cockpit_KeyboardView!!.visibility = View.VISIBLE
+            cockpit_ButtonOpen!!.visibility = View.GONE
         }
 
-        phone_log_ButtonClose!!.setOnClickListener {
+        cockpit_ButtonClose!!.setOnClickListener {
 
             val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
             val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
 
-            phone_log_EditTextLayout!!.startAnimation(slideDown)
-            phone_log_KeyboardView!!.startAnimation(slideDown)
-            phone_log_CallLayout!!.startAnimation(slideDown)
-            phone_log_ButtonOpen!!.startAnimation(slideRight)
+            cockpit_EditTextLayout!!.startAnimation(slideDown)
+            cockpit_KeyboardView!!.startAnimation(slideDown)
+            cockpit_CallLayout!!.startAnimation(slideDown)
+            cockpit_ButtonOpen!!.startAnimation(slideRight)
 
-            phone_log_CallLayout!!.visibility = View.GONE
-            phone_log_KeyboardView!!.visibility = View.GONE
-            phone_log_EditTextLayout!!.visibility = View.GONE
-            phone_log_ButtonOpen!!.visibility = View.VISIBLE
+            cockpit_CallLayout!!.visibility = View.GONE
+            cockpit_KeyboardView!!.visibility = View.GONE
+            cockpit_EditTextLayout!!.visibility = View.GONE
+            cockpit_ButtonOpen!!.visibility = View.VISIBLE
         }
 
         //region ========================================== Keyboard ========================================
 
-        phone_log_CallKeyboard_1!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 1)
+        cockpit_CallKeyboard_1!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 1)
         }
-        phone_log_CallKeyboard_2!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 2)
+        cockpit_CallKeyboard_2!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 2)
         }
-        phone_log_CallKeyboard_3!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 3)
+        cockpit_CallKeyboard_3!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 3)
         }
-        phone_log_CallKeyboard_4!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 4)
+        cockpit_CallKeyboard_4!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 4)
         }
-        phone_log_CallKeyboard_5!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 5)
+        cockpit_CallKeyboard_5!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 5)
         }
-        phone_log_CallKeyboard_6!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 6)
+        cockpit_CallKeyboard_6!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 6)
         }
-        phone_log_CallKeyboard_7!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 7)
+        cockpit_CallKeyboard_7!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 7)
         }
-        phone_log_CallKeyboard_8!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 8)
+        cockpit_CallKeyboard_8!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 8)
         }
-        phone_log_CallKeyboard_9!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 9)
+        cockpit_CallKeyboard_9!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 9)
         }
-        phone_log_CallKeyboard_Star!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + "*")
+        cockpit_CallKeyboard_Star!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + "*")
         }
-        phone_log_CallKeyboard_0!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + 0)
+        cockpit_CallKeyboard_0!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 0)
         }
-        phone_log_CallKeyboard_Sharp!!.setOnClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + "#")
+        cockpit_CallKeyboard_Sharp!!.setOnClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + "#")
         }
-        phone_log_CallKeyboard_0!!.setOnLongClickListener {
-            phone_log_EditTextLayout!!.visibility = View.VISIBLE
-            phone_log_PhoneNumberEditText!!.setText(phone_log_PhoneNumberEditText!!.text.toString() + "+")
+        cockpit_CallKeyboard_0!!.setOnLongClickListener {
+            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + "+")
             true
         }
-        phone_log_CallBackSpace!!.setOnClickListener {
-            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                phone_log_PhoneNumberEditText!!.text!!.delete(
-                        phone_log_PhoneNumberEditText!!.length() - 1,
-                        phone_log_PhoneNumberEditText!!.length())
+        cockpit_CallBackSpace!!.setOnClickListener {
+            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
+                cockpit_PhoneNumberEditText!!.text!!.delete(
+                        cockpit_PhoneNumberEditText!!.length() - 1,
+                        cockpit_PhoneNumberEditText!!.length())
             }
         }
 
-        phone_log_CallBackSpace!!.setOnLongClickListener {
-            if (phone_log_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                phone_log_PhoneNumberEditText!!.setText("")
+        cockpit_CallBackSpace!!.setOnLongClickListener {
+            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
+                cockpit_PhoneNumberEditText!!.setText("")
             }
             true
         }
-        phone_log_CallKeyboard_1!!.setOnLongClickListener {
+        cockpit_CallKeyboard_1!!.setOnLongClickListener {
             val telecomManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            if (ContextCompat.checkSelfPermission(this@PhoneLogActivity, Manifest.permission.READ_PHONE_STATE)
+            if (ContextCompat.checkSelfPermission(this@CockpitActivity, Manifest.permission.READ_PHONE_STATE)
                     != PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this@PhoneLogActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
+                ActivityCompat.requestPermissions(this@CockpitActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
             } else {
                 val numberVoiceMail = telecomManager.voiceMailNumber
                 val dial = "tel:$numberVoiceMail"
@@ -478,7 +473,7 @@ class PhoneLogActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_help, menu)
+        inflater.inflate(R.menu.toolbar_menu_help, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -486,18 +481,12 @@ class PhoneLogActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                phone_log_DrawerLayout!!.openDrawer(GravityCompat.START)
+                cockpit_DrawerLayout!!.openDrawer(GravityCompat.START)
                 hideKeyboard()
                 return true
             }
             R.id.item_help -> {
-//                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                        .setTitle(R.string.help)
-//                        .setMessage(this.resources.getString(R.string.help_phone_log))
-//                        .show()
-
-
-                val intentToTuto = Intent(this@PhoneLogActivity, TutorialActivity::class.java)
+                val intentToTuto = Intent(this@CockpitActivity, TutorialActivity::class.java)
                 intentToTuto.putExtra("fromPhoneLogActivity", true)
                 startActivity(intentToTuto)
                 finish()
@@ -677,7 +666,7 @@ class PhoneLogActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
-                phone_log_IncomingCallButton!!.isEnabled = true
+                cockpit_IncomingCallButton!!.isEnabled = true
             }
         }
     }
@@ -696,7 +685,7 @@ class PhoneLogActivity : AppCompatActivity() {
                 }
             }
         } else {
-            Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }
     }
 

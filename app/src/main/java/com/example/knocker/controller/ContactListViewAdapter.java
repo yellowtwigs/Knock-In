@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,7 +93,7 @@ public class ContactListViewAdapter extends BaseAdapter {
                     listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
                 } else {
                     listItemChannelSelected.add(holder.smsCl);
-                    holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
+                    holder.smsCl.setImageResource(R.drawable.ic_item_selected);
                     listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
                 }
             }
@@ -107,7 +104,7 @@ public class ContactListViewAdapter extends BaseAdapter {
                     listOfMailSelected.remove(listContacts.get(position).getFirstMail());
                 } else {
                     listItemChannelSelected.add(holder.mailCl);
-                    holder.mailCl.setImageResource(R.drawable.ic_contact_selected);
+                    holder.mailCl.setImageResource(R.drawable.ic_item_selected);
                     listOfMailSelected.add(listContacts.get(position).getFirstMail());
                 }
             }

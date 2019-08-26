@@ -19,7 +19,6 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -44,7 +43,6 @@ import com.example.knocker.model.ModelDB.ContactDB;
 import com.example.knocker.model.ModelDB.ContactWithAllInformation;
 import com.example.knocker.model.ModelDB.GroupDB;
 import com.example.knocker.model.ModelDB.GroupWithContact;
-import com.example.knocker.model.requestDB.GroupsDao;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
@@ -164,14 +162,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         final ContactDB contact = this.contactManager.getContactList().get(position).getContactDB();
         assert contact != null;
         if (contact.getContactPriority() == 0) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
         } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor, null));
         } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
         }
         if(modeMultiSelect && listOfItemSelected.contains(contactManager.getContactList().get(position))){
-            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+            holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         } else {
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -201,10 +199,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             assert roundedLayout != null;
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             } else {
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             }
 
@@ -262,7 +260,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             Spannable span = new SpannableString(holder.contactFirstNameView.getText());
             span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(span);
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
             if (contact.getLastName().length() > 11)
                 lastName = contact.getLastName().substring(0, 9).concat("..");
 
@@ -447,12 +445,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                         holder.contactRoundedImageView.setImageBitmap(bitmap);
                     } else {
                         listOfItemSelected.add(contactManager.getContactList().get(position));
-                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                         notifyDataSetChanged();
                     }
                 } else {
                     listOfItemSelected.add(contactManager.getContactList().get(position));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                     notifyDataSetChanged();
                 }
                 closeMenu();
@@ -478,7 +476,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     notifyDataSetChanged();
                 } else {
                     listOfItemSelected.add(contactManager.getContactList().get(position));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                     notifyDataSetChanged();
                 }
                 ((GroupManagerActivity) context).gridLongItemClick(position);
@@ -641,7 +639,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                             if (!listOfItemSelected.contains(listContactOnGroup.get(i))) {
                                 //System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
                                 int positionItem= contactManager.getContactList().indexOf(listContactOnGroup.get(i));
-                                ((GroupManagerActivity) context).longRecyclerItemClick(positionItem, secondClick, true);
+                                ((GroupManagerActivity) context).recyclerMultiSelectItemClick(positionItem, secondClick, true);
                                 listOfItemSelected.add(contactManager.getContactList().get(positionItem));
                             }
                 }
@@ -652,7 +650,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             for (int i = 0; i < listContactOnGroup.size(); i++) {
                         if (listOfItemSelected.contains(listContactOnGroup.get(i))) {
                             int positionItem= contactManager.getContactList().indexOf(listContactOnGroup.get(i));
-                            ((GroupManagerActivity) context).longRecyclerItemClick(positionItem, secondClick, true);
+                            ((GroupManagerActivity) context).recyclerMultiSelectItemClick(positionItem, secondClick, true);
                             listOfItemSelected.remove(contactManager.getContactList().get(positionItem));
                         }
             }

@@ -288,7 +288,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         val firstName: String = json.getString("first_name")
         val lastName: String = json.getString("last_name")
 
-        val profilPicture: Int = R.drawable.img_avatar
+        val profilPicture: Int = R.drawable.ic_user_blue
         val contactPriority: Int = json.getInt("contact_priority")
         val profilPictureStr: String = json.getString("profile_picture_str")
         val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr, 0)

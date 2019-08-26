@@ -321,7 +321,7 @@ class NotificationListener : NotificationListenerService() {
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
         adapterNotification = NotifAdapter(applicationContext, notifications, windowManager!!, view!!)
-        listViews = view.findViewById<ListView>(R.id.notification_pop_up_listView)
+        listViews = view.findViewById(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification
         val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE

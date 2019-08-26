@@ -105,7 +105,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val callButton = view.findViewById<View>(R.id.item_notification_call) as AppCompatButton
 
 
-        val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.custom_shape_top_bar_notif_adapter)
+        val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.item_notif_adapter_top_bar)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
         app.text = convertPackageToString(sbp.appNotifier!!)
@@ -206,19 +206,19 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
         when (convertPackageToString(sbp.appNotifier!!)) {
             "Facebook" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook, null))
             }
             "Messenger" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_messenger))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_messenger, null))
             }
             "WhatsApp" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_whatsapp))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_whatsapp, null))
             }
             "Gmail" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_gmail))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_gmail, null))
             }
             "Message" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorPrimary))
+                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorPrimary, null))
             }
         }
 
@@ -285,7 +285,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
           }*/
         try {
             val pckManager = context.packageManager
-            val icon = pckManager.getApplicationIcon(sbp.appNotifier)
+            val icon = pckManager.getApplicationIcon(sbp.appNotifier!!)
             appImg.setImageDrawable(icon)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
@@ -315,7 +315,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 }
             }
         } else {
-            Toast.makeText(context, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }
     }
 

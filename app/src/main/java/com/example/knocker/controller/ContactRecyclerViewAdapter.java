@@ -67,29 +67,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return listOfItemSelected;
     }
 
-    public void checkListOfItemSelected() {
-
-        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-        main_mDbWorkerThread.start();
-
-        System.out.println("list contact grid size" + gestionnaireContacts.getContactList().size());
-        modeMultiSelect = true;
-        for (int i = 0; i < gestionnaireContacts.getContactList().size(); i++) {
-            if (gestionnaireContacts.getContactList().get(i).getFirstGroup(context) != null) {
-                if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(i).getFirstGroup(context).getId())) {
-                    if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
-                        System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
-                        ((MainActivity) context).longRecyclerItemClick(i);
-//                        ((MainActivity) context).longRecyclerItemClick(i, true);
-                        listOfItemSelected.remove(gestionnaireContacts.getContactList().get(i));
-                    }
-                }
-            }
-        }
-        secondClick = true;
-        notifyDataSetChanged();
-    }
-
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     private String numberForPermission = "";
@@ -129,25 +106,25 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
         if (len == 0) {
             if (contact.getContactPriority() == 0) {
-                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor));
-            }else if(contact.getContactPriority() == 1) {
+                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor, null));
+            } else if (contact.getContactPriority() == 1) {
                 SharedPreferences sharedPreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
                 if (sharedPreferences.getBoolean("darkTheme", false)) {
-                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight));
+                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight, null));
                 } else {
-                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorDark));
+                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorDark, null));
                 }
 
-            }else if (contact.getContactPriority() == 2) {
-                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            } else if (contact.getContactPriority() == 2) {
+                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark, null));
             }
         } else {
             if (contact.getContactPriority() == 0) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
             } else if (contact.getContactPriority() == 1) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor, null));
             } else if (contact.getContactPriority() == 2) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
             }
 
         }
@@ -171,23 +148,20 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }
         if (firstGroup == null) {
-            System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
             SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
-                System.out.println(" black color");
             } else {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
+                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
             }
             //Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             //roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
             //holder.groupWordingConstraint.setBackground(roundedLayout);
         } else {
-            System.out.println("have group");
             group = firstGroup.getName();
             Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             assert roundedLayout != null;
@@ -210,9 +184,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         if (modeMultiSelect) {
             if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(position))) {
                 if (context instanceof GroupActivity && len == 0) {
-                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor, null));
                 } else {
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
             }
         }
@@ -254,32 +228,29 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
 
             view.setTag(holder);
-            ContactDB contact1 = gestionnaireContacts.getContactList().get(position).getContactDB();
-            assert contact1 != null;
+            ContactDB contactDB = gestionnaireContacts.getContactList().get(position).getContactDB();
+            assert contactDB != null;
 
             if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(position))) {
                 listOfItemSelected.remove(gestionnaireContacts.getContactList().get(position));
 
-                if (!contact1.getProfilePicture64().equals("")) {
-                    Bitmap bitmap = base64ToBitmap(contact1.getProfilePicture64());
+                if (!contactDB.getProfilePicture64().equals("")) {
+                    Bitmap bitmap = base64ToBitmap(contactDB.getProfilePicture64());
                     holder.contactRoundedImageView.setImageBitmap(bitmap);
                 } else {
-                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact1.getProfilePicture()));
+                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.getProfilePicture()));
                 }
             } else {
                 listOfItemSelected.add(gestionnaireContacts.getContactList().get(position));
                 if (context instanceof GroupActivity && len == 0) {
-                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor));
+                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor, null));
                 } else {
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
             }
 
-            if (context instanceof GroupActivity) {
-                ((GroupActivity) context).longRecyclerItemClick(position, false, false);
-            } else if (context instanceof MainActivity) {
-                ((MainActivity) context).longRecyclerItemClick(position);
-//                ((MainActivity) context).longRecyclerItemClick(position, false);
+            if (context instanceof MainActivity) {
+                ((MainActivity) context).recyclerMultiSelectItemClick(position);
             }
 
             if (listOfItemSelected.size() > 0) {
@@ -295,7 +266,43 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
         View.OnClickListener listItemClick = v -> {
             if (modeMultiSelect) {
+                if (listOfItemSelected.size() == 0 && len == 1 && holder.constraintLayoutMenu != null) {
+                    holder.constraintLayoutMenu.setVisibility(View.GONE);
+                }
 
+                view.setTag(holder);
+                ContactDB contactDB = gestionnaireContacts.getContactList().get(position).getContactDB();
+                assert contactDB != null;
+
+                if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(position))) {
+                    listOfItemSelected.remove(gestionnaireContacts.getContactList().get(position));
+
+                    if (!contactDB.getProfilePicture64().equals("")) {
+                        Bitmap bitmap = base64ToBitmap(contactDB.getProfilePicture64());
+                        holder.contactRoundedImageView.setImageBitmap(bitmap);
+                    } else {
+                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.getProfilePicture()));
+                    }
+                } else {
+                    listOfItemSelected.add(gestionnaireContacts.getContactList().get(position));
+                    if (context instanceof GroupActivity && len == 0) {
+                        holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+                    } else {
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+                    }
+                }
+
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).recyclerMultiSelectItemClick(position);
+                }
+
+                if (listOfItemSelected.size() > 0) {
+                    modeMultiSelect = true;
+                    lastClick = false;
+                } else {
+                    modeMultiSelect = false;
+                    lastClick = true;
+                }
             } else {
                 if (lastClick) {
                     lastClick = false;
@@ -411,7 +418,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                             if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(position).getFirstGroup(context).getId())) {
                                 if (!listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
                                     System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
-                                    ((GroupActivity) context).longRecyclerItemClick(i, secondClick, true);
+                                    ((GroupActivity) context).recyclerMultiSelectItemClick(i, secondClick, true);
                                     listOfItemSelected.add(gestionnaireContacts.getContactList().get(i));
                                 }
                             }
@@ -425,7 +432,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     if (gestionnaireContacts.getContactList().get(i).getFirstGroup(context) != null) {
                         if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(position).getFirstGroup(context).getId())) {
                             if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
-                                ((GroupActivity) context).longRecyclerItemClick(i, secondClick, true);
+                                ((GroupActivity) context).recyclerMultiSelectItemClick(i, secondClick, true);
                                 listOfItemSelected.remove(gestionnaireContacts.getContactList().get(i));
                             }
                         }

@@ -14,7 +14,7 @@
         android:title="@string/bottom_navigation_view_notify_history"
         android:visible="false"/>
     <item
-        android:id="@+id/navigation_phone_keyboard"
+        android:id="@+id/navigation_cockpit"
         android:icon="@drawable/ic_phone_call"
-        android:title="@string/bottom_navigation_view_phone_log" />
+        android:title="@string/bottom_navigation_view_cockpit" />
 </menu>

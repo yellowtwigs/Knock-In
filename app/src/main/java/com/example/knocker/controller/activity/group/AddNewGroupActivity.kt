@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar
 import com.example.knocker.R
 import com.example.knocker.model.ContactsRoomDatabase
 import com.example.knocker.model.ModelDB.ContactDB
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
 import com.example.knocker.model.ModelDB.GroupDB
 import com.example.knocker.model.ModelDB.LinkContactGroup
 
@@ -73,7 +72,7 @@ class AddNewGroupActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_validate, menu)
+        inflater.inflate(R.menu.toolbar_menu_validation, menu)
         return true
     }
     /**

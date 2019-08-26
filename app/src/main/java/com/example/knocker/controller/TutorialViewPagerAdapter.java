@@ -9,13 +9,15 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
-public class CustomViewPagerAdapter extends FragmentStatePagerAdapter {
+public class TutorialViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private ArrayList<Drawable> listOfTuto;
+    private Boolean fromMainActivity;
 
-    public CustomViewPagerAdapter(FragmentManager fm, ArrayList<Drawable> listOfTuto) {
+    public TutorialViewPagerAdapter(FragmentManager fm, ArrayList<Drawable> listOfTuto, Boolean fromMainActivity) {
         super(fm);
         this.listOfTuto = listOfTuto;
+        this.fromMainActivity = fromMainActivity;
     }
 
     /**
@@ -35,6 +37,10 @@ public class CustomViewPagerAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return new TutorialPageFragment(listOfTuto.get(position));
+        if (fromMainActivity) {
+            return new TutorialPageFragment(listOfTuto.get(position), fromMainActivity, position);
+        } else {
+            return new TutorialPageFragment(listOfTuto.get(position));
+        }
     }
 }

@@ -8,7 +8,6 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
@@ -17,7 +16,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -191,7 +189,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 }
 
                 if (!isDuplicate) {
-                    val contactId =add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
+                    val contactId = add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
                     //val listContacts: List<ContactDB>? = add_new_contact_ContactsDatabase?.contactsDao()!!.getAllContacts()
                     //val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
                     var contactDetailDB: ContactDetailDB
@@ -272,22 +270,22 @@ class AddNewContactActivity : AppCompatActivity() {
                     0 -> {
                         add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority0)
                         add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor, null))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                         add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                     }
                     1 -> {
                         add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority1)
                         add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor, null))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                         add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                     }
                     2 -> {
                         add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority2)
                         add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor, null))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                         add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                     }
                 }
@@ -295,8 +293,8 @@ class AddNewContactActivity : AppCompatActivity() {
             }
         }
         add_new_contact_Priority!!.setSelection(1)
-        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
-        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor, null))
+        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
         println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
 
 
@@ -377,7 +375,6 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
 
-
     //endregion
 
     //demmande de confirmation de la création d'un contact en double
@@ -404,15 +401,17 @@ class AddNewContactActivity : AppCompatActivity() {
     private fun selectImage() {
 
         val builderBottom = BottomSheetDialog(this)
-        builderBottom.setContentView(R.layout.alert_dialog_picture)
-        val gallerie = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_gallerie_view)
-        val camera = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_camera_view)
-        val recylcer = builderBottom.findViewById<RecyclerView>(R.id.alert_picture_recycler_view)
+        builderBottom.setContentView(R.layout.alert_dialog_select_contact_picture_layout)
+        val gallery = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_gallery_layout)
+        val camera = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_camera_layout)
+        val recyclerView = builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
         val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        recylcer!!.layoutManager = layoutMananger
+
+        recyclerView!!.layoutManager = layoutMananger
+        
         val adapter = ContactIconeAdapter(this)
-        recylcer.adapter = adapter
-        gallerie!!.setOnClickListener {
+        recyclerView.adapter = adapter
+        gallery!!.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
                 builderBottom.dismiss()
@@ -436,7 +435,7 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     /**
-     * 
+     *
      */
     private fun openCamera() {
         val values = ContentValues()
@@ -528,7 +527,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     /**
      * Méthode appellé par le système lorsque l'utilisateur accepte ou refuse une permission
-     * Lorsque l'utilisateur autorise l'accès a ces fichiers nous ouvrons le dossier "Gallerie"
+     * Lorsque l'utilisateur autorise l'accès a ces fichiers nous ouvrons le dossier "Galerie"
      * Lorsque l'utilisateur autorise à l'appareil photo nous l'ouvrons
      * @param requestCode [Int]
      * @param permissions [Array<String>]

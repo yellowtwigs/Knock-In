@@ -17,7 +17,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="400dp"
         android:background="@color/colorPrimary"
-        android:src="@drawable/ic_group_floating"
+        android:src="@drawable/ic_group"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
@@ -52,7 +52,7 @@
         app:backgroundTint="@color/colorPrimary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_open_id"
+        android:id="@+id/main_floating_button_add_new_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -64,7 +64,7 @@
         app:backgroundTint="@color/colorPrimary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_floating_button_send_id"
+        android:id="@+id/main_floating_button_multichannel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

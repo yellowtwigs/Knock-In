@@ -517,6 +517,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("Recycle")
     private fun whatsappCall() {
         val resolver = contentResolver;
         val cursor = resolver.query(
@@ -526,7 +527,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         //Now read data from cursor like
 
-        while (cursor.moveToNext()) {
+        while (cursor!!.moveToNext()) {
             val _id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Data._ID))
             val displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME))
             val mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE))
@@ -581,7 +582,7 @@ class ContactDetailsActivity : AppCompatActivity() {
                 }
             }
         } else {
-            Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }
     }
 

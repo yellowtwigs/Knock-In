@@ -57,45 +57,54 @@ import kotlin.collections.ArrayList
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
-    //Dans cette region on crée toutes les variables dont l'activité aura besoin
+
+
+    /**
+     * Dans cette region on crée toutes les variables dont l'activité aura besoin
+     * Val pour les valeurs constantes
+     * Var pour les valeurs qui seront modifiés
+     */
     //region ========================================== Var or Val ==========================================
 
     // Show on the Main Layout
-    private var drawerLayout: DrawerLayout? = null
+    private var mainDrawerLayout: DrawerLayout? = null
+    private var bottomNavigationView: BottomNavigationView? = null
 
+    // Gridview et Recycler avec leur adapter
     private var main_GridView: GridView? = null
+    private var gridViewAdapter: ContactGridViewAdapter? = null
     private var main_RecyclerView: RecyclerView? = null
+    private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
 
-    private var main_FloatingButtonAdd: FloatingActionButton? = null
-    private var main_FloatingButtonSend: FloatingActionButton? = null
 
-    private var main_SMSButton: FloatingActionButton? = null
-    private var main_MailButton: FloatingActionButton? = null
-    private var main_groupButton: FloatingActionButton? = null
+    // Floating Button
+    private var main_FloatingButtonAddNewContact: FloatingActionButton? = null
+    private var main_FloatingButtonMultiChannel: FloatingActionButton? = null
+    private var main_FloatingButtonSMS: FloatingActionButton? = null
+    private var main_FloatingButtonMail: FloatingActionButton? = null
+    private var main_FloatingButtonGroup: FloatingActionButton? = null
 
     internal var main_search_bar_value = ""
     private var main_filter = arrayListOf<String>()
     private var main_SearchBar: AppCompatEditText? = null
 
+    // Custom Toolbar
     private var main_ToolbarLayout: RelativeLayout? = null
-    private var main_toolbar_Help: AppCompatImageView? = null
-
     private var main_ToolbarMultiSelectModeLayout: RelativeLayout? = null
+
     private var main_ToolbarMultiSelectModeClose: AppCompatImageView? = null
+    private var main_toolbar_Help: AppCompatImageView? = null
     private var main_ToolbarMultiSelectModeTitle: TextView? = null
     private var main_ToolbarMultiSelectModeDelete: AppCompatImageView? = null
     private var main_ToolbarMultiSelectModeMenu: AppCompatImageView? = null
+    private var main_toolbar_OpenDrawer: AppCompatImageView? = null
 
     // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
-    private var main_BottomNavigationView: BottomNavigationView? = null
-
     private var gestionnaireContacts: ContactManager? = null
-    private var gridViewAdapter: ContactGridViewAdapter? = null
-    private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
-    private var main_layout: LinearLayout? = null
+    private var main_LinearLayout: LinearLayout? = null
     private var main_loadingPanel: RelativeLayout? = null
 
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
@@ -106,7 +115,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private val PERMISSION_CALL_RESULT = 1
     private val PERMISSION_READ_CONTACT = 99
 
-    //On créé un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
+    private var idGroup: Long = 0
+
+    //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
@@ -119,8 +130,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@MainActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@MainActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -133,12 +144,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * Méthode lancé par le système à chaque redémarage de l'activité
      * @param Bundle @type
      */
-
     @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("ClickableViewAccessibility", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         //region ======================================== Theme Dark ========================================
+
         //On affecte le Thème light ou le dark en fonction de ce que l'utilisateur à choisi
         //Ce thème est enregistré dans une sharedPreferences c'est un fichier android qui est sauvegardé par l'application
         val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
@@ -150,35 +162,46 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
+        //region ======================================= First Launch =======================================
 
-        //region =====================================First Launch ==========================================
-        //Si c'est la premiere fois que nous ouvrons l'application alors nous sommes envoyer dans les différents écrans d'installations
+        //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         if (sharedFirstLaunch.getBoolean("first_launch", true)) {
             startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
+
         //endregion
 
-        setContentView(R.layout.activity_main)//On affecte a notre activity son layout correspondant
+        //On affecte à notre activity son layout correspondant
+        setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         //region ================================ BottomActionBar color light ===============================
+
         // (Bar android avec les boutons retour, home et application en cours)
+
         val decorView = window.decorView
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//Feature possible a partir de la version Oreo d'android
+
+        //Feature possible a partir de la version Oreo d'android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
+
         //endregion
 
+        // Si un contact est supprimé, un message s'affichera
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
         }
-        //region =====================================Relancement du Service de Notification=========================================
+
+        //region ======================= Relancement du Service de Notification =============================
+
         if (isNotificationServiceEnabled()) {
             toggleNotificationListenerService()
         }
+
         //endregion
 
         //region ====================================== Worker Thread =======================================
@@ -192,9 +215,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
-        //region ============================================setFavorite List ================================
-        //Si l'activité précédente etait StartActivity alors on regarde dans les feoupes si il y en a un qui se nomme favoris
-        //Si oui alors pour tous les contact de ce groupes alors nous les mettons en favoris
+        //region ===================================== SetFavoriteList ======================================
+
+        //Si l'activité précédente était StartActivity alors on regarde dans les groupes du carnet Android de l'utilisateur
+        // S'il y en a un qui se nomme favoris ou favorites alors tous les contacts de ce groupe seront
+        // considérés comme des favoris et seront placés dans le groupe Favoris de Knocker
+
         val intent = intent
         var fromStartActivity = intent.getBooleanExtra("fromStartActivity", false)
 
@@ -216,25 +242,40 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             fromStartActivity = false
         }
+
         //endregion
 
         //region ======================================= FindViewById =======================================
+
         //Pour tous nos attributs qui sont des vues (TextView, listView , ConstraintLayout, ImageView etc) sur lesquelles notre activité agit nous les récupérons
-        main_FloatingButtonAdd = findViewById(R.id.main_floating_button_open_id)
 
-        main_FloatingButtonSend = findViewById(R.id.main_floating_button_send_id)
+        main_FloatingButtonAddNewContact = findViewById(R.id.main_floating_button_add_new_contact)
+        main_FloatingButtonMultiChannel = findViewById(R.id.main_floating_button_multichannel)
+        main_FloatingButtonMail = findViewById(R.id.main_gmail_button)
+        main_FloatingButtonSMS = findViewById(R.id.main_sms_button)
+        main_FloatingButtonGroup = findViewById(R.id.main_group_button)
 
-        main_BottomNavigationView = findViewById(R.id.navigation)
-
-        main_BottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavigationView = findViewById(R.id.navigation)
+        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         main_SearchBar = findViewById(R.id.main_toolbar_search)
-        main_layout = findViewById(R.id.content_frame)
-        main_loadingPanel = findViewById(R.id.loadingPanel)
+        main_LinearLayout = findViewById(R.id.main_layout)
+        main_loadingPanel = findViewById(R.id.main_loadingPanel)
 
-        main_MailButton = findViewById(R.id.main_gmail_button)
-        main_SMSButton = findViewById(R.id.main_sms_button)
-        main_groupButton = findViewById(R.id.main_group_button)
+        main_GridView = findViewById(R.id.main_grid_view_id)
+        main_RecyclerView = findViewById(R.id.main_recycler_view_id)
+
+        //endregion
+
+        //region ========================================== Toolbar =========================================
+
+        // La toolbar de base est la barre d'action en haut de l'écran, elle est composée d'une searchbar et de filtres
+        // Lorsque l'utilisateur passe en mode Multiselect, une autre Toolbar apparait avec une poubelle pour supprimer les contacts
+        // Et une croix permettant d'annuler le mode Multiselect
+
+        main_ToolbarLayout = findViewById(R.id.main_toolbar_layout)
+        main_toolbar_Help = findViewById(R.id.main_toolbar_help)
+        main_toolbar_OpenDrawer = findViewById(R.id.main_toolbar_open_drawer)
 
         main_ToolbarLayout = findViewById(R.id.main_toolbar_layout)
 
@@ -243,15 +284,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_ToolbarMultiSelectModeTitle = findViewById(R.id.main_toolbar_multi_select_mode_tv)
         main_ToolbarMultiSelectModeDelete = findViewById(R.id.main_toolbar_multi_select_mode_delete)
         main_ToolbarMultiSelectModeMenu = findViewById(R.id.main_toolbar_multi_select_mode_menu)
-
-        //endregion
-
-        //region ========================================== Toolbar =========================================
-        //La toolbar est la barre d'action en haut de l'écran elle est ici composé d'une searchbar mais ce n'est pas toujours le cas
-        //Dans cette région nous ajoutons à la toolbar tous les menus et affichage qu'elle utiliseras
-        main_ToolbarLayout = findViewById(R.id.main_toolbar_layout)
-        val main_toolbar_OpenDrawer = findViewById<AppCompatImageView>(R.id.main_toolbar_open_drawer)
-        main_toolbar_Help = findViewById(R.id.main_toolbar_help)
 
         val main_toolbar_Menu = findViewById<Toolbar>(R.id.main_toolbar_menu)
         setSupportActionBar(main_toolbar_Menu)
@@ -263,20 +295,27 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         //region ======================================= DrawerLayout =======================================
-        //On récupère le drawer(menu latéral) pour affecter à chaque option de ce menu une action et modifier ces options d'affichage
-        drawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout!!.addDrawerListener(this)
+
+        //On récupère le drawer(menu latéral) pour affecter à chaque option de ce menu une action et modifier ses options d'affichage
+        mainDrawerLayout = findViewById(R.id.drawer_layout)
+        mainDrawerLayout!!.addDrawerListener(this)
+
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_home) //On récupère l'option correspondant à cette activité
-        navItem.isChecked = true //Puis nous la mettons en surbrillance par rapport aux autres options
-        val navSyncContact = menu.findItem(R.id.nav_sync_contact)
-        navSyncContact.isVisible = true //Nous affichons dans cette activité la possibilité de synchroniser nos contacts
 
-        //Lorsque l'utilisateur clique sur un des éléments du drawer nous le fermons puis ouvrons un nouvel activité
+        //On récupère l'item correspondant à l'activité Home-Contacts
+        val navItem = menu.findItem(R.id.nav_home)
+        //Puis nous la mettons en surbrillance par rapport aux autres options
+        navItem.isChecked = true
+
+        //Nous affichons dans cette activité la possibilité de synchroniser nos contacts
+        val navSyncContact = menu.findItem(R.id.nav_sync_contact)
+        navSyncContact.isVisible = true
+
+        //Lorsque l'utilisateur clique sur un des éléments du drawer nous le fermons puis ouvrons une nouvelle activité
         navigationView.setNavigationItemSelectedListener { menuItem ->
-         //   menuItem.isChecked = true
-            drawerLayout!!.closeDrawers()
+            //   menuItem.isChecked = true
+            mainDrawerLayout!!.closeDrawers()
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
@@ -288,36 +327,37 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
-           /* val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)*/
             true
         }
 
         //endregion
 
         //region ========================================= Runnable =========================================
-        //affiche tout les contactList de la Database dans une RecyclerView ou dans une GridView
 
-        main_GridView = findViewById(R.id.main_grid_view_id)
-        main_RecyclerView = findViewById(R.id.main_recycler_view_id)
+        //affiche tous les contactList de la Database dans une RecyclerView ou dans une GridView
+
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
 
-        //Vérification du mode d'affichage si inférieur à 1 alors l'affichage est sous forme de liste sinon sous forme de gridView
+        //Vérification du mode d'affichage si c'est 1 ou inférieur alors l'affichage est sous forme de liste
+        // sinon il sera sous forme de gridView
+
         if (len <= 1) {
             main_GridView!!.visibility = View.GONE
             main_RecyclerView!!.visibility = View.VISIBLE
         } else {
-            main_RecyclerView!!.visibility = View.GONE
             main_GridView!!.visibility = View.VISIBLE
+            main_RecyclerView!!.visibility = View.GONE
         }
 
         main_GridView!!.numColumns = len // permet de changer
         gestionnaireContacts = ContactManager(this.applicationContext)
-        //region ==================================================== set ListContact ====================================
-        //Selon le mode d'affichage set pour la list ou pour la grid les contact triés
+
+        //region ===================================== set ListContact ======================================
+
+        //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
         if (main_GridView!!.visibility != View.GONE) {
-            when {//Verification du mode de trie des contact pour afficher le bon tri
+            when {//Verification du mode de tri des contacts pour afficher le bon tri
                 sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
                 sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
                 else -> gestionnaireContacts!!.sortContactByGroup()
@@ -329,7 +369,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_GridView!!.setSelection(index)
             edit.apply()
-            //La gridView va mettre en place un écouteur sur l'action Scroll nous avons alors défini un ensemble d'action à effectuer lorsque la gridView detecte ce scroll
+
+            // La gridView va mettre en place un écouteur sur l'action Scroll,
+            // nous avons alors défini un ensemble d'action à effectuer lorsque la gridView détecte ce scroll
             main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
                 var lastVisiblePos = main_GridView!!.firstVisiblePosition
                 /**
@@ -345,7 +387,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
 
                 /**
-                 * méthode appellé par la gridView lorsque il y a un scroll
+                 * Méthode appelée par la gridView lorsque il y a un scroll
                  * Nous affichons et masquons ici le bouton ajout de contact
                  * @param view [AbsListView]
                  * @param firstVisibleItem [Int]
@@ -353,22 +395,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                  * @param totalItemCount [Int]
                  */
                 override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-                  /* if (gridViewAdapter != null) {
-                        gridViewAdapter!!.closeMenu()
-                    }*/
+                    /* if (gridViewAdapter != null) {
+                          gridViewAdapter!!.closeMenu()
+                      }*/
                     println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
                     if (lastVisiblePos < firstVisibleItem) {
-                        if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
+                        if (main_FloatingButtonAddNewContact!!.visibility == View.VISIBLE) {
                             val disappear = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
-                            main_FloatingButtonAdd!!.startAnimation(disappear)
-                            main_FloatingButtonAdd!!.visibility = View.GONE
+                            main_FloatingButtonAddNewContact!!.startAnimation(disappear)
+                            main_FloatingButtonAddNewContact!!.visibility = View.GONE
                         }
                         lastVisiblePos = firstVisibleItem
                     } else if (lastVisiblePos > firstVisibleItem) {
-                        if (main_FloatingButtonAdd!!.visibility == View.GONE && !multiChannelMode) {
+                        if (main_FloatingButtonAddNewContact!!.visibility == View.GONE && !multiChannelMode) {
                             val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
-                            main_FloatingButtonAdd!!.startAnimation(apparition)
-                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                            main_FloatingButtonAddNewContact!!.startAnimation(apparition)
+                            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
                         }
                         lastVisiblePos = firstVisibleItem
                     }
@@ -393,16 +435,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     super.onScrolled(recyclerView, dx, dy)
                     println("dx $dx dy$dy")
                     if (dy > 10) {
-                        if (main_FloatingButtonAdd!!.visibility == View.VISIBLE) {
+                        if (main_FloatingButtonAddNewContact!!.visibility == View.VISIBLE) {
                             val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
-                            main_FloatingButtonAdd!!.startAnimation(disparition)
-                            main_FloatingButtonAdd!!.visibility = View.GONE
+                            main_FloatingButtonAddNewContact!!.startAnimation(disparition)
+                            main_FloatingButtonAddNewContact!!.visibility = View.GONE
                         }
                     } else if (dy < -10) {
-                        if (main_FloatingButtonAdd!!.visibility == View.GONE) {
+                        if (main_FloatingButtonAddNewContact!!.visibility == View.GONE) {
                             val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
-                            main_FloatingButtonAdd!!.startAnimation(apparition)
-                            main_FloatingButtonAdd!!.visibility = View.VISIBLE
+                            main_FloatingButtonAddNewContact!!.startAnimation(apparition)
+                            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -410,110 +452,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         //endregion
+
         //endregion
 
-        //zone qui nous permet de mettre en place les actions lors d'interaction de l'utilisateur
+        /**
+         *  Partie du code qui permet de mettre en place des actions liées aux interactions de l'utilisateur
+         */
         //region ======================================== Listeners =========================================
-        //Lors du click sur le bouton hamburger  dans la toolbar nous ouvrons le drawer
-        main_toolbar_OpenDrawer.setOnClickListener {
-            drawerLayout!!.openDrawer(GravityCompat.START)
-            hideKeyboard()
-        }
-
-        main_toolbar_Help!!.setOnClickListener {
-            val intentToTuto = Intent(this@MainActivity, TutorialActivity::class.java)
-            intentToTuto.putExtra("fromMainActivity", true)
-            startActivity(intentToTuto)
-            finish()
-        }
-
-        main_FloatingButtonSend!!.setOnClickListener {
-            val intentToMultiChannelActivity = Intent(this@MainActivity, MultiChannelActivity::class.java)
-            intentToMultiChannelActivity.putExtra("fromMainToMultiChannel", true)
-            val iterator: IntIterator?
-            val listOfIdContactSelected: ArrayList<Int> = ArrayList()
-
-            iterator = (0 until listOfItemSelected.size).iterator()
-
-            for (i in iterator) {
-                listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
-            }
-            intentToMultiChannelActivity.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
-
-            refreshActivity()
-            startActivity(intentToMultiChannelActivity)
-            finish()
-        }
-
-        main_ToolbarMultiSelectModeClose!!.setOnClickListener {
-            listOfItemSelected.clear()
-            switchMultiSelectToNormalMode()
-            refreshActivity()
-
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-        }
-
-        main_ToolbarMultiSelectModeClose!!.setOnClickListener {
-            listOfItemSelected.clear()
-            switchMultiSelectToNormalMode()
-            refreshActivity()
-
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-        }
-
-        main_ToolbarMultiSelectModeMenu!!.setOnClickListener {
-            val popupMenu = PopupMenu(this, it)
-            popupMenu.inflate(R.menu.menu_main_toolbar_multiselect)
-
-            popupMenu.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.menu_main_toolbar_multiselect_all_select -> {
-                    }
-                }
-                false
-            }
-            popupMenu.show();
-
-        }
-
-        main_ToolbarMultiSelectModeDelete!!.setOnClickListener {
-            var supressWarning = " "
-            if (listOfItemSelected.size > 1) {
-                supressWarning = " :"
-                for (contact in listOfItemSelected) {
-                    val contactDb = contact.contactDB
-                    supressWarning += "\n-" + contactDb!!.firstName + " " + contactDb.lastName
-                }
-            } else {
-                val contact = listOfItemSelected.get(0).contactDB
-                supressWarning += contact!!.firstName + " " + contact.lastName
-            }
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle("Delete Contact")
-                    .setMessage(String.format(resources.getString(R.string.main_delete_contact), supressWarning))
-                    .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
-                        System.out.println("size of list " + listOfItemSelected.size + "-----")
-                        listOfItemSelected.forEach {
-                            main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
-                            System.out.println("contact " + it.contactDB!! + " son id " + it.contactDB!!.id!!)
-                        }
-                        listOfItemSelected.clear()
-                        switchMultiSelectToNormalMode()
-                        refreshActivity()
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
-
-                    }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
-
-        }
 
         //Sync contact
         navSyncContact.setOnMenuItemClickListener {
             fromStartActivity = true
 
-            drawerLayout!!.closeDrawers()
+            mainDrawerLayout!!.closeDrawers()
             main_GridView!!.visibility = View.GONE
             main_RecyclerView!!.visibility = View.GONE
             //check les permissions
@@ -536,10 +487,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     var index = 1
                     var stringSet = listOf<String>()
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
                     }
@@ -592,7 +543,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         edit.remove(index.toString())
                         index++
                     }
@@ -615,7 +566,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                             recyclerViewAdapter!!.notifyDataSetChanged()
                         }
-                        drawerLayout!!.closeDrawers()
+                        mainDrawerLayout!!.closeDrawers()
                     }
                     runOnUiThread(displaySync)
                 }
@@ -624,13 +575,86 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             true
         }
 
-        main_layout!!.setOnTouchListener { _, _ ->
+        main_LinearLayout!!.setOnTouchListener { _, _ ->
             val v = this@MainActivity.currentFocus
             val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (v != null) {
                 imm.hideSoftInputFromWindow(v.windowToken, 0)
             }
             true
+        }
+
+        // Lors du click sur le bouton hamburger  dans la toolbar, nous ouvrons le drawer layout
+        main_toolbar_OpenDrawer!!.setOnClickListener {
+            mainDrawerLayout!!.openDrawer(GravityCompat.START)
+            hideKeyboard()
+        }
+
+        // Lors du click sur le bouton Help dans la toolbar, nous ouvrons le Tutorial
+        main_toolbar_Help!!.setOnClickListener {
+            startActivity(Intent(this@MainActivity, TutorialActivity::class.java).putExtra("fromMainActivity", true))
+            finish()
+        }
+
+        // En mode Multiselect, le click sur la croix permet de fermer de ce mode
+        main_ToolbarMultiSelectModeClose!!.setOnClickListener {
+            //            listOfItemSelected.clear()
+//            switchMultiSelectToNormalMode()
+//            refreshActivity()
+
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this@MainActivity, MainActivity::class.java))
+            finish()
+        }
+
+        // En mode Multiselect, le click sur le menu permettant de faire un Select All
+        main_ToolbarMultiSelectModeMenu!!.setOnClickListener {
+            val popupMenu = PopupMenu(this, it)
+            popupMenu.inflate(R.menu.toolbar_menu_main_multiselect_mode)
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_main_toolbar_multiselect_all_select -> {
+                    }
+                }
+                false
+            }
+            popupMenu.show();
+
+        }
+
+        // En mode Multiselect, le click sur la poubelle permettant de faire un Delete des contacts séléctionnés
+        main_ToolbarMultiSelectModeDelete!!.setOnClickListener {
+            var suppressWarning = " "
+            if (listOfItemSelected.size > 1) {
+                suppressWarning = " :"
+                for (contact in listOfItemSelected) {
+                    val contactDb = contact.contactDB
+                    suppressWarning += "\n- " + contactDb!!.firstName + " " + contactDb.lastName
+                }
+            } else {
+                val contact = listOfItemSelected.get(0).contactDB
+                suppressWarning += contact!!.firstName + " " + contact.lastName
+            }
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
+                    .setMessage(String.format(resources.getString(R.string.main_alert_dialog_delete_contact_message), suppressWarning))
+                    .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
+                        listOfItemSelected.forEach {
+                            main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
+                        }
+                        listOfItemSelected.clear()
+                        switchMultiSelectToNormalMode()
+                        refreshActivity()
+                        finish();
+                        overridePendingTransition(0, 0);
+                        startActivity(getIntent());
+                        overridePendingTransition(0, 0);
+
+                    }
+                    .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
+                    .show()
+
         }
 
         //création du listener de la searchbar
@@ -644,7 +668,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             //fonction appelée à chaque charactère tapé
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
                 //ferme circular
-                if (gridViewAdapter!=null) {
+                if (gridViewAdapter != null) {
                     gridViewAdapter!!.closeMenu()
                 }
                 //convertir en string le contenu de la searchbar
@@ -677,11 +701,32 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
         })
 
-        main_FloatingButtonAdd!!.setOnClickListener {
+        // Lors du click sur le Floating Button +, nous redirige vers la page d'Ajout d'un nouveau contact
+        main_FloatingButtonAddNewContact!!.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddNewContactActivity::class.java))
         }
 
-        main_SMSButton!!.setOnClickListener {
+        // En mode Multiselect, lors du click sur le Floating Button -> -> ->, nous redirige vers la page Multichannel
+        main_FloatingButtonMultiChannel!!.setOnClickListener {
+            val intentToMultiChannelActivity = Intent(this@MainActivity, MultiChannelActivity::class.java)
+            intentToMultiChannelActivity.putExtra("fromMainToMultiChannel", true)
+            val iterator: IntIterator?
+            val listOfIdContactSelected: ArrayList<Int> = ArrayList()
+
+            iterator = (0 until listOfItemSelected.size).iterator()
+
+            for (i in iterator) {
+                listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
+            }
+            intentToMultiChannelActivity.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+
+            refreshActivity()
+            startActivity(intentToMultiChannelActivity)
+            finish()
+        }
+
+        // En mode Multiselect, lors du click sur le Floating Button SMS, nous redirige vers l'appli SMS de l'utilisateur avec les contacts sélectionnés
+        main_FloatingButtonSMS!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfPhoneNumberContactSelected: ArrayList<String> = ArrayList()
             iterator = (0 until listOfItemSelected.size).iterator()
@@ -692,7 +737,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             refreshActivity()
         }
 
-        main_MailButton!!.setOnClickListener {
+        // En mode Multiselect, lors du click sur le Floating Button Mail, nous redirige vers l'appli Mail de l'utilisateur avec les contacts sélectionnés
+        main_FloatingButtonMail!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfMailContactSelected: ArrayList<String> = ArrayList()
             iterator = (0 until listOfItemSelected.size).iterator()
@@ -705,26 +751,27 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             if (len >= 3) {
                 gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                 main_GridView!!.adapter = gridViewAdapter
-                main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                main_FloatingButtonSend!!.visibility = View.GONE
+                main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
+                main_FloatingButtonMultiChannel!!.visibility = View.GONE
 
-                main_MailButton!!.visibility = View.GONE
-                main_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
+                main_FloatingButtonMail!!.visibility = View.GONE
+                main_FloatingButtonSMS!!.visibility = View.GONE
+                main_FloatingButtonGroup!!.visibility = View.GONE
             } else {
                 main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
-                main_FloatingButtonAdd!!.visibility = View.VISIBLE
-                main_FloatingButtonSend!!.visibility = View.GONE
+                main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
+                main_FloatingButtonMultiChannel!!.visibility = View.GONE
 
-                main_MailButton!!.visibility = View.GONE
-                main_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
+                main_FloatingButtonMail!!.visibility = View.GONE
+                main_FloatingButtonSMS!!.visibility = View.GONE
+                main_FloatingButtonGroup!!.visibility = View.GONE
             }
 
             refreshActivity()
         }
 
-        main_groupButton!!.setOnClickListener {
+        // En mode Multiselect, lors du click sur le Floating Button Group, ouvre une Popup création de groupe
+        main_FloatingButtonGroup!!.setOnClickListener {
             val iterator: IntIterator?
             val listOfContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
@@ -732,34 +779,33 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             for (i in iterator) {
                 listOfContactSelected.add(listOfItemSelected[i])
-                println("test contact:" + listOfItemSelected[i])
             }
-            if (len >= 3) {
-                gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                main_GridView!!.adapter = gridViewAdapter
-
-
-                main_MailButton!!.visibility = View.GONE
-                main_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
-                main_FloatingButtonSend!!.visibility = View.GONE
-            } else {
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
-
-
-                main_MailButton!!.visibility = View.GONE
-                main_SMSButton!!.visibility = View.GONE
-                main_groupButton!!.visibility = View.GONE
-                main_FloatingButtonSend!!.visibility = View.GONE
-            }
-            saveGroupMultiSelect(listOfContactSelected, len)
+//            if (len >= 3) {
+//                gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+//                main_GridView!!.adapter = gridViewAdapter
+//
+//
+//                main_FloatingButtonMail!!.visibility = View.GONE
+//                main_FloatingButtonSMS!!.visibility = View.GONE
+//                main_FloatingButtonGroup!!.visibility = View.GONE
+//                main_FloatingButtonMultiChannel!!.visibility = View.GONE
+//            } else {
+//                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
+//
+//                main_FloatingButtonMail!!.visibility = View.GONE
+//                main_FloatingButtonSMS!!.visibility = View.GONE
+//                main_FloatingButtonGroup!!.visibility = View.GONE
+//                main_FloatingButtonMultiChannel!!.visibility = View.GONE
+//            }
+            createGroupMultiSelectClick(listOfContactSelected)
         }
+
         //endregion
     }
 
     //region ========================================== Functions ===========================================
     /**
-     *  Les affichages du modemultiselect sont enlevé pour remettre un affichage comme à l'ouverture de l'activité
+     *  Les affichages du mode Multiselect sont enlevés pour remettre l'affichage initial
      */
     private fun refreshActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
@@ -771,19 +817,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
         }
-        listOfItemSelected.clear()
-        switchMultiSelectToNormalMode()
     }
 
     /**
-     * Comme [MainActivity.onCreate] méthode lancé a chaque lancement de l'activité
-     * On vérifie qu'elle est le dernier tri choisi par l'utilisateur et on l'affecte
+     * Comme [MainActivity.onCreate] méthode lancée à chaque lancement de l'activité
+     * On vérifie quel est le dernier tri choisi par l'utilisateur et on l'affecte
      * @param item [MenuItem]
      * @return [Boolean]
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_main, menu)
+        inflater.inflate(R.menu.toolbar_menu_filter_main, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
         val triLastName = menu.findItem(R.id.tri_par_lastname)
         val triPriority = menu.findItem(R.id.tri_par_priorite)
@@ -799,7 +843,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * Vérifie si les checkbox ont été check apres une recherche
+     * Vérifie si les checkbox ont été check après une recherche
      * @param item [MenuItem]
      * @return [Boolean]
      */
@@ -818,7 +862,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * Méthode qui lors de la sélection d'un item du menu effectue les filtres et trie séléctionner dans le menu
+     * Méthode qui lors de la sélection d'un item du menu effectue les filtres et tri séléctionnés dans le menu
      * @param item [MenuItem]
      * @return [Boolean]
      */
@@ -1075,7 +1119,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * Retourne si on a l'autorisation d'accès aux notification
+     * Retourne si on a l'autorisation d'accès aux notifications
      * @return [Boolean]
      */
     private fun isNotificationServiceEnabled(): Boolean {
@@ -1106,7 +1150,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     *  ferme le keyboard
+     *  Ferme la keyboard
      */
     private fun hideKeyboard() {
         // Check if no view has focus:
@@ -1117,8 +1161,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
-    //region ======================= Drawer Listener ========================
-    //Cette region est composé d'un ensemble de méthode qui sont appellé lors d'action sur le drawer
+
+    /**
+     *  Cette region est composée d'un ensemble de méthodes qui sont appelés lors d'action sur le drawer
+     */
+    //region ======================================== Drawer Listener =======================================
 
     /**
      *Lors du changement d'état nous ne faisons rien
@@ -1134,7 +1181,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param slideOffset [Float]
      */
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        if (gridViewAdapter !=null){
+        if (gridViewAdapter != null) {
             gridViewAdapter!!.closeMenu()
         }
     }
@@ -1152,19 +1199,27 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param slideOffset [Float]
      */
     override fun onDrawerOpened(drawerView: View) {
-        if (gridViewAdapter !=null){
+        if (gridViewAdapter != null) {
             gridViewAdapter!!.closeMenu()
         }
     }
+
     //endregion
+
     /**
-     *
-     * @param [Int]
+     *  Cette region est composée d'un ensemble de méthodes qui sont liées au Multiselect
+     */
+    //region ====================================== Multi-MonoChannel =======================================
+
+    /**
+     * Fonction Item Click, appelée dans GridViewAdapter, liée au click sur un contact
+     * Cela permet d'activer le mode Multiselect et ensuite de sélectionner d'autres contacts
+     * @param position [Int]
      */
     @SuppressLint("SetTextI18n")
-    fun longGridItemClick(position: Int) {
-        main_FloatingButtonAdd!!.visibility = View.GONE
-        main_FloatingButtonSend!!.visibility = View.VISIBLE
+    fun gridMultiSelectItemClick(position: Int) {
+        main_FloatingButtonAddNewContact!!.visibility = View.GONE
+        main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE
 
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
@@ -1185,7 +1240,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
             switchMultiSelectToNormalMode()
-            main_groupButton!!.visibility = View.GONE
+            main_FloatingButtonGroup!!.visibility = View.GONE
         } else if (listOfItemSelected.size == 1) {
             firstClick = false
             main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
@@ -1202,8 +1257,60 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * On regarde dans la liste ce qu'ont comme channel tous les contacts pour vérifier si ils ont un mail ou numéro
-     * Si un des contact n'a pas un de ses channel le boutton correspondant au channel est masqué
+     * Fonction Item Click, appelée dans GridViewAdapter, liée au long click sur un contact
+     * Cela permet d'activer le mode Multiselect et ensuite de sélectionner d'autres contacts
+     * @param position [Int]
+     */
+    fun recyclerMultiSelectItemClick(position: Int) {
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+            verifiedContactsChannel(listOfItemSelected)
+        } else {
+            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+
+            main_FloatingButtonAddNewContact!!.visibility = View.GONE
+            main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE
+
+            verifiedContactsChannel(listOfItemSelected)
+        }
+
+        val i = listOfItemSelected.size
+
+        if (listOfItemSelected.size == 1 && firstClick) {
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+            main_FloatingButtonAddNewContact!!.visibility = View.GONE
+            main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE
+            firstClick = false
+            multiChannelMode = true
+            main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
+            main_ToolbarLayout!!.visibility = View.GONE
+
+        } else if (listOfItemSelected.size == 0) {
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+
+            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
+            main_FloatingButtonMultiChannel!!.visibility = View.GONE
+            main_FloatingButtonSMS!!.visibility = View.GONE
+            main_FloatingButtonMail!!.visibility = View.GONE
+            main_FloatingButtonGroup!!.visibility = View.GONE
+
+            main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
+            main_ToolbarLayout!!.visibility = View.VISIBLE
+
+            firstClick = true
+        }
+
+        if (listOfItemSelected.size == 1) {
+            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
+        } else if (listOfItemSelected.size > 1) {
+            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+        }
+    }
+
+    /**
+     * On regarde dans la liste des contacts sélectionnés lors du multiselect tous les channels (SMS, Mail) présents
+     * Si tous les contacts possèdent un channel commun, alors le bouton correspondant à ce Channel sera visible
+     * Sinon il sera masqué
      * @param listOfItemSelected [ArrayList<ContactWithAllInformation>]
      */
     private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
@@ -1226,80 +1333,31 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val margin = (0.5 * metrics.densityDpi).toInt()
         println("metric smartphone" + metrics.densityDpi)
         if (allContactsHavePhoneNumber) {
-            main_SMSButton!!.visibility = View.VISIBLE
+            main_FloatingButtonSMS!!.visibility = View.VISIBLE
             i++
         } else {
             println("false phoneNumber")
-            main_SMSButton!!.visibility = View.GONE
+            main_FloatingButtonSMS!!.visibility = View.GONE
         }
         if (allContactsHaveMail) {
-            main_MailButton!!.visibility = View.VISIBLE
-            val params: ViewGroup.MarginLayoutParams = main_MailButton!!.layoutParams as ViewGroup.MarginLayoutParams
+            main_FloatingButtonMail!!.visibility = View.VISIBLE
+            val params: ViewGroup.MarginLayoutParams = main_FloatingButtonMail!!.layoutParams as ViewGroup.MarginLayoutParams
             params.bottomMargin = margin * i
-            main_MailButton!!.layoutParams = params
-            println("height of floating mail" + main_MailButton!!.height)
+            main_FloatingButtonMail!!.layoutParams = params
+            println("height of floating mail" + main_FloatingButtonMail!!.height)
         } else {
             println("false mail")
-            main_MailButton!!.visibility = View.GONE
+            main_FloatingButtonMail!!.visibility = View.GONE
         }
-        main_groupButton!!.visibility = View.VISIBLE
-        val params: ViewGroup.MarginLayoutParams = main_groupButton!!.layoutParams as ViewGroup.MarginLayoutParams
+        main_FloatingButtonGroup!!.visibility = View.VISIBLE
+        val params: ViewGroup.MarginLayoutParams = main_FloatingButtonGroup!!.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin = margin * i
-        main_groupButton!!.layoutParams = params
+        main_FloatingButtonGroup!!.layoutParams = params
 
     }
 
     /**
-     *
-     * @param position [Int]
-     */
-    fun longRecyclerItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-            verifiedContactsChannel(listOfItemSelected)
-        } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-
-            main_FloatingButtonAdd!!.visibility = View.GONE
-            main_FloatingButtonSend!!.visibility = View.VISIBLE
-
-            verifiedContactsChannel(listOfItemSelected)
-        }
-
-        val i = listOfItemSelected.size
-
-        if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
-            main_FloatingButtonAdd!!.visibility = View.GONE
-            main_FloatingButtonSend!!.visibility = View.VISIBLE
-            firstClick = false
-            multiChannelMode = true
-            main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
-            main_ToolbarLayout!!.visibility = View.GONE
-
-        } else if (listOfItemSelected.size == 0) {
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-
-            main_FloatingButtonAdd!!.visibility = View.VISIBLE
-            main_FloatingButtonSend!!.visibility = View.GONE
-            main_SMSButton!!.visibility = View.GONE
-            main_MailButton!!.visibility = View.GONE
-            main_groupButton!!.visibility = View.GONE
-
-            main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
-            main_ToolbarLayout!!.visibility = View.VISIBLE
-
-            firstClick = true
-        }
-
-        if (listOfItemSelected.size == 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
-        } else if (listOfItemSelected.size > 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
-        }
-    }
-    /**
-     * On ouvre l'application de SMS avec les contact saisit lors du multiselect
+     * On ouvre l'application de SMS avec tous les contacts saisis lors du multiselect
      * @param listOfPhoneNumber [ArrayList<String>]
      */
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
@@ -1312,7 +1370,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * On ouvre l'application de mail choisi par l'utilisateur avec les contact saisit lors du multiselect
+     * On ouvre l'application de mail choisi par l'utilisateur avec tous les contacts saisis lors du multiselect
      * @param listOfMail [ArrayList<String>]
      */
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
@@ -1327,9 +1385,207 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * Méthode appellé par le système lorsque l'utilisateur accepte ou refuse une permission
-     * Lorsque l'utilisateur autorise de lire ses contacts nous synchronisons ses contacts android
-     * Lorsque l'utilisateur autorise d'appeler avec Knocker alors nous Passons l'appel qu'il voulait passer avant d'accepter la permission
+     * Nous affichons ici une Popup de création de groupe qui nous demande d'entrer le nom du groupe et sa couleur
+     * Une fois validé, nous enregistrons le groupe et ses contacts dans la BDD
+     * @param listContacts[ArrayList<ContactWithAllInformation>]
+     * @param len [Int]
+     */
+    private fun createGroupMultiSelectClick(listContacts: ArrayList<ContactWithAllInformation>) {
+
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        @SuppressLint("InflateParams") val alertView = inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
+
+        val mainCreateGroupAlertDialogTitle = alertView.findViewById<TextView>(R.id.manager_group_edit_group_alert_dialog_title)
+        val mainCreateGroupAlertDialogEditText = alertView.findViewById<AppCompatEditText>(R.id.manager_group_edit_group_view_edit)
+
+        val mainCreateGroupAlertDialogRedTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_red)
+        val mainCreateGroupAlertDialogBlueTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_blue)
+        val mainCreateGroupAlertDialogGreenTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_green)
+        val mainCreateGroupAlertDialogYellowTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_yellow)
+        val mainCreateGroupAlertDialogOrangeTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_orange)
+        val mainCreateGroupAlertDialogPurpleTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_purple)
+
+        // Titre de la Popup
+        mainCreateGroupAlertDialogTitle.text = this.getString(R.string.main_alert_dialog_group_title)
+
+        // Text hint de l'EditText
+        mainCreateGroupAlertDialogEditText.hint = getString(R.string.group_name).format(main_ContactsDatabase!!.GroupsDao().getIdNeverUsed())
+
+        mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_image_view)
+        var color = this.getColor(R.color.red_tag_group)
+
+        //region ================================= ClickListenerOnColorTag ==================================
+
+        mainCreateGroupAlertDialogRedTag.setOnClickListener {
+            mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.red_tag_group)
+        }
+
+        mainCreateGroupAlertDialogBlueTag.setOnClickListener {
+            mainCreateGroupAlertDialogBlueTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.blue_tag_group)
+        }
+
+        mainCreateGroupAlertDialogGreenTag.setOnClickListener {
+            mainCreateGroupAlertDialogGreenTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.green_tag_group)
+        }
+
+        mainCreateGroupAlertDialogYellowTag.setOnClickListener {
+            mainCreateGroupAlertDialogYellowTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.yellow_tag_group)
+        }
+
+        mainCreateGroupAlertDialogOrangeTag.setOnClickListener {
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.orange_tag_group)
+        }
+
+        mainCreateGroupAlertDialogPurpleTag.setOnClickListener { v1 ->
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
+
+            color = this.getColor(R.color.purple_tag_group)
+        }
+
+        //endregion
+
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setView(alertView)
+                .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
+                    if (mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites" || mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites") {
+                        hideKeyboard()
+                        Toast.makeText(this, getString(R.string.main_alert_dialog_group_favorites_already_exist), Toast.LENGTH_LONG).show()
+                    } else {
+                        val nameGroup = if (mainCreateGroupAlertDialogEditText.text.toString().isNotEmpty()) {
+                            mainCreateGroupAlertDialogEditText.text.toString()
+                        } else {
+                            mainCreateGroupAlertDialogEditText.hint.toString()
+                        }
+                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+                        val callDb = Callable {
+                            if (listContacts.size != 0) {
+                                val group = GroupDB(null, nameGroup, "", -500138)
+                                idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)!!
+                                for (contact in listContacts) {
+                                    val link = LinkContactGroup(idGroup.toInt(), contact.getContactId())
+                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
+                                }
+                            }
+                        }
+                        executorService.submit(callDb).get()!!
+
+                        if (color == 0) {
+                            val r = Random()
+                            when (r.nextInt(7)) {
+                                0 -> {
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                    color = this.getColor(R.color.green_tag_group)
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                1 -> {
+                                    color = this.getColor(R.color.blue_tag_group)
+                                    color = this.getColor(R.color.green_tag_group)
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                2 -> {
+                                    color = this.getColor(R.color.green_tag_group)
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                3 -> {
+                                    color = this.getColor(R.color.orange_tag_group)
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                4 -> {
+                                    color = this.getColor(R.color.yellow_tag_group)
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                5 -> {
+                                    color = this.getColor(R.color.purple_tag_group)
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                6 -> {
+                                    color = this.getColor(R.color.red_tag_group)
+                                    color = this.getColor(R.color.blue_tag_group)
+                                }
+                                else -> color = this.getColor(R.color.blue_tag_group)
+                            }
+                        }
+                        hideKeyboard()
+                        main_ContactsDatabase!!.GroupsDao().updateGroupSectionColorById(idGroup.toInt(), color)
+                        startActivity(Intent(this, GroupManagerActivity::class.java))
+                    }
+                }
+                .setNegativeButton(R.string.alert_dialog_cancel) { _, _ ->
+                    hideKeyboard()
+                }
+                .show()
+
+//        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+//        main_GridView!!.adapter = gridViewAdapter
+//        switchMultiSelectToNormalMode()
+//        listOfItemSelected.clear()
+    }
+
+    //endregion
+
+    /**
+     * Méthode appelée par le système lorsque l'utilisateur accepte ou refuse une permission
+     * Lorsque l'utilisateur autorise de lire ses contacts, nous synchronisons ses contacts Android
+     * Lorsque l'utilisateur autorise d'appeler avec Knocker, alors nous passons l'appel qu'il voulait passer avant d'accepter la permission
      * @param requestCode [Int]
      * @param permissions [Array<String>]
      * @param grantResults [IntArray]
@@ -1355,215 +1611,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     /**
-     * Nous affichons ici un alertDialog de création du groupe qui nous demande le nom du groupe est sa couleur
-     * Une fois validé nous enregistrons le groupe et ses contacts
-     * @param listContacts[ArrayList<ContactWithAllInformation>]
-     * @param len [Int]
-     */
-    private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
-
-        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        @SuppressLint("InflateParams") val alertView = inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
-
-        val edit_group_name_EditText = alertView.findViewById<AppCompatEditText>(R.id.manager_group_edit_group_view_edit)
-        val edit_group_name_AlertDialogTitle = alertView.findViewById<TextView>(R.id.manager_group_edit_group_alert_dialog_title)
-
-        val edit_group_name_RedTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_red)
-        val edit_group_name_BlueTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_blue)
-        val edit_group_name_GreenTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_green)
-        val edit_group_name_YellowTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_yellow)
-        val edit_group_name_OrangeTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_orange)
-        val edit_group_name_PurpleTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_purple)
-
-
-        edit_group_name_AlertDialogTitle.setText(this.getString(R.string.main_alert_dialog_group_title)
-                )
-
-        edit_group_name_EditText.setHint(getString(R.string.group_name).format(main_ContactsDatabase!!.GroupsDao().getIdNeverUsed()))
-
-        edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view)
-        var color=this.getColor(R.color.red_tag_group)
-        edit_group_name_RedTag.setOnClickListener { v1 ->
-            edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.red_tag_group)
-        }
-
-        edit_group_name_BlueTag.setOnClickListener { v1 ->
-            edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.blue_tag_group)
-        }
-
-        edit_group_name_GreenTag.setOnClickListener { v1 ->
-            edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.green_tag_group)
-        }
-
-        edit_group_name_YellowTag.setOnClickListener { v1 ->
-            edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.yellow_tag_group)
-        }
-
-        edit_group_name_OrangeTag.setOnClickListener { v1 ->
-            edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-            edit_group_name_PurpleTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.orange_tag_group)
-        }
-
-        edit_group_name_PurpleTag.setOnClickListener { v1 ->
-            edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_image_view)
-            edit_group_name_RedTag.setImageResource(android.R.color.transparent)
-            edit_group_name_GreenTag.setImageResource(android.R.color.transparent)
-            edit_group_name_YellowTag.setImageResource(android.R.color.transparent)
-            edit_group_name_OrangeTag.setImageResource(android.R.color.transparent)
-            edit_group_name_BlueTag.setImageResource(android.R.color.transparent)
-
-            color = this.getColor(R.color.purple_tag_group)
-        }
-
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setView(alertView)
-                .setPositiveButton(R.string.alert_dialog_validate) { dialog, which ->
-                  /*  println("Name : " + Objects.requireNonNull<Editable>(edit_group_name_EditText.text).toString())
-                    println("Name : " + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup()!!.toInt()).name)
-                    println("Color : $color")
-*/                  var idGroup:Long=0
-                    if (edit_group_name_EditText.text!!.toString() == "Favorites") {
-                        Toast.makeText(this, "Vous ne pouvez pas donner favoris comme nom de groupe", Toast.LENGTH_LONG).show()
-                    } else {
-
-                        val nameGroup = if (edit_group_name_EditText.text.toString().isNotEmpty()) {
-                            edit_group_name_EditText.text.toString()
-                        } else {
-                            edit_group_name_EditText.hint.toString()
-                        }
-                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                        val callDb = Callable {
-                            if (listContacts.size != 0) {
-                                val group = GroupDB(null, nameGroup, "", -500138)
-                                idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)!!
-                                for (contact in listContacts) {
-                                    val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
-                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
-                                }
-                            }
-                        }
-                        executorService.submit(callDb).get()!!
-                        //                                            Toast.makeText(this, "Vous avez modifié le nom de votre groupe", Toast.LENGTH_LONG).show();
-                    }
-
-                    if (color == 0) {
-                        val r = Random()
-                        val n = r.nextInt(7)
-
-                        when (n) {
-                            0 -> {
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                                color = this.getColor(R.color.green_tag_group)
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            1 -> {
-                                color = this.getColor(R.color.blue_tag_group)
-                                color = this.getColor(R.color.green_tag_group)
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            2 -> {
-                                color = this.getColor(R.color.green_tag_group)
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            3 -> {
-                                color = this.getColor(R.color.orange_tag_group)
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            4 -> {
-                                color = this.getColor(R.color.yellow_tag_group)
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            5 -> {
-                                color = this.getColor(R.color.purple_tag_group)
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            6 -> {
-                                color = this.getColor(R.color.red_tag_group)
-                                color = this.getColor(R.color.blue_tag_group)
-                            }
-                            else -> color = this.getColor(R.color.blue_tag_group)
-                        }
-                    }
-
-                    main_ContactsDatabase!!.GroupsDao().updateGroupSectionColorById(idGroup.toInt(), color)
-                    this.startActivity(Intent(this, GroupManagerActivity::class.java))
-                }
-                .setNegativeButton(R.string.alert_dialog_cancel) { dialog, which -> }
-                .show()
-        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-        main_GridView!!.adapter = gridViewAdapter
-        /*main_FloatingButtonSend!!.visibility = View.GONE
-          main_SearchBar!!.visibility = View.VISIBLE
-          main_MailButton!!.visibility = View.GONE
-          main_SMSButton!!.visibility = View.GONE
-          main_groupButton!!.visibility = View.GONE*/
-        switchMultiSelectToNormalMode()
-        listOfItemSelected.clear()
-    }
-
-    /**
      *Passer de l'affichage multiselect au mode normal en changeant le laytout
      */
     private fun switchMultiSelectToNormalMode() {
-        main_FloatingButtonSend!!.visibility = View.GONE
+        main_FloatingButtonMultiChannel!!.visibility = View.GONE
         main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
         main_ToolbarLayout!!.visibility = View.VISIBLE
-        main_MailButton!!.visibility = View.GONE
-        main_SMSButton!!.visibility = View.GONE
-        main_groupButton!!.visibility = View.GONE
+        main_FloatingButtonMail!!.visibility = View.GONE
+        main_FloatingButtonSMS!!.visibility = View.GONE
+        main_FloatingButtonGroup!!.visibility = View.GONE
     }
 
     //endregion

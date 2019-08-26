@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/phone_log_drawer_layout"
+    android:id="@+id/cockpit_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/backgroundColor"
-        tools:context=".controller.activity.PhoneLogActivity">
+        tools:context=".controller.activity.CockpitActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/cockpit_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar"
+            android:layout_below="@+id/cockpit_toolbar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp">
 
@@ -180,10 +180,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/phone_log_call_edit_text_layout"
+            android:id="@+id/cockpit_call_edit_text_layout"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:layout_above="@+id/phone_log_call_keyboard_view"
+            android:layout_above="@+id/cockpit_call_keyboard_view"
             android:background="?attr/backgroundColor"
             android:visibility="visible">
 
@@ -196,20 +196,20 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/phone_log_button_add_contact"
+                android:id="@+id/cockpit_button_add_contact"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_plus_selector"
+                android:src="@drawable/ic_circular_button_plus_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/phone_log_call_phone_number_edit_text"
+                android:id="@+id/cockpit_call_phone_number_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -226,13 +226,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/phone_log_call_back_space"
+                android:id="@+id/cockpit_call_back_space"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="30dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_back_space_button_selector"
+                android:src="@drawable/ic_backspace_arrow_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -240,10 +240,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TableLayout
-            android:id="@+id/phone_log_call_keyboard_view"
+            android:id="@+id/cockpit_call_keyboard_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/phone_log_call_layout_id"
+            android:layout_above="@+id/cockpit_call_layout_id"
             android:background="?attr/backgroundColor"
             android:shrinkColumns="*"
             android:stretchColumns="*"
@@ -257,11 +257,11 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_1"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_1"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -271,7 +271,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_1"
+                            android:id="@+id/cockpit_tv_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -287,23 +287,23 @@
                             android:id="@+id/imageView"
                             android:layout_width="24dp"
                             android:layout_height="12dp"
-                            android:layout_below="@+id/phone_log_tv_1"
+                            android:layout_below="@+id/cockpit_tv_1"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="1dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_1"
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_1"
                             app:srcCompat="@drawable/ic_voicemail" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_2"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_2"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -313,7 +313,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_2"
+                            android:id="@+id/cockpit_tv_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -328,7 +328,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_2"
+                            android:layout_below="@+id/cockpit_tv_2"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -338,16 +338,16 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_2" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_2" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_3"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_3"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -357,7 +357,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_3"
+                            android:id="@+id/cockpit_tv_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -373,7 +373,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_3"
+                            android:layout_below="@+id/cockpit_tv_3"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -383,7 +383,7 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_3" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_3" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
             </TableRow>
@@ -391,11 +391,11 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_4"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_4"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -405,7 +405,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_4"
+                            android:id="@+id/cockpit_tv_4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -421,7 +421,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_4"
+                            android:layout_below="@+id/cockpit_tv_4"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -431,16 +431,16 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_4" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_4" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_5"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_5"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -450,7 +450,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_5"
+                            android:id="@+id/cockpit_tv_5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -466,7 +466,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_5"
+                            android:layout_below="@+id/cockpit_tv_5"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -476,16 +476,16 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_5" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_5" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_6"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_6"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -495,7 +495,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_6"
+                            android:id="@+id/cockpit_tv_6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -511,7 +511,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_6"
+                            android:layout_below="@+id/cockpit_tv_6"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -521,7 +521,7 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_6" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_6" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
             </TableRow>
@@ -529,11 +529,11 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_7"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_7"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -545,7 +545,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_7"
+                            android:id="@+id/cockpit_tv_7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -561,7 +561,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_7"
+                            android:layout_below="@+id/cockpit_tv_7"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -571,16 +571,16 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_7" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_7" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_8"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_8"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -590,7 +590,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_8"
+                            android:id="@+id/cockpit_tv_8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -606,7 +606,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_8"
+                            android:layout_below="@+id/cockpit_tv_8"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -616,17 +616,17 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_8" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_8" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_9"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_9"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -636,7 +636,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_9"
+                            android:id="@+id/cockpit_tv_9"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -652,7 +652,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_9"
+                            android:layout_below="@+id/cockpit_tv_9"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="2dp"
@@ -662,7 +662,7 @@
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_9" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_9" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
@@ -671,15 +671,15 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_star"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_star"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
                     android:clickable="true"
                     android:focusable="true">
 
                     <TextView
-                        android:id="@+id/phone_log_tv_star"
+                        android:id="@+id/cockpit_tv_star"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -689,11 +689,11 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_0"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_0"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
-                    android:background="@drawable/selector_relative_layout"
+                    android:background="@drawable/background_layout_selector"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -703,7 +703,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/phone_log_tv_0"
+                            android:id="@+id/cockpit_tv_0"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -719,7 +719,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/phone_log_tv_0"
+                            android:layout_below="@+id/cockpit_tv_0"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
                             android:text="+"
@@ -729,21 +729,21 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phone_log_tv_0" />
+                            app:layout_constraintTop_toBottomOf="@+id/cockpit_tv_0" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
 
                 <RelativeLayout
-                    android:id="@+id/phone_log_call_keyboard_sharp"
-                    android:layout_width="@dimen/phone_log_keyboard_width"
-                    android:layout_height="@dimen/phone_log_keyboard_height"
+                    android:id="@+id/cockpit_call_keyboard_sharp"
+                    android:layout_width="@dimen/cockpit_keyboard_width"
+                    android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
                     android:clickable="true"
                     android:focusable="true">
 
                     <TextView
-                        android:id="@+id/phone_log_tv_sharp"
+                        android:id="@+id/cockpit_tv_sharp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -755,7 +755,7 @@
         </TableLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/phone_log_call_layout_id"
+            android:id="@+id/cockpit_call_layout_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/navigation"
@@ -767,7 +767,7 @@
 
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/phone_log_send_message"
+                android:id="@+id/cockpit_send_message"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="30dp"
@@ -781,7 +781,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/phone_log_incoming_call_button"
+                android:id="@+id/cockpit_incoming_call_button"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_alignParentEnd="true"
@@ -798,7 +798,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/phone_log_button_close_id"
+                android:id="@+id/cockpit_button_close_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
@@ -812,7 +812,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/phone_log_button_open_id"
+            android:id="@+id/cockpit_button_open_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/navigation"
@@ -840,11 +840,11 @@
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/main_navigation_view" />
+            app:menu="@menu/bottom_navigation_view" />
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/phone_log_nav_view"
+        android:id="@+id/cockpit_nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -852,5 +852,5 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/menu_left_drawer_layout" />
 </androidx.drawerlayout.widget.DrawerLayout>

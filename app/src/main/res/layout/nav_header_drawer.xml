@@ -5,7 +5,7 @@
     android:id="@+id/nav_header_drawer_copyright"
     android:clickable="true"
     android:focusable="true"
-    android:background="@drawable/selector_relative_layout">
+    android:background="@drawable/background_layout_selector">
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
