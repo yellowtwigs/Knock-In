@@ -73,9 +73,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     public ContactRecyclerViewAdapter(Context context, ContactManager gestionnaireContacts, Integer len) {
         this.context = context;
-        this.listContacts = gestionnaireContacts.getContactList();
         this.len = len;
         this.gestionnaireContacts = gestionnaireContacts;
+        this.listContacts = gestionnaireContacts.getContactList();
         lastSelectMenuLen1 = null;
     }
 

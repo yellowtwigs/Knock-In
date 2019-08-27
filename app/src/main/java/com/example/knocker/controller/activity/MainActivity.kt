@@ -868,7 +868,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      */
     @SuppressLint("ShowToast")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        gridViewAdapter!!.closeMenu()
+        if(gridViewAdapter!=null) {
+            gridViewAdapter!!.closeMenu()
+        }
         when (item.itemId) {
             R.id.sms_filter -> {
                 //clique sur la checkbox filtre SMS
@@ -902,9 +904,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
+                        gridViewAdapter!!.notifyDataSetChanged()
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 } else {
                     //on coche la checkbox
@@ -987,8 +991,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
+                        println("gestionnaire contacct  size ==================="+gestionnaireContacts!!.contactList.size)
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
-
+                        main_RecyclerView!!.adapter=recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 }

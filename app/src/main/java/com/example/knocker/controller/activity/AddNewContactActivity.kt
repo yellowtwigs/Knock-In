@@ -376,8 +376,10 @@ class AddNewContactActivity : AppCompatActivity() {
 
 
     //endregion
-
-    //demmande de confirmation de la création d'un contact en double
+    /**
+     *demande de confirmation de la création d'un contact en double
+     * @param contactData [contactDB]
+     */
     private fun confirmationDuplicate(contactData: ContactDB) {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.add_new_contact_alert_dialog_title)
@@ -394,10 +396,18 @@ class AddNewContactActivity : AppCompatActivity() {
                 .show()
     }
 
+    /**
+     *Retourne si le [TextInputLayout] passé en parametre n'a pas de texte
+     * @param field [TextInputLayout]
+     * @return [boolean]
+     */
     private fun isEmptyField(field: TextInputLayout?): Boolean {
         return field!!.editText!!.text.toString().isEmpty()
     }
 
+    /**
+     * Lors du click sur l'image du contact  affichage du BottomSheetDialog contenant les option choix icone appareil photo ou gallerie
+     */
     private fun selectImage() {
 
         val builderBottom = BottomSheetDialog(this)
@@ -435,7 +445,7 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     /**
-     *
+     * Ouvre l'appreil photo du téléphone
      */
     private fun openCamera() {
         val values = ContentValues()
@@ -447,6 +457,12 @@ class AddNewContactActivity : AppCompatActivity() {
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
+    /**
+     * Transforme l'Uri passer parametre en string contenant le path vers la ressource
+     * @param context [Context]
+     * @param  contentUri [Uri]
+     * @return [String] //path
+     */
     private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
         var cursor: Cursor? = null
         try {
@@ -463,7 +479,10 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     /**
-     *
+     * Récupère la photo prise depuis l'appreil ou la photo que le contact à sélectionner pour la rajouter au contact
+     * @param requestCode [Int]
+     * @param resultCode [Int]
+     * @param data [Intent]
      */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -545,7 +564,7 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     /**
-     * Change l'image du contact par l'icone l'icone sélectionner par l'utilisateur à
+     * Change l'image du contact par l'icone sélectionner par l'utilisateur
      * @param bitmap
      */
     fun addContactIcone(bitmap: Bitmap) {
