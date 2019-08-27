@@ -109,7 +109,7 @@
 
     <!-- region Add New Contact !-->
 
-    <string name="add_new_contact_title">Add a new contact</string>
+    <string name="add_new_contact_title">Add contact</string>
     <string name="add_new_contact_last_name">Name</string>
     <string name="add_new_contact_first_name">Firstname</string>
     <string name="add_new_contact_phone_number">Phone number</string>

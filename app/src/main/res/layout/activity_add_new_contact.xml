@@ -30,7 +30,7 @@
 
         <RelativeLayout
             android:id="@+id/add_new_contact_toolbar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="4dp"
+                android:layout_toStartOf="@+id/add_new_contact_favorite"
                 android:layout_toEndOf="@+id/add_new_contact_return"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/add_new_contact_title"
                 android:textColor="?attr/textColor"
                 android:textSize="20sp"
