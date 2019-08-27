@@ -274,7 +274,7 @@
 
     <!-- region Notification History -->
 
-    <string name="notification_history_search_hint">Rechercher dans l\'historique</string>
+    <string name="notification_history_search_hint">Rechercher</string>
 
     <!-- endregion -->
 
