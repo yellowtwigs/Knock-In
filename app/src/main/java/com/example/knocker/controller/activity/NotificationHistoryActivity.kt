@@ -470,9 +470,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         if (sharedPreferences.getString("tri", "date") == "date") {
             menu!!.findItem(R.id.notif_tri_par_date).setChecked(true)
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
-
             menu!!.findItem(R.id.notif_tri_par_priorite).setChecked(true)
-        } else if (sharedPreferences.getBoolean("filtre_message", true)) {
+        }else{
             menu!!.findItem(R.id.notif_tri_par_contact)
         }
         if (!sharedPreferences.getBoolean("filtre_message", true)) {
