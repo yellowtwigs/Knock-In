@@ -197,7 +197,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
                         add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                     }
-                    if (add_new_contact_fixNumber!!.editText!!.text.toString() !== "") {
+                    if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
                         contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
                         add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                     }
