@@ -358,9 +358,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
         if (main_GridView!!.visibility != View.GONE) {
             when {//Verification du mode de tri des contacts pour afficher le bon tri
+                sharedPreferences.getString("tri","nom")== "lastname" -> gestionnaireContacts!!.sortContactByLastname()
                 sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
                 sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
-                else -> gestionnaireContacts!!.sortContactByGroup()
+                else -> gestionnaireContacts!!.sortContactByFavorite()
             }
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
 
