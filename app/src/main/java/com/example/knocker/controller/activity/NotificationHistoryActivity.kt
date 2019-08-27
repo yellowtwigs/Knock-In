@@ -560,7 +560,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
 //            openItem.width = convertDipToPixels(50F)
 //            it.addMenuItem(openItem)
 
-            deleteItem.setBackground(R.drawable.ic_swipe_delete)
+            //deleteItem.setBackground(R.drawable.ic_swipe_delete)
+            deleteItem.setIcon(R.drawable.ic_swipe_delete)
             deleteItem.width = convertDipToPixels(50F)
             it.addMenuItem(deleteItem)
         }
