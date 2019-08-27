@@ -125,6 +125,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.notification_history_toolbar)
         setSupportActionBar(toolbar)
+        toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         val actionbar = supportActionBar
         actionbar!!.run {
             actionbar.title = ""

@@ -70,12 +70,8 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
         notification_history_adapter_App!!.setImageDrawable(icon)
 
         println("notification " + position + " " + notif.platform)
+        notification_history_adapter_contenue!!.text = notif.description
 
-        if (notif.description.length > 100) {
-            notification_history_adapter_contenue!!.text = notif.description.substring(0, 99) + ".."
-        } else {
-            notification_history_adapter_contenue!!.text = notif.description
-        }
 
 //        notification_history_adapter_layout!!.setOnLongClickListener {
 //            val notifSelected = notif_history_ContactsDatabase!!.notificationsDao().getNotification(notification_history_ListOfNotificationDB[position].id!!)
