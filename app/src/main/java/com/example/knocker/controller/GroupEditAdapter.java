@@ -71,12 +71,16 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                 // holder.layoutGroup.setVisibility(View.GONE);
             }
         });
-        Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);
-        assert drawable != null;
+        if(listGroup.get(position).getName().equals("Favorites")){
+         holder.layoutGroup.setVisibility(View.GONE);
+        }else {
+            Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);
+            assert drawable != null;
 //        drawable.setColorFilter(listGroup.get(position).randomColorGroup(context), PorterDuff.Mode.MULTIPLY);
-        drawable.setColorFilter(listGroup.get(position).getSection_color(), PorterDuff.Mode.MULTIPLY);
-        holder.layoutGroup.setBackground(drawable);
-        holder.groupName.setText(listGroup.get(position).getName());
+            drawable.setColorFilter(listGroup.get(position).getSection_color(), PorterDuff.Mode.MULTIPLY);
+            holder.layoutGroup.setBackground(drawable);
+            holder.groupName.setText(listGroup.get(position).getName());
+        }
     }
 
     public GroupDB getItem(int position) {
