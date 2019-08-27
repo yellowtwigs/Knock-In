@@ -616,6 +616,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_main_toolbar_multiselect_all_select -> {
+                        listOfItemSelected.clear()
+                        listOfItemSelected.addAll(gestionnaireContacts!!.contactList)
+                        if(len>1){
+                            gridViewAdapter!!.setListOfItemSelected(listOfItemSelected)
+                            gridViewAdapter!!.notifyDataSetChanged()
+                        }else{
+                            recyclerViewAdapter!!.notifyDataSetChanged()
+                            recyclerViewAdapter!!.setListOfItemSelected(listOfItemSelected)
+                        }
+                        main_ToolbarMultiSelectModeTitle!!.text = listOfItemSelected.size.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+
                     }
                 }
                 false
@@ -1477,7 +1488,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             color = this.getColor(R.color.orange_tag_group)
         }
 
-        mainCreateGroupAlertDialogPurpleTag.setOnClickListener { v1 ->
+        mainCreateGroupAlertDialogPurpleTag.setOnClickListener { _ ->
             mainCreateGroupAlertDialogPurpleTag.setImageResource(R.drawable.border_selected_image_view)
             mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)

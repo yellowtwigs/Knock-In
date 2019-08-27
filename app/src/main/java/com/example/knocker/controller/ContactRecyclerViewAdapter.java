@@ -66,7 +66,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
-
+    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected){
+        this.listOfItemSelected.clear();
+        this.listOfItemSelected.addAll(listOfItemSelected);
+    }
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     private String numberForPermission = "";

@@ -76,8 +76,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
-
-
+    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected){
+        this.listOfItemSelected.clear();
+        this.listOfItemSelected.addAll(listOfItemSelected);
+    }
     public void setGestionnairecontact(ContactManager gestionnaireContact) {
         this.gestionnaireContact = gestionnaireContact;
     }
