@@ -46,8 +46,8 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
     @Override
     public void onBindViewHolder(@NonNull ContactIconeAdapter.ViewHolder holder, final int position) {
 
-        for (int i = 0; i < iconeList.length; i++) {
-            System.out.println("icone list" + iconeList[i]);
+        for (int i1 : iconeList) {
+            System.out.println("icone list" + i1);
         }
         holder.imageViewIcone.setImageResource(iconeList[position]);
         holder.iconeLayout.setOnClickListener(new View.OnClickListener() {

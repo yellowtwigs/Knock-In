@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alert_dialog_notif_details_messaging_layout"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@drawable/custom_shape_popup_with_border">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/alert_dialog_notif_details_messaging_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/notification_popup_top_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/alert_dialog_notif_details_messaging_platform_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_app_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/alert_dialog_notif_details_messaging_platform_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/app_name"
+            android:textColor="@color/textColorDark"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/alert_dialog_notif_details_messaging_platform_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/alert_dialog_notif_details_messaging_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_cross" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/alert_dialog_notif_details_messaging_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alert_dialog_notif_details_messaging_top_bar">
+
+        <TextView
+            android:id="@+id/alert_dialog_notif_details_messaging_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:text="@string/multi_select_alert_dialog_message"
+            android:textColor="@color/textColorDark"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/alert_dialog_notif_details_messaging_edit_text_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_form_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alert_dialog_notif_details_messaging_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/alert_dialog_notif_details_messaging_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@+id/alert_dialog_notif_details_messaging_send"
+                android:background="@drawable/custom_edit_text"
+                android:hint="@string/notif_adapter_edit_text_hint"
+                android:inputType="textShortMessage"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:textColor="@color/textColorDark" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/alert_dialog_notif_details_messaging_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_right_arrow_send" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/alert_dialog_notif_details_messaging_call_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alert_dialog_notif_details_messaging_content_layout">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/item_notification_show_message"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toStartOf="@+id/alert_dialog_notif_details_messaging_button_view"
+            android:text="@string/notif_adapter_show_message_button" />
+
+        <View
+            android:id="@+id/alert_dialog_notif_details_messaging_button_view"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/item_notification_call"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toEndOf="@+id/alert_dialog_notif_details_messaging_button_view"
+            android:text="@string/notif_adapter_call"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

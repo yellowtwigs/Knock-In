@@ -1,12 +1,15 @@
 package com.example.knocker.controller.activity
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.telephony.SmsManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -16,9 +19,11 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.baoyz.swipemenulistview.SwipeMenu
@@ -127,6 +132,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         val actionbar = supportActionBar
+        toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         actionbar!!.run {
             actionbar.title = ""
             setDisplayHomeAsUpEnabled(true)
@@ -241,14 +247,45 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             val contact = gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName)
 
-            val inflater: LayoutInflater = this.layoutInflater
-            val alertView: View = inflater.inflate(R.layout.alert_dialog_notif_details, null)
+            val platform = notification_history_ListOfNotificationDB[position].platform
+            var alertView: View? = null
 
-            val alert_dialog_notif_details_PlatformImageView = alertView.findViewById<AppCompatImageView>(R.id.alert_dialog_notif_details_platform_image)
-            val alert_dialog_notif_details_Title = alertView.findViewById<TextView>(R.id.alert_dialog_notif_details_title)
-            val alert_dialog_notif_details_Message = alertView.findViewById<TextView>(R.id.alert_dialog_notif_details_message)
-            val alert_dialog_notif_details_Delete = alertView.findViewById<AppCompatButton>(R.id.alert_dialog_notif_details_button_delete)
-            val alert_dialog_notif_details_Show = alertView.findViewById<AppCompatButton>(R.id.alert_dialog_notif_details_button_show)
+            alertView = if (platform == "com.whatsapp" || platform == "com.google.android.apps.messaging"
+                    || platform == "com.android.mms" || platform == "com.samsung.android.messaging") {
+                val inflater: LayoutInflater = this.layoutInflater
+                inflater.inflate(R.layout.alert_dialog_notif_details_messaging, null)
+            } else {
+                val inflater: LayoutInflater = this.layoutInflater
+                inflater.inflate(R.layout.alert_dialog_notif_details, null)
+            }
+
+            val alert_dialog_notif_details_PlatformImageView: AppCompatImageView?
+            val alert_dialog_notif_details_Title: TextView?
+            val alert_dialog_notif_details_Message: TextView?
+
+            var alert_dialog_notif_details_EditText: AppCompatEditText? = null
+            var alert_dialog_notif_details_Send: AppCompatImageView? = null
+
+            var alert_dialog_notif_details_Delete: AppCompatButton? = null
+            var alert_dialog_notif_details_Show: AppCompatButton? = null
+
+            if (platform == "com.whatsapp" || platform == "com.google.android.apps.messaging"
+                    || platform == "com.android.mms" || platform == "com.samsung.android.messaging") {
+
+                alert_dialog_notif_details_PlatformImageView = alertView.findViewById(R.id.alert_dialog_notif_details_messaging_platform_image)
+                alert_dialog_notif_details_Title = alertView.findViewById(R.id.alert_dialog_notif_details_messaging_platform_name)
+                alert_dialog_notif_details_Message = alertView.findViewById(R.id.alert_dialog_notif_details_messaging_content)
+                alert_dialog_notif_details_EditText = alertView.findViewById(R.id.alert_dialog_notif_details_messaging_edit_text)
+                alert_dialog_notif_details_Send = alertView.findViewById(R.id.alert_dialog_notif_details_messaging_send)
+
+            } else {
+                alert_dialog_notif_details_PlatformImageView = alertView.findViewById(R.id.alert_dialog_notif_details_platform_image)
+                alert_dialog_notif_details_Title = alertView.findViewById(R.id.alert_dialog_notif_details_title)
+                alert_dialog_notif_details_Message = alertView.findViewById(R.id.alert_dialog_notif_details_message)
+
+                alert_dialog_notif_details_Delete = alertView.findViewById(R.id.alert_dialog_notif_details_button_delete)
+                alert_dialog_notif_details_Show = alertView.findViewById(R.id.alert_dialog_notif_details_button_show)
+            }
 
             when (notification_history_ListOfNotificationDB[position].platform) {
 
@@ -260,7 +297,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
                 "com.facebook.orca" -> alert_dialog_notif_details_PlatformImageView.setImageResource(R.drawable.ic_facebook)
 
-                "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> alert_dialog_notif_details_PlatformImageView.setImageResource(R.drawable.ic_sms)
+                "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> alert_dialog_notif_details_PlatformImageView!!.setImageResource(R.drawable.ic_sms)
 
                 "com.instagram.android" -> alert_dialog_notif_details_PlatformImageView.setImageResource(R.drawable.ic_instagram)
 
@@ -273,23 +310,77 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 "com.linkedin.android" -> alert_dialog_notif_details_PlatformImageView.setImageResource(R.drawable.ic_linkedin)
             }
 
-            alert_dialog_notif_details_Title.text = notification_history_ListOfNotificationDB[position].contactName
-            alert_dialog_notif_details_Message.text = notification_history_ListOfNotificationDB[position].description
+            alert_dialog_notif_details_Title!!.text = notification_history_ListOfNotificationDB[position].contactName
+            alert_dialog_notif_details_Message!!.text = notification_history_ListOfNotificationDB[position].description
 
-            alert_dialog_notif_details_Delete.setOnClickListener {
-                notification_history_NotificationsDatabase!!.notificationsDao().deleteNotificationById(notification_history_ListOfNotificationDB[position].id!!)
-                fromPopup = true
+            MaterialAlertDialogBuilder(this)
+                    .setView(alertView)
+                    .show()
+
+            alert_dialog_notif_details_Send?.setOnClickListener {
+
+                when (notification_history_ListOfNotificationDB[position].platform) {
+                    "com.whatsapp" -> {
+                        if (alert_dialog_notif_details_EditText!!.text!!.isNotEmpty()) {
+                            if (contact != null) {
+                                sendMessageWithWhatsapp(contact.getFirstPhoneNumber(), alert_dialog_notif_details_EditText.text.toString())
+                            }
+                        } else {
+                            Toast.makeText(this, R.string.multi_channel_empty_field, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    "com.google.android.gm" -> {
+                        if (alert_dialog_notif_details_EditText!!.text!!.isNotEmpty()) {
+                            if (contact != null) {
+                                openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
+                            }
+                        } else {
+                            Toast.makeText(this, R.string.multi_channel_empty_field, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
+
+                        if (checkPermission(Manifest.permission.SEND_SMS)) {
+                            if (alert_dialog_notif_details_EditText!!.text!!.isNotEmpty()) {
+                                if (contact != null) {
+                                    sendMessageWithAndroidMessage(contact.getFirstPhoneNumber(), alert_dialog_notif_details_EditText.text.toString())
+                                } else {
+                                    sendMessageWithAndroidMessage(notification_history_ListOfNotificationDB[position].contactName, alert_dialog_notif_details_EditText.text.toString())
+                                }
+                            } else {
+                                Toast.makeText(this, R.string.multi_channel_empty_field, Toast.LENGTH_SHORT).show()
+                            }
+                            refreshActivity()
+                        } else {
+                            //TODO In english
+                            Toast.makeText(this, "Vous n'avez pas autorisé l'envoi de SMS via Knocker", Toast.LENGTH_LONG).show()
+
+                            if (contact != null) {
+                                openSms(contact.getFirstPhoneNumber(), alert_dialog_notif_details_EditText!!.text.toString())
+                            } else {
+                                openSms(notification_history_ListOfNotificationDB[position].contactName, alert_dialog_notif_details_EditText!!.text.toString())
+                            }
+                        }
+                    }
+                }
             }
 
-            alert_dialog_notif_details_Show.setOnClickListener {
+            alert_dialog_notif_details_Delete?.setOnClickListener {
+                notification_history_NotificationsDatabase!!.notificationsDao().deleteNotificationById(notification_history_ListOfNotificationDB[position].id!!)
+                fromPopup = true
+                refreshActivity()
+            }
+
+            alert_dialog_notif_details_Show?.setOnClickListener {
                 when (notification_history_ListOfNotificationDB[position].platform) {
                     "com.whatsapp" -> {
                         if (contact != null) {
                             openWhatsapp(contact.getFirstPhoneNumber())
                         }
                     }
-
-                    "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
+//                    "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
 
                     "com.facebook.katana" -> goToFacebook()
 
@@ -321,10 +412,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 }
             }
 
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setView(alertView)
-                    .show()
-
             true
         }
 
@@ -340,6 +427,44 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ==========================================
+
+    private fun sendMail(addressMail: String, msg: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_EMAIL, addressMail)
+        intent.data = Uri.parse("mailto:")
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, msg)
+
+        startActivity(intent)
+    }
+
+    private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        val message = "phone=" + converter06To33(phoneNumber)
+        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
+
+        startActivity(intent)
+    }
+
+    private fun appIsInstalled(): Boolean {
+        val pm = getPackageManager()
+        return try {
+            pm.getApplicationInfo("com.whatsapp", 0)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun openSms(phoneNumber: String, message: String) {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra("sms_body", message)
+
+        startActivity(intent)
+    }
 
     override fun onResume() {
         super.onResume()
@@ -449,6 +574,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String) {
+        val smsManager = SmsManager.getDefault()
+        smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
+
+        Toast.makeText(this, R.string.notif_adapter_message_sent,
+                Toast.LENGTH_LONG).show()
+    }
+
     private fun firstContactPrio0(notifList: List<NotificationDB>): Int {
         if (notifList.size > 1) {
             var i = notifList.size - 1
@@ -535,6 +668,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
         updateFilter()
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun checkPermission(permission: String): Boolean {
+        val checkPermission = ContextCompat.checkSelfPermission(this, permission)
+        return checkPermission == PackageManager.PERMISSION_GRANTED
     }
 
     private fun isMessagingApp(packageName: String): Boolean {

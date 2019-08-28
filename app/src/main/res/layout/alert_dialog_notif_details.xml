@@ -81,7 +81,7 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@+id/alert_dialog_notif_details_button_view"
-                android:background="@drawable/rounded_button_background_white"
+                android:background="@drawable/rounded_button_background_red"
                 android:text="Delete"
                 android:textColor="@color/lightColor"
                 app:layout_constraintBottom_toBottomOf="parent" />
