@@ -1,4 +1,4 @@
-package com.example.knocker
+package com.yellowtwigs.knocker
 
 import android.content.Context
 import android.content.Intent
@@ -9,8 +9,7 @@ import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.knocker.controller.activity.firstLaunch.ImportContactsActivity
-import com.example.knocker.controller.activity.firstLaunch.StartActivity
+import com.yellowtwigs.knocker.controller.activity.firstLaunch.ImportContactsActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
 

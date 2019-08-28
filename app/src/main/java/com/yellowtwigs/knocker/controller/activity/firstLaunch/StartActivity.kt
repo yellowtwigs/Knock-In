@@ -290,7 +290,7 @@ class StartActivity : AppCompatActivity() {
     private fun activateNotificationsClick() {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
-        intentFilter.addAction("com.example.knocker.notificationExemple")
+        intentFilter.addAction("com.yellowtwigs.knocker.notificationExemple")
     }
 
     companion object {

@@ -289,7 +289,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     private fun positiveAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
-        intentFilter.addAction("com.example.knocker.notificationExemple")
+        intentFilter.addAction("com.yellowtwigs.knocker.notificationExemple")
         alertDialog.cancel()
         val thread = Thread {
             activityVisible = false

@@ -11,7 +11,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.knocker"
+        applicationId "com.yellowtwigs.knocker"
         minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
@@ -33,15 +33,15 @@ android {
     flavorDimensions "default"
     productFlavors {
         onlyContact {
-            applicationId "com.example.knocker.contact"
+            applicationId "com.yellowtwigs.knocker.contact"
             resValue "string", "app_name", "contacter"
         }
         contactAndHistory {
-            applicationId "com.example.knocker.contactAndHistory"
+            applicationId "com.yellowtwigs.knocker.contactAndHistory"
             resValue "string", "app_name", "converser"
         }
         appComplete {
-            applicationId "com.example.knocker"
+            applicationId "com.yellowtwigs.knocker"
             resValue "string", "app_name", "Knocker"
         }
 
