@@ -472,7 +472,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
             menu!!.findItem(R.id.notif_tri_par_priorite).setChecked(true)
         }else{
-            menu!!.findItem(R.id.notif_tri_par_contact)
+            menu!!.findItem(R.id.notif_tri_par_contact).setChecked(true)
         }
         if (!sharedPreferences.getBoolean("filtre_message", true)) {
             menu!!.findItem(R.id.messagefilter).setChecked(false)
