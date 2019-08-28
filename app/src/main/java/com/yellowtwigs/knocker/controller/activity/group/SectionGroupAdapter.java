@@ -305,9 +305,8 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                         System.out.println("Name : " + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
                                         System.out.println("Color : " + color);
 
-                                        if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName().equals("Favorites")||
-                                                contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName().equals("Favoris")) {
-                                            Toast.makeText(mContext, "Vous ne pouvez pas modifier le nom du groupe Favorites", Toast.LENGTH_LONG).show();//mettre en string
+                                        if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName().equals("Favorites")) {
+                                            Toast.makeText(mContext, "Vous ne pouvez pas modifier le nom du groupe Favorites", Toast.LENGTH_LONG).show();
                                         } else {
                                             if (edit_group_name_EditText.getText().toString().equals("")) {
                                                 edit_group_name_EditText.setText(contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
@@ -540,8 +539,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             int counter = 0;
 
                             while (counter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ().size()) {
-                                if (Objects.requireNonNull(contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getGroupDB()).getName().equals("Favorites")||
-                                        Objects.requireNonNull(contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getGroupDB()).getName().equals("Favoris")) {
+                                if (Objects.requireNonNull(contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getGroupDB()).getName().equals("Favorites")) {
                                     int secondCounter = 0;
                                     while (secondCounter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getListContact(mContext).size()) {
                                         contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(counter).getListContact(mContext).get(secondCounter).setIsNotFavorite(contactsDatabase);
