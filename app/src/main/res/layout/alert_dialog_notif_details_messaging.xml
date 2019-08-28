@@ -73,7 +73,7 @@
             android:layout_marginEnd="15dp"
             android:gravity="center"
             android:text="@string/multi_select_alert_dialog_message"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,14 +97,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="14dp"
                 android:layout_toStartOf="@+id/alert_dialog_notif_details_messaging_send"
                 android:background="@drawable/custom_edit_text"
                 android:hint="@string/notif_adapter_edit_text_hint"
                 android:inputType="textShortMessage"
                 android:paddingStart="10dp"
                 android:paddingEnd="5dp"
-                android:textColor="@color/textColorDark" />
+                android:textColorHint="?attr/darkGreyColor"
+                android:textColor="?attr/textColor" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/alert_dialog_notif_details_messaging_send"

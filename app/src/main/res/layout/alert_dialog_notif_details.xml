@@ -38,7 +38,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/alert_dialog_notif_details_platform_image"
-                android:textColor="@color/textColorDark"
+                android:textColor="?attr/textColor"
                 android:textSize="20sp" />
 
             <View
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.45dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/textColorDark" />
+                android:background="?attr/darkColor" />
         </RelativeLayout>
 
         <TextView
@@ -59,7 +59,7 @@
             android:maxWidth="230dp"
             android:gravity="center"
             android:text="@string/multi_select_alert_dialog_message"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
