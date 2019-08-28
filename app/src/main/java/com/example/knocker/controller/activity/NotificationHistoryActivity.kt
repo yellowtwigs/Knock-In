@@ -380,7 +380,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                             openWhatsapp(contact.getFirstPhoneNumber())
                         }
                     }
-//                    "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
+                    "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
 
                     "com.facebook.katana" -> goToFacebook()
 
