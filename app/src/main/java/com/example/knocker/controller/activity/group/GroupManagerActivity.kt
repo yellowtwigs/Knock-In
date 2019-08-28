@@ -314,10 +314,9 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 firstClick = true
             }
         } else {
-            listOfItemSelected.clear()
-            group_manager_FloatingButtonSMS!!.visibility = View.GONE
-            group_manager_FloatingButtonMail!!.visibility = View.GONE
-            group_manager_FloatingButtonSend!!.visibility = View.GONE
+            if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+                listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+            }
         }
 
 
@@ -325,6 +324,10 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_LONG).show()
             firstClick = false
         } else if (listOfItemSelected.size == 0) {
+            listOfItemSelected.clear()
+            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+            group_manager_FloatingButtonMail!!.visibility = View.GONE
+            group_manager_FloatingButtonSend!!.visibility = View.GONE
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG).show()
             firstClick = true
         }

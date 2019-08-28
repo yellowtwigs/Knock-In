@@ -654,8 +654,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                             listOfItemSelected.remove(contactManager.getContactList().get(positionItem));
                         }
             }
-            secondClick = false;
-            modeMultiSelect = false;
+            if(listOfItemSelected.size()==0){
+                secondClick = false;
+                modeMultiSelect = false;
+            }
             notifyDataSetChanged();
         }
     }
