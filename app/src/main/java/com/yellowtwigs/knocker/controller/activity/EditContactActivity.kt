@@ -710,7 +710,7 @@ class EditContactActivity : AppCompatActivity() {
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
         } else {
-            createGroup(listContact, "Favorites")
+            createGroup(listContact, getString(R.string.group_favorites))
         }
     }
 
@@ -722,7 +722,8 @@ class EditContactActivity : AppCompatActivity() {
         var counter = 0
 
         while (counter < edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" ||
+                    edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
                 groupId = edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
                 break
             }

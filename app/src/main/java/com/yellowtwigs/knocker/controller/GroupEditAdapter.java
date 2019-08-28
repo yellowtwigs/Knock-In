@@ -70,7 +70,8 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                 // holder.layoutGroup.setVisibility(View.GONE);
             }
         });
-        if(listGroup.get(position).getName().equals("Favorites")){
+        if(listGroup.get(position).getName().equals("Favorites")||
+                listGroup.get(position).getName().equals("Favoris")){
          holder.layoutGroup.setVisibility(View.GONE);
         }else {
             Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);

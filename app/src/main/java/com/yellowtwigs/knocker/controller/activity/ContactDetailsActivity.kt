@@ -432,7 +432,8 @@ class ContactDetailsActivity : AppCompatActivity() {
         var alreadyExist = false
 
         while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" ||
+                    contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
                 groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
                 alreadyExist = true
                 break
@@ -445,7 +446,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
         } else {
-            createGroup(listContact, "Favorites")
+            createGroup(listContact, getString(R.string.group_favorites))
         }
     }
 
@@ -457,7 +458,8 @@ class ContactDetailsActivity : AppCompatActivity() {
         var counter = 0
 
         while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" ||
+                    contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris" ) {
                 groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
                 break
             }

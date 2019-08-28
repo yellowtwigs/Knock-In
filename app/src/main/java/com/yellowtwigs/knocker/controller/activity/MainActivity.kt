@@ -228,7 +228,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             var counter = 0
 
             while (counter < main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ().size) {
-                if (main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                if (main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites"||
+                        main_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
                     var secondCounter = 0
                     while (secondCounter < main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(this).size) {
                         main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(this)[secondCounter].setIsFavorite(main_ContactsDatabase)
@@ -1504,7 +1505,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setView(alertView)
                 .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
-                    if (mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites" || mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites") {
+                    if (mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites" || mainCreateGroupAlertDialogEditText.text!!.toString() == "Favoris") {
                         hideKeyboard()
                         Toast.makeText(this, getString(R.string.main_alert_dialog_group_favorites_already_exist), Toast.LENGTH_LONG).show()
                     } else {

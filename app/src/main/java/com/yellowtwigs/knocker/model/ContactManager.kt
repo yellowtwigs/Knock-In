@@ -860,7 +860,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
 
             //récupère les membres du groupe
             if (groupName == "Starred in Android") {
-                groupName = "Favorites"
+                groupName = context.getString(R.string.group_favorites)
             }
             val groupMembers = getMemberOfGroup(main_contentResolver, groupId.toString(), groupName)
             if (groupMembers.isNotEmpty() && allGroupMembers.isNotEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {

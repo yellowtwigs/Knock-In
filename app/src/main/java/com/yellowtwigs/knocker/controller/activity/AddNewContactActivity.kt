@@ -327,7 +327,8 @@ class AddNewContactActivity : AppCompatActivity() {
         var alreadyExist = false
 
         while (counter < add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-            if (add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+            if (add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites"||
+                    add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
                 groupId = add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
                 alreadyExist = true
                 break
@@ -340,7 +341,7 @@ class AddNewContactActivity : AppCompatActivity() {
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
         } else {
-            createGroup(listContact, "Favorites")
+            createGroup(listContact, getString(R.string.group_favorites))
         }
     }
 
