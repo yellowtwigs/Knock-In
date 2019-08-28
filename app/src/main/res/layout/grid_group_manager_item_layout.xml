@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true">
 
-    <com.example.knocker.controller.CircularImageView
+    <com.yellowtwigs.knocker.controller.CircularImageView
         android:id="@+id/grid_group_manager_item_RoundedImageView"
         android:layout_width="@dimen/rounded_image_view_height_width"
         android:layout_height="@dimen/rounded_image_view_height_width"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.knocker">
+    package="com.yellowtwigs.knocker">
 
     <supports-screens
         android:anyDensity="true"
@@ -37,47 +37,47 @@
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.firstLaunch.TutorialActivity" />
-        <activity android:name=".controller.activity.ContactDetailsActivity" />
-        <activity android:name=".controller.activity.MessengerActivity" />
-        <activity android:name=".controller.activity.SettingsActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.TutorialActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.ContactDetailsActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.MessengerActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.KnockerInfos" />
-        <activity android:name=".controller.activity.firstLaunch.StartActivity">
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.StartActivity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".controller.activity.group.AddNewGroupActivity" />
-        <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
-        <activity android:name=".controller.activity.group.AddContactToGroupActivity" />
-        <activity android:name=".controller.activity.group.GroupActivity" />
-        <activity android:name=".controller.activity.MultiChannelActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.group.AddNewGroupActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.group.DeleteContactFromGroupActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.group.AddContactToGroupActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.group.GroupActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.MultiChannelActivity" />
         <activity
-            android:name=".controller.activity.NotificationAlarmActivity"
+            android:name="com.yellowtwigs.knocker.controller.activity.NotificationAlarmActivity"
             android:showOnLockScreen="true"
             android:turnScreenOn="true"
             tools:targetApi="o_mr1" />
-        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
-        <activity android:name=".controller.activity.group.GroupManagerActivity" />
-        <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
-        <activity android:name=".FirstLaunchActivity" />
-        <activity android:name=".controller.activity.CockpitActivity" />
-        <activity android:name=".controller.activity.HelpActivity" />
-        <activity android:name=".controller.activity.ManageMyScreenActivity" />
-        <activity android:name=".controller.activity.EditInformationsActivity" />
-        <activity android:name=".controller.activity.ComposeMessageActivity" />
-        <activity android:name=".controller.activity.ManageNotificationActivity" />
-        <activity android:name=".controller.activity.NotificationHistoryActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.MultiSelectActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.ImportContactsActivity" />
+        <activity android:name="com.yellowtwigs.knocker.FirstLaunchActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.CockpitActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.HelpActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.ManageMyScreenActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.EditInformationsActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.ComposeMessageActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.ManageNotificationActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.NotificationHistoryActivity" />
         <activity
-            android:name=".controller.activity.AddNewContactActivity"
+            android:name="com.yellowtwigs.knocker.controller.activity.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".controller.activity.EditContactActivity"
+            android:name="com.yellowtwigs.knocker.controller.activity.EditContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".controller.activity.MainActivity"
+            android:name="com.yellowtwigs.knocker.controller.activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden">
@@ -97,7 +97,7 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <service
-            android:name=".controller.NotificationListener"
+            android:name="com.yellowtwigs.knocker.controller.NotificationListener"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -115,7 +115,7 @@
         <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
-        <receiver android:name=".controller.NotificationSender" />
+        <receiver android:name="com.yellowtwigs.knocker.controller.NotificationSender" />
     </application>
 
 </manifest>
