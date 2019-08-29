@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knocker.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -57,6 +58,11 @@ class SettingsActivity : AppCompatActivity() {
         //endregion
 
         setContentView(R.layout.activity_settings)
+
+        PremiumButton.setOnClickListener {
+            val intent = Intent(this,PremiumActivity::class.java)
+            startActivity(intent)
+        }
 
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
         callPopup = sharedPreferencePopup.getBoolean("popup", true)

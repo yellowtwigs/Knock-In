@@ -116,6 +116,7 @@
         <!-- </intent-filter> -->
         <!-- </receiver> -->
         <receiver android:name="com.yellowtwigs.knocker.controller.NotificationSender" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.PremiumActivity"></activity>
     </application>
 
 </manifest>
