@@ -1363,6 +1363,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             params.bottomMargin = margin * i
             main_FloatingButtonMail!!.layoutParams = params
             println("height of floating mail" + main_FloatingButtonMail!!.height)
+            i++
         } else {
             println("false mail")
             main_FloatingButtonMail!!.visibility = View.GONE
