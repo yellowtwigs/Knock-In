@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knocker.R
 import com.yellowtwigs.knocker.controller.TutorialViewPagerAdapter
 import com.yellowtwigs.knocker.controller.activity.MainActivity
@@ -49,7 +50,7 @@ class TutorialActivity : AppCompatActivity() {
         //region ======================================= FindViewById =======================================
 
         tutorial_ViewPager = findViewById(R.id.tutorial_view_pager)
-        tutorial_Skip = findViewById(R.id.tutorial_skip)
+        tutorial_Skip = this.findViewById(R.id.tutorial_skip)
 
         tutorial_NoSelected_1 = findViewById(R.id.tutorial_no_selected_1)
         tutorial_Selected_1 = findViewById(R.id.tutorial_selected_1)
@@ -76,19 +77,44 @@ class TutorialActivity : AppCompatActivity() {
 
         when {
             fromImportContact -> {
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
+
+                if (Locale.getDefault().displayLanguage == "français") {
+
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
+
+                } else if (Locale.getDefault().displayLanguage == "English") {
+
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5_en)!!)
+
+                }
             }
 
             fromStartActivity -> {
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4)!!)
-                tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
+                if (Locale.getDefault().displayLanguage == "français") {
+
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
+
+                } else if (Locale.getDefault().displayLanguage == "English") {
+
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3_en)!!)
+                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5_en)!!)
+
+                }
             }
 
             fromMainActivity -> {
@@ -205,6 +231,7 @@ class TutorialActivity : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onPageSelected(position: Int) {
 
                 when (position) {

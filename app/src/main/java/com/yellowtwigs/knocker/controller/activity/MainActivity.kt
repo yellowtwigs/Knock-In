@@ -58,7 +58,6 @@ import kotlin.collections.ArrayList
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
-
     /**
      * Dans cette region on crée toutes les variables dont l'activité aura besoin
      * Val pour les valeurs constantes
@@ -359,7 +358,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
         if (main_GridView!!.visibility != View.GONE) {
             when {//Verification du mode de tri des contacts pour afficher le bon tri
-                sharedPreferences.getString("tri","nom")== "lastname" -> gestionnaireContacts!!.sortContactByLastname()
+                sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
                 sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
                 sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
                 else -> gestionnaireContacts!!.sortContactByFavorite()
@@ -600,10 +599,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // En mode Multiselect, le click sur la croix permet de fermer de ce mode
         main_ToolbarMultiSelectModeClose!!.setOnClickListener {
-            //            listOfItemSelected.clear()
-//            switchMultiSelectToNormalMode()
-//            refreshActivity()
-
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
             startActivity(Intent(this@MainActivity, MainActivity::class.java))
             finish()
@@ -619,10 +614,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     R.id.menu_main_toolbar_multiselect_all_select -> {
                         listOfItemSelected.clear()
                         listOfItemSelected.addAll(gestionnaireContacts!!.contactList)
-                        if(len>1){
+                        if (len > 1) {
                             gridViewAdapter!!.setListOfItemSelected(listOfItemSelected)
                             gridViewAdapter!!.notifyDataSetChanged()
-                        }else{
+                        } else {
                             recyclerViewAdapter!!.notifyDataSetChanged()
                             recyclerViewAdapter!!.setListOfItemSelected(listOfItemSelected)
                         }
@@ -881,7 +876,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      */
     @SuppressLint("ShowToast")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(gridViewAdapter!=null) {
+        if (gridViewAdapter != null) {
             gridViewAdapter!!.closeMenu()
         }
         when (item.itemId) {
@@ -1004,9 +999,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                     } else {
-                        println("gestionnaire contacct  size ==================="+gestionnaireContacts!!.contactList.size)
+                        println("gestionnaire contacct  size ===================" + gestionnaireContacts!!.contactList.size)
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_RecyclerView!!.adapter=recyclerViewAdapter
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
                         recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 }
