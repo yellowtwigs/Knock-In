@@ -36,7 +36,6 @@ import com.yellowtwigs.knocker.controller.activity.MainActivity;
 import com.yellowtwigs.knocker.controller.activity.group.GroupActivity;
 import com.yellowtwigs.knocker.model.ContactGesture;
 import com.yellowtwigs.knocker.model.ContactManager;
-import com.yellowtwigs.knocker.model.DbWorkerThread;
 import com.yellowtwigs.knocker.model.ModelDB.ContactDB;
 import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation;
 import com.yellowtwigs.knocker.model.ModelDB.NotificationDB;
@@ -66,7 +65,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private Boolean secondClick = false;
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
     private ArrayList<NotificationDB> listOfInteractions = new ArrayList<>();
-
+    private int heightAndWidth;
     public ContactGridViewAdapter(Context context, ContactManager contactManager, Integer len) {
         this.context = context;
         this.gestionnaireContact = contactManager;
@@ -77,8 +76,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
-
-
+    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected){
+        this.listOfItemSelected.clear();
+        this.listOfItemSelected.addAll(listOfItemSelected);
+    }
     public void setGestionnairecontact(ContactManager gestionnaireContact) {
         this.gestionnaireContact = gestionnaireContact;
     }
@@ -102,18 +103,22 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         final ViewHolder holder;
-
-        convertView = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
-
-        holder = new ViewHolder();
+        if(convertView==null) {
+            convertView = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
+            holder = new ViewHolder();
+            convertView.setTag(holder);
+            holder.contactRoundedImageView = convertView.findViewById(R.id.contactRoundedImageView);
+            heightAndWidth = holder.contactRoundedImageView.getLayoutParams().height;
+        }else{
+            holder= (ViewHolder) convertView.getTag();
+        }
         holder.contactRoundedImageView = convertView.findViewById(R.id.contactRoundedImageView);
         holder.gridAdapterFavoriteShine = convertView.findViewById(R.id.grid_adapter_favorite_shine);
         holder.gridContactItemLayout = convertView.findViewById(R.id.grid_contact_item_layout);
         holder.groupWordingConstraint = convertView.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
         holder.groupWordingTv = convertView.findViewById(R.id.grid_adapter_wording_group_tv);
 
-        int height = holder.contactRoundedImageView.getLayoutParams().height;
-        int width = holder.contactRoundedImageView.getLayoutParams().width;
+       // int width = holder.contactRoundedImageView.getLayoutParams().width;
 
         holder.contactFirstNameView = convertView.findViewById(R.id.grid_adapter_contactFirstName);
         ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
@@ -130,28 +135,28 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             }
         } else {
             // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
-            holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+            holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
-        if (len == 3) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.05;
-            holder.contactRoundedImageView.getLayoutParams().width -= height * 0.05;
-            layoutParamsTV.topMargin = 30;
-            layoutParamsIV.topMargin = 10;
-        } else if (len == 4) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.25;
-            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.25;
+        if (len == 6) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.50);
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.50);
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
+        } else if (len == 5) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.60);
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.60);
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
+        }else if (len == 4) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.75);
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.75);
             layoutParamsTV.topMargin = 10;
             layoutParamsIV.topMargin = 10;
-        } else if (len == 5) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.40;
-            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.40;
-            layoutParamsTV.topMargin = 0;
-            layoutParamsIV.topMargin = 0;
-        } else if (len == 6) {
-            holder.contactRoundedImageView.getLayoutParams().height -= height * 0.50;
-            holder.contactRoundedImageView.getLayoutParams().width -= width * 0.50;
-            layoutParamsTV.topMargin = 0;
-            layoutParamsIV.topMargin = 0;
+        } else if (len == 3) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.95);
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.95);
+            layoutParamsTV.topMargin = 30;
+            layoutParamsIV.topMargin = 10;
         }
 
         holder.contactLastNameView = convertView.findViewById(R.id.grid_adapter_contactLastName);
@@ -160,85 +165,17 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         assert contact != null;
         if (contact.getContactPriority() == 0) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
         } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor, null));
         } else if (contact.getContactPriority() == 2) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor));
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
         }
 
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
-      /*  String group = "";
-        GroupDB firstGroup = getItem(position).getFirstGroup(context);
-        if (context instanceof GroupActivity) {
-            holder.groupWordingConstraint.setVisibility(View.VISIBLE);
-        }*/
 
-   /*    if (firstGroup == null) {
-            System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
-            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
-            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            assert roundedLayout != null;
-            if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark), PorterDuff.Mode.MULTIPLY);
-                holder.groupWordingConstraint.setBackground(roundedLayout);
-            } else {
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
-                holder.groupWordingConstraint.setBackground(roundedLayout);
-            }
 
-        } else {
-            System.out.println("have group");
-            group = firstGroup.getName();
-            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            assert roundedLayout != null;
-//            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
-            roundedLayout.setColorFilter(firstGroup.getSection_color(), PorterDuff.Mode.MULTIPLY);
-            holder.groupWordingConstraint.setBackground(roundedLayout);
-        }
-*/
-        if (len == 3) {
-            Spannable spanFistName = new SpannableString(firstname);
-            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(spanFistName);
-            Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactLastNameView.setText(spanLastName);
-            //holder.contactFirstNameView.;
-
-        }
-        if (len == 4) {
-            if (contact.getFirstName().length() > 12)
-                firstname = contact.getFirstName().substring(0, 10).concat("..");
-
-            Spannable spanFistName = new SpannableString(firstname);
-            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(spanFistName);
-            if (contact.getLastName().length() > 12)
-                lastName = contact.getLastName().substring(0, 10).concat("..");
-
-            Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactLastNameView.setText(spanLastName);
-        }
-        if (len == 5) {
-            if (contact.getFirstName().length() > 11)
-                firstname = contact.getFirstName().substring(0, 9).concat("..");
-
-            holder.contactFirstNameView.setText(firstname);
-            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(span);
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-            if (contact.getLastName().length() > 11)
-                lastName = contact.getLastName().substring(0, 9).concat("..");
-
-            Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactLastNameView.setText(spanLastName);
-
-        }
         if (len == 6) {
             if (contact.getFirstName().length() > 8)
                 firstname = contact.getFirstName().substring(0, 7).concat("..");
@@ -253,6 +190,47 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
+
+        }
+        else if (len == 5) {
+            if (contact.getFirstName().length() > 11)
+                firstname = contact.getFirstName().substring(0, 9).concat("..");
+
+            holder.contactFirstNameView.setText(firstname);
+            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
+            span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(span);
+            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
+            if (contact.getLastName().length() > 11)
+                lastName = contact.getLastName().substring(0, 9).concat("..");
+
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
+
+        }
+        else if (len == 4) {
+            if (contact.getFirstName().length() > 12)
+                firstname = contact.getFirstName().substring(0, 10).concat("..");
+
+            Spannable spanFistName = new SpannableString(firstname);
+            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(spanFistName);
+            if (contact.getLastName().length() > 12)
+                lastName = contact.getLastName().substring(0, 10).concat("..");
+
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
+        }
+        else if (len == 3) {
+            Spannable spanFistName = new SpannableString(firstname);
+            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactFirstNameView.setText(spanFistName);
+            Spannable spanLastName = new SpannableString(lastName);
+            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.contactLastNameView.setText(spanLastName);
+            //holder.contactFirstNameView.;
 
         }
      /*   if (!contact.getProfilePicture64().equals("")) {
@@ -312,8 +290,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         }
         DisplayMetrics metrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int diametreBoutton = (int) (0.35 * metrics.densityDpi);
-        int radiusMenu = (int) (0.45 * metrics.densityDpi);
+        int diametreBoutton = (int) (0.38 * metrics.densityDpi);
+        int radiusMenu = (int) (0.50 * metrics.densityDpi);
         int border = (int) (0.0625 * metrics.densityDpi);
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
@@ -348,7 +326,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
         final FloatingActionMenu quickMenu = builder.build();
         listCircularMenu.add(quickMenu);
-        //  quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton)
+        //quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton);
         View.OnClickListener buttonListener = v -> {
 
            /* if (v.getId() == buttonMessenger.getId()) {
@@ -444,11 +422,11 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }
                 System.out.println("selection" + firstPosVis);
                 if (context instanceof MainActivity) {
-                    ((MainActivity) context).longGridItemClick(position);
+                    ((MainActivity) context).gridMultiSelectItemClick(position);
                 } else {
-                    ((GroupActivity) context).longGridItemClick(len, position, firstPosVis);
+                    ((GroupActivity) context).gridMultiSelectItemClick(len, position, firstPosVis);
                 }
-                holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
             }
             return true;
         };
@@ -468,9 +446,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                     }
                 } else {
                     listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_contact_selected);
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
-                ((MainActivity) context).longGridItemClick(position);
+                ((MainActivity) context).gridMultiSelectItemClick(position);
             } else {
                 if (quickMenu.isOpen()) {
                     quickMenu.close(false);
@@ -487,7 +465,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             return true;
         });
 
-        holder.groupWordingConstraint.setOnClickListener(v -> {
+     /*   holder.groupWordingConstraint.setOnClickListener(v -> {
             DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
             main_mDbWorkerThread.start();
             ArrayList<Integer> listPosition = new ArrayList<>();
@@ -506,7 +484,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }
                 ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick, true);
             }
-        });
+        });*/
 
         holder.gridContactItemLayout.setOnLongClickListener(gridlongClick);
         holder.contactRoundedImageView.setOnLongClickListener(gridlongClick);
@@ -519,14 +497,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);
-
+/*
         holder.gridContactItemLayout.setOnClickListener(v -> {
             if (quickMenu.isOpen()) {
                 quickMenu.close(false);
             } else {
                 quickMenu.open(false);
             }
-        });
+        });*/
         return convertView;
     }
 
@@ -616,10 +594,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
     }
 
-    /*public void onScroll() {
-        if (selectMenu != null)
-            selectMenu.updateItemPositions();
-    }*/
 
     static class ViewHolder {
         TextView contactFirstNameView;

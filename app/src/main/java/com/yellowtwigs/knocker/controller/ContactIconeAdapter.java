@@ -8,10 +8,10 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knocker.R;
@@ -45,8 +45,8 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
     @Override
     public void onBindViewHolder(@NonNull ContactIconeAdapter.ViewHolder holder, final int position) {
 
-        for (int i = 0; i < iconeList.length; i++) {
-            System.out.println("icone list" + iconeList[i]);
+        for (int i1 : iconeList) {
+            System.out.println("icone list" + i1);
         }
         holder.imageViewIcone.setImageResource(iconeList[position]);
         holder.iconeLayout.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +92,7 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout iconeLayout;
-        ImageView imageViewIcone;
+        AppCompatImageView imageViewIcone;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

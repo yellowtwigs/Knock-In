@@ -38,7 +38,7 @@
             android:layout_marginEnd="8dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/img_avatar"
+            android:src="@drawable/ic_user_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -50,7 +50,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_edit"
+            android:src="@drawable/ic_edit_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edit_informations_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:background="@drawable/selector_relative_layout_with_border"
+            android:background="@drawable/background_layout_selector_with_border"
             android:clickable="true"
             android:focusable="true"
             android:backgroundTint="?attr/backgroundColor"
@@ -114,7 +114,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -151,7 +150,7 @@
             android:id="@+id/edit_informations_mail_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_relative_layout_with_border"
+            android:background="@drawable/background_layout_selector_with_border"
             android:clickable="true"
             android:focusable="true"
             android:backgroundTint="?attr/backgroundColor"
@@ -192,7 +191,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -229,7 +227,7 @@
             android:id="@+id/edit_informations_phone_number_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_relative_layout_with_border"
+            android:background="@drawable/background_layout_selector_with_border"
             android:clickable="true"
             android:focusable="true"
             android:backgroundTint="?attr/backgroundColor"
@@ -268,7 +266,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -311,5 +308,5 @@
         app:itemTextColor="@color/bottom_navigation_color"
         app:itemIconTint="@color/bottom_navigation_color"
         app:headerLayout="@layout/nav_header_drawer"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/menu_left_drawer_layout" />
 </androidx.drawerlayout.widget.DrawerLayout>

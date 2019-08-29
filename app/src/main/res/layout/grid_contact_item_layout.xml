@@ -5,7 +5,7 @@
     android:id="@+id/grid_contact_item_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_relative_layout"
+    android:background="@drawable/background_layout_selector"
     android:clickable="true"
     android:focusable="true">
 
@@ -75,29 +75,26 @@
 
         <TextView
             android:id="@+id/grid_adapter_contactFirstName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
-            android:ellipsize="end"
             android:maxLines="1"
             android:text="Bla bla"
-            android:textAlignment="center"
             android:textColor="?attr/textColor"
-            android:textSize="14sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/grid_adapter_contactLastName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Bla bla"
-            android:textAlignment="center"
             android:textColor="?attr/textColor"
-            android:textSize="14sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

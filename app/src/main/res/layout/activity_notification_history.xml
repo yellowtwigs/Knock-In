@@ -122,6 +122,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +145,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/main_navigation_view" />
+            app:menu="@menu/bottom_navigation_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -158,6 +160,6 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/menu_left_drawer_layout" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

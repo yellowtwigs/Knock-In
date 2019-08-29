@@ -99,7 +99,7 @@
                 app:labelVisibilityMode="labeled"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:menu="@menu/main_navigation_view" />
+                app:menu="@menu/bottom_navigation_view" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -170,5 +170,5 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/menu_left_drawer_layout" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -8,7 +8,6 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
@@ -190,25 +189,25 @@ class AddNewContactActivity : AppCompatActivity() {
                 }
 
                 if (!isDuplicate) {
-                    add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-                    val listContacts: List<ContactDB>? = add_new_contact_ContactsDatabase?.contactsDao()!!.getAllContacts()
-                    val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
+                    val contactId = add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
+                    //val listContacts: List<ContactDB>? = add_new_contact_ContactsDatabase?.contactsDao()!!.getAllContacts()
+                    //val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
                     var contactDetailDB: ContactDetailDB
                     if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                        contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
+                        contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
                         add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                     }
-                    if (add_new_contact_fixNumber!!.editText!!.text.toString() !== "") {
-                        contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
+                    if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
+                        contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
                         add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                     }
                     if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                        contactDetailDB = ContactDetailDB(null, contact?.id, "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
+                        contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
                         add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                     }
 
                     if (isFavorite) {
-                        addToFavorite(contact?.id!!)
+                        addToFavorite(contactId!!.toInt())
                     }
 
                     // println("test" + add_new_contact_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
@@ -271,22 +270,22 @@ class AddNewContactActivity : AppCompatActivity() {
                     0 -> {
                         add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority0)
                         add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor, null))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                         add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                     }
                     1 -> {
                         add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority1)
                         add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor, null))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                         add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                     }
                     2 -> {
                         add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority2)
                         add_new_contact_RoundedImageView!!.visibility = View.GONE
-                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
-                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+                        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor, null))
+                        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                         add_new_contact_RoundedImageView!!.visibility = View.VISIBLE
                     }
                 }
@@ -294,8 +293,8 @@ class AddNewContactActivity : AppCompatActivity() {
             }
         }
         add_new_contact_Priority!!.setSelection(1)
-        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
-        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
+        add_new_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor, null))
+        add_new_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
         println("selected item equals" + add_new_contact_Priority!!.selectedItemPosition)
 
 
@@ -315,7 +314,10 @@ class AddNewContactActivity : AppCompatActivity() {
 
 
     //region ========================================== Favorites ===========================================
-
+    /**
+     * Ajout du contact dont l'id est passé en parametre dans les favoris
+     * @param idContact
+     */
     private fun addToFavorite(idContact: Int) {
         val contact = add_new_contact_ContactsDatabase?.contactsDao()?.getContact(idContact)
 
@@ -325,7 +327,8 @@ class AddNewContactActivity : AppCompatActivity() {
         var alreadyExist = false
 
         while (counter < add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-            if (add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+            if (add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites"||
+                    add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
                 groupId = add_new_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
                 alreadyExist = true
                 break
@@ -338,14 +341,18 @@ class AddNewContactActivity : AppCompatActivity() {
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
         } else {
-            createGroup(listContact, "Favorites")
+            createGroup(listContact, getString(R.string.group_favorites))
         }
     }
 
     //endregion
 
     //region =========================================== Groups =============================================
-
+    /**
+     * Sert à la création du groupe favoris si il n'existe pas encore
+     * @param listContact [ArrayList<ContactDB>]
+     * @param name [String]
+     */
     private fun createGroup(listContact: ArrayList<ContactDB?>, name: String) {
         val group = GroupDB(null, name, "", -500138)
 
@@ -356,6 +363,11 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     *
+     * @param listContact [ArrayList<ContactDB>]
+     * @param groupId [Long]
+     */
     private fun addContactToGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
         listContact.forEach {
             val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
@@ -363,14 +375,12 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeContactFromGroup(contactId: Int, groupId: Long?) {
-        add_new_contact_ContactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(contactId, groupId!!.toInt())
-
-    }
 
     //endregion
-
-    //demmande de confirmation de la création d'un contact en double
+    /**
+     *demande de confirmation de la création d'un contact en double
+     * @param contactData [contactDB]
+     */
     private fun confirmationDuplicate(contactData: ContactDB) {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.add_new_contact_alert_dialog_title)
@@ -387,22 +397,32 @@ class AddNewContactActivity : AppCompatActivity() {
                 .show()
     }
 
+    /**
+     *Retourne si le [TextInputLayout] passé en parametre n'a pas de texte
+     * @param field [TextInputLayout]
+     * @return [boolean]
+     */
     private fun isEmptyField(field: TextInputLayout?): Boolean {
         return field!!.editText!!.text.toString().isEmpty()
     }
 
+    /**
+     * Lors du click sur l'image du contact  affichage du BottomSheetDialog contenant les option choix icone appareil photo ou gallerie
+     */
     private fun selectImage() {
 
         val builderBottom = BottomSheetDialog(this)
-        builderBottom.setContentView(R.layout.alert_dialog_picture)
-        val gallerie = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_gallerie_view)
-        val camera = builderBottom.findViewById<ConstraintLayout>(R.id.alert_picture_camera_view)
-        val recylcer = builderBottom.findViewById<RecyclerView>(R.id.alert_picture_recycler_view)
+        builderBottom.setContentView(R.layout.alert_dialog_select_contact_picture_layout)
+        val gallery = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_gallery_layout)
+        val camera = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_camera_layout)
+        val recyclerView = builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
         val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        recylcer!!.layoutManager = layoutMananger
+
+        recyclerView!!.layoutManager = layoutMananger
+        
         val adapter = ContactIconeAdapter(this)
-        recylcer.adapter = adapter
-        gallerie!!.setOnClickListener {
+        recyclerView.adapter = adapter
+        gallery!!.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
                 builderBottom.dismiss()
@@ -425,6 +445,9 @@ class AddNewContactActivity : AppCompatActivity() {
         builderBottom.show()
     }
 
+    /**
+     * Ouvre l'appreil photo du téléphone
+     */
     private fun openCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, getString(R.string.add_new_contact_camera_open_title))
@@ -435,6 +458,12 @@ class AddNewContactActivity : AppCompatActivity() {
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
+    /**
+     * Transforme l'Uri passer parametre en string contenant le path vers la ressource
+     * @param context [Context]
+     * @param  contentUri [Uri]
+     * @return [String] //path
+     */
     private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
         var cursor: Cursor? = null
         try {
@@ -450,6 +479,12 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Récupère la photo prise depuis l'appreil ou la photo que le contact à sélectionner pour la rajouter au contact
+     * @param requestCode [Int]
+     * @param resultCode [Int]
+     * @param data [Intent]
+     */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -483,6 +518,11 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * retourne la rotation lors de la prise de photo
+     * @param exifOrientation [Int]
+     * @return [Int]
+     */
     private fun exifToDegrees(exifOrientation: Int): Int {
         return when (exifOrientation) {
             ExifInterface.ORIENTATION_ROTATE_90 -> 90
@@ -492,6 +532,11 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * convertie l'image passé en parametre en base64
+     * @param bitmap [Bitmap]
+     * @return [String]
+     */
     private fun bitmapToBase64(bitmap: Bitmap): String {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
@@ -500,31 +545,14 @@ class AddNewContactActivity : AppCompatActivity() {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
-    private fun base64ToBitmap(base64: String): Bitmap {
-        val imageBytes = Base64.decode(base64, 0)
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-    }
-
-    private fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
-
-        if (name.contains(" ")) {
-            listContact!!.forEach { dbContact ->
-
-                //                println("contact "+dbContact+ "différent de name"+name)
-                if (dbContact.firstName + " " + dbContact.lastName == name) {
-                    return dbContact
-                }
-            }
-        } else {
-            listContact!!.forEach { dbContact ->
-                if (dbContact.firstName == name && dbContact.lastName == "" || dbContact.firstName == "" && dbContact.lastName == name) {
-                    return dbContact
-                }
-            }
-        }
-        return null
-    }//TODO : trouver une place pour toutes les méthodes des contactList
-
+    /**
+     * Méthode appellé par le système lorsque l'utilisateur accepte ou refuse une permission
+     * Lorsque l'utilisateur autorise l'accès a ces fichiers nous ouvrons le dossier "Galerie"
+     * Lorsque l'utilisateur autorise à l'appareil photo nous l'ouvrons
+     * @param requestCode [Int]
+     * @param permissions [Array<String>]
+     * @param grantResults [IntArray]
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -536,11 +564,11 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
-    public fun addContactIcone(bitmap: Bitmap) {
-
-        /*   var bitmap = BitmapFactory.decodeResource(resources,iconeId)*/
-        //bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
-        //bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    /**
+     * Change l'image du contact par l'icone sélectionner par l'utilisateur
+     * @param bitmap
+     */
+    fun addContactIcone(bitmap: Bitmap) {
         add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
         add_new_contact_ImgString = bitmapToBase64(bitmap)
     }

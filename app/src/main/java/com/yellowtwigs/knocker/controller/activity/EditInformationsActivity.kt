@@ -206,7 +206,7 @@ class EditInformationsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_help, menu)
+        inflater.inflate(R.menu.toolbar_menu_help, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

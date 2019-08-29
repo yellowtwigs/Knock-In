@@ -250,10 +250,10 @@ class StartActivity : AppCompatActivity() {
                     var index = 1
                     var stringSet = listOf<String>()
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         index++
                     }
 
@@ -290,7 +290,7 @@ class StartActivity : AppCompatActivity() {
     private fun activateNotificationsClick() {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
-        intentFilter.addAction("com.example.knocker.notificationExemple")
+        intentFilter.addAction("com.yellowtwigs.knocker.notificationExemple")
     }
 
     companion object {

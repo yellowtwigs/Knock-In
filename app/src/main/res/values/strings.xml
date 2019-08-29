@@ -10,7 +10,7 @@
     <string name="help_main">To activate the multichannel mode, do a long click on one of your contacts</string>
     <string name="help_group">To select the entire group, click on the group\'s name</string>
     <string name="help_notification_history">In this screen you can see all the received notifications</string>
-    <string name="help_phone_log">From this screen you can call or send an SMS to someone not listed into your address book. You can also connect to email and SoMe</string>
+    <string name="help_cockpit">From this screen you can call or send an SMS to someone not listed into your address book. You can also connect to email and SoMe</string>
     <string name="help_manage_screen">In this screen you can display your contacts and configure various display options</string>
     <string name="help_notification_manager"> In this screen you can chose to enable/disable the priority 2 notifications </string>
     <string name="help_my_informations"> In this screen you can update your personal details  </string>
@@ -78,8 +78,10 @@
     <string name="main_toast_multi_select_mode_selected"> selected</string>
     <string name="main_toast_multi_select_mode_selected_more_than_one"> selected</string>
 
-    <string name="main_alert_dialog_group_title">Group creation</string>
+    <string name="main_alert_dialog_group_title">Create a new Group</string>
     <string name="main_alert_dialog_group_subtitle">Choose a name for your group</string>
+    <string name="main_alert_dialog_group_favorites_already_exist">Group "Favorites" already exists</string>
+
     <string name="main_edited_contact">Modified contact</string>
     <string name="main_content_edited_contact">The contact </string>
     <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knocker one?</string>
@@ -89,7 +91,8 @@
     <string name="main_contact_grid_title">Do you want to call this contact?</string>
     <string name="main_contact_grid_message">You can disable this validation from the options</string>
 
-    <string name="main_delete_contact">You will delete %1s</string>
+    <string name="main_alert_dialog_delete_contact_title">Delete contact(s)</string>
+    <string name="main_alert_dialog_delete_contact_message">You will delete %1s</string>
 
     <string name="menu_main_toolbar_multiselect_all_select">All Select</string>
 
@@ -100,13 +103,13 @@
     <string name="bottom_navigation_view_phone_book">Contacts</string>
     <string name="bottom_navigation_view_groups">Groups</string>
     <string name="bottom_navigation_view_notify_history">Notifications</string>
-    <string name="bottom_navigation_view_phone_log">Cockpit</string>
+    <string name="bottom_navigation_view_cockpit">Cockpit</string>
 
     <!-- endregion !-->
 
     <!-- region Add New Contact !-->
 
-    <string name="add_new_contact_title">Add a new contact</string>
+    <string name="add_new_contact_title">Add contact</string>
     <string name="add_new_contact_last_name">Name</string>
     <string name="add_new_contact_first_name">Firstname</string>
     <string name="add_new_contact_phone_number">Phone number</string>
@@ -184,6 +187,7 @@
     <string name="edit_contact_delete_contact">Remove contact</string>
     <string name="edit_contact_delete_contact_message">You gonna remove this contact, are you sure ?</string>
     <string name="edit_contact_validate">Validate</string>
+    <string name="edit_contact_cancel">Cancel</string>
     <string name="edit_contact_toast">Name or firstname is required</string>
     <string name="edit_contact_groups">Groups</string>
 
@@ -248,31 +252,31 @@
 
     <!-- endregion -->
 
-    <!-- region Phone Log -->
+    <!-- region Cockpit -->
 
-    <string name="phone_log_toolbar_title">Cockpit</string>
-    <string name="phone_log_toast_phone_number_empty">Enter a phone number</string>
+    <string name="cockpit_toolbar_title">Cockpit</string>
+    <string name="cockpit_toast_phone_number_empty">Enter a phone number</string>
 
-    <string name="phone_log_toast_number_valid">Pleaes enter a valid phone number</string>
+    <string name="cockpit_toast_number_valid">Pleaes enter a valid phone number</string>
 
-    <string name="phone_log_toast_facebook_not_install">Facebook is not installed</string>
-    <string name="phone_log_toast_instagram_not_install">Instagram is not installed</string>
-    <string name="phone_log_toast_whatsapp_not_install">Whatsapp is not installed</string>
-    <string name="phone_log_toast_messenger_not_install">Facebook Messenger is not installed</string>
-    <string name="phone_log_toast_youtube_not_install">Youtube is not installed</string>
-    <string name="phone_log_toast_gmail_not_install">Gmail is not installed</string>
-    <string name="phone_log_toast_telegram_not_install">Telegram is not installed</string>
-    <string name="phone_log_toast_outlook_not_install">Outlook is not installed</string>
-    <string name="phone_log_toast_skype_not_install">Skype is not installed</string>
-    <string name="phone_log_toast_linkedin_not_install">Linkedin is not installed</string>
-    <string name="phone_log_toast_twitter_not_install">Twitter is not installed</string>
-    <string name="phone_log_toast_snapchat_not_install">Snapchat is not installed</string>
+    <string name="cockpit_toast_facebook_not_install">Facebook is not installed</string>
+    <string name="cockpit_toast_instagram_not_install">Instagram is not installed</string>
+    <string name="cockpit_toast_whatsapp_not_install">Whatsapp is not installed</string>
+    <string name="cockpit_toast_messenger_not_install">Facebook Messenger is not installed</string>
+    <string name="cockpit_toast_youtube_not_install">Youtube is not installed</string>
+    <string name="cockpit_toast_gmail_not_install">Gmail is not installed</string>
+    <string name="cockpit_toast_telegram_not_install">Telegram is not installed</string>
+    <string name="cockpit_toast_outlook_not_install">Outlook is not installed</string>
+    <string name="cockpit_toast_skype_not_install">Skype is not installed</string>
+    <string name="cockpit_toast_linkedin_not_install">Linkedin is not installed</string>
+    <string name="cockpit_toast_twitter_not_install">Twitter is not installed</string>
+    <string name="cockpit_toast_snapchat_not_install">Snapchat is not installed</string>
 
     <!-- endregion -->
 
     <!-- region Notification History -->
 
-    <string name="notification_history_search_hint">Rechercher dans l\'historique</string>
+    <string name="notification_history_search_hint">Search</string>
 
     <!-- endregion -->
 
@@ -344,7 +348,7 @@
 
     <string name="notification_sender_content_title">Interactions summary</string>
     <string name="notification_sender_content_text">Knocker has treated %1s messages since yesterday</string>
-    <string name="notification_sender_big_text">Knocker has treated %1s messages since yesterday \n you can view them in "History"</string>
+    <string name="notification_sender_big_text">Knocker has received %1s new unread messages \n you can view them in "Notifications"</string>
 
     <!-- endregion -->
 
@@ -378,6 +382,7 @@
     <string name="multi_channel_empty_field">Your messaging field can not be empty</string>
     <string name="multi_channel_list_of_channel_selected_empty">You have chosen no channel of communication</string>
     <string name="multi_channel_message_sent">Message Sent</string>
+    <string name="multi_channel_message_edit_text_hint">Write your message</string>
 
     <!-- endregion -->
 

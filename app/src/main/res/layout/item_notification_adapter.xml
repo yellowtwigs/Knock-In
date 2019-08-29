@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_margin="5dp"
-        android:background="@drawable/custom_shape_layout_notif_adapter"
+        android:background="@drawable/notif_adapter_background_layout"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +22,7 @@
             android:id="@+id/notification_adapter_top_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_shape_top_bar_notif_adapter"
+            android:background="@drawable/item_notif_adapter_top_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -59,7 +59,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="5dp"
-                android:src="@drawable/ic_launcher_foreground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +67,7 @@
         <TextView
             android:id="@+id/notification_adapter_content"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="8dp"
@@ -84,7 +83,7 @@
             android:layout_margin="15dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/layout_rounded_form"
+            android:background="@drawable/rounded_form_layout"
             android:hint="@string/notif_adapter_edit_text_hint"
             android:inputType="textShortMessage"
             android:paddingStart="8dp"
@@ -94,25 +93,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content" />
 
-        <RelativeLayout
-            android:id="@+id/notification_adapter_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/selector_relative_layout"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toTopOf="@+id/item_notification_call_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/notification_adapter_message_to_send"
-            app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_adapter_send"
                 android:layout_width="30dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_right_arrow_send" />
-        </RelativeLayout>
+                android:src="@drawable/ic_right_arrow_send"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toTopOf="@+id/item_notification_call_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/notification_adapter_message_to_send"
+                app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content"/>
+
 
         <LinearLayout
             android:id="@+id/item_notification_call_layout"

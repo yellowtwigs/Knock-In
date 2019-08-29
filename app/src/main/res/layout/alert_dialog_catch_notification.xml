@@ -79,7 +79,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/rounded_button_background_white"
+            android:background="@drawable/rounded_button_background_red"
             android:text="@string/alert_dialog_notification_dismiss"
             android:textColor="@color/textColorDark"
             app:layout_constraintBottom_toBottomOf="parent"

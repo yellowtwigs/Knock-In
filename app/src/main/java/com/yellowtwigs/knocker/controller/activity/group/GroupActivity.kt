@@ -82,7 +82,7 @@ class GroupActivity : AppCompatActivity() {
     private var gestionnaireContacts: ContactManager? = null
     private var gridViewAdapter: ContactGridViewAdapter? = null
     private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
-    private var main_layout: LinearLayout? = null
+    private var group_layout: LinearLayout? = null
     private var main_loadingPanel: RelativeLayout? = null
 
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
@@ -102,8 +102,8 @@ class GroupActivity : AppCompatActivity() {
                 startActivity(Intent(this@GroupActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_phone_keyboard -> {
-                startActivity(Intent(this@GroupActivity, PhoneLogActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            R.id.navigation_cockpit -> {
+                startActivity(Intent(this@GroupActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -175,7 +175,7 @@ class GroupActivity : AppCompatActivity() {
 
         // Search bar
         group_SearchBar = findViewById(R.id.group_search_bar)
-        main_layout = findViewById(R.id.content_frame)
+        group_layout = findViewById(R.id.group_layout)
         main_loadingPanel = findViewById(R.id.loadingPanel)
 
         group_MailButton = findViewById(R.id.group_gmail_button)
@@ -416,10 +416,10 @@ class GroupActivity : AppCompatActivity() {
                     var index = 1
                     var stringSet = listOf<String>()
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
                     }
@@ -471,7 +471,7 @@ class GroupActivity : AppCompatActivity() {
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null).sorted()
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         edit.remove(index.toString())
                         index++
                     }
@@ -503,7 +503,7 @@ class GroupActivity : AppCompatActivity() {
             true
         }
 
-        main_layout!!.setOnTouchListener { _, _ ->
+        group_layout!!.setOnTouchListener { _, _ ->
             val view = this@GroupActivity.currentFocus
             val imm = this@GroupActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (view != null) {
@@ -667,7 +667,7 @@ class GroupActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_filter_group, menu)
+        inflater.inflate(R.menu.toolbar_menu_filter_group, menu)
         val triNom = menu.findItem(R.id.tri_par_nom)
         val sortLastname = menu.findItem(R.id.tri_par_lastname)
         val triPrio = menu.findItem(R.id.tri_par_priorite)
@@ -946,7 +946,7 @@ class GroupActivity : AppCompatActivity() {
         }
     }
 
-    fun longGridItemClick(len: Int, position: Int, firstPosVis: Int) {
+    fun gridMultiSelectItemClick(len: Int, position: Int, firstPosVis: Int) {
         group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
         group_GridView!!.adapter = adapter
@@ -1050,7 +1050,7 @@ class GroupActivity : AppCompatActivity() {
         }*/
     }
 
-    fun longRecyclerItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
+    fun recyclerMultiSelectItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
         if (!secondClickLibelle) {
             if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
                 listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
@@ -1166,56 +1166,6 @@ class GroupActivity : AppCompatActivity() {
         }
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
     }
-
- /*   private fun saveGroupMultiSelect(listContacts: ArrayList<ContactWithAllInformation>, len: Int) {
-        val editText = EditText(this)
-        editText.hint = "group" + group_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle(R.string.main_alert_dialog_group_title)
-                .setMessage(R.string.main_alert_dialog_group_subtitle)
-                .setBackground(getDrawable(R.color.backgroundColor))
-                .setView(editText)
-                .setNegativeButton(R.string.alert_dialog_no, null)
-                .setPositiveButton(R.string.alert_dialog_yes
-                ) { _, _ ->
-                    val nameGroup = if (editText.text.isNotEmpty()) {
-                        editText.text.toString()
-                    } else {
-                        editText.hint.toString()
-                    }
-                    println("name group$nameGroup")
-                    val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                    var callDb = Callable {
-                        if (listContacts.size != 0) {
-                            val group = GroupDB(null, nameGroup, "")
-                            val idGroup = group_ContactsDatabase?.GroupsDao()!!.insert(group)
-                            for (contact in listContacts) {
-                                val link = LinkContactGroup(idGroup!!.toInt(), contact.getContactId())
-                                group_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
-                            }
-                        }
-                    }
-                    executorService.submit(callDb).get()!!
-                    if (len <= 1) {
-                        gestionnaireContacts!!.sortContactByGroup()
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@GroupActivity, gestionnaireContacts, len)
-                        group_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
-                    } else {
-                        // gridViewAdapter!!.notifyDataSetChanged()
-                        gestionnaireContacts!!.sortContactByGroup()
-                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                    }
-                }.show()
-        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-        group_GridView!!.adapter = gridViewAdapter
-        group_FloatingButtonSend!!.visibility = View.GONE
-        group_SearchBar!!.visibility = View.VISIBLE
-        group_MailButton!!.visibility = View.GONE
-        group_SMSButton!!.visibility = View.GONE
-        group_groupButton!!.visibility = View.GONE
-        group_floating_button_send_id!!.visibility = View.GONE
-    }*/
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))

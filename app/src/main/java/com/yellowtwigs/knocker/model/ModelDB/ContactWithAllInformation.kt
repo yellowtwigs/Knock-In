@@ -28,7 +28,7 @@ class ContactWithAllInformation {
             println(detail.content + "matches with regex ?" + detail.content.matches(regex))
             if (detail.type == "phone" && detail.content.matches(regex)) {
                 return detail.content
-            } else if (detail.type == "phone") {
+            } else if (detail.type == "phone" && onlyFix == "") {
                 onlyFix = detail.content
             }
         }

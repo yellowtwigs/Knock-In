@@ -30,7 +30,7 @@
 
         <RelativeLayout
             android:id="@+id/add_new_contact_toolbar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="4dp"
+                android:layout_toStartOf="@+id/add_new_contact_favorite"
                 android:layout_toEndOf="@+id/add_new_contact_return"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/add_new_contact_title"
                 android:textColor="?attr/textColor"
                 android:textSize="20sp"
@@ -99,6 +103,7 @@
         </RelativeLayout>
 
         <View
+            android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="0.05dp"
             android:background="?attr/darkGreyColor"
@@ -109,23 +114,21 @@
             android:layout_width="@dimen/rounded_image_view_height_width"
             android:layout_height="@dimen/rounded_image_view_height_width"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="96dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginTop="25dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/img_avatar"
+            android:src="@drawable/ic_user_blue"
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_toolbar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <RelativeLayout
             android:id="@+id/add_new_contact_first_name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:background="@drawable/background_layout_no_pressed_with_border"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +181,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:background="@drawable/background_layout_no_pressed_with_border"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -298,7 +301,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:background="@drawable/background_layout_no_pressed_with_border"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_layout">

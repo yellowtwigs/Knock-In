@@ -70,7 +70,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_validate, menu)
+        inflater.inflate(R.menu.toolbar_menu_validation, menu)
         return true
     }
 

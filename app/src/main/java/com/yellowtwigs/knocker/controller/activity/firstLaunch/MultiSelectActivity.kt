@@ -1,12 +1,8 @@
 package com.yellowtwigs.knocker.controller.activity.firstLaunch
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -121,7 +117,7 @@ class MultiSelectActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar_validate_skip, menu)
+        inflater.inflate(R.menu.toolbar_menu_select_vip, menu)
         return true
     }
 
@@ -138,15 +134,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 finish()
             }
             R.id.nav_validate -> {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (!Settings.canDrawOverlays(applicationContext)) {
-                    } else {
-                        val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
-                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                        edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
-                        edit.apply()
-                    }
-                }
+
                 listItemSelect = adapter!!.listContactSelect
                 overlayAlertDialog(listItemSelect!!).show()
             }

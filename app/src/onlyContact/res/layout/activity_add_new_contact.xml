@@ -16,25 +16,83 @@
         android:focusableInTouchMode="true"
         tools:context=".controller.activity.AddNewContactActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:id="@+id/add_new_contact_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/backgroundColor"
-            android:descendantFocusability="blocksDescendants"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:itemTextColor="?attr/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="?attr/textColor" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_return"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_left_arrow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/add_new_contact_return"
+                android:text="@string/add_new_contact_title"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp"
+                tools:ignore="RelativeOverlap" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/add_new_contact_validate"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_star_selector" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_favorite_shine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/add_new_contact_validate"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_star_selector_shine" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_validate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_validate" />
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.05dp"
             android:background="?attr/darkGreyColor"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_toolbar" />
 
-        <com.example.knocker.controller.CircularImageView
+        <com.yellowtwigs.knocker.controller.CircularImageView
             android:id="@+id/add_new_contact_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
             android:layout_height="@dimen/rounded_image_view_height_width"
@@ -45,7 +103,7 @@
             android:layout_marginRight="8dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/img_avatar"
+            android:src="@drawable/ic_user_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:background="@drawable/custom_edit_text"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -102,30 +160,32 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/add_new_contact_last_name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:background="@drawable/custom_edit_text"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_first_name_layout">
-        <RelativeLayout
-            android:id="@+id/add_new_contact_last_name_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@color/transparentColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_avatar" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/add_new_contact_last_name_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparentColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_avatar" />
+            </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/add_new_contact_last_name_id"
@@ -155,6 +215,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/add_new_contact_phone_number_layout"
             android:layout_width="match_parent"
@@ -184,6 +245,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <RelativeLayout
                 android:id="@+id/add_new_contact_contact_phone_number_icon"
                 android:layout_width="60dp"
@@ -196,6 +258,7 @@
                     android:layout_centerInParent="true"
                     app:srcCompat="@drawable/ic_phone_call" />
             </RelativeLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/add_new_contact_phone_number_id"
                 android:layout_width="match_parent"
@@ -224,7 +287,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/custom_shape_relative_layout_with_border"
+            android:background="@drawable/custom_edit_text"
             android:backgroundTint="?attr/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_number_layout">
@@ -316,6 +379,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <RelativeLayout
                 android:id="@+id/add_new_contact_mail_icon"
                 android:layout_width="60dp"
@@ -328,6 +392,7 @@
                     android:layout_centerInParent="true"
                     app:srcCompat="@drawable/ic_email" />
             </RelativeLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/add_new_contact_mail_id"
                 android:layout_width="match_parent"
@@ -363,8 +428,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:visibility="gone"
             android:background="?attr/spinnerColor"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/add_new_contact_priority_explain"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/add_new_contact_priority_explain">

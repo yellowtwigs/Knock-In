@@ -4,7 +4,7 @@
     android:id="@+id/messenger_recycler_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_relative_layout_with_border"
+    android:background="@drawable/background_layout_selector_with_border"
     android:clickable="true"
     android:focusable="true">
 

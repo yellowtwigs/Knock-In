@@ -432,7 +432,8 @@ class ContactDetailsActivity : AppCompatActivity() {
         var alreadyExist = false
 
         while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" ||
+                    contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
                 groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
                 alreadyExist = true
                 break
@@ -445,7 +446,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
         } else {
-            createGroup(listContact, "Favorites")
+            createGroup(listContact, getString(R.string.group_favorites))
         }
     }
 
@@ -457,7 +458,8 @@ class ContactDetailsActivity : AppCompatActivity() {
         var counter = 0
 
         while (counter < contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+            if (contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" ||
+                    contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris" ) {
                 groupId = contact_details_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
                 break
             }
@@ -517,6 +519,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("Recycle")
     private fun whatsappCall() {
         val resolver = contentResolver;
         val cursor = resolver.query(
@@ -526,7 +529,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         //Now read data from cursor like
 
-        while (cursor.moveToNext()) {
+        while (cursor!!.moveToNext()) {
             val _id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Data._ID))
             val displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME))
             val mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE))
@@ -581,7 +584,7 @@ class ContactDetailsActivity : AppCompatActivity() {
                 }
             }
         } else {
-            Toast.makeText(this, R.string.phone_log_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }
     }
 

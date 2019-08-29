@@ -41,7 +41,7 @@
         <activity android:name="com.yellowtwigs.knocker.controller.activity.ContactDetailsActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.MessengerActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.SettingsActivity" />
-        <activity android:name="com.yellowtwigs.knocker.controller.activity.KnockerInfos" />
+        <activity android:name=".controller.activity.KnockerInfos" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.StartActivity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -63,7 +63,7 @@
         <activity android:name="com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.ImportContactsActivity" />
         <activity android:name="com.yellowtwigs.knocker.FirstLaunchActivity" />
-        <activity android:name="com.yellowtwigs.knocker.controller.activity.PhoneLogActivity" />
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.CockpitActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.HelpActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.ManageMyScreenActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.EditInformationsActivity" />
@@ -76,7 +76,6 @@
         <activity
             android:name="com.yellowtwigs.knocker.controller.activity.EditContactActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name="com.yellowtwigs.knocker.controller.activity.SplashScreenActivity"/>
         <activity
             android:name="com.yellowtwigs.knocker.controller.activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

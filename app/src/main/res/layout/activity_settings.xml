@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/selector_relative_layout_with_border"
+                android:background="@drawable/background_layout_selector_with_border"
                 android:backgroundTint="?attr/backgroundColor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
@@ -158,6 +158,6 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/menu_left_drawer_layout" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -93,7 +93,7 @@ public class ContactListViewAdapter extends BaseAdapter {
                     listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
                 } else {
                     listItemChannelSelected.add(holder.smsCl);
-                    holder.smsCl.setImageResource(R.drawable.ic_contact_selected);
+                    holder.smsCl.setImageResource(R.drawable.ic_item_selected);
                     listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
                 }
             }
@@ -104,7 +104,7 @@ public class ContactListViewAdapter extends BaseAdapter {
                     listOfMailSelected.remove(listContacts.get(position).getFirstMail());
                 } else {
                     listItemChannelSelected.add(holder.mailCl);
-                    holder.mailCl.setImageResource(R.drawable.ic_contact_selected);
+                    holder.mailCl.setImageResource(R.drawable.ic_item_selected);
                     listOfMailSelected.add(listContacts.get(position).getFirstMail());
                 }
             }

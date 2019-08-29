@@ -96,10 +96,9 @@ class SettingsActivity : AppCompatActivity() {
 
         val navigationView = findViewById<NavigationView>(R.id.settings_nav_view)
         val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_manage_screen)
+        val navItem = menu.findItem(R.id.nav_settings)
         navItem.isChecked = true
 
-        navigationView!!.menu.getItem(3).isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -120,8 +119,6 @@ class SettingsActivity : AppCompatActivity() {
                 R.id.nav_help -> startActivity(Intent(this@SettingsActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.settings_drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)
             true
         }
 

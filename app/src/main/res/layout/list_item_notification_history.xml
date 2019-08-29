@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_relative_layout">
+    android:background="@drawable/background_layout_selector">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/notif_history_item_layout"
@@ -35,9 +35,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:text="text"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="text"
             android:textAlignment="viewStart"
             android:textColor="?attr/textColor"
             app:layout_constraintStart_toEndOf="@+id/notif_history_item_app_image"

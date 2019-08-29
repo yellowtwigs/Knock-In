@@ -42,7 +42,7 @@ public class CircularImageView extends AppCompatImageView {
     private ShadowGravity shadowGravity = ShadowGravity.BOTTOM;
     private ColorFilter colorFilter;
 
-    // Object used to draw
+    // Object used to draw+
     private Bitmap image;
     private Drawable drawable;
     private Paint paint;

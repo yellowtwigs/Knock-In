@@ -68,7 +68,7 @@ public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<Messenger
             assert contact1 != null;
 
 //            if (context instanceof MessengerActivity) {
-//                ((MessengerActivity) context).longRecyclerItemClick(position);
+//                ((MessengerActivity) context).recyclerMultiSelectItemClick(position);
 //            }
 
             if (listOfItemSelected.size() > 0) {
