@@ -3,6 +3,7 @@ package com.yellowtwigs.knocker.controller
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,12 +67,21 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
         notification_history_adapter_Date!!.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notif.timestamp))
 
         val pckManager = context.packageManager
-        val icon = pckManager.getApplicationIcon(notif.platform)
-        if(icon!=null) {
-            notification_history_adapter_App!!.setImageDrawable(icon)
+
+        val intent: Intent? = context.packageManager.getLaunchIntentForPackage(notif.platform)
+        if (intent == null) {
+            val drawable= context.getDrawable(R.drawable.ic_uninstalled_app)
+            notification_history_adapter_App!!.setImageDrawable(drawable)
         }else{
-            notification_history_adapter_App!!.setBackgroundResource(R.drawable.ic_uninstalled_app)
+            val icon = pckManager.getApplicationIcon(notif.platform)
+            notification_history_adapter_App!!.setImageDrawable(icon)
         }
+
+       /* if(icon!=null) {
+
+        }else{
+
+        }*/
         println("notification " + position + " " + notif.platform)
         notification_history_adapter_contenue!!.text = notif.description
 

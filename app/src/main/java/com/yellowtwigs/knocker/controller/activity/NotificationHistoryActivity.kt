@@ -709,6 +709,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = notification_Adapter
+
                 swipeMenuCreator(notification_history_ListView!!)
 
             }
@@ -727,6 +728,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             else -> println("thats a problem test")
 
         }
+        notification_history_ListView!!.setScrollingCacheEnabled(false)
     }
 
     fun swipeMenuCreator(listView: SwipeMenuListView) {
