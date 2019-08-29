@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.knocker.R
 import com.example.knocker.controller.NotificationListener
@@ -464,6 +465,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
                 notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+                notification_history_RecyclerView!!.layoutManager= LinearLayoutManager(applicationContext)
                 notification_history_RecyclerView!!.adapter = notification_Adapter
             }
             sharedPreferences.getString("tri", "date") == "priorite" -> {
@@ -479,6 +481,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_ListOfNotificationDB.addAll(listTmp)
                 notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+                notification_history_RecyclerView!!.layoutManager= LinearLayoutManager(applicationContext)
                 notification_history_RecyclerView!!.adapter = notification_Adapter
 
             }
@@ -489,6 +492,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listNotif.retainAll(notification_history_ListOfNotificationDB)
                 notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, listNotif)
                 notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+                notification_history_RecyclerView!!.layoutManager= LinearLayoutManager(applicationContext)
                 notification_history_RecyclerView!!.adapter = notification_Adapter
             }
             else -> println("thats a problem test")

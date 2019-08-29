@@ -84,7 +84,8 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
             holder.notif_history_item_NotificationContent.setText(notif.getDescription());
         }
 
-        holder.notif_history_item_NotificationContent.setText(text);
+        holder.notif_history_item_NotificationDate.setText(text);
+        holder.notif_history_item_SenderName.setText(notif.getContactName());
     }
 
     @Override
