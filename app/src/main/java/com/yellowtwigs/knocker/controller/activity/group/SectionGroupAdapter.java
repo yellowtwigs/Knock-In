@@ -132,9 +132,12 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             int i = position + 1;
             System.out.println("position section" + position);
-
-            ((SectionViewHolder) sectionViewHolder).titleTv.setText(mSections.get(position).title);
-
+            String groupName=  mSections.get(position).title.toString();
+            if(groupName.equals("Favorites")){
+                ((SectionViewHolder) sectionViewHolder).titleTv.setText(R.string.group_favorites);
+            }else {
+                ((SectionViewHolder) sectionViewHolder).titleTv.setText(mSections.get(position).title);
+            }
             while (!isSectionHeaderPosition(i) && i < getItemCount()) {
                 ContactWithAllInformation contact = ((GroupAdapter) mBaseAdapter).getItem(sectionedPositionToPosition(i));
                 System.out.println("contact " + contact.getContactDB() + " de la section " + position);
@@ -207,11 +210,16 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             AppCompatImageView edit_group_name_OrangeTag = alertView.findViewById(R.id.manager_group_edit_group_color_orange);
                             AppCompatImageView edit_group_name_PurpleTag = alertView.findViewById(R.id.manager_group_edit_group_color_purple);
 
+                            if(groupName.equals("Favorites")){
+                                edit_group_name_AlertDialogTitle.setText(mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "
+                                        + mContext.getString(R.string.group_favorites));
+                                edit_group_name_EditText.setText(mContext.getString(R.string.group_favorites));
+                            }else {
+                                edit_group_name_AlertDialogTitle.setText(mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "
+                                        + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
+                                edit_group_name_EditText.setText(contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
+                            }
 
-                            edit_group_name_AlertDialogTitle.setText(mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "
-                                    + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
-
-                            edit_group_name_EditText.setHint(contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
 
                             if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getSection_color() == R.color.red_tag_group) {
                                 edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view);
