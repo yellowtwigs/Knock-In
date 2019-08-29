@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.firstLaunch
+package com.yellowtwigs.knocker.controller.activity.firstLaunch
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -8,13 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
-import com.example.knocker.R
-import com.example.knocker.controller.CustomViewPagerAdapter
-import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.controller.activity.NotificationHistoryActivity
-import com.example.knocker.controller.activity.PhoneLogActivity
-import com.example.knocker.controller.activity.group.GroupManagerActivity
-import kotlinx.android.synthetic.main.alert_dialog_multi_select.*
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.controller.CustomViewPagerAdapter
+import com.yellowtwigs.knocker.controller.activity.MainActivity
+import com.yellowtwigs.knocker.controller.activity.NotificationHistoryActivity
+import com.yellowtwigs.knocker.controller.activity.PhoneLogActivity
+import com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity
 import java.util.*
 
 class TutorialActivity : AppCompatActivity() {

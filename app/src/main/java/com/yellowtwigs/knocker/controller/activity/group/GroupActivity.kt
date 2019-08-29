@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.group
+package com.yellowtwigs.knocker.controller.activity.group
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -29,17 +29,17 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.knocker.R
-import com.example.knocker.controller.ContactGridViewAdapter
-import com.example.knocker.controller.ContactRecyclerViewAdapter
-import com.example.knocker.controller.NotificationListener
-import com.example.knocker.controller.SelectContactAdapter
-import com.example.knocker.controller.activity.*
-import com.example.knocker.FirstLaunchActivity
-import com.example.knocker.model.ContactManager
-import com.example.knocker.model.ContactsRoomDatabase
-import com.example.knocker.model.DbWorkerThread
-import com.example.knocker.model.ModelDB.*
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.controller.ContactGridViewAdapter
+import com.yellowtwigs.knocker.controller.ContactRecyclerViewAdapter
+import com.yellowtwigs.knocker.controller.NotificationListener
+import com.yellowtwigs.knocker.controller.SelectContactAdapter
+import com.yellowtwigs.knocker.controller.activity.*
+import com.yellowtwigs.knocker.FirstLaunchActivity
+import com.yellowtwigs.knocker.model.ContactManager
+import com.yellowtwigs.knocker.model.ContactsRoomDatabase
+import com.yellowtwigs.knocker.model.DbWorkerThread
+import com.yellowtwigs.knocker.model.ModelDB.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton

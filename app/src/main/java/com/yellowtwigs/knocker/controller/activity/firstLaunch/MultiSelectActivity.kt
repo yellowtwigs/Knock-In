@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.firstLaunch
+package com.yellowtwigs.knocker.controller.activity.firstLaunch
 
 import android.content.Context
 import android.content.Intent
@@ -11,11 +11,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import com.example.knocker.R
-import com.example.knocker.controller.SelectContactAdapter
-import com.example.knocker.controller.activity.MainActivity
-import com.example.knocker.model.ContactManager
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.controller.SelectContactAdapter
+import com.yellowtwigs.knocker.model.ContactManager
+import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**

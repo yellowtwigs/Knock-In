@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.group
+package com.yellowtwigs.knocker.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
@@ -15,14 +15,14 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.knocker.R
-import com.example.knocker.controller.activity.*
-import com.example.knocker.controller.activity.firstLaunch.TutorialActivity
-import com.example.knocker.model.ContactManager
-import com.example.knocker.model.ContactsRoomDatabase
-import com.example.knocker.model.DbWorkerThread
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
-import com.example.knocker.model.ModelDB.GroupWithContact
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.controller.activity.*
+import com.yellowtwigs.knocker.controller.activity.firstLaunch.TutorialActivity
+import com.yellowtwigs.knocker.model.ContactManager
+import com.yellowtwigs.knocker.model.ContactsRoomDatabase
+import com.yellowtwigs.knocker.model.DbWorkerThread
+import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knocker.model.ModelDB.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView

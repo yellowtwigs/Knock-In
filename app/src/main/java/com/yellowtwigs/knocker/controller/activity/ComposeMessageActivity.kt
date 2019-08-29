@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -24,9 +24,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
-import com.example.knocker.R
-import com.example.knocker.controller.MessageListAdapter
-import com.example.knocker.model.Message
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.controller.MessageListAdapter
+import com.yellowtwigs.knocker.model.Message
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern

@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.group;
+package com.yellowtwigs.knocker.controller.activity.group;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,7 +19,6 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -33,18 +32,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.knocker.R;
-import com.example.knocker.controller.CircularImageView;
-import com.example.knocker.controller.activity.EditContactActivity;
-import com.example.knocker.model.ContactGesture;
-import com.example.knocker.model.ContactManager;
-import com.example.knocker.model.ContactsRoomDatabase;
-import com.example.knocker.model.DbWorkerThread;
-import com.example.knocker.model.ModelDB.ContactDB;
-import com.example.knocker.model.ModelDB.ContactWithAllInformation;
-import com.example.knocker.model.ModelDB.GroupDB;
-import com.example.knocker.model.ModelDB.GroupWithContact;
-import com.example.knocker.model.requestDB.GroupsDao;
+import com.yellowtwigs.knocker.R;
+import com.yellowtwigs.knocker.controller.CircularImageView;
+import com.yellowtwigs.knocker.controller.activity.EditContactActivity;
+import com.yellowtwigs.knocker.model.ContactGesture;
+import com.yellowtwigs.knocker.model.ContactManager;
+import com.yellowtwigs.knocker.model.ContactsRoomDatabase;
+import com.yellowtwigs.knocker.model.DbWorkerThread;
+import com.yellowtwigs.knocker.model.ModelDB.ContactDB;
+import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knocker.model.ModelDB.GroupDB;
+import com.yellowtwigs.knocker.model.ModelDB.GroupWithContact;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 

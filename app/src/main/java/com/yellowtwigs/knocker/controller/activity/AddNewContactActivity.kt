@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -17,7 +17,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -26,14 +25,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.knocker.*
-import com.example.knocker.controller.CircularImageView
-import com.example.knocker.controller.ContactIconeAdapter
-import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.ContactDB
-import com.example.knocker.model.ModelDB.ContactDetailDB
-import com.example.knocker.model.ModelDB.GroupDB
-import com.example.knocker.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knocker.*
+import com.yellowtwigs.knocker.controller.CircularImageView
+import com.yellowtwigs.knocker.controller.ContactIconeAdapter
+import com.yellowtwigs.knocker.model.*
+import com.yellowtwigs.knocker.model.ModelDB.ContactDB
+import com.yellowtwigs.knocker.model.ModelDB.ContactDetailDB
+import com.yellowtwigs.knocker.model.ModelDB.GroupDB
+import com.yellowtwigs.knocker.model.ModelDB.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout

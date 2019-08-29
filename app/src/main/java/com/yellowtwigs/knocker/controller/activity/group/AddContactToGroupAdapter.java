@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.group;
+package com.yellowtwigs.knocker.controller.activity.group;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,17 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.example.knocker.R;
-import com.example.knocker.controller.CircularImageView;
-import com.example.knocker.model.ModelDB.ContactDB;
-import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knocker.R;
+import com.yellowtwigs.knocker.controller.CircularImageView;
+import com.yellowtwigs.knocker.model.ModelDB.ContactDB;
+import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Adapter qui nous permet de gérer chaque item de la liste des contact en rapport avec un groupe ces contacts peuvent être supprimer d'un groupe ou utiliser pour créer un groupe

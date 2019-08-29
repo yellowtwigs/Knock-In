@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.Manifest
 import android.content.Context
@@ -17,11 +17,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.knocker.R
-import com.example.knocker.controller.ContactListViewAdapter
-import com.example.knocker.controller.activity.group.GroupManagerActivity
-import com.example.knocker.model.ContactManager
-import com.example.knocker.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.controller.ContactListViewAdapter
+import com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knocker.model.ContactManager
+import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation
 
 class MultiChannelActivity : AppCompatActivity() {
 

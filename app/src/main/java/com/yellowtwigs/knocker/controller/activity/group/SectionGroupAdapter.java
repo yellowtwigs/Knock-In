@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.group;
+package com.yellowtwigs.knocker.controller.activity.group;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,10 +24,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.knocker.R;
-import com.example.knocker.model.ContactsRoomDatabase;
-import com.example.knocker.model.DbWorkerThread;
-import com.example.knocker.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knocker.R;
+import com.yellowtwigs.knocker.model.ContactsRoomDatabase;
+import com.yellowtwigs.knocker.model.DbWorkerThread;
+import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements PopupMenu.OnMenuItemClickListener {
 

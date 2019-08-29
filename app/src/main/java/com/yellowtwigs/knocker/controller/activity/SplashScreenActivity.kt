@@ -1,11 +1,11 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.knocker.R
+import com.yellowtwigs.knocker.R
 
 /**
  * La Classe qui permet d'afficher le splashscreen lors du lancement de l'application

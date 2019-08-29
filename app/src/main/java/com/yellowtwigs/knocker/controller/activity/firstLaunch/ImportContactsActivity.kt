@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity.firstLaunch
+package com.yellowtwigs.knocker.controller.activity.firstLaunch
 
 import android.Manifest
 import android.content.Intent
@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import com.example.knocker.R
-import com.example.knocker.model.ContactManager
-import com.example.knocker.model.DbWorkerThread
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.model.ContactManager
+import com.yellowtwigs.knocker.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**

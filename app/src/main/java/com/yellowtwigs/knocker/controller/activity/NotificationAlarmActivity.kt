@@ -1,18 +1,15 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
-import com.example.knocker.R
+import com.yellowtwigs.knocker.R
 import android.view.WindowManager
 import android.widget.TextView
-import com.example.knocker.model.StatusBarParcelable
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.yellowtwigs.knocker.model.StatusBarParcelable
 import android.annotation.SuppressLint
-import android.media.SoundPool
 import android.os.*
-import android.view.SoundEffectConstants
 import com.google.android.material.button.MaterialButton
 
 

@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,10 +20,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.knocker.R
-import com.example.knocker.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knocker.R
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
 class SettingsActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 
-import com.example.knocker.R
+import com.yellowtwigs.knocker.R
 import com.google.android.material.navigation.NavigationView
 
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +18,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.knocker.controller.activity.group.GroupActivity
-import com.example.knocker.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**

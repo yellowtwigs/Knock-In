@@ -1,9 +1,9 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.knocker.R
+import com.yellowtwigs.knocker.R
 
 class KnockerInfos : AppCompatActivity() {
 

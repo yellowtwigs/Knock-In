@@ -1,4 +1,4 @@
-package com.example.knocker.controller.activity
+package com.yellowtwigs.knocker.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -33,13 +33,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.knocker.R
-import com.example.knocker.controller.CircularImageView
-import com.example.knocker.controller.ContactIconeAdapter
-import com.example.knocker.controller.GroupEditAdapter
-import com.example.knocker.controller.activity.group.GroupManagerActivity
-import com.example.knocker.model.*
-import com.example.knocker.model.ModelDB.*
+import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knocker.controller.CircularImageView
+import com.yellowtwigs.knocker.controller.ContactIconeAdapter
+import com.yellowtwigs.knocker.controller.GroupEditAdapter
+import com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knocker.model.*
+import com.yellowtwigs.knocker.model.ModelDB.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
