@@ -67,8 +67,11 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
 
         val pckManager = context.packageManager
         val icon = pckManager.getApplicationIcon(notif.platform)
-        notification_history_adapter_App!!.setImageDrawable(icon)
-
+        if(icon!=null) {
+            notification_history_adapter_App!!.setImageDrawable(icon)
+        }else{
+            notification_history_adapter_App!!.setBackgroundResource(R.drawable.ic_uninstalled_app)
+        }
         println("notification " + position + " " + notif.platform)
         notification_history_adapter_contenue!!.text = notif.description
 
