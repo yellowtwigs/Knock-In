@@ -37,7 +37,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
         notification_Alarm_Button_close = findViewById(R.id.notification_alarm_floating_button_close)
         notification_Alarm_Button_response = findViewById(R.id.notification_alarm_floating_button_openMessage)
 
-        val sbp = intent.extras.get("notification") as StatusBarParcelable
+        val sbp = intent.extras!!.get("notification") as StatusBarParcelable
         notification_alarm_sender = sbp.statusBarNotificationInfo.get("android.title") as String
         notification_alarm_content = sbp.statusBarNotificationInfo.get("android.text") as String
 
@@ -92,8 +92,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
            // val partialWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PowerManager.PARTIAL_WAKE_LOCK")
 
             println("app notifier " + sbp.appNotifier)
-            val intent = packageManager.getLaunchIntentForPackage(sbp.appNotifier)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            val intent = packageManager.getLaunchIntentForPackage(sbp.appNotifier!!)
+            intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             /*if (fullWakeLock.isHeld()) {
                 fullWakeLock.release()
