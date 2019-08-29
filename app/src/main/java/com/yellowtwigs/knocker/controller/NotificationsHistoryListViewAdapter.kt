@@ -1,6 +1,7 @@
 package com.yellowtwigs.knocker.controller
 
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -93,4 +94,8 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
 
         return view
     }
+     fun updateList(newList:List<NotificationDB>){
+         notification_history_ListOfNotificationDB.clear()
+         notification_history_ListOfNotificationDB.addAll(newList)
+     }
 }

@@ -717,7 +717,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 val listNotif: ArrayList<NotificationDB> = arrayListOf()
                 listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
                 listNotif.retainAll(notification_history_ListOfNotificationDB)
-                notification_Adapter = NotificationsHistoryListViewAdapter(this, listNotif)
+                notification_history_ListOfNotificationDB.clear()
+                notification_history_ListOfNotificationDB.addAll(listNotif)
+                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = notification_Adapter
                 swipeMenuCreator(notification_history_ListView!!)
@@ -754,8 +756,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 0 -> {
                     notification_history_NotificationsDatabase!!.notificationsDao().deleteNotificationById(notification_history_ListOfNotificationDB[position].id!!)
                     notification_history_ListOfNotificationDB.removeAt(position)
-                    notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
-                    listView.adapter = notification_Adapter
+                    notification_Adapter!!.updateList(notification_history_ListOfNotificationDB)
                     notification_Adapter!!.notifyDataSetChanged()
                     //refreshActivity()
 
