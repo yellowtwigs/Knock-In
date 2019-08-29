@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="8dp">
 
-    <com.example.knocker.controller.CircularImageView
+    <com.yellowtwigs.knocker.controller.CircularImageView
         android:id="@+id/item_message_received_profile_image"
         android:layout_width="32dp"
         android:layout_height="32dp"

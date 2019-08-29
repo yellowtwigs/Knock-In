@@ -96,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.example.knocker.controller.CircularImageView
+            <com.yellowtwigs.knocker.controller.CircularImageView
                 android:id="@+id/contact_details_rounded_image_view"
                 android:layout_width="@dimen/rounded_image_view_height_width"
                 android:layout_height="@dimen/rounded_image_view_height_width"
