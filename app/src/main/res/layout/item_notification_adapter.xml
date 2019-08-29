@@ -93,25 +93,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content" />
 
-        <RelativeLayout
-            android:id="@+id/notification_adapter_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/background_layout_selector"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toTopOf="@+id/item_notification_call_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/notification_adapter_message_to_send"
-            app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_adapter_send"
                 android:layout_width="30dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_right_arrow_send" />
-        </RelativeLayout>
+                android:src="@drawable/ic_right_arrow_send"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toTopOf="@+id/item_notification_call_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/notification_adapter_message_to_send"
+                app:layout_constraintTop_toBottomOf="@+id/notification_adapter_content"/>
+
 
         <LinearLayout
             android:id="@+id/item_notification_call_layout"

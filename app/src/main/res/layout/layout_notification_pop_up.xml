@@ -64,6 +64,7 @@
         <ListView
             android:id="@+id/notification_pop_up_listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
