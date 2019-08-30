@@ -148,6 +148,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //region ======================================= First Launch =======================================
+
+        //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
+        val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
+        if (sharedFirstLaunch.getBoolean("first_launch", true)) {
+            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
+            finish()
+        }
+
+        //endregion
+
         //region ======================================== Theme Dark ========================================
 
         //On affecte le Thème light ou le dark en fonction de ce que l'utilisateur à choisi
@@ -161,16 +172,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
-        //region ======================================= First Launch =======================================
-
-        //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
-        val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
-        if (sharedFirstLaunch.getBoolean("first_launch", true)) {
-            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
-            finish()
-        }
-
-        //endregion
 
         //On affecte à notre activity son layout correspondant
         setContentView(R.layout.activity_main)
@@ -353,15 +354,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ===================================== set ListContact ======================================
-
+        when {//Verification du mode de tri des contacts pour afficher le bon tri
+            sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
+            sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+            sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
+            else -> gestionnaireContacts!!.sortContactByFavorite()
+        }
         //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
         if (main_GridView!!.visibility != View.GONE) {
-            when {//Verification du mode de tri des contacts pour afficher le bon tri
-                sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
-                sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
-                sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
-                else -> gestionnaireContacts!!.sortContactByFavorite()
-            }
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
 
             main_GridView!!.adapter = gridViewAdapter
@@ -419,6 +419,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         if (main_RecyclerView!!.visibility != View.GONE) {
+
             recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
 

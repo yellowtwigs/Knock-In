@@ -320,7 +320,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                                 edit_group_name_EditText.setText(contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
                                             }
                                             contactsDatabase.GroupsDao().updateGroupNameById(mSections.get(position).getIdGroup().intValue(), edit_group_name_EditText.getText().toString());
-//                                            Toast.makeText(mContext, "Vous avez modifié le nom de votre groupe", Toast.LENGTH_LONG).show();
+                                            //Toast.makeText(mContext, "Vous avez modifié le nom de votre groupe", Toast.LENGTH_LONG).show();
                                         }
 
                                         if (color == 0) {
