@@ -48,7 +48,7 @@ import java.sql.DriverManager.println
  *
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class NotificationAlarmRecyclerViewAdapter(private val context: Context, private var notification_alarm_ListOfNotification: MutableList<StatusBarParcelable>, private var nbOfMessages: Int) : RecyclerView.Adapter<NotificationAlarmRecyclerViewAdapter.NotificationAlarmViewHolder>() {
+class NotificationAlarmRecyclerViewAdapter(private val context: Context, private var notification_alarm_ListOfNotification: MutableList<StatusBarParcelable>, private var nbOfSMS: Int, private var nbOfWhatsappMsg: Int) : RecyclerView.Adapter<NotificationAlarmRecyclerViewAdapter.NotificationAlarmViewHolder>() {
     private var notification_alarm_ContactsDatabase: ContactsRoomDatabase? = null
     private var view: View? = null
 
@@ -83,10 +83,10 @@ class NotificationAlarmRecyclerViewAdapter(private val context: Context, private
                 "com.whatsapp" -> {
                     holder.item_recycler_notification_alarm_ImageView.setImageResource(R.drawable.ic_circular_whatsapp)
 
-                    if (nbOfMessages == 1) {
-                        holder.item_recycler_notification_alarm_Text.text = context.getString(R.string.notification_alarm_message_received)
+                    if (nbOfWhatsappMsg == 1) {
+                        holder.item_recycler_notification_alarm_Text.text = nbOfWhatsappMsg.toString() + " " + context.getString(R.string.notification_alarm_message_received)
                     } else {
-                        holder.item_recycler_notification_alarm_Text.text = nbOfMessages.toString() + " " + context.getString(R.string.notification_alarm_messages_received)
+                        holder.item_recycler_notification_alarm_Text.text = nbOfWhatsappMsg.toString() + " " + context.getString(R.string.notification_alarm_messages_received)
                     }
                 }
 
@@ -97,10 +97,10 @@ class NotificationAlarmRecyclerViewAdapter(private val context: Context, private
                 "com.samsung.android.messaging" -> {
                     holder.item_recycler_notification_alarm_ImageView.setImageResource(R.drawable.ic_sms)
 
-                    if (nbOfMessages == 1) {
-                        holder.item_recycler_notification_alarm_Text.text = context.getString(R.string.notification_alarm_message_received)
+                    if (nbOfSMS == 1) {
+                        holder.item_recycler_notification_alarm_Text.text = nbOfSMS.toString() + " " + context.getString(R.string.notification_alarm_message_received)
                     } else {
-                        holder.item_recycler_notification_alarm_Text.text = nbOfMessages.toString() + " " + context.getString(R.string.notification_alarm_messages_received)
+                        holder.item_recycler_notification_alarm_Text.text = nbOfSMS.toString() + " " + context.getString(R.string.notification_alarm_messages_received)
                     }
                 }
             }

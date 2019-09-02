@@ -26,7 +26,11 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var notification_alarm_RecyclerViewAdapter: NotificationAlarmRecyclerViewAdapter? = null
     private var sharedThemePreferences: SharedPreferences? = null
 
-    private var cpt : Int? = null
+    private var cptSMS: Int? = null
+    private var cptWhatsappMSG: Int? = null
+    private var refresh = false
+
+    private var sbp: StatusBarParcelable? = null
 
     private var isOpen = true
 
@@ -37,18 +41,20 @@ class NotificationAlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_alarm)
 
-        sharedThemePreferences = getSharedPreferences("nbOfMessages", Context.MODE_PRIVATE)
-        cpt = sharedThemePreferences!!.getInt("nbOfMessages", 1)
+        sharedThemePreferences = getSharedPreferences("nbOfSMS", Context.MODE_PRIVATE)
+        sharedThemePreferences = getSharedPreferences("nbOfWhatsappMsg", Context.MODE_PRIVATE)
+        cptSMS = sharedThemePreferences!!.getInt("nbOfSMS", 1)
+        cptWhatsappMSG = sharedThemePreferences!!.getInt("nbOfWhatsappMsg", 1)
 
         notification_Alarm_Button_ShutDown = findViewById(R.id.notification_alarm_shut_down)
         notification_alarm_RecyclerView = findViewById(R.id.notification_alarm_recycler_view)
 
-        val sbp = intent.extras!!.get("notification") as StatusBarParcelable
+        sbp = intent.extras!!.get("notification") as StatusBarParcelable
 
         val notification_alarm_ListOfNotification: ArrayList<StatusBarParcelable> = ArrayList()
-        notification_alarm_ListOfNotification.add(sbp)
+        notification_alarm_ListOfNotification.add(sbp!!)
 
-        notification_alarm_RecyclerViewAdapter = NotificationAlarmRecyclerViewAdapter(this, notification_alarm_ListOfNotification, cpt!!)
+        notification_alarm_RecyclerViewAdapter = NotificationAlarmRecyclerViewAdapter(this, notification_alarm_ListOfNotification, cptSMS!!, cptWhatsappMSG!!)
         notification_alarm_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
         notification_alarm_RecyclerView!!.adapter = notification_alarm_RecyclerViewAdapter
 
@@ -92,24 +98,77 @@ class NotificationAlarmActivity : AppCompatActivity() {
         //endregion
 
         notification_Alarm_Button_ShutDown!!.setOnClickListener {
-            this.finish()
+            val edit: SharedPreferences.Editor = sharedThemePreferences!!.edit()
+            edit.putInt("nbOfSMS", 1)
+            edit.putInt("nbOfWhatsappMsg", 1)
+            edit.apply()
             isOpen = false
             // sound.stop()
+
+            refresh = true
+
+            finish()
         }
     }
 
     override fun onStop() {
         super.onStop()
 
-        cpt = cpt!!.plus(1)
+        if (sbp!!.appNotifier == "com.whatsapp") {
+
+            cptWhatsappMSG = cptWhatsappMSG!!.plus(1)
+
+        } else if (sbp!!.appNotifier == "com.google.android.apps.messaging"
+                || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
+
+            cptSMS = cptSMS!!.plus(1)
+        }
+
         finish()
     }
+
+//    override fun onPause() {
+//        super.onPause()
+//
+//        if (sbp!!.appNotifier == "com.whatsapp") {
+//
+//            cptWhatsappMSG = cptWhatsappMSG!!.plus(1)
+//
+//        } else if (sbp!!.appNotifier == "com.google.android.apps.messaging"
+//                || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
+//
+//            cptSMS = cptSMS!!.plus(1)
+//        }
+//
+//        finish()
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        val edit: SharedPreferences.Editor = sharedThemePreferences!!.edit()
-        edit.putInt("nbOfMessages", 1)
-        edit.apply()
+        if (sbp!!.appNotifier == "com.whatsapp") {
+
+            val edit: SharedPreferences.Editor = sharedThemePreferences!!.edit()
+
+            if (refresh) {
+
+            } else {
+                edit.putInt("nbOfWhatsappMsg", cptWhatsappMSG!!)
+                edit.apply()
+            }
+
+        } else if (sbp!!.appNotifier == "com.google.android.apps.messaging"
+                || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
+
+
+            val edit: SharedPreferences.Editor = sharedThemePreferences!!.edit()
+
+            if (refresh) {
+
+            } else {
+                edit.putInt("nbOfSMS", cptSMS!!)
+                edit.apply()
+            }
+        }
     }
 }
