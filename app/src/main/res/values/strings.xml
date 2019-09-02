@@ -492,4 +492,11 @@
     <string name="tutorial_activity_back">Back</string>
 
     <!-- endregion-->
+
+    <!-- region Notification Alarm -->
+
+    <string name="notification_alarm_message_received">new message VIP</string>
+    <string name="notification_alarm_messages_received">new messages VIP</string>
+
+    <!-- endregion-->
 </resources>

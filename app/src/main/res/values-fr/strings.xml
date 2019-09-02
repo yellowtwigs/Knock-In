@@ -487,4 +487,11 @@
     <string name="tutorial_activity_back">Retour</string>
 
     <!-- endregion-->
+
+    <!-- region Notification Alarm -->
+
+    <string name="notification_alarm_message_received">nouveau message VIP</string>
+    <string name="notification_alarm_messages_received">nouveaux messages VIP</string>
+
+    <!-- endregion-->
 </resources>
