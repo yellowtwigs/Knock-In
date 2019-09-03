@@ -10,53 +10,155 @@ import android.widget.TextView
 import com.yellowtwigs.knocker.model.StatusBarParcelable
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.*
+import android.view.View
+import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knocker.controller.NotificationAlarmRecyclerViewAdapter
+import com.yellowtwigs.knocker.model.ContactManager
 import com.yellowtwigs.knocker.model.ModelDB.NotificationDB
 
-
 class NotificationAlarmActivity : AppCompatActivity() {
+
+    //region ========================================== Val or Var ==========================================
 
     private var notification_Alarm_Button_ShutDown: MaterialButton? = null
 
     private var notification_alarm_RecyclerView: RecyclerView? = null
     private var notification_alarm_RecyclerViewAdapter: NotificationAlarmRecyclerViewAdapter? = null
-    private var sharedThemePreferences: SharedPreferences? = null
-
-    private var cptSMS: Int? = null
-    private var cptWhatsappMSG: Int? = null
-    private var refresh = false
+    private var sharedNbMessagesPreferences: SharedPreferences? = null
 
     private var sbp: StatusBarParcelable? = null
 
+    private var notification_alarm_ReceiveSMSLayout: RelativeLayout? = null
+    private var notification_alarm_ReceiveWhatsappMessageLayout: RelativeLayout? = null
+    private var notification_alarm_ReceiveWhatsappMessageLayout_2: RelativeLayout? = null
+
+    private var notification_alarm_ReceiveSMSTextView: TextView? = null
+    private var notification_alarm_ReceiveWhatsappMessageTextView: TextView? = null
+    private var notification_alarm_ReceiveWhatsappMessageTextView_2: TextView? = null
+
+    private var cptSMS: Int? = null
+    private var cptWhatsappMSG: Int? = null
+
     private var isOpen = true
 
-//    private var sound : SoundPool
+    //endregion
 
     @SuppressLint("InvalidWakeLockTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_alarm)
 
-        sharedThemePreferences = getSharedPreferences("nbOfSMS", Context.MODE_PRIVATE)
-        sharedThemePreferences = getSharedPreferences("nbOfWhatsappMsg", Context.MODE_PRIVATE)
-        cptSMS = sharedThemePreferences!!.getInt("nbOfSMS", 1)
-        cptWhatsappMSG = sharedThemePreferences!!.getInt("nbOfWhatsappMsg", 1)
+        //region ==================================== SharedPreferences =====================================
+
+        sharedNbMessagesPreferences = getSharedPreferences("nbOfSMS", Context.MODE_PRIVATE)
+        sharedNbMessagesPreferences = getSharedPreferences("nbOfWhatsappMsg", Context.MODE_PRIVATE)
+        cptSMS = sharedNbMessagesPreferences!!.getInt("nbOfSMS", 0)
+        cptWhatsappMSG = sharedNbMessagesPreferences!!.getInt("nbOfWhatsappMsg", 0)
+
+        //endregion
+
+        //region ====================================== FindViewById ========================================
 
         notification_Alarm_Button_ShutDown = findViewById(R.id.notification_alarm_shut_down)
-        notification_alarm_RecyclerView = findViewById(R.id.notification_alarm_recycler_view)
+
+        notification_alarm_ReceiveSMSLayout = findViewById(R.id.notification_alarm_receive_sms_layout)
+        notification_alarm_ReceiveWhatsappMessageLayout = findViewById(R.id.notification_alarm_receive_whatsapp_layout)
+        notification_alarm_ReceiveWhatsappMessageLayout_2 = findViewById(R.id.notification_alarm_receive_whatsapp_layout_2)
+
+        notification_alarm_ReceiveSMSTextView = findViewById(R.id.notification_alarm_receive_sms_message)
+        notification_alarm_ReceiveWhatsappMessageTextView = findViewById(R.id.notification_alarm_receive_whatsapp_message)
+        notification_alarm_ReceiveWhatsappMessageTextView_2 = findViewById(R.id.notification_alarm_receive_whatsapp_message_2)
+
+        //endregion
 
         sbp = intent.extras!!.get("notification") as StatusBarParcelable
 
-        val notification_alarm_ListOfNotification: ArrayList<StatusBarParcelable> = ArrayList()
-        notification_alarm_ListOfNotification.add(sbp!!)
+        val gestionnaireContacts = ContactManager(this)
+        val contact = gestionnaireContacts.getContact(sbp!!.statusBarNotificationInfo["android.title"] as String)
 
-        notification_alarm_RecyclerViewAdapter = NotificationAlarmRecyclerViewAdapter(this, notification_alarm_ListOfNotification, cptSMS!!, cptWhatsappMSG!!)
-        notification_alarm_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-        notification_alarm_RecyclerView!!.adapter = notification_alarm_RecyclerViewAdapter
+        if (sbp!!.appNotifier == "com.google.android.apps.messaging"
+                || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
+
+            notification_alarm_ReceiveSMSLayout!!.visibility = View.VISIBLE
+
+            if (cptWhatsappMSG!! > 0) {
+                notification_alarm_ReceiveWhatsappMessageLayout!!.visibility = View.VISIBLE
+                notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_message_received)
+                notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+            }
+
+            when (cptSMS) {
+                0 -> {
+                    cptSMS = cptSMS!!.plus(1)
+
+                    notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_message_received)
+
+                    val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+
+                    edit.putInt("nbOfSMS", cptSMS!!)
+                    edit.apply()
+                }
+                cptSMS -> {
+                    cptSMS = cptSMS!!.plus(1)
+
+                    notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+
+                    val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+
+                    edit.putInt("nbOfSMS", cptSMS!!)
+                    edit.apply()
+                }
+            }
+        }
+
+        if (sbp!!.appNotifier == "com.whatsapp") {
+
+            if (cptSMS!! > 0) {
+                notification_alarm_ReceiveSMSLayout!!.visibility = View.VISIBLE
+                notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_message_received)
+                notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+                notification_alarm_ReceiveWhatsappMessageLayout!!.visibility = View.VISIBLE
+            }else{
+                notification_alarm_ReceiveWhatsappMessageLayout_2!!.visibility = View.VISIBLE
+            }
+
+            when (cptWhatsappMSG) {
+                0 -> {
+                    cptWhatsappMSG = cptWhatsappMSG!!.plus(1)
+
+                    if (notification_alarm_ReceiveSMSLayout!!.visibility == View.GONE) {
+                        notification_alarm_ReceiveWhatsappMessageTextView_2!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_message_received)
+                    } else {
+                        notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_message_received)
+                    }
+
+                    val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+
+                    edit.putInt("nbOfWhatsappMsg", cptWhatsappMSG!!)
+                    edit.apply()
+                }
+                cptWhatsappMSG -> {
+                    cptWhatsappMSG = cptWhatsappMSG!!.plus(1)
+
+                    if (notification_alarm_ReceiveSMSLayout!!.visibility == View.GONE) {
+                        notification_alarm_ReceiveWhatsappMessageTextView_2!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+                    } else {
+                        notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+                    }
+
+                    val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+
+                    edit.putInt("nbOfWhatsappMsg", cptWhatsappMSG!!)
+                    edit.apply()
+                }
+            }
+        }
 
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         println("I'm into alarm")
@@ -97,78 +199,106 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         //endregion
 
-        notification_Alarm_Button_ShutDown!!.setOnClickListener {
-            val edit: SharedPreferences.Editor = sharedThemePreferences!!.edit()
-            edit.putInt("nbOfSMS", 1)
-            edit.putInt("nbOfWhatsappMsg", 1)
+        notification_alarm_ReceiveSMSLayout!!.setOnClickListener {
+            if (contact != null) {
+                openSms(contact.getFirstPhoneNumber())
+            } else {
+                openSms(sbp!!.statusBarNotificationInfo["android.title"] as String)
+            }
+
+            val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+            edit.putInt("nbOfSMS", 0)
+            edit.putInt("nbOfWhatsappMsg", 0)
             edit.apply()
             isOpen = false
             // sound.stop()
 
-            refresh = true
+            finish()
+        }
+
+        notification_alarm_ReceiveWhatsappMessageLayout!!.setOnClickListener {
+            if (contact != null) {
+                openWhatsapp(contact.getFirstPhoneNumber())
+            } else {
+                openWhatsapp(sbp!!.statusBarNotificationInfo["android.title"] as String)
+            }
+
+            val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+            edit.putInt("nbOfSMS", 0)
+            edit.putInt("nbOfWhatsappMsg", 0)
+            edit.apply()
+            isOpen = false
+            // sound.stop()
+
+            finish()
+        }
+
+        notification_alarm_ReceiveWhatsappMessageLayout_2!!.setOnClickListener {
+            if (contact != null) {
+                openWhatsapp(contact.getFirstPhoneNumber())
+            } else {
+                openWhatsapp(sbp!!.statusBarNotificationInfo["android.title"] as String)
+            }
+
+            val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+            edit.putInt("nbOfSMS", 0)
+            edit.putInt("nbOfWhatsappMsg", 0)
+            edit.apply()
+            isOpen = false
+            // sound.stop()
+
+            finish()
+        }
+
+        notification_Alarm_Button_ShutDown!!.setOnClickListener {
+            val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+            edit.putInt("nbOfSMS", 0)
+            edit.putInt("nbOfWhatsappMsg", 0)
+            edit.apply()
+            isOpen = false
+            // sound.stop()
 
             finish()
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    private fun openSms(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
-        if (sbp!!.appNotifier == "com.whatsapp") {
+        val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+        edit.putInt("nbOfSMS", 0)
+        edit.putInt("nbOfWhatsappMsg", 0)
+        edit.apply()
 
-            cptWhatsappMSG = cptWhatsappMSG!!.plus(1)
-
-        } else if (sbp!!.appNotifier == "com.google.android.apps.messaging"
-                || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
-
-            cptSMS = cptSMS!!.plus(1)
-        }
-
+        startActivity(intent)
         finish()
     }
 
-//    override fun onPause() {
-//        super.onPause()
-//
-//        if (sbp!!.appNotifier == "com.whatsapp") {
-//
-//            cptWhatsappMSG = cptWhatsappMSG!!.plus(1)
-//
-//        } else if (sbp!!.appNotifier == "com.google.android.apps.messaging"
-//                || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
-//
-//            cptSMS = cptSMS!!.plus(1)
-//        }
-//
-//        finish()
-//    }
+    private fun openWhatsapp(phoneNumber: String) {
 
-    override fun onDestroy() {
-        super.onDestroy()
+        val intent = Intent(Intent.ACTION_VIEW)
+        val message = "phone=" + converter06To33(phoneNumber)
+        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
 
-        if (sbp!!.appNotifier == "com.whatsapp") {
+        val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+        edit.putInt("nbOfSMS", 0)
+        edit.putInt("nbOfWhatsappMsg", 0)
+        edit.apply()
 
-            val edit: SharedPreferences.Editor = sharedThemePreferences!!.edit()
+        startActivity(intent)
+        finish()
+    }
 
-            if (refresh) {
+    private fun converter06To33(phoneNumber: String): String {
+        return if (phoneNumber[0] == '0') {
+            "+33 $phoneNumber"
+        } else phoneNumber
+    }
 
-            } else {
-                edit.putInt("nbOfWhatsappMsg", cptWhatsappMSG!!)
-                edit.apply()
-            }
+    override fun onStop() {
+        super.onStop()
 
-        } else if (sbp!!.appNotifier == "com.google.android.apps.messaging"
-                || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
-
-
-            val edit: SharedPreferences.Editor = sharedThemePreferences!!.edit()
-
-            if (refresh) {
-
-            } else {
-                edit.putInt("nbOfSMS", cptSMS!!)
-                edit.apply()
-            }
-        }
+        finish()
     }
 }

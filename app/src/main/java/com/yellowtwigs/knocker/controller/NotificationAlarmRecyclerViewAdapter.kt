@@ -59,6 +59,8 @@ class NotificationAlarmRecyclerViewAdapter(private val context: Context, private
     private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
     private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
 
+    private var sharedNbMessagesPreferences: SharedPreferences? = null
+
     fun getItem(position: Int): StatusBarParcelable {
         return notification_alarm_ListOfNotification[position]
     }
@@ -72,6 +74,9 @@ class NotificationAlarmRecyclerViewAdapter(private val context: Context, private
     override fun onBindViewHolder(holder: NotificationAlarmViewHolder, position: Int) {
         val notification = getItem(position)
         val gestionnaireContacts = ContactManager(context)
+
+        sharedNbMessagesPreferences = context.getSharedPreferences("nbOfSMS", Context.MODE_PRIVATE)
+        sharedNbMessagesPreferences = context.getSharedPreferences("nbOfWhatsappMsg", Context.MODE_PRIVATE)
 
         val contact = gestionnaireContacts.getContact(notification_alarm_ListOfNotification[position].statusBarNotificationInfo["android.title"] as String)
 
@@ -139,7 +144,15 @@ class NotificationAlarmRecyclerViewAdapter(private val context: Context, private
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
-        context.startActivity(intent)
+        val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+        edit.putInt("nbOfSMS", 0)
+        edit.putInt("nbOfWhatsappMsg", 0)
+        edit.apply()
+
+        if (context is NotificationAlarmActivity) {
+            context.startActivity(intent)
+            context.finish()
+        }
     }
 
     private fun openWhatsapp(phoneNumber: String) {
@@ -148,7 +161,15 @@ class NotificationAlarmRecyclerViewAdapter(private val context: Context, private
         val message = "phone=" + converter06To33(phoneNumber)
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
 
-        context.startActivity(intent)
+        val edit: SharedPreferences.Editor = sharedNbMessagesPreferences!!.edit()
+        edit.putInt("nbOfSMS", 0)
+        edit.putInt("nbOfWhatsappMsg", 0)
+        edit.apply()
+
+        if (context is NotificationAlarmActivity) {
+            context.startActivity(intent)
+            context.finish()
+        }
     }
 
     private fun converter06To33(phoneNumber: String): String {

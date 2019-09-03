@@ -23,66 +23,109 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--        <RelativeLayout-->
-        <!--            android:id="@+id/receive_sms_vip_alarm_layout"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_below="@+id/knocker_logo"-->
-        <!--            android:layout_centerHorizontal="true"-->
-        <!--            android:layout_marginTop="30dp">-->
+        <RelativeLayout
+            android:id="@+id/notification_alarm_receive_sms_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notification_alarm_knocker_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_layout_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
 
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                android:layout_marginStart="15dp"-->
-        <!--                android:layout_toEndOf="@+id/receive_sms_vip_alarm_image"-->
-        <!--                android:text="2 nouveaux messages VIP"-->
-        <!--                android:textColor="@color/textColorDark"-->
-        <!--                android:textSize="20sp" />-->
+            <TextView
+                android:id="@+id/notification_alarm_receive_sms_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/notification_alarm_receive_sms_image"
+                android:text="2 nouveaux messages VIP"
+                android:textColor="@color/textColorDark"
+                android:textSize="20sp" />
 
-        <!--            <androidx.appcompat.widget.AppCompatImageView-->
-        <!--                android:id="@+id/receive_sms_vip_alarm_image"-->
-        <!--                android:layout_width="40dp"-->
-        <!--                android:layout_height="40dp"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                app:srcCompat="@drawable/ic_sms" />-->
-        <!--        </RelativeLayout>-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_alarm_receive_sms_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_sms" />
+        </RelativeLayout>
 
-        <!--        <RelativeLayout-->
-        <!--            android:id="@+id/receive_whatsapp_vip_alarm_layout"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_below="@+id/receive_sms_vip_alarm_layout"-->
-        <!--            android:layout_centerHorizontal="true"-->
-        <!--            android:layout_marginTop="10dp">-->
+        <RelativeLayout
+            android:id="@+id/notification_alarm_receive_whatsapp_layout_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notification_alarm_knocker_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_layout_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="invisible">
 
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                android:layout_marginStart="15dp"-->
-        <!--                android:layout_toEndOf="@+id/receive_whatsapp_vip_alarm_image"-->
-        <!--                android:text="2 nouveaux messages VIP"-->
-        <!--                android:textColor="@color/textColorDark"-->
-        <!--                android:textSize="20sp" />-->
+            <TextView
+                android:id="@+id/notification_alarm_receive_whatsapp_message_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/notification_alarm_receive_whatsapp_image_2"
+                android:text="2 nouveaux messages VIP"
+                android:textColor="@color/textColorDark"
+                android:textSize="20sp" />
 
-        <!--            <androidx.appcompat.widget.AppCompatImageView-->
-        <!--                android:id="@+id/receive_whatsapp_vip_alarm_image"-->
-        <!--                android:layout_width="40dp"-->
-        <!--                android:layout_height="40dp"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                app:srcCompat="@drawable/ic_circular_whatsapp" />-->
-        <!--        </RelativeLayout>-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_alarm_receive_whatsapp_image_2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_circular_whatsapp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/notification_alarm_receive_whatsapp_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notification_alarm_receive_whatsapp_layout_2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_layout_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/notification_alarm_receive_whatsapp_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/notification_alarm_receive_whatsapp_image"
+                android:text="2 nouveaux messages VIP"
+                android:textColor="@color/textColorDark"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification_alarm_receive_whatsapp_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_circular_whatsapp" />
+        </RelativeLayout>
 
         <!--        <RelativeLayout-->
         <!--            android:id="@+id/receive_gmail_vip_alarm_layout"-->
         <!--            android:layout_width="wrap_content"-->
         <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_below="@+id/receive_whatsapp_vip_alarm_layout"-->
+        <!--            android:layout_below="@+id/notification_alarm_receive_whatsapp_layout"-->
         <!--            android:layout_centerHorizontal="true"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:layout_marginBottom="10dp">-->
+        <!--            android:layout_marginBottom="10dp"-->
+        <!--            android:visibility="gone">-->
 
         <!--            <TextView-->
         <!--                android:layout_width="wrap_content"-->
@@ -110,16 +153,6 @@
             android:layout_marginTop="10dp"
             app:srcCompat="@drawable/ic_app_image" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notification_alarm_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/notification_alarm_knocker_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="15dp" />
 
     </RelativeLayout>
 
