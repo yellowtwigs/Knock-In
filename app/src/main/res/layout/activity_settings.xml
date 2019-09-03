@@ -8,152 +8,331 @@
     tools:context=".controller.activity.SettingsActivity"
     tools:openDrawer="start">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/backgroundColor">
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/settings_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/backgroundColor"
+            app:itemTextColor="?attr/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/manage_my_screen_toolbar_title"
+            app:titleTextColor="?attr/textColor" />
+
+        <RelativeLayout
+            android:id="@+id/settings_call_popup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/backgroundColor"
-            android:orientation="vertical">
+            android:layout_marginTop="25dp"
+            android:background="@drawable/background_layout_selector_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_toolbar">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/settings_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginBottom="8dp"
-                android:background="?attr/backgroundColor"
-                app:itemTextColor="?attr/textColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="@string/manage_my_screen_toolbar_title"
-                app:titleTextColor="?attr/textColor" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/settings_call_popup"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/background_layout_selector_with_border"
-                android:backgroundTint="?attr/backgroundColor"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
-
-                <TextView
-                    android:id="@+id/settings_call_popup_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/manage_my_screen_contact_popup"
-                    android:textColor="?attr/textColor"
-                    android:textSize="@dimen/settings_subtitle_size"
-                    android:textStyle="normal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/settings_call_popup_long_text"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/manage_my_screen_contact_popup_long_text"
-                    android:textColor="?attr/textColor"
-                    android:textSize="@dimen/settings_long_text_size"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settings_call_popup_title" />
-
-                <Switch
-                    android:id="@+id/settings_call_popup_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <RelativeLayout
-                android:id="@+id/settings_permissions_phone_layout"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/settings_call_popup_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/start_activity_superposition_layout">
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/manage_my_screen_contact_popup"
+                android:textColor="?attr/textColor"
+                android:textSize="@dimen/settings_subtitle_size"
+                android:textStyle="normal" />
 
-                <TextView
-                    android:id="@+id/settings_permissions_phone_title"
-                    android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/settings_call_popup_long_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_alignParentStart="true"
+                android:text="@string/manage_my_screen_contact_popup_long_text"
+                android:layout_below="@+id/settings_call_popup_title"
+                android:layout_toStartOf="@+id/settings_call_popup_switch"
+                android:textColor="?attr/textColor"
+                android:textSize="@dimen/settings_long_text_size"
+                android:textStyle="normal" />
+
+            <Switch
+                android:id="@+id/settings_call_popup_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+        android:id="@+id/settings_permissions_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_activity_superposition_layout">
+
+        <TextView
+        android:id="@+id/settings_permissions_phone_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:text="@string/start_activity_permission_title"
+        android:textColor="?attr/textColor"
+        android:textSize="18sp" />
+
+        <TextView
+        android:id="@+id/settings_permissions_phone_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_permissions_phone_title"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/settings_permissions_phone_button"
+        android:text="@string/start_activity_permission_subtitle"
+        android:textColor="?attr/textColor"
+        android:textSize="12sp" />
+
+        <com.google.android.material.button.MaterialButton
+        android:id="@+id/settings_permissions_phone_button"
+        android:layout_width="@dimen/start_activity_button_width"
+        android:layout_height="@dimen/start_activity_button_height"
+        android:textColor="#000000"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:text="@string/start_activity_button_permission"
+        android:textSize="12sp" />
+
+        <ProgressBar
+        android:id="@+id/settings_permissions_phone_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="30dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/settings_permissions_phone_check"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="30dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_check" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/settings_choose_notif_sound_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="45dp"
+            android:text="@string/manage_my_screen_contact_popup"
+            android:textColor="?attr/textColor"
+            android:visibility="visible"
+            android:textSize="@dimen/settings_subtitle_size"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_call_popup"
+            app:layout_constraintBottom_toTopOf="@id/settings_choose_notif_sound" />
+
+        <HorizontalScrollView
+            android:id="@+id/settings_choose_notif_sound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_choose_notif_sound_title">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="?attr/backgroundColor"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_slap_layout"
+                    android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="25dp"
-                    android:text="@string/start_activity_permission_title"
-                    android:textColor="?attr/textColor"
-                    android:textSize="18sp" />
+                    android:background="@drawable/background_layout_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible">
 
-                <TextView
-                    android:id="@+id/settings_permissions_phone_subtitle"
-                    android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_slap_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_bass_guitar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_notif_sound_slap_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Slap"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_xylo_layout"
+                    android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/settings_permissions_phone_title"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toStartOf="@+id/settings_permissions_phone_button"
-                    android:text="@string/start_activity_permission_subtitle"
-                    android:textColor="?attr/textColor"
-                    android:textSize="12sp" />
+                    android:background="@drawable/background_layout_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/settings_permissions_phone_button"
-                    android:layout_width="@dimen/start_activity_button_width"
-                    android:layout_height="@dimen/start_activity_button_height"
-                    android:textColor="#000000"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:text="@string/start_activity_button_permission"
-                    android:textSize="12sp" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_xylo_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_xylophone" />
 
-                <ProgressBar
-                    android:id="@+id/settings_permissions_phone_loading"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_notif_sound_xylo_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Xylo"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_keyboard_layout"
+                    android:layout_width="95dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="30dp"
-                    android:indeterminate="true"
-                    android:visibility="gone" />
+                    android:background="@drawable/background_layout_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/settings_permissions_phone_check"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="30dp"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/ic_check" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_keyboard_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_piano" />
 
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_notif_sound_keyboard_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Keyboard"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_guitar_layout"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_layout_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_guitar_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_guitar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_notif_sound_guitar_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Guitar"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_drum_layout"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_layout_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_drum_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_drum_set" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_notif_sound_drum_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Drum"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/settings_nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:visibility="gone"
         android:background="?attr/backgroundColor"
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"

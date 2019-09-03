@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.yellowtwigs.knocker.controller.CircularImageView
+        <com.yellowtwigs.knockin.controller.CircularImageView
             android:id="@+id/list_contact_item_contactRoundedImageView"
             android:layout_width="45dp"
             android:layout_height="45dp"
