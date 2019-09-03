@@ -41,7 +41,6 @@
         <activity android:name="com.yellowtwigs.knocker.controller.activity.ContactDetailsActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.MessengerActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.SettingsActivity" />
-        <activity android:name=".controller.activity.KnockerInfos" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.StartActivity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -56,8 +55,7 @@
         <activity android:name="com.yellowtwigs.knocker.controller.activity.MultiChannelActivity" />
         <activity
             android:name="com.yellowtwigs.knocker.controller.activity.NotificationAlarmActivity"
-            android:showOnLockScreen="true"
-            android:turnScreenOn="true"
+            android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.firstLaunch.MultiSelectActivity" />
         <activity android:name="com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity" />

@@ -1,26 +1,27 @@
 package com.yellowtwigs.knocker.controller.activity
 
+import android.annotation.SuppressLint
 import android.app.KeyguardManager
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import com.yellowtwigs.knocker.R
-import android.view.WindowManager
-import android.widget.TextView
-import com.yellowtwigs.knocker.model.StatusBarParcelable
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.RelativeLayout
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.yellowtwigs.knocker.controller.NotificationAlarmRecyclerViewAdapter
+import com.yellowtwigs.knocker.R
 import com.yellowtwigs.knocker.model.ContactManager
-import com.yellowtwigs.knocker.model.ModelDB.NotificationDB
+import com.yellowtwigs.knocker.model.StatusBarParcelable
+
 
 class NotificationAlarmActivity : AppCompatActivity() {
 
@@ -29,7 +30,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var notification_Alarm_Button_ShutDown: MaterialButton? = null
 
     private var notification_alarm_RecyclerView: RecyclerView? = null
-    private var notification_alarm_RecyclerViewAdapter: NotificationAlarmRecyclerViewAdapter? = null
     private var sharedNbMessagesPreferences: SharedPreferences? = null
 
     private var sbp: StatusBarParcelable? = null
@@ -46,6 +46,11 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var cptWhatsappMSG: Int? = null
 
     private var isOpen = true
+
+    private val ADMIN_INTENT = 15
+    private val description = "Some Description About Your Admin"
+    private var mDevicePolicyManager: DevicePolicyManager? = null
+    private var mComponentName: ComponentName? = null
 
     //endregion
 
@@ -77,6 +82,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         //endregion
 
+        //region ================================== StatusBarParcelable =====================================
+
         sbp = intent.extras!!.get("notification") as StatusBarParcelable
         val contact_id = intent.extras!!.get("contact_id") as Int
 
@@ -90,9 +97,9 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
             if (cptWhatsappMSG!! > 0) {
 
-                if(cptWhatsappMSG!! == 1){
+                if (cptWhatsappMSG!! == 1) {
                     notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_message_received)
-                }else{
+                } else {
                     notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
                 }
                 notification_alarm_ReceiveWhatsappMessageLayout!!.visibility = View.VISIBLE
@@ -127,13 +134,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
             if (cptSMS!! > 0) {
                 notification_alarm_ReceiveSMSLayout!!.visibility = View.VISIBLE
 
-                if(cptSMS!! == 1){
+                if (cptSMS!! == 1) {
                     notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_message_received)
-                }else{
+                } else {
                     notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
                 }
                 notification_alarm_ReceiveWhatsappMessageLayout!!.visibility = View.VISIBLE
-            }else{
+            } else {
                 notification_alarm_ReceiveWhatsappMessageLayout_2!!.visibility = View.VISIBLE
             }
 
@@ -168,6 +175,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 }
             }
         }
+
+        //endregion
 
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         println("I'm into alarm")
@@ -303,6 +312,17 @@ class NotificationAlarmActivity : AppCompatActivity() {
         return if (phoneNumber[0] == '0') {
             "+33 $phoneNumber"
         } else phoneNumber
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ADMIN_INTENT) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(applicationContext, "Registered As Admin", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "Failed to register as Admin", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onStop() {
