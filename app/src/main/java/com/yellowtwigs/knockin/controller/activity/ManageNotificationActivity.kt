@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -18,9 +18,9 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.controller.NotificationSender
-import com.yellowtwigs.knocker.controller.activity.firstLaunch.MultiSelectActivity
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.NotificationSender
+import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_manage_notification.*

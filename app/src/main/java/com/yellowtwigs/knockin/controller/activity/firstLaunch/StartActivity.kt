@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity.firstLaunch
+package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.Manifest
 import android.content.*
@@ -14,9 +14,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.model.ContactManager
-import com.yellowtwigs.knocker.model.DbWorkerThread
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.content.Intent
@@ -24,8 +24,8 @@ import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AlertDialog
-import com.yellowtwigs.knocker.model.ModelDB.ContactDB
-import com.yellowtwigs.knocker.model.ModelDB.ContactDetailDB
+import com.yellowtwigs.knockin.model.ModelDB.ContactDB
+import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 
 /**

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity.group;
+package com.yellowtwigs.knockin.controller.activity.group;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,10 +24,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yellowtwigs.knocker.R;
-import com.yellowtwigs.knocker.model.ContactsRoomDatabase;
-import com.yellowtwigs.knocker.model.DbWorkerThread;
-import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knockin.R;
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase;
+import com.yellowtwigs.knockin.model.DbWorkerThread;
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;

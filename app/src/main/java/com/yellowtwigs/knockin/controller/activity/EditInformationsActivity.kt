@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
 import android.app.Activity
@@ -26,7 +26,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
-import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knockin.R
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -34,7 +34,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.yellowtwigs.knocker.controller.CircularImageView
+import com.yellowtwigs.knockin.controller.CircularImageView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText

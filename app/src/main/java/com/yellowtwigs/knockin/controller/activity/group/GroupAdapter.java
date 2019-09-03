@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity.group;
+package com.yellowtwigs.knockin.controller.activity.group;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -32,17 +32,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yellowtwigs.knocker.R;
-import com.yellowtwigs.knocker.controller.CircularImageView;
-import com.yellowtwigs.knocker.controller.activity.EditContactActivity;
-import com.yellowtwigs.knocker.model.ContactGesture;
-import com.yellowtwigs.knocker.model.ContactManager;
-import com.yellowtwigs.knocker.model.ContactsRoomDatabase;
-import com.yellowtwigs.knocker.model.DbWorkerThread;
-import com.yellowtwigs.knocker.model.ModelDB.ContactDB;
-import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation;
-import com.yellowtwigs.knocker.model.ModelDB.GroupDB;
-import com.yellowtwigs.knocker.model.ModelDB.GroupWithContact;
+import com.yellowtwigs.knockin.R;
+import com.yellowtwigs.knockin.controller.CircularImageView;
+import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
+import com.yellowtwigs.knockin.model.ContactGesture;
+import com.yellowtwigs.knockin.model.ContactManager;
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase;
+import com.yellowtwigs.knockin.model.DbWorkerThread;
+import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knockin.model.ModelDB.GroupDB;
+import com.yellowtwigs.knockin.model.ModelDB.GroupWithContact;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 

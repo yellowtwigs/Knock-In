@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -18,7 +18,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -30,16 +29,16 @@ import com.baoyz.swipemenulistview.SwipeMenu
 import com.baoyz.swipemenulistview.SwipeMenuCreator
 import com.baoyz.swipemenulistview.SwipeMenuItem
 import com.baoyz.swipemenulistview.SwipeMenuListView
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.controller.NotificationsHistoryListViewAdapter
-import com.yellowtwigs.knocker.controller.NotificationListener
-import com.yellowtwigs.knocker.controller.activity.firstLaunch.TutorialActivity
-import com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity
-import com.yellowtwigs.knocker.model.ContactManager
-import com.yellowtwigs.knocker.model.ContactsRoomDatabase
-import com.yellowtwigs.knocker.model.DbWorkerThread
-import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knocker.model.ModelDB.NotificationDB
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.NotificationsHistoryListViewAdapter
+import com.yellowtwigs.knockin.controller.NotificationListener
+import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView

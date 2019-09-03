@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,11 +20,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.controller.CircularImageView
-import com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity
-import com.yellowtwigs.knocker.model.*
-import com.yellowtwigs.knocker.model.ModelDB.*
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knockin.model.*
+import com.yellowtwigs.knockin.model.ModelDB.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -24,14 +24,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yellowtwigs.knocker.*
-import com.yellowtwigs.knocker.controller.CircularImageView
-import com.yellowtwigs.knocker.controller.ContactIconeAdapter
-import com.yellowtwigs.knocker.model.*
-import com.yellowtwigs.knocker.model.ModelDB.ContactDB
-import com.yellowtwigs.knocker.model.ModelDB.ContactDetailDB
-import com.yellowtwigs.knocker.model.ModelDB.GroupDB
-import com.yellowtwigs.knocker.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.*
+import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.controller.ContactIconeAdapter
+import com.yellowtwigs.knockin.model.*
+import com.yellowtwigs.knockin.model.ModelDB.ContactDB
+import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
+import com.yellowtwigs.knockin.model.ModelDB.GroupDB
+import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout

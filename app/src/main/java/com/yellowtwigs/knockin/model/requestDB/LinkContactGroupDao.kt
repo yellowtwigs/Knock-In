@@ -1,9 +1,9 @@
-package com.yellowtwigs.knocker.model.requestDB
+package com.yellowtwigs.knockin.model.requestDB
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.yellowtwigs.knocker.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
 
 @Dao
 interface LinkContactGroupDao {

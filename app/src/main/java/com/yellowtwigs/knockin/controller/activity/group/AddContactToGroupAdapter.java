@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity.group;
+package com.yellowtwigs.knockin.controller.activity.group;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,10 +15,10 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.yellowtwigs.knocker.R;
-import com.yellowtwigs.knocker.controller.CircularImageView;
-import com.yellowtwigs.knocker.model.ModelDB.ContactDB;
-import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knockin.R;
+import com.yellowtwigs.knockin.controller.CircularImageView;
+import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;

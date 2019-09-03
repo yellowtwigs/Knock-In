@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,7 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.yellowtwigs.knocker.R
+import com.yellowtwigs.knockin.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 

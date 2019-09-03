@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity.firstLaunch
+package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,10 +7,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.controller.SelectContactAdapter
-import com.yellowtwigs.knocker.model.ContactManager
-import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.SelectContactAdapter
+import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity.group
+package com.yellowtwigs.knockin.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
@@ -10,11 +10,11 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.model.ContactsRoomDatabase
-import com.yellowtwigs.knocker.model.ModelDB.ContactDB
-import com.yellowtwigs.knocker.model.ModelDB.GroupDB
-import com.yellowtwigs.knocker.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ModelDB.ContactDB
+import com.yellowtwigs.knockin.model.ModelDB.GroupDB
+import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
 
 /**
  * Activité qui nous permet de créer un groupe

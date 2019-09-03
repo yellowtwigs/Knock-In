@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
@@ -18,9 +18,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.model.ContactManager
-import com.yellowtwigs.knocker.model.StatusBarParcelable
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.StatusBarParcelable
 
 
 class NotificationAlarmActivity : AppCompatActivity() {

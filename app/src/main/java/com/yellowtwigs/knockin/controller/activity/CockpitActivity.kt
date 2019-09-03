@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity
+package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -28,9 +28,9 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.controller.activity.firstLaunch.TutorialActivity
-import com.yellowtwigs.knocker.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.google.android.material.navigation.NavigationView
 import java.util.ArrayList
 

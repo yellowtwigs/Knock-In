@@ -1,9 +1,9 @@
-package com.yellowtwigs.knocker.model.requestDB
+package com.yellowtwigs.knockin.model.requestDB
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.yellowtwigs.knocker.model.ModelDB.ContactDetailDB
+import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table contact detail

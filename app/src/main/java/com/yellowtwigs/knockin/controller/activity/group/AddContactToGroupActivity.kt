@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.controller.activity.group
+package com.yellowtwigs.knockin.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
@@ -8,11 +8,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
-import com.yellowtwigs.knocker.R
-import com.yellowtwigs.knocker.model.ContactsRoomDatabase
-import com.yellowtwigs.knocker.model.ModelDB.ContactDB
-import com.yellowtwigs.knocker.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knocker.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ModelDB.ContactDB
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
