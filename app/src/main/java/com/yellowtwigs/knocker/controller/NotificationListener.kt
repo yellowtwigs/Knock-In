@@ -112,7 +112,9 @@ class NotificationListener : NotificationListenerService() {
                                 if (screenListener.isKeyguardLocked) {
                                     val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
                                     i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
                                     i.putExtra("notification", sbp)
+                                    i.putExtra("contact_id", contact.getContactId())
                                     startActivity(i)
                                 } else {
                                     println("screenIsUnlocked")

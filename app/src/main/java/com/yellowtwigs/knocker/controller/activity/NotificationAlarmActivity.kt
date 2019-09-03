@@ -78,9 +78,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
         //endregion
 
         sbp = intent.extras!!.get("notification") as StatusBarParcelable
+        val contact_id = intent.extras!!.get("contact_id") as Int
 
         val gestionnaireContacts = ContactManager(this)
-        val contact = gestionnaireContacts.getContact(sbp!!.statusBarNotificationInfo["android.title"] as String)
+        val contact = gestionnaireContacts.getContactById(contact_id)
 
         if (sbp!!.appNotifier == "com.google.android.apps.messaging"
                 || sbp!!.appNotifier == "com.android.mms" || sbp!!.appNotifier == "com.samsung.android.messaging") {
@@ -88,9 +89,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
             notification_alarm_ReceiveSMSLayout!!.visibility = View.VISIBLE
 
             if (cptWhatsappMSG!! > 0) {
+
+                if(cptWhatsappMSG!! == 1){
+                    notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_message_received)
+                }else{
+                    notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+                }
                 notification_alarm_ReceiveWhatsappMessageLayout!!.visibility = View.VISIBLE
-                notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_message_received)
-                notification_alarm_ReceiveWhatsappMessageTextView!!.text = cptWhatsappMSG!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
             }
 
             when (cptSMS) {
@@ -121,8 +126,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
             if (cptSMS!! > 0) {
                 notification_alarm_ReceiveSMSLayout!!.visibility = View.VISIBLE
-                notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_message_received)
-                notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+
+                if(cptSMS!! == 1){
+                    notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_message_received)
+                }else{
+                    notification_alarm_ReceiveSMSTextView!!.text = cptSMS!!.toString() + " " + getString(R.string.notification_alarm_messages_received)
+                }
                 notification_alarm_ReceiveWhatsappMessageLayout!!.visibility = View.VISIBLE
             }else{
                 notification_alarm_ReceiveWhatsappMessageLayout_2!!.visibility = View.VISIBLE

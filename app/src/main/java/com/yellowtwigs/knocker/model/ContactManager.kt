@@ -33,6 +33,13 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     private var mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
     private var contactsDatabase: ContactsRoomDatabase? = null
 
+    private val FACEBOOK_PACKAGE = "com.facebook.katana"
+    private val MESSENGER_PACKAGE = "com.facebook.orca"
+    private val WHATSAPP_SERVICE = "com.whatsapp"
+    private val GMAIL_PACKAGE = "com.google.android.gm"
+    private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
+    private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+
     init {
         mDbWorkerThread.start()
         contactsDatabase = ContactsRoomDatabase.getDatabase(context)

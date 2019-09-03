@@ -105,12 +105,10 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val showButton = view.findViewById<View>(R.id.item_notification_show_message) as AppCompatButton
         val callButton = view.findViewById<View>(R.id.item_notification_call) as AppCompatButton
 
-
         val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.item_notif_adapter_top_bar)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
         app.text = convertPackageToString(sbp.appNotifier!!)
-
 
         editText.setText(listOftext.get(position))
         System.out.println("text content" + listOftext[position] + " message" + sbp.statusBarNotificationInfo["android.text"])
