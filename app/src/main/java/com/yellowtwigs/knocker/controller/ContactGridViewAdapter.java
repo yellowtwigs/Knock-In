@@ -80,7 +80,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         this.listOfItemSelected.clear();
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
-    public void setGestionnairecontact(ContactManager gestionnaireContact) {
+    public void setGestionnaireContact(ContactManager gestionnaireContact) {
         this.gestionnaireContact = gestionnaireContact;
     }
 

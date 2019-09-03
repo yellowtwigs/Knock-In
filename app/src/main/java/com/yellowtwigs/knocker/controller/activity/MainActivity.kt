@@ -75,7 +75,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_RecyclerView: RecyclerView? = null
     private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
 
-
     // Floating Button
     private var main_FloatingButtonAddNewContact: FloatingActionButton? = null
     private var main_FloatingButtonMultiChannel: FloatingActionButton? = null
@@ -500,7 +499,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle(R.string.main_edited_contact)
-                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + this.resources.getString(R.string.main_content_edited_contact_2))
+                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + " " + this.resources.getString(R.string.main_content_edited_contact_2))
                                 .setPositiveButton(R.string.app_name) { _, _ ->
                                     // on garde la version Knocker
                                 }
@@ -533,8 +532,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                             val result = executorService.submit(callDb)
                                             gestionnaireContacts!!.contactList.addAll(result.get())
                                         }
-                                        gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
-                                        gridViewAdapter!!.notifyDataSetChanged()
+
+                                        if (gridViewAdapter != null) {
+                                            gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
+                                            gridViewAdapter!!.notifyDataSetChanged()
+                                        }
+
+                                        if (recyclerViewAdapter != null) {
+                                            recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
+                                            recyclerViewAdapter!!.notifyDataSetChanged()
+                                        }
                                     }
                                     runOnUiThread(displaySync)
                                 }
@@ -560,13 +567,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                         if (len >= 3) {
                             main_GridView!!.visibility = View.VISIBLE
-                            gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                            gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                             gridViewAdapter!!.notifyDataSetChanged()
                         } else {
                             main_RecyclerView!!.visibility = View.VISIBLE
                             recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                             recyclerViewAdapter!!.notifyDataSetChanged()
                         }
+
+                        refreshActivity()
                         mainDrawerLayout!!.closeDrawers()
                     }
                     runOnUiThread(displaySync)

@@ -455,7 +455,7 @@ class GroupActivity : AppCompatActivity() {
                                             val result = executorService.submit(callDb)
                                             gestionnaireContacts!!.contactList.addAll(result.get())
                                         }
-                                        gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                                        gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                                         gridViewAdapter!!.notifyDataSetChanged()
                                     }
                                     runOnUiThread(displaySync)
@@ -487,7 +487,7 @@ class GroupActivity : AppCompatActivity() {
 
                         if (len >= 3) {
                             group_GridView!!.visibility = View.VISIBLE
-                            gridViewAdapter!!.setGestionnairecontact(gestionnaireContacts!!)
+                            gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                             gridViewAdapter!!.notifyDataSetChanged()
                         } else {
                             group_RecyclerView!!.visibility = View.VISIBLE
