@@ -25,7 +25,7 @@
             app:layout_constraintBottom_toTopOf="@+id/notification_popup_main_layout">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/notification_popup_knocker_logo"
+                android:id="@+id/notification_popup_Knockin_logo"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="16dp"
@@ -45,7 +45,7 @@
                 android:textColor="@color/textColorDark"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/notification_popup_knocker_logo"
+                app:layout_constraintStart_toEndOf="@+id/notification_popup_Knockin_logo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView

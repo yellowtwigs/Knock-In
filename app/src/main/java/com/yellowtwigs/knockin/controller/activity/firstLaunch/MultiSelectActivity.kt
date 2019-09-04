@@ -95,7 +95,7 @@ class MultiSelectActivity : AppCompatActivity() {
         }
 
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle("Knocker")
+                .setTitle("Knockin")
                 .setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->

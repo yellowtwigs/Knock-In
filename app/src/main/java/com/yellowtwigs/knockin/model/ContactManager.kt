@@ -672,7 +672,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                 lastSync = sharedPreferences.getString("last_sync_2", "")!!
                                 //on regarde si on a pas deja enregistré le contact lors de la dernière synchro
                                 if (!isDuplicateContacts(fullName, lastSync)) {
-                                    //on enregistre dans la database le contact et on recupere son id Knocker
+                                    //on enregistre dans la database le contact et on recupere son id Knockin
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
                                     //on serialise le nouveau contact ( idAndroid:
                                     lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
@@ -792,25 +792,25 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         return allContacts
     }
 
-    private fun isSameContact(knockerContact: ContactWithAllInformation?, fullname: Triple<String, String, String>, contactDetail: List<ContactDetailDB>): Boolean {
+    private fun isSameContact(KnockinContact: ContactWithAllInformation?, fullname: Triple<String, String, String>, contactDetail: List<ContactDetailDB>): Boolean {
         var isSame = true
         if (fullname.second != "") {
-            if (knockerContact!!.contactDB!!.firstName != fullname.first || knockerContact.contactDB!!.lastName != fullname.second + " " + fullname.third) {
+            if (KnockinContact!!.contactDB!!.firstName != fullname.first || KnockinContact.contactDB!!.lastName != fullname.second + " " + fullname.third) {
                 return false
             }
         } else {
-            if (knockerContact!!.contactDB!!.firstName != fullname.first || knockerContact.contactDB!!.lastName != fullname.third) {
+            if (KnockinContact!!.contactDB!!.firstName != fullname.first || KnockinContact.contactDB!!.lastName != fullname.third) {
                 return false
             }
         }
-        if (knockerContact.contactDetailList!!.size != contactDetail.size) {
+        if (KnockinContact.contactDetailList!!.size != contactDetail.size) {
             return false
         }
         var alreadyCheck: Int
-        knockerContact.contactDetailList!!.forEach { knocker ->
+        KnockinContact.contactDetailList!!.forEach { Knockin ->
             alreadyCheck = 0
             contactDetail.forEach {
-                if (alreadyCheck == 0 && (knocker.type != it.type || knocker.content != it.content || knocker.tag != it.tag)) {
+                if (alreadyCheck == 0 && (Knockin.type != it.type || Knockin.content != it.content || Knockin.tag != it.tag)) {
                     isSame = false
                 } else {
                     alreadyCheck = 1
@@ -825,14 +825,14 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
 
     private fun getContactWithAndroidId(androidId: Int, lastSync: String): ContactWithAllInformation? {
         var contact: ContactWithAllInformation? = null
-        var knockerId = -1
+        var KnockinId = -1
         val allId = sliceLastSync(lastSync)
         allId.forEach {
             if (androidId == it.first)
-                knockerId = it.second
+                KnockinId = it.second
         }
-        if (knockerId != -1) {
-            contact = contactsDatabase?.contactsDao()?.getContact(knockerId)
+        if (KnockinId != -1) {
+            contact = contactsDatabase?.contactsDao()?.getContact(KnockinId)
         }
         return contact
     }

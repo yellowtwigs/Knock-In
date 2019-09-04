@@ -29,7 +29,7 @@ class NotificationSender : BroadcastReceiver() {
                     NotificationManager.IMPORTANCE_DEFAULT)
             manager.createNotificationChannel(channel)
         }
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         if (!isNotificationServiceEnabled(context) && sharedPreferences.getBoolean("reminder",false)) {
 
             var main_ContactsDatabase: ContactsRoomDatabase? = null

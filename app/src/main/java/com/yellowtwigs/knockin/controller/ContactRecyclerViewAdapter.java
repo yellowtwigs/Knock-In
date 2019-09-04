@@ -111,7 +111,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             if (contact.getContactPriority() == 0) {
                 holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor, null));
             } else if (contact.getContactPriority() == 1) {
-                SharedPreferences sharedPreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE);
                 if (sharedPreferences.getBoolean("darkTheme", false)) {
                     holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight, null));
                 } else {
@@ -151,7 +151,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
         }
         if (firstGroup == null) {
-            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE);
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);

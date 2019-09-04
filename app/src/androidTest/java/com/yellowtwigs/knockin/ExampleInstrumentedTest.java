@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.yellowtwigs.knocker", appContext.getPackageName());
+        assertEquals("com.yellowtwigs.Knockin", appContext.getPackageName());
     }
 }

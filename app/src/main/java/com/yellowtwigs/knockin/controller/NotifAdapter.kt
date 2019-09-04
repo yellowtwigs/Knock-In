@@ -243,7 +243,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                             //closeNotificationPopup()
                         } else {
                             //TODO In english
-                            Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knocker", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knockin", Toast.LENGTH_LONG).show()
 
                             if (contact != null) {
                                 openSms(contact.getFirstPhoneNumber(), editText.text.toString())
@@ -372,7 +372,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
     private fun closeNotificationPopup() {
         windowManager.removeView(view)
-        val sharedPreferences = context.getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         edit.putBoolean("view", false)
         edit.apply()

@@ -27,7 +27,7 @@
             android:id="@+id/notification_alarm_receive_sms_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/notification_alarm_knocker_logo"
+            android:layout_below="@+id/notification_alarm_Knockin_logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
@@ -59,7 +59,7 @@
             android:id="@+id/notification_alarm_receive_whatsapp_layout_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/notification_alarm_knocker_logo"
+            android:layout_below="@+id/notification_alarm_Knockin_logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
@@ -146,7 +146,7 @@
         <!--        </RelativeLayout>-->
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/notification_alarm_knocker_logo"
+            android:id="@+id/notification_alarm_Knockin_logo"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_centerHorizontal="true"

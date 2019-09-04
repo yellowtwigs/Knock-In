@@ -60,7 +60,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {

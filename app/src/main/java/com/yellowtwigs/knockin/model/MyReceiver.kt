@@ -1,4 +1,4 @@
-//package com.example.knocker.model
+//package com.example.Knockin.model
 //
 //import android.annotation.SuppressLint
 //import android.annotation.TargetApi
@@ -13,8 +13,8 @@
 //import android.widget.ListView
 //import android.widget.Toast
 //
-//import com.example.knocker.R
-//import com.example.knocker.controller.MessageListAdapter
+//import com.example.Knockin.R
+//import com.example.Knockin.controller.MessageListAdapter
 //
 //import java.text.SimpleDateFormat
 //import java.util.ArrayList

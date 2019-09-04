@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -41,13 +42,19 @@ class SettingsActivity : AppCompatActivity() {
     private var settings_PermissionsPhoneLoading: ProgressBar? = null
     private var settings_PermissionsPhoneChecked: AppCompatImageView? = null
 
+    private var settings_NotifSoundSlapLayout: RelativeLayout? = null
+    private var settings_NotifSoundXyloLayout: RelativeLayout? = null
+    private var settings_NotifSoundKeyboardLayout: RelativeLayout? = null
+    private var settings_NotifSoundGuitarLayout: RelativeLayout? = null
+    private var settings_NotifSoundDrumLayout: RelativeLayout? = null
+
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -63,7 +70,7 @@ class SettingsActivity : AppCompatActivity() {
 
 //        searchbarPos = sharedPreferencePopup.getBoolean("searchbarPos", false)
 
-        //region ========================================== FindViewById ==========================================
+        //region ======================================= FindViewById =======================================
 
         settings_CallPopupSwitch = findViewById(R.id.settings_call_popup_switch)
 //        settings_SearchBarPosSwitch = findViewById(R.id.settings_searchbar_pos_switch)
@@ -75,7 +82,13 @@ class SettingsActivity : AppCompatActivity() {
         settings_PermissionsPhoneChecked = findViewById(R.id.settings_permissions_phone_check)
         val phoneCallAlertTv = findViewById<TextView>(R.id.settings_permissions_phone_subtitle)
 
-        phoneCallAlertTv.text = String.format(getString(R.string.start_activity_permission_subtitle),getString(R.string.app_name))
+        phoneCallAlertTv.text = String.format(getString(R.string.start_activity_permission_subtitle), getString(R.string.app_name))
+
+        settings_NotifSoundSlapLayout = findViewById(R.id.settings_notif_sound_slap_layout)
+        settings_NotifSoundXyloLayout = findViewById(R.id.settings_notif_sound_xylo_layout)
+        settings_NotifSoundKeyboardLayout = findViewById(R.id.settings_notif_sound_keyboard_layout)
+        settings_NotifSoundGuitarLayout = findViewById(R.id.settings_notif_sound_guitar_layout)
+        settings_NotifSoundDrumLayout = findViewById(R.id.settings_notif_sound_drum_layout)
 
         //endregion
 
@@ -124,7 +137,7 @@ class SettingsActivity : AppCompatActivity() {
 
         //endregion
 
-        if (checkPermission(Manifest.permission.SEND_SMS) && checkPermission(Manifest.permission.CALL_PHONE) ) {
+        if (checkPermission(Manifest.permission.SEND_SMS) && checkPermission(Manifest.permission.CALL_PHONE)) {
             settings_PermissionsPhoneLayout!!.visibility = View.GONE
         } else {
             settings_PermissionsPhoneLayout!!.visibility = View.VISIBLE
@@ -160,6 +173,28 @@ class SettingsActivity : AppCompatActivity() {
             settings_PermissionsPhoneMaterialButton!!.visibility = View.INVISIBLE
             settings_PermissionsPhoneLoading!!.visibility = View.VISIBLE
         }
+
+        settings_NotifSoundSlapLayout!!.setOnClickListener {
+            val notification_AlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
+            notification_AlarmSound.start()
+        }
+
+        settings_NotifSoundXyloLayout!!.setOnClickListener {
+//            val notification_AlarmSound = MediaPlayer.create(this, R.raw.slap)
+//            notification_AlarmSound.start()
+        }
+        settings_NotifSoundKeyboardLayout!!.setOnClickListener {
+//            val notification_AlarmSound = MediaPlayer.create(this, R.raw.slap)
+//            notification_AlarmSound.start()
+        }
+//        settings_NotifSoundGuitarLayout!!.setOnClickListener {
+//            val notification_AlarmSound = MediaPlayer.create(this, R.raw.slap)
+//            notification_AlarmSound.start()
+//        }
+//        settings_NotifSoundDrumLayout!!.setOnClickListener {
+//            val notification_AlarmSound = MediaPlayer.create(this, R.raw.slap)
+//            notification_AlarmSound.start()
+//        }
     }
 
     @SuppressLint("ShowToast")
@@ -183,9 +218,9 @@ class SettingsActivity : AppCompatActivity() {
         if (REQUEST_CODE_SMS_AND_CALL == requestCode && checkPermission(Manifest.permission.SEND_SMS) && checkPermission(Manifest.permission.CALL_PHONE)) {
             settings_PermissionsPhoneLoading!!.visibility = View.INVISIBLE
             settings_PermissionsPhoneChecked!!.visibility = View.VISIBLE
-        }else{
+        } else {
             settings_PermissionsPhoneLoading!!.visibility = View.INVISIBLE
-            settings_PermissionsPhoneMaterialButton!!.visibility = View.VISIBLE  
+            settings_PermissionsPhoneMaterialButton!!.visibility = View.VISIBLE
         }
     }
 

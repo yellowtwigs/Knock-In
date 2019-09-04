@@ -126,7 +126,7 @@ class StartActivity : AppCompatActivity() {
                 start_activity_ActivateNotificationsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
-            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans knocker une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
+            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
             val verifiedNotification = Thread {
                 activityVisible = false
                 while (!activityVisible) {
@@ -140,7 +140,7 @@ class StartActivity : AppCompatActivity() {
                         Handler().postDelayed({
                             start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
                             start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
-                            val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                             val edit: SharedPreferences.Editor = sharedPreferences.edit()
                             edit.putBoolean("serviceNotif", true)
                             edit.apply()
@@ -175,7 +175,7 @@ class StartActivity : AppCompatActivity() {
                 start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
-            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans knocker une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
+            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
             val verifiedSuperposition = Thread {
                 activityVisible = false
                 while (!activityVisible) {
@@ -190,7 +190,7 @@ class StartActivity : AppCompatActivity() {
                         Handler().postDelayed({
                             start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
                             start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
-                            val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                             val edit: SharedPreferences.Editor = sharedPreferences.edit()
                             edit.putBoolean("popupNotif", true)
                             edit.apply()
@@ -290,7 +290,7 @@ class StartActivity : AppCompatActivity() {
     private fun activateNotificationsClick() {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
-        intentFilter.addAction("com.yellowtwigs.knocker.notificationExemple")
+        intentFilter.addAction("com.yellowtwigs.Knockin.notificationExemple")
     }
 
     companion object {
@@ -309,7 +309,7 @@ class StartActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.notification_alert_dialog_message))
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     startActivity(Intent(this@StartActivity, MultiSelectActivity::class.java))
-                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putBoolean("view", true)
                     edit.apply()
@@ -345,7 +345,7 @@ class StartActivity : AppCompatActivity() {
                     val intent = Intent(this@StartActivity, TutorialActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
-                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putBoolean("view", true)
                     edit.apply()

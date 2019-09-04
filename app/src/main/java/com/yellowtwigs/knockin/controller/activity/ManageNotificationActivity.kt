@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_manage_notification.*
 import java.util.*
 
 /**
- * La Classe qui permet d'activer ou desactiver les notifications de knocker
+ * La Classe qui permet d'activer ou desactiver les notifications de Knockin
  * @author Florian Striebel
  */
 class ManageNotificationActivity : AppCompatActivity() {
@@ -47,7 +47,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -58,7 +58,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_manage_notification)
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
 
         switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
@@ -269,7 +269,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.notification_alert_dialog_message))
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     startActivity(Intent(this@ManageNotificationActivity, MultiSelectActivity::class.java))
-                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putBoolean("view", true)
                     edit.apply()
@@ -289,13 +289,13 @@ class ManageNotificationActivity : AppCompatActivity() {
     private fun positiveAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
-        intentFilter.addAction("com.yellowtwigs.knocker.notificationExemple")
+        intentFilter.addAction("com.yellowtwigs.Knockin.notificationExemple")
         alertDialog.cancel()
         val thread = Thread {
             activityVisible = false
             while (!isNotificationServiceEnabled && !activityVisible) {
             }
-            val sharedPreferences: SharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (isNotificationServiceEnabled) {
                 edit.putBoolean("serviceNotif", true)

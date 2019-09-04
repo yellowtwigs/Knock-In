@@ -133,7 +133,7 @@ public class SelectContactAdapter extends BaseAdapter {
         }
         if (firstGroup == null) {
             System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
-            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE);
+            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE);
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);

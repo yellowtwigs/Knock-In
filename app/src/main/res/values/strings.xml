@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!--   <string name="app_name">Knocker</string>-->
+    <!--   <string name="app_name">Knockin</string>-->
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contacts@yellowtwigs.com</string>
 
@@ -84,9 +84,9 @@
 
     <string name="main_edited_contact">Modified contact</string>
     <string name="main_content_edited_contact">The contact </string>
-    <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knocker one?</string>
+    <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knockin one?</string>
     <string name="main_android_edited_contact">Android</string>
-    <!--<string name="main_knocker_edited_contact">Knocker</string>-->
+    <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
 
     <string name="main_contact_grid_title">Do you want to call this contact?</string>
     <string name="main_contact_grid_message">You can disable this validation from the options</string>
@@ -116,7 +116,7 @@
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
     <string name="add_new_contact_priority0">All the notifications related to this contact will be disabled</string>
     <string name="add_new_contact_priority1">All the notifications related to this contact will be treated like standard Android notifications</string>
-    <string name="add_new_contact_priority2">All the notifications related to this contact will have high-priority (Knocker VIP)</string>
+    <string name="add_new_contact_priority2">All the notifications related to this contact will have high-priority (Knockin VIP)</string>
     <string name="add_new_contact_toast">" Firstname field must be populated!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -241,7 +241,7 @@
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Notification parameters</string>
-    <string name="notification_manager_stop_popup"> Allow Knocker to display priority notifications</string>
+    <string name="notification_manager_stop_popup"> Allow Knockin to display priority notifications</string>
     <string name="notification_manager_stop_service"> Enable the notification service</string>
     <string name="notification_manager_horaire"> Select recall daily time to view all your notifications</string>
     <string name="notification_manager_prio_1"> Hide priority 1 notifications</string>
@@ -282,7 +282,7 @@
 
     <!-- region Alert Dialog Notifications -->
 
-    <string name="alert_dialog_notification_message">Authorize Knocker to access your notifications and prioritize them</string>
+    <string name="alert_dialog_notification_message">Authorize Knockin to access your notifications and prioritize them</string>
     <string name="alert_dialog_notification_allow_it">Authorize</string>
     <string name="alert_dialog_notification_dismiss">Do not authorize</string>
 
@@ -327,7 +327,7 @@
     <!-- region Alert Dialog -->
 
     <string name="multi_select_alert_dialog_title">Notifications display</string>
-    <string name="multi_select_alert_dialog_message"> Do you authorize Knocker to display high priority notifications</string>
+    <string name="multi_select_alert_dialog_message"> Do you authorize Knockin to display high priority notifications</string>
     <string name="multi_select_alert_dialog_allow_it">Authorize</string>
     <string name="multi_select_alert_dialog_dismiss">Do not authorize</string>
     <string name="multi_select_alert_dialog_nb_contact">You have selected %1s %2s </string>
@@ -347,8 +347,8 @@
     <!-- region Notification Sender -->
 
     <string name="notification_sender_content_title">Interactions summary</string>
-    <string name="notification_sender_content_text">Knocker has treated %1s messages since yesterday</string>
-    <string name="notification_sender_big_text">Knocker has received %1s new unread messages \n you can view them in "Notifications"</string>
+    <string name="notification_sender_content_text">Knockin has treated %1s messages since yesterday</string>
+    <string name="notification_sender_big_text">Knockin has received %1s new unread messages \n you can view them in "Notifications"</string>
 
     <!-- endregion -->
 
@@ -372,7 +372,7 @@
     <!-- region AlertDialog permission overlay !-->
 
     <string name="alert_dialog_overlay_title">High priority notifications</string>
-    <string name="alert_dialog_overlay_message"> Do you authorize Knocker to display high priority notifications?</string>
+    <string name="alert_dialog_overlay_message"> Do you authorize Knockin to display high priority notifications?</string>
 
     <!-- endregion !-->
 
@@ -457,9 +457,9 @@
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Starting Knocker</string>
+    <string name="start_activity_title">Starting Knockin</string>
     <string name="start_activity_import_title">Import your contacts</string>
-    <string name="start_activity_import_subtitle">Import your Android contacts into Knocker and communicate with them more effectively</string>
+    <string name="start_activity_import_subtitle">Import your Android contacts into Knockin and communicate with them more effectively</string>
     <string name="start_activity_notification_title">Activate notifications</string>
     <string name="start_activity_notification_subtitle">Activate the service and receive custom notifications</string>
     <string name="start_activity_button_notification">Activate</string>
@@ -467,14 +467,14 @@
     <string name="start_activity_superposition_subtitle">Allow this app to display over other apps you\'re using</string>
     <string name="start_activity_button_superposition">Allow</string>
     <string name="start_activity_permission_title">Permissions</string>
-    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from Knocker</string>
+    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from Knockin</string>
     <string name="start_activity_button_permission">Allow</string>
     <string name="start_activity_skip">Skip</string>
     <string name="start_activity_next">Next</string>
 
     <string name="start_activity_skip_alert_dialog_title">Skip permissions</string>
     <string name="start_activity_skip_alert_dialog_message">If you skip permissions, you could allow them later</string>
-    <string name="start_activity_skip_alert_dialog_message_importation">Knocker import your contacts, if you ignore now, all your contacts will not save</string>
+    <string name="start_activity_skip_alert_dialog_message_importation">Knockin import your contacts, if you ignore now, all your contacts will not save</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Skip</string>
 
     <!-- endregion -->

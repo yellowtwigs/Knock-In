@@ -21,7 +21,7 @@ import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
 
 /**
- * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de knocker
+ * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de Knockin
  * @author Kenzy Suon
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -44,7 +44,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {

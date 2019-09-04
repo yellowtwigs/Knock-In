@@ -113,7 +113,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -351,7 +351,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
         contact_details_SendSMS!!.setOnClickListener {
             val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", contact_details_phone_number, null))
-            i.putExtra("fromKnocker", "envoyé depuis Knocker")
+            i.putExtra("fromKnockin", "envoyé depuis Knockin")
             startActivity(i)
         }
 
@@ -372,7 +372,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             intentSendMailTo.data = Uri.parse("mailto:")
             intentSendMailTo.putExtra(Intent.EXTRA_EMAIL, arrayOf(contact_details_mail))
             intentSendMailTo.putExtra(Intent.EXTRA_SUBJECT, "")
-            intentSendMailTo.putExtra(Intent.EXTRA_TEXT, "Envoyé depuis Knocker")
+            intentSendMailTo.putExtra(Intent.EXTRA_TEXT, "Envoyé depuis Knockin")
             startActivity(intentSendMailTo)
         }
 
@@ -389,7 +389,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             intentSendMailTo.data = Uri.parse("mailto:")
             intentSendMailTo.putExtra(Intent.EXTRA_EMAIL, arrayOf(contact_details_mail))
             intentSendMailTo.putExtra(Intent.EXTRA_SUBJECT, "")
-            intentSendMailTo.putExtra(Intent.EXTRA_TEXT, "Envoyé depuis Knocker")
+            intentSendMailTo.putExtra(Intent.EXTRA_TEXT, "Envoyé depuis Knockin")
             startActivity(intentSendMailTo)
         }
 

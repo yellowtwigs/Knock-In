@@ -122,7 +122,7 @@ class GroupActivity : AppCompatActivity() {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -426,8 +426,8 @@ class GroupActivity : AppCompatActivity() {
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle("Contact modifié")
-                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'adresse d'Android ou de Knocker ?")
-                                .setPositiveButton("Knocker") { _, _ ->
+                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'adresse d'Android ou de Knockin ?")
+                                .setPositiveButton("Knockin") { _, _ ->
                                 }
                                 .setNegativeButton("Android") { _, _ ->
                                     val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)

@@ -103,7 +103,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -335,7 +335,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                                 refreshActivity()
                             } else {
                                 //TODO In english
-                                Toast.makeText(this, "Vous n'avez pas autorisé l'envoi de SMS via Knocker", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this, "Vous n'avez pas autorisé l'envoi de SMS via Knockin", Toast.LENGTH_LONG).show()
 
                                 if (contact != null) {
                                     openSms(contact.getFirstPhoneNumber(), alert_dialog_notif_details_EditText!!.text.toString())

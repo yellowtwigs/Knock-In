@@ -16,7 +16,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="8dp"
-            android:text="Démarrage de Knocker"
+            android:text="Démarrage de Knockin"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
                 android:layout_below="@+id/start_activity_importation_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:text="Importer vos contacts Android dans Knocker et communiquer avec eux plus efficacement"
+                android:text="Importer vos contacts Android dans Knockin et communiquer avec eux plus efficacement"
                 android:textColor="@color/textColorLight"
                 android:textSize="14sp" />
 
@@ -173,7 +173,7 @@
                 android:layout_below="@+id/start_activity_permissions_title"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:text="Vous pourrez effectuer des appels et envoyer des sms depuis Knocker"
+                android:text="Vous pourrez effectuer des appels et envoyer des sms depuis Knockin"
                 android:textColor="@color/textColorLight"
                 android:textSize="14sp" />
 

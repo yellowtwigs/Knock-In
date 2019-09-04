@@ -126,7 +126,7 @@ class EditContactActivity : AppCompatActivity() {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -922,7 +922,7 @@ class EditContactActivity : AppCompatActivity() {
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
                     startActivity(intentPermission)
-                    val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
                     edit.putBoolean("serviceNotif", false)
@@ -930,7 +930,7 @@ class EditContactActivity : AppCompatActivity() {
                 }
                 .setNegativeButton(R.string.alert_dialog_no)
                 { _, _ ->
-                    val sharedPreferences = getSharedPreferences("Knocker_preferences", Context.MODE_PRIVATE)
+                    val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
                     edit.putBoolean("serviceNotif", true)

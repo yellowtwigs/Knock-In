@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //On affecte le Thème light ou le dark en fonction de ce que l'utilisateur à choisi
         //Ce thème est enregistré dans une sharedPreferences c'est un fichier android qui est sauvegardé par l'application
-        val sharedThemePreferences = getSharedPreferences("Knocker_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Si l'activité précédente était StartActivity alors on regarde dans les groupes du carnet Android de l'utilisateur
         // S'il y en a un qui se nomme favoris ou favorites alors tous les contacts de ce groupe seront
-        // considérés comme des favoris et seront placés dans le groupe Favoris de Knocker
+        // considérés comme des favoris et seront placés dans le groupe Favoris de Knockin
 
         val intent = intent
         var fromStartActivity = intent.getBooleanExtra("fromStartActivity", false)
@@ -495,18 +495,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         index++
                     }
 
-                    //pour chaque contact changé on affiche une popup avec un choix "garder la version Android ou Knocker"
+                    //pour chaque contact changé on affiche une popup avec un choix "garder la version Android ou Knockin"
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle(R.string.main_edited_contact)
                                 .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + " " + this.resources.getString(R.string.main_content_edited_contact_2))
                                 .setPositiveButton(R.string.app_name) { _, _ ->
-                                    // on garde la version Knocker
+                                    // on garde la version Knockin
                                 }
                                 .setNegativeButton(R.string.main_android_edited_contact) { _, _ ->
 
                                     val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
-                                    //on get les idAndroid et idKnocker du contact modifier
+                                    //on get les idAndroid et idKnockin du contact modifier
                                     allId.forEach {
                                         if (changedContact.first.id == it.first)
                                             changedContact.first.id = it.second
@@ -1608,7 +1608,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     /**
      * Méthode appelée par le système lorsque l'utilisateur accepte ou refuse une permission
      * Lorsque l'utilisateur autorise de lire ses contacts, nous synchronisons ses contacts Android
-     * Lorsque l'utilisateur autorise d'appeler avec Knocker, alors nous passons l'appel qu'il voulait passer avant d'accepter la permission
+     * Lorsque l'utilisateur autorise d'appeler avec Knockin, alors nous passons l'appel qu'il voulait passer avant d'accepter la permission
      * @param requestCode [Int]
      * @param permissions [Array<String>]
      * @param grantResults [IntArray]
