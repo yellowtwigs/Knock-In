@@ -230,12 +230,18 @@
     <string name="manage_my_screen_toast_grid">You have selected %1$d contacts per row</string>
     <string name="manage_my_screen_toast_list">"List" view selected</string>
     <string name="manage_my_screen_toast_list_smaller">"Compact" view selected</string>
-    <string name="manage_my_screen_contact_popup">Phone call Popup</string>
     <string name="manage_my_screen_contact_popup_long_text"> Enable/disable popup before calling a contact</string>
     <string name="manage_my_screen_searchbar_pos">Search bar position</string>
     <string name="manage_my_screen_searchbar_pos_long_text"> Position the search bar at the bottom of the screen</string>
     <string name="manage_my_screen_display_for_group_title">Enable specific groups display</string>
     <string name="manage_my_screen_display_for_group_subtitle">Chose a different display for your groups</string>
+    <!-- endregion -->
+
+    <!-- region Manage My Screen !-->
+
+    <string name="settings_contact_popup_phone_call">Phone call Popup</string>
+    <string name="settings_vip_message_tone">VIP Messages Tone in sleeping mode</string>
+
     <!-- endregion -->
 
     <!-- region Notification Manager -->

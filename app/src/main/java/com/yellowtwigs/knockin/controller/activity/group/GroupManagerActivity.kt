@@ -463,6 +463,5 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         adapaterItem!!.closeMenu()
     }
 
-
     //endregion
 }

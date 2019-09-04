@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/manage_my_screen_contact_popup"
+                android:text="@string/settings_contact_popup_phone_call"
                 android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal" />
@@ -79,11 +79,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="45dp"
-            android:text="@string/manage_my_screen_contact_popup"
+            android:text="@string/settings_vip_message_tone"
             android:textColor="?attr/textColor"
             android:textSize="@dimen/settings_subtitle_size"
             android:textStyle="normal"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/settings_choose_notif_sound"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_call_popup" />
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_choose_notif_sound_title">
@@ -101,7 +101,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:background="?attr/backgroundColor"
                 android:orientation="horizontal">
 
@@ -182,7 +181,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Keyboard"
+                        android:text="Piano"
                         android:textColor="?attr/textColor"
                         android:textSize="18sp" />
 
@@ -253,6 +252,36 @@
                         android:layout_centerHorizontal="true"
                         android:layout_margin="8dp"
                         app:srcCompat="@drawable/ic_drum_set" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_sax_layout"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_layout_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_notif_sound_sax_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Saxo"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_sax_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_saxophone" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -334,7 +363,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
-        android:visibility="gone"
+        android:visibility="visible"
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"

@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -42,6 +43,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var notification_alarm_ReceiveWhatsappMessageTextView: TextView? = null
     private var notification_alarm_ReceiveWhatsappMessageTextView_2: TextView? = null
 
+    private var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
+
     private var cptSMS: Int? = null
     private var cptWhatsappMSG: Int? = null
 
@@ -65,6 +68,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
         sharedNbMessagesPreferences = getSharedPreferences("nbOfWhatsappMsg", Context.MODE_PRIVATE)
         cptSMS = sharedNbMessagesPreferences!!.getInt("nbOfSMS", 0)
         cptWhatsappMSG = sharedNbMessagesPreferences!!.getInt("nbOfWhatsappMsg", 0)
+
+        val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
 
         //endregion
 
@@ -198,6 +203,51 @@ class NotificationAlarmActivity : AppCompatActivity() {
         /* sound.start()
          sound.isLooping=true*/
 
+        when (sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", 1)) {
+            R.raw.bass_slap -> {
+                if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                    notification_alarm_NotificationMessagesAlarmSound!!.stop()
+                }
+                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
+                notification_alarm_NotificationMessagesAlarmSound!!.start()
+            }
+            R.raw.xylophone_tone -> {
+                if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                    notification_alarm_NotificationMessagesAlarmSound!!.stop()
+                }
+                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.xylophone_tone)
+                notification_alarm_NotificationMessagesAlarmSound!!.start()
+            }
+            R.raw.piano_sms -> {
+                if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                    notification_alarm_NotificationMessagesAlarmSound!!.stop()
+                }
+                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.piano_sms)
+                notification_alarm_NotificationMessagesAlarmSound!!.start()
+            }
+            R.raw.electric_blues -> {
+                if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                    notification_alarm_NotificationMessagesAlarmSound!!.stop()
+                }
+                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.electric_blues)
+                notification_alarm_NotificationMessagesAlarmSound!!.start()
+            }
+            R.raw.caravan -> {
+                if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                    notification_alarm_NotificationMessagesAlarmSound!!.stop()
+                }
+                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.caravan)
+                notification_alarm_NotificationMessagesAlarmSound!!.start()
+            }
+            R.raw.sax_sms -> {
+                if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                    notification_alarm_NotificationMessagesAlarmSound!!.stop()
+                }
+                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.sax_sms)
+                notification_alarm_NotificationMessagesAlarmSound!!.start()
+            }
+        }
+
 //        val vibration = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            val thread = Thread {
@@ -274,7 +324,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
             edit.putInt("nbOfWhatsappMsg", 0)
             edit.apply()
             isOpen = false
-            // sound.stop()
+
+            if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                notification_alarm_NotificationMessagesAlarmSound!!.stop()
+            }
 
             finish()
         }

@@ -229,12 +229,19 @@
     <string name="manage_my_screen_toast_grid">Vous avez sélectionné %1$d contacts par ligne</string>
     <string name="manage_my_screen_toast_list">Vous avez sélectionné le mode "Liste"</string>
     <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionnez le mode d\'affichage "Compact"</string>
-    <string name="manage_my_screen_contact_popup">Popup d\'appel</string>
     <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
     <string name="manage_my_screen_searchbar_pos">Position de la Barre de recherche</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
     <string name="manage_my_screen_display_for_group_title">Activer l\'affichage différent pour les groupes</string>
     <string name="manage_my_screen_display_for_group_subtitle">Choix d\'un affichage spécifique pour les groupes </string>
+
+    <!-- endregion -->
+
+    <!-- region Manage My Screen !-->
+
+    <string name="settings_contact_popup_phone_call">Popup d\'appel</string>
+    <string name="settings_vip_message_tone">Sons des messages VIP en veille</string>
+
     <!-- endregion -->
 
     <!-- region Notification Manager -->
