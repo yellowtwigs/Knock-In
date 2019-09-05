@@ -51,9 +51,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var isOpen = true
 
     private val ADMIN_INTENT = 15
-    private val description = "Some Description About Your Admin"
-    private var mDevicePolicyManager: DevicePolicyManager? = null
-    private var mComponentName: ComponentName? = null
 
     //endregion
 

@@ -410,7 +410,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    //region open app TODO supprimmer toutes ces méthodes useless pour la plupart des application
+    //region open app TODO supprimer toutes ces méthodes useless pour la plupart des application
     private fun goToSkype() {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
         try {
@@ -632,29 +632,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("filtre_message", true)) {
-            /*    notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
 
-                val listTmp = mutableListOf<NotificationDB>()
-                listTmp.addAll(notification_history_ListOfNotificationDB)
-
-                val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
-                listTmp.addAll(notification_history_ListOfNotificationDB)
-                if (stringSearch.isNotEmpty()) {
-                    val regex = (".*(" + stringSearch + ").*").toRegex()
-                    listTmp.forEach {
-                        if (!(it.contactName.toLowerCase().matches(regex) || it.description.toLowerCase().matches(regex)) || !isMessagingApp(it.platform)) {
-                            notification_history_ListOfNotificationDB.remove(it)
-                        }
-                    }
-                } else {
-                    listTmp.forEach {
-                        if (!isMessagingApp(it.platform)) {
-                            notification_history_ListOfNotificationDB.remove(it)
-                        }
-                    }
-                }
-    */
             notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             if (stringSearch.isEmpty()) {

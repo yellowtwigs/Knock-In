@@ -1261,6 +1261,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 
+            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
+
             switchMultiSelectToNormalMode()
             main_FloatingButtonGroup!!.visibility = View.GONE
         } else if (listOfItemSelected.size == 1) {

@@ -426,7 +426,7 @@ class GroupActivity : AppCompatActivity() {
                     changedContactList.forEach { changedContact ->
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle("Contact modifié")
-                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changer, garder la version du carnet d'adresse d'Android ou de Knockin ?")
+                                .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changé, garder la version du carnet d'adresse d'Android ou de Knockin ?")
                                 .setPositiveButton("Knockin") { _, _ ->
                                 }
                                 .setNegativeButton("Android") { _, _ ->

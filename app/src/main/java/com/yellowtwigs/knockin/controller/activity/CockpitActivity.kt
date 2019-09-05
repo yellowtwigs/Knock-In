@@ -108,8 +108,6 @@ class CockpitActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_cockpit -> {
-                startActivity(Intent(this@CockpitActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
             }
         }
         false

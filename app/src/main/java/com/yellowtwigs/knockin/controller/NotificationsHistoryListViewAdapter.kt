@@ -69,18 +69,18 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
 
         val intent: Intent? = context.packageManager.getLaunchIntentForPackage(notif.platform)
         if (intent == null) {
-            val drawable= context.getDrawable(R.drawable.ic_uninstalled_app)
+            val drawable = context.getDrawable(R.drawable.ic_uninstalled_app)
             notification_history_adapter_App!!.setImageDrawable(drawable)
-        }else{
+        } else {
             val icon = pckManager.getApplicationIcon(notif.platform)
             notification_history_adapter_App!!.setImageDrawable(icon)
         }
 
-       /* if(icon!=null) {
+        /* if(icon!=null) {
 
-        }else{
+         }else{
 
-        }*/
+         }*/
         println("notification " + position + " " + notif.platform)
         notification_history_adapter_contenue!!.text = notif.description
 
@@ -106,8 +106,9 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
 
         return view
     }
-     fun updateList(newList:List<NotificationDB>){
-         notification_history_ListOfNotificationDB.clear()
-         notification_history_ListOfNotificationDB.addAll(newList)
-     }
+
+    fun updateList(newList: List<NotificationDB>) {
+        notification_history_ListOfNotificationDB.clear()
+        notification_history_ListOfNotificationDB.addAll(newList)
+    }
 }

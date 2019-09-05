@@ -74,7 +74,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         return null
     }
 
-//region SortContact Toutes les méthodes nous permetttant de trier les contacts
+    //region SortContact Toutes les méthodes nous permetttant de trier les contacts
     fun sortContactByFirstNameAZ() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
@@ -138,7 +138,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     }
 
 
-//endregion
+    //endregion
 //region Filter
     private fun getAllContactFilter(filterList: ArrayList<String>): List<ContactWithAllInformation>? {
         val allFilters: MutableList<List<ContactWithAllInformation>> = mutableListOf()
@@ -202,6 +202,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         }
         return contactList
     }
+
     //endregion
     private fun getContactByName(name: String): List<ContactWithAllInformation> {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
@@ -257,8 +258,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         }
         return listContacts
     }
-
-
 
 
     //region region Creation FakeContact
@@ -501,13 +500,13 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 phonePic = ""
             } else {
                 //on recupert la photo et on la converti en base64
-                val photo =openPhoto(phoneId!!.toLong(),
+                val photo = openPhoto(phoneId!!.toLong(),
                         main_contentResolver)
-                if(photo!=null) {
+                if (photo != null) {
                     phonePic = bitmapToBase64(
                             BitmapFactory.decodeStream(photo))
-                }else{
-                    phonePic=""
+                } else {
+                    phonePic = ""
                 }
             }
             if (phoneTag == null) {
@@ -718,7 +717,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                         lastSync = deleteContactFromLastSync(lastSync, fullName.first)
                                         edit.putString("last_sync_2", lastSync)
                                         edit.apply()
-                                       // createListContactsSync(phoneStructName, contactNumberAndPic, contactGroup, gestionnaireContacts)
+                                        // createListContactsSync(phoneStructName, contactNumberAndPic, contactGroup, gestionnaireContacts)
                                         contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
                                         //on serialise le nouveau contact ( idAndroid:
                                         lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
@@ -839,7 +838,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
 
     private fun isDuplicateContacts(allcontacts: Pair<Int, Triple<String, String, String>>?, lastSync: String?): Boolean {
         if (lastSync != null /*|| lastSync != ""*/) {
-            val allId = sliceLastSync(lastSync!!)
+            val allId = sliceLastSync(lastSync)
             allId.forEach { Id ->
                 if (allcontacts!!.first == Id.first) {
                     return true
@@ -857,26 +856,31 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     private fun getContactGroupSync(main_contentResolver: ContentResolver): List<Triple<Int, String?, String?>> {
         val phoneContact = main_contentResolver.query(ContactsContract.Groups.CONTENT_URI, null, null, null, ContactsContract.Groups.TITLE + " ASC")
         var allGroupMembers = listOf<Triple<Int, String?, String?>>()
-        println(phoneContact.columnNames)
+        println(phoneContact!!.columnNames)
         while (phoneContact.moveToNext()) {
             //récupère l'id du groupe
-            val groupId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups._ID))
+            val groupId = phoneContact.getString(phoneContact.getColumnIndex(ContactsContract.Groups._ID))
 
             //récupère le nom du groupe
-            var groupName = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Groups.TITLE))
+            var groupName = phoneContact.getString(phoneContact.getColumnIndex(ContactsContract.Groups.TITLE))
 
             //récupère les membres du groupe
             if (groupName == "Starred in Android") {
                 groupName = "Favorites"
             }
-            val groupMembers = getMemberOfGroup(main_contentResolver, groupId.toString(), groupName)
-            if (groupMembers.isNotEmpty() && allGroupMembers.isNotEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {
-                //ajoute un membre au groupe
-                allGroupMembers = allGroupMembers.union(groupMembers).toList()
-            } else if (allGroupMembers.isEmpty())
-                allGroupMembers = groupMembers
+
+            if (groupName == "My Contacts") {
+            } else {
+                val groupMembers = getMemberOfGroup(main_contentResolver, groupId.toString(), groupName)
+                if (groupMembers.isNotEmpty() && allGroupMembers.isNotEmpty() && !isDuplicateGroup(allGroupMembers, groupMembers)) {
+                    //ajoute un membre au groupe
+                    allGroupMembers = allGroupMembers.union(groupMembers).toList()
+                } else if (allGroupMembers.isEmpty())
+                    allGroupMembers = groupMembers
+
+            }
         }
-        phoneContact?.close()
+        phoneContact.close()
         return allGroupMembers
     }
 

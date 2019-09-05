@@ -17,6 +17,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Editable
@@ -397,6 +398,11 @@ class EditContactActivity : AppCompatActivity() {
 
         //region ======================================== Listeners =========================================
 
+
+        //endregion
+
+        //region ======================================== Listeners =========================================
+
         edit_contact_Return!!.setOnClickListener {
             onBackPressed()
         }
@@ -547,15 +553,105 @@ class EditContactActivity : AppCompatActivity() {
                     //println("modify on contact " + contact.contactDB)
 
                     if (fromGroupActivity) {
-                        val intentToGroupManagerActivity = Intent(this@EditContactActivity, GroupManagerActivity::class.java)
-                        intentToGroupManagerActivity.putExtra("ContactId", edit_contact_id!!)
-                        startActivity(intentToGroupManagerActivity)
-                        finish()
+                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                                .setTitle("Contact modifié")
+                                .setMessage("Vous venez de modifier un contact, voulez-vous l'éditer dans vos contacts Android ?")
+                                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                    // The Cursor that contains the Contact row
+                                    val mCursor: Cursor? = null
+                                    // The index of the lookup key column in the cursor
+                                    var lookupKeyIndex: Int = 0
+                                    // The index of the contact's _ID value
+                                    var idIndex: Int = 0
+                                    // The lookup key from the Cursor
+                                    var currentLookupKey: String? = null
+                                    // The _ID value from the Cursor
+                                    var currentId: Long = 0
+                                    // A content URI pointing to the contact
+                                    var selectedContactUri: Uri? = null
+                                    /*
+                                     * Once the user has selected a contact to edit,
+                                     * this gets the contact's lookup key and _ID values from the
+                                     * cursor and creates the necessary URI.
+                                     */
+                                    mCursor?.apply {
+                                        // Gets the lookup key column index
+                                        lookupKeyIndex = getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY)
+                                        // Gets the lookup key value
+                                        currentLookupKey = getString(lookupKeyIndex)
+                                        // Gets the _ID column index
+                                        idIndex = getColumnIndex(ContactsContract.Contacts._ID)
+                                        currentId = getLong(idIndex)
+                                        selectedContactUri = ContactsContract.Contacts.getLookupUri(currentId, currentLookupKey)
+                                    }
+
+                                    val editIntent  = Intent(Intent.ACTION_EDIT).apply {
+                                        setDataAndType(selectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE)
+
+//                                        putExtra(ContactsContract.Intents.Insert.NAME, edit_contact_FirstName?.editText!!.text.toString() + " " + edit_contact_LastName?.editText!!.text.toString())
+//
+//                                        // Inserts an email address
+//                                        putExtra(ContactsContract.Intents.Insert.EMAIL, edit_contact_Mail?.editText!!.text.toString())
+//                                        /*
+//                                         * In this example, sets the email type to be a work email.
+//                                         * You can set other email types as necessary.
+//                                         */
+//                                        putExtra(
+//                                                ContactsContract.Intents.Insert.EMAIL_TYPE,
+//                                                ContactsContract.CommonDataKinds.Email.TYPE_WORK
+//                                        )
+//                                        // Inserts a phone number
+//                                        putExtra(ContactsContract.Intents.Insert.PHONE, edit_contact_PhoneNumber?.editText!!.text.toString())
+                                    }
+                                    startActivity(editIntent.putExtra("finishActivityOnSaveCompleted", true))
+                                }
+                                .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                    startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                                    finish()
+                                }
+                                .show()
                     } else {
-                        val intentToMainActivity = Intent(this@EditContactActivity, MainActivity::class.java)
-                        intentToMainActivity.putExtra("ContactId", edit_contact_id!!)
-                        startActivity(intentToMainActivity)
-                        finish()
+                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                                .setTitle("Contact modifié")
+                                .setMessage("Vous venez de modifier un contact, voulez-vous l'éditer dans vos contacts Android ?")
+                                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                    val intentInsertEdit = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
+                                        type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
+
+                                        putExtra(ContactsContract.Intents.Insert.NAME, edit_contact_FirstName?.editText!!.text.toString() + " " + edit_contact_LastName?.editText!!.text.toString())
+
+                                        // Inserts an email address
+                                        putExtra(ContactsContract.Intents.Insert.EMAIL, edit_contact_Mail?.editText!!.text.toString())
+                                        /*
+                                         * In this example, sets the email type to be a work email.
+                                         * You can set other email types as necessary.
+                                         */
+                                        putExtra(
+                                                ContactsContract.Intents.Insert.EMAIL_TYPE,
+                                                ContactsContract.CommonDataKinds.Email.TYPE_WORK
+                                        )
+                                        // Inserts a phone number
+                                        putExtra(ContactsContract.Intents.Insert.PHONE, edit_contact_PhoneNumber?.editText!!.text.toString())
+                                        /*
+                                         * In this example, sets the phone type to be a work phone.
+                                         * You can set other phone types as necessary.
+                                         */
+                                        putExtra(
+                                                ContactsContract.Intents.Insert.PHONE_TYPE,
+                                                ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+                                        )
+                                    }
+                                    startActivity(intentInsertEdit)
+                                }
+                                .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                    startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                                    finish()
+                                }
+                                .show()
+
+                        // Creates a new Intent to insert a contact
+
+
                     }
                 } else {
                     Toast.makeText(this, R.string.edit_contact_toast, Toast.LENGTH_LONG).show()
@@ -592,6 +688,12 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    override fun onRestart() {
+        super.onRestart()
+//        startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+//        finish()
+    }
 
     override fun onBackPressed() {
         if (isChanged || isFavoriteChanged != isFavorite) {

@@ -13,6 +13,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.AlertDialog
@@ -212,9 +213,39 @@ class AddNewContactActivity : AppCompatActivity() {
 
                     // println("test" + add_new_contact_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
 
-                    val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                    // Creates a new Intent to insert a contact
+                    val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                        // Sets the MIME type to match the Contacts Provider
+                        type = ContactsContract.RawContacts.CONTENT_TYPE
+                    }
+
+                    intent.apply {
+                        putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString() + " " + add_new_contact_LastName?.editText!!.text.toString())
+
+                        // Inserts an email address
+                        putExtra(ContactsContract.Intents.Insert.EMAIL, add_new_contact_Email?.editText!!.text.toString())
+                        /*
+                         * In this example, sets the email type to be a work email.
+                         * You can set other email types as necessary.
+                         */
+                        putExtra(
+                                ContactsContract.Intents.Insert.EMAIL_TYPE,
+                                ContactsContract.CommonDataKinds.Email.TYPE_WORK
+                        )
+                        // Inserts a phone number
+                        putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
+                        /*
+                         * In this example, sets the phone type to be a work phone.
+                         * You can set other phone types as necessary.
+                         */
+                        putExtra(
+                                ContactsContract.Intents.Insert.PHONE_TYPE,
+                                ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+                        )
+                    }
+
                     startActivity(intent)
-                    finish()
+//                    finish()
                 } else {
                     confirmationDuplicate(contactData)
                 }
@@ -308,10 +339,14 @@ class AddNewContactActivity : AppCompatActivity() {
         array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         add_new_contact_MailProperty!!.adapter = adapterMailTagList
         android.R.layout.simple_spinner_item
+
+        //region =================================== Edit Android Contact ===================================
+
+
+        //endregion
     }
 
     //region ========================================== Functions ===========================================
-
 
     //region ========================================== Favorites ===========================================
     /**
@@ -418,7 +453,7 @@ class AddNewContactActivity : AppCompatActivity() {
         val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
 
         recyclerView!!.layoutManager = layoutMananger
-        
+
         val adapter = ContactIconeAdapter(this)
         recyclerView.adapter = adapter
         gallery!!.setOnClickListener {
@@ -561,6 +596,11 @@ class AddNewContactActivity : AppCompatActivity() {
         } else if (requestCode == 2 && ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             openCamera()
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
     }
 
     /**

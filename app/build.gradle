@@ -34,11 +34,11 @@ android {
     productFlavors {
         onlyContact {
             applicationId "com.yellowtwigs.Knockin.contact"
-            resValue "string", "app_name", "contacter"
+            resValue "string", "app_name", "Knock In Contacts"
         }
         contactAndHistory {
             applicationId "com.yellowtwigs.Knockin.contactAndHistory"
-            resValue "string", "app_name", "converser"
+            resValue "string", "app_name", "Converser"
         }
         appComplete {
             applicationId "com.yellowtwigs.Knockin"

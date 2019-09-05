@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -54,6 +55,7 @@ import java.util.Objects;
 
 /**
  * Adapter qui nous permet d'afficher un contact dans une section
+ *
  * @author Florian Striebel
  */
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> implements FloatingActionMenu.MenuStateChangeListener {
@@ -78,11 +80,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * Constructeur de GroupAdapter
-     * @param context [Context]
+     *
+     * @param context        [Context]
      * @param contactManager [ContactManager]
-     * @param len [Integer]
+     * @param len            [Integer]
      */
-    public GroupAdapter(Context context, ContactManager contactManager, Integer len)  {
+    public GroupAdapter(Context context, ContactManager contactManager, Integer len) {
         this.context = context;
         this.contactManager = contactManager;
         this.len = len;
@@ -91,14 +94,16 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * renvoi le contact manager de l'adapter
+     *
      * @return [ContactManager]
      */
-    public ContactManager getContactManager(){
+    public ContactManager getContactManager() {
         return contactManager;
     }
 
     /**
      * renvoie la list des contact qui sont multiselecté
+     *
      * @return [ArrayList<ContactWithAllInformation>]
      */
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
@@ -117,6 +122,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * Gère les affichages par contact
+     *
      * @param holder
      * @param position
      */
@@ -168,7 +174,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         } else if (contact.getContactPriority() == 2) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
         }
-        if(modeMultiSelect && listOfItemSelected.contains(contactManager.getContactList().get(position))){
+        if (modeMultiSelect && listOfItemSelected.contains(contactManager.getContactList().get(position))) {
             holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         } else {
             if (!contact.getProfilePicture64().equals("")) {
@@ -318,6 +324,13 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         buttonMail.setId(5);
 
         //buttonMessenger.setImageDrawable(iconMessenger);
+        if (contact.getFavorite() == 1) {
+            holder.gridAdapterFavoriteShine.setVisibility(View.VISIBLE);
+        } else {
+            holder.gridAdapterFavoriteShine.setVisibility(View.GONE);
+        }
+
+        //buttonMessenger.setImageDrawable(iconMessenger);
 
         buttonCall.setImageResource(R.drawable.ic_google_call);
         buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp);
@@ -430,15 +443,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
         View.OnLongClickListener gridlongClick = v -> {
 
-                if (!modeMultiSelect) {
-                    v.setTag(holder);
-                   // ContactDB contact1 = contactManager.getContactList().get(position).getContactDB();
-                    assert contact != null;
+            if (!modeMultiSelect) {
+                v.setTag(holder);
+                // ContactDB contact1 = contactManager.getContactList().get(position).getContactDB();
+                assert contact != null;
 
                 holder.contactFirstNameView.setText(contact.getFirstName());
 
-                    if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
-                        listOfItemSelected.remove(contactManager.getContactList().get(position));
+                if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
+                    listOfItemSelected.remove(contactManager.getContactList().get(position));
 
                     if (!contact.getProfilePicture64().equals("")) {
                         Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -555,6 +568,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * renvoie si l'utilisateur est en train de faire un multiselect
+     *
      * @return [Boolean]
      */
     public boolean multiSelectMode() {
@@ -563,6 +577,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * écoute quand un menuCirculaire à été ouvert et ferme l'ancien menuCirculaire ouvert
+     *
      * @param floatingActionMenu //menu qui est ouvert
      */
     @Override
@@ -598,6 +613,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * appelle le numéro de téléphone passé en paramètre
+     *
      * @param phoneNumber
      */
     public void callPhone(final String phoneNumber) {
@@ -624,6 +640,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * gère la multiselection d'un groupe par le click sur son libéllé
+     *
      * @param position
      */
     public void SetGroupClick(int position) {
@@ -636,25 +653,25 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 modeMultiSelect = true;
 
                 for (int i = 0; i < listContactOnGroup.size(); i++) {
-                            if (!listOfItemSelected.contains(listContactOnGroup.get(i))) {
-                                //System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
-                                int positionItem= contactManager.getContactList().indexOf(listContactOnGroup.get(i));
-                                ((GroupManagerActivity) context).recyclerMultiSelectItemClick(positionItem, secondClick, true);
-                                listOfItemSelected.add(contactManager.getContactList().get(positionItem));
-                            }
+                    if (!listOfItemSelected.contains(listContactOnGroup.get(i))) {
+                        //System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
+                        int positionItem = contactManager.getContactList().indexOf(listContactOnGroup.get(i));
+                        ((GroupManagerActivity) context).recyclerMultiSelectItemClick(positionItem, secondClick, true);
+                        listOfItemSelected.add(contactManager.getContactList().get(positionItem));
+                    }
                 }
                 secondClick = true;
                 notifyDataSetChanged();
             }
         } else {
             for (int i = 0; i < listContactOnGroup.size(); i++) {
-                        if (listOfItemSelected.contains(listContactOnGroup.get(i))) {
-                            int positionItem= contactManager.getContactList().indexOf(listContactOnGroup.get(i));
-                            ((GroupManagerActivity) context).recyclerMultiSelectItemClick(positionItem, secondClick, true);
-                            listOfItemSelected.remove(contactManager.getContactList().get(positionItem));
-                        }
+                if (listOfItemSelected.contains(listContactOnGroup.get(i))) {
+                    int positionItem = contactManager.getContactList().indexOf(listContactOnGroup.get(i));
+                    ((GroupManagerActivity) context).recyclerMultiSelectItemClick(positionItem, secondClick, true);
+                    listOfItemSelected.remove(contactManager.getContactList().get(positionItem));
+                }
             }
-            if(listOfItemSelected.size()==0){
+            if (listOfItemSelected.size() == 0) {
                 secondClick = false;
                 modeMultiSelect = false;
             }
@@ -668,6 +685,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         CircularImageView contactRoundedImageView;
         ConstraintLayout gridContactItemLayout;
         ConstraintLayout groupWordingConstraint;
+        AppCompatImageView gridAdapterFavoriteShine;
         TextView groupWordingTv;
 
         ViewHolder(View view) {
@@ -678,6 +696,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             groupWordingTv = view.findViewById(R.id.grid_adapter_wording_group_tv);
             contactFirstNameView = view.findViewById(R.id.grid_adapter_contactFirstName);
             contactLastNameView = view.findViewById(R.id.grid_adapter_contactLastName);
+            gridAdapterFavoriteShine = view.findViewById(R.id.grid_adapter_favorite_shine);
             heightWidthImage = contactRoundedImageView.getHeight();
         }
 
@@ -689,6 +708,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * Récupère le contact à la position [position]
+     *
      * @param position [Int]
      * @return [ContactWithAllInformation]
      */
@@ -698,6 +718,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * Supression de la liste l'item à la position [position]
+     *
      * @param position [Int]
      */
     public void removeItem(int position) {
@@ -722,6 +743,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * rajoute un indicatif au numéro
+     *
      * @param phoneNumber [String]
      * @return [String]
      */
@@ -731,8 +753,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         }
         return phoneNumber;
     }
+
     /**
-     *Renvoie l'image du contact sous forme de ressource
+     * Renvoie l'image du contact sous forme de ressource
+     *
      * @param avatarId [Int]
      * @return [Int]
      */
@@ -760,6 +784,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * Convertit les image de base64 en Bitmap
+     *
      * @param base64
      * @return
      */
@@ -773,6 +798,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * vérifie que le téléphone possède l'application whatsApp
+     *
      * @return [Boolean]
      */
     private boolean appIsInstalled() {
@@ -786,7 +812,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     }
 
     /**
-     *setter sectionPos
+     * setter sectionPos
+     *
      * @param position ArrayList<Integer>
      */
     public void setSectionPos(ArrayList<Integer> position) {
@@ -795,6 +822,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * Retourne la position de la section dont fait partie le contact
+     *
      * @param position [Int]
      * @return [Int]
      */
@@ -809,15 +837,16 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     /**
      * Ajout des contact faisant partie du groupe dans une list
+     *
      * @param position
      * @return [List<ContactWithAllInformation>]
      */
-    private List<ContactWithAllInformation> putGroupContactInItemSelected(int position){
-        ContactsRoomDatabase contactsDatabase= ContactsRoomDatabase.Companion.getDatabase(context);
-        DbWorkerThread main_mDbWorkerThread=new DbWorkerThread("dbWorkerThread");
-        main_mDbWorkerThread.start() ;
+    private List<ContactWithAllInformation> putGroupContactInItemSelected(int position) {
+        ContactsRoomDatabase contactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+        DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+        main_mDbWorkerThread.start();
         GroupWithContact group = contactsDatabase.GroupsDao().getAllGroupsByNameAZ().get(position);
-        List<ContactWithAllInformation> listContact=group.getListContact(context);
+        List<ContactWithAllInformation> listContact = group.getListContact(context);
         return listContact;
     }
 

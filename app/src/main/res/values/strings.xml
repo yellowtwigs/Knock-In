@@ -473,7 +473,7 @@
     <string name="start_activity_superposition_subtitle">Allow this app to display over other apps you\'re using</string>
     <string name="start_activity_button_superposition">Allow</string>
     <string name="start_activity_permission_title">Permissions</string>
-    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from Knockin</string>
+    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from the app</string>
     <string name="start_activity_button_permission">Allow</string>
     <string name="start_activity_skip">Skip</string>
     <string name="start_activity_next">Next</string>

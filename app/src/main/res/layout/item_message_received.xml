@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schemas.android.com/tools ">
 
     <com.yellowtwigs.knockin.controller.CircularImageView
         android:id="@+id/item_message_received_profile_image"
