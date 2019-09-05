@@ -35,7 +35,6 @@ import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter
 import com.yellowtwigs.knockin.controller.NotificationListener
 import com.yellowtwigs.knockin.controller.SelectContactAdapter
 import com.yellowtwigs.knockin.controller.activity.*
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
@@ -44,6 +43,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.FirstLaunchActivity
 import kotlinx.android.synthetic.main.activity_group.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService

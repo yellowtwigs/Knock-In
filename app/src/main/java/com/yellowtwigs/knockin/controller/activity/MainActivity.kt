@@ -30,7 +30,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
 import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter
@@ -45,6 +44,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.FirstLaunchActivity
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -171,23 +171,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
-
         //On affecte à notre activity son layout correspondant
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-
-        //region ================================ BottomActionBar color light ===============================
-
-        // (Bar android avec les boutons retour, home et application en cours)
-
-        val decorView = window.decorView
-
-        //Feature possible a partir de la version Oreo d'android
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        }
-
-        //endregion
 
         // Si un contact est supprimé, un message s'affichera
         val isDelete = intent.getBooleanExtra("isDelete", false)
@@ -238,8 +224,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
                 counter++
             }
-
-            fromStartActivity = false
         }
 
         //endregion
@@ -357,6 +341,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
             sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
             sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
+            sharedPreferences.getString("tri", "nom") == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
             else -> gestionnaireContacts!!.sortContactByFavorite()
         }
         //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
@@ -818,6 +803,33 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         //endregion
+
+
+        if (fromStartActivity) {
+            val sortByFavorite = Runnable {
+                gestionnaireContacts!!.sortContactByFavorite()
+                val sharedDefaultTriPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                val len = sharedDefaultTriPreferences.getInt("gridview", 4)
+                val edit: SharedPreferences.Editor = sharedDefaultTriPreferences.edit()
+                edit.putString("tri", "favoris")
+                edit.apply()
+                runOnUiThread {
+                    if (len > 1) {
+                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        main_GridView!!.adapter = gridViewAdapter
+                        main_GridView!!.visibility = View.VISIBLE
+                    } else {
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        main_RecyclerView!!.adapter = recyclerViewAdapter
+                        recyclerViewAdapter!!.notifyDataSetChanged()
+                        main_RecyclerView!!.visibility = View.VISIBLE
+                    }
+                    main_loadingPanel!!.visibility = View.GONE
+                }
+            }
+            main_mDbWorkerThread.postTask(sortByFavorite)
+            fromStartActivity = false
+        }
     }
 
     //region ========================================== Functions ===========================================
@@ -906,12 +918,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     // on regarde le quel tri est activé pour l'appliquer
                     val contactListDb = ContactManager(this)
-                    if (sharedPreferences.getString("tri", "nom") == "nom") {
-                        contactListDb.sortContactByFirstNameAZ()
-                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
-                        contactListDb.sortContactByPriority()
-                    } else {
-                        contactListDb.sortContactByGroup()
+                    when {
+                        sharedPreferences.getString("tri", "nom") == "nom" -> contactListDb.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "lastname" -> contactListDb.sortContactByLastname()
+                        sharedPreferences.getString("tri", "nom") == "priorite" -> contactListDb.sortContactByPriority()
+                        sharedPreferences.getString("tri", "nom") == "favoris" -> contactListDb.sortContactByFavorite()
+                        else -> contactListDb.sortContactByGroup()
                     }
                     //on garde uniquement les contact en commun avec les filtres et tris
                     contactListDb.contactList.retainAll(filteredContact)
@@ -937,12 +949,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    if (sharedPreferences.getString("tri", "nom") == "nom") {
-                        gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
-                        gestionnaireContacts!!.sortContactByPriority()
-                    } else {
-                        gestionnaireContacts!!.sortContactByGroup()
+                    when {
+                        sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
+                        sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
+                        sharedPreferences.getString("tri", "nom") == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
+                        else -> gestionnaireContacts!!.sortContactByGroup()
                     }
                     gestionnaireContacts!!.contactList.retainAll(filteredContact)
 
@@ -970,12 +982,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     val contactListDb = ContactManager(this)
-                    if (sharedPreferences.getString("tri", "nom") == "nom") {
-                        contactListDb.sortContactByFirstNameAZ()
-                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
-                        contactListDb.sortContactByPriority()
-                    } else {
-                        contactListDb.sortContactByGroup()
+                    when {
+                        sharedPreferences.getString("tri", "nom") == "nom" -> contactListDb.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "lastname" -> contactListDb.sortContactByLastname()
+                        sharedPreferences.getString("tri", "nom") == "priorite" -> contactListDb.sortContactByPriority()
+                        sharedPreferences.getString("tri", "nom") == "favoris" -> contactListDb.sortContactByFavorite()
+                        else -> contactListDb.sortContactByGroup()
                     }
                     contactListDb.contactList.retainAll(filteredContact)
                     gestionnaireContacts!!.contactList.clear()
@@ -996,12 +1008,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    if (sharedPreferences.getString("tri", "nom") == "nom") {
-                        gestionnaireContacts!!.sortContactByFirstNameAZ()
-                    } else if (sharedPreferences.getString("tri", "nom") == "priorite") {
-                        gestionnaireContacts!!.sortContactByPriority()
-                    } else {
-                        gestionnaireContacts!!.sortContactByGroup()
+                    when {
+                        sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
+                        sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
+                        sharedPreferences.getString("tri", "nom") == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
+                        else -> gestionnaireContacts!!.sortContactByGroup()
                     }
                     gestionnaireContacts!!.contactList.retainAll(filteredContact)
                     if (len > 1) {

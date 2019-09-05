@@ -539,14 +539,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
         inflater.inflate(R.menu.toolbar_menu_filter_notif_history, menu)
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
         if (sharedPreferences.getString("tri", "date") == "date") {
-            menu!!.findItem(R.id.notif_tri_par_date).setChecked(true)
+            menu!!.findItem(R.id.notif_tri_par_date).isChecked = true
         } else if (sharedPreferences.getString("tri", "date") == "priorite") {
-            menu!!.findItem(R.id.notif_tri_par_priorite).setChecked(true)
+            menu!!.findItem(R.id.notif_tri_par_priorite).isChecked = true
         } else {
-            menu!!.findItem(R.id.notif_tri_par_contact).setChecked(true)
+            menu!!.findItem(R.id.notif_tri_par_contact).isChecked = true
         }
         if (!sharedPreferences.getBoolean("filtre_message", true)) {
-            menu!!.findItem(R.id.messagefilter).setChecked(false)
+            menu.findItem(R.id.messagefilter).isChecked = false
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -705,7 +705,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             else -> println("thats a problem test")
 
         }
-        notification_history_ListView!!.setScrollingCacheEnabled(false)
+        notification_history_ListView!!.isScrollingCacheEnabled = false
     }
 
     fun swipeMenuCreator(listView: SwipeMenuListView) {
@@ -729,16 +729,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         listView.setOnMenuItemClickListener { position: Int, _: SwipeMenu?, index: Int ->
             when (index) {
-//                0 -> {
-//
-//                }
                 0 -> {
                     notification_history_NotificationsDatabase!!.notificationsDao().deleteNotificationById(notification_history_ListOfNotificationDB[position].id!!)
                     notification_history_ListOfNotificationDB.removeAt(position)
                     notification_Adapter!!.updateList(notification_history_ListOfNotificationDB)
                     notification_Adapter!!.notifyDataSetChanged()
-                    //refreshActivity()
-
+                    refreshActivity()
                 }
             }
             false

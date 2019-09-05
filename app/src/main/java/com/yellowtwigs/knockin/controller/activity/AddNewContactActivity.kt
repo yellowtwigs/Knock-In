@@ -214,37 +214,39 @@ class AddNewContactActivity : AppCompatActivity() {
                     // println("test" + add_new_contact_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
 
                     // Creates a new Intent to insert a contact
-                    val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-                        // Sets the MIME type to match the Contacts Provider
-                        type = ContactsContract.RawContacts.CONTENT_TYPE
-                    }
+//                    val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+//                        // Sets the MIME type to match the Contacts Provider
+//                        type = ContactsContract.RawContacts.CONTENT_TYPE
+//                    }
+//                    intent.apply {
+//                        putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString() + " " + add_new_contact_LastName?.editText!!.text.toString())
+//
+//                        // Inserts an email address
+//                        putExtra(ContactsContract.Intents.Insert.EMAIL, add_new_contact_Email?.editText!!.text.toString())
+//                        /*
+//                         * In this example, sets the email type to be a work email.
+//                         * You can set other email types as necessary.
+//                         */
+//                        putExtra(
+//                                ContactsContract.Intents.Insert.EMAIL_TYPE,
+//                                ContactsContract.CommonDataKinds.Email.TYPE_WORK
+//                        )
+//                        // Inserts a phone number
+//                        putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
+//                        /*
+//                         * In this example, sets the phone type to be a work phone.
+//                         * You can set other phone types as necessary.
+//                         */
+//                        putExtra(
+//                                ContactsContract.Intents.Insert.PHONE_TYPE,
+//                                ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+//                        )
+//                    }
+//                    startActivity(intent)
 
-                    intent.apply {
-                        putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString() + " " + add_new_contact_LastName?.editText!!.text.toString())
-
-                        // Inserts an email address
-                        putExtra(ContactsContract.Intents.Insert.EMAIL, add_new_contact_Email?.editText!!.text.toString())
-                        /*
-                         * In this example, sets the email type to be a work email.
-                         * You can set other email types as necessary.
-                         */
-                        putExtra(
-                                ContactsContract.Intents.Insert.EMAIL_TYPE,
-                                ContactsContract.CommonDataKinds.Email.TYPE_WORK
-                        )
-                        // Inserts a phone number
-                        putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
-                        /*
-                         * In this example, sets the phone type to be a work phone.
-                         * You can set other phone types as necessary.
-                         */
-                        putExtra(
-                                ContactsContract.Intents.Insert.PHONE_TYPE,
-                                ContactsContract.CommonDataKinds.Phone.TYPE_WORK
-                        )
-                    }
-
+                    val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
                     startActivity(intent)
+                    finish()
 //                    finish()
                 } else {
                     confirmationDuplicate(contactData)
