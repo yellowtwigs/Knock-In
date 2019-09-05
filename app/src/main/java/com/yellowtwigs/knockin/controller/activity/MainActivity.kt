@@ -782,23 +782,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             for (i in iterator) {
                 listOfContactSelected.add(listOfItemSelected[i])
             }
-//            if (len >= 3) {
-//                gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-//                main_GridView!!.adapter = gridViewAdapter
-//
-//
-//                main_FloatingButtonMail!!.visibility = View.GONE
-//                main_FloatingButtonSMS!!.visibility = View.GONE
-//                main_FloatingButtonGroup!!.visibility = View.GONE
-//                main_FloatingButtonMultiChannel!!.visibility = View.GONE
-//            } else {
-//                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
-//
-//                main_FloatingButtonMail!!.visibility = View.GONE
-//                main_FloatingButtonSMS!!.visibility = View.GONE
-//                main_FloatingButtonGroup!!.visibility = View.GONE
-//                main_FloatingButtonMultiChannel!!.visibility = View.GONE
-//            }
+
             createGroupMultiSelectClick(listOfContactSelected)
         }
 

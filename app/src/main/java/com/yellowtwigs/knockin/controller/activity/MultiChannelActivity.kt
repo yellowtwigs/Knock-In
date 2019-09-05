@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -37,7 +38,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private var multi_channel_listViewAdapter: ContactListViewAdapter? = null
 
-    private var multi_channel_SendMessageEditText: EditText? = null
+    private var multi_channel_SendMessageEditText: AppCompatEditText? = null
     private var multi_channel_SendMessageButton: AppCompatImageView? = null
 
     private val SEND_SMS_PERMISSION_REQUEST_CODE = 1

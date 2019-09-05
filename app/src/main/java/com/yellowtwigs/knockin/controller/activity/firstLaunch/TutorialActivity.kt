@@ -81,7 +81,6 @@ class TutorialActivity : AppCompatActivity() {
 
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1)!!)
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2)!!)
-                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4)!!)
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3)!!)
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5)!!)
 
@@ -89,11 +88,20 @@ class TutorialActivity : AppCompatActivity() {
 
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_1_en)!!)
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_2_en)!!)
-                    tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_4_en)!!)
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_3_en)!!)
                     tutorial_ListOfTutorialImages.add(getDrawable(R.drawable.presentation_5_en)!!)
 
                 }
+                tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+                tutorial_Selected_1!!.visibility = View.VISIBLE
+                tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                tutorial_Selected_2!!.visibility = View.INVISIBLE
+                tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                tutorial_Selected_3!!.visibility = View.INVISIBLE
+                tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                tutorial_Selected_4!!.visibility = View.INVISIBLE
+                tutorial_NoSelected_5!!.visibility = View.GONE
+                tutorial_Selected_5!!.visibility = View.GONE
             }
 
             fromStartActivity -> {
@@ -156,9 +164,20 @@ class TutorialActivity : AppCompatActivity() {
             tutorial_Selected_3!!.visibility = View.GONE
             tutorial_NoSelected_4!!.visibility = View.GONE
             tutorial_Selected_4!!.visibility = View.GONE
+        }
+
+        if (tutorial_CustomViewPagerAdapter!!.count == 3) {
+
+            tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+            tutorial_Selected_1!!.visibility = View.VISIBLE
+            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+            tutorial_Selected_2!!.visibility = View.INVISIBLE
+            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+            tutorial_Selected_3!!.visibility = View.INVISIBLE
+            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+            tutorial_Selected_4!!.visibility = View.INVISIBLE
             tutorial_NoSelected_5!!.visibility = View.GONE
             tutorial_Selected_5!!.visibility = View.GONE
-
         }
 
         tutorial_ViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -167,66 +186,119 @@ class TutorialActivity : AppCompatActivity() {
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                when (position) {
-                    0 -> {
-                        tutorial_NoSelected_1!!.visibility = View.INVISIBLE
-                        tutorial_Selected_1!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
+                if(tutorial_CustomViewPagerAdapter!!.count > 3){
+                    when (position) {
+                        0 -> {
+                            tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+                            tutorial_Selected_1!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        1 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.INVISIBLE
+                            tutorial_Selected_2!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        2 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.INVISIBLE
+                            tutorial_Selected_3!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        3 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.INVISIBLE
+                            tutorial_Selected_4!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.VISIBLE
+                            tutorial_Selected_5!!.visibility = View.INVISIBLE
+                        }
+                        4 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.INVISIBLE
+                            tutorial_Selected_5!!.visibility = View.VISIBLE
+                        }
                     }
-                    1 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.INVISIBLE
-                        tutorial_Selected_2!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    2 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.INVISIBLE
-                        tutorial_Selected_3!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    3 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.INVISIBLE
-                        tutorial_Selected_4!!.visibility = View.VISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.VISIBLE
-                        tutorial_Selected_5!!.visibility = View.INVISIBLE
-                    }
-                    4 -> {
-                        tutorial_NoSelected_1!!.visibility = View.VISIBLE
-                        tutorial_Selected_1!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_2!!.visibility = View.VISIBLE
-                        tutorial_Selected_2!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_3!!.visibility = View.VISIBLE
-                        tutorial_Selected_3!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_4!!.visibility = View.VISIBLE
-                        tutorial_Selected_4!!.visibility = View.INVISIBLE
-                        tutorial_NoSelected_5!!.visibility = View.INVISIBLE
-                        tutorial_Selected_5!!.visibility = View.VISIBLE
+                }else{
+                    when (position) {
+                        0 -> {
+                            tutorial_NoSelected_1!!.visibility = View.INVISIBLE
+                            tutorial_Selected_1!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.GONE
+                            tutorial_Selected_5!!.visibility = View.GONE
+                        }
+                        1 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.INVISIBLE
+                            tutorial_Selected_2!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.GONE
+                            tutorial_Selected_5!!.visibility = View.GONE
+                        }
+                        2 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.INVISIBLE
+                            tutorial_Selected_3!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.VISIBLE
+                            tutorial_Selected_4!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.GONE
+                            tutorial_Selected_5!!.visibility = View.GONE
+                        }
+                        3 -> {
+                            tutorial_NoSelected_1!!.visibility = View.VISIBLE
+                            tutorial_Selected_1!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_2!!.visibility = View.VISIBLE
+                            tutorial_Selected_2!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_3!!.visibility = View.VISIBLE
+                            tutorial_Selected_3!!.visibility = View.INVISIBLE
+                            tutorial_NoSelected_4!!.visibility = View.INVISIBLE
+                            tutorial_Selected_4!!.visibility = View.VISIBLE
+                            tutorial_NoSelected_5!!.visibility = View.GONE
+                            tutorial_Selected_5!!.visibility = View.GONE
+                        }
                     }
                 }
             }
