@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Pour tous nos attributs qui sont des vues (TextView, listView , ConstraintLayout, ImageView etc) sur lesquelles notre activité agit nous les récupérons
 
-        main_FloatingButtonAddNewContact = findViewById(R.id.main_floating_button_add_new_contact)
+        main_FloatingButtonAddNewContact = this.findViewById(R.id.main_floating_button_add_new_contact)
         main_FloatingButtonMultiChannel = findViewById(R.id.main_floating_button_multichannel)
         main_FloatingButtonMail = findViewById(R.id.main_gmail_button)
         main_FloatingButtonSMS = findViewById(R.id.main_sms_button)
@@ -736,7 +736,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 listOfPhoneNumberContactSelected.add(listOfItemSelected[i].getFirstPhoneNumber())
             }
             monoChannelSmsClick(listOfPhoneNumberContactSelected)
-            refreshActivity()
+//            refreshActivity()
         }
 
         // En mode Multiselect, lors du click sur le Floating Button Mail, nous redirige vers l'appli Mail de l'utilisateur avec les contacts sélectionnés
@@ -1594,11 +1594,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     hideKeyboard()
                 }
                 .show()
+    }
 
-//        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-//        main_GridView!!.adapter = gridViewAdapter
-//        switchMultiSelectToNormalMode()
-//        listOfItemSelected.clear()
+    override fun onRestart() {
+        super.onRestart()
+        hideKeyboard()
+        startActivity(Intent(this@MainActivity, MainActivity::class.java))
     }
 
     //endregion

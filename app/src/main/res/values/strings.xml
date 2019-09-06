@@ -145,6 +145,7 @@
     <string name="add_new_contact_validate">Validate</string>
 
     <string name="add_new_contact_alert_dialog_title" tools:ignore="Typos">Contact already existing</string>
+    <string name="add_new_contact_toast_empty_name">Your contact has to have a first name or a last name</string>
     <string name="add_new_contact_alert_dialog_message"> An existing contact is already using this name. Do you want to record it under this name anyway?</string>
     <string name="add_new_contact_alert_dialog_cancel_title">Warning</string>
     <string name="add_new_contact_alert_dialog_cancel_message"> You will lose all our data, do you really want to continue?</string>

@@ -144,6 +144,7 @@
     <string name="add_new_contact_validate">Valider</string>
 
     <string name="add_new_contact_alert_dialog_title" tools:ignore="Typos">Contact déjà existant</string>
+    <string name="add_new_contact_toast_empty_name">Votre contact doit posséder au moins un nom ou un prénom</string>
     <string name="add_new_contact_alert_dialog_message">Un contact porte déjà ce nom. Voulez-vous tout de même l\'enregistrer sous ce nom ?</string>
     <string name="add_new_contact_alert_dialog_cancel_title">Attention</string>
     <string name="add_new_contact_alert_dialog_cancel_message">Vous risquez de perdre toutes vos données, voulez vous vraiment continuer ?</string>
