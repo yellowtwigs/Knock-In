@@ -45,7 +45,7 @@ class MultiChannelActivity : AppCompatActivity() {
     private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
 
     private var sendValidate = false
-    private var refreshNow = false
+    private var multiChannelActivity = false
 
     //endregion
 
@@ -65,7 +65,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_multi_channel)
 
-        askForSMSPermissions()
+//        askForSMSPermissions()
 
         //region ========================================== Toolbar =========================================
 
@@ -112,39 +112,26 @@ class MultiChannelActivity : AppCompatActivity() {
 
         multi_channel_SendMessageButton!!.setOnClickListener {
             if (multi_channel_SendMessageEditText!!.text.toString() != "") {
-                if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0) {
+                if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0 && multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
                     multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
 
-                    if (multi_channel_listViewAdapter!!.listOfMailSelected.size == 0) {
-                        sendValidate = true
-                        refreshNow = true
-                    }
-                }
+                    multiChannelActivity = true
 
-                if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
-                    multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+                } else if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0 && multi_channel_listViewAdapter!!.listOfMailSelected.size == 0) {
+                    multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
 
                     sendValidate = true
-                    refreshNow = false
 
-                    if (multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
-                        sendValidate = true
-                        refreshNow = false
-                    }
-
+                } else if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
+                    multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
                 }
 
                 if (multi_channel_listViewAdapter!!.listOfMailSelected.size == 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
                     Toast.makeText(this, getString(R.string.multi_channel_list_of_channel_selected_empty), Toast.LENGTH_LONG).show()
                     sendValidate = false
-                    refreshNow = false
                 }
 
                 hideKeyboard()
-
-                if (refreshNow) {
-                    refreshActivity()
-                }
 
             } else {
                 Toast.makeText(this, getString(R.string.multi_channel_empty_field), Toast.LENGTH_SHORT).show()
@@ -177,45 +164,58 @@ class MultiChannelActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun checkPermission(permission: String): Boolean {
-        val checkPermission = ContextCompat.checkSelfPermission(this, permission)
-        return checkPermission == PackageManager.PERMISSION_GRANTED
-    }
+//    private fun checkPermission(permission: String): Boolean {
+//        val checkPermission = ContextCompat.checkSelfPermission(this, permission)
+//        return checkPermission == PackageManager.PERMISSION_GRANTED
+//    }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                multi_channel_SendMessageButton!!.isEnabled = true
-            }
-            MY_PERMISSIONS_REQUEST_RECEIVE_SMS -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Thank You for permitting !", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+//        when (requestCode) {
+//            SEND_SMS_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                multi_channel_SendMessageButton!!.isEnabled = true
+//            }
+//            MY_PERMISSIONS_REQUEST_RECEIVE_SMS -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                Toast.makeText(this, "Thank You for permitting !", Toast.LENGTH_SHORT).show()
+//            } else {
+//                Toast.makeText(this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
-    private fun askForSMSPermissions() {
-        if (!checkPermission(Manifest.permission.SEND_SMS)) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
-                } else {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
-                }
-            }
-        } else {
-        }
-    }
+//    private fun askForSMSPermissions() {
+//        if (!checkPermission(Manifest.permission.SEND_SMS)) {
+//            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+//                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
+//                } else {
+//                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
+//                }
+//            }
+//        } else {
+//        }
+//    }
 
+    /**
+     * On ouvre l'application de SMS avec tous les contacts saisis lors du multiselect
+     * @param listOfPhoneNumber [ArrayList<String>]
+     */
     private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
+
+        var message = "smsto:" + listOfPhoneNumber[0]
         for (i in 0 until listOfPhoneNumber.size) {
-            val smsManager = SmsManager.getDefault()
-            smsManager.sendTextMessage(listOfPhoneNumber[i], null, msg, null, null)
+            message += ";" + listOfPhoneNumber[i]
         }
-        Toast.makeText(applicationContext, getString(R.string.multi_channel_message_sent),
-                Toast.LENGTH_LONG).show()
+        startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)).putExtra("sms_body", msg))
     }
+
+//    private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
+//        for (i in 0 until listOfPhoneNumber.size) {
+//            val smsManager = SmsManager.getDefault()
+//            smsManager.sendTextMessage(listOfPhoneNumber[i], null, msg, null, null)
+//        }
+//        Toast.makeText(applicationContext, getString(R.string.multi_channel_message_sent),
+//                Toast.LENGTH_LONG).show()
+//    }
 
     private fun multiChannelMailClick(listOfMail: ArrayList<String>, msg: String) {
         val intent = Intent(Intent.ACTION_SEND)
@@ -224,6 +224,9 @@ class MultiChannelActivity : AppCompatActivity() {
         intent.data = Uri.parse("mailto:")
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, msg)
+
+        sendValidate = true
+        multiChannelActivity = false
 
         startActivity(intent)
     }
@@ -242,6 +245,10 @@ class MultiChannelActivity : AppCompatActivity() {
 
         if (sendValidate) {
             refreshActivity()
+        }
+
+        if (multiChannelActivity) {
+            multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
         }
     }
 

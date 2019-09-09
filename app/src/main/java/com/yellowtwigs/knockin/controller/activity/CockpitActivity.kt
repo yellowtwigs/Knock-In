@@ -449,18 +449,18 @@ class CockpitActivity : AppCompatActivity() {
             }
             true
         }
-        cockpit_CallKeyboard_1!!.setOnLongClickListener {
-            val telecomManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            if (ContextCompat.checkSelfPermission(this@CockpitActivity, Manifest.permission.READ_PHONE_STATE)
-                    != PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this@CockpitActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
-            } else {
-                val numberVoiceMail = telecomManager.voiceMailNumber
-                val dial = "tel:$numberVoiceMail"
-                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
-            }
-            true
-        }
+//        cockpit_CallKeyboard_1!!.setOnLongClickListener {
+//            val telecomManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+//            if (ContextCompat.checkSelfPermission(this@CockpitActivity, Manifest.permission.READ_PHONE_STATE)
+//                    != PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this@CockpitActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
+//            } else {
+//                val numberVoiceMail = telecomManager.voiceMailNumber
+//                val dial = "tel:$numberVoiceMail"
+//                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
+//            }
+//            true
+//        }
 
         //endregion
 

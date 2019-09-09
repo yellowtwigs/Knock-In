@@ -189,9 +189,9 @@ class SettingsActivity : AppCompatActivity() {
 
         settings_PermissionsPhoneMaterialButton!!.setOnClickListener {
             val arraylistPermission = ArrayList<String>()
-            arraylistPermission.add(Manifest.permission.SEND_SMS)
+//            arraylistPermission.add(Manifest.permission.SEND_SMS)
             arraylistPermission.add(Manifest.permission.CALL_PHONE)
-            ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), SettingsActivity.REQUEST_CODE_SMS_AND_CALL)
+            ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), REQUEST_CODE_SMS_AND_CALL)
             settings_PermissionsPhoneMaterialButton!!.visibility = View.INVISIBLE
             settings_PermissionsPhoneLoading!!.visibility = View.VISIBLE
         }

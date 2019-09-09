@@ -5,16 +5,24 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.*
 import com.yellowtwigs.knockin.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.facebook.login.widget.LoginButton
+import java.util.*
+import com.facebook.login.LoginResult
+import com.facebook.login.LoginManager
+import com.facebook.ProfileTracker
 
-class MessengerActivity : AppCompatActivity() {
+
+open class MessengerActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
@@ -23,6 +31,12 @@ class MessengerActivity : AppCompatActivity() {
     private var messenger_ComposeMessageFloatingButton: FloatingActionButton? = null
 
     private var messenger_RecyclerView: RecyclerView? = null
+
+    private var facebook_LoginButton: LoginButton? = null
+    private val EMAIL = "email"
+    private var callbackManager: CallbackManager? = null
+
+    private var profileTracker : ProfileTracker? = null
 
     //endregion
 
@@ -46,6 +60,9 @@ class MessengerActivity : AppCompatActivity() {
 
         messenger_ComposeMessageFloatingButton = findViewById(R.id.messenger_compose_message)
         messenger_RecyclerView = findViewById(R.id.messenger_recycler_view)
+
+        facebook_LoginButton = findViewById(R.id.facebook_login_button)
+        facebook_LoginButton!!.setReadPermissions(listOf(EMAIL))
 
         //endregion
 
@@ -92,7 +109,7 @@ class MessengerActivity : AppCompatActivity() {
 
         //endregion
 
-        //region ======================================= Adapter =======================================
+        //region ========================================= Adapter ==========================================
 
 //        messenger_RecyclerView.adapter = MessengerRecyclerViewAdapter(this, )
 
@@ -105,10 +122,53 @@ class MessengerActivity : AppCompatActivity() {
         }
 
         //endregion
+
+        //region ========================================= Facebook =========================================
+
+        FacebookSdk.sdkInitialize(this.applicationContext);
+        callbackManager = CallbackManager.Factory.create()
+        val accessToken = AccessToken.getCurrentAccessToken()
+        val isLoggedIn = accessToken != null && !accessToken.isExpired
+        LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(loginResult: LoginResult) {
+                        Toast.makeText(this@MessengerActivity, "is connected", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onCancel() {
+                        // App code
+                    }
+
+                    override fun onError(exception: FacebookException) {
+                        // App code
+                    }
+                })
+        val profile : Profile
+
+        profileTracker = object : ProfileTracker() {
+            override fun onCurrentProfileChanged(
+                    oldProfile: Profile,
+                    currentProfile: Profile) {
+                // App code
+            }
+        }
+
+        //endregion
     }
 
     //region ========================================== Functions ===========================================
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        callbackManager!!.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        profileTracker!!.stopTracking()
+    }
 
     //endregion
 }
