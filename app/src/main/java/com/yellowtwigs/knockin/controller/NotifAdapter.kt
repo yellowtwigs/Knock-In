@@ -298,6 +298,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         return view
     }
 
+    //TODO Ask for the permission before call
     private fun phoneCall(phoneNumber: String) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {

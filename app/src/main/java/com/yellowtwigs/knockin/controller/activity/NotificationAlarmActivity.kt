@@ -30,7 +30,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private var notification_Alarm_Button_ShutDown: MaterialButton? = null
 
-    private var notification_alarm_RecyclerView: RecyclerView? = null
     private var sharedNbMessagesPreferences: SharedPreferences? = null
 
     private var sbp: StatusBarParcelable? = null

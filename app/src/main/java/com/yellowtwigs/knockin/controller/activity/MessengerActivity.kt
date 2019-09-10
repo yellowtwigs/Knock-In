@@ -16,10 +16,17 @@ import com.yellowtwigs.knockin.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.facebook.login.widget.LoginButton
-import java.util.*
 import com.facebook.login.LoginResult
 import com.facebook.login.LoginManager
 import com.facebook.ProfileTracker
+import com.facebook.GraphResponse
+import com.facebook.GraphRequest
+import com.facebook.HttpMethod
+import com.facebook.AccessToken
+import com.google.android.youtube.player.internal.e
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 
 open class MessengerActivity : AppCompatActivity() {
@@ -36,7 +43,9 @@ open class MessengerActivity : AppCompatActivity() {
     private val EMAIL = "email"
     private var callbackManager: CallbackManager? = null
 
-    private var profileTracker : ProfileTracker? = null
+    private var profileTracker: ProfileTracker? = null
+
+    private var isConnected: Boolean = false
 
     //endregion
 
@@ -131,9 +140,19 @@ open class MessengerActivity : AppCompatActivity() {
         val isLoggedIn = accessToken != null && !accessToken.isExpired
         LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
 
+        /* make the API call */
+        GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/{friend-list-id}",
+                null,
+                HttpMethod.GET,
+                GraphRequest.Callback { /* handle the result */ }
+        ).executeAsync()
+
         LoginManager.getInstance().registerCallback(callbackManager,
                 object : FacebookCallback<LoginResult> {
                     override fun onSuccess(loginResult: LoginResult) {
+//                        isConnected = true
                         Toast.makeText(this@MessengerActivity, "is connected", Toast.LENGTH_SHORT).show()
                     }
 
@@ -145,14 +164,44 @@ open class MessengerActivity : AppCompatActivity() {
                         // App code
                     }
                 })
-        val profile : Profile
 
-        profileTracker = object : ProfileTracker() {
-            override fun onCurrentProfileChanged(
-                    oldProfile: Profile,
-                    currentProfile: Profile) {
-                // App code
+        val request = GraphRequest.newGraphPathRequest(
+                accessToken, "/{user-id}/friends") {
+            // Insert your code here
+            val jsonArrayFriends = it.jsonArray
+            val friendlistObject = it.jsonObject.getJSONObject("friendlist").getJSONArray("data")
+            var cpt = 0
+
+            while (cpt < jsonArrayFriends.length()) {
+                if (jsonArrayFriends != null){
+                    Toast.makeText(this@MessengerActivity, jsonArrayFriends[cpt].toString(), Toast.LENGTH_SHORT).show()
+                }
+                if (jsonArrayFriends != null){
+                    Toast.makeText(this@MessengerActivity, friendlistObject[cpt].toString(), Toast.LENGTH_SHORT).show()
+                }
+                cpt++
             }
+        }
+
+        request.executeAsync()
+
+        if (isConnected) {
+            val token = AccessToken.getCurrentAccessToken()
+            val graphRequest = GraphRequest.newMeRequest(token) { jsonObject, response ->
+                try {
+                    val jsonArrayFriends = jsonObject.getJSONObject("friendlist").getJSONArray("data")
+                    val friendlistObject = jsonArrayFriends.getJSONObject(0)
+                    val friendListID = friendlistObject.getString("id")
+                    myNewGraphReq(friendListID)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }
+
+            val param = Bundle()
+            param.putString("fields", "friendlist")
+            graphRequest.parameters = param
+            graphRequest.executeAsync()
         }
 
         //endregion
@@ -168,6 +217,27 @@ open class MessengerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         profileTracker!!.stopTracking()
+    }
+
+    private fun myNewGraphReq(friendlistId: String) {
+        val graphPath = "/$friendlistId/members/";
+        val token = AccessToken.getCurrentAccessToken();
+        val request = GraphRequest(token, graphPath, null, HttpMethod.GET, GraphRequest.Callback() {
+            val jsonObject = it.jsonObject;
+            try {
+                val arrayOfUsersInFriendList = jsonObject.getJSONArray("data");
+                /* Do something with the user list */
+                /* ex: get first user in list, "name" */
+                val user = arrayOfUsersInFriendList.getJSONObject(0);
+                val usersName = user.getString("name");
+            } catch (e: JSONException) {
+                e.printStackTrace();
+            }
+        });
+        val param = Bundle();
+        param.putString("fields", "name");
+        request.parameters = param;
+        request.executeAsync();
     }
 
     //endregion

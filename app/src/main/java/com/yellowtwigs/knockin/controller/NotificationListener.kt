@@ -322,6 +322,7 @@ class NotificationListener : NotificationListenerService() {
 
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
+//        i.putExtra("contact_id", contact.getContactId())
         adapterNotification = NotifAdapter(applicationContext, notifications, windowManager!!, view!!)
         listViews = view.findViewById(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification

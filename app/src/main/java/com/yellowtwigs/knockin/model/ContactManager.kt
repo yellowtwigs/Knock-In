@@ -979,6 +979,13 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
 
                 if (contactInfo.firstName + " " + contactInfo.lastName == name || contactInfo.firstName == name || contactInfo.lastName == name) {
                     return dbContact
+                } else {
+                    var entireName = name.replace(name[0], ' ')
+                    entireName = entireName.replace(name[entireName.length - 1], ' ')
+
+                    if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
+                        return dbContact
+                    }
                 }
             }
         } else {
