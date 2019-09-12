@@ -2,9 +2,12 @@ package com.yellowtwigs.knockin.controller.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,22 +15,12 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.*
-import com.yellowtwigs.knockin.R
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.facebook.login.widget.LoginButton
-import com.facebook.login.LoginResult
-import com.facebook.login.LoginManager
-import com.facebook.ProfileTracker
-import com.facebook.GraphResponse
-import com.facebook.GraphRequest
-import com.facebook.HttpMethod
-import com.facebook.AccessToken
-import com.google.android.youtube.player.internal.e
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-
+import com.yellowtwigs.knockin.R
 
 open class MessengerActivity : AppCompatActivity() {
 
@@ -44,13 +37,31 @@ open class MessengerActivity : AppCompatActivity() {
     private var callbackManager: CallbackManager? = null
 
     private var profileTracker: ProfileTracker? = null
-
-    private var isConnected: Boolean = false
+    private var accessTokenTracker: AccessTokenTracker? = null
 
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
+        accessTokenTracker = object : AccessTokenTracker() {
+            override fun onCurrentAccessTokenChanged(
+                    oldAccessToken: AccessToken,
+                    currentAccessToken: AccessToken) {
+
+            }
+        }
+
+        profileTracker = object : ProfileTracker() {
+            override fun onCurrentProfileChanged(
+                    oldProfile: Profile,
+                    currentProfile: Profile) {
+
+            }
+        }
 
         //region ======================================== Theme Dark ========================================
 
@@ -111,8 +122,6 @@ open class MessengerActivity : AppCompatActivity() {
                 R.id.nav_help -> startActivity(Intent(this@MessengerActivity, HelpActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.messenger_drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)
             true
         }
 
@@ -134,25 +143,12 @@ open class MessengerActivity : AppCompatActivity() {
 
         //region ========================================= Facebook =========================================
 
-        FacebookSdk.sdkInitialize(this.applicationContext);
-        callbackManager = CallbackManager.Factory.create()
-        val accessToken = AccessToken.getCurrentAccessToken()
-        val isLoggedIn = accessToken != null && !accessToken.isExpired
-        LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
+        callbackManager = CallbackManager.Factory.create();
 
-        /* make the API call */
-        GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/{friend-list-id}",
-                null,
-                HttpMethod.GET,
-                GraphRequest.Callback { /* handle the result */ }
-        ).executeAsync()
-
-        LoginManager.getInstance().registerCallback(callbackManager,
+        // Callback registration
+        facebook_LoginButton!!.registerCallback(callbackManager,
                 object : FacebookCallback<LoginResult> {
                     override fun onSuccess(loginResult: LoginResult) {
-//                        isConnected = true
                         Toast.makeText(this@MessengerActivity, "is connected", Toast.LENGTH_SHORT).show()
                     }
 
@@ -165,44 +161,9 @@ open class MessengerActivity : AppCompatActivity() {
                     }
                 })
 
-        val request = GraphRequest.newGraphPathRequest(
-                accessToken, "/{user-id}/friends") {
-            // Insert your code here
-            val jsonArrayFriends = it.jsonArray
-            val friendlistObject = it.jsonObject.getJSONObject("friendlist").getJSONArray("data")
-            var cpt = 0
-
-            while (cpt < jsonArrayFriends.length()) {
-                if (jsonArrayFriends != null){
-                    Toast.makeText(this@MessengerActivity, jsonArrayFriends[cpt].toString(), Toast.LENGTH_SHORT).show()
-                }
-                if (jsonArrayFriends != null){
-                    Toast.makeText(this@MessengerActivity, friendlistObject[cpt].toString(), Toast.LENGTH_SHORT).show()
-                }
-                cpt++
-            }
-        }
-
-        request.executeAsync()
-
-        if (isConnected) {
-            val token = AccessToken.getCurrentAccessToken()
-            val graphRequest = GraphRequest.newMeRequest(token) { jsonObject, response ->
-                try {
-                    val jsonArrayFriends = jsonObject.getJSONObject("friendlist").getJSONArray("data")
-                    val friendlistObject = jsonArrayFriends.getJSONObject(0)
-                    val friendListID = friendlistObject.getString("id")
-                    myNewGraphReq(friendListID)
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }
-
-            val param = Bundle()
-            param.putString("fields", "friendlist")
-            graphRequest.parameters = param
-            graphRequest.executeAsync()
-        }
+        val accessToken = AccessToken.getCurrentAccessToken()
+        val isLoggedIn = accessToken != null && !accessToken.isExpired
+        LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
 
         //endregion
     }
@@ -210,34 +171,15 @@ open class MessengerActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager!!.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+        callbackManager!!.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        profileTracker!!.stopTracking()
-    }
 
-    private fun myNewGraphReq(friendlistId: String) {
-        val graphPath = "/$friendlistId/members/";
-        val token = AccessToken.getCurrentAccessToken();
-        val request = GraphRequest(token, graphPath, null, HttpMethod.GET, GraphRequest.Callback() {
-            val jsonObject = it.jsonObject;
-            try {
-                val arrayOfUsersInFriendList = jsonObject.getJSONArray("data");
-                /* Do something with the user list */
-                /* ex: get first user in list, "name" */
-                val user = arrayOfUsersInFriendList.getJSONObject(0);
-                val usersName = user.getString("name");
-            } catch (e: JSONException) {
-                e.printStackTrace();
-            }
-        });
-        val param = Bundle();
-        param.putString("fields", "name");
-        request.parameters = param;
-        request.executeAsync();
+        accessTokenTracker!!.stopTracking()
+        profileTracker!!.stopTracking()
     }
 
     //endregion

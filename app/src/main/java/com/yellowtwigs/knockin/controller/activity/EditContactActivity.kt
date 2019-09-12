@@ -431,7 +431,8 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_PhoneNumber!!.editText!!.text.toString() != edit_contact_phone_number ||
                     edit_contact_FixNumber!!.editText!!.text.toString() != edit_contact_fix_number ||
                     edit_contact_Mail!!.editText!!.text.toString() != edit_contact_mail ||
-                    isFavorite != isFavoriteChanged || edit_contact_imgStringChanged) {
+                    isFavorite != isFavoriteChanged || edit_contact_imgStringChanged ||
+                    edit_contact_priority != edit_contact_Priority!!.selectedItemPosition) {
                 MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle("Contact modifié")
                         .setMessage("Vous venez de modifier un contact, voulez-vous l'éditer dans vos contacts Android ?")
