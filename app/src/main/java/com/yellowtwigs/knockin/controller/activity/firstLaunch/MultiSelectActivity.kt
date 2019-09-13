@@ -51,7 +51,7 @@ class MultiSelectActivity : AppCompatActivity() {
 
         //endregion
 
-        adapter = SelectContactAdapter(this, gestionnaireContact, 4, true)
+        adapter = SelectContactAdapter(this, gestionnaireContact, 4)
 
         multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
         multi_select_gridView!!.numColumns = 4

@@ -41,7 +41,7 @@ public class SelectContactAdapter extends BaseAdapter {
     private ArrayList<ContactWithAllInformation> listSelectedItem;
     private Boolean secondClick = true;
 
-    public SelectContactAdapter(Context context, ContactManager contactManager, Integer len, Boolean isNull) {
+    public SelectContactAdapter(Context context, ContactManager contactManager, Integer len) {
         this.context = context;
         this.gestionnaireContact = contactManager;
         this.len = len;

@@ -27,8 +27,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/edit_contact_return"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
                 android:background="?attr/actionBarItemBackground"
@@ -38,8 +38,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/edit_contact_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp"
                 android:layout_toStartOf="@+id/edit_contact_favorite"
@@ -50,8 +50,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/edit_contact_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp"
                 android:layout_toStartOf="@+id/edit_contact_edit_contact"

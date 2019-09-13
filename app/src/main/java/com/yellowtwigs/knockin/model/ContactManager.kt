@@ -977,7 +977,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             this.contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
-                if (contactInfo.firstName + " " + contactInfo.lastName == name || contactInfo.firstName == name || contactInfo.lastName == name) {
+                if (contactInfo.firstName + " " + contactInfo.lastName == name || contactInfo.firstName == name || contactInfo.lastName == name || " " + contactInfo.firstName + " " + contactInfo.lastName == name) {
                     return dbContact
                 } else {
                     var entireName = name.replace(name[0], ' ')
@@ -993,6 +993,13 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 val contactInfo = dbContact.contactDB!!
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
                     return dbContact
+                } else {
+                    var entireName = name.replace(name[0], ' ')
+                    entireName = entireName.replace(name[entireName.length - 1], ' ')
+
+                    if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
+                        return dbContact
+                    }
                 }
             }
         }

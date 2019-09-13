@@ -62,5 +62,4 @@ interface GroupsDao {
 
     @Query("SELECT MAX(id)  FROM groups_table")
     fun getIdNeverUsed(): Int
-
 }

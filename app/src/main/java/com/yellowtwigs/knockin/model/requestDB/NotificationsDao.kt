@@ -19,13 +19,13 @@ interface NotificationsDao {
     fun getAllNotifications(): List<NotificationDB>
 
     @Query("SELECT * FROM notifications_table WHERE instr(lower(contact_name||' '||description), lower(:name)) > 0")
-    fun getNotificationFiltered(name:String): List<NotificationDB>
+    fun getNotificationFiltered(name: String): List<NotificationDB>
 
     @Query("SELECT * FROM notifications_table INNER JOIN contacts_table ON contacts_table.id=notifications_table.id_contact where contact_priority!=1 ORDER BY contacts_table.contact_priority DESC,timestamp DESC ")
-    fun getContactWithPriority0And2():List<NotificationDB>
+    fun getContactWithPriority0And2(): List<NotificationDB>
 
     @Query("SELECT * FROM notifications_table ORDER BY contact_name DESC")
-    fun getNotifSortByContact():List<NotificationDB>
+    fun getNotifSortByContact(): List<NotificationDB>
 
     /**
      * Récupère toutes les [notifications][NotificationDB] lié à une plateforme
@@ -36,9 +36,11 @@ interface NotificationsDao {
     fun getNotificationByPlatform(platform: String): List<NotificationDB>
 
     @Query("SELECT COUNT(*) FROM notifications_table WHERE datetime('now')- datetime(timestamp)<1")
-    fun getNotificationSinceYesterday():Int
-    @Query("SELECT datetime(timestamp) FROM notifications_table" )
-    fun getIntTime():List<String>
+    fun getNotificationSinceYesterday(): Int
+
+    @Query("SELECT datetime(timestamp) FROM notifications_table")
+    fun getIntTime(): List<String>
+
     /**
      * Récupère une [notification][NotificationDB] grâce à son id
      * @param id Int   L'id de la [notification][NotificationDB] voulu
@@ -70,8 +72,8 @@ interface NotificationsDao {
     fun deleteNotificationByPlatform(platform: String)
 
     @Query("SELECT max(id) from notifications_table ")
-    fun lastInsert():Int
+    fun lastInsert(): Int
 
     @Query("SELECT * FROM notifications_table where :dateNow- timestamp <500")
-    fun lastInsertByTime(dateNow:Long):List<NotificationDB>
+    fun lastInsertByTime(dateNow: Long): List<NotificationDB>
 }

@@ -19,6 +19,7 @@ import com.yellowtwigs.knockin.controller.activity.AddNewContactActivity;
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
 
 public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapter.ViewHolder> {
+
     private Context context;
     private int[] iconeList;
 

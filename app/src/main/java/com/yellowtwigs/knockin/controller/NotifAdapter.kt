@@ -234,23 +234,23 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     "Gmail" -> {
                     }
                     "Message" -> {
-                        if (checkPermission(Manifest.permission.SEND_SMS)) {
-                            if (contact != null) {
-                                sendMessageWithAndroidMessage(contact.getFirstPhoneNumber(), editText.text.toString())
-                            } else {
-                                sendMessageWithAndroidMessage(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
-                            }
-                            //closeNotificationPopup()
+//                        if (checkPermission(Manifest.permission.SEND_SMS)) {
+                        if (contact != null) {
+                            sendMessageWithAndroidMessage(contact.getFirstPhoneNumber(), editText.text.toString())
                         } else {
-                            //TODO In english
-                            Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knockin", Toast.LENGTH_LONG).show()
-
-                            if (contact != null) {
-                                openSms(contact.getFirstPhoneNumber(), editText.text.toString())
-                            } else {
-                                openSms(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
-                            }
+                            sendMessageWithAndroidMessage(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
                         }
+                        //closeNotificationPopup()
+//                        } else {
+//                            //TODO In english
+//                            Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knockin", Toast.LENGTH_LONG).show()
+//
+//                            if (contact != null) {
+//                                openSms(contact.getFirstPhoneNumber(), editText.text.toString())
+//                            } else {
+//                                openSms(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
+//                            }
+//                        }
                     }
                 }
                 editText.setText("")
@@ -350,11 +350,16 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     }
 
     private fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String) {
-        val smsManager = SmsManager.getDefault()
-        smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
+        val message = "smsto:" + phoneNumber
+        val i = Intent(Intent.ACTION_SENDTO, Uri.parse(message))
+        i.flags = FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(i.putExtra("sms_body", msg))
 
-        Toast.makeText(context, R.string.notif_adapter_message_sent,
-                Toast.LENGTH_LONG).show()
+//        val smsManager = SmsManager.getDefault()
+//        smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
+//
+//        Toast.makeText(context, R.string.notif_adapter_message_sent,
+//                Toast.LENGTH_LONG).show()
     }
 
     private fun checkPermission(permission: String): Boolean {

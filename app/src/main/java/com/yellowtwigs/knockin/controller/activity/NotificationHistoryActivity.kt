@@ -68,10 +68,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
 
     private val notification_history_ListOfNotificationDB = mutableListOf<NotificationDB>()
-    private var listOfItemSelected: ArrayList<NotificationDB> = ArrayList()
-
-    private var firstClick: Boolean = true
-    private var multiSelectMode: Boolean = false
     private var fromPopup: Boolean = false
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -129,7 +125,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.notification_history_toolbar)
         setSupportActionBar(toolbar)
-        toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         val actionbar = supportActionBar
         toolbar.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         actionbar!!.run {
@@ -538,12 +533,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu_filter_notif_history, menu)
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
-        if (sharedPreferences.getString("tri", "date") == "date") {
-            menu!!.findItem(R.id.notif_tri_par_date).isChecked = true
-        } else if (sharedPreferences.getString("tri", "date") == "priorite") {
-            menu!!.findItem(R.id.notif_tri_par_priorite).isChecked = true
-        } else {
-            menu!!.findItem(R.id.notif_tri_par_contact).isChecked = true
+        when {
+            sharedPreferences.getString("tri", "date") == "date" -> menu!!.findItem(R.id.notif_tri_par_date).isChecked = true
+            sharedPreferences.getString("tri", "date") == "priorite" -> menu!!.findItem(R.id.notif_tri_par_priorite).isChecked = true
+            else -> menu!!.findItem(R.id.notif_tri_par_contact).isChecked = true
         }
         if (!sharedPreferences.getBoolean("filtre_message", true)) {
             menu.findItem(R.id.messagefilter).isChecked = false
@@ -558,17 +551,15 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 return true
             }
             R.id.notif_tri_par_date -> {
-                println("tri par priorité checked")
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.putString("tri", "date")
                 editor.apply()
-                item.setChecked(true)
+                item.isChecked = true
                 updateFilter()
                 // this.recreate()
             }
             R.id.notif_tri_par_priorite -> {
-                println("tri par priorité checked")
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.putString("tri", "priorite")
@@ -576,7 +567,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
 
                 updateFilter()
-                //   this.recreate()
             }
             R.id.notif_tri_par_contact -> {
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
@@ -680,7 +670,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp2.addAll(notification_history_ListOfNotificationDB)
                 listTmp2.removeAll(listTmp)
 
-                listTmp.addAll(Math.max(firstContactPrio0(listTmp), 0), listTmp2)
+                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
                 notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
@@ -688,7 +678,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_ListView!!.adapter = notification_Adapter
 
                 swipeMenuCreator(notification_history_ListView!!)
-
             }
             sharedPreferences.getString("tri", "date") == "contact" -> {
 
@@ -700,6 +689,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = notification_Adapter
+
                 swipeMenuCreator(notification_history_ListView!!)
             }
             else -> println("thats a problem test")
@@ -712,14 +702,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val creator = SwipeMenuCreator {
 
             val deleteItem = SwipeMenuItem(applicationContext)
-//            val openItem = SwipeMenuItem(applicationContext)
-//
-//            openItem.setBackground(R.color.blue_tag_group)
-//            openItem.title = "Notif details"
-//            openItem.width = convertDipToPixels(50F)
-//            it.addMenuItem(openItem)
-
-            //deleteItem.setBackground(R.drawable.ic_swipe_delete)
             deleteItem.setIcon(R.drawable.ic_swipe_delete)
             deleteItem.width = convertDipToPixels(50F)
             it.addMenuItem(deleteItem)
@@ -737,7 +719,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     refreshActivity()
                 }
             }
-            false
+            true
         }
     }
 

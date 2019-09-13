@@ -19,7 +19,7 @@ class NotificationSender : BroadcastReceiver() {
         println("received")
         val CHANNEL_ID = "my_channel"
 
-        println("extras test" + intent.extras.toString())
+        println("extras test" + intent.extras!!.toString())
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -32,7 +32,7 @@ class NotificationSender : BroadcastReceiver() {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         if (!isNotificationServiceEnabled(context) && sharedPreferences.getBoolean("reminder",false)) {
 
-            var main_ContactsDatabase: ContactsRoomDatabase? = null
+            val main_ContactsDatabase: ContactsRoomDatabase?
             lateinit var main_mDbWorkerThread: DbWorkerThread
             main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
             main_mDbWorkerThread.start()
@@ -77,7 +77,7 @@ class NotificationSender : BroadcastReceiver() {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
 
-                if (intent.action == "NOTIFICAION_TIME")
+                if (intent.action == "NOTIFICATION_TIME")
                     manager.notify(0, notification.build())
             }
             main_mDbWorkerThread.postTask(runnableSendNotif)

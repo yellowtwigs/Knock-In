@@ -112,20 +112,15 @@ class NotificationListener : NotificationListenerService() {
                                 if (screenListener.isKeyguardLocked) {
                                     val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
                                     i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-
                                     i.putExtra("notification", sbp)
-                                    i.putExtra("contact_id", contact.getContactId())
                                     startActivity(i)
                                 } else {
                                     println("screenIsUnlocked")
+                                    this.cancelNotification(sbn.key)
                                     displayLayout(sbp, sharedPreferences)
-                                    cancelNotification(sbn.key)
                                 }
                             }
                             contact.contactDB!!.contactPriority == 1 -> {
-                                if (sharedPreferences.getBoolean("mask_prio_1", false)) {
-                                    this.cancelNotification(sbn.key)
-                                }
                             }
                             contact.contactDB!!.contactPriority == 0 -> {
                                 println("priority 0")
@@ -322,7 +317,6 @@ class NotificationListener : NotificationListenerService() {
 
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
-//        i.putExtra("contact_id", contact.getContactId())
         adapterNotification = NotifAdapter(applicationContext, notifications, windowManager!!, view!!)
         listViews = view.findViewById(R.id.notification_pop_up_listView)
         listViews?.adapter = adapterNotification

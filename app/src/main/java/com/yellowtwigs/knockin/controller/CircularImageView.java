@@ -22,6 +22,7 @@ import com.yellowtwigs.knockin.R;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
+import static com.yellowtwigs.knockin.controller.CircularImageView.ShadowGravity.*;
 
 /**
  * La Classe qui permet d'arrondir les images
@@ -39,7 +40,7 @@ public class CircularImageView extends AppCompatImageView {
     private int canvasSize;
     private float shadowRadius;
     private int shadowColor = Color.BLACK;
-    private ShadowGravity shadowGravity = ShadowGravity.BOTTOM;
+    private ShadowGravity shadowGravity = BOTTOM;
     private ColorFilter colorFilter;
 
     // Object used to draw+
@@ -101,8 +102,8 @@ public class CircularImageView extends AppCompatImageView {
             shadowRadius = DEFAULT_SHADOW_RADIUS;
             drawShadow(attributes.getFloat(R.styleable.CircularImageView_civ_shadow_radius, shadowRadius),
                     attributes.getColor(R.styleable.CircularImageView_civ_shadow_color, shadowColor));
-            int shadowGravityIntValue = attributes.getInteger(R.styleable.CircularImageView_civ_shadow_gravity, ShadowGravity.BOTTOM.getValue());
-            shadowGravity = ShadowGravity.fromValue(shadowGravityIntValue);
+            int shadowGravityIntValue = attributes.getInteger(R.styleable.CircularImageView_civ_shadow_gravity, BOTTOM.getValue());
+            shadowGravity = fromValue(shadowGravityIntValue);
         }
 
         attributes.recycle();

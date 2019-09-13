@@ -296,7 +296,7 @@ class GroupActivity : AppCompatActivity() {
                     verifiedContactsChannel(listOfItemSelected)
 
                     if (adapter.listContactSelect.size == 0) {
-                        gridViewAdapter= ContactGridViewAdapter(this, gestionnaireContacts, len)
+                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                         group_GridView!!.adapter = gridViewAdapter
                         group_SearchBar!!.visibility = View.VISIBLE
 
@@ -608,7 +608,7 @@ class GroupActivity : AppCompatActivity() {
                 }
             }
             if (len >= 3) {
-                gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
+                gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
                 group_GridView!!.adapter = gridViewAdapter
                 group_SearchBar!!.visibility = View.VISIBLE
 
@@ -948,7 +948,7 @@ class GroupActivity : AppCompatActivity() {
 
     fun gridMultiSelectItemClick(len: Int, position: Int, firstPosVis: Int) {
         group_GridView!!.setSelection(firstPosVis)
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
+        val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
         group_GridView!!.adapter = adapter
         adapter.itemSelected(position)
         adapter.notifyDataSetChanged()
@@ -967,7 +967,7 @@ class GroupActivity : AppCompatActivity() {
 
     fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
         group_GridView!!.setSelection(firstPosVis)
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len, false)
+        val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
         group_GridView!!.adapter = adapter
         adapter.notifyDataSetChanged()
 
@@ -994,8 +994,8 @@ class GroupActivity : AppCompatActivity() {
             group_groupButton!!.visibility = View.GONE
 
             adapter.itemDeselected()
-            gridViewAdapter=ContactGridViewAdapter(this, gestionnaireContacts, len)
-            group_GridView!!.adapter =gridViewAdapter
+            gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+            group_GridView!!.adapter = gridViewAdapter
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
         }
@@ -1043,11 +1043,11 @@ class GroupActivity : AppCompatActivity() {
         params.bottomMargin = margin * i
         group_groupButton!!.layoutParams = params
 
-     /*   if (listOfItemSelected.size == 1) {
-            group_groupButton!!.visibility = View.GONE
-        } else {
-            group_groupButton!!.visibility = View.VISIBLE
-        }*/
+        /*   if (listOfItemSelected.size == 1) {
+               group_groupButton!!.visibility = View.GONE
+           } else {
+               group_groupButton!!.visibility = View.VISIBLE
+           }*/
     }
 
     fun recyclerMultiSelectItemClick(position: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {

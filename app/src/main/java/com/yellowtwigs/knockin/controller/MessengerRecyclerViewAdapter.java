@@ -26,6 +26,7 @@ import java.util.List;
  * @author Florian Striebel, Kenzy Suon
  */
 public class MessengerRecyclerViewAdapter extends RecyclerView.Adapter<MessengerRecyclerViewAdapter.MessengerViewHolder> {
+
     private List<ContactWithAllInformation> listContacts;
     private Context context;
     private View view;

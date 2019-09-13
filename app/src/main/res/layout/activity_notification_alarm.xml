@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
-            android:id="@+id/notification_alarm_receive_sms_layout"
+            android:id="@+id/notification_alarm_receive_message_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/notification_alarm_Knockin_logo"
@@ -33,22 +33,34 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_layout_selector"
             android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone">
+            android:focusable="true">
 
             <TextView
-                android:id="@+id/notification_alarm_receive_sms_message"
+                android:id="@+id/notification_alarm_receive_message_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/notification_alarm_receive_sms_image"
+                android:layout_toEndOf="@+id/notification_alarm_receive_message_image"
                 android:text="2 nouveaux messages VIP"
                 android:textColor="@color/textColorDark"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/notification_alarm_receive_message_sender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/notification_alarm_receive_message_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@+id/notification_alarm_receive_message_image"
+                android:text="de 0065606"
+                android:textColor="@color/textColorDark"
+                android:textSize="16sp" />
+
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/notification_alarm_receive_sms_image"
+                android:id="@+id/notification_alarm_receive_message_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"

@@ -38,8 +38,8 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var activityVisible: Boolean = false
     private var switchPopupNotif: Switch? = null
     private var switchservice: Switch? = null
-    private var switchMaskNotif: Switch? = null
     private var isTrue = false
+
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,20 +62,16 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
         switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
-        switchMaskNotif = this.findViewById<Switch>(R.id.switch_manage_notif_prio_1)
         val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
-        if(this.isNotificationServiceEnabled) {
+        if (this.isNotificationServiceEnabled) {
             switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
             switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
-            switchMaskNotif!!.isChecked = sharedPreferences.getBoolean("mask_prio_1", false)
             switchReminder.isChecked = sharedPreferences.getBoolean("reminder", false)
-        }else{
-
-            switchPopupNotif!!.isChecked =false
+        } else {
+            switchPopupNotif!!.isChecked = false
             switchservice!!.isChecked = false
-            switchMaskNotif!!.isChecked = false
             switchReminder.isChecked = false
         }
         if (!switchReminder.isChecked) {
@@ -119,7 +115,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_settings ->startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this@ManageNotificationActivity, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }
@@ -149,22 +145,6 @@ class ManageNotificationActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-        switchMaskNotif!!.setOnCheckedChangeListener { _, _ ->
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            if (switchMaskNotif!!.isChecked) {
-                /*if (!isNotificationServiceEnabled) {
-                   // buildNotificationServiceAlertDialog().show()
-                }else{*/
-                switchservice!!.isChecked = true
-                edit.putBoolean("serviceNotif", true)
-                edit.putBoolean("mask_prio_1", true)
-                edit.apply()
-                //}
-            } else {
-                edit.putBoolean("mask_prio_1", false)
-                edit.apply()
-            }
-        }
         switchservice!!.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchservice!!.isChecked) {
@@ -177,7 +157,6 @@ class ManageNotificationActivity : AppCompatActivity() {
             } else {
 
                 switchPopupNotif!!.isChecked = false
-                switchMaskNotif!!.isChecked = false
                 edit.putBoolean("serviceNotif", false)
                 edit.putBoolean("popupNotif", false)
                 edit.putBoolean("mask_prio_1", false)
@@ -299,13 +278,11 @@ class ManageNotificationActivity : AppCompatActivity() {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (isNotificationServiceEnabled) {
                 edit.putBoolean("serviceNotif", true)
-                edit.putBoolean("mask_prio_1", switchMaskNotif!!.isChecked)
                 edit.apply()
 
                 isTrue = true
             } else {
                 val runnable = Runnable {
-                    switchMaskNotif!!.isChecked = false
                     switchPopupNotif!!.isChecked = false
                     switchservice!!.isChecked = false
                 }
@@ -316,7 +293,6 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     private fun negativeAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
-        switchMaskNotif!!.isChecked = false
         switchPopupNotif!!.isChecked = false
         switchservice!!.isChecked = false
         alertDialog.cancel()
@@ -363,7 +339,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
         val intent = Intent(applicationContext, NotificationSender::class.java)
-        intent.action = "NOTIFICAION_TIME"
+        intent.action = "NOTIFICATION_TIME"
         val pendingIntent = PendingIntent.getBroadcast(applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
@@ -375,11 +351,6 @@ class ManageNotificationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         activityVisible = true
-
-        if (isTrue && manage_notif_prio_1_layout.visibility != View.GONE) {
-            buildMultiSelectAlertDialog()
-            isTrue = false
-        }
     }
 
     override fun onPause() {

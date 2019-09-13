@@ -45,41 +45,32 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final GroupEditAdapter.ViewHolder holder, final int position) {
-        holder.close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("click close");
-                new MaterialAlertDialogBuilder(context)
-                        .setTitle(R.string.delete_contact_from_group_alert_dialog_title)
-                        .setMessage(String.format(context.getString(R.string.delete_contact_from_group_alert_dialog_message), Objects.requireNonNull(contact.getContactDB()).getFirstName() + " " + contact.getContactDB().getLastName(), listGroup.get(position).getName()))
-                        .setPositiveButton(R.string.edit_contact_validate, (dialog, which) -> {
-                            ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-                            DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-                            mDbWorkerThread.start();
-                            assert ContactsDatabase != null;
-                            ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(), Objects.requireNonNull(listGroup.get(position).getId()).intValue());
+        holder.close.setOnClickListener(v -> {
+            System.out.println("click close");
+            new MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.delete_contact_from_group_alert_dialog_title)
+                    .setMessage(String.format(context.getString(R.string.delete_contact_from_group_alert_dialog_message), Objects.requireNonNull(contact.getContactDB()).getFirstName() + " " + contact.getContactDB().getLastName(), listGroup.get(position).getName()))
+                    .setPositiveButton(R.string.edit_contact_validate, (dialog, which) -> {
+                        ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+                        DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+                        mDbWorkerThread.start();
+                        assert ContactsDatabase != null;
+                        ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(), Objects.requireNonNull(listGroup.get(position).getId()).intValue());
 
-                            listGroup.remove(position);
-                            notifyDataSetChanged();
-                        }).setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                        listGroup.remove(position);
+                        notifyDataSetChanged();
+                    }).setNegativeButton(R.string.alert_dialog_cancel, (dialog, which) -> {
 
-                    }
-                }).show();
+            }).show();
 
-                // holder.layoutGroup.setVisibility(View.GONE);
-            }
+            // holder.layoutGroup.setVisibility(View.GONE);
         });
-        if(listGroup.get(position).getName().equals("Favorites")){
-         holder.layoutGroup.setVisibility(View.GONE);
-        }else {
-            Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);
-            assert drawable != null;
+        Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);
+        assert drawable != null;
 //        drawable.setColorFilter(listGroup.get(position).randomColorGroup(context), PorterDuff.Mode.MULTIPLY);
-            drawable.setColorFilter(listGroup.get(position).getSection_color(), PorterDuff.Mode.MULTIPLY);
-            holder.layoutGroup.setBackground(drawable);
-            holder.groupName.setText(listGroup.get(position).getName());
-        }
+        drawable.setColorFilter(listGroup.get(position).getSection_color(), PorterDuff.Mode.MULTIPLY);
+        holder.layoutGroup.setBackground(drawable);
+        holder.groupName.setText(listGroup.get(position).getName());
     }
 
     public GroupDB getItem(int position) {

@@ -181,6 +181,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
         }
 
+        val position = intent.getIntExtra("position", 0)
+
         //region ======================= Relancement du Service de Notification =============================
 
         if (isNotificationServiceEnabled()) {
@@ -334,6 +336,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         main_GridView!!.numColumns = len // permet de changer
+
+        if(position != 0){
+            main_GridView!!.smoothScrollToPosition(position)
+        }
+
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ===================================== set ListContact ======================================
@@ -406,14 +413,18 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
-
-            val index = sharedPreferences.getInt("index", 0)
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            main_RecyclerView!!.scrollToPosition(index)
-            edit.putInt("index", 0)
-            edit.apply()
-
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+
+            if(position == 0){
+                val index = sharedPreferences.getInt("index", 0)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                main_RecyclerView!!.scrollToPosition(index)
+                edit.putInt("index", 0)
+                edit.apply()
+            }else{
+                main_RecyclerView!!.layoutManager!!.scrollToPosition(position)
+            }
+
             main_RecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -1251,7 +1262,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val pos = main_GridView!!.firstVisiblePosition
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
-            gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_GridView!!.adapter = gridViewAdapter
             main_GridView!!.setSelection(pos)
 

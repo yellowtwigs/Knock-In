@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.controller.activity
 
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,13 +10,10 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
@@ -29,8 +27,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private var notification_Alarm_Button_ShutDown: MaterialButton? = null
 
-    private var sharedNbMessagesPreferences: SharedPreferences? = null
-
     private var sbp: StatusBarParcelable? = null
 
     private var notification_alarm_ReceiveMessageLayout: RelativeLayout? = null
@@ -41,8 +37,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
 
     private var isSMS = false
-
-    private var isOpen = true
 
     //endregion
 
@@ -61,11 +55,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         notification_Alarm_Button_ShutDown = findViewById(R.id.notification_alarm_shut_down)
 
-        notification_alarm_ReceiveMessageLayout = findViewById(R.id.notification_alarm_receive_sms_layout)
-        notification_alarm_ReceiveMessageContent = findViewById(R.id.notification_alarm_receive_sms_layout)
-        notification_alarm_ReceiveMessageSender = findViewById(R.id.notification_alarm_receive_sms_layout)
-        notification_alarm_ReceiveMessageImage = findViewById(R.id.notification_alarm_receive_sms_layout)
-
+        notification_alarm_ReceiveMessageLayout = findViewById(R.id.notification_alarm_receive_message_layout)
+        notification_alarm_ReceiveMessageContent = findViewById(R.id.notification_alarm_receive_message_content)
+        notification_alarm_ReceiveMessageSender = findViewById(R.id.notification_alarm_receive_message_sender)
+        notification_alarm_ReceiveMessageImage = findViewById(R.id.notification_alarm_receive_message_image)
 
         //endregion
 
@@ -74,8 +67,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
         sbp = intent.extras!!.get("notification") as StatusBarParcelable
 
         val sbp = intent.extras!!.get("notification") as StatusBarParcelable
+
         notification_alarm_ReceiveMessageSender!!.text = sbp.statusBarNotificationInfo["android.title"] as String
         notification_alarm_ReceiveMessageContent!!.text = sbp.statusBarNotificationInfo["android.text"] as String
+
+        if (notification_alarm_ReceiveMessageContent!!.length() > 20)
+            notification_alarm_ReceiveMessageContent!!.text = notification_alarm_ReceiveMessageContent!!.text.substring(0, 19) + ".."
 
         val gestionnaireContacts = ContactManager(this.applicationContext)
         val contact = gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"] as String)
@@ -90,6 +87,11 @@ class NotificationAlarmActivity : AppCompatActivity() {
             "com.whatsapp" -> {
                 isSMS = false
                 notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_circular_whatsapp)
+            }
+
+            "com.google.android.gm" -> {
+                isSMS = false
+                notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_circular_gmail)
             }
         }
 
@@ -186,11 +188,20 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 } else {
                     openSms(sbp.statusBarNotificationInfo["android.title"] as String)
                 }
-            } else {
+            } else if (sbp.appNotifier == "com.whatsapp") {
                 if (contact != null) {
                     openWhatsapp(contact.getFirstPhoneNumber())
                 } else {
                     openWhatsapp(sbp.statusBarNotificationInfo["android.title"] as String)
+                }
+            } else if (sbp.appNotifier == "com.google.android.gm") {
+                val appIntent = Intent(Intent.ACTION_VIEW)
+                appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail")
+                try {
+                    startActivity(appIntent)
+                } catch (e: ActivityNotFoundException) {
+                    startActivity(Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://gmail.com/")))
                 }
             }
 
@@ -202,7 +213,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
         }
 
         notification_Alarm_Button_ShutDown!!.setOnClickListener {
-            isOpen = false
 
             if (notification_alarm_NotificationMessagesAlarmSound != null) {
                 notification_alarm_NotificationMessagesAlarmSound!!.stop()

@@ -410,10 +410,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
                 Intent intent = new Intent(context, EditContactActivity.class);
                 intent.putExtra("ContactId", contact.getId());
-
-                if (context instanceof GroupActivity) {
-                    intent.putExtra("fromGroupActivity", true);
-                }
+                intent.putExtra("fromGroupActivity", true);
 
                 context.startActivity(intent);
             } else if (v.getId() == buttonCall.getId()) {

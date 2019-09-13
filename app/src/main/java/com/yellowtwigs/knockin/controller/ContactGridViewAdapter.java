@@ -62,10 +62,10 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     private FloatingActionMenu selectMenu;
     private String numberForPermission = "";
     private Boolean modeMultiSelect = false;
-    private Boolean secondClick = false;
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
     private ArrayList<NotificationDB> listOfInteractions = new ArrayList<>();
     private int heightAndWidth;
+
     public ContactGridViewAdapter(Context context, ContactManager contactManager, Integer len) {
         this.context = context;
         this.gestionnaireContact = contactManager;
@@ -76,10 +76,12 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
-    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected){
+
+    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected) {
         this.listOfItemSelected.clear();
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
+
     public void setGestionnaireContact(ContactManager gestionnaireContact) {
         this.gestionnaireContact = gestionnaireContact;
     }
@@ -103,14 +105,14 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         final ViewHolder holder;
-        if(convertView==null) {
+        if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.grid_contact_item_layout, null);
             holder = new ViewHolder();
             convertView.setTag(holder);
             holder.contactRoundedImageView = convertView.findViewById(R.id.contactRoundedImageView);
             heightAndWidth = holder.contactRoundedImageView.getLayoutParams().height;
-        }else{
-            holder= (ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
         holder.contactRoundedImageView = convertView.findViewById(R.id.contactRoundedImageView);
         holder.gridAdapterFavoriteShine = convertView.findViewById(R.id.grid_adapter_favorite_shine);
@@ -118,7 +120,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         holder.groupWordingConstraint = convertView.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
         holder.groupWordingTv = convertView.findViewById(R.id.grid_adapter_wording_group_tv);
 
-       // int width = holder.contactRoundedImageView.getLayoutParams().width;
+        // int width = holder.contactRoundedImageView.getLayoutParams().width;
 
         holder.contactFirstNameView = convertView.findViewById(R.id.grid_adapter_contactFirstName);
         ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
@@ -147,7 +149,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.60);
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
-        }else if (len == 4) {
+        } else if (len == 4) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.75);
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.75);
             layoutParamsTV.topMargin = 10;
@@ -191,8 +193,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-        }
-        else if (len == 5) {
+        } else if (len == 5) {
             if (contact.getFirstName().length() > 11)
                 firstname = contact.getFirstName().substring(0, 9).concat("..");
 
@@ -208,8 +209,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
 
-        }
-        else if (len == 4) {
+        } else if (len == 4) {
             if (contact.getFirstName().length() > 12)
                 firstname = contact.getFirstName().substring(0, 10).concat("..");
 
@@ -222,8 +222,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
-        }
-        else if (len == 3) {
+        } else if (len == 3) {
             Spannable spanFistName = new SpannableString(firstname);
             spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactFirstNameView.setText(spanFistName);
@@ -354,6 +353,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
                 Intent intent = new Intent(context, EditContactActivity.class);
                 intent.putExtra("ContactId", contact.getId());
+                intent.putExtra("position", position);
 
                 if (context instanceof GroupActivity) {
                     intent.putExtra("fromGroupActivity", true);

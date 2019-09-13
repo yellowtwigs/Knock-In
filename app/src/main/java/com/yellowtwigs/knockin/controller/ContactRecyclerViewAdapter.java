@@ -52,6 +52,7 @@ import static java.sql.DriverManager.println;
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
+
     private List<ContactWithAllInformation> listContacts;
     private Context context;
     private Integer len;
@@ -220,6 +221,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 if (v.getId() == holder.editCl.getId()) {
                     Intent intent = new Intent(context, EditContactActivity.class);
                     intent.putExtra("ContactId", contact.getId());
+                    intent.putExtra("position", position);
                     context.startActivity(intent);
                 }
             }
@@ -313,6 +315,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     if (len == 0) {
                         Intent intent = new Intent(context, EditContactActivity.class);
                         intent.putExtra("ContactId", contact.getId());
+                        intent.putExtra("position", position);
                         context.startActivity(intent);
                     } else if (len == 1) {
                         if (holder.constraintLayoutMenu != null) {
@@ -564,7 +567,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         TextView groupWordingTv;
         Boolean open;
 
-        ContactViewHolder(@NonNull View view) {
+        public ContactViewHolder(@NonNull View view) {
             super(view);
 
             if (len == 0) {
