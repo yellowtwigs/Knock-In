@@ -83,7 +83,7 @@
 
     <string name="main_edited_contact">Contact modifié</string>
     <string name="main_content_edited_contact">Le contact </string>
-    <string name="main_content_edited_contact_2"> a été changé\, souhaitez-vous garder la version du carnet d\'adresse d\'Android ou de Knockin ?</string>
+    <string name="main_content_edited_contact_2"> a été changé\, souhaitez-vous garder la version du carnet d\'adresse d\'Android ou de Knock In ?</string>
     <string name="main_android_edited_contact">Android</string>
 
     <string name="main_contact_grid_title">Voulez-vous appeler ce contact ?</string>
@@ -115,7 +115,7 @@
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
     <string name="add_new_contact_priority0">Toutes les notifications liées à ce contact seront désactivées </string>
     <string name="add_new_contact_priority1">Toutes les notifications liées à ce contact seront traitées comme des notifications standard Android</string>
-    <string name="add_new_contact_priority2">Toutes les notifications liées à ce contact seront prioritaires (Knockin VIP)</string>
+    <string name="add_new_contact_priority2">Toutes les notifications liées à ce contact seront prioritaires (Knock In VIP)</string>
     <string name="add_new_contact_toast">"Le champ prénom ne peut pas être vide !"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -203,6 +203,9 @@
 
     <string name="edit_contact_alert_dialog_delete_contact_title">Supprimer un contact</string>
     <string name="edit_contact_alert_dialog_delete_contact_message">Êtes-vous sûr de vouloir supprimer ce contact?</string>
+
+    <string name="edit_contact_alert_dialog_sync_contact_title">Vous venez de modifier un contact</string>
+    <string name="edit_contact_alert_dialog_sync_contact_message">Voulez-vous également le modifier dans vos contacts Android ?</string>
     <string name="edit_contact">Editer le contact</string>
     <!-- endregion !-->
 
@@ -248,11 +251,11 @@
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_popup">Autoriser Knockin à afficher des notifications prioritaires</string>
+    <string name="notification_manager_stop_popup">Autoriser Knock In à afficher des notifications prioritaires</string>
     <string name="notification_manager_stop_service">Activer le service de notification</string>
     <string name="notification_manager_horaire">Choisir l\'horaire de rappel des notifications de la journée</string>
     <string name="notification_manager_prio_1">Masquer les notifications standard (priorité 1)</string>
-    <string name="notification_reminder">Envoyer un rappel pour regarder les messages traités par Knockin</string>
+    <string name="notification_reminder">Envoyer un rappel pour regarder les messages traités par Knock In</string>
 
     <string name="notification_alert_dialog_title">Sélection des contacts VIP</string>
     <string name="notification_alert_dialog_message">Voulez vous choisir vos contacts prioritaires ?</string>
@@ -288,7 +291,7 @@
 
     <!-- region Alert Dialog Notifications -->
 
-    <string name="alert_dialog_notification_message">Autoriser Knockin à accéder à vos notifications pour les prioriser</string>
+    <string name="alert_dialog_notification_message">Autoriser Knock In à accéder à vos notifications pour les prioriser</string>
     <string name="alert_dialog_notification_allow_it">Autoriser</string>
     <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
 
@@ -333,7 +336,7 @@
     <!-- region Alert Dialog -->
 
     <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
-    <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knockin à afficher des notifications prioritaires?</string>
+    <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knock In à afficher des notifications prioritaires?</string>
     <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
     <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
     <string name="multi_select_alert_dialog_nb_contact">Vous venez de sélectionner %1s %2s </string>
@@ -353,8 +356,8 @@
     <!-- region Notification Sender -->
 
     <string name="notification_sender_content_title">Résumé des interactions</string>
-    <string name="notification_sender_content_text">Knockin a traité %1s messages depuis hier…</string>
-    <string name="notification_sender_big_text">Knockin a traité %1s messages non lus depuis hier \n vous pouvez les lire depuis l\'application dans "Notifications"</string>
+    <string name="notification_sender_content_text">%1s messages n\'ont pas été traité depuis hier…</string>
+    <string name="notification_sender_big_text">%1s messages n\'ont pas été traité depuis hier \n vous pourrez les lire depuis l\'application dans "Notifications"</string>
 
     <!-- endregion -->
 
@@ -378,7 +381,7 @@
     <!-- region AlertDialog permission overlay !-->
 
     <string name="alert_dialog_overlay_title">Notifications prioritaires</string>
-    <string name="alert_dialog_overlay_message">Voulez-vous autoriser Knockin à afficher des notifications prioritaires?</string>
+    <string name="alert_dialog_overlay_message">Voulez-vous autoriser Knock In à afficher des notifications prioritaires?</string>
 
     <!-- endregion !-->
 
@@ -459,9 +462,9 @@
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Démarrage de Knockin</string>
+    <string name="start_activity_title">Démarrage de Knock In</string>
     <string name="start_activity_import_title">Importation des contacts</string>
-    <string name="start_activity_import_subtitle">Importer vos contacts Android dans Knockin et communiquer avec eux plus efficacement</string>
+    <string name="start_activity_import_subtitle">Importer vos contacts Android dans Knock In et communiquer avec eux plus efficacement</string>
     <string name="start_activity_notification_title">Activer les notifications</string>
     <string name="start_activity_notification_subtitle">Activer le service et recevez des notifications personnalisés</string>
     <string name="start_activity_button_notification">Activer</string>
@@ -476,7 +479,7 @@
 
     <string name="start_activity_skip_alert_dialog_title">Passer les autorisations</string>
     <string name="start_activity_skip_alert_dialog_message">Si vous passez les autorisations, vous pourez les activer plus tard</string>
-    <string name="start_activity_skip_alert_dialog_message_importation">Knockin importe vos contacts,
+    <string name="start_activity_skip_alert_dialog_message_importation">Knock In importe vos contacts,
         si vous passez maintenant, tous vos contacts ne seront pas sauvegardés</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Passer</string>
 

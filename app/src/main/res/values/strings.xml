@@ -84,7 +84,7 @@
 
     <string name="main_edited_contact">Modified contact</string>
     <string name="main_content_edited_contact">The contact </string>
-    <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knockin one?</string>
+    <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knock In one?</string>
     <string name="main_android_edited_contact">Android</string>
     <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
 
@@ -116,7 +116,7 @@
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
     <string name="add_new_contact_priority0">All the notifications related to this contact will be disabled</string>
     <string name="add_new_contact_priority1">All the notifications related to this contact will be treated like standard Android notifications</string>
-    <string name="add_new_contact_priority2">All the notifications related to this contact will have high-priority (Knockin VIP)</string>
+    <string name="add_new_contact_priority2">All the notifications related to this contact will have high-priority (Knock In VIP)</string>
     <string name="add_new_contact_toast">" Firstname field must be populated!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -204,6 +204,9 @@
 
     <string name="edit_contact_alert_dialog_delete_contact_title">Remove a contact</string>
     <string name="edit_contact_alert_dialog_delete_contact_message">Do you really want to remove this contact?</string>
+
+    <string name="edit_contact_alert_dialog_sync_contact_title">You have updated a contac</string>
+    <string name="edit_contact_alert_dialog_sync_contact_message">Do you want to edit it in your Android contacts ?</string>
     <string name="edit_contact">Edit contact</string>
     <!-- endregion !-->
 
@@ -248,7 +251,7 @@
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Notification parameters</string>
-    <string name="notification_manager_stop_popup"> Allow Knockin to display priority notifications</string>
+    <string name="notification_manager_stop_popup"> Allow Knock In to display priority notifications</string>
     <string name="notification_manager_stop_service"> Enable the notification service</string>
     <string name="notification_manager_horaire"> Select recall daily time to view all your notifications</string>
     <string name="notification_manager_prio_1"> Hide priority 1 notifications</string>
@@ -289,7 +292,7 @@
 
     <!-- region Alert Dialog Notifications -->
 
-    <string name="alert_dialog_notification_message">Authorize Knockin to access your notifications and prioritize them</string>
+    <string name="alert_dialog_notification_message">Authorize Knock In to access your notifications and prioritize them</string>
     <string name="alert_dialog_notification_allow_it">Authorize</string>
     <string name="alert_dialog_notification_dismiss">Do not authorize</string>
 
@@ -334,7 +337,7 @@
     <!-- region Alert Dialog -->
 
     <string name="multi_select_alert_dialog_title">Notifications display</string>
-    <string name="multi_select_alert_dialog_message"> Do you authorize Knockin to display high priority notifications</string>
+    <string name="multi_select_alert_dialog_message"> Do you authorize Knock In to display high priority notifications</string>
     <string name="multi_select_alert_dialog_allow_it">Authorize</string>
     <string name="multi_select_alert_dialog_dismiss">Do not authorize</string>
     <string name="multi_select_alert_dialog_nb_contact">You have selected %1s %2s </string>
@@ -354,8 +357,8 @@
     <!-- region Notification Sender -->
 
     <string name="notification_sender_content_title">Interactions summary</string>
-    <string name="notification_sender_content_text">Knockin has treated %1s messages since yesterday</string>
-    <string name="notification_sender_big_text">Knockin has received %1s new unread messages \n you can view them in "Notifications"</string>
+    <string name="notification_sender_content_text">%1s messages have not been processed since yesterday</string>
+    <string name="notification_sender_big_text">%1s messages have not been processed since you returned to the app in "Notifications"</string>
 
     <!-- endregion -->
 
@@ -379,7 +382,7 @@
     <!-- region AlertDialog permission overlay !-->
 
     <string name="alert_dialog_overlay_title">High priority notifications</string>
-    <string name="alert_dialog_overlay_message"> Do you authorize Knockin to display high priority notifications?</string>
+    <string name="alert_dialog_overlay_message"> Do you authorize Knock In to display high priority notifications?</string>
 
     <!-- endregion !-->
 
@@ -464,9 +467,9 @@
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Starting Knockin</string>
+    <string name="start_activity_title">Starting Knock In</string>
     <string name="start_activity_import_title">Import your contacts</string>
-    <string name="start_activity_import_subtitle">Import your Android contacts into Knockin and communicate with them more effectively</string>
+    <string name="start_activity_import_subtitle">Import your Android contacts into Knock In and communicate with them more effectively</string>
     <string name="start_activity_notification_title">Activate notifications</string>
     <string name="start_activity_notification_subtitle">Activate the service and receive custom notifications</string>
     <string name="start_activity_button_notification">Activate</string>
@@ -481,7 +484,7 @@
 
     <string name="start_activity_skip_alert_dialog_title">Skip permissions</string>
     <string name="start_activity_skip_alert_dialog_message">If you skip permissions, you could allow them later</string>
-    <string name="start_activity_skip_alert_dialog_message_importation">Knockin import your contacts, if you ignore now, all your contacts will not save</string>
+    <string name="start_activity_skip_alert_dialog_message_importation">Knock In import your contacts, if you ignore now, all your contacts will not save</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Skip</string>
 
     <!-- endregion -->

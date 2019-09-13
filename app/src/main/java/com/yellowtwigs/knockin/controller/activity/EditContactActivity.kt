@@ -118,9 +118,12 @@ class EditContactActivity : AppCompatActivity() {
 
     private var isChanged = false
     private var editInAndroid = false
+    private var editInGoogle = false
 
     private var isFavorite: Boolean? = null
     private var isFavoriteChanged: Boolean? = null
+
+    private var position: Int? = null
 
     //endregion
 
@@ -154,6 +157,7 @@ class EditContactActivity : AppCompatActivity() {
 
         val intent = intent
         edit_contact_id = intent.getIntExtra("ContactId", 1)
+        position = intent.getIntExtra("position", 0)
         fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
         gestionnaireContacts = ContactManager(this.applicationContext)
 
@@ -392,6 +396,7 @@ class EditContactActivity : AppCompatActivity() {
         val resultGroup = executorService.submit(callDbGroup)
         val listGroup: ArrayList<GroupDB> = ArrayList()
         listGroup.addAll(resultGroup.get())
+
         val callDBContact = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
         val resultContact = executorService.submit(callDBContact)
         val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
@@ -430,67 +435,14 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_LastName!!.editText!!.text.toString() != edit_contact_last_name ||
                     edit_contact_PhoneNumber!!.editText!!.text.toString() != edit_contact_phone_number ||
                     edit_contact_FixNumber!!.editText!!.text.toString() != edit_contact_fix_number ||
-                    edit_contact_Mail!!.editText!!.text.toString() != edit_contact_mail ||
-                    isFavorite != isFavoriteChanged || edit_contact_imgStringChanged ||
-                    edit_contact_priority != edit_contact_Priority!!.selectedItemPosition) {
+                    edit_contact_Mail!!.editText!!.text.toString() != edit_contact_mail) {
                 MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle("Contact modifié")
-                        .setMessage("Vous venez de modifier un contact, voulez-vous l'éditer dans vos contacts Android ?")
+                        .setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
+                        .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message)
                         .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                             editContactValidation()
                             editInAndroid = true
-//                            // The Cursor that contains the Contact row
-//                            val mCursor: Cursor? = null
-//                            // The index of the lookup key column in the cursor
-//                            var lookupKeyIndex: Int = 0
-//                            // The index of the contact's _ID value
-//                            var idIndex: Int = 0
-//                            // The lookup key from the Cursor
-//                            var currentLookupKey: String? = null
-//                            // The _ID value from the Cursor
-//                            var currentId: Long = 0
-//                            // A content URI pointing to the contact
-//                            var selectedContactUri: Uri? = null
-//                            /*
-//                             * Once the user has selected a contact to edit,
-//                             * this gets the contact's lookup key and _ID values from the
-//                             * cursor and creates the necessary URI.
-//                             */
-//                            mCursor?.apply {
-//                                // Gets the lookup key column index
-//                                lookupKeyIndex = getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY)
-//                                // Gets the lookup key value
-//                                currentLookupKey = getString(lookupKeyIndex)
-//                                // Gets the _ID column index
-//                                idIndex = getColumnIndex(ContactsContract.Contacts._ID)
-//                                currentId = getLong(idIndex)
-//                                selectedContactUri = ContactsContract.Contacts.getLookupUri(currentId, currentLookupKey)
-//                            }
-//
-//                            // Creates a new Intent to edit a contact
-//                            val editIntent = Intent(Intent.ACTION_EDIT).apply {
-//
-//                                /*
-//                                 * Sets the contact URI to edit, and the data type that the
-//                                 * Intent must match
-//                                 */
-//                                setDataAndType(selectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE)
-//
-//                                putExtra(ContactsContract.Intents.Insert.NAME, edit_contact_FirstName?.editText!!.text.toString() + " " + edit_contact_LastName?.editText!!.text.toString())
-//
-//                                putExtra(ContactsContract.Intents.Insert.EMAIL, edit_contact_Mail?.editText!!.text.toString())
-//                                putExtra(
-//                                        ContactsContract.Intents.Insert.EMAIL_TYPE,
-//                                        ContactsContract.CommonDataKinds.Email.TYPE_WORK
-//                                )
-//                                putExtra(ContactsContract.Intents.Insert.PHONE, edit_contact_PhoneNumber?.editText!!.text.toString())
-//                                putExtra(
-//                                        ContactsContract.Intents.Insert.PHONE_TYPE,
-//                                        ContactsContract.CommonDataKinds.Phone.TYPE_WORK
-//                                )
-//                            }
-//
-//                            startActivity(editIntent.putExtra("finishActivityOnSaveCompleted", true))
+                            editInGoogle = true
 
                             val intentInsertEdit = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
                                 type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
@@ -516,17 +468,28 @@ class EditContactActivity : AppCompatActivity() {
                                 startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                                 finish()
                             } else {
-                                startActivity(Intent(this@EditContactActivity, MainActivity::class.java))
+                                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
                                 finish()
                             }
                         }
                         .show()
+            } else if (
+                    isFavorite != isFavoriteChanged || edit_contact_imgStringChanged ||
+                    edit_contact_priority != edit_contact_Priority!!.selectedItemPosition) {
+                editContactValidation()
+                if (fromGroupActivity) {
+                    startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                    finish()
+                } else {
+                    startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                    finish()
+                }
             } else {
                 if (fromGroupActivity) {
                     startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                     finish()
                 } else {
-                    startActivity(Intent(this@EditContactActivity, MainActivity::class.java))
+                    startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
                     finish()
                 }
             }
@@ -704,7 +667,20 @@ class EditContactActivity : AppCompatActivity() {
                 startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
                 finish()
             } else {
-                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                finish()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (editInGoogle) {
+            if (fromGroupActivity) {
+                startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                finish()
+            } else {
+                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
                 finish()
             }
         }
@@ -720,7 +696,7 @@ class EditContactActivity : AppCompatActivity() {
                         if (fromGroupActivity) {
                             startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                         } else {
-                            startActivity(Intent(this@EditContactActivity, MainActivity::class.java))
+                            startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position))
                         }
                         finish()
                     }
@@ -728,6 +704,11 @@ class EditContactActivity : AppCompatActivity() {
                     }
                     .show()
         } else {
+            if (fromGroupActivity) {
+                startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+            } else {
+                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position))
+            }
             finish()
         }
         hideKeyboard()
@@ -749,7 +730,6 @@ class EditContactActivity : AppCompatActivity() {
                 .show()
     }
 
-
     private fun hideKeyboard() {
         // Check if no view has focus:
         val view = this.currentFocus
@@ -759,36 +739,6 @@ class EditContactActivity : AppCompatActivity() {
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
-
-    /*private fun getListOfFields(): ArrayList<String> {
-        val edit_contact_ListOfFields = ArrayList<String>()
-
-        edit_contact_ListOfFields.add("Phone Number")
-        edit_contact_ListOfFields.add("Email Address")
-        edit_contact_ListOfFields.add("Facebook Account")
-        edit_contact_ListOfFields.add("Whatsapp Account")
-        edit_contact_ListOfFields.add("Skype Account")
-        edit_contact_ListOfFields.add("Instagram Account")
-        edit_contact_ListOfFields.add("Telegram Account")
-        edit_contact_ListOfFields.add("Address")
-        edit_contact_ListOfFields.add("Nickname")
-        edit_contact_ListOfFields.add("Site Web")
-        edit_contact_ListOfFields.add("Anniversary")
-        edit_contact_ListOfFields.add("Relationship")
-
-        return edit_contact_ListOfFields
-    }*/
-
-    /*private fun getListOfEditText(position: Int): ArrayList<EditTextModel> {
-        val edit_contact_ListOfEditText = ArrayList<EditTextModel>()
-        val edit_contact_ListOfFields = getListOfFields()
-
-        val editModel = EditTextModel()
-        editModel.editTextValue = edit_contact_ListOfFields[position]
-        edit_contact_ListOfEditText.add(editModel)
-
-        return edit_contact_ListOfEditText
-    }*/
 
     private fun getPosItemSpinner(item: String, spinner: Spinner): Int {
         val tailleSpinner: Int = spinner.adapter.count
