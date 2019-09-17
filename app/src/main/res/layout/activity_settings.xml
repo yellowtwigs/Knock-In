@@ -193,6 +193,14 @@
                         android:layout_margin="8dp"
                         app:srcCompat="@drawable/ic_piano" />
                 </RelativeLayout>
+            <Button
+                android:id="@+id/PremiumButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="Acheter premium"
+                android:textColor="#000000">
+            </Button>
 
                 <RelativeLayout
                     android:id="@+id/settings_notif_sound_guitar_layout"

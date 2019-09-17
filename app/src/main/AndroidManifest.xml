@@ -99,6 +99,7 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+        <activity android:name="com.yellowtwigs.knocker.controller.activity.PremiumActivity"></activity>
     </application>
 
     <supports-screens
