@@ -75,6 +75,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     }
 
     //region SortContact Toutes les méthodes nous permetttant de trier les contacts
+
     fun sortContactByFirstNameAZ() {
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
@@ -931,7 +932,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     }
 
     /**
-     * fonction qui permet de récuper tout les info des contactList du carnet Android.
+     * fonction qui permet de récupérer toutes les infos des contactList du carnet Android.
      * @param main_contentResolver ContentResolver
      */
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver) {
@@ -950,6 +951,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         //fonction qui va stocker dans la database tout les element récuperé plus haut
         createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, this)
     }
+
 //endregion
 
     fun getContactWithName(name: String, platform: String): ContactWithAllInformation? {

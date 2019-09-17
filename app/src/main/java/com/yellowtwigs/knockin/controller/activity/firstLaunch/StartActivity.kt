@@ -240,6 +240,7 @@ class StartActivity : AppCompatActivity() {
      */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
@@ -270,6 +271,7 @@ class StartActivity : AppCompatActivity() {
                 start_activity_ImportContacts!!.visibility = View.VISIBLE
             }
         }
+
         if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
 
             start_activity_PermissionsLoading!!.visibility = View.INVISIBLE

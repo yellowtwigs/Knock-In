@@ -83,7 +83,7 @@
             android:textColor="?attr/textColor"
             android:textSize="@dimen/settings_subtitle_size"
             android:textStyle="normal"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/settings_choose_notif_sound"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_call_popup" />
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_choose_notif_sound_title">
@@ -296,7 +296,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_call_popup">
+            app:layout_constraintTop_toBottomOf="@+id/settings_choose_notif_sound">
 
             <ProgressBar
                 android:id="@+id/settings_permissions_phone_loading"

@@ -181,11 +181,13 @@ class AddNewContactActivity : AppCompatActivity() {
                     //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
                     val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
                     val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(), this)
+
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
                             avatar, add_new_contact_Priority!!.selectedItemPosition,
                             add_new_contact_ImgString!!, 0)
+
                     println(contactData)
                     var isDuplicate = false
                     val allcontacts = add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
@@ -195,20 +197,23 @@ class AddNewContactActivity : AppCompatActivity() {
                     }
 
                     if (!isDuplicate) {
+
                         val contactId = add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-                        //val listContacts: List<ContactDB>? = add_new_contact_ContactsDatabase?.contactsDao()!!.getAllContacts()
-                        //val contact: ContactDB? = getContact(contactData.firstName + " " + contactData.lastName, listContacts)
+
                         var contactDetailDB: ContactDetailDB
                         if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
+                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                    add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
                             add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
                         if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
+                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                    add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
                             add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
                         if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" + add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
+                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                    add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
                             add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
                         }
 
@@ -216,38 +221,27 @@ class AddNewContactActivity : AppCompatActivity() {
                             addToFavorite(contactId!!.toInt())
                         }
 
-                        // println("test" + add_new_contact_ContactsDatabase?.contactDetailsDao()?.getAllpropertiesEditContact())
-
-                        // Creates a new Intent to insert a contact
                         val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-                            // Sets the MIME type to match the Contacts Provider
                             type = ContactsContract.RawContacts.CONTENT_TYPE
                         }
                         intent.apply {
-                            putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString() + " " + add_new_contact_LastName?.editText!!.text.toString())
+                            putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString()
+                                    + " " + add_new_contact_LastName?.editText!!.text.toString())
 
-                            // Inserts an email address
                             putExtra(ContactsContract.Intents.Insert.EMAIL, add_new_contact_Email?.editText!!.text.toString())
-                            /*
-                             * In this example, sets the email type to be a work email.
-                             * You can set other email types as necessary.
-                             */
                             putExtra(
                                     ContactsContract.Intents.Insert.EMAIL_TYPE,
                                     ContactsContract.CommonDataKinds.Email.TYPE_WORK
                             )
-                            // Inserts a phone number
                             putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
-                            /*
-                             * In this example, sets the phone type to be a work phone.
-                             * You can set other phone types as necessary.
-                             */
                             putExtra(
                                     ContactsContract.Intents.Insert.PHONE_TYPE,
                                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK
                             )
                         }
                         startActivity(intent)
+
+
                     } else {
                         confirmationDuplicate(contactData)
                     }

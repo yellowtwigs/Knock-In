@@ -353,9 +353,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
         if (main_GridView!!.visibility != View.GONE) {
-            gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
 
+            gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
+
+
+
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             main_GridView!!.setSelection(index)
@@ -1392,6 +1395,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * On ouvre l'application de SMS avec tous les contacts saisis lors du multiselect
      * @param listOfPhoneNumber [ArrayList<String>]
      */
+
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
         var message = "smsto:" + listOfPhoneNumber[0]
@@ -1405,6 +1409,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * On ouvre l'application de mail choisi par l'utilisateur avec tous les contacts saisis lors du multiselect
      * @param listOfMail [ArrayList<String>]
      */
+
+
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
