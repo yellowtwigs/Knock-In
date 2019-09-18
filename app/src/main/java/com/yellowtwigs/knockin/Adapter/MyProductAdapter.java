@@ -1,4 +1,4 @@
-package com.yellowtwigs.knocker.Adapter;
+package com.yellowtwigs.knockin.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.SkuDetails;
-import com.yellowtwigs.knocker.Interface.IProductClickListener;
-import com.yellowtwigs.knocker.R;
-import com.yellowtwigs.knocker.controller.activity.PremiumActivity;
+import com.yellowtwigs.knockin.controller.IProductClickListener;
+import com.yellowtwigs.knockin.R;
+import com.yellowtwigs.knockin.controller.activity.PremiumActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyViewHolder> {
 
@@ -42,15 +44,12 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         myViewHolder.txt_product.setText(skuDetailsList.get(i).getTitle());
 
         //Product click
-        myViewHolder.setiProductClickListener(new IProductClickListener() {
-            @Override
-            public void onProductClickListener(View view, int position) {
-                //Launch Billing flow
-                BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                        .setSkuDetails(skuDetailsList.get(i))
-                        .build();
-                billingClient.launchBillingFlow(premiumActivity,billingFlowParams);
-            }
+        myViewHolder.setiProductClickListener((view, position) -> {
+            //Launch Billing flow
+            BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                    .setSkuDetails(skuDetailsList.get(i))
+                    .build();
+            billingClient.launchBillingFlow(premiumActivity,billingFlowParams);
         });
     }
 
@@ -63,15 +62,13 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         TextView txt_product;
 
         IProductClickListener iProductClickListener;
-
-        public void setiProductClickListener(IProductClickListener iProductClickListener) {
+        void setiProductClickListener(IProductClickListener iProductClickListener) {
             this.iProductClickListener = iProductClickListener;
         }
 
-        public MyViewHolder(@NonNull View itemView){
+        MyViewHolder(@NonNull View itemView){
             super(itemView);
-            txt_product = (TextView)itemView.findViewById(R.id.txt_product_name);
-
+            txt_product = itemView.findViewById(R.id.txt_product_name);
             itemView.setOnClickListener(this);
         }
 

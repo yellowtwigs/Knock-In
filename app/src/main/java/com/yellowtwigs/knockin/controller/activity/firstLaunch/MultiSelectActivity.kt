@@ -1,6 +1,8 @@
 package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -51,6 +53,8 @@ class MultiSelectActivity : AppCompatActivity() {
 
         //endregion
 
+        val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
+
         adapter = SelectContactAdapter(this, gestionnaireContact, 4)
 
         multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
@@ -66,6 +70,10 @@ class MultiSelectActivity : AppCompatActivity() {
             adapter!!.itemSelected(position)
             adapter!!.notifyDataSetChanged()
             multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
+
+            val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+            edit.putInt("nb_Contacts_VIP", adapter!!.listContactSelect.size)
+            edit.apply()
         }
         //endregion
     }

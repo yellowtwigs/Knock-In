@@ -151,6 +151,13 @@ class EditContactActivity : AppCompatActivity() {
         //on get la base de données
         edit_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
+        val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
+        val nb_Contacts_VIP = sharedNumberOfContactsVIPPreferences.getInt("gridview", 0)
+
+        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP)
+        edit.apply()
+
         //region ========================================== Intent ==========================================
 
         // Create the Intent, and get the data from the GridView
@@ -358,6 +365,10 @@ class EditContactActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (nb_Contacts_VIP > 4 && position == 2) {
+                    Toast.makeText(this@EditContactActivity, "Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium", Toast.LENGTH_SHORT).show()
+                    position == edit_contact_priority
+                }
                 when (position) {
                     0 -> {
                         edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)

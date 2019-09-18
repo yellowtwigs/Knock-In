@@ -18,11 +18,13 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
+import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupActivity;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.DbWorkerThread;
@@ -77,6 +79,7 @@ public class SelectContactAdapter extends BaseAdapter {
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
             holder.groupWordingConstraint = gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
             holder.groupWordingTv = gridview.findViewById(R.id.grid_adapter_wording_group_tv);
+            holder.multi_select_ContactLayout = gridview.findViewById(R.id.multi_select_contact_layout);
 
             int height = holder.contactRoundedImageView.getLayoutParams().height;
             int width = holder.contactRoundedImageView.getLayoutParams().width;
@@ -106,6 +109,7 @@ public class SelectContactAdapter extends BaseAdapter {
                 layoutParamsTV.topMargin = 0;
                 layoutParamsIV.topMargin = 0;
             }
+
             holder.contactLastNameView = gridview.findViewById(R.id.grid_adapter_contactLastName);
 
             gridview.setTag(holder);
@@ -121,9 +125,7 @@ public class SelectContactAdapter extends BaseAdapter {
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
         String group = "";
-        //ContactsRoomDatabase main_ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-        //DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-        //main_mDbWorkerThread.start();
+
         GroupDB firstGroup = getItem(position).getFirstGroup(context);
         if (context instanceof GroupActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
@@ -139,7 +141,7 @@ public class SelectContactAdapter extends BaseAdapter {
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
                 System.out.println(" black color");
-            }else {
+            } else {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY);
                 holder.groupWordingConstraint.setBackground(roundedLayout);
@@ -240,6 +242,7 @@ public class SelectContactAdapter extends BaseAdapter {
         } else {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
+
         if (context instanceof MainActivity || context instanceof GroupActivity) {
             if (listSelectedItem.contains(getItem(position))) {
                 holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
@@ -253,10 +256,13 @@ public class SelectContactAdapter extends BaseAdapter {
                 }
             }
         } else {
-            if (listSelectedItem.contains(getItem(position))) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+            if (listSelectedItem.size() > 5) {
             } else {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor, null));
+                if (listSelectedItem.contains(getItem(position))) {
+                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+                } else {
+                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor, null));
+                }
             }
         }
 
@@ -278,6 +284,7 @@ public class SelectContactAdapter extends BaseAdapter {
         TextView contactFirstNameView;
         TextView contactLastNameView;
         CircularImageView contactRoundedImageView;
+        ConstraintLayout multi_select_ContactLayout;
         Boolean isSelect;
         ConstraintLayout groupWordingConstraint;
         TextView groupWordingTv;
@@ -295,10 +302,15 @@ public class SelectContactAdapter extends BaseAdapter {
     public void itemSelected(int position) {
 
         ContactWithAllInformation contact = getItem(position);
+
         if (listSelectedItem.contains(contact)) {
             listSelectedItem.remove(contact);
         } else {
-            listSelectedItem.add(contact);
+            if (listSelectedItem.size() >= 5) {
+                listSelectedItem.remove(contact);
+            } else {
+                listSelectedItem.add(contact);
+            }
         }
     }
 
