@@ -28,6 +28,7 @@ class MultiSelectActivity : AppCompatActivity() {
     private var multi_select_textView: TextView? = null
     private var adapter: SelectContactAdapter? = null
     private var listItemSelect: ArrayList<ContactWithAllInformation>? = null
+    private var firstClickOutOf5: Boolean = true
 
     //endregion
 
@@ -67,6 +68,10 @@ class MultiSelectActivity : AppCompatActivity() {
 
         //lors d'un click sur un item(Contact) de la gridview Nous l'ajoutons dans la liste des contact sélectionner puis nous modifions le texte du nombre de contact sélectionné
         multi_select_gridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            // TODO Améliorer l'algo
+            if(adapter!!.listContactSelect.size == 5 && firstClickOutOf5){
+                Toast.makeText(this, "Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium", Toast.LENGTH_SHORT).show()
+            }
             adapter!!.itemSelected(position)
             adapter!!.notifyDataSetChanged()
             multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
