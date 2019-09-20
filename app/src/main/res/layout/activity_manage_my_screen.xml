@@ -297,7 +297,6 @@
                 android:backgroundTint="?attr/backgroundColor"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toTopOf="@+id/manage_theme_title">
 
                 <TextView

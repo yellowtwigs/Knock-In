@@ -35,7 +35,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener{
         loadProduct!!.setOnClickListener {
             if (billingClient!!.isReady) {
                 val params = SkuDetailsParams.newBuilder()
-                        .setSkusList(listOf("premium_acces"))
+                        .setSkusList(listOf("contacts_vip_unlimited"))
+                        .setSkusList(listOf("custom_notifications_sound"))
                         .setType(BillingClient.SkuType.INAPP)
                         .build()
 

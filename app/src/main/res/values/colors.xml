@@ -8,6 +8,9 @@
 
     <color name="colorPrimaryDark">#e4b41e</color>
 
+    <color name="colorPrimaryOM">#5e94d5</color>
+    <color name="colorPrimaryVariantOM">#6097d8</color>
+
     <color name="backgroundColor">#fafafa</color>
     <color name="backgroundColorDark">#262626</color>
 

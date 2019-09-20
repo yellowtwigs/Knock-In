@@ -21,6 +21,18 @@ import com.facebook.login.widget.LoginButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
+import org.json.JSONException
+import org.json.JSONObject
+import org.json.JSONArray
+import com.facebook.GraphResponse
+import com.facebook.GraphRequest
+import com.facebook.AccessToken
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.R
+
+
 
 open class MessengerActivity : AppCompatActivity() {
 
@@ -165,6 +177,23 @@ open class MessengerActivity : AppCompatActivity() {
         val isLoggedIn = accessToken != null && !accessToken.isExpired
         LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
 
+        val token = AccessToken.getCurrentAccessToken()
+        val graphRequest = GraphRequest.newMeRequest(token) { jsonObject, graphResponse ->
+            try {
+                val jsonArrayFriends = jsonObject.getJSONObject("friendlist").getJSONArray("data")
+                val friendlistObject = jsonArrayFriends.getJSONObject(0)
+                val friendListID = friendlistObject.getString("id")
+                myNewGraphReq(friendListID)
+
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
+        val param = Bundle()
+        param.putString("fields", "friendlist", "members")
+        graphRequest.parameters = param
+        graphRequest.executeAsync()
+
         //endregion
     }
 
@@ -181,6 +210,30 @@ open class MessengerActivity : AppCompatActivity() {
         accessTokenTracker!!.stopTracking()
         profileTracker!!.stopTracking()
     }
+
+    private void myNewGraphReq(String friendlistId) {
+    final String graphPath = "/"+friendlistId+"/members/";
+    AccessToken token = AccessToken.getCurrentAccessToken();
+    GraphRequest request = new GraphRequest(token, graphPath, null, HttpMethod.GET, new GraphRequest.Callback() {
+        @Override
+        public void onCompleted(GraphResponse graphResponse) {
+            JSONObject object = graphResponse.getJSONObject();
+            try {
+                JSONArray arrayOfUsersInFriendList= object.getJSONArray("data");
+                /* Do something with the user list */
+                /* ex: get first user in list, "name" */
+                JSONObject user = arrayOfUsersInFriendList.getJSONObject(0);
+                String usersName = user.getString("name");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+     Bundle param = new Bundle();
+    param.putString("fields", "name");
+    request.setParameters(param);
+    request.executeAsync();
+}
 
     //endregion
 }

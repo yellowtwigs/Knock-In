@@ -119,52 +119,52 @@ class NotificationListener : NotificationListenerService() {
                                     println("screenIsUnlocked")
                                     this.cancelNotification(sbn.key)
                                     displayLayout(sbp, sharedPreferences)
-//                                    val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
-//                                    var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
-//                                    when (sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", 1)) {
-//                                        R.raw.bass_slap -> {
-//                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-//                                                notification_alarm_NotificationMessagesAlarmSound.stop()
-//                                            }
-//                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
-//                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
-//                                        }
-//                                        R.raw.xylophone_tone -> {
-//                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-//                                                notification_alarm_NotificationMessagesAlarmSound.stop()
-//                                            }
-//                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.xylophone_tone)
-//                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
-//                                        }
-//                                        R.raw.piano_sms -> {
-//                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-//                                                notification_alarm_NotificationMessagesAlarmSound.stop()
-//                                            }
-//                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.piano_sms)
-//                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
-//                                        }
-//                                        R.raw.electric_blues -> {
-//                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-//                                                notification_alarm_NotificationMessagesAlarmSound.stop()
-//                                            }
-//                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.electric_blues)
-//                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
-//                                        }
-//                                        R.raw.caravan -> {
-//                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-//                                                notification_alarm_NotificationMessagesAlarmSound.stop()
-//                                            }
-//                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.caravan)
-//                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
-//                                        }
-//                                        R.raw.sax_sms -> {
-//                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-//                                                notification_alarm_NotificationMessagesAlarmSound.stop()
-//                                            }
-//                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.sax_sms)
-//                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
-//                                        }
-//                                    }
+                                    val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+                                    var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
+                                    when (sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", 1)) {
+                                        R.raw.bass_slap -> {
+                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                                                notification_alarm_NotificationMessagesAlarmSound.stop()
+                                            }
+                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
+                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                        }
+                                        R.raw.xylophone_tone -> {
+                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                                                notification_alarm_NotificationMessagesAlarmSound.stop()
+                                            }
+                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.xylophone_tone)
+                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                        }
+                                        R.raw.piano_sms -> {
+                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                                                notification_alarm_NotificationMessagesAlarmSound.stop()
+                                            }
+                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.piano_sms)
+                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                        }
+                                        R.raw.electric_blues -> {
+                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                                                notification_alarm_NotificationMessagesAlarmSound.stop()
+                                            }
+                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.electric_blues)
+                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                        }
+                                        R.raw.caravan -> {
+                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                                                notification_alarm_NotificationMessagesAlarmSound.stop()
+                                            }
+                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.caravan)
+                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                        }
+                                        R.raw.sax_sms -> {
+                                            if (notification_alarm_NotificationMessagesAlarmSound != null) {
+                                                notification_alarm_NotificationMessagesAlarmSound.stop()
+                                            }
+                                            notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.sax_sms)
+                                            notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                        }
+                                    }
                                 }
                             }
                             contact.contactDB!!.contactPriority == 1 -> {
