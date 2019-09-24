@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_choose_notif_sound_title">
@@ -337,7 +337,7 @@
             android:textColor="?attr/textColor"
             android:textSize="@dimen/settings_subtitle_size"
             android:textStyle="normal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/settings_choose_notif_sound"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_call_popup" />
@@ -346,12 +346,12 @@
             android:id="@+id/PremiumButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Acheter premium"
+            android:layout_marginTop="15dp"
+            android:text="Achat InApp"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_choose_notif_sound" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_call_popup" />
 
 
         <androidx.appcompat.widget.Toolbar

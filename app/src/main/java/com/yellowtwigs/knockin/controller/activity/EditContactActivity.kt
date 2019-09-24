@@ -880,6 +880,7 @@ class EditContactActivity : AppCompatActivity() {
         recyclerView!!.layoutManager = layoutMananger
         val adapter = ContactIconeAdapter(this)
         recyclerView.adapter = adapter
+
         gallery!!.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
@@ -892,8 +893,13 @@ class EditContactActivity : AppCompatActivity() {
             }
         }
         camera!!.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 2)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                val arraylistPermission = ArrayList<String>()
+                arraylistPermission.add(Manifest.permission.CAMERA)
+                arraylistPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), 2)
                 builderBottom.dismiss()
             } else {
                 openCamera()
@@ -918,9 +924,9 @@ class EditContactActivity : AppCompatActivity() {
         try {
             val proj = arrayOf(MediaStore.Images.Media.DATA)
             cursor = context.contentResolver.query(contentUri, proj, null, null, null)
-            val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             cursor.moveToFirst()
-            return cursor.getString(column_index)
+            return cursor.getString(columnIndex)
         } finally {
             cursor?.close()
         }

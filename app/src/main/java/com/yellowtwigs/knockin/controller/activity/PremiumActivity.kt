@@ -7,16 +7,17 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yellowtwigs.knockin.Adapter.MyProductAdapter
 
 import com.yellowtwigs.knockin.R
 
 import java.util.Arrays
 
-class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener{
+class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private var billingClient: BillingClient? = null
-    private var loadProduct: AppCompatButton? = null
+    private var loadProduct: FloatingActionButton? = null
     private var recyclerProduct: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,9 +35,9 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener{
         //Event
         loadProduct!!.setOnClickListener {
             if (billingClient!!.isReady) {
+                val list = listOf("contacts_vip_unlimited") + listOf("custom_notifications_sound")
                 val params = SkuDetailsParams.newBuilder()
-                        .setSkusList(listOf("contacts_vip_unlimited"))
-                        .setSkusList(listOf("custom_notifications_sound"))
+                        .setSkusList(list)
                         .setType(BillingClient.SkuType.INAPP)
                         .build()
 
@@ -98,6 +99,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener{
      * @param purchases List of updated purchases if present.
      */
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
-        Toast.makeText(this, "Purchases item: " + purchases!!.size, Toast.LENGTH_SHORT).show()
+        if(purchases != null){
+            Toast.makeText(this, "Purchases item: " + purchases.size, Toast.LENGTH_SHORT).show()
+        }
     }
 }

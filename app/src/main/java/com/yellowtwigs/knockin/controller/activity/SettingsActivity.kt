@@ -148,7 +148,7 @@ class SettingsActivity : AppCompatActivity() {
 
         //endregion
 
-        if (checkPermission(Manifest.permission.SEND_SMS) && checkPermission(Manifest.permission.CALL_PHONE)) {
+        if (checkPermission(Manifest.permission.SEND_SMS) || checkPermission(Manifest.permission.CALL_PHONE)) {
             settings_PermissionsPhoneLayout!!.visibility = View.GONE
         } else {
             settings_PermissionsPhoneLayout!!.visibility = View.VISIBLE
