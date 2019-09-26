@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
@@ -40,6 +41,17 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var switchservice: Switch? = null
     private var isTrue = false
 
+    private var settings_NotifSoundSlapLayout: RelativeLayout? = null
+    private var settings_NotifSoundXyloLayout: RelativeLayout? = null
+    private var settings_NotifSoundKeyboardLayout: RelativeLayout? = null
+    private var settings_NotifSoundGuitarLayout: RelativeLayout? = null
+    private var settings_NotifSoundDrumLayout: RelativeLayout? = null
+    private var settings_NotifSoundSaxLayout: RelativeLayout? = null
+
+    private var settings_NotificationMessagesAlarmSound: MediaPlayer? = null
+    private var settings_ChooseNotifSoundTitle: TextView? = null
+    private var settings_ChooseNotifSoundHorizontalView: HorizontalScrollView? = null
+
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,12 +71,25 @@ class ManageNotificationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_manage_notification)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
 
-        switchPopupNotif = this.findViewById<Switch>(R.id.switch_stop_popup)
-        switchservice = this.findViewById<Switch>(R.id.switch_stop_service)
+        switchPopupNotif = this.findViewById(R.id.switch_stop_popup)
+        switchservice = this.findViewById(R.id.switch_stop_service)
         val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
+
+        settings_NotifSoundSlapLayout = findViewById(R.id.settings_notif_sound_slap_layout)
+        settings_NotifSoundXyloLayout = findViewById(R.id.settings_notif_sound_xylo_layout)
+        settings_NotifSoundKeyboardLayout = findViewById(R.id.settings_notif_sound_keyboard_layout)
+        settings_NotifSoundGuitarLayout = findViewById(R.id.settings_notif_sound_guitar_layout)
+        settings_NotifSoundDrumLayout = findViewById(R.id.settings_notif_sound_drum_layout)
+        settings_NotifSoundSaxLayout = findViewById(R.id.settings_notif_sound_sax_layout)
+
+        settings_ChooseNotifSoundTitle = findViewById(R.id.settings_choose_notif_sound_title)
+        settings_ChooseNotifSoundHorizontalView = findViewById(R.id.settings_choose_notif_sound_layout)
+
+
         if (this.isNotificationServiceEnabled) {
             switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
             switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
@@ -110,16 +135,35 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
+                    if (settings_NotificationMessagesAlarmSound != null) {
+                        settings_NotificationMessagesAlarmSound!!.stop()
+                    }
                     startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
-                R.id.nav_manage_screen -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_data_access -> startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
-                R.id.nav_knockons -> startActivity(Intent(this@ManageNotificationActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_manage_screen -> {
+
+                    if (settings_NotificationMessagesAlarmSound != null) {
+                        settings_NotificationMessagesAlarmSound!!.stop()
+                    }
+                    startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
+                }
+                R.id.nav_settings -> {
+
+                    if (settings_NotificationMessagesAlarmSound != null) {
+                        settings_NotificationMessagesAlarmSound!!.stop()
+                    }
+                    startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
+                }
                 R.id.nav_statistics -> {
                 }
-                R.id.nav_help -> startActivity(Intent(this@ManageNotificationActivity, HelpActivity::class.java))
+                R.id.nav_help -> {
+
+                    if (settings_NotificationMessagesAlarmSound != null) {
+                        settings_NotificationMessagesAlarmSound!!.stop()
+                    }
+                    startActivity(Intent(this@ManageNotificationActivity, HelpActivity::class.java))
+                }
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_manage_notif)
@@ -128,6 +172,27 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
 
         //endregion
+
+        when (sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", 1)) {
+            R.raw.bass_slap -> {
+                settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            }
+            R.raw.xylophone_tone -> {
+                settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            }
+            R.raw.piano_sms -> {
+                settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            }
+            R.raw.electric_blues -> {
+                settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            }
+            R.raw.caravan -> {
+                settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            }
+            R.raw.sax_sms -> {
+                settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            }
+        }
 
         switchPopupNotif!!.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -197,6 +262,123 @@ class ManageNotificationActivity : AppCompatActivity() {
             timePickerDialog.show()
         }
 
+        //region ======================================== Ring Tones ========================================
+
+        settings_NotifSoundSlapLayout!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
+            settings_NotificationMessagesAlarmSound!!.start()
+
+            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+
+            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+            edit.putInt("Alarm_Notif_Tone", R.raw.bass_slap)
+            edit.apply()
+        }
+
+        settings_NotifSoundXyloLayout!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.xylophone_tone)
+            settings_NotificationMessagesAlarmSound!!.start()
+
+            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+
+            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+            edit.putInt("Alarm_Notif_Tone", R.raw.xylophone_tone)
+            edit.apply()
+        }
+
+        settings_NotifSoundKeyboardLayout!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.piano_sms)
+            settings_NotificationMessagesAlarmSound!!.start()
+
+            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+
+            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+            edit.putInt("Alarm_Notif_Tone", R.raw.piano_sms)
+            edit.apply()
+        }
+
+        settings_NotifSoundGuitarLayout!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.electric_blues)
+            settings_NotificationMessagesAlarmSound!!.start()
+
+            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+
+            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+            edit.putInt("Alarm_Notif_Tone", R.raw.electric_blues)
+            edit.apply()
+        }
+
+        settings_NotifSoundDrumLayout!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.caravan)
+            settings_NotificationMessagesAlarmSound!!.start()
+
+            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+
+            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+            edit.putInt("Alarm_Notif_Tone", R.raw.caravan)
+            edit.apply()
+        }
+
+        settings_NotifSoundSaxLayout!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.sax_sms)
+            settings_NotificationMessagesAlarmSound!!.start()
+
+            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+
+            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+            edit.putInt("Alarm_Notif_Tone", R.raw.sax_sms)
+            edit.apply()
+        }
+
+        //endregion
     }
 
     //region ========================================== Functions =========================================

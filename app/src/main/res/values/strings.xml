@@ -48,6 +48,7 @@
     <string name="left_drawer_notif_config">Manage my notifications</string>
     <string name="left_drawer_settings">Settings</string>
     <string name="left_drawer_my_screen">Display options</string>
+    <string name="left_drawer_in_app">Buy products</string>
 
     <string name="left_drawer_data_access">Data access</string>
     <string name="left_drawer_statistics">Statistics</string>
@@ -208,7 +209,7 @@
     <string name="edit_contact_alert_dialog_delete_contact_title">Remove a contact</string>
     <string name="edit_contact_alert_dialog_delete_contact_message">Do you really want to remove this contact?</string>
 
-    <string name="edit_contact_alert_dialog_sync_contact_title">You have updated a contac</string>
+    <string name="edit_contact_alert_dialog_sync_contact_title">You have updated a contact</string>
     <string name="edit_contact_alert_dialog_sync_contact_message">Do you want to edit it in your Android contacts ?</string>
     <string name="edit_contact">Edit contact</string>
     <!-- endregion !-->

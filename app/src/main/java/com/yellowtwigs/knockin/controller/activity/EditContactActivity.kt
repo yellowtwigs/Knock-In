@@ -188,8 +188,8 @@ class EditContactActivity : AppCompatActivity() {
 
         recyclerGroup = findViewById(R.id.edit_contact_recycler)
 
-        edit_contact_Return = findViewById(R.id.edit_contact_return)
-        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete)
+        edit_contact_Return = findViewById(R.id.edit_contact_return) // 1531651456
+        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete) // 1531651455574546
         edit_contact_AddContactToFavorite = findViewById(R.id.edit_contact_favorite)
         edit_contact_RemoveContactFromFavorite = findViewById(R.id.edit_contact_favorite_shine)
         edit_contact_Validate = findViewById(R.id.edit_contact_edit_contact)
@@ -443,50 +443,95 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_PhoneNumber!!.editText!!.text.toString() != edit_contact_phone_number ||
                     edit_contact_FixNumber!!.editText!!.text.toString() != edit_contact_fix_number ||
                     edit_contact_Mail!!.editText!!.text.toString() != edit_contact_mail) {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
-                        .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message)
-                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                            editContactValidation()
-                            editInAndroid = true
-                            editInGoogle = true
 
-                            val intentInsertEdit = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
-                                type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
-
-                                putExtra(ContactsContract.Intents.Insert.NAME, edit_contact_FirstName?.editText!!.text.toString() + " " + edit_contact_LastName?.editText!!.text.toString())
-
-                                putExtra(ContactsContract.Intents.Insert.EMAIL, edit_contact_Mail?.editText!!.text.toString())
-                                putExtra(
-                                        ContactsContract.Intents.Insert.EMAIL_TYPE,
-                                        ContactsContract.CommonDataKinds.Email.TYPE_WORK
-                                )
-                                putExtra(ContactsContract.Intents.Insert.PHONE, edit_contact_PhoneNumber?.editText!!.text.toString())
-                                putExtra(
-                                        ContactsContract.Intents.Insert.PHONE_TYPE,
-                                        ContactsContract.CommonDataKinds.Phone.TYPE_WORK
-                                )
-                            }
-                            startActivity(intentInsertEdit)
-                        }
-                        .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-                            editContactValidation()
-                            if (fromGroupActivity) {
-                                startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
-                                finish()
-                            } else {
-                                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                if (nb_Contacts_VIP > 4 && edit_contact_Priority!!.selectedItemPosition == 2) {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle("Nombre de contacts VIP atteint")
+                            .setMessage("Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium, voulez vous accèder à la boutique ?")
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@EditContactActivity, PremiumActivity::class.java))
                                 finish()
                             }
-                        }
-                        .show()
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            }
+                            .show()
+                } else {
+
+                    if (edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_Priority!!.selectedItemPosition == 2) {
+                        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
+                        edit.apply()
+                    }
+
+                    if (edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_priority == 2) {
+                        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP - 1)
+                        edit.apply()
+                    }
+
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
+                            .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message)
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                editContactValidation()
+                                editInAndroid = true
+                                editInGoogle = true
+
+                                val intentInsertEdit = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
+                                    type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
+
+                                    putExtra(ContactsContract.Intents.Insert.NAME, edit_contact_FirstName?.editText!!.text.toString() + " " + edit_contact_LastName?.editText!!.text.toString())
+
+                                    putExtra(ContactsContract.Intents.Insert.EMAIL, edit_contact_Mail?.editText!!.text.toString())
+                                    putExtra(
+                                            ContactsContract.Intents.Insert.EMAIL_TYPE,
+                                            ContactsContract.CommonDataKinds.Email.TYPE_WORK
+                                    )
+                                    putExtra(ContactsContract.Intents.Insert.PHONE, edit_contact_PhoneNumber?.editText!!.text.toString())
+                                    putExtra(
+                                            ContactsContract.Intents.Insert.PHONE_TYPE,
+                                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+                                    )
+                                }
+                                startActivity(intentInsertEdit)
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                editContactValidation()
+                                if (fromGroupActivity) {
+                                    startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                                    finish()
+                                } else {
+                                    startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                                    finish()
+                                }
+                            }
+                            .show()
+                }
             } else if (
                     isFavorite != isFavoriteChanged || edit_contact_imgStringChanged ||
                     edit_contact_priority != edit_contact_Priority!!.selectedItemPosition) {
 
-                if (nb_Contacts_VIP > 4) {
-                    Toast.makeText(this@EditContactActivity, "Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium", Toast.LENGTH_LONG).show()
+                if (nb_Contacts_VIP > 4 && edit_contact_Priority!!.selectedItemPosition == 2) {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle("Nombre de contacts VIP atteint")
+                            .setMessage("Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium, voulez vous accèder à la boutique ?")
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@EditContactActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            }
+                            .show()
                 } else {
+                    if (edit_contact_Priority!!.selectedItemPosition == 2) {
+                        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
+                        edit.apply()
+                    } else if (edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_priority == 2) {
+                        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP - 1)
+                        edit.apply()
+                    }
                     editContactValidation()
                     if (fromGroupActivity) {
                         startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
@@ -876,8 +921,8 @@ class EditContactActivity : AppCompatActivity() {
         val gallery = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_gallery_layout)
         val camera = builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_camera_layout)
         val recyclerView = builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
-        val layoutMananger = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView!!.layoutManager = layoutMananger
+        val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView!!.layoutManager = layoutManager
         val adapter = ContactIconeAdapter(this)
         recyclerView.adapter = adapter
 
@@ -896,10 +941,10 @@ class EditContactActivity : AppCompatActivity() {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                val arraylistPermission = ArrayList<String>()
-                arraylistPermission.add(Manifest.permission.CAMERA)
-                arraylistPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), 2)
+                val arrayListPermission = ArrayList<String>()
+                arrayListPermission.add(Manifest.permission.CAMERA)
+                arrayListPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                ActivityCompat.requestPermissions(this, arrayListPermission.toArray(arrayOfNulls<String>(arrayListPermission.size)), 2)
                 builderBottom.dismiss()
             } else {
                 openCamera()

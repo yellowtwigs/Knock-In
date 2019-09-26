@@ -342,9 +342,7 @@ class CockpitActivity : AppCompatActivity() {
 
         cockpit_ButtonAddContact!!.setOnClickListener {
             if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                val intent = Intent(this@CockpitActivity, AddNewContactActivity::class.java)
-                intent.putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString())
-                startActivity(intent)
+                startActivity(Intent(this@CockpitActivity, AddNewContactActivity::class.java).putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString()))
             } else {
                 Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
             }

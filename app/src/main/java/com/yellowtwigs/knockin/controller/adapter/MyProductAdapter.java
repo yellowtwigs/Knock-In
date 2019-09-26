@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.Adapter;
+package com.yellowtwigs.knockin.controller.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.billingclient.api.BillingClient;
@@ -20,7 +18,6 @@ import com.yellowtwigs.knockin.controller.IProductClickListener;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

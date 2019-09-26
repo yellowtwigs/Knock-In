@@ -46,6 +46,7 @@
     <string name="left_drawer_notif_config">Gérer mes notifications</string>
     <string name="left_drawer_settings">Paramètres</string>
     <string name="left_drawer_my_screen">Affichage</string>
+    <string name="left_drawer_in_app">Achat In App</string>
 
     <string name="left_drawer_data_access">Accès aux données</string>
     <string name="left_drawer_statistics">Mes statistiques</string>

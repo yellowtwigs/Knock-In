@@ -177,7 +177,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
 
-
         if (len == 6) {
             if (contact.getFirstName().length() > 8)
                 firstname = contact.getFirstName().substring(0, 7).concat("..");
@@ -338,17 +337,8 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             if (v.getId() == buttonWhatsApp.getId()) {
 
                 ContactWithAllInformation contactWithAllInformation = getItem(position);
-
-                String name = contact.getFirstName() + " " + contact.getLastName();
-
-                Date currentTime = Calendar.getInstance().getTime();
-
-                listOfInteractions.add(new NotificationDB(null, "", name,
-                        "Ouverture de Whatsapp", "com.whatsapp", false, currentTime.getTime(), 0, contact.getId()));
-
-//                notification.insertNotifications
-
                 ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
+
             } else if (v.getId() == buttonEdit.getId()) {
 
                 Intent intent = new Intent(context, EditContactActivity.class);
@@ -362,23 +352,9 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 context.startActivity(intent);
             } else if (v.getId() == buttonCall.getId()) {
 
-                String name = contact.getFirstName() + " " + contact.getLastName();
-
-                Date currentTime = Calendar.getInstance().getTime();
-
-                listOfInteractions.add(new NotificationDB(null, "", name,
-                        "Appel sortant vers " + "" + getItem(position).getFirstPhoneNumber(), "com.google.android.apps.messaging", false, currentTime.getTime(), 0, contact.getId()));
-
                 callPhone(getItem(position).getFirstPhoneNumber());
 
             } else if (v.getId() == buttonSMS.getId()) {
-
-                String name = contact.getFirstName() + " " + contact.getLastName();
-
-                Date currentTime = Calendar.getInstance().getTime();
-
-                listOfInteractions.add(new NotificationDB(null, "", name,
-                        "Sms vers " + "" + getItem(position).getFirstPhoneNumber(), "com.google.android.apps.messaging", false, currentTime.getTime(), 0, contact.getId()));
 
                 String phone = getItem(position).getFirstPhoneNumber();
                 Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
@@ -386,21 +362,12 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
 
             } else if (v.getId() == buttonMail.getId()) {
 
-                String name = contact.getFirstName() + " " + contact.getLastName();
-
-                Date currentTime = Calendar.getInstance().getTime();
-
-                listOfInteractions.add(new NotificationDB(null, "", name,
-                        "Mail vers " + "" + getItem(position).getFirstMail(), "com.google.android.gm", false, currentTime.getTime(), 0, contact.getId()));
-
                 String mail = getItem(position).getFirstMail();
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:"));
-                //intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
-                System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                 context.startActivity(intent);
             }
             selectMenu.close(false);
@@ -412,7 +379,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 int firstPosVis;
                 closeMenu();
                 modeMultiSelect = true;
-                System.out.println("test in long click");
                 listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
 
                 if (position < 2 * len) {

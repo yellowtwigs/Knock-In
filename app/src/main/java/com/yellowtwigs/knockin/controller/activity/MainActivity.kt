@@ -307,6 +307,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_messenger -> startActivity(Intent(this@MainActivity, MessengerActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
@@ -356,8 +357,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
-
-
+            main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
 
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()

@@ -1,24 +1,21 @@
 package com.yellowtwigs.knockin.controller.activity
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.*
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.yellowtwigs.knockin.Adapter.MyProductAdapter
-
+import com.yellowtwigs.knockin.controller.adapter.MyProductAdapter
 import com.yellowtwigs.knockin.R
-
-import java.util.Arrays
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private var billingClient: BillingClient? = null
-    private var loadProduct: FloatingActionButton? = null
     private var recyclerProduct: RecyclerView? = null
+    private var sharedProductIsBoughtPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,31 +23,30 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         setupBillingClient()
 
+        sharedProductIsBoughtPreferences = this.getSharedPreferences("IsBought", Context.MODE_PRIVATE)
+
         //View
-        loadProduct = findViewById(R.id.btn_load_product)
         recyclerProduct = findViewById(R.id.recycler_product)
         recyclerProduct!!.setHasFixedSize(true)
         recyclerProduct!!.layoutManager = LinearLayoutManager(this)
 
         //Event
-        loadProduct!!.setOnClickListener {
-            if (billingClient!!.isReady) {
-                val list = listOf("contacts_vip_unlimited") + listOf("custom_notifications_sound")
-                val params = SkuDetailsParams.newBuilder()
-                        .setSkusList(list)
-                        .setType(BillingClient.SkuType.INAPP)
-                        .build()
+        if (billingClient!!.isReady) {
+            val list = listOf("contacts_vip_unlimited") + listOf("custom_notifications_sound")
+            val params = SkuDetailsParams.newBuilder()
+                    .setSkusList(list)
+                    .setType(BillingClient.SkuType.INAPP)
+                    .build()
 
-                billingClient!!.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-                    if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
-                        loadProductToRecyclerView(skuDetailsList)
-                    } else {
-                        Toast.makeText(this@PremiumActivity, "Cannot query product", Toast.LENGTH_SHORT).show()
-                    }
+            billingClient!!.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+                if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
+                    loadProductToRecyclerView(skuDetailsList)
+                } else {
+                    Toast.makeText(this@PremiumActivity, "Cannot query product", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(this@PremiumActivity, "Billing client not ready", Toast.LENGTH_SHORT).show()
             }
+        } else {
+            Toast.makeText(this@PremiumActivity, "Billing client not ready", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -99,8 +95,13 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
      * @param purchases List of updated purchases if present.
      */
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
-        if(purchases != null){
-            Toast.makeText(this, "Purchases item: " + purchases.size, Toast.LENGTH_SHORT).show()
+        if (purchases != null) {
+            Toast.makeText(this, "Purchases item: " + purchases.size, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Purchases item: " + purchases[0], Toast.LENGTH_LONG).show()
+
+            val edit = sharedProductIsBoughtPreferences!!.edit()
+            edit.putBoolean("IsBought", true)
+            edit.apply()
         }
     }
 }

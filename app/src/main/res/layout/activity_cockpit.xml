@@ -19,9 +19,6 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_marginBottom="8dp"
             android:background="?attr/transparentColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="?attr/textColor" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -759,6 +756,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/navigation"
+            android:layout_marginBottom="4dp"
             android:background="?attr/backgroundColor"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
@@ -780,6 +778,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/cockpit_button_close_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_phone_keypad_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.489" />
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/cockpit_incoming_call_button"
                 android:layout_width="55dp"
@@ -795,18 +806,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/cockpit_button_close_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_phone_keypad_selector"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

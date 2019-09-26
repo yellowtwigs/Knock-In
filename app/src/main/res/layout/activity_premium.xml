@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/main_toolbar_multi_select_mode_layout"
+        android:id="@+id/premium_activity_toolbar_layout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/backgroundColor"
@@ -32,6 +32,7 @@
             app:srcCompat="@drawable/ic_toolbar_menu" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/premium_activity_toolbar_open_drawer"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
@@ -39,7 +40,19 @@
             android:background="?attr/actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@drawable/ic_left_arrow" />
+            app:srcCompat="@drawable/ic_open_drawer" />
+
+        <TextView
+            android:id="@+id/premium_activity_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Boutique Knock In"
+            android:textColor="?attr/textColor"
+            android:textSize="20sp"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@+id/premium_activity_toolbar_open_drawer"
+            />
 
     </RelativeLayout>
 
@@ -48,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/main_toolbar_multi_select_mode_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/premium_activity_toolbar_layout" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

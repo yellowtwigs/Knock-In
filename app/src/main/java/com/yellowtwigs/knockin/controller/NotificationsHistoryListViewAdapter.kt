@@ -26,7 +26,6 @@ class NotificationsHistoryListViewAdapter(private val context: Context, private 
     private val listOfItemSelected = ArrayList<NotificationDB>()
     private val notification_history_ListOfNotificationDB = ArrayList<NotificationDB>()
 
-
     private var notification_history_adapter_expediteur: TextView? = null
     private var notification_history_adapter_contenue: TextView? = null
     private var notification_history_adapter_Date: TextView? = null
