@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
@@ -209,7 +210,7 @@ class ManageNotificationActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeL
 
         when (sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", 1)) {
             R.raw.bass_slap -> {
-                settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+//                settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
             }
 //            R.raw.xylophone_tone -> {
 //                settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
@@ -304,34 +305,42 @@ class ManageNotificationActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeL
             audioPlay()
         }
 
+        settings_NotificationSoundSlapStopButton!!.setOnClickListener {
+            audioStop()
+        }
+
         settings_ChooseNotifSoundLayoutOpenClose!!.setOnClickListener {
             if (settings_ChooseNotifSoundImageClose!!.visibility == View.GONE) {
-                settings_ChooseNotifSoundLayout!!.visibility = View.VISIBLE
-                settings_ChooseNotifSoundImageOpen!!.visibility = View.VISIBLE
-            } else if (settings_ChooseNotifSoundImageOpen!!.visibility == View.GONE) {
                 settings_ChooseNotifSoundLayout!!.visibility = View.GONE
                 settings_ChooseNotifSoundImageClose!!.visibility = View.VISIBLE
+                settings_ChooseNotifSoundImageOpen!!.visibility = View.GONE
+            } else if (settings_ChooseNotifSoundImageOpen!!.visibility == View.GONE) {
+                settings_ChooseNotifSoundLayout!!.visibility = View.VISIBLE
+                settings_ChooseNotifSoundImageOpen!!.visibility = View.VISIBLE
+                settings_ChooseNotifSoundImageClose!!.visibility = View.GONE
+                val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
+                settings_ChooseNotifSoundLayout!!.startAnimation(slideDown)
             }
         }
 
-        settings_NotifSoundSlapLayout!!.setOnClickListener {
-            if (settings_NotificationMessagesAlarmSound != null) {
-                settings_NotificationMessagesAlarmSound!!.stop()
-            }
-            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
-            settings_NotificationMessagesAlarmSound!!.start()
-
-            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
-//            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.background_layout_selector)
-//            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.background_layout_selector)
-//            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.background_layout_selector)
-//            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.background_layout_selector)
-//            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.background_layout_selector)
-
-            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
-            edit.putInt("Alarm_Notif_Tone", R.raw.bass_slap)
-            edit.apply()
-        }
+//        settings_NotifSoundSlapLayout!!.setOnClickListener {
+//            if (settings_NotificationMessagesAlarmSound != null) {
+//                settings_NotificationMessagesAlarmSound!!.stop()
+//            }
+//            settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
+//            settings_NotificationMessagesAlarmSound!!.start()
+//
+////            settings_NotifSoundSlapLayout!!.background = getDrawable(R.drawable.border_selected_image_view)
+////            settings_NotifSoundXyloLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+////            settings_NotifSoundKeyboardLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+////            settings_NotifSoundGuitarLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+////            settings_NotifSoundDrumLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+////            settings_NotifSoundSaxLayout!!.background = getDrawable(R.drawable.background_layout_selector)
+//
+//            val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+//            edit.putInt("Alarm_Notif_Tone", R.raw.bass_slap)
+//            edit.apply()
+//        }
 
 //        settings_NotifSoundXyloLayout!!.setOnClickListener {
 //            if (settings_NotificationMessagesAlarmSound != null) {
@@ -581,7 +590,7 @@ class ManageNotificationActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeL
 
     fun milliSecondToString(ms: Int): String {
         var detik = TimeUnit.MILLISECONDS.toSeconds(ms.toLong())
-        var menit = TimeUnit.SECONDS.toSeconds(detik)
+        val menit = TimeUnit.SECONDS.toSeconds(detik)
 
         detik %= 60
 
