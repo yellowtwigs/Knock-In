@@ -256,13 +256,10 @@ public class SelectContactAdapter extends BaseAdapter {
                 }
             }
         } else {
-            if (listSelectedItem.size() > 5) {
+            if (listSelectedItem.contains(getItem(position))) {
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
             } else {
-                if (listSelectedItem.contains(getItem(position))) {
-                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
-                } else {
-                    holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor, null));
-                }
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor, null));
             }
         }
 
@@ -307,7 +304,6 @@ public class SelectContactAdapter extends BaseAdapter {
             listSelectedItem.remove(contact);
         } else {
             if (listSelectedItem.size() >= 5) {
-                listSelectedItem.remove(contact);
             } else {
                 listSelectedItem.add(contact);
             }
@@ -340,7 +336,7 @@ public class SelectContactAdapter extends BaseAdapter {
             case 6:
                 return R.drawable.ic_user_pink;
             default:
-                return R.drawable.ic_user_blue;
+                return R.drawable.ic_multiple_users_silhouette_test;
         }
     }
 }

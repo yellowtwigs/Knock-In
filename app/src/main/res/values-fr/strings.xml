@@ -247,7 +247,7 @@
     <!-- region Manage My Screen !-->
 
     <string name="settings_contact_popup_phone_call">Popup d\'appel</string>
-    <string name="settings_vip_message_tone">Sons des messages VIP en veille</string>
+    <string name="settings_vip_message_tone">Sons des messages VIP</string>
 
     <!-- endregion -->
 

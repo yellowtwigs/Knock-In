@@ -14,6 +14,7 @@ import com.yellowtwigs.knockin.controller.SelectContactAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 
 /**
  * Activité qui nous permet de faire un multiSelect sur nos contact afin de les prioriser
@@ -25,10 +26,9 @@ class MultiSelectActivity : AppCompatActivity() {
 
     private var multi_select_gridView: GridView? = null
     private var gestionnaireContact: ContactManager? = null
-    private var multi_select_textView: TextView? = null
+    private var multi_select_NumberOfContactsSelected: TextView? = null
     private var adapter: SelectContactAdapter? = null
-    private var listItemSelect: ArrayList<ContactWithAllInformation>? = null
-    private var firstClickOutOf5: Boolean = true
+    private var listItemSelect = ArrayList<ContactWithAllInformation>()
 
     //endregion
 
@@ -49,7 +49,7 @@ class MultiSelectActivity : AppCompatActivity() {
         //region ====================================== FindViewById ========================================
 
         multi_select_gridView = findViewById(R.id.multiSelect_gridView)
-        multi_select_textView = findViewById(R.id.multiSelect_Tv_nb_contact)
+        multi_select_NumberOfContactsSelected = findViewById(R.id.multiSelect_Tv_nb_contact)
         gestionnaireContact = ContactManager(this)
 
         //endregion
@@ -58,26 +58,38 @@ class MultiSelectActivity : AppCompatActivity() {
 
         adapter = SelectContactAdapter(this, gestionnaireContact, 4)
 
-        multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
+        multi_select_NumberOfContactsSelected!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
         multi_select_gridView!!.numColumns = 4
         multi_select_gridView!!.adapter = adapter
 
-        multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
+        multi_select_NumberOfContactsSelected!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
 
-        //region =================================== listener============================================
+        //region ========================================= Listener =========================================
 
         //lors d'un click sur un item(Contact) de la gridview Nous l'ajoutons dans la liste des contact sélectionner puis nous modifions le texte du nombre de contact sélectionné
         multi_select_gridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            // TODO Améliorer l'algo
-            if(adapter!!.listContactSelect.size == 5 && firstClickOutOf5){
-                Toast.makeText(this, "Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium", Toast.LENGTH_SHORT).show()
-            }
+
             adapter!!.itemSelected(position)
-            adapter!!.notifyDataSetChanged()
-            multi_select_textView!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
+            selectedItem(listItemSelect, gestionnaireContact!!.contactList[position])
+
+            if (listItemSelect.size > 5) {
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                        .setTitle("Nombre de contacts VIP atteint")
+                        .setMessage("Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium, voulez vous accèder à la boutique ?")
+                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                            startActivity(Intent(this@MultiSelectActivity, PremiumActivity::class.java))
+                            finish()
+                        }
+                        .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                        }
+                        .show()
+            } else {
+                adapter!!.notifyDataSetChanged()
+                multi_select_NumberOfContactsSelected!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
+            }
 
             val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
-            edit.putInt("nb_Contacts_VIP", adapter!!.listContactSelect.size)
+            edit.putInt("nb_Contacts_VIP", listItemSelect.size)
             edit.apply()
         }
         //endregion
@@ -125,6 +137,18 @@ class MultiSelectActivity : AppCompatActivity() {
                 }
     }
 
+    fun selectedItem(listItemSelect: ArrayList<ContactWithAllInformation>, contact: ContactWithAllInformation) {
+        if (listItemSelect.isEmpty()) {
+            listItemSelect.add(contact)
+        } else {
+            if (listItemSelect.contains(contact)) {
+                listItemSelect.remove(contact)
+            } else {
+                listItemSelect.add(contact)
+            }
+        }
+    }
+
     /**
      * Pour le menu de l'activité nous affectons la ressource menu [menu_toolbar_validate_skip]
      */
@@ -147,9 +171,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 finish()
             }
             R.id.nav_validate -> {
-
-                listItemSelect = adapter!!.listContactSelect
-                overlayAlertDialog(listItemSelect!!).show()
+                overlayAlertDialog(adapter!!.listContactSelect!!).show()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -227,7 +227,8 @@ class StartActivity : AppCompatActivity() {
         }
         //lors du click affichage d'un message de prévention
         start_activity_Skip!!.setOnClickListener {
-            buildLeaveAlertDialog()
+            buildMultiSelectAlertDialog()
+//            buildLeaveAlertDialog()
         }
 
 

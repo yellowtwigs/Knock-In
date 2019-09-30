@@ -23,9 +23,9 @@ import java.util.List;
 
 public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyViewHolder> {
 
-    PremiumActivity premiumActivity;
-    List<SkuDetails> skuDetailsList;
-    BillingClient billingClient;
+    private PremiumActivity premiumActivity;
+    private List<SkuDetails> skuDetailsList;
+    private BillingClient billingClient;
 
     public MyProductAdapter(PremiumActivity premiumActivity, List<SkuDetails> skuDetailsList, BillingClient billingClient) {
         this.premiumActivity = premiumActivity;
@@ -44,16 +44,16 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
         myViewHolder.myProductName.setText(skuDetailsList.get(i).getTitle());
-        myViewHolder.myProductPrice.setText(skuDetailsList.get(i).getPrice());
+//        myViewHolder.myProductPrice.setText(skuDetailsList.get(i).getPrice());
         myViewHolder.myProductLayout.setOnLongClickListener(v -> {
             Toast.makeText(premiumActivity, skuDetailsList.get(i).getDescription(), Toast.LENGTH_LONG).show();
             return true;
         });
 
         if(skuDetailsList.get(i).getTitle().contains("Contacts")){
-            myViewHolder.myProductImage.setImageResource(R.drawable.ic_app_image);
+            myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_vip_icon);
         }else if(skuDetailsList.get(i).getTitle().contains("Sons")){
-            myViewHolder.myProductImage.setImageResource(R.drawable.ic_icons8_tennis);
+            myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
         }
 
         //Product click
@@ -75,7 +75,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         RelativeLayout myProductLayout;
         AppCompatImageView myProductImage;
         TextView myProductName;
-        TextView myProductPrice;
+//        TextView myProductPrice;
         AppCompatImageView myProductBuyImage;
 
         IProductClickListener iProductClickListener;
@@ -89,7 +89,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myProductLayout = itemView.findViewById(R.id.product_item_layout);
             myProductImage = itemView.findViewById(R.id.product_item_image);
             myProductName = itemView.findViewById(R.id.product_item_name);
-            myProductPrice = itemView.findViewById(R.id.product_item_price);
+//            myProductPrice = itemView.findViewById(R.id.product_item_price);
             myProductBuyImage = itemView.findViewById(R.id.product_item_buy_image);
             myProductBuyImage.setOnClickListener(this);
         }

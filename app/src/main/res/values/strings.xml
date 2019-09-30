@@ -248,7 +248,7 @@
     <!-- region Manage My Screen !-->
 
     <string name="settings_contact_popup_phone_call">Phone call Popup</string>
-    <string name="settings_vip_message_tone">VIP Messages Tone in sleeping mode</string>
+    <string name="settings_vip_message_tone">VIP Messages Tone</string>
 
     <!-- endregion -->
 
