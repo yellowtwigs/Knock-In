@@ -28,14 +28,14 @@ interface ContactsDao {
     fun sortContactByFirstNameZA(): List<ContactWithAllInformation>
 
     /**
-     * Récupère les [contactList][ContactDB] trier par nom A->Z
+     * Récupère les [contactList][ContactDB] trier par nom de famille A->Z
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY last_name COLLATE NOCASE ASC")
     fun sortContactByLastNameAZ(): List<ContactWithAllInformation>
 
     /**
-     * Récupère les [contactList][ContactDB] trier par nom Z->A
+     * Récupère les [contactList][ContactDB] trier par nom de famille Z->A
      * @return List&lt[ContactDB]&gt
      */
     @Query("SELECT * FROM contacts_table ORDER BY last_name COLLATE NOCASE DESC")

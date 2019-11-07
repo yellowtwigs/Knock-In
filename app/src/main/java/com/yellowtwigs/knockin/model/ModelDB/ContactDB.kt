@@ -21,6 +21,10 @@ data class ContactDB(
          */
         @ColumnInfo(name = "last_name") var lastName: String,
         /**
+         * Nom du compte mail du contact s'il est différent de son nom, prénom
+         */
+        @ColumnInfo(name = "mail_name") var mail_name: String,
+        /**
          * Avatar utilisé lorsque le contact ne possède pas d'image de profile.
          */
         @ColumnInfo(name = "profile_picture") val profilePicture: Int,

@@ -7,21 +7,21 @@
     <!-- region Help Tutorial -->
 
     <string name="help">Help</string>
-    <string name="help_main">To activate the multichannel mode, do a long click on one of your contacts</string>
+    <string name="help_main">To activate the Multi-Channel mode, do a long click on one of your contacts</string>
     <string name="help_group">To select the entire group, click on the group\'s name</string>
     <string name="help_notification_history">In this screen you can see all the received notifications</string>
     <string name="help_cockpit">From this screen you can call or send an SMS to someone not listed into your address book. You can also connect to email and SoMe</string>
     <string name="help_manage_screen">In this screen you can display your contacts and configure various display options</string>
     <string name="help_notification_manager"> In this screen you can chose to enable/disable the priority 2 notifications </string>
-    <string name="help_my_informations"> In this screen you can update your personal details  </string>
+    <string name="help_my_informations"> In this screen you can update your personal details </string>
     <string name="help_contact_us_intent">Contact us</string>
 
     <!-- endregion-->
 
     <!-- region Facebook Strings-->
 
-<!--    <string name="facebook_app_id">2440482259568703</string>-->
-<!--    <string name="fb_login_protocol_scheme">fb2440482259568703</string>-->
+    <!--    <string name="facebook_app_id">2440482259568703</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb2440482259568703</string>-->
 
     <string name="facebook_app_id">704152513420071</string>
     <string name="fb_login_protocol_scheme">fb704152513420071</string>
@@ -48,7 +48,7 @@
     <string name="left_drawer_notif_config">Manage my notifications</string>
     <string name="left_drawer_settings">Settings</string>
     <string name="left_drawer_my_screen">Display options</string>
-    <string name="left_drawer_in_app">Buy products</string>
+    <string name="left_drawer_in_app">Shop</string>
 
     <string name="left_drawer_data_access">Data access</string>
     <string name="left_drawer_statistics">Statistics</string>
@@ -75,9 +75,9 @@
     <string name="notif_filtre_systeme">System</string>
     <string name="notif_tri_date">Date and time</string>
     <string name="notif_tri_par_contact">Contact</string>
-    <string name="main_toast_delete_contact"> You removed a contact!</string>
+    <string name="main_toast_delete_contact"> You removed a contact! </string>
     <string name="main_toast_multi_select_actived">Enable Multi-Select mode</string>
-    <string name="main_toast_multi_select_deactived">Diasable Multi-Select mode</string>
+    <string name="main_toast_multi_select_deactived">Disable Multi-Select mode</string>
 
     <string name="main_toast_multi_select_mode_selected"> selected</string>
     <string name="main_toast_multi_select_mode_selected_more_than_one"> selected</string>
@@ -88,11 +88,11 @@
 
     <string name="main_edited_contact">Modified contact</string>
     <string name="main_content_edited_contact">The contact </string>
-    <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knock In one?</string>
+    <string name="main_content_edited_contact_2"> was changed\, do you want to keep the Android address book version, or the Knock In Notifications one?</string>
     <string name="main_android_edited_contact">Android</string>
     <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
 
-    <string name="main_contact_grid_title">Do you want to call this contact?</string>
+    <string name="main_contact_grid_title">Do you want to call this contact? </string>
     <string name="main_contact_grid_message">You can disable this validation from the options</string>
 
     <string name="main_alert_dialog_delete_contact_title">Delete contact(s)</string>
@@ -118,9 +118,9 @@
     <string name="add_new_contact_first_name">Firstname</string>
     <string name="add_new_contact_phone_number">Phone number</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
-    <string name="add_new_contact_priority0">All the notifications related to this contact will be disabled</string>
-    <string name="add_new_contact_priority1">All the notifications related to this contact will be treated like standard Android notifications</string>
-    <string name="add_new_contact_priority2">All the notifications related to this contact will have high-priority (Knock In VIP)</string>
+    <string name="add_new_contact_priority0">All the notifications related to this contact will only be visible in the history</string>
+    <string name="add_new_contact_priority1">The notifications related to this contact will be treated as standard notifications</string>
+    <string name="add_new_contact_priority2">All the messages of this contact will be notified with high priority</string>
     <string name="add_new_contact_toast">" Firstname field must be populated!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -149,10 +149,10 @@
     <string name="add_new_contact_validate">Validate</string>
 
     <string name="add_new_contact_alert_dialog_title" tools:ignore="Typos">Contact already existing</string>
-    <string name="add_new_contact_toast_empty_name">Your contact has to have a first name or a last name</string>
-    <string name="add_new_contact_alert_dialog_message"> An existing contact is already using this name. Do you want to record it under this name anyway?</string>
+    <string name="add_new_contact_toast_empty_name">Your contact must have a first name or a last name</string>
+    <string name="add_new_contact_alert_dialog_message"> An existing contact is already using this name. Do you want to record it under this name anyway? </string>
     <string name="add_new_contact_alert_dialog_cancel_title">Warning</string>
-    <string name="add_new_contact_alert_dialog_cancel_message"> You will lose all our data, do you really want to continue?</string>
+    <string name="add_new_contact_alert_dialog_cancel_message"> Your updates were not recorded, do you want to save them? </string>
     <string name="add_new_contact_alert_dialog_photo_title">Add a picture</string>
     <string name="add_new_contact_alert_dialog_photo_camera">Camera</string>
     <string name="add_new_contact_alert_dialog_photo_galery">Gallery</string>
@@ -160,6 +160,7 @@
     <string name="add_new_contact_intent_title">Select a file</string>
     <string name="add_new_contact_camera_open_title">New picture</string>
     <string name="add_new_contact_camera_open_description">From your Smartphone camera</string>
+    <string name="add_new_contact_first_name_empty_field">The first name field can not be empty</string>
 
     <!-- endregion !-->
 
@@ -190,14 +191,14 @@
     </string-array>
     <string name="edit_contact_add_field">Add a new field</string>
     <string name="edit_contact_delete_contact">Remove contact</string>
-    <string name="edit_contact_delete_contact_message">You gonna remove this contact, are you sure ?</string>
+    <string name="edit_contact_delete_contact_message">You are going to remove this contact, are you sure ?</string>
     <string name="edit_contact_validate">Validate</string>
     <string name="edit_contact_cancel">Cancel</string>
     <string name="edit_contact_toast">Name or firstname is required</string>
     <string name="edit_contact_groups">Groups</string>
 
     <string name="edit_contact_alert_dialog_cancel_title">Warning</string>
-    <string name="edit_contact_alert_dialog_cancel_message"> You will lose all our data, do you really want to continue?</string>
+    <string name="edit_contact_alert_dialog_cancel_message"> You will lose all our data; do you really want to continue? </string>
     <string name="edit_contact_alert_dialog_photo_title">Add a picture</string>
     <string name="edit_contact_alert_dialog_photo_camera">Camera</string>
     <string name="edit_contact_alert_dialog_photo_galery">Gallery</string>
@@ -207,10 +208,10 @@
     <string name="edit_contact_camera_open_description">From your Smartphone camera</string>
 
     <string name="edit_contact_alert_dialog_delete_contact_title">Remove a contact</string>
-    <string name="edit_contact_alert_dialog_delete_contact_message">Do you really want to remove this contact?</string>
+    <string name="edit_contact_alert_dialog_delete_contact_message">Do you really want to remove this contact? </string>
 
     <string name="edit_contact_alert_dialog_sync_contact_title">You have updated a contact</string>
-    <string name="edit_contact_alert_dialog_sync_contact_message">Do you want to edit it in your Android contacts ?</string>
+    <string name="edit_contact_alert_dialog_sync_contact_message">Do you want to update your Android address book? </string>
     <string name="edit_contact">Edit contact</string>
     <!-- endregion !-->
 
@@ -230,7 +231,7 @@
 
     <string name="manage_my_screen_toolbar_title">Display</string>
     <string name="manage_my_screen_theme">Change theme</string>
-    <string name="manage_my_screen_theme_long_text">Chose dark theme</string>
+    <string name="manage_my_screen_theme_long_text">Choose dark theme</string>
     <string name="manage_my_screen_number_of_column">Number of contacts per row</string>
     <string name="manage_my_screen_number_of_column_group">Groups display</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Decouple contacts display</string>
@@ -240,29 +241,39 @@
     <string name="manage_my_screen_toast_list_smaller">"Compact" view selected</string>
     <string name="manage_my_screen_contact_popup_long_text"> Enable/disable popup before calling a contact</string>
     <string name="manage_my_screen_searchbar_pos">Search bar position</string>
-    <string name="manage_my_screen_searchbar_pos_long_text"> Position the search bar at the bottom of the screen</string>
+    <string name="manage_my_screen_searchbar_pos_long_text">Position the search bar at the bottom of the screen</string>
     <string name="manage_my_screen_display_for_group_title">Enable specific groups display</string>
-    <string name="manage_my_screen_display_for_group_subtitle">Chose a different display for your groups</string>
-    <!-- endregion -->
-
-    <!-- region Manage My Screen !-->
-
-    <string name="settings_contact_popup_phone_call">Phone call Popup</string>
-    <string name="settings_vip_message_tone">VIP Messages Tone</string>
-
+    <string name="manage_my_screen_display_for_group_subtitle">Choose a different display for your groups</string>
     <!-- endregion -->
 
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Notification parameters</string>
-    <string name="notification_manager_stop_popup"> Allow Knock In to display priority notifications</string>
-    <string name="notification_manager_stop_service"> Enable the notification service</string>
-    <string name="notification_manager_horaire"> Select recall daily time to view all your notifications</string>
+    <string name="notification_manager_stop_service"> Enable the management of notification by priority</string>
+    <string name="notification_manager_stop_popup"> Display VIP notifications</string>
+    <string name="notification_reminder">Send a reminder to view all the non-VIP messages </string>
+    <string name="notification_manager_horaire"> Select recall daily time: </string>
     <string name="notification_manager_prio_1"> Hide priority 1 notifications</string>
-    <string name="notification_reminder">Send a reminder to view all the received notifications</string>
 
     <string name="notification_alert_dialog_title">Selection of VIP contacts</string>
-    <string name="notification_alert_dialog_message">Do you want to choose your priority contacts?</string>
+    <string name="notification_alert_dialog_message">Do you want to choose your priority contacts? </string>
+
+    <string name="settings_contact_popup_phone_call">Phone call Popup</string>
+
+    <string name="notification_vip_message_tone">VIP Messages Tone</string>
+    <string name="notification_vip_default_message_tone">VIP Default Messages Tone</string>
+    <string name="notification_vip_jazzy_message_tone">VIP Jazzy Messages Tone</string>
+    <string name="notification_vip_funky_message_tone">VIP Funky Messages Tone</string>
+
+    <string name="notification_vip_message_tone_no_sound">No ringtone</string>
+    <string name="notification_vip_message_tone_default">Default ringtone</string>
+    <string name="notification_vip_message_tone_xylophone">Xylophone ringtone</string>
+    <string name="notification_vip_message_tone_moanin">Moanin ringtone</string>
+    <string name="notification_vip_message_tone_blue_bossa">Blue bossa ringtone</string>
+    <string name="notification_vip_message_tone_caravan">Caravan ringtone</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky slap ringtone</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the curve ringtone</string>
+    <string name="notification_vip_message_tone_funk_yall">Funk Yall ringtone</string>
 
     <!-- endregion -->
 
@@ -271,7 +282,7 @@
     <string name="cockpit_toolbar_title">Cockpit</string>
     <string name="cockpit_toast_phone_number_empty">Enter a phone number</string>
 
-    <string name="cockpit_toast_number_valid">Pleaes enter a valid phone number</string>
+    <string name="cockpit_toast_number_valid">Please enter a valid phone number</string>
 
     <string name="cockpit_toast_facebook_not_install">Facebook is not installed</string>
     <string name="cockpit_toast_instagram_not_install">Instagram is not installed</string>
@@ -296,7 +307,7 @@
 
     <!-- region Alert Dialog Notifications -->
 
-    <string name="alert_dialog_notification_message">Authorize Knock In to access your notifications and prioritize them</string>
+    <string name="alert_dialog_notification_message">Authorize Knock In Notifications to access your notifications and prioritize them</string>
     <string name="alert_dialog_notification_allow_it">Authorize</string>
     <string name="alert_dialog_notification_dismiss">Do not authorize</string>
 
@@ -316,7 +327,7 @@
     <!-- region Import Contacts -->
 
     <string name="import_contacts_title">Import Android contacts</string>
-    <string name="import_contacts_long_text"> Import your Android phone contacts in %s. You will be able to easily communicate with them and and change their priotity</string>
+    <string name="import_contacts_long_text"> Import your Android phone contacts in %s. You will be able to easily communicate with them and change their priority</string>
     <string name="import_contacts_button_yes">Import</string>
     <string name="import_contacts_button_no">Skip</string>
     <string name="import_contacts_toast">Contacts imported</string>
@@ -329,7 +340,7 @@
     <string name="first_launch_welcome">Welcome to %s</string>
     <string name="first_launch_welcome_long_text"> Enjoy a new way to manage your contacts and to communicate with them</string>
     <string name="first_launch_welcome_accept">Accept and continue</string>
-    <string name="first_launch_confidentiality"> Please read our Terms and Conditions from our site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a> To accept them, please click on "Accept and continue"</string>
+    <string name="first_launch_confidentiality">Please read our Terms and Conditions from our site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF. </a> To accept them, please click on "Accept and continue"</string>
 
     <!-- endregion -->
 
@@ -341,7 +352,7 @@
     <!-- region Alert Dialog -->
 
     <string name="multi_select_alert_dialog_title">Notifications display</string>
-    <string name="multi_select_alert_dialog_message"> Do you authorize Knock In to display high priority notifications</string>
+    <string name="multi_select_alert_dialog_message"> Do you authorize Knock In Notifications to display high priority notifications</string>
     <string name="multi_select_alert_dialog_allow_it">Authorize</string>
     <string name="multi_select_alert_dialog_dismiss">Do not authorize</string>
     <string name="multi_select_alert_dialog_nb_contact">You have selected %1s %2s </string>
@@ -362,7 +373,7 @@
 
     <string name="notification_sender_content_title">Interactions summary</string>
     <string name="notification_sender_content_text">%1s messages have not been processed since yesterday</string>
-    <string name="notification_sender_big_text">%1s messages have not been processed since you returned to the app in "Notifications"</string>
+    <string name="notification_sender_big_text">%1s messages have not been processed since you returned to "Notifications"</string>
 
     <!-- endregion -->
 
@@ -378,6 +389,7 @@
 
     <string name="alert_dialog_yes">Yes</string>
     <string name="alert_dialog_no">No</string>
+    <string name="alert_dialog_later">Later</string>
     <string name="alert_dialog_cancel">Cancel</string>
     <string name="alert_dialog_validate">Validate</string>
 
@@ -386,15 +398,15 @@
     <!-- region AlertDialog permission overlay !-->
 
     <string name="alert_dialog_overlay_title">High priority notifications</string>
-    <string name="alert_dialog_overlay_message"> Do you authorize Knock In to display high priority notifications?</string>
+    <string name="alert_dialog_overlay_message">Do you authorize Knock In Notifications to display high priority notifications? </string>
 
     <!-- endregion !-->
 
     <!-- region Multi Channel -->
 
-    <string name="multi_channel_no_permission">You have not the permission to send SMS</string>
-    <string name="multi_channel_empty_field">Your messaging field can not be empty</string>
-    <string name="multi_channel_list_of_channel_selected_empty">You have chosen no channel of communication</string>
+    <string name="multi_channel_no_permission">You don’t have the permission to send SMS</string>
+    <string name="multi_channel_empty_field">Your messaging field cannot be empty</string>
+    <string name="multi_channel_list_of_channel_selected_empty">You have not chosen any communication channel</string>
     <string name="multi_channel_message_sent">Message Sent</string>
     <string name="multi_channel_message_edit_text_hint">Write your message</string>
 
@@ -408,6 +420,7 @@
 
     <!-- region GroupManager -->
 
+    <string name="group_manager_toolbar_title">Group Manager</string>
     <string name="group_manager_search_hint">Search</string>
     <string name="menu_group_edit_group">Edit the group</string>
     <string name="menu_group_add_contacts">Add contacts</string>
@@ -419,8 +432,8 @@
     <!-- region Delete a contact from a Group -->
 
     <string name="delete_contact_from_group_toolbar_title">Removing contact(s) from a group</string>
-    <string name="delete_contact_0_contact">You can not delete 0 contact from a group</string>
-    <string name="delete_contact_from_group">You gonna delete %1s from this group</string>
+    <string name="delete_contact_0_contact">You cannot delete 0 contact from a group</string>
+    <string name="delete_contact_from_group">You are going to delete %1s from this group</string>
     <string name="delete_contact_from_group_title">Removing contact(s) from a group</string>
     <string name="delete_contact_from_group_cancel">Cancel</string>
 
@@ -434,21 +447,21 @@
     <string name="group_search_hint">Search</string>
     <string name="add_contact_to_group_toolbar_title">Choose a contact to add</string>
     <string name="add_contact_to_group_alert_dialog_title">Warning</string>
-    <string name="add_contact_to_group_alert_dialog_message">You can not add 0 contact to a group</string>
+    <string name="add_contact_to_group_alert_dialog_message">You cannot add 0 contact to a group</string>
 
     <!--endregion -->
 
     <!-- region Add New Group -->
 
-    <string name="add_new_group_toast_empty_field">You have to choose a group name</string>
-    <string name="add_new_group_toast_no_contact_selected">You have to select one contact</string>
+    <string name="add_new_group_toast_empty_field">You must choose a group name</string>
+    <string name="add_new_group_toast_no_contact_selected">You must select one contact</string>
     <string name="add_new_group_hint_group_name">Name the group</string>
 
     <!-- endregion -->
 
     <!-- region Edit Group -->
 
-    <string name="manager_group_edit_group_alert_dialog_title">Edit the group : </string>
+    <string name="manager_group_edit_group_alert_dialog_title">Edit the group: </string>
 
     <!-- endregion -->
 
@@ -456,7 +469,7 @@
 
     <!-- region Compose Message -->
 
-    <string name="compose_message_toast_send">Message send</string>
+    <string name="compose_message_toast_send">Message sent</string>
     <string name="compose_message_toast_permission_denied">Permission denied</string>
     <string name="compose_message_toast_miss_phone">Enter a message and a phone number</string>
 
@@ -464,31 +477,31 @@
 
     <!-- region notifAdapter-->
 
-    <string name="notif_adapter">Your message need to not be empty</string>
+    <string name="notif_adapter">Your message cannot be empty</string>
     <string name="notif_adapter_message_sent">Message sent</string>
 
     <!-- endregion-->
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Starting Knock In</string>
-    <string name="start_activity_import_title">Import your contacts</string>
-    <string name="start_activity_import_subtitle">Import your Android contacts into Knock In and communicate with them more effectively</string>
-    <string name="start_activity_notification_title">Activate notifications</string>
-    <string name="start_activity_notification_subtitle">Activate the service and receive custom notifications</string>
+    <string name="start_activity_title">Starting Knock In Notifications</string>
+    <string name="start_activity_import_title">Contacts</string>
+    <string name="start_activity_import_subtitle">Import your contacts into Knock In Notifications to communicate with them more effectively</string>
+    <string name="start_activity_notification_title">Notifications</string>
+    <string name="start_activity_notification_subtitle">Activate the notification service and receive custom notifications</string>
     <string name="start_activity_button_notification">Activate</string>
-    <string name="start_activity_superposition_title">Allow the superposition</string>
-    <string name="start_activity_superposition_subtitle">Allow this app to display over other apps you\'re using</string>
+    <string name="start_activity_superposition_title">Superposition</string>
+    <string name="start_activity_superposition_subtitle">Allow Knock In Notifications to display VIP notifications while you are using other apps </string>
     <string name="start_activity_button_superposition">Allow</string>
-    <string name="start_activity_permission_title">Permissions</string>
-    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send sms from the app</string>
+    <string name="start_activity_permission_title">Other authorisations</string>
+    <string name="start_activity_permission_subtitle">You will be able to make phone calls and send SMS from the app</string>
     <string name="start_activity_button_permission">Allow</string>
     <string name="start_activity_skip">Skip</string>
     <string name="start_activity_next">Next</string>
 
     <string name="start_activity_skip_alert_dialog_title">Skip permissions</string>
     <string name="start_activity_skip_alert_dialog_message">If you skip permissions, you could allow them later</string>
-    <string name="start_activity_skip_alert_dialog_message_importation">Knock In import your contacts, if you ignore now, all your contacts will not save</string>
+    <string name="start_activity_skip_alert_dialog_message_importation">Knock In Notifications is importing your contacts; if you ignore now, your contacts will not be saved</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Skip</string>
 
     <!-- endregion -->
@@ -513,4 +526,18 @@
     <string name="notification_alarm_messages_received">new messages VIP</string>
 
     <!-- endregion-->
+
+    <!-- region In App -->
+
+    <string name="in_app_popup_nb_vip_max_title">Number of VIP contacts reached</string>
+    <string name="in_app_popup_nb_vip_max_message">You cannot exceed 5 VIP contacts in the Freemium version, do you want to go to the shop? </string>
+    <string name="in_app_popup_tone_available_title">Ringtones packs available from the shop</string>
+    <string name="in_app_popup_tone_available_message">Would you like to go to the shop? </string>
+    <string name="in_app_purchase_made_message">Purchase made</string>
+    <string name="in_app_load_products">Load products</string>
+    <string name="in_app_shop">Knock In Notifications\' Shop</string>
+
+
+    <!-- endregion-->
+
 </resources>

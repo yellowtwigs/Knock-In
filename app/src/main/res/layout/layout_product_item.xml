@@ -4,6 +4,8 @@
     android:id="@+id/product_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:clickable="true"
     android:focusable="true">
 
@@ -52,7 +54,6 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_buying_on_smartphone" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </RelativeLayout>

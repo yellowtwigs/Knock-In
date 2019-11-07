@@ -223,6 +223,7 @@ class CockpitActivity : AppCompatActivity() {
                 R.id.nav_informations -> startActivity(Intent(this@CockpitActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@CockpitActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@CockpitActivity, SettingsActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@CockpitActivity, PremiumActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@CockpitActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }

@@ -33,6 +33,43 @@
                 app:titleTextColor="?attr/textColor" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout11"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.127">
+
+                <Switch
+                    android:id="@+id/switch_stop_service"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.51"
+                    app:layout_constraintStart_toEndOf="@+id/textView_stop_service"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView_stop_service"
+                    android:layout_width="268dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/notification_manager_stop_service"
+                    android:textColor="?attr/textColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/manage_notif_layout_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -139,51 +176,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout11"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.127">
-
-                <Switch
-                    android:id="@+id/switch_stop_service"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.51"
-                    app:layout_constraintStart_toEndOf="@+id/textView_stop_service"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView_stop_service"
-                    android:layout_width="268dp"
-                    android:layout_height="19dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/notification_manager_stop_service"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <RelativeLayout
                 android:id="@+id/settings_choose_notif_sound_layout_open_close"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/background_layout_selector"
-                android:clickable="true"
-                android:focusable="true">
+                android:background="@drawable/background_layout_selector">
 
                 <TextView
                     android:id="@+id/settings_choose_notif_sound_title"
@@ -194,7 +192,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/settings_vip_message_tone"
+                    android:text="@string/notification_vip_message_tone"
                     android:textColor="?attr/textColor"
                     android:textSize="@dimen/settings_subtitle_size"
                     android:textStyle="normal" />
@@ -204,25 +202,6 @@
                     android:layout_height="0.75dp"
                     android:layout_alignParentBottom="true"
                     android:background="@color/darkGreyColor" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/settings_choose_notif_sound_image_open"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="15dp"
-                    app:srcCompat="@drawable/ic_top_arrow" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/settings_choose_notif_sound_image_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="15dp"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/ic_bottom_arrow" />
 
             </RelativeLayout>
 
@@ -235,93 +214,132 @@
                 android:visibility="visible">
 
                 <RelativeLayout
-                    android:id="@+id/settings_notif_sound_slap_layout"
+                    android:id="@+id/settings_choose_default_sound_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:visibility="visible"
+                    android:layout_height="50dp"
+                    android:background="@drawable/background_layout_selector"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                    <RelativeLayout
-                        android:id="@+id/settings_notif_sound_slap_image_text"
+                    <TextView
+                        android:id="@+id/settings_choose_default_sound_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp">
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/notification_vip_default_message_tone"
+                        android:textColor="?attr/textColor"
+                        android:textSize="@dimen/settings_long_text_size"
+                        android:textStyle="normal" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_slap_img"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:text="Slap"
-                            android:textColor="?attr/textColor"
-                            android:textSize="15sp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.75dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/darkGreyColor" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/settings_notif_sound_slap_img"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_margin="8dp"
-                            app:srcCompat="@drawable/ic_bass_guitar" />
-                    </RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_choose_notif_default_sound_image_open"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        app:srcCompat="@drawable/ic_top_arrow" />
 
-                    <RelativeLayout
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_choose_notif_default_sound_image_close"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_bottom_arrow" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_no_sound_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_choose_default_sound_layout">
+
+                    <CheckBox
+                        android:id="@+id/settings_notif_no_sound_checkbox"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_toEndOf="@+id/settings_notif_sound_slap_image_text">
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
 
-                        <TextView
-                            android:id="@+id/settings_notif_sound_slap_current_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_slap_seekbar"
-                            android:layout_marginStart="10dp"
-                            android:text="0:00"
-                            android:textColor="?attr/textColor" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_no_sound_img"
+                        android:text="@string/notification_vip_message_tone_no_sound"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/settings_notif_sound_slap_max_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_slap_seekbar"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="10dp"
-                            android:text="0:00"
-                            android:textColor="?attr/textColor" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_no_sound_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_circular" />
 
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/settings_notif_sound_slap_play"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_slap_seekbar"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginStart="5dp"
-                            android:src="@drawable/ic_play_button_inside_a_circle" />
+                </RelativeLayout>
 
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/settings_notif_sound_slap_stop"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_slap_seekbar"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginStart="5dp"
-                            android:src="@drawable/ic_stop_circular_button"
-                            android:visibility="gone" />
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_knockin_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_no_sound_layout">
 
-                        <androidx.appcompat.widget.AppCompatSeekBar
-                            android:id="@+id/settings_notif_sound_slap_seekbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginEnd="15dp" />
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_knockin_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
 
-                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_knockin_img"
+                        android:text="@string/notification_vip_message_tone_default"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_knockin_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_app_image" />
 
                 </RelativeLayout>
 
@@ -329,241 +347,419 @@
                     android:id="@+id/settings_notif_sound_xylo_layout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_knockin_layout">
+
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_xylo_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_xylo_img"
+                        android:text="@string/notification_vip_message_tone_xylophone"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_xylo_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_xylophone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_choose_jazzy_sound_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/background_layout_selector"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_xylo_layout"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/settings_choose_jazzy_sound_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/notification_vip_jazzy_message_tone"
+                        android:textColor="?attr/textColor"
+                        android:textSize="@dimen/settings_long_text_size"
+                        android:textStyle="normal" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.75dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/darkGreyColor" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_choose_notif_jazzy_sound_image_open"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        app:srcCompat="@drawable/ic_top_arrow" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_choose_notif_jazzy_sound_image_close"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_bottom_arrow" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_moanin_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_choose_jazzy_sound_layout">
+
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_moanin_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_moanin_img"
+                        android:text="@string/notification_vip_message_tone_moanin"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_moanin_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_piano" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_blue_bossa_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_moanin_layout">
+
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_blue_bossa_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_blue_bossa_img"
+                        android:text="@string/notification_vip_message_tone_blue_bossa"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_blue_bossa_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_saxophone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_caravan_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_blue_bossa_layout">
+
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_caravan_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_caravan_img"
+                        android:text="@string/notification_vip_message_tone_caravan"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_caravan_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_drum_set" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_choose_funky_sound_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/background_layout_selector"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_caravan_layout"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/settings_choose_funky_sound_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/notification_vip_funky_message_tone"
+                        android:textColor="?attr/textColor"
+                        android:textSize="@dimen/settings_long_text_size"
+                        android:textStyle="normal" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.75dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/darkGreyColor" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_choose_notif_funky_sound_image_open"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        app:srcCompat="@drawable/ic_top_arrow" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_choose_notif_funky_sound_image_close"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_bottom_arrow" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_slap_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_choose_funky_sound_layout">
+
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_slap_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_slap_img"
+                        android:text="@string/notification_vip_message_tone_funky_slap"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_slap_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_bass_guitar" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_off_the_curve_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_slap_layout">
 
-                    <RelativeLayout
-                        android:id="@+id/settings_notif_sound_xylo_image_text"
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_off_the_curve_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp">
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_xylo_img"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:text="Xylophone"
-                            android:textColor="?attr/textColor"
-                            android:textSize="15sp" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/settings_notif_sound_xylo_img"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_margin="8dp"
-                            app:srcCompat="@drawable/ic_xylophone" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_toEndOf="@+id/settings_notif_sound_xylo_image_text">
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_off_the_curve_img"
+                        android:text="@string/notification_vip_message_tone_off_the_curve"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/settings_notif_sound_xylo_current_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_xylo_seekbar"
-                            android:layout_marginStart="10dp"
-                            android:text="0:00"
-                            android:textColor="?attr/textColor" />
-
-                        <TextView
-                            android:id="@+id/settings_notif_sound_xylo_max_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_xylo_seekbar"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="10dp"
-                            android:text="0:00"
-                            android:textColor="?attr/textColor" />
-
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/settings_notif_sound_xylo_play"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/settings_notif_sound_xylo_seekbar"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginStart="5dp"
-                            android:src="@drawable/ic_play_button_inside_a_circle" />
-
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/settings_notif_sound_xylo_stop"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginStart="5dp"
-                            android:src="@drawable/ic_stop_circular_button"
-                            android:visibility="gone" />
-
-                        <androidx.appcompat.widget.AppCompatSeekBar
-                            android:id="@+id/settings_notif_sound_xylo_seekbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginEnd="15dp" />
-
-                    </RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_off_the_curve_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_keyboard" />
 
                 </RelativeLayout>
 
-                <!--            <RelativeLayout-->
-                <!--                android:id="@+id/settings_notif_sound_xylo_layout"-->
-                <!--                android:layout_width="95dp"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:background="@drawable/background_layout_selector"-->
-                <!--                android:clickable="true"-->
-                <!--                android:focusable="true"-->
-                <!--                android:visibility="visible">-->
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_funk_yall_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_off_the_curve_layout">
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_below="@+id/settings_notif_sound_xylo_img"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_marginStart="8dp"-->
-                <!--                    android:layout_marginEnd="8dp"-->
-                <!--                    android:layout_marginBottom="8dp"-->
-                <!--                    android:text="Xylo"-->
-                <!--                    android:textColor="?attr/textColor"-->
-                <!--                    android:textSize="18sp" />-->
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_funk_yall_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
 
-                <!--                <androidx.appcompat.widget.AppCompatImageView-->
-                <!--                    android:id="@+id/settings_notif_sound_xylo_img"-->
-                <!--                    android:layout_width="40dp"-->
-                <!--                    android:layout_height="40dp"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_margin="8dp"-->
-                <!--                    app:srcCompat="@drawable/ic_xylophone" />-->
-                <!--            </RelativeLayout>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_funk_yall_img"
+                        android:text="@string/notification_vip_message_tone_funk_yall"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
 
-                <!--            <RelativeLayout-->
-                <!--                android:id="@+id/settings_notif_sound_keyboard_layout"-->
-                <!--                android:layout_width="95dp"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:background="@drawable/background_layout_selector"-->
-                <!--                android:clickable="false"-->
-                <!--                android:focusable="false"-->
-                <!--                android:visibility="visible">-->
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_funk_yall_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_keyboard" />
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_below="@+id/settings_notif_sound_keyboard_img"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_marginStart="8dp"-->
-                <!--                    android:layout_marginEnd="8dp"-->
-                <!--                    android:layout_marginBottom="8dp"-->
-                <!--                    android:text="Piano"-->
-                <!--                    android:textColor="?attr/textColor"-->
-                <!--                    android:textSize="18sp" />-->
+                </RelativeLayout>
 
-                <!--                <androidx.appcompat.widget.AppCompatImageView-->
-                <!--                    android:id="@+id/settings_notif_sound_keyboard_img"-->
-                <!--                    android:layout_width="40dp"-->
-                <!--                    android:layout_height="40dp"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_margin="8dp"-->
-                <!--                    app:srcCompat="@drawable/ic_piano" />-->
-                <!--            </RelativeLayout>-->
+                <RelativeLayout
+                    android:id="@+id/settings_notif_sound_guitar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_notif_sound_xylo_layout">
 
-                <!--            <RelativeLayout-->
-                <!--                android:id="@+id/settings_notif_sound_guitar_layout"-->
-                <!--                android:layout_width="95dp"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:background="@drawable/background_layout_selector"-->
-                <!--                android:clickable="false"-->
-                <!--                android:focusable="false"-->
-                <!--                android:visibility="visible">-->
+                    <CheckBox
+                        android:id="@+id/settings_notif_sound_guitar_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor" />
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_below="@+id/settings_notif_sound_guitar_img"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_marginStart="8dp"-->
-                <!--                    android:layout_marginEnd="8dp"-->
-                <!--                    android:layout_marginBottom="8dp"-->
-                <!--                    android:text="Guitar"-->
-                <!--                    android:textColor="?attr/textColor"-->
-                <!--                    android:textSize="18sp" />-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@+id/settings_notif_sound_guitar_img"
+                        android:text="Sonnerie Blues Rock Guitar"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp" />
 
-                <!--                <androidx.appcompat.widget.AppCompatImageView-->
-                <!--                    android:id="@+id/settings_notif_sound_guitar_img"-->
-                <!--                    android:layout_width="40dp"-->
-                <!--                    android:layout_height="40dp"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_margin="8dp"-->
-                <!--                    app:srcCompat="@drawable/ic_guitar" />-->
-                <!--            </RelativeLayout>-->
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/settings_notif_sound_guitar_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="8dp"
+                        app:srcCompat="@drawable/ic_guitar" />
 
-                <!--            <RelativeLayout-->
-                <!--                android:id="@+id/settings_notif_sound_drum_layout"-->
-                <!--                android:layout_width="95dp"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:background="@drawable/background_layout_selector"-->
-                <!--                android:clickable="false"-->
-                <!--                android:focusable="false"-->
-                <!--                android:visibility="visible">-->
-
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_below="@+id/settings_notif_sound_drum_img"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_marginStart="8dp"-->
-                <!--                    android:layout_marginEnd="8dp"-->
-                <!--                    android:layout_marginBottom="8dp"-->
-                <!--                    android:text="Drum"-->
-                <!--                    android:textColor="?attr/textColor"-->
-                <!--                    android:textSize="18sp" />-->
-
-                <!--                <androidx.appcompat.widget.AppCompatImageView-->
-                <!--                    android:id="@+id/settings_notif_sound_drum_img"-->
-                <!--                    android:layout_width="40dp"-->
-                <!--                    android:layout_height="40dp"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_margin="8dp"-->
-                <!--                    app:srcCompat="@drawable/ic_drum_set" />-->
-                <!--            </RelativeLayout>-->
-
-                <!--            <RelativeLayout-->
-                <!--                android:id="@+id/settings_notif_sound_sax_layout"-->
-                <!--                android:layout_width="95dp"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:background="@drawable/background_layout_selector"-->
-                <!--                android:clickable="false"-->
-                <!--                android:focusable="false"-->
-                <!--                android:visibility="visible">-->
-
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_below="@+id/settings_notif_sound_sax_img"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_marginStart="8dp"-->
-                <!--                    android:layout_marginEnd="8dp"-->
-                <!--                    android:layout_marginBottom="8dp"-->
-                <!--                    android:text="Saxo"-->
-                <!--                    android:textColor="?attr/textColor"-->
-                <!--                    android:textSize="18sp" />-->
-
-                <!--                <androidx.appcompat.widget.AppCompatImageView-->
-                <!--                    android:id="@+id/settings_notif_sound_sax_img"-->
-                <!--                    android:layout_width="40dp"-->
-                <!--                    android:layout_height="40dp"-->
-                <!--                    android:layout_centerHorizontal="true"-->
-                <!--                    android:layout_margin="8dp"-->
-                <!--                    app:srcCompat="@drawable/ic_saxophone" />-->
-                <!--            </RelativeLayout>-->
+                </RelativeLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -571,16 +767,16 @@
 
     </ScrollView>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view_manage_notif"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="?attr/backgroundColor"
-        android:visibility="visible"
-        app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/drawer_navigation_color"
-        app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer_layout" />
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view_manage_notif"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="?attr/backgroundColor"
+            android:visibility="visible"
+            app:headerLayout="@layout/nav_header_drawer"
+            app:itemIconTint="@color/drawer_navigation_color"
+            app:itemTextColor="@color/drawer_navigation_color"
+            app:menu="@menu/menu_left_drawer_layout" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

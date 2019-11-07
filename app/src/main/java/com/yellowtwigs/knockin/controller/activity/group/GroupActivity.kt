@@ -86,7 +86,6 @@ class GroupActivity : AppCompatActivity() {
     private var main_loadingPanel: RelativeLayout? = null
 
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
-    private val listOfItemSelectedFromLibelleClick: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var firstClick: Boolean = true
 

@@ -23,6 +23,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -123,7 +124,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         // int width = holder.contactRoundedImageView.getLayoutParams().width;
 
         holder.contactFirstNameView = convertView.findViewById(R.id.grid_adapter_contactFirstName);
-        ConstraintLayout.LayoutParams layoutParamsTV = (ConstraintLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
+        RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
         final ContactDB contact = this.gestionnaireContact.getContactList().get(position).getContactDB();
@@ -229,8 +230,12 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
             //holder.contactFirstNameView.;
-
         }
+
+        if(firstname.isEmpty()){
+            holder.contactFirstNameView.setVisibility(View.GONE);
+        }
+
      /*   if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
 
@@ -374,7 +379,6 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
         };
 
         View.OnLongClickListener gridlongClick = v -> {
-
             if (!modeMultiSelect) {
                 int firstPosVis;
                 closeMenu();
@@ -423,6 +427,7 @@ public class ContactGridViewAdapter extends BaseAdapter implements FloatingActio
                 }
             }
         };
+
         buttonCall.setOnLongClickListener(v -> {
             String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
             if (!phoneNumber.isEmpty()) {

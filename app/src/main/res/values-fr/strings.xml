@@ -5,22 +5,22 @@
 
     <!-- region Help Tutorial -->
 
-    <string name="help">Help</string>
-    <string name="help_main">Pour activer le mode multichannel, faites un long clic sur l\'un de vos contacts</string>
+    <string name="help">Aide</string>
+    <string name="help_main">Pour activer le mode Multi-Channel, faites un long clic sur l\'un de vos contacts</string>
     <string name="help_group">Pour sélectionner tout un groupe, cliquer sur le libellé</string>
-    <string name="help_notification_history">Sur cet écran vous pouvez voir toutes les notifications reçues</string>
-    <string name="help_cockpit">Sur cet écran vous pouvez appeler un numéro de téléphone ou envoyer un SMS à une personne qui n\'est pas dans vos contacts. Vous pouvez aussi vous diriger vers un réseau social</string>
-    <string name="help_manage_screen">Sur cet écran vous pouvez choisir comment afficher vos contacts</string>
-    <string name="help_notification_manager">Sur cet écran vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
-    <string name="help_my_informations">Sur cette écran vous pouvez modifier vos informations personnelles</string>
+    <string name="help_notification_history">Dans cet écran vous pouvez voir toutes les notifications reçues</string>
+    <string name="help_cockpit">Dans cet écran vous pouvez appeler un numéro de téléphone ou envoyer un SMS à une personne qui n\'est pas dans vos contacts. Vous pouvez aussi vous diriger vers un réseau social</string>
+    <string name="help_manage_screen">Dans cet écran vous pouvez choisir comment afficher vos contacts</string>
+    <string name="help_notification_manager">Dans cet écran vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
+    <string name="help_my_informations">Dans cette écran vous pouvez modifier vos informations personnelles</string>
     <string name="help_contact_us_intent">Contactez-nous</string>
 
     <!-- endregion-->
 
     <!-- region Facebook Strings-->
 
-<!--    <string name="facebook_app_id">2440482259568703</string>-->
-<!--    <string name="fb_login_protocol_scheme">fb2440482259568703</string>-->
+    <!--    <string name="facebook_app_id">2440482259568703</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb2440482259568703</string>-->
     <string name="facebook_app_id">704152513420071</string>
     <string name="fb_login_protocol_scheme">fb704152513420071</string>
 
@@ -46,7 +46,7 @@
     <string name="left_drawer_notif_config">Gérer mes notifications</string>
     <string name="left_drawer_settings">Paramètres</string>
     <string name="left_drawer_my_screen">Affichage</string>
-    <string name="left_drawer_in_app">Achat In App</string>
+    <string name="left_drawer_in_app">Boutique</string>
 
     <string name="left_drawer_data_access">Accès aux données</string>
     <string name="left_drawer_statistics">Mes statistiques</string>
@@ -69,8 +69,8 @@
     <string name="main_tri_par_groupe">Groupe</string>
     <string name="main_filtre_title">Filtrer par :</string>
     <string name="notif_filtre_app">Notification d\'application</string>
-    <string name="notif_filtre_message">Notification de Message</string>
-    <string name="notif_filtre_systeme">Notification du Système</string>
+    <string name="notif_filtre_message">Notification de message</string>
+    <string name="notif_filtre_systeme">Notification du système</string>
     <string name="notif_tri_date">Date et heure</string>
     <string name="notif_tri_par_contact">Contact</string>
     <string name="main_toast_delete_contact">Vous venez de supprimer un contact !</string>
@@ -81,12 +81,12 @@
     <string name="main_toast_multi_select_mode_selected_more_than_one"> sélectionnés</string>
 
     <string name="main_alert_dialog_group_title">Création d\'un nouveau groupe</string>
-    <string name="main_alert_dialog_group_subtitle">Donner un nom à votre groupe</string>
+    <string name="main_alert_dialog_group_subtitle">Donnez un nom à votre groupe</string>
     <string name="main_alert_dialog_group_favorites_already_exist">Le groupe "Favoris" existe déjà</string>
 
     <string name="main_edited_contact">Contact modifié</string>
     <string name="main_content_edited_contact">Le contact </string>
-    <string name="main_content_edited_contact_2"> a été changé\, souhaitez-vous garder la version du carnet d\'adresse d\'Android ou de Knock In ?</string>
+    <string name="main_content_edited_contact_2"> a été changé\, souhaitez-vous garder la version du carnet d\'adresse d\'Android ou de Knock In Notifications ?</string>
     <string name="main_android_edited_contact">Android</string>
 
     <string name="main_contact_grid_title">Voulez-vous appeler ce contact ?</string>
@@ -116,9 +116,9 @@
     <string name="add_new_contact_first_name">Prénom</string>
     <string name="add_new_contact_phone_number">Numéro de téléphone</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
-    <string name="add_new_contact_priority0">Toutes les notifications liées à ce contact seront désactivées </string>
-    <string name="add_new_contact_priority1">Toutes les notifications liées à ce contact seront traitées comme des notifications standard Android</string>
-    <string name="add_new_contact_priority2">Toutes les notifications liées à ce contact seront prioritaires (Knock In VIP)</string>
+    <string name="add_new_contact_priority0">Toutes les notifications relatives à ce contact seront seulement visibles dans l’historique des notifications </string>
+    <string name="add_new_contact_priority1">Les notifications concernant ce contact seront traitées de façon standard</string>
+    <string name="add_new_contact_priority2">Tous les messages de ce contact vous seront notifiés de façon prioritaire</string>
     <string name="add_new_contact_toast">"Le champ prénom ne peut pas être vide !"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -148,9 +148,9 @@
 
     <string name="add_new_contact_alert_dialog_title" tools:ignore="Typos">Contact déjà existant</string>
     <string name="add_new_contact_toast_empty_name">Votre contact doit posséder au moins un nom ou un prénom</string>
-    <string name="add_new_contact_alert_dialog_message">Un contact porte déjà ce nom. Voulez-vous tout de même l\'enregistrer sous ce nom ?</string>
+    <string name="add_new_contact_alert_dialog_message">Un contact porte déjà ce nom. Voulez-vous tout de même l\'enregistrer sous ce nom ? </string>
     <string name="add_new_contact_alert_dialog_cancel_title">Attention</string>
-    <string name="add_new_contact_alert_dialog_cancel_message">Vous risquez de perdre toutes vos données, voulez vous vraiment continuer ?</string>
+    <string name="add_new_contact_alert_dialog_cancel_message">Vos modifications n’ont pas été enregistrées, voulez-vous les sauver ?</string>
     <string name="add_new_contact_alert_dialog_photo_title">Ajouter une image</string>
     <string name="add_new_contact_alert_dialog_photo_camera">Caméra</string>
     <string name="add_new_contact_alert_dialog_photo_galery">Galerie</string>
@@ -158,6 +158,7 @@
     <string name="add_new_contact_intent_title">Sélectionner un fichier</string>
     <string name="add_new_contact_camera_open_title">Nouvelle photo</string>
     <string name="add_new_contact_camera_open_description">Depuis votre appareil photo</string>
+    <string name="add_new_contact_first_name_empty_field">Le champ prénom de votre contact ne peut être vide</string>
 
     <!-- endregion !-->
 
@@ -237,31 +238,43 @@
     <string name="manage_my_screen_toast_list">Vous avez sélectionné le mode "Liste"</string>
     <string name="manage_my_screen_toast_list_smaller">Vous avez sélectionnez le mode d\'affichage "Compact"</string>
     <string name="manage_my_screen_contact_popup_long_text">Activer/Désactiver la popup avant l\'appel d\'un contact</string>
-    <string name="manage_my_screen_searchbar_pos">Position de la Barre de recherche</string>
+    <string name="manage_my_screen_searchbar_pos">Position de la barre de recherche</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Positionner la barre de recherche en bas de l\'écran</string>
     <string name="manage_my_screen_display_for_group_title">Activer l\'affichage différent pour les groupes</string>
     <string name="manage_my_screen_display_for_group_subtitle">Choix d\'un affichage spécifique pour les groupes </string>
 
     <!-- endregion -->
 
-    <!-- region Manage My Screen !-->
-
-    <string name="settings_contact_popup_phone_call">Popup d\'appel</string>
-    <string name="settings_vip_message_tone">Sons des messages VIP</string>
-
-    <!-- endregion -->
-
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_popup">Autoriser Knock In à afficher des notifications prioritaires</string>
-    <string name="notification_manager_stop_service">Activer le service de notification</string>
-    <string name="notification_manager_horaire">Choisir l\'horaire de rappel des notifications de la journée</string>
+    <string name="notification_manager_stop_service">Activer la gestion des notifications par priorités</string>
+    <string name="notification_manager_stop_popup">Afficher les notifications VIP</string>
+    <string name="notification_reminder">M’envoyer un rappel pour consulter mes nouveaux messages non prioritaires</string>
+    <string name="notification_manager_horaire">Choisir l\'heure de rappel : </string>
     <string name="notification_manager_prio_1">Masquer les notifications standard (priorité 1)</string>
-    <string name="notification_reminder">Envoyer un rappel pour regarder les messages traités par Knock In</string>
+
 
     <string name="notification_alert_dialog_title">Sélection des contacts VIP</string>
-    <string name="notification_alert_dialog_message">Voulez vous choisir vos contacts prioritaires ?</string>
+    <string name="notification_alert_dialog_message">Voulez-vous choisir vos contacts prioritaires ?</string>
+
+    <string name="settings_contact_popup_phone_call">Popup d\'appel</string>
+
+    <string name="notification_vip_message_tone">Sons des messages VIP</string>
+    <string name="notification_vip_default_message_tone">Sons des messages VIP par défaut</string>
+    <string name="notification_vip_jazzy_message_tone">Sons Jazz des messages VIP</string>
+    <string name="notification_vip_funky_message_tone">Sons Funky des messages VIP</string>
+
+    <string name="notification_vip_message_tone_no_sound">Aucune sonnerie</string>
+    <string name="notification_vip_message_tone_default">Sonnerie par défaut</string>
+    <string name="notification_vip_message_tone_xylophone">Sonnerie Xylophone</string>
+    <string name="notification_vip_message_tone_moanin">Sonnerie Moanin</string>
+    <string name="notification_vip_message_tone_blue_bossa">Sonnerie Blue bossa</string>
+    <string name="notification_vip_message_tone_caravan">Sonnerie Caravan</string>
+    <string name="notification_vip_message_tone_funky_slap">Sonnerie Funky slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Sonnerie Off the curve</string>
+    <string name="notification_vip_message_tone_funk_yall">Sonnerie Funk Yall</string>
+
     <!-- endregion -->
 
     <!-- region Phone Log -->
@@ -294,7 +307,7 @@
 
     <!-- region Alert Dialog Notifications -->
 
-    <string name="alert_dialog_notification_message">Autoriser Knock In à accéder à vos notifications pour les prioriser</string>
+    <string name="alert_dialog_notification_message">Autoriser Knock In Notifications à accéder à vos notifications pour les prioriser</string>
     <string name="alert_dialog_notification_allow_it">Autoriser</string>
     <string name="alert_dialog_notification_dismiss">Ne pas autoriser</string>
 
@@ -339,7 +352,7 @@
     <!-- region Alert Dialog -->
 
     <string name="multi_select_alert_dialog_title">Affichage des notifications</string>
-    <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knock In à afficher des notifications prioritaires?</string>
+    <string name="multi_select_alert_dialog_message">Voulez-vous autoriser Knock In Notifications à afficher des notifications prioritaires?</string>
     <string name="multi_select_alert_dialog_allow_it">Autoriser</string>
     <string name="multi_select_alert_dialog_dismiss">Ne pas autoriser</string>
     <string name="multi_select_alert_dialog_nb_contact">Vous venez de sélectionner %1s %2s </string>
@@ -376,6 +389,7 @@
 
     <string name="alert_dialog_yes">Oui</string>
     <string name="alert_dialog_no">Non</string>
+    <string name="alert_dialog_later">Plus tard</string>
     <string name="alert_dialog_cancel">Annuler</string>
     <string name="alert_dialog_validate">Valider</string>
 
@@ -384,15 +398,15 @@
     <!-- region AlertDialog permission overlay !-->
 
     <string name="alert_dialog_overlay_title">Notifications prioritaires</string>
-    <string name="alert_dialog_overlay_message">Voulez-vous autoriser Knock In à afficher des notifications prioritaires?</string>
+    <string name="alert_dialog_overlay_message">Voulez-vous autoriser Knock In Notifications à afficher des notifications prioritaires?</string>
 
     <!-- endregion !-->
 
     <!-- region Multi Channel -->
 
-    <string name="multi_channel_no_permission">Vous n\'avez pas les permissions pour envoyer des sms</string>
+    <string name="multi_channel_no_permission">Vous n\'avez pas les permissions pour envoyer des SMS</string>
     <string name="multi_channel_empty_field">Votre message ne doit pas être vide</string>
-    <string name="multi_channel_list_of_channel_selected_empty">Vous n\'avez sélectionné aucun channel de communication</string>
+    <string name="multi_channel_list_of_channel_selected_empty">Vous n\'avez sélectionné aucun canal de communication</string>
     <string name="multi_channel_message_sent">Message envoyé</string>
     <string name="multi_channel_message_edit_text_hint">Ecrivez votre message</string>
 
@@ -406,10 +420,11 @@
 
     <!-- region GroupManager -->
 
+    <string name="group_manager_toolbar_title">Gestionnaire de groupes</string>
     <string name="group_manager_search_hint">Rechercher</string>
     <string name="menu_group_edit_group">Éditer le groupe</string>
     <string name="menu_group_add_contacts">Ajouter des contacts</string>
-    <string name="menu_group_delete_contacts">Enlever des contacts du groupe</string>
+    <string name="menu_group_delete_contacts">Supprimer des contacts du groupe</string>
     <string name="menu_group_delete_group">Supprimer le groupe</string>
     <string name="section_alert_delete_group_title">Suppression d\'un groupe</string>
     <string name="section_alert_delete_group_message">Le groupe %1 va être supprimé, êtes vous bien sûr de votre choix ?</string>
@@ -422,8 +437,8 @@
     <string name="delete_contact_from_group_title">Supprimer des contacts d\'un groupe</string>
     <string name="delete_contact_from_group_cancel">Annuler</string>
 
-    <string name="delete_contact_from_group_alert_dialog_title">Enlever du groupe</string>
-    <string name="delete_contact_from_group_alert_dialog_message">Vous allez enlever %1s du groupe %2s</string>
+    <string name="delete_contact_from_group_alert_dialog_title">Supprimer du groupe</string>
+    <string name="delete_contact_from_group_alert_dialog_message">Vous allez supprimer %1s du groupe %2s</string>
 
     <!-- endregion-->
 
@@ -465,25 +480,25 @@
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Démarrage de Knock In</string>
-    <string name="start_activity_import_title">Importation des contacts</string>
-    <string name="start_activity_import_subtitle">Importer vos contacts Android dans Knock In et communiquer avec eux plus efficacement</string>
-    <string name="start_activity_notification_title">Activer les notifications</string>
-    <string name="start_activity_notification_subtitle">Activer le service et recevez des notifications personnalisés</string>
+    <string name="start_activity_title">Démarrage de Knock In Notifications</string>
+    <string name="start_activity_import_title">Contacts</string>
+    <string name="start_activity_import_subtitle">Importez vos contacts dans Knock In Notifications pour communiquer plus efficacement avec eux</string>
+    <string name="start_activity_notification_title">Notifications</string>
+    <string name="start_activity_notification_subtitle">Activez le service de notifications pour recevoir des notifications personnalisés</string>
     <string name="start_activity_button_notification">Activer</string>
-    <string name="start_activity_superposition_title">Autoriser la superposition</string>
-    <string name="start_activity_superposition_subtitle">Autoriser cette application à se superposer aux autres applications</string>
+    <string name="start_activity_superposition_title">Superposition</string>
+    <string name="start_activity_superposition_subtitle">Autorisez Knock In Notifications à afficher les notifications VIP pendant que vous exécutez d’autres applications</string>
     <string name="start_activity_button_superposition">Autoriser</string>
-    <string name="start_activity_permission_title">Autorisations</string>
-    <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des sms depuis l\'application</string>
+    <string name="start_activity_permission_title">Autres autorisations</string>
+    <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des SMS depuis l\'application</string>
     <string name="start_activity_button_permission">Autoriser</string>
     <string name="start_activity_skip">Passer</string>
     <string name="start_activity_next">Suivant</string>
 
     <string name="start_activity_skip_alert_dialog_title">Passer les autorisations</string>
-    <string name="start_activity_skip_alert_dialog_message">Si vous passez les autorisations, vous pourez les activer plus tard</string>
-    <string name="start_activity_skip_alert_dialog_message_importation">Knock In importe vos contacts,
-        si vous passez maintenant, tous vos contacts ne seront pas sauvegardés</string>
+    <string name="start_activity_skip_alert_dialog_message">Si vous passez les autorisations, vous pourrez les activer plus tard</string>
+    <string name="start_activity_skip_alert_dialog_message_importation">Knock In Notifications importe vos contacts,
+        si vous passez maintenant, vos contacts ne seront pas sauvegardés</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Passer</string>
 
     <!-- endregion -->
@@ -508,4 +523,17 @@
     <string name="notification_alarm_messages_received">nouveaux messages VIP</string>
 
     <!-- endregion-->
+
+    <!-- region In App -->
+
+    <string name="in_app_popup_nb_vip_max_title">Nombre maximum de contacts VIP atteint</string>
+    <string name="in_app_popup_nb_vip_max_message">Vous n\'avez le droit qu\'à 5 contacts VIP maximum en version Freemium, voulez-vous accèder à la boutique ?</string>
+    <string name="in_app_popup_tone_available_title">Pack de sonnerie disponible dans la boutique</string>
+    <string name="in_app_popup_tone_available_message">Voulez-vous accèder à la boutique ?</string>
+    <string name="in_app_purchase_made_message">Achat effectué</string>
+    <string name="in_app_load_products">Charger les produits de la Boutique</string>
+    <string name="in_app_shop">Boutique Knock In Notifications</string>
+
+    <!-- endregion-->
+
 </resources>

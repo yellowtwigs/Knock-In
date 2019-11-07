@@ -62,42 +62,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_star_shine" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contactRoundedImageView">
-
-        <TextView
-            android:id="@+id/grid_adapter_contactFirstName"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:maxLines="1"
-            android:text="Bla bla"
-            android:textColor="?attr/textColor"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/grid_adapter_contactLastName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Bla bla"
-            android:textColor="?attr/textColor"
-            android:textSize="15sp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grid_adapter_contactFirstName" />
+            app:layout_constraintTop_toBottomOf="@+id/contactRoundedImageView">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/grid_adapter_contactFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:maxLines="1"
+                android:text="Bla bla"
+                android:layout_centerHorizontal="true"
+                android:textColor="?attr/textColor"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/grid_adapter_contactLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:layout_marginTop="1dp"
+                android:maxLines="1"
+                android:text="Bla bla"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/grid_adapter_contactFirstName"
+                android:textColor="?attr/textColor"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

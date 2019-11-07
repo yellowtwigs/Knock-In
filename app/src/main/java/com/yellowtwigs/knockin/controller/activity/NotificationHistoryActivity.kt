@@ -159,6 +159,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_manage_screen -> startActivity(Intent(this, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
+                R.id.nav_in_app -> startActivity(Intent(this@NotificationHistoryActivity, PremiumActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }
@@ -673,6 +674,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
+
                 notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
                 notification_history_ListView = findViewById(R.id.listView_notification_history)
                 notification_history_ListView!!.adapter = notification_Adapter

@@ -30,6 +30,8 @@ class MultiSelectActivity : AppCompatActivity() {
     private var adapter: SelectContactAdapter? = null
     private var listItemSelect = ArrayList<ContactWithAllInformation>()
 
+    private var firstClick = true
+
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,17 +74,18 @@ class MultiSelectActivity : AppCompatActivity() {
             adapter!!.itemSelected(position)
             selectedItem(listItemSelect, gestionnaireContact!!.contactList[position])
 
-            if (listItemSelect.size > 5) {
+            if (listItemSelect.size > 5 && firstClick) {
                 MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle("Nombre de contacts VIP atteint")
-                        .setMessage("Vous n'avez le droit qu'à 5 contacts VIP maximum en version Freemium, voulez vous accèder à la boutique ?")
+                        .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
+                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
                         .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                            startActivity(Intent(this@MultiSelectActivity, PremiumActivity::class.java))
-                            finish()
+                            startActivity(Intent(this@MultiSelectActivity, PremiumActivity::class.java).putExtra("fromMultiSelectActivity", true))
+                            firstClick = true
                         }
                         .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                         }
                         .show()
+//                firstClick = false
             } else {
                 adapter!!.notifyDataSetChanged()
                 multi_select_NumberOfContactsSelected!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)

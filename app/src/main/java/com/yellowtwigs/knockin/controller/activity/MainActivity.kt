@@ -341,7 +341,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if(position != 0){
             main_GridView!!.smoothScrollToPosition(position)
         }
-
+ 
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ===================================== set ListContact ======================================
@@ -917,7 +917,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     // on regarde le quel tri est activé pour l'appliquer
                     val contactListDb = ContactManager(this)
                     when {
-                        sharedPreferences.getString("tri", "nom") == "nom" -> contactListDb.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "prenom" -> contactListDb.sortContactByFirstNameAZ()
                         sharedPreferences.getString("tri", "nom") == "lastname" -> contactListDb.sortContactByLastname()
                         sharedPreferences.getString("tri", "nom") == "priorite" -> contactListDb.sortContactByPriority()
                         sharedPreferences.getString("tri", "nom") == "favoris" -> contactListDb.sortContactByFavorite()
@@ -948,7 +948,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     when {
-                        sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "prenom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
                         sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
                         sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
                         sharedPreferences.getString("tri", "nom") == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
@@ -981,7 +981,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     val contactListDb = ContactManager(this)
                     when {
-                        sharedPreferences.getString("tri", "nom") == "nom" -> contactListDb.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "prenom" -> contactListDb.sortContactByFirstNameAZ()
                         sharedPreferences.getString("tri", "nom") == "lastname" -> contactListDb.sortContactByLastname()
                         sharedPreferences.getString("tri", "nom") == "priorite" -> contactListDb.sortContactByPriority()
                         sharedPreferences.getString("tri", "nom") == "favoris" -> contactListDb.sortContactByFavorite()
@@ -1007,7 +1007,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val len = sharedPreferences.getInt("gridview", 4)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
                     when {
-                        sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+                        sharedPreferences.getString("tri", "nom") == "prenom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
                         sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
                         sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
                         sharedPreferences.getString("tri", "nom") == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
@@ -1036,7 +1036,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                         val len = sharedPreferences.getInt("gridview", 4)
                         val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                        edit.putString("tri", "nom")
+                        edit.putString("tri", "prenom")
                         edit.apply()
                         runOnUiThread {
                             item.isChecked = true
@@ -1261,7 +1261,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         verifiedContactsChannel(listOfItemSelected)
 
-        if (gridViewAdapter!!.listOfItemSelected.size == 0) {
+//        if (gridViewAdapter!!.listOfItemSelected.size == 0) {
+        if (listOfItemSelected.size == 0) {
             val pos = main_GridView!!.firstVisiblePosition
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)

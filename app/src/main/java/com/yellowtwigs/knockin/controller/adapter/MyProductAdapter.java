@@ -1,5 +1,7 @@
 package com.yellowtwigs.knockin.controller.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,17 +45,46 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
-        myViewHolder.myProductName.setText(skuDetailsList.get(i).getTitle());
+
+        SharedPreferences sharedNotifJazzySoundInAppPreferences = premiumActivity.getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE);
+        boolean notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Notif_Jazzy_Sound_IsBought", false);
+
+        SharedPreferences sharedNotifFunkySoundInAppPreferences = premiumActivity.getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE);
+        boolean notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Notif_Funky_Sound_IsBought", false);
+
+        SharedPreferences sharedAlarmNotifInAppPreferences = premiumActivity.getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE);
+        boolean contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false);
+
+
+        String productName = skuDetailsList.get(i).getTitle(); // Contact VIP Illimités (Knock In Notifications)
+        String[] text = productName.split("\\(");
+
+        myViewHolder.myProductName.setText(text[0]);
 //        myViewHolder.myProductPrice.setText(skuDetailsList.get(i).getPrice());
         myViewHolder.myProductLayout.setOnLongClickListener(v -> {
             Toast.makeText(premiumActivity, skuDetailsList.get(i).getDescription(), Toast.LENGTH_LONG).show();
             return true;
         });
 
-        if(skuDetailsList.get(i).getTitle().contains("Contacts")){
+        if (skuDetailsList.get(i).getTitle().contains("Contacts")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_vip_icon);
-        }else if(skuDetailsList.get(i).getTitle().contains("Sons")){
+        } else if (skuDetailsList.get(i).getTitle().contains("Jazzy")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
+        } else if (skuDetailsList.get(i).getTitle().contains("Funky")) {
+            myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
+        }
+
+        myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone);
+
+        if (skuDetailsList.get(i).getTitle().contains("Contacts") && contactsUnlimitedIsBought) {
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setEnabled(false);
+        } else if (skuDetailsList.get(i).getTitle().contains("Jazzy") && notifJazzySoundIsBought) {
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setEnabled(false);
+        } else if (skuDetailsList.get(i).getTitle().contains("Funky") && notifFunkySoundIsBought) {
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setEnabled(false);
         }
 
         //Product click
@@ -75,7 +106,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         RelativeLayout myProductLayout;
         AppCompatImageView myProductImage;
         TextView myProductName;
-//        TextView myProductPrice;
         AppCompatImageView myProductBuyImage;
 
         IProductClickListener iProductClickListener;
@@ -89,7 +119,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myProductLayout = itemView.findViewById(R.id.product_item_layout);
             myProductImage = itemView.findViewById(R.id.product_item_image);
             myProductName = itemView.findViewById(R.id.product_item_name);
-//            myProductPrice = itemView.findViewById(R.id.product_item_price);
             myProductBuyImage = itemView.findViewById(R.id.product_item_buy_image);
             myProductBuyImage.setOnClickListener(this);
         }

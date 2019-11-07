@@ -150,6 +150,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_settings -> startActivity(Intent(this@GroupManagerActivity, SettingsActivity::class.java))
                 R.id.nav_data_access -> {
                 }
+                R.id.nav_in_app -> startActivity(Intent(this@GroupManagerActivity, PremiumActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this@GroupManagerActivity, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }

@@ -151,6 +151,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_informations -> startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@ManageMyScreenActivity, SettingsActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@ManageMyScreenActivity, PremiumActivity::class.java))
                 R.id.nav_manage_screen -> {
                 }
                 R.id.nav_data_access -> {

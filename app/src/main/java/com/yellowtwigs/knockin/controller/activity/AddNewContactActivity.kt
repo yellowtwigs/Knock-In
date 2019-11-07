@@ -76,8 +76,8 @@ class AddNewContactActivity : AppCompatActivity() {
     private var SELECT_FILE: Int? = 0
     private var add_new_contact_ImgString: String? = ""
 
-
     private var isFavorite = false
+    private var isRetroFit: Boolean = false
     private var groupId: Long = 0
     private var listContact: ArrayList<ContactDB?> = ArrayList()
 
@@ -172,9 +172,8 @@ class AddNewContactActivity : AppCompatActivity() {
 
         add_new_contact_Validate!!.setOnClickListener {
 
-            if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty() && add_new_contact_LastName!!.editText!!.text.toString().isEmpty()) {
-
-                Toast.makeText(this, getString(R.string.add_new_contact_toast_empty_name), Toast.LENGTH_LONG).show()
+            if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.add_new_contact_first_name_empty_field), Toast.LENGTH_LONG).show()
 
             } else {
                 val printContacts = Runnable {
@@ -185,7 +184,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
-                            avatar, add_new_contact_Priority!!.selectedItemPosition,
+                            "", avatar, add_new_contact_Priority!!.selectedItemPosition,
                             add_new_contact_ImgString!!, 0)
 
                     println(contactData)
@@ -233,15 +232,15 @@ class AddNewContactActivity : AppCompatActivity() {
                                     ContactsContract.Intents.Insert.EMAIL_TYPE,
                                     ContactsContract.CommonDataKinds.Email.TYPE_WORK
                             )
+                            putExtra(ContactsContract.Contacts.Photo.PHOTO, add_new_contact_ImgString!!)
                             putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
                             putExtra(
                                     ContactsContract.Intents.Insert.PHONE_TYPE,
                                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK
                             )
                         }
+                        isRetroFit = true
                         startActivity(intent)
-
-
                     } else {
                         confirmationDuplicate(contactData)
                     }
@@ -267,7 +266,6 @@ class AddNewContactActivity : AppCompatActivity() {
 
             isFavorite = false
         }
-
 
         //endregion
 
@@ -401,7 +399,6 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
-
     //endregion
     /**
      *demande de confirmation de la création d'un contact en double
@@ -499,9 +496,7 @@ class AddNewContactActivity : AppCompatActivity() {
             cursor.moveToFirst()
             return cursor.getString(columnIndex)
         } finally {
-            if (cursor != null) {
-                cursor.close()
-            }
+            cursor?.close()
         }
     }
 
@@ -572,7 +567,7 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     /**
-     * Méthode appellé par le système lorsque l'utilisateur accepte ou refuse une permission
+     * Méthode appelée par le système lorsque l'utilisateur accepte ou refuse une permission
      * Lorsque l'utilisateur autorise l'accès a ces fichiers nous ouvrons le dossier "Galerie"
      * Lorsque l'utilisateur autorise à l'appareil photo nous l'ouvrons
      * @param requestCode [Int]
@@ -592,8 +587,10 @@ class AddNewContactActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
-        finish()
+        if (isRetroFit) {
+            startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
+            finish()
+        }
     }
 
     /**

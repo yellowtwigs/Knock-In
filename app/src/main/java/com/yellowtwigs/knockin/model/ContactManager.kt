@@ -10,6 +10,7 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.telephony.PhoneNumberUtils
 import android.util.Base64
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ModelDB.*
 import org.json.JSONArray
@@ -298,7 +299,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         val profilPicture: Int = R.drawable.ic_user_blue
         val contactPriority: Int = json.getInt("contact_priority")
         val profilPictureStr: String = json.getString("profile_picture_str")
-        val contact = ContactDB(id, firstName, lastName, profilPicture, contactPriority, profilPictureStr, 0)
+        val contact = ContactDB(id, firstName, lastName, "", profilPicture, contactPriority, profilPictureStr, 0)
         val contactInfo = ContactWithAllInformation()
         contactInfo.contactDB = contact
         contactInfo.contactDetailList = getContactDetailFromJSONObject(json, id)
@@ -667,7 +668,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                             //on regarde si le contact possède un middle name
                             if (fullName.second.second == "") {
                                 //on créé un objet ContactDB que l'on remplis avec les info récolté avant
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0)
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, "", randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0)
                                 //on recupere la liste des contactList récuperer lors de la derniere synchro sous format idAndroid:id
                                 lastSync = sharedPreferences.getString("last_sync_2", "")!!
                                 //on regarde si on a pas deja enregistré le contact lors de la dernière synchro
@@ -741,7 +742,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                 }
                                 phoneContactsList.add(contacts)
                             } else if (fullName.second.second != "") {
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0)
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, "", randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0)
                                 phoneContactsList.add(contacts)
                                 if (!isDuplicate(allcontacts, contacts)) {
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -784,11 +785,11 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     fun setToContactList(contactset: List<String>): Pair<ContactDB, List<ContactDetailDB>> {
         val allContacts: Pair<ContactDB, List<ContactDetailDB>>
         val detailList = arrayListOf<ContactDetailDB>()
-        for (i in 3..contactset.size - 1) {
+        for (i in 3 until contactset.size) {
             val contactSetSplite = contactset.elementAt(i).split(":")
             detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2))
         }
-        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), 0, 0, "", 0), detailList)
+        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), "", 0, 0, "", 0), detailList)
         return allContacts
     }
 
@@ -966,6 +967,9 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             "gmail" -> {
                 return getContact(name)
             }
+            "Outlook" -> {
+                return getContact(name)
+            }
             "Messenger" -> {
                 return getContact(name)
             }
@@ -979,14 +983,93 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             this.contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
-                if (contactInfo.firstName + " " + contactInfo.lastName == name || contactInfo.firstName == name || contactInfo.lastName == name || " " + contactInfo.firstName + " " + contactInfo.lastName == name) {
+                val firstnameList: ArrayList<Char> = arrayListOf()
+                var firstname = ""
+                val lastnameList: ArrayList<Char> = arrayListOf()
+                var lastname = ""
+
+                var cpt = 0
+
+                while (name[cpt] != ' ') {
+                    firstnameList.add(name[cpt]) // Kj, " " = 2
+                    cpt++
+                }
+                cpt++
+
+                for (i in 0 until firstnameList.size) {
+                    firstname += firstnameList[i]
+                }
+
+                while (cpt < name.length) {
+                    lastnameList.add(name[cpt]) // Kent, " " = 2
+                    cpt++
+                }
+
+                for (i in 0 until lastnameList.size) {
+                    lastname += lastnameList[i]
+                }
+
+                if (contactInfo.firstName + " " + contactInfo.lastName == name ||
+                        contactInfo.firstName == name || contactInfo.lastName == name ||
+                        " " + contactInfo.firstName + " " + contactInfo.lastName == name) {
+
+                    return dbContact
+
+                } else if (contactInfo.mail_name == name) {
+
+                    return dbContact
+
+                } else if (lastname == contactInfo.lastName && firstname == contactInfo.firstName) {
                     return dbContact
                 } else {
-                    var entireName = name.replace(name[0], ' ')
-                    entireName = entireName.replace(name[entireName.length - 1], ' ')
 
-                    if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
-                        return dbContact
+                    if (lastname == contactInfo.lastName) {
+//                        if (name.contains("_") || name.contains(".") || name.contains("-") || name.contains("_")) {
+                        if (contactInfo.firstName.contains("-")) {
+                            // Kj Kent = Kenny-Jay Kent
+
+                            var cpt2 = 0
+                            val firstLetterList: ArrayList<Char> = arrayListOf()
+                            val lastLetterList: ArrayList<Char> = arrayListOf()
+                            var firstLetter = ""
+                            var lastLetter = ""
+
+                            while (contactInfo.firstName[cpt2] != '-') {
+                                firstLetterList.add(contactInfo.firstName[cpt2]) // K de Kenny
+                                firstLetter = firstLetterList[0].toString()
+                                cpt2++
+                            }
+                            cpt2++
+
+                            while (cpt2 < name.length) {
+                                lastLetterList.add(contactInfo.firstName[cpt2]) // J de Jay
+                                lastLetter = lastLetterList[0].toString()
+                                cpt2++
+                            }
+
+                            if (firstname == firstLetter + lastLetter ||
+                                    firstname == firstLetter.toLowerCase() + lastLetter.toLowerCase() ||
+                                    firstname == firstLetter + lastLetter.toLowerCase()) {
+                                dbContact.contactDB!!.mail_name = name
+                                return dbContact
+                            }
+
+                        } else {
+                            // Ken Suon = Kenzy Suon
+                            if (contactInfo.firstName.contains(firstname)) {
+                                return dbContact
+                            }
+                        }
+
+                        // Jfc = Jean-Francois Coudeyre
+
+                    } else {
+                        var entireName = name.replace(name[0], ' ')
+                        entireName = entireName.replace(name[entireName.length - 1], ' ')
+
+                        if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
+                            return dbContact
+                        }
                     }
                 }
             }

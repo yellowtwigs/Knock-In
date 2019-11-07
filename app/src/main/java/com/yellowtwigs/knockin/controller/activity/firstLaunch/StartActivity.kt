@@ -319,7 +319,7 @@ class StartActivity : AppCompatActivity() {
                     closeContextMenu()
                     finish()
                 }
-                .setNegativeButton(R.string.alert_dialog_no)
+                .setNegativeButton(R.string.alert_dialog_later)
                 { _, _ ->
                     closeContextMenu()
                     val intent = Intent(this@StartActivity, TutorialActivity::class.java)
