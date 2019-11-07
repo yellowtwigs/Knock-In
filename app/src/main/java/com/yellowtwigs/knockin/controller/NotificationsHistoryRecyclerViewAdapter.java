@@ -69,20 +69,25 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
         holder.notif_history_item_NotificationDate.setText(text);
         holder.notif_history_item_SenderName.setText(notif.getContactName());
     }
+
     @Override
     public long getItemId(int position) {
         return notification_history_ListOfNotificationDB.size();
     }
+
     @Override
     public int getItemCount() {
         return notification_history_ListOfNotificationDB.size();
     }
+
     class NotificationHistoryViewHolder extends RecyclerView.ViewHolder {
+
         ConstraintLayout notif_history_item_Layout;
         TextView notif_history_item_SenderName;
         TextView notif_history_item_NotificationContent;
         TextView notif_history_item_NotificationDate;
         AppCompatImageView notif_history_item_AppImage;
+
         NotificationHistoryViewHolder(@NonNull View view) {
             super(view);
             notif_history_item_Layout = view.findViewById(R.id.notif_history_item_layout);
