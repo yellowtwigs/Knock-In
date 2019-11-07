@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.baoyz.swipemenulistview.SwipeMenu
 import com.baoyz.swipemenulistview.SwipeMenuCreator
 import com.baoyz.swipemenulistview.SwipeMenuItem
@@ -63,6 +64,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private var notification_Adapter: NotificationsHistoryListViewAdapter? = null
     private var notification_history_ListView: SwipeMenuListView? = null
+
+    private var notification_Adapter: NotificationsHistoryRecyclerViewAdapter? = null
+    private var notification_history_RecyclerView: RecyclerView? = null
 
     private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
