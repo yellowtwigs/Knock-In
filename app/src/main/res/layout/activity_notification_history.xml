@@ -20,6 +20,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
+            android:visibility="visible"
             android:background="@drawable/custom_shadow_background"
             android:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/backgroundColor"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -87,18 +88,6 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/notification_history_toolbar_multi_select_mode_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp"
-                android:layout_toStartOf="@+id/notification_history_toolbar_multi_select_mode_menu"
-                android:background="?attr/actionBarItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                app:srcCompat="@drawable/ic_garbage" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/notification_history_toolbar_multi_select_mode_menu"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
@@ -107,7 +96,7 @@
                 android:background="?attr/actionBarItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_toolbar_menu" />
+                app:srcCompat="@drawable/ic_garbage" />
 
             <View
                 android:layout_width="match_parent"
@@ -119,6 +108,19 @@
 
         <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/listView_notification_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notification_history_toolbar_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notification_history_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
