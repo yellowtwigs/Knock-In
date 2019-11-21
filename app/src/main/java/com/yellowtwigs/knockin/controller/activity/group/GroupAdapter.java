@@ -151,20 +151,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             layoutParamsIV.topMargin = 10;
         } else if (len == 5) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.40));
-            ;
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.40));
-            ;
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         } else if (len == 6) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.50));
-            ;
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.50));
-            ;
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         }
-        ;
 
         final ContactDB contact = this.contactManager.getContactList().get(position).getContactDB();
         assert contact != null;

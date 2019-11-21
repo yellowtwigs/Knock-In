@@ -59,7 +59,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var firstClick: Boolean = true
 
     private var group_GridView: RecyclerView? = null
-    private var adapaterItem: GroupAdapter? = null
+    private var adapterItem: GroupAdapter? = null
     private var sectionAdapter: SectionGroupAdapter? = null
 
     var touchHelper: ItemTouchHelper? = null
@@ -195,14 +195,14 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gestionnaireContacts = ContactManager(this)
         gestionnaireContacts!!.contactList = listContactGroup
         if (len >= 3) {
-            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
+            adapterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
         } else {
-            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
+            adapterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
         }
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapaterItem)
+        sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapterItem)
         sectionAdapter!!.setSections(sections.toArray(sectionList))
         println("taille list group " + listContactGroup.size)
         group_manager_RecyclerView!!.adapter = sectionAdapter
@@ -267,7 +267,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         group_manager_RecyclerView!!.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            adapaterItem!!.closeMenu()
+            adapterItem!!.closeMenu()
         }
 
         touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
@@ -278,7 +278,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             ): Boolean {
                 val sourcePosition = p1.adapterPosition
                 val targetPosition = p2.adapterPosition
-                //adapaterItem!!.contactManager.contactList.add(targetPosition,adapaterItem!!.getItem(sourcePosition))
+                //adapterItem!!.contactManager.contactList.add(targetPosition,adapterItem!!.getItem(sourcePosition))
                 println("Start Position$sourcePosition")
                 println("last Position$targetPosition")
                 return true
@@ -418,14 +418,14 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         gestionnaireContacts = ContactManager(this)
         gestionnaireContacts!!.contactList = listContactGroup
         if (len >= 3) {
-            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, len)
+            adapterItem = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
         } else {
-            adapaterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
+            adapterItem = GroupAdapter(this, gestionnaireContacts!!, 4)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
         }
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapaterItem)
+        val sectionAdapter = SectionGroupAdapter(this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView, adapterItem)
         sectionAdapter.setSections(sections.toArray(sectionList))
         group_manager_RecyclerView!!.adapter = sectionAdapter
     }
@@ -454,14 +454,14 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        adapaterItem!!.closeMenu()
+        adapterItem!!.closeMenu()
     }
 
     override fun onDrawerClosed(drawerView: View) {
     }
 
     override fun onDrawerOpened(drawerView: View) {
-        adapaterItem!!.closeMenu()
+        adapterItem!!.closeMenu()
     }
 
     //endregion

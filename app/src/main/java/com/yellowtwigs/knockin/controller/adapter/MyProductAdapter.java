@@ -52,9 +52,11 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         SharedPreferences sharedNotifFunkySoundInAppPreferences = premiumActivity.getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE);
         boolean notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Notif_Funky_Sound_IsBought", false);
 
+        SharedPreferences sharedNotifRelaxationSoundInAppPreferences = premiumActivity.getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE);
+        boolean notifRelaxationSoundIsBought = sharedNotifRelaxationSoundInAppPreferences.getBoolean("Notif_Relaxation_Sound_IsBought", false);
+
         SharedPreferences sharedAlarmNotifInAppPreferences = premiumActivity.getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE);
         boolean contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false);
-
 
         String productName = skuDetailsList.get(i).getTitle(); // Contact VIP Illimités (Knock In Notifications)
         String[] text = productName.split("\\(");
@@ -69,9 +71,11 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         if (skuDetailsList.get(i).getTitle().contains("Contacts")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_vip_icon);
         } else if (skuDetailsList.get(i).getTitle().contains("Jazzy")) {
-            myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
+            myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_trumpet);
         } else if (skuDetailsList.get(i).getTitle().contains("Funky")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
+        } else if (skuDetailsList.get(i).getTitle().contains("Relaxation")) {
+            myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_relax);
         }
 
         myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone);
@@ -83,6 +87,9 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
             myViewHolder.myProductBuyImage.setEnabled(false);
         } else if (skuDetailsList.get(i).getTitle().contains("Funky") && notifFunkySoundIsBought) {
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setEnabled(false);
+        }else if (skuDetailsList.get(i).getTitle().contains("Relaxation") && notifRelaxationSoundIsBought) {
             myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
             myViewHolder.myProductBuyImage.setEnabled(false);
         }

@@ -8,21 +8,17 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton
-import com.yellowtwigs.knockin.controller.adapter.MyProductAdapter
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
+import com.yellowtwigs.knockin.controller.adapter.MyProductAdapter
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
@@ -47,6 +43,18 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            setTheme(R.style.AppThemeDark)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
+
+        //endregion
+
         setContentView(R.layout.activity_premium)
 
         setupBillingClient()
@@ -55,6 +63,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         sharedProductNotifFunkySoundPreferences = this.getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
         sharedProductNotifJazzySoundPreferences = this.getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
+        sharedProductNotifJazzySoundPreferences = this.getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
         sharedProductContactsUnlimitedPreferences = this.getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
 
         premium_activity_ToolbarLayout = findViewById(R.id.premium_activity_toolbar_layout)
@@ -119,8 +128,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         //Event
         premium_activity_ToolbarLoadProducts!!.setOnClickListener {
             if (billingClient!!.isReady) {
-                val list = listOf("contacts_vip_unlimited") + listOf("custom_notifications_funky_sound") +
-                        listOf("custom_notifications_jazzy_sound")
+                val list = listOf("contacts_vip_unlimited") + listOf("notifications_vip_funk_theme")+ listOf("notifications_vip_jazz_theme") +
+                        listOf("notifications_vip_relaxation_theme")
                 val params = SkuDetailsParams.newBuilder()
                         .setSkusList(list)
                         .setType(BillingClient.SkuType.INAPP)
@@ -203,17 +212,24 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (purchases != null) {
 
             when {
-                purchases[0].originalJson.contains("custom_notifications_funky_sound") -> {
+                purchases[0].originalJson.contains("notifications_vip_funk_theme") -> {
                     Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
                     val edit = sharedProductNotifFunkySoundPreferences!!.edit()
                     edit.putBoolean("Notif_Funky_Sound_IsBought", true)
                     edit.apply()
                     refreshActivity()
                 }
-                purchases[0].originalJson.contains("custom_notifications_jazzy_sound") -> {
+                purchases[0].originalJson.contains("notifications_vip_jazz_theme") -> {
                     Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
                     val edit = sharedProductNotifJazzySoundPreferences!!.edit()
                     edit.putBoolean("Notif_Jazzy_Sound_IsBought", true)
+                    edit.apply()
+                    refreshActivity()
+                }
+                purchases[0].originalJson.contains("notifications_vip_relaxation_theme") -> {
+                    Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
+                    val edit = sharedProductNotifJazzySoundPreferences!!.edit()
+                    edit.putBoolean("Notif_Relaxation_Sound_IsBought", true)
                     edit.apply()
                     refreshActivity()
                 }

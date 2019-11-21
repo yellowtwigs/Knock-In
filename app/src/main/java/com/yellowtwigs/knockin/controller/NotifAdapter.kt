@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.controller
 
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,10 +7,11 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.MediaPlayer
 import android.net.Uri
-import android.telephony.SmsManager
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -31,7 +31,6 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import java.util.*
-
 
 /**
  * La Classe qui permet d'afficher les notifications prioritaires au milieu de l'écran
