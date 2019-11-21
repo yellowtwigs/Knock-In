@@ -19,7 +19,7 @@
         android:layout_toStartOf="@+id/product_item_buy_image"
         android:layout_toEndOf="@+id/product_item_image"
         android:text="Contacts VIP"
-        android:textColor="#000"
+        android:textColor="?attr/darkColor"
         android:textSize="20sp" />
 
 <!--    <TextView-->

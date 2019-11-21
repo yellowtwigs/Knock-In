@@ -264,16 +264,29 @@
     <string name="notification_vip_default_message_tone">Sons des messages VIP par défaut</string>
     <string name="notification_vip_jazzy_message_tone">Sons Jazz des messages VIP</string>
     <string name="notification_vip_funky_message_tone">Sons Funky des messages VIP</string>
+    <string name="notification_vip_relaxation_message_tone">VIP Relaxation Messages Tone</string>
 
     <string name="notification_vip_message_tone_no_sound">Aucune sonnerie</string>
     <string name="notification_vip_message_tone_default">Sonnerie par défaut</string>
     <string name="notification_vip_message_tone_xylophone">Sonnerie Xylophone</string>
     <string name="notification_vip_message_tone_moanin">Sonnerie Moanin</string>
     <string name="notification_vip_message_tone_blue_bossa">Sonnerie Blue bossa</string>
+    <string name="notification_vip_message_tone_dolphin_dance">Sonnerie Dolphin Dance</string>
+    <string name="notification_vip_message_tone_autumn_leaves">Sonnerie Autumn Leaves</string>
+    <string name="notification_vip_message_tone_freddie_freeloader">Sonnerie Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Sonnerie Caravan</string>
     <string name="notification_vip_message_tone_funky_slap">Sonnerie Funky slap</string>
     <string name="notification_vip_message_tone_off_the_curve">Sonnerie Off the curve</string>
     <string name="notification_vip_message_tone_funk_yall">Sonnerie Funk Yall</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">Sonnerie U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_cold_sweat">Sonnerie Cold Sweat</string>
+    <string name="notification_vip_message_tone_keyboard_funky">Sonnerie Keyboard Funky</string>
+    <string name="notification_vip_message_tone_xylo_relax">Sonnerie Xylo-Relax</string>
+    <string name="notification_vip_message_tone_space_relax">Sonnerie First Step</string>
+    <string name="notification_vip_message_tone_guitar_relax">Guitar-Relax Tone</string>
+    <string name="notification_vip_message_tone_slow_dancing">Slow Dancing in a Burning Room</string>
+    <string name="notification_vip_message_tone_gravity">Gravity</string>
+    <string name="notification_vip_message_tone_scorpion_theme">Scorpion Theme</string>
 
     <!-- endregion -->
 

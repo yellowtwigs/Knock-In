@@ -77,6 +77,15 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var settings_NotifSoundBlueBossaLayout: RelativeLayout? = null
     private var settings_NotifSoundBlueBossaCheckbox: CheckBox? = null
 
+    private var settings_NotifSoundAutumnLeavesLayout: RelativeLayout? = null
+    private var settings_NotifSoundAutumnLeavesCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundDolphinDanceLayout: RelativeLayout? = null
+    private var settings_NotifSoundDolphinDanceCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundFreddieFreeloaderLayout: RelativeLayout? = null
+    private var settings_NotifSoundFreddieFreeloaderCheckbox: CheckBox? = null
+
     private var settings_NotifSoundCaravanLayout: RelativeLayout? = null
     private var settings_NotifSoundCaravanCheckbox: CheckBox? = null
 
@@ -94,13 +103,45 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var settings_NotifSoundOffTheCurveLayout: RelativeLayout? = null
     private var settings_NotifSoundOffTheCurveCheckbox: CheckBox? = null
 
+    private var settings_NotifSoundKeyboardFunkyToneLayout: RelativeLayout? = null
+    private var settings_NotifSoundKeyboardFunkyToneCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundUCantHoldNoGrooveLayout: RelativeLayout? = null
+    private var settings_NotifSoundUCantHoldNoGrooveCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundColdSweatLayout: RelativeLayout? = null
+    private var settings_NotifSoundColdSweatCheckbox: CheckBox? = null
+
     private var settings_NotifSoundFunkYallLayout: RelativeLayout? = null
     private var settings_NotifSoundFunkYallCheckbox: CheckBox? = null
 
     //endregion
 
-    private var settings_NotifSoundBluesGuitarLayout: RelativeLayout? = null
-    private var settings_NotifSoundBluesGuitarCheckbox: CheckBox? = null
+    //region Relaxation Sound
+
+    private var settings_ChooseNotifRelaxationSoundLayoutOpenClose: RelativeLayout? = null
+    private var settings_ChooseNotifRelaxationSoundImageOpen: AppCompatImageView? = null
+    private var settings_ChooseNotifRelaxationSoundImageClose: AppCompatImageView? = null
+
+    private var settings_NotifSoundAcousticGuitarLayout: RelativeLayout? = null
+    private var settings_NotifSoundAcousticGuitarCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundRelaxToneLayout: RelativeLayout? = null
+    private var settings_NotifSoundRelaxToneCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundGravityLayout: RelativeLayout? = null
+    private var settings_NotifSoundGravityCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundSlowDancingLayout: RelativeLayout? = null
+    private var settings_NotifSoundSlowDancingCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundScorpionThemeLayout: RelativeLayout? = null
+    private var settings_NotifSoundScorpionThemeCheckbox: CheckBox? = null
+
+    private var settings_NotifSoundFirstStepLayout: RelativeLayout? = null
+    private var settings_NotifSoundFirstStepCheckbox: CheckBox? = null
+
+    //endregion
 
     private var settings_NotificationMessagesAlarmSound: MediaPlayer? = null
     private var settings_ChooseNotifSoundTitle: TextView? = null
@@ -108,6 +149,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     private var notifFunkySoundIsBought: Boolean = false
     private var notifJazzySoundIsBought: Boolean = false
+    private var notifRelaxationSoundIsBought: Boolean = false
 
     private var numberDefault: Int = 0
 
@@ -135,6 +177,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val sharedNotifJazzySoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
         notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Notif_Jazzy_Sound_IsBought", false)
+
+        val sharedNotifRelaxationSoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
+        notifRelaxationSoundIsBought = sharedNotifRelaxationSoundInAppPreferences.getBoolean("Notif_Relaxation_Sound_IsBought", false)
 
         val sharedNotifFunkySoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
         notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Notif_Funky_Sound_IsBought", false)
@@ -179,6 +224,15 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_NotifSoundCaravanLayout = findViewById(R.id.settings_notif_sound_caravan_layout)
         settings_NotifSoundCaravanCheckbox = findViewById(R.id.settings_notif_sound_caravan_checkbox)
 
+        settings_NotifSoundAutumnLeavesLayout = findViewById(R.id.settings_notif_sound_autumn_leaves_layout)
+        settings_NotifSoundAutumnLeavesCheckbox = findViewById(R.id.settings_notif_sound_autumn_leaves_checkbox)
+
+        settings_NotifSoundDolphinDanceLayout = findViewById(R.id.settings_notif_sound_dolphin_dance_layout)
+        settings_NotifSoundDolphinDanceCheckbox = findViewById(R.id.settings_notif_sound_dolphin_dance_checkbox)
+
+        settings_NotifSoundFreddieFreeloaderLayout = findViewById(R.id.settings_notif_sound_freddie_freeloader_layout)
+        settings_NotifSoundFreddieFreeloaderCheckbox = findViewById(R.id.settings_notif_sound_freddie_freeloader_checkbox)
+
         //endregion
 
         //region Funky Sound
@@ -196,10 +250,42 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_NotifSoundFunkYallLayout = findViewById(R.id.settings_notif_sound_funk_yall_layout)
         settings_NotifSoundFunkYallCheckbox = findViewById(R.id.settings_notif_sound_funk_yall_checkbox)
 
+        settings_NotifSoundKeyboardFunkyToneLayout = findViewById(R.id.settings_notif_sound_keyboard_funky_tone_layout)
+        settings_NotifSoundKeyboardFunkyToneCheckbox = findViewById(R.id.settings_notif_sound_keyboard_funky_tone_checkbox)
+
+        settings_NotifSoundUCantHoldNoGrooveLayout = findViewById(R.id.settings_notif_sound_u_cant_hold_no_groove_layout)
+        settings_NotifSoundUCantHoldNoGrooveCheckbox = findViewById(R.id.settings_notif_sound_u_cant_hold_no_groove_checkbox)
+
+        settings_NotifSoundColdSweatLayout = findViewById(R.id.settings_notif_sound_cold_sweat_layout)
+        settings_NotifSoundColdSweatCheckbox = findViewById(R.id.settings_notif_sound_cold_sweat_checkbox)
+
         //endregion
 
-        settings_NotifSoundBluesGuitarLayout = findViewById(R.id.settings_notif_sound_guitar_layout)
-        settings_NotifSoundBluesGuitarCheckbox = findViewById(R.id.settings_notif_sound_guitar_checkbox)
+        //region Relaxation Sound
+
+        settings_ChooseNotifRelaxationSoundLayoutOpenClose = findViewById(R.id.settings_choose_relaxation_sound_layout)
+        settings_ChooseNotifRelaxationSoundImageOpen = findViewById(R.id.settings_choose_notif_relaxation_sound_image_open)
+        settings_ChooseNotifRelaxationSoundImageClose = findViewById(R.id.settings_choose_notif_relaxation_sound_image_close)
+
+        settings_NotifSoundAcousticGuitarLayout = findViewById(R.id.settings_notif_sound_guitar_relax_layout)
+        settings_NotifSoundAcousticGuitarCheckbox = findViewById(R.id.settings_notif_sound_guitar_relax_checkbox)
+
+        settings_NotifSoundRelaxToneLayout = findViewById(R.id.settings_notif_sound_xylo_relax_layout)
+        settings_NotifSoundRelaxToneCheckbox = findViewById(R.id.settings_notif_sound_xylo_relax_checkbox)
+
+        settings_NotifSoundGravityLayout = findViewById(R.id.settings_notif_sound_gravity_layout)
+        settings_NotifSoundGravityCheckbox = findViewById(R.id.settings_notif_sound_gravity_checkbox)
+
+        settings_NotifSoundSlowDancingLayout = findViewById(R.id.settings_notif_sound_slow_dancing_layout)
+        settings_NotifSoundSlowDancingCheckbox = findViewById(R.id.settings_notif_sound_slow_dancing_checkbox)
+
+        settings_NotifSoundScorpionThemeLayout = findViewById(R.id.settings_notif_sound_scorpion_theme_layout)
+        settings_NotifSoundScorpionThemeCheckbox = findViewById(R.id.settings_notif_sound_scorpion_theme_checkbox)
+
+        settings_NotifSoundFirstStepLayout = findViewById(R.id.settings_notif_sound_interstellar_theme_layout)
+        settings_NotifSoundFirstStepCheckbox = findViewById(R.id.settings_notif_sound_interstellar_theme_checkbox)
+
+        //endregion
 
         settings_ChooseNotifSoundTitle = findViewById(R.id.settings_choose_notif_sound_title)
         settings_ChooseNotifSoundLayout = findViewById(R.id.settings_choose_notif_sound_layout)
@@ -396,11 +482,17 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_ChooseNotifJazzySoundLayoutOpenClose!!.setOnClickListener {
             if (settings_NotifSoundMoaninLayout!!.visibility == View.VISIBLE &&
                     settings_NotifSoundBlueBossaLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundCaravanLayout!!.visibility == View.VISIBLE) {
+                    settings_NotifSoundCaravanLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundDolphinDanceLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundAutumnLeavesLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundFreddieFreeloaderLayout!!.visibility == View.VISIBLE) {
 
                 settings_NotifSoundMoaninLayout!!.visibility = View.GONE
                 settings_NotifSoundBlueBossaLayout!!.visibility = View.GONE
                 settings_NotifSoundCaravanLayout!!.visibility = View.GONE
+                settings_NotifSoundDolphinDanceLayout!!.visibility = View.GONE
+                settings_NotifSoundAutumnLeavesLayout!!.visibility = View.GONE
+                settings_NotifSoundFreddieFreeloaderLayout!!.visibility = View.GONE
 
                 settings_ChooseNotifJazzySoundImageOpen!!.visibility = View.GONE
                 settings_ChooseNotifJazzySoundImageClose!!.visibility = View.VISIBLE
@@ -408,6 +500,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundMoaninLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundBlueBossaLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundCaravanLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundDolphinDanceLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundAutumnLeavesLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundFreddieFreeloaderLayout!!.visibility = View.VISIBLE
 
                 settings_ChooseNotifJazzySoundImageOpen!!.visibility = View.VISIBLE
                 settings_ChooseNotifJazzySoundImageClose!!.visibility = View.GONE
@@ -417,11 +512,17 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_ChooseNotifFunkySoundLayoutOpenClose!!.setOnClickListener {
             if (settings_NotifSoundSlapLayout!!.visibility == View.VISIBLE &&
                     settings_NotifSoundOffTheCurveLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundFunkYallLayout!!.visibility == View.VISIBLE) {
+                    settings_NotifSoundFunkYallLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundKeyboardFunkyToneLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundColdSweatLayout!!.visibility == View.VISIBLE) {
 
                 settings_NotifSoundSlapLayout!!.visibility = View.GONE
                 settings_NotifSoundOffTheCurveLayout!!.visibility = View.GONE
                 settings_NotifSoundFunkYallLayout!!.visibility = View.GONE
+                settings_NotifSoundKeyboardFunkyToneLayout!!.visibility = View.GONE
+                settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility = View.GONE
+                settings_NotifSoundColdSweatLayout!!.visibility = View.GONE
 
                 settings_ChooseNotifFunkySoundImageOpen!!.visibility = View.GONE
                 settings_ChooseNotifFunkySoundImageClose!!.visibility = View.VISIBLE
@@ -429,9 +530,42 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundSlapLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundOffTheCurveLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundFunkYallLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundKeyboardFunkyToneLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundColdSweatLayout!!.visibility = View.VISIBLE
 
                 settings_ChooseNotifFunkySoundImageOpen!!.visibility = View.VISIBLE
                 settings_ChooseNotifFunkySoundImageClose!!.visibility = View.GONE
+            }
+        }
+
+        settings_ChooseNotifRelaxationSoundLayoutOpenClose!!.setOnClickListener {
+            if (settings_NotifSoundAcousticGuitarLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundGravityLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundSlowDancingLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundScorpionThemeLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundFirstStepLayout!!.visibility == View.VISIBLE &&
+                    settings_NotifSoundRelaxToneLayout!!.visibility == View.VISIBLE) {
+
+                settings_NotifSoundAcousticGuitarLayout!!.visibility = View.GONE
+                settings_NotifSoundGravityLayout!!.visibility = View.GONE
+                settings_NotifSoundSlowDancingLayout!!.visibility = View.GONE
+                settings_NotifSoundScorpionThemeLayout!!.visibility = View.GONE
+                settings_NotifSoundFirstStepLayout!!.visibility = View.GONE
+                settings_NotifSoundRelaxToneLayout!!.visibility = View.GONE
+
+                settings_ChooseNotifRelaxationSoundImageOpen!!.visibility = View.GONE
+                settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.VISIBLE
+            } else {
+                settings_NotifSoundAcousticGuitarLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundGravityLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundSlowDancingLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundScorpionThemeLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundFirstStepLayout!!.visibility = View.VISIBLE
+                settings_NotifSoundRelaxToneLayout!!.visibility = View.VISIBLE
+
+                settings_ChooseNotifRelaxationSoundImageOpen!!.visibility = View.VISIBLE
+                settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.GONE
             }
         }
 
@@ -448,16 +582,30 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifNoSoundCheckbox!!.isChecked) {
 
+//                settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
                 edit.putInt("Alarm_Notif_Tone", 1)
@@ -475,15 +623,30 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound!!.start()
 
                 settings_NotifNoSoundCheckbox!!.isChecked = false
+//                settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
 
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
                 edit.putInt("Alarm_Notif_Tone", R.raw.sms_ring)
@@ -500,16 +663,30 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.xylophone_tone)
                 settings_NotificationMessagesAlarmSound!!.start()
 
+                settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+//                settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
                 edit.putInt("Alarm_Notif_Tone", R.raw.xylophone_tone)
@@ -531,14 +708,29 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound!!.start()
 
                 settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
 
+//                settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 if (notifJazzySoundIsBought) {
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
@@ -572,11 +764,25 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
+//                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 if (notifJazzySoundIsBought) {
 
@@ -615,10 +821,24 @@ class ManageNotificationActivity : AppCompatActivity() {
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+//                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 if (notifJazzySoundIsBought) {
 
@@ -627,6 +847,174 @@ class ManageNotificationActivity : AppCompatActivity() {
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
                     edit.putInt("Alarm_Notif_Tone", R.raw.caravan)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundDolphinDanceCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundDolphinDanceCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+//                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifJazzySoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.dolphin_dance)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.dolphin_dance)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundAutumnLeavesCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundAutumnLeavesCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+//                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifJazzySoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.autumn_leaves)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.autumn_leaves)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundFreddieFreeloaderCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+//                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifJazzySoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.freddie_freeloader)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.freddie_freeloader)
                     edit.apply()
                 } else {
                     MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -664,9 +1052,23 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
+//                settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 if (notifFunkySoundIsBought) {
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
@@ -702,9 +1104,23 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
+//                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 if (notifFunkySoundIsBought) {
                     settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.off_the_curve_groove)
@@ -744,9 +1160,23 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+//                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 if (notifFunkySoundIsBought) {
 
@@ -755,6 +1185,511 @@ class ManageNotificationActivity : AppCompatActivity() {
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
                     edit.putInt("Alarm_Notif_Tone", R.raw.off_the_curve_groove)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundKeyboardFunkyToneCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+//                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifFunkySoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.keyboard_funky_tone)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.keyboard_funky_tone)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundUCantHoldNoGrooveCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+//                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifFunkySoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.u_cant_hold_no_groove)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.u_cant_hold_no_groove)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundColdSweatCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundColdSweatCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifFunkySoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.cold_sweat)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.cold_sweat)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        //endregion
+
+        //region Relaxation
+
+        settings_NotifSoundAcousticGuitarCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundAcousticGuitarCheckbox!!.isChecked) {
+                settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.beautiful_chords_progression)
+                settings_NotificationMessagesAlarmSound!!.start()
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+//                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifRelaxationSoundIsBought) {
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.beautiful_chords_progression)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundGravityCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundGravityCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+//                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifRelaxationSoundIsBought) {
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.gravity)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.gravity)
+                    edit.apply()
+
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundSlowDancingCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundSlowDancingCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+//                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifRelaxationSoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.slow_dancing)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.slow_dancing)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundScorpionThemeCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundScorpionThemeCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+//                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifRelaxationSoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.scorpion_theme)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.scorpion_theme)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundFirstStepCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundFirstStepCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+//                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifRelaxationSoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.interstellar_main_theme)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.interstellar_main_theme)
+                    edit.apply()
+                } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                                finish()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                                refreshChecked()
+                            }
+                            .show()
+                }
+            }
+        }
+
+        settings_NotifSoundRelaxToneCheckbox!!.setOnClickListener {
+            if (settings_NotificationMessagesAlarmSound != null) {
+                settings_NotificationMessagesAlarmSound!!.stop()
+            }
+
+            if (settings_NotifSoundRelaxToneCheckbox!!.isChecked) {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+//                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+                if (notifRelaxationSoundIsBought) {
+
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.relax_sms)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
+                    val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putInt("Alarm_Notif_Tone", R.raw.relax_sms)
                     edit.apply()
                 } else {
                     MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -925,109 +1860,570 @@ class ManageNotificationActivity : AppCompatActivity() {
         //cancel previous app
     }
 
-    fun refreshChecked(){
+    fun refreshChecked() {
+
+        if (settings_NotificationMessagesAlarmSound != null) {
+            settings_NotificationMessagesAlarmSound!!.stop()
+        }
+
         when (numberDefault) {
             1 -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = true
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.sms_ring -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = true
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.xylophone_tone -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = true
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
-                settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
-                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
-            }
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
             R.raw.moanin_jazz -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = true
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.blue_bossa -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = true
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.caravan -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = true
-                settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
-                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
-            }
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
 
-            R.raw.bass_slap -> {
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.dolphin_dance -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
-                settings_NotifSoundSlapCheckbox!!.isChecked = true
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = true
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.autumn_leaves -> {
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = true
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.freddie_freeloader -> {
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = true
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.bass_slap -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = true
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.funk_yall -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = true
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
-                settings_NotifSoundMoaninCheckbox!!.isChecked = false
-                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
-                settings_NotifSoundCaravanCheckbox!!.isChecked = false
-                settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = true
-                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
-            }
 
-            R.raw.off_the_curve_groove -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = true
+                settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
+
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = true
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.off_the_curve_groove -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = true
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.keyboard_funky_tone -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = true
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.u_cant_hold_no_groove -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = true
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.cold_sweat -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = true
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.beautiful_chords_progression -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = true
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.gravity -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = true
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.scorpion_theme -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = true
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.slow_dancing -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = true
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+            R.raw.relax_sms -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = true
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = true
+            }
+            R.raw.interstellar_main_theme -> {
+
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = true
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
         }
     }

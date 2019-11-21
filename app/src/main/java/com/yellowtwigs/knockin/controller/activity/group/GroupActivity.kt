@@ -59,7 +59,7 @@ class GroupActivity : AppCompatActivity() {
 
     //region ========================================= Var or Val ===========================================
 
-    private var group_GridView: GridView? = null
+    private var group_GridView: RecyclerView? = null
     private var group_RecyclerView: RecyclerView? = null
 
     private var group_FloatingButtonSend: FloatingActionButton? = null
@@ -262,7 +262,7 @@ class GroupActivity : AppCompatActivity() {
             group_GridView!!.visibility = View.VISIBLE
         }
 
-        group_GridView!!.numColumns = len // permet de changer
+//        group_GridView!!.numColumns = len // permet de changer
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         if (group_GridView != null) {
@@ -277,50 +277,49 @@ class GroupActivity : AppCompatActivity() {
             group_GridView!!.adapter = gridViewAdapter
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            group_GridView!!.setSelection(index)
             edit.apply()
 
-            group_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                if (group_GridView!!.adapter is SelectContactAdapter && !firstClick) {
-                    val adapter = (group_GridView!!.adapter as SelectContactAdapter)
-                    adapter.itemSelected(position)
-                    adapter.notifyDataSetChanged()
-
-                    if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-                        listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-                    } else {
-                        listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-                    }
-
-                    verifiedContactsChannel(listOfItemSelected)
-
-                    if (adapter.listContactSelect.size == 0) {
-                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-                        group_GridView!!.adapter = gridViewAdapter
-                        group_SearchBar!!.visibility = View.VISIBLE
-
-                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
-
-                        group_MailButton!!.visibility = View.GONE
-                        group_SMSButton!!.visibility = View.GONE
-                        group_groupButton!!.visibility = View.GONE
-                        group_floating_button_send_id!!.visibility = View.GONE
-                    }
-                }
-                firstClick = false
-            }
-
-            group_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
-                override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
-
-                }
-
-                override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-                    if (gridViewAdapter != null) {
-                        gridViewAdapter!!.closeMenu()
-                    }
-                }
-            })
+//            group_GridView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+//                if (group_GridView!!.adapter is SelectContactAdapter && !firstClick) {
+//                    val adapter = (group_GridView!!.adapter as SelectContactAdapter)
+//                    adapter.itemSelected(position)
+//                    adapter.notifyDataSetChanged()
+//
+//                    if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+//                        listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+//                    } else {
+//                        listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+//                    }
+//
+//                    verifiedContactsChannel(listOfItemSelected)
+//
+//                    if (adapter.listContactSelect.size == 0) {
+//                        gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+//                        group_GridView!!.adapter = gridViewAdapter
+//                        group_SearchBar!!.visibility = View.VISIBLE
+//
+//                        Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+//
+//                        group_MailButton!!.visibility = View.GONE
+//                        group_SMSButton!!.visibility = View.GONE
+//                        group_groupButton!!.visibility = View.GONE
+//                        group_floating_button_send_id!!.visibility = View.GONE
+//                    }
+//                }
+//                firstClick = false
+//            }
+//
+//            group_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
+//                override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
+//
+//                }
+//
+//                override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+//                    if (gridViewAdapter != null) {
+//                        gridViewAdapter!!.closeMenu()
+//                    }
+//                }
+//            })
         }
 
         if (group_RecyclerView != null) {
@@ -946,9 +945,9 @@ class GroupActivity : AppCompatActivity() {
     }
 
     fun gridMultiSelectItemClick(len: Int, position: Int, firstPosVis: Int) {
-        group_GridView!!.setSelection(firstPosVis)
+//        group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
-        group_GridView!!.adapter = adapter
+//        group_GridView!!.adapter = adapter
         adapter.itemSelected(position)
         adapter.notifyDataSetChanged()
         group_SearchBar!!.visibility = View.GONE
@@ -965,9 +964,9 @@ class GroupActivity : AppCompatActivity() {
     }
 
     fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
-        group_GridView!!.setSelection(firstPosVis)
+//        group_GridView!!.setSelection(firstPosVis)
         val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
-        group_GridView!!.adapter = adapter
+//        group_GridView!!.adapter = adapter
         adapter.notifyDataSetChanged()
 
         if (!secondClickLibelle) {

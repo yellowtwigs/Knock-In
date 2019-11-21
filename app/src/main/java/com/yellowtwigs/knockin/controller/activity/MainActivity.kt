@@ -28,6 +28,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var bottomNavigationView: BottomNavigationView? = null
 
     // Gridview et Recycler avec leur adapter
-    private var main_GridView: GridView? = null
+    private var main_GridView: RecyclerView? = null
     private var gridViewAdapter: ContactGridViewAdapter? = null
     private var main_RecyclerView: RecyclerView? = null
     private var recyclerViewAdapter: ContactRecyclerViewAdapter? = null
@@ -336,7 +337,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_RecyclerView!!.visibility = View.GONE
         }
 
-        main_GridView!!.numColumns = len // permet de changer
+//        main_GridView!!.numColumns = len // permet de changer
 
         if(position != 0){
             main_GridView!!.smoothScrollToPosition(position)
@@ -357,59 +358,65 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
-            main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
+            main_GridView!!.layoutManager = GridLayoutManager(this, len)
 
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            main_GridView!!.setSelection(index)
+//            main_GridView!!.setSelection(index)
             edit.apply()
 
             // La gridView va mettre en place un écouteur sur l'action Scroll,
             // nous avons alors défini un ensemble d'action à effectuer lorsque la gridView détecte ce scroll
-            main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
-                var lastVisiblePos = main_GridView!!.firstVisiblePosition
-                /**
-                 * Méthode lancer par le listener lors du lancement ou de l'arret d'un scroll
-                 * @param view [AbsListView]
-                 * @param scrollState [Int]
-                 */
-
-                override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
-                    if (gridViewAdapter != null) {
-                        gridViewAdapter!!.closeMenu()
-                    }
+            main_GridView!!.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (gridViewAdapter != null) {
+                    gridViewAdapter!!.closeMenu()
                 }
+            }
 
-                /**
-                 * Méthode appelée par la gridView lorsque il y a un scroll
-                 * Nous affichons et masquons ici le bouton ajout de contact
-                 * @param view [AbsListView]
-                 * @param firstVisibleItem [Int]
-                 * @param visibleItemCount [Int]
-                 * @param totalItemCount [Int]
-                 */
-                override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-                    /* if (gridViewAdapter != null) {
-                          gridViewAdapter!!.closeMenu()
-                      }*/
-                    println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
-                    if (lastVisiblePos < firstVisibleItem) {
-                        if (main_FloatingButtonAddNewContact!!.visibility == View.VISIBLE) {
-                            val disappear = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
-                            main_FloatingButtonAddNewContact!!.startAnimation(disappear)
-                            main_FloatingButtonAddNewContact!!.visibility = View.GONE
-                        }
-                        lastVisiblePos = firstVisibleItem
-                    } else if (lastVisiblePos > firstVisibleItem) {
-                        if (main_FloatingButtonAddNewContact!!.visibility == View.GONE && !multiChannelMode) {
-                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
-                            main_FloatingButtonAddNewContact!!.startAnimation(apparition)
-                            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
-                        }
-                        lastVisiblePos = firstVisibleItem
-                    }
-                }
-            })
+//            main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
+//                var lastVisiblePos = main_GridView!!.firstVisiblePosition
+//                /**
+//                 * Méthode lancer par le listener lors du lancement ou de l'arret d'un scroll
+//                 * @param view [AbsListView]
+//                 * @param scrollState [Int]
+//                 */
+//
+//                override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
+//                    if (gridViewAdapter != null) {
+//                        gridViewAdapter!!.closeMenu()
+//                    }
+//                }
+//
+//                /**
+//                 * Méthode appelée par la gridView lorsque il y a un scroll
+//                 * Nous affichons et masquons ici le bouton ajout de contact
+//                 * @param view [AbsListView]
+//                 * @param firstVisibleItem [Int]
+//                 * @param visibleItemCount [Int]
+//                 * @param totalItemCount [Int]
+//                 */
+//                override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+//                    /* if (gridViewAdapter != null) {
+//                          gridViewAdapter!!.closeMenu()
+//                      }*/
+//                    println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
+//                    if (lastVisiblePos < firstVisibleItem) {
+//                        if (main_FloatingButtonAddNewContact!!.visibility == View.VISIBLE) {
+//                            val disappear = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
+//                            main_FloatingButtonAddNewContact!!.startAnimation(disappear)
+//                            main_FloatingButtonAddNewContact!!.visibility = View.GONE
+//                        }
+//                        lastVisiblePos = firstVisibleItem
+//                    } else if (lastVisiblePos > firstVisibleItem) {
+//                        if (main_FloatingButtonAddNewContact!!.visibility == View.GONE && !multiChannelMode) {
+//                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
+//                            main_FloatingButtonAddNewContact!!.startAnimation(apparition)
+//                            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
+//                        }
+//                        lastVisiblePos = firstVisibleItem
+//                    }
+//                }
+//            })
         }
 
         if (main_RecyclerView!!.visibility != View.GONE) {
@@ -595,6 +602,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // Lors du click sur le bouton hamburger  dans la toolbar, nous ouvrons le drawer layout
         main_toolbar_OpenDrawer!!.setOnClickListener {
+            gridViewAdapter!!.closeMenu()
             mainDrawerLayout!!.openDrawer(GravityCompat.START)
             hideKeyboard()
         }
@@ -801,7 +809,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         //endregion
-
 
         if (fromStartActivity) {
             val sortByFavorite = Runnable {
@@ -1263,12 +1270,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 //        if (gridViewAdapter!!.listOfItemSelected.size == 0) {
         if (listOfItemSelected.size == 0) {
-            val pos = main_GridView!!.firstVisiblePosition
+
+//            val pos = main_GridView!!.firstVisiblePosition
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
             gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.adapter = gridViewAdapter
-            main_GridView!!.setSelection(pos)
+//            main_GridView!!.setSe(pos)
+//            main_GridView!!.setSelection(pos)
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 

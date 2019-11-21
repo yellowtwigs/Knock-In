@@ -115,7 +115,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
         System.out.println(parent.getClass());
-        //parentGrid=((GridView) parent);
+//        parentGrid = ((GridView) parent);
         ViewHolder holder = new ViewHolder(view);
         heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
         return holder;
@@ -151,20 +151,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             layoutParamsIV.topMargin = 10;
         } else if (len == 5) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.40));
-            ;
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.40));
-            ;
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         } else if (len == 6) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.50));
-            ;
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.50));
-            ;
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         }
-        ;
 
         final ContactDB contact = this.contactManager.getContactList().get(position).getContactDB();
         assert contact != null;
