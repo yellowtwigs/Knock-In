@@ -28,6 +28,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
@@ -357,7 +358,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
-            main_GridView!!.adapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
+            main_GridView!!.layoutManager = GridLayoutManager(this, len)
 
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -366,6 +367,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             // La gridView va mettre en place un écouteur sur l'action Scroll,
             // nous avons alors défini un ensemble d'action à effectuer lorsque la gridView détecte ce scroll
+            main_GridView!!.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (gridViewAdapter != null) {
+                    gridViewAdapter!!.closeMenu()
+                }
+            }
+
 //            main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
 //                var lastVisiblePos = main_GridView!!.firstVisiblePosition
 //                /**
@@ -1263,12 +1270,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 //        if (gridViewAdapter!!.listOfItemSelected.size == 0) {
         if (listOfItemSelected.size == 0) {
-            val pos = main_GridView!!.firstVisiblePosition
+
+//            val pos = main_GridView!!.firstVisiblePosition
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
             gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.adapter = gridViewAdapter
-            main_GridView!!.setSelection(pos)
+//            main_GridView!!.setSe(pos)
+//            main_GridView!!.setSelection(pos)
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
 

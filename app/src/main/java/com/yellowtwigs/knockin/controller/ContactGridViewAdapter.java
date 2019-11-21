@@ -37,6 +37,7 @@ import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupActivity;
+import com.yellowtwigs.knockin.controller.activity.group.GroupAdapter;
 import com.yellowtwigs.knockin.model.ContactGesture;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
@@ -68,6 +69,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
     private ArrayList<NotificationDB> listOfInteractions = new ArrayList<>();
     private int heightAndWidth;
+    private int heightWidthImage;
 
     public ContactGridViewAdapter(Context context, ContactManager contactManager, Integer len) {
         this.context = context;
@@ -98,18 +100,25 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
         System.out.println(parent.getClass());
-        //parentGrid=((GridView) parent);
-        //        heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
-        return new ViewHolder(view);
+//        parentGrid = ((GridView) parent);
+        ContactGridViewAdapter.ViewHolder holder = new ContactGridViewAdapter.ViewHolder(view);
+
+        heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        final ContactDB contact = this.gestionnaireContact.getContactList().get(position).getContactDB();
+
+        int height = heightWidthImage;
+        int width = heightWidthImage;
+
+        System.out.println(" layout params height " + height + " width " + width);
         RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
-        final ContactDB contact = this.gestionnaireContact.getContactList().get(position).getContactDB();
         if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContactList().get(position))) {
             assert contact != null;
             if (!contact.getProfilePicture64().equals("")) {
@@ -122,26 +131,27 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
             holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
-        if (len == 6) {
-            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.50);
-            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.50);
-            layoutParamsTV.topMargin = 0;
-            layoutParamsIV.topMargin = 0;
-        } else if (len == 5) {
-            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.60);
-            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.60);
-            layoutParamsTV.topMargin = 0;
-            layoutParamsIV.topMargin = 0;
-        } else if (len == 4) {
-            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.75);
-            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.75);
-            layoutParamsTV.topMargin = 10;
-            layoutParamsIV.topMargin = 10;
-        } else if (len == 3) {
-            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightAndWidth * 0.95);
-            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightAndWidth * 0.95);
+
+        if (len == 3) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.05));
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.05));
             layoutParamsTV.topMargin = 30;
             layoutParamsIV.topMargin = 10;
+        } else if (len == 4) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.25));
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.25));
+            layoutParamsTV.topMargin = 10;
+            layoutParamsIV.topMargin = 10;
+        } else if (len == 5) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.40));
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.40));
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
+        } else if (len == 6) {
+            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.50));
+            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.50));
+            layoutParamsTV.topMargin = 0;
+            layoutParamsIV.topMargin = 0;
         }
 
         assert contact != null;
@@ -210,7 +220,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             //holder.contactFirstNameView.;
         }
 
-        if(firstname.isEmpty()){
+        if (firstname.isEmpty()) {
             holder.contactFirstNameView.setVisibility(View.GONE);
         }
 
@@ -366,7 +376,8 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 if (position < 2 * len) {
                     firstPosVis = 0;
                 } else {
-                    firstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
+                    firstPosVis = 0;
+//                    firstPosVisfirstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
                 }
                 System.out.println("selection" + firstPosVis);
                 if (context instanceof MainActivity) {
@@ -574,6 +585,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             contactRoundedImageView = view.findViewById(R.id.contactRoundedImageView);
             gridAdapterFavoriteShine = view.findViewById(R.id.grid_adapter_favorite_shine);
             groupWordingTv = view.findViewById(R.id.grid_adapter_wording_group_tv);
+//            heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
         }
     }
 
