@@ -572,6 +572,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         //endregion
 
         refreshChecked()
+        ringToneLayoutClosed()
 
         //region Default
 
@@ -1379,8 +1380,6 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
 
             if (settings_NotifSoundAcousticGuitarCheckbox!!.isChecked) {
-                settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.beautiful_chords_progression)
-                settings_NotificationMessagesAlarmSound!!.start()
 
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
@@ -1657,6 +1656,9 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
 
             if (settings_NotifSoundRelaxToneCheckbox!!.isChecked) {
+
+                settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.relax_sms)
+                settings_NotificationMessagesAlarmSound!!.start()
 
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
@@ -2426,6 +2428,49 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
         }
+    }
+
+    fun ringToneLayoutClosed() {
+        //region OpenClose
+
+        settings_NotifSoundKnockinLayout!!.visibility = View.GONE
+        settings_NotifSoundXyloLayout!!.visibility = View.GONE
+        settings_NotifNoSoundLayout!!.visibility = View.GONE
+
+        settings_ChooseNotifDefaultSoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifDefaultSoundImageClose!!.visibility = View.VISIBLE
+
+        settings_NotifSoundMoaninLayout!!.visibility = View.GONE
+        settings_NotifSoundBlueBossaLayout!!.visibility = View.GONE
+        settings_NotifSoundCaravanLayout!!.visibility = View.GONE
+        settings_NotifSoundDolphinDanceLayout!!.visibility = View.GONE
+        settings_NotifSoundAutumnLeavesLayout!!.visibility = View.GONE
+        settings_NotifSoundFreddieFreeloaderLayout!!.visibility = View.GONE
+
+        settings_ChooseNotifJazzySoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifJazzySoundImageClose!!.visibility = View.VISIBLE
+
+        settings_NotifSoundSlapLayout!!.visibility = View.GONE
+        settings_NotifSoundOffTheCurveLayout!!.visibility = View.GONE
+        settings_NotifSoundFunkYallLayout!!.visibility = View.GONE
+        settings_NotifSoundKeyboardFunkyToneLayout!!.visibility = View.GONE
+        settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility = View.GONE
+        settings_NotifSoundColdSweatLayout!!.visibility = View.GONE
+
+        settings_ChooseNotifFunkySoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifFunkySoundImageClose!!.visibility = View.VISIBLE
+
+        settings_NotifSoundAcousticGuitarLayout!!.visibility = View.GONE
+        settings_NotifSoundGravityLayout!!.visibility = View.GONE
+        settings_NotifSoundSlowDancingLayout!!.visibility = View.GONE
+        settings_NotifSoundScorpionThemeLayout!!.visibility = View.GONE
+        settings_NotifSoundFirstStepLayout!!.visibility = View.GONE
+        settings_NotifSoundRelaxToneLayout!!.visibility = View.GONE
+
+        settings_ChooseNotifRelaxationSoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.VISIBLE
+
+        //endregion
     }
 
     override fun onResume() {

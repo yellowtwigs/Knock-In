@@ -56,6 +56,7 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
     public NotificationsHistoryRecyclerViewAdapter(Context context, List<NotificationDB> notifications) {
         this.context = context;
         this.notification_history_ListOfNotificationDB = notifications;
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -88,7 +89,7 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
 
         final Drawable icon2 = icon;
 
-        holder.notif_history_item_AppImage.setBackgroundDrawable(icon);
+        holder.notif_history_item_AppImage.setImageDrawable(icon);
         if (notif.getDescription().length() > 100) {
             holder.notif_history_item_NotificationContent.setText(notif.getDescription().substring(0, 99) + "..");
         } else {
@@ -159,7 +160,12 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
 
     @Override
     public long getItemId(int position) {
-        return notification_history_ListOfNotificationDB.size();
+        return (long) position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override

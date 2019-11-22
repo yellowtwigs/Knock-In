@@ -329,7 +329,7 @@
     <!-- region List Contact Item -->
 
     <string name="list_contact_item_call">Call</string>
-    <string name="list_contact_item_sms">Message</string>
+    <string name="list_contact_item_sms">SMS</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
     <string name="list_contact_item_mail">Mail</string>
     <string name="list_contact_item_edit">Edition</string>
@@ -352,7 +352,7 @@
 
     <string name="first_launch_welcome">Welcome to %s</string>
     <string name="first_launch_welcome_long_text"> Enjoy a new way to manage your contacts and to communicate with them</string>
-    <string name="first_launch_welcome_accept">Accept and continue</string>
+    <string name="first_launch_welcome_accept">Accept and Continue</string>
     <string name="first_launch_confidentiality">Please read our Terms and Conditions from our site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF. </a> To accept them, please click on "Accept and continue"</string>
 
     <!-- endregion -->
@@ -548,7 +548,7 @@
     <string name="in_app_popup_tone_available_message">Would you like to go to the shop? </string>
     <string name="in_app_purchase_made_message">Purchase made</string>
     <string name="in_app_load_products">Load products</string>
-    <string name="in_app_shop">Knock In Notifications\' Shop</string>
+    <string name="in_app_shop">Knock In Notifications Shop</string>
 
 
     <!-- endregion-->

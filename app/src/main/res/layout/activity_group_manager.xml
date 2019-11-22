@@ -49,7 +49,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="25dp"
                     android:layout_toEndOf="@+id/group_manager_open_drawer"
-                    android:text="Group Manager"
+                    android:text="@string/group_manager_toolbar_title"
                     android:textSize="20sp"/>
 
                 <androidx.appcompat.widget.AppCompatImageView

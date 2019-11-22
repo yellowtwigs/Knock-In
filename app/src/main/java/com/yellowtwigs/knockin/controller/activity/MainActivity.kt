@@ -602,7 +602,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // Lors du click sur le bouton hamburger  dans la toolbar, nous ouvrons le drawer layout
         main_toolbar_OpenDrawer!!.setOnClickListener {
-            gridViewAdapter!!.closeMenu()
+            if(gridViewAdapter != null){
+                gridViewAdapter!!.closeMenu()
+            }
             mainDrawerLayout!!.openDrawer(GravityCompat.START)
             hideKeyboard()
         }

@@ -210,7 +210,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
      */
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
         if (purchases != null) {
-
             when {
                 purchases[0].originalJson.contains("notifications_vip_funk_theme") -> {
                     Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
