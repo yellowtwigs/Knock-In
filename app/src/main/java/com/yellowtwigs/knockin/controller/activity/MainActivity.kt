@@ -813,12 +813,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         if (fromStartActivity) {
-            val sortByFavorite = Runnable {
-                gestionnaireContacts!!.sortContactByFavorite()
+            val sortByPriority = Runnable {
+                gestionnaireContacts!!.sortContactByPriority()
                 val sharedDefaultTriPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedDefaultTriPreferences.getInt("gridview", 4)
                 val edit: SharedPreferences.Editor = sharedDefaultTriPreferences.edit()
-                edit.putString("tri", "favoris")
+                edit.putString("tri", "priorite")
                 edit.apply()
                 runOnUiThread {
                     if (len > 1) {
@@ -834,7 +834,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     main_loadingPanel!!.visibility = View.GONE
                 }
             }
-            main_mDbWorkerThread.postTask(sortByFavorite)
+            main_mDbWorkerThread.postTask(sortByPriority)
             fromStartActivity = false
         }
     }
@@ -869,7 +869,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val triPriority = menu.findItem(R.id.tri_par_priorite)
         val triFavorite = menu.findItem(R.id.tri_par_favoris)
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        when (sharedPreferences.getString("tri", "favoris")) {
+        when (sharedPreferences.getString("tri", "priorite")) {
             "nom" -> triNom.isChecked = true
             "priorite" -> triPriority.isChecked = true
             "favoris" -> triFavorite.isChecked = true

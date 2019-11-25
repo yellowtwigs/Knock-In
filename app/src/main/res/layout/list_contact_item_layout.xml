@@ -233,7 +233,7 @@
                     app:layout_constraintStart_toStartOf="@+id/list_contact_item_mail_tv"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/ic_email" />
+                    app:srcCompat="@drawable/ic_circular_mail" />
 
                 <TextView
                     android:id="@+id/list_contact_item_mail_tv"

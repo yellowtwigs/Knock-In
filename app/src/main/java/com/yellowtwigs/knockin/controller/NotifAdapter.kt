@@ -7,10 +7,8 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.media.MediaPlayer
 import android.net.Uri
 import android.text.Editable
 import android.text.TextUtils
@@ -19,13 +17,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
@@ -36,7 +38,7 @@ import java.util.*
  * La Classe qui permet d'afficher les notifications prioritaires au milieu de l'écran
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class NotifAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : BaseAdapter() {
+class NotifPopupRecyclerViewAdapter(context: Context, notifications: ArrayList<StatusBarParcelable>, windowManager: WindowManager, view: View) : RecyclerView.Adapter<NotifPopupRecyclerViewAdapter.NotificationHistoryViewHolder>() {
 
     /*private val TAG = NotificationListener::class.java.simpleName*/
     private lateinit var notification_adapter_mDbWorkerThread: DbWorkerThread
@@ -55,16 +57,34 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     private var newMessage: Boolean = false
     private val listOftext: MutableList<String> = mutableListOf()
 
-    override fun getCount(): Int {
-        return notifications.size
+    private val listOfNotifications = notifications
+    private val thisWindowManager = windowManager
+    private var thisView = view
+    private var thisContext = context
+
+    private var thisParent: ViewGroup? = null
+
+    override fun getItemCount(): Int {
+        return listOfNotifications.size
     }
 
-    override fun getItem(position: Int): StatusBarParcelable {
-        return notifications[position]
+//    override fun getItem(position: Int): StatusBarParcelable {
+//        return notifications[position]
+//    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHistoryViewHolder {
+
+        thisParent = parent
+        thisView = LayoutInflater.from(parent.context).inflate(R.layout.list_item_notification_history, parent, false)
+        return NotificationHistoryViewHolder(thisView!!)
     }
 
     override fun getItemId(position: Int): Long {
-        return 0
+        return position.toLong()
+    }
+
+    fun getItem(position: Int): StatusBarParcelable {
+        return listOfNotifications[position]
     }
 
     fun getlastChangePos(): Int {
@@ -75,77 +95,67 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         return lastChanged
     }
 
-    @SuppressLint("SetTextI18n", "ViewHolder")
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    @SuppressLint("SetTextI18n")
+    override fun onBindViewHolder(holder: NotificationHistoryViewHolder, position: Int) {
         notification_adapter_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         notification_adapter_mDbWorkerThread.start()
 
-        val view = LayoutInflater.from(context).inflate(R.layout.item_notification_adapter, parent, false)
-
         if (listOftext.isEmpty()) {
-            for (i in 1..notifications.size) {
+            for (i in 1..listOfNotifications.size) {
                 listOftext.add("")
             }
-        } else if (listOftext.size != notifications.size) {
+        } else if (listOftext.size != listOfNotifications.size) {
             listOftext.add(0, "")
         }
 
         val sbp = getItem(position)
 
-        val gestionnaireContacts = ContactManager(this.context)
+        val gestionnaireContacts = ContactManager(thisContext)
         val contact = gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"].toString())
 
-        val app = view!!.findViewById<View>(R.id.notification_adapter_platform) as TextView
-        val content = view.findViewById<View>(R.id.notification_adapter_content) as TextView
-        val appImg = view.findViewById<View>(R.id.notification_adapter_plateforme_img) as ImageView
-        val senderImg = view.findViewById<View>(R.id.notification_adapter_sender_img) as ImageView
-        val buttonSend = view.findViewById<View>(R.id.notification_adapter_send) as AppCompatImageView
-        val editText = view.findViewById<View>(R.id.notification_adapter_message_to_send) as EditText
-        val showButton = view.findViewById<View>(R.id.item_notification_show_message) as AppCompatButton
-        val callButton = view.findViewById<View>(R.id.item_notification_call) as AppCompatButton
-
-        val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.item_notif_adapter_top_bar)
+        val unwrappedDrawable = AppCompatResources.getDrawable(thisContext, R.drawable.item_notif_adapter_top_bar)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
-        app.text = convertPackageToString(sbp.appNotifier!!)
+        holder.appPlateform!!.text = convertPackageToString(sbp.appNotifier!!)
 
-        editText.setText(listOftext.get(position))
+        holder.messageToSendEditText!!.setText(listOftext.get(position))
         System.out.println("text content" + listOftext[position] + " message" + sbp.statusBarNotificationInfo["android.text"])
+
+
         if (newMessage && System.currentTimeMillis() - NotificationListener.adapterNotification!!.getlastChangeMillis() <= 10000) {
             println("last text changed")
-            (parent as ListView).post {
-                parent.requestFocusFromTouch();
-                parent.setSelection(lastChangedPosition + 1);
-                parent.requestFocus();
+            (thisParent as ListView).post {
+                thisParent!!.requestFocusFromTouch()
+                thisParent!!.setSelection(lastChangedPosition + 1)
+                thisParent!!.requestFocus()
             }
-            editText.isFocusable = true
+            holder.messageToSendEditText!!.isFocusable = true
             newMessage = false
         } else if (newMessage && System.currentTimeMillis() - NotificationListener.adapterNotification!!.getlastChangeMillis() > 10000) {
-            (parent as ListView).post {
-                parent.requestFocusFromTouch();
-                parent.setSelection(0);
-                parent.requestFocus();
+            (thisParent!! as ListView).post {
+                thisParent!!.requestFocusFromTouch()
+                thisParent!!.(0)
+                thisParent!!.requestFocus()
             }
             newMessage = false
         }
 
-
-        if (app.text == "WhatsApp" || app.text == "Message") {
-            callButton.visibility = View.VISIBLE
+        if (holder.appPlateform!!.text == "WhatsApp" || holder.appPlateform!!.text == "Message") {
+            holder.callButton!!.visibility = View.VISIBLE
         }
 
-        content.text = sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
+        holder.notifContent!!.text = sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
         //appImg.setImageResource(getApplicationNotifier(sbp));
 
-        showButton.setOnClickListener {
-            when (app.text) {
+        holder.goToAppButton!!.setOnClickListener {
+            when (holder.appPlateform!!.text) {
                 "Facebook" -> {
                     val uri = Uri.parse("facebook:/newsfeed")
                     val likeIng = Intent(Intent.ACTION_VIEW, uri)
                     try {
-                        context.startActivity(likeIng)
+                        thisContext.startActivity(likeIng)
                     } catch (e: ActivityNotFoundException) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW,
+                        thisContext.startActivity(Intent(Intent.ACTION_VIEW,
                                 Uri.parse("http://facebook.com/")))
                     }
                     closeNotificationPopup()
@@ -153,10 +163,10 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 "Messenger" -> {
                     try {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/"))
-                        context.startActivity(intent)
+                        thisContext.startActivity(intent)
                     } catch (e: ActivityNotFoundException) {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/"))
-                        context.startActivity(intent)
+                        thisContext.startActivity(intent)
                     }
                     closeNotificationPopup()
                 }
@@ -167,9 +177,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     val appIntent = Intent(Intent.ACTION_VIEW)
                     appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail")
                     try {
-                        context.startActivity(appIntent)
+                        thisContext.startActivity(appIntent)
                     } catch (e: ActivityNotFoundException) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW,
+                        thisContext.startActivity(Intent(Intent.ACTION_VIEW,
                                 Uri.parse("https://gmail.com/")))
                     }
                     closeNotificationPopup()
@@ -185,8 +195,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             }
         }
 
-        callButton.setOnClickListener {
-            when (app.text) {
+        holder.callButton!!.setOnClickListener {
+            when (holder.appPlateform!!.text) {
                 "WhatsApp" -> {
                     phoneCall(contact!!.getFirstPhoneNumber())
                     closeNotificationPopup()
@@ -204,30 +214,30 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 
         when (convertPackageToString(sbp.appNotifier!!)) {
             "Facebook" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook, null))
+                DrawableCompat.setTint(wrappedDrawable, thisContext.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook, null))
             }
             "Messenger" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_messenger, null))
+                DrawableCompat.setTint(wrappedDrawable, thisContext.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_messenger, null))
             }
             "WhatsApp" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_whatsapp, null))
+                DrawableCompat.setTint(wrappedDrawable, thisContext.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_whatsapp, null))
             }
             "Gmail" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_gmail, null))
+                DrawableCompat.setTint(wrappedDrawable, thisContext.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_gmail, null))
             }
             "Message" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorPrimary, null))
+                DrawableCompat.setTint(wrappedDrawable, thisContext.resources.getColor(R.color.colorPrimary, null))
             }
         }
 
-        buttonSend.setOnClickListener {
-            if (editText.text.toString() == "") {
-                Toast.makeText(context, R.string.notif_adapter, Toast.LENGTH_SHORT).show()
+        holder.buttonSend!!.setOnClickListener {
+            if (holder.messageToSendEditText!!.text.toString() == "") {
+                Toast.makeText(thisContext, R.string.notif_adapter, Toast.LENGTH_SHORT).show()
             } else {
 
                 when (convertPackageToString(sbp.appNotifier!!)) {
                     "WhatsApp" -> {
-                        sendMessageWithWhatsapp(contact!!.getFirstPhoneNumber(), editText.text.toString())
+                        sendMessageWithWhatsapp(contact!!.getFirstPhoneNumber(), holder.messageToSendEditText!!.text.toString())
                         closeNotificationPopup()
                     }
                     "Gmail" -> {
@@ -235,9 +245,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                     "Message" -> {
 //                        if (checkPermission(Manifest.permission.SEND_SMS)) {
                         if (contact != null) {
-                            sendMessageWithAndroidMessage(contact.getFirstPhoneNumber(), editText.text.toString())
+                            sendMessageWithAndroidMessage(contact.getFirstPhoneNumber(), holder.messageToSendEditText!!.text.toString())
                         } else {
-                            sendMessageWithAndroidMessage(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
+                            sendMessageWithAndroidMessage(sbp.statusBarNotificationInfo["android.title"].toString(), holder.messageToSendEditText!!.text.toString())
                         }
                         //closeNotificationPopup()
 //                        } else {
@@ -245,16 +255,16 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
 //                            Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knockin", Toast.LENGTH_LONG).show()
 //
 //                            if (contact != null) {
-//                                openSms(contact.getFirstPhoneNumber(), editText.text.toString())
+//                                openSms(contact.getFirstPhoneNumber(), holder.messageToSendEditText!!.text.toString())
 //                            } else {
-//                                openSms(sbp.statusBarNotificationInfo["android.title"].toString(), editText.text.toString())
+//                                openSms(sbp.statusBarNotificationInfo["android.title"].toString(), holder.messageToSendEditText!!.text.toString())
 //                            }
 //                        }
                     }
                 }
-                editText.setText("")
-                if (notifications.size > 1) {
-                    notifications.removeAt(position)
+                holder.messageToSendEditText!!.setText("")
+                if (listOfNotifications.size > 1) {
+                    listOfNotifications.removeAt(position)
                 } else {
                     closeNotificationPopup()
                 }
@@ -262,7 +272,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             }
 
         }
-        editText.addTextChangedListener(object : TextWatcher {
+        holder.messageToSendEditText!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -273,7 +283,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
                 lastChanged = System.currentTimeMillis()
                 lastChangedPosition = position
                 listOftext.removeAt(position)
-                listOftext.add(position, editText.text.toString())
+                listOftext.add(position, holder.messageToSendEditText!!.text.toString())
                 println("text change at$lastChanged at position $position")
             }
 
@@ -282,9 +292,9 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
               val iconID = Integer.parseInt(sbp.statusBarNotificationInfo["android.icon"]!!.toString())
           }*/
         try {
-            val pckManager = context.packageManager
+            val pckManager = thisContext.packageManager
             val icon = pckManager.getApplicationIcon(sbp.appNotifier!!)
-            appImg.setImageDrawable(icon)
+            holder.buttonSend!!.setImageDrawable(icon)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
@@ -292,41 +302,39 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"] != null) {//image de l'expediteur provenant l'application source
             println("bitmap :" + sbp.statusBarNotificationInfo["android.largeIcon"]!!)
             val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
-            senderImg.setImageBitmap(bitmap)
+            holder.buttonSend!!.setImageBitmap(bitmap)
         }
-        return view
     }
 
     //TODO Ask for the permission before call
     private fun phoneCall(phoneNumber: String) {
         if (!TextUtils.isEmpty(phoneNumber)) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
+            if (ContextCompat.checkSelfPermission(thisContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(thisContext as Activity, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
                 numberForPermission = phoneNumber
             } else {
                 val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
                 intent.flags = FLAG_ACTIVITY_NEW_TASK
                 if (numberForPermission.isEmpty()) {
-                    context.startActivity(intent)
+                    thisContext.startActivity(intent)
                 } else {
-                    context.startActivity(intent)
+                    thisContext.startActivity(intent)
                     numberForPermission = ""
                 }
             }
         } else {
-            Toast.makeText(context, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(thisContext, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
         }
     }
 
     //region ========================================== Functions ===========================================
-
 
     private fun openSms(phoneNumber: String, message: String) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
         intent.flags = FLAG_ACTIVITY_NEW_TASK
         intent.putExtra("sms_body", message)
 
-        context.startActivity(intent)
+        thisContext.startActivity(intent)
     }
 
     private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
@@ -336,7 +344,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val message = "phone=" + converter06To33(phoneNumber)
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
 
-        context.startActivity(intent)
+        thisContext.startActivity(intent)
     }
 
     private fun openWhatsapp(phoneNumber: String) {
@@ -345,24 +353,24 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
         val message = "phone=" + converter06To33(phoneNumber)
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
 
-        context.startActivity(intent)
+        thisContext.startActivity(intent.setFlags(FLAG_ACTIVITY_NEW_TASK))
     }
 
     private fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String) {
         val message = "smsto:" + phoneNumber
         val i = Intent(Intent.ACTION_SENDTO, Uri.parse(message))
         i.flags = FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(i.putExtra("sms_body", msg))
+        thisContext.startActivity(i.putExtra("sms_body", msg))
 
 //        val smsManager = SmsManager.getDefault()
 //        smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
 //
-//        Toast.makeText(context, R.string.notif_adapter_message_sent,
+//        Toast.makeText(thisContext, R.string.notif_adapter_message_sent,
 //                Toast.LENGTH_LONG).show()
     }
 
     private fun checkPermission(permission: String): Boolean {
-        val checkPermission = ContextCompat.checkSelfPermission(context, permission)
+        val checkPermission = ContextCompat.checkSelfPermission(thisContext, permission)
         return checkPermission == PackageManager.PERMISSION_GRANTED
     }
 
@@ -376,8 +384,8 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     }
 
     private fun closeNotificationPopup() {
-        windowManager.removeView(view)
-        val sharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        thisWindowManager!!.removeView(thisView)
+        val sharedPreferences = thisContext.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         edit.putBoolean("view", false)
         edit.apply()
@@ -399,6 +407,29 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
             return "Message"
         }
         return ""
+    }
+
+    class NotificationHistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        var appPlateform : TextView? = null
+        var notifContent : TextView? = null
+        var appImageView : AppCompatImageView? = null
+        var senderImageView : AppCompatImageView? = null
+        var buttonSend : AppCompatImageView? = null
+        var messageToSendEditText : EditText? = null
+        var goToAppButton : AppCompatButton? = null
+        var callButton : AppCompatButton? = null
+
+        init {
+            appPlateform = view.findViewById(R.id.notification_adapter_platform)
+            notifContent = view.findViewById(R.id.notification_adapter_content)
+            appImageView = view.findViewById(R.id.notification_adapter_plateforme_img)
+            senderImageView = view.findViewById(R.id.notification_adapter_sender_img)
+            buttonSend = view.findViewById(R.id.notification_adapter_send)
+            messageToSendEditText = view.findViewById(R.id.notification_adapter_message_to_send)
+            goToAppButton = view.findViewById(R.id.item_notification_show_message)
+            callButton = view.findViewById(R.id.item_notification_call)
+        }
     }
 
 //    private fun canResponse(packageName: String): Boolean {
@@ -424,7 +455,7 @@ class NotifAdapter(private val context: Context, private val notifications: Arra
     /////****** code dupliqué faire attention trouvé un moyen de ne plus en avoir *******//////
 
     fun addNotification(sbp: StatusBarParcelable) {
-        notifications.add(0, sbp)
+        listOfNotifications.add(0, sbp)
         newMessage = true
         this.notifyDataSetChanged()
     }

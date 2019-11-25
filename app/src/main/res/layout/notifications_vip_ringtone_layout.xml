@@ -876,7 +876,7 @@
             android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_margin="8dp"
-            app:srcCompat="@drawable/ic_first_step" />
+            app:srcCompat="@drawable/ic_piano" />
 
     </RelativeLayout>
 
@@ -1032,7 +1032,7 @@
             android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_margin="8dp"
-            app:srcCompat="@drawable/ic_piano" />
+            app:srcCompat="@drawable/ic_acoustic_guitar" />
 
     </RelativeLayout>
 

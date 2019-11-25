@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,11 +16,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.*
-import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
 import com.yellowtwigs.knockin.controller.adapter.MyProductAdapter
+
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
@@ -28,7 +31,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private var billingClient: BillingClient? = null
     private var recyclerProduct: RecyclerView? = null
-    private var premium_activity_ToolbarLoadProducts: MaterialButton? = null
     private var sharedProductNotifFunkySoundPreferences: SharedPreferences? = null
     private var sharedProductNotifJazzySoundPreferences: SharedPreferences? = null
     private var sharedProductContactsUnlimitedPreferences: SharedPreferences? = null
@@ -38,6 +40,11 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private var premium_activity_ToolbarLayoutFromMultiSelect: RelativeLayout? = null
     private var premium_activity_ToolbarBackOnPressed: AppCompatImageView? = null
+
+    private var mDelayHandler: Handler? = null
+    private val SPLASH_DELAY: Long = 100 //3 seconds
+
+    private var fromManageNotification = false
 
     //endregion
 
@@ -60,6 +67,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         setupBillingClient()
 
         val fromMultiSelectActivity = intent.getBooleanExtra("fromMultiSelectActivity", false)
+        fromManageNotification = intent.getBooleanExtra("fromManageNotification", false)
 
         sharedProductNotifFunkySoundPreferences = this.getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
         sharedProductNotifJazzySoundPreferences = this.getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
@@ -71,8 +79,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         premium_activity_ToolbarLayoutFromMultiSelect = findViewById(R.id.premium_activity_toolbar_layout)
         premium_activity_ToolbarBackOnPressed = findViewById(R.id.premium_activity_toolbar_from_multi_select_back)
-
-        premium_activity_ToolbarLoadProducts = findViewById(R.id.premium_activity_toolbar_load_products)
 
         if (fromMultiSelectActivity) {
             premium_activity_ToolbarLayout!!.visibility = View.GONE
@@ -126,28 +132,31 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         recyclerProduct!!.layoutManager = LinearLayoutManager(this)
 
         //Event
-        premium_activity_ToolbarLoadProducts!!.setOnClickListener {
-            if (billingClient!!.isReady) {
-                val list = listOf("contacts_vip_unlimited") + listOf("notifications_vip_funk_theme")+ listOf("notifications_vip_jazz_theme") +
-                        listOf("notifications_vip_relaxation_theme")
-                val params = SkuDetailsParams.newBuilder()
-                        .setSkusList(list)
-                        .setType(BillingClient.SkuType.INAPP)
-                        .build()
+//        premium_activity_ToolbarLoadProducts!!.setOnClickListener {
+        //Initialize the Handler
+        mDelayHandler = Handler()
 
-                billingClient!!.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-                    if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
-                        loadProductToRecyclerView(skuDetailsList)
-                        premium_activity_ToolbarLoadProducts!!.visibility = View.GONE
-                    } else {
-//                        Toast.makeText(this@PremiumActivity, "Cannot query product", Toast.LENGTH_SHORT).show()
+        val handler = Handler()
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (billingClient!!.isReady) {
+                    val list = listOf("contacts_vip_unlimited") + listOf("notifications_vip_funk_theme") + listOf("notifications_vip_jazz_theme") +
+                            listOf("notifications_vip_relaxation_theme")
+                    val params = SkuDetailsParams.newBuilder()
+                            .setSkusList(list)
+                            .setType(BillingClient.SkuType.INAPP)
+                            .build()
+
+                    billingClient!!.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+                        if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
+                            loadProductToRecyclerView(skuDetailsList)
+                        }
                     }
                 }
-            } else {
-//                Toast.makeText(this@PremiumActivity, "Billing client not ready", Toast.LENGTH_SHORT).show()
-            }
 
-        }
+                handler.postDelayed(this, SPLASH_DELAY)
+            }
+        }, SPLASH_DELAY)
 
         premium_activity_ToolbarOpenDrawer!!.setOnClickListener {
             drawerLayout!!.openDrawer(GravityCompat.START)
@@ -189,11 +198,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         })
     }
 
-    private fun refreshActivity() {
-        startActivity(Intent(this@PremiumActivity, PremiumActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-        finish()
-    }
-
     /**
      * Implement this method to get notifications for purchases updates. Both purchases initiated by
      * your app and the ones initiated outside of your app will be reported here.
@@ -216,30 +220,43 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     val edit = sharedProductNotifFunkySoundPreferences!!.edit()
                     edit.putBoolean("Notif_Funky_Sound_IsBought", true)
                     edit.apply()
-                    refreshActivity()
+                    backToManageNotifAfterBuying()
                 }
                 purchases[0].originalJson.contains("notifications_vip_jazz_theme") -> {
                     Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
                     val edit = sharedProductNotifJazzySoundPreferences!!.edit()
                     edit.putBoolean("Notif_Jazzy_Sound_IsBought", true)
                     edit.apply()
-                    refreshActivity()
+                    backToManageNotifAfterBuying()
                 }
                 purchases[0].originalJson.contains("notifications_vip_relaxation_theme") -> {
                     Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
                     val edit = sharedProductNotifJazzySoundPreferences!!.edit()
                     edit.putBoolean("Notif_Relaxation_Sound_IsBought", true)
                     edit.apply()
-                    refreshActivity()
+                    backToManageNotifAfterBuying()
                 }
                 purchases[0].originalJson.contains("contacts_vip_unlimited") -> {
                     Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
                     val edit = sharedProductContactsUnlimitedPreferences!!.edit()
                     edit.putBoolean("Alarm_Contacts_Unlimited_IsBought", true)
                     edit.apply()
-                    refreshActivity()
                 }
             }
+        }
+    }
+
+    fun backToManageNotifAfterBuying(){
+        if (fromManageNotification) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle("Achat Effectué")
+                    .setMessage("Voulez-vous retourner à la page des Notifcations ?")
+                    .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                        startActivity(Intent(this@PremiumActivity, ManageNotificationActivity::class.java).putExtra("fromMultiSelectActivity", true))
+                    }
+                    .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                    }
+                    .show()
         }
     }
 }

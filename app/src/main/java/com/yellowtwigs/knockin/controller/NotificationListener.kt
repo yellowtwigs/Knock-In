@@ -123,112 +123,6 @@ class NotificationListener : NotificationListenerService() {
                                         println("screenIsUnlocked")
                                         this.cancelNotification(sbn.key)
                                         displayLayout(sbp, sharedPreferences)
-                                        val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
-                                        var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
-
-                                        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", 1)
-                                        when (sound) {
-                                            R.raw.xylophone_tone -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.sms_ring -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.bass_slap -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.off_the_curve_groove -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.funk_yall -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.u_cant_hold_no_groove -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.cold_sweat -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.keyboard_funky_tone -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.caravan -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.moanin_jazz -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.blue_bossa -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.dolphin_dance -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.autumn_leaves -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.freddie_freeloader -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.beautiful_chords_progression -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.interstellar_main_theme -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.relax_sms -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.gravity -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.slow_dancing -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                            R.raw.scorpion_theme -> {
-                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
-                                            }
-                                        }
                                     }
                                 }
                                 contact.contactDB!!.contactPriority == 1 -> {
@@ -435,11 +329,57 @@ class NotificationListener : NotificationListenerService() {
 
 
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
-        var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
+        val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
 
-        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", 1)
+        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
         notification_alarm_NotificationMessagesAlarmSound?.stop()
+        alartNotifTone(sound)
+
+        val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
+        imgClose.visibility = View.VISIBLE
+        imgClose.setOnClickListener {
+            //System.exit(0)
+            windowManager?.removeView(view)
+            popupView = null
+            //effacer le window manager en rendre popup-view null pour lui réaffecter de nouvelle valeur
+
+            notification_alarm_NotificationMessagesAlarmSound?.stop()
+        }
+    }//TODO:améliorer l'algorithmie
+
+
+    private fun appNotifiable(sbp: StatusBarParcelable): Boolean {
+        return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
+                sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
+                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
+                convertPackageToString(sbp.appNotifier!!) != ""
+    }
+
+    private fun convertPackageToString(packageName: String): String {
+        if (packageName == FACEBOOK_PACKAGE) {
+            return "Facebook"
+        } else if (packageName == MESSENGER_PACKAGE) {
+            return "Messenger"
+        } else if (packageName == WHATSAPP_SERVICE) {
+            return "WhatsApp"
+        } else if (packageName == GMAIL_PACKAGE) {
+            return "gmail"
+        } else if (packageName == OUTLOOK_PACKAGE) {
+            return "Outlook"
+        } else if (packageName == MESSAGE_PACKAGE || packageName == MESSAGE_SAMSUNG_PACKAGE || packageName == XIAOMI_MESSAGE_PACKAGE) {
+            return "message"
+        }
+        return ""
+    }
+
+    private fun isPhoneNumber(title: String): Boolean {
+        println("name equals :" + title)
+        val pregMatchString = "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))"
+        return title.matches(pregMatchString.toRegex())
+    }
+
+    fun alartNotifTone(sound : Int){
         when (sound) {
             R.raw.xylophone_tone -> {
                 notification_alarm_NotificationMessagesAlarmSound?.stop()
@@ -536,54 +476,12 @@ class NotificationListener : NotificationListenerService() {
                 notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
                 notification_alarm_NotificationMessagesAlarmSound!!.start()
             }
-            R.raw.scorpion_theme -> {
+            R.raw.fade_to_black -> {
                 notification_alarm_NotificationMessagesAlarmSound?.stop()
                 notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
                 notification_alarm_NotificationMessagesAlarmSound!!.start()
             }
         }
-
-        val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
-        imgClose.visibility = View.VISIBLE
-        imgClose.setOnClickListener {
-            //System.exit(0)
-            windowManager?.removeView(view)
-            popupView = null
-            //effacer le window manager en rendre popup-view null pour lui réaffecter de nouvelle valeur
-
-            notification_alarm_NotificationMessagesAlarmSound?.stop()
-        }
-    }//TODO:améliorer l'algorithmie
-
-
-    private fun appNotifiable(sbp: StatusBarParcelable): Boolean {
-        return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
-                convertPackageToString(sbp.appNotifier!!) != ""
-    }
-
-    private fun convertPackageToString(packageName: String): String {
-        if (packageName == FACEBOOK_PACKAGE) {
-            return "Facebook"
-        } else if (packageName == MESSENGER_PACKAGE) {
-            return "Messenger"
-        } else if (packageName == WHATSAPP_SERVICE) {
-            return "WhatsApp"
-        } else if (packageName == GMAIL_PACKAGE) {
-            return "gmail"
-        } else if (packageName == OUTLOOK_PACKAGE) {
-            return "Outlook"
-        } else if (packageName == MESSAGE_PACKAGE || packageName == MESSAGE_SAMSUNG_PACKAGE || packageName == XIAOMI_MESSAGE_PACKAGE) {
-            return "message"
-        }
-        return ""
-    }
-
-    private fun isPhoneNumber(title: String): Boolean {
-        println("name equals :" + title)
-        val pregMatchString = "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))"
-        return title.matches(pregMatchString.toRegex())
     }
 
     companion object {

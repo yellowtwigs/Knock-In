@@ -332,7 +332,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms_selector);
         buttonEdit.setImageResource(R.drawable.ic_circular_edit);
-        buttonMail.setImageResource(R.drawable.ic_circular_gmail);
+        buttonMail.setImageResource(R.drawable.ic_circular_mail);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));

@@ -94,6 +94,9 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myViewHolder.myProductBuyImage.setEnabled(false);
         }
 
+        skuDetailsList.get(i).getOriginalPrice();
+        skuDetailsList.get(i).getPrice();
+
         //Product click
         myViewHolder.setIProductClickListener((view, position) -> {
             //Launch Billing flow

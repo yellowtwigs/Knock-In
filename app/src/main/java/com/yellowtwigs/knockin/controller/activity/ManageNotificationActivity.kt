@@ -742,8 +742,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -798,8 +797,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -854,8 +852,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -910,8 +907,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -966,8 +962,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1022,8 +1017,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1080,8 +1074,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1136,8 +1129,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1181,7 +1173,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
                 if (notifFunkySoundIsBought) {
 
-                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.off_the_curve_groove)
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.funk_yall)
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
@@ -1192,8 +1184,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1248,8 +1239,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1304,8 +1294,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1359,8 +1348,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1415,8 +1403,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1471,8 +1458,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1527,8 +1513,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1572,19 +1557,18 @@ class ManageNotificationActivity : AppCompatActivity() {
 
                 if (notifRelaxationSoundIsBought) {
 
-                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.scorpion_theme)
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.fade_to_black)
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
-                    edit.putInt("Alarm_Notif_Tone", R.raw.scorpion_theme)
+                    edit.putInt("Alarm_Notif_Tone", R.raw.fade_to_black)
                     edit.apply()
                 } else {
                     MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1639,8 +1623,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -1698,8 +1681,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setTitle(getString(R.string.in_app_popup_tone_available_title))
                             .setMessage(getString(R.string.in_app_popup_tone_available_message))
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                                finish()
+                                goToPremiumActivity()
                             }
                             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                 refreshChecked()
@@ -2319,7 +2301,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
-            R.raw.scorpion_theme -> {
+            R.raw.fade_to_black -> {
 
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
@@ -2471,6 +2453,11 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.VISIBLE
 
         //endregion
+    }
+
+    fun goToPremiumActivity(){
+        startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java).putExtra("fromManageNotification", true))
+        finish()
     }
 
     override fun onResume() {
