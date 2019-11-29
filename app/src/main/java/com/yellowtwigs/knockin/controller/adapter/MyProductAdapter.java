@@ -28,6 +28,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
     private PremiumActivity premiumActivity;
     private List<SkuDetails> skuDetailsList;
     private BillingClient billingClient;
+    private IProductClickListener iProductClickListener;
+
 
     public MyProductAdapter(PremiumActivity premiumActivity, List<SkuDetails> skuDetailsList, BillingClient billingClient) {
         this.premiumActivity = premiumActivity;
@@ -63,10 +65,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
 
         myViewHolder.myProductName.setText(text[0]);
 //        myViewHolder.myProductPrice.setText(skuDetailsList.get(i).getPrice());
-        myViewHolder.myProductLayout.setOnLongClickListener(v -> {
-            Toast.makeText(premiumActivity, skuDetailsList.get(i).getDescription(), Toast.LENGTH_LONG).show();
-            return true;
-        });
 
         if (skuDetailsList.get(i).getTitle().contains("Contacts")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_vip_icon);
@@ -78,24 +76,26 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_relax);
         }
 
-        myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone);
+        myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_selector);
 
         if (skuDetailsList.get(i).getTitle().contains("Contacts") && contactsUnlimitedIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
             myViewHolder.myProductBuyImage.setEnabled(false);
         } else if (skuDetailsList.get(i).getTitle().contains("Jazzy") && notifJazzySoundIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
             myViewHolder.myProductBuyImage.setEnabled(false);
         } else if (skuDetailsList.get(i).getTitle().contains("Funky") && notifFunkySoundIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
             myViewHolder.myProductBuyImage.setEnabled(false);
         }else if (skuDetailsList.get(i).getTitle().contains("Relaxation") && notifRelaxationSoundIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_on_smartphone_not_enabled);
+            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
             myViewHolder.myProductBuyImage.setEnabled(false);
         }
 
-        skuDetailsList.get(i).getOriginalPrice();
-        skuDetailsList.get(i).getPrice();
+        myViewHolder.myProductLayout.setOnClickListener(v -> {
+            Toast.makeText(premiumActivity, skuDetailsList.get(i).getDescription() + " " +
+                    skuDetailsList.get(i).getPrice(), Toast.LENGTH_LONG).show();
+        });
 
         //Product click
         myViewHolder.setIProductClickListener((view, position) -> {

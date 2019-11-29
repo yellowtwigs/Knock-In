@@ -108,8 +108,8 @@ interface ContactsDao {
      * @param profilePicture64 String   image du contact
      * @param priority Int  priorité du contact
      */
-    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture_str = :profilePicture64, contact_priority = :priority WHERE id = :id")
-    fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture64: String, priority: Int)
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, profile_picture_str = :profilePicture64, contact_priority = :priority , messenger_id = :messengerID WHERE id = :id")
+    fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture64: String, priority: Int, messengerID : String)
 
     /**
      * Update un [contact][ContactDB] sans image de profil grace à son id
@@ -117,8 +117,8 @@ interface ContactsDao {
      * @param firstName String  Prénom du contact
      * @param lastName String   Nom du contact
      */
-    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, contact_priority = :priority WHERE id = :id")
-    fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, priority: Int)
+    @Query("UPDATE contacts_table SET first_name = :firstName, last_name = :lastName, contact_priority = :priority, messenger_id = :messengerID  WHERE id = :id")
+    fun updateContactByIdWithoutPic(id: Int, firstName: String, lastName: String, priority: Int, messengerID : String)
 
     /**
      * Update un [contact][ContactDB] apres une synchronisation grace à son id

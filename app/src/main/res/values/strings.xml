@@ -152,7 +152,7 @@
     <string name="add_new_contact_toast_empty_name">Your contact must have a first name or a last name</string>
     <string name="add_new_contact_alert_dialog_message"> An existing contact is already using this name. Do you want to record it under this name anyway? </string>
     <string name="add_new_contact_alert_dialog_cancel_title">Warning</string>
-    <string name="add_new_contact_alert_dialog_cancel_message"> Your updates were not recorded, do you want to save them? </string>
+    <string name="add_new_contact_alert_dialog_cancel_message"> Your updates were not recorded, are you sure ? </string>
     <string name="add_new_contact_alert_dialog_photo_title">Add a picture</string>
     <string name="add_new_contact_alert_dialog_photo_camera">Camera</string>
     <string name="add_new_contact_alert_dialog_photo_galery">Gallery</string>

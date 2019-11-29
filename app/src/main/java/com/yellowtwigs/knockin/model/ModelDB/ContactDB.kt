@@ -39,6 +39,10 @@ data class ContactDB(
         /**
          * Le champ si Oui = 1 ou Non = 0, ce contact est un favori
          */
-        @ColumnInfo(name = "is_favorite") val favorite: Int
+        @ColumnInfo(name = "is_favorite") val favorite: Int,
+        /**
+         * Id Messenger du contact
+         */
+        @ColumnInfo(name = "messenger_id") val messengerId: String
 
 )

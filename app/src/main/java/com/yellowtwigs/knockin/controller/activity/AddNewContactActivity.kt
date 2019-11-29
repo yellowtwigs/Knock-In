@@ -185,7 +185,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
                             "", avatar, add_new_contact_Priority!!.selectedItemPosition,
-                            add_new_contact_ImgString!!, 0)
+                            add_new_contact_ImgString!!, 0, "")
 
                     println(contactData)
                     var isDuplicate = false

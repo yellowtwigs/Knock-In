@@ -19,6 +19,10 @@ class ContactWithAllInformation {
         return contactDB!!.id!!
     }
 
+    fun getMessengerID(): String {
+        return contactDB!!.messengerId
+    }
+
     /*@Relation(parentColumn = "id",entityColumn = "id_contact",entity = Notification.class)
     public List<Notification> NotificationList;*/
     fun getFirstPhoneNumber(): String {

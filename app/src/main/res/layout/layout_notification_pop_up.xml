@@ -61,8 +61,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ListView
-            android:id="@+id/notification_pop_up_listView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notification_popup_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundColor"/>

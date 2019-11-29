@@ -132,7 +132,7 @@
     <string name="add_new_contact_mail">E-mail</string>
     <string name="add_new_contact_mail_mobile">Bureau</string>
 
-    <string name="add_new_contact_priority_0">Indésirable</string>
+    <string name="add_new_contact_priority_0">Sans notification</string>
 
     <string-array name="add_new_contact_mail_arrays">
         <item>Bureau</item>
@@ -150,7 +150,7 @@
     <string name="add_new_contact_toast_empty_name">Votre contact doit posséder au moins un nom ou un prénom</string>
     <string name="add_new_contact_alert_dialog_message">Un contact porte déjà ce nom. Voulez-vous tout de même l\'enregistrer sous ce nom ? </string>
     <string name="add_new_contact_alert_dialog_cancel_title">Attention</string>
-    <string name="add_new_contact_alert_dialog_cancel_message">Vos modifications n’ont pas été enregistrées, voulez-vous les sauver ?</string>
+    <string name="add_new_contact_alert_dialog_cancel_message">Vos modifications n’ont pas été enregistrées, êtes-vous sûr de vouloir quitter la page ?</string>
     <string name="add_new_contact_alert_dialog_photo_title">Ajouter une image</string>
     <string name="add_new_contact_alert_dialog_photo_camera">Caméra</string>
     <string name="add_new_contact_alert_dialog_photo_galery">Galerie</string>
@@ -264,7 +264,7 @@
     <string name="notification_vip_default_message_tone">Sons des messages VIP par défaut</string>
     <string name="notification_vip_jazzy_message_tone">Sons Jazz des messages VIP</string>
     <string name="notification_vip_funky_message_tone">Sons Funky des messages VIP</string>
-    <string name="notification_vip_relaxation_message_tone">VIP Relaxation Messages Tone</string>
+    <string name="notification_vip_relaxation_message_tone">Sons Relaxation des messages VIP</string>
 
     <string name="notification_vip_message_tone_no_sound">Aucune</string>
     <string name="notification_vip_message_tone_default">Par défaut</string>

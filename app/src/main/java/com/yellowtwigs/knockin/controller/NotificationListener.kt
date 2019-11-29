@@ -2,25 +2,33 @@ package com.yellowtwigs.knockin.controller
 
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.os.Build
+import android.os.Handler
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
-import android.widget.ListView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.NotificationAlarmActivity
-import com.yellowtwigs.knockin.model.*
+import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
-import kotlin.collections.ArrayList
-import android.util.DisplayMetrics
+import com.yellowtwigs.knockin.model.StatusBarParcelable
 
 /**
  * Service qui nous permet de traiter les notifications
@@ -35,7 +43,16 @@ class NotificationListener : NotificationListenerService() {
     private var oldPosY: Float = 0.0f
     private var popupView: View? = null
     private var windowManager: WindowManager? = null
-    private var listViews: ListView? = null
+    private var notificationPopupRecyclerView: RecyclerView? = null
+
+    private var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
+
+    private var sharedAlarmNotifDurationPreferences: SharedPreferences? = null
+    private var duration = 0
+
+    private var sharedAlarmNotifCanRingtonePreferences: SharedPreferences? = null
+    private var canRingtone = false
+
     /**
      * La première fois que le service est crée nous définnissons les valeurs pour les threads
      */
@@ -143,7 +160,6 @@ class NotificationListener : NotificationListenerService() {
                                     i.putExtra("notification", sbp)
                                     startActivity(i)
                                 } else {
-
                                     println("screenIsUnlocked")
                                     displayLayout(sbp, sharedPreferences)
                                     cancelNotification(sbn.key)
@@ -174,9 +190,9 @@ class NotificationListener : NotificationListenerService() {
                 return false
             }
         }
-        /*if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp - lastInsert.timestamp < 1000) {
+        if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp - lastInsert.timestamp < 1000) {
             return false
-        }*/
+        }
         return true
     }
     //SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(Calendar.getInstance().timeInMillis.toString().toLong()))    /// timestamp to date
@@ -215,6 +231,33 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
+
+        val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
+
+        sharedAlarmNotifDurationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
+        duration = sharedAlarmNotifDurationPreferences!!.getInt("Alarm_Notif_Duration", 0)
+
+        sharedAlarmNotifCanRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
+        canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", false)
+
+        if (canRingtone) {
+            alartNotifTone(sound)
+        }
+
+        val handler = Handler()
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                canRingtone = true
+
+                val edit: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
+                edit.putBoolean("Can_RingTone", canRingtone)
+                edit.apply()
+
+                handler.postDelayed(this, duration.toLong())
+            }
+        }, duration.toLong())
+
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             //this.cancelNotification(sbn.key)
 
@@ -323,18 +366,19 @@ class NotificationListener : NotificationListenerService() {
 
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
-        adapterNotification = NotifAdapter(applicationContext, notifications, windowManager!!, view!!)
-        listViews = view.findViewById(R.id.notification_pop_up_listView)
-        listViews?.adapter = adapterNotification
-
+        adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view!!)
+        notificationPopupRecyclerView = view.findViewById(R.id.notification_popup_recycler_view)
+        notificationPopupRecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
+        notificationPopupRecyclerView?.adapter = adapterNotification
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
+        itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
 
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
-        val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
-
         val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
-        notification_alarm_NotificationMessagesAlarmSound?.stop()
-        alartNotifTone(sound)
+        if (notifications.size == 1) {
+            alartNotifTone(sound)
+        }
 
         val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE
@@ -347,7 +391,6 @@ class NotificationListener : NotificationListenerService() {
             notification_alarm_NotificationMessagesAlarmSound?.stop()
         }
     }//TODO:améliorer l'algorithmie
-
 
     private fun appNotifiable(sbp: StatusBarParcelable): Boolean {
         return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
@@ -379,109 +422,18 @@ class NotificationListener : NotificationListenerService() {
         return title.matches(pregMatchString.toRegex())
     }
 
-    fun alartNotifTone(sound : Int){
-        when (sound) {
-            R.raw.xylophone_tone -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.sms_ring -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.bass_slap -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.off_the_curve_groove -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.funk_yall -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.u_cant_hold_no_groove -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.cold_sweat -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.keyboard_funky_tone -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.caravan -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.moanin_jazz -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.blue_bossa -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.dolphin_dance -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.autumn_leaves -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.freddie_freeloader -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.beautiful_chords_progression -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.interstellar_main_theme -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.relax_sms -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.gravity -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.slow_dancing -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.fade_to_black -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-        }
+    fun alartNotifTone(sound: Int) {
+        notification_alarm_NotificationMessagesAlarmSound?.stop()
+        notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
+        notification_alarm_NotificationMessagesAlarmSound!!.start()
+
+        val editDuration: SharedPreferences.Editor = sharedAlarmNotifDurationPreferences!!.edit()
+        editDuration.putInt("Alarm_Notif_Duration", notification_alarm_NotificationMessagesAlarmSound!!.duration)
+        editDuration.apply()
+
+        val editCanRingtone: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
+        editCanRingtone.putBoolean("Can_RingTone", canRingtone)
+        editCanRingtone.apply()
     }
 
     companion object {
@@ -498,6 +450,6 @@ class NotificationListener : NotificationListenerService() {
 
         // var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
         @SuppressLint("StaticFieldLeak")
-        var adapterNotification: NotifAdapter? = null
+        var adapterNotification: NotifPopupRecyclerViewAdapter? = null
     }
 }

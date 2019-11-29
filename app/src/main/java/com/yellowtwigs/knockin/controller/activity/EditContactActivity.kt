@@ -66,6 +66,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_PhoneNumber: TextInputLayout? = null
     private var edit_contact_FixNumber: TextInputLayout? = null
     private var edit_contact_Mail: TextInputLayout? = null
+    private var edit_contact_Messenger: TextInputLayout? = null
 
     private var edit_contact_RoundedImageView: CircularImageView? = null
     private var edit_contact_Priority: Spinner? = null
@@ -93,6 +94,7 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_fix_property: String = ""
     private var edit_contact_mail_property: String = ""
     private var edit_contact_mail: String = ""
+    private var edit_contact_messenger: String = ""
     private var edit_contact_rounded_image: Int = 0
     private var edit_contact_image64: String = ""
     private var edit_contact_priority: Int = 1
@@ -180,6 +182,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
         edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
         edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
+        edit_contact_Messenger = findViewById(R.id.edit_contact_messenger_id_edit_text)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Fix_Property = findViewById(R.id.edit_contact_phone_number_spinner_fix)
@@ -224,6 +227,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_mail = tmpMail.content
             edit_contact_mail_property = tmpMail.tag
             edit_contact_priority = contact.contactDB!!.contactPriority
+            edit_contact_messenger = contact.contactDB!!.messengerId
             edit_contact_image64 = contact.contactDB!!.profilePicture64
             edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64))
         } else {
@@ -302,6 +306,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_PhoneNumber!!.editText!!.setText(edit_contact_phone_number)
         edit_contact_FixNumber!!.editText!!.setText(edit_contact_fix_number)
         edit_contact_Mail!!.editText!!.setText(edit_contact_mail)
+        edit_contact_Messenger!!.editText!!.setText(edit_contact_messenger)
         edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property, edit_contact_Mail_Property!!))
         edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property, edit_contact_Phone_Property!!))
         edit_contact_Fix_Property!!.setSelection(getPosItemSpinner(edit_contact_fix_property, edit_contact_Fix_Property!!))
@@ -309,6 +314,7 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
         textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
         textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
+        textChanged(edit_contact_Messenger, edit_contact_Messenger!!.editText!!.text?.toString())
 
         //endregion
 
@@ -446,7 +452,8 @@ class EditContactActivity : AppCompatActivity() {
                         edit_contact_PhoneNumber!!.editText!!.text.toString() != edit_contact_phone_number ||
                         edit_contact_FixNumber!!.editText!!.text.toString() != edit_contact_fix_number ||
                         edit_contact_Mail!!.editText!!.text.toString() != edit_contact_mail ||
-                        isFavorite != isFavoriteChanged || edit_contact_imgStringChanged) {
+                        isFavorite != isFavoriteChanged || edit_contact_imgStringChanged||
+                        edit_contact_Messenger!!.editText!!.text.toString() != edit_contact_messenger) {
 
                     if (nb_Contacts_VIP > 4 && edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_Priority!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -496,6 +503,7 @@ class EditContactActivity : AppCompatActivity() {
                                                 ContactsContract.CommonDataKinds.Email.TYPE_WORK
                                         )
                                         putExtra(ContactsContract.Intents.Insert.PHONE, edit_contact_PhoneNumber?.editText!!.text.toString())
+
                                         putExtra(
                                                 ContactsContract.Intents.Insert.PHONE_TYPE,
                                                 ContactsContract.CommonDataKinds.Phone.TYPE_WORK
@@ -706,11 +714,11 @@ class EditContactActivity : AppCompatActivity() {
                 if (edit_contact_imgString != null) {
 
                     //println("edit contact rounded != null "+edit_contact_rounded_image )
-                    edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition) //edit contact rounded maybe not work
+                    edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition, edit_contact_Messenger!!.editText!!.text.toString()) //edit contact rounded maybe not work
 
                 } else {
                     //println("edit contact rounded == null "+edit_contact_rounded_image )
-                    edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_Priority!!.selectedItemPosition)
+                    edit_contact_ContactsDatabase?.contactsDao()?.updateContactByIdWithoutPic(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_Priority!!.selectedItemPosition, edit_contact_Messenger!!.editText!!.text.toString())
                 }
                 //println("modify on contact " + contact.contactDB)
 

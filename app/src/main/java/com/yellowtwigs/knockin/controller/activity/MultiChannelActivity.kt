@@ -110,7 +110,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
         //region ======================================== Listeners =========================================
 
-        multi_channel_SendMessageButton!!.setOnClickListener {
+        multi_channel_SendMessageButton!!.setOnClickListener  {
             if (multi_channel_SendMessageEditText!!.text.toString() != "") {
                 if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0 && multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
                     multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())

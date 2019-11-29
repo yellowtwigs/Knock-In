@@ -295,7 +295,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             "com.facebook.katana" -> goToFacebook()
 
-            "com.facebook.orca" -> openMessenger("", this)
+            "com.facebook.orca" -> {
+                if (contact != null) {
+                    openMessenger(contact.getMessengerID(), this)
+                } else {
+                    openMessenger("", this)
+                }
+            }
 
             "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
                 if (contact != null) {
@@ -613,7 +619,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             NotificationListener.MESSENGER_PACKAGE -> true
             NotificationListener.WHATSAPP_SERVICE -> true
             NotificationListener.GMAIL_PACKAGE -> true
-            NotificationListener.MESSAGE_PACKAGE, NotificationListener.MESSAGE_SAMSUNG_PACKAGE -> true
+            NotificationListener.MESSAGE_PACKAGE, NotificationListener.MESSAGE_SAMSUNG_PACKAGE, NotificationListener.XIAOMI_MESSAGE_PACKAGE -> true
             NotificationListener.TELEGRAM_PACKAGE -> true
             else -> false
         }

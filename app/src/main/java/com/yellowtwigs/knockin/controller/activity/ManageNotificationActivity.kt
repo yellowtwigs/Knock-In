@@ -1395,6 +1395,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 if (notifRelaxationSoundIsBought) {
+                    settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.beautiful_chords_progression)
+                    settings_NotificationMessagesAlarmSound!!.start()
+
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
                     edit.putInt("Alarm_Notif_Tone", R.raw.beautiful_chords_progression)
                     edit.apply()

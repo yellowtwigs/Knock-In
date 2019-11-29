@@ -33,6 +33,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var recyclerProduct: RecyclerView? = null
     private var sharedProductNotifFunkySoundPreferences: SharedPreferences? = null
     private var sharedProductNotifJazzySoundPreferences: SharedPreferences? = null
+    private var sharedProductNotifRelaxationSoundPreferences: SharedPreferences? = null
     private var sharedProductContactsUnlimitedPreferences: SharedPreferences? = null
 
     private var premium_activity_ToolbarLayout: RelativeLayout? = null
@@ -42,7 +43,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var premium_activity_ToolbarBackOnPressed: AppCompatImageView? = null
 
     private var mDelayHandler: Handler? = null
-    private val SPLASH_DELAY: Long = 100 //3 seconds
+    private val SPLASH_DELAY: Long = 300
 
     private var fromManageNotification = false
 
@@ -71,7 +72,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         sharedProductNotifFunkySoundPreferences = this.getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
         sharedProductNotifJazzySoundPreferences = this.getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
-        sharedProductNotifJazzySoundPreferences = this.getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
+        sharedProductNotifRelaxationSoundPreferences = this.getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
         sharedProductContactsUnlimitedPreferences = this.getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
 
         premium_activity_ToolbarLayout = findViewById(R.id.premium_activity_toolbar_layout)
@@ -231,7 +232,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 }
                 purchases[0].originalJson.contains("notifications_vip_relaxation_theme") -> {
                     Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
-                    val edit = sharedProductNotifJazzySoundPreferences!!.edit()
+                    val edit = sharedProductNotifRelaxationSoundPreferences!!.edit()
                     edit.putBoolean("Notif_Relaxation_Sound_IsBought", true)
                     edit.apply()
                     backToManageNotifAfterBuying()
@@ -250,11 +251,11 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (fromManageNotification) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle("Achat Effectué")
-                    .setMessage("Voulez-vous retourner à la page des Notifcations ?")
+                    .setMessage("Voulez-vous retourner à la page des Notifications ?")
                     .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                         startActivity(Intent(this@PremiumActivity, ManageNotificationActivity::class.java).putExtra("fromMultiSelectActivity", true))
                     }
-                    .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                    .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                     }
                     .show()
         }

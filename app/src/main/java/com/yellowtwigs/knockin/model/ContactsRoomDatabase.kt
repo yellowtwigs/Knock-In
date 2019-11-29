@@ -13,7 +13,7 @@ import com.yellowtwigs.knockin.model.requestDB.*
  * La Classe qui permet de créer la base de données et de la garder à jour
  * @author Ryan Granet
  */
-@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class], version = 13)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class], version = 14)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -46,6 +46,7 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                         .addMigrations(MIGRATION_10_11)
                         .addMigrations(MIGRATION_11_12)
                         .addMigrations(MIGRATION_12_13)
+                        .addMigrations(MIGRATION_13_14)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -119,6 +120,12 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
         private val MIGRATION_12_13 = object : Migration(12, 13) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN mail_name TEXT DEFAULT '' NOT NULL")
+            }
+        }
+
+        private val MIGRATION_13_14 = object : Migration(13, 14) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN messenger_id TEXT DEFAULT '' NOT NULL")
             }
         }
 

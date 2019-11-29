@@ -38,7 +38,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="text"
-            android:textAlignment="viewStart"
             android:textColor="?attr/textColor"
             app:layout_constraintStart_toEndOf="@+id/notif_history_item_app_image"
             app:layout_constraintTop_toTopOf="parent" />
