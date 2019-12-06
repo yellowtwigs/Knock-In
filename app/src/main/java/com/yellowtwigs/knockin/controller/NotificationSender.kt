@@ -89,7 +89,7 @@ class NotificationSender : BroadcastReceiver() {
     }
 
     private fun isNotificationServiceEnabled(context: Context): Boolean {
-        val pkgName = MainActivity::class.java.`package`.name
+        val pkgName = MainActivity::class.java.`package`!!.name
         val str = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
         if (!TextUtils.isEmpty(str)) {
             val names = str.split(":")

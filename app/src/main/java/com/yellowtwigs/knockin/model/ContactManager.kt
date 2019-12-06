@@ -453,7 +453,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         val contactDetails = arrayListOf<Map<Int, Any>>()
         var idAndMail: Map<Int, Any>
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC")
-        while (phonecontact.moveToNext()) {
+        while (phonecontact!!.moveToNext()) {
             //recupert l'id du contact
             val phoneId = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
             //recupert l'email du contact
@@ -486,7 +486,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         var idAndPhoneNumber: Map<Int, Any>
         //requete pour récuperer les numéros de téléphone des contactList
         val phonecontact = main_contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
-        while (phonecontact.moveToNext()) {
+        while (phonecontact!!.moveToNext()) {
             //récupère l'id d'un contact
             val phoneId = phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
             //récupère le numéro de téléphone d'un contact
@@ -891,7 +891,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         val phoneContact = main_contentResolver.query(ContactsContract.Data.CONTENT_URI, null, where, null, ContactsContract.Data.DISPLAY_NAME + " ASC")
         var member: Triple<Int, String?, String?>
         val groupMembers = arrayListOf<Triple<Int, String?, String?>>()
-        while (phoneContact.moveToNext()) {
+        while (phoneContact!!.moveToNext()) {
             //récupère l'id du contact
             val contactId = phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Data.CONTACT_ID))
             //récupère le nom du contact
