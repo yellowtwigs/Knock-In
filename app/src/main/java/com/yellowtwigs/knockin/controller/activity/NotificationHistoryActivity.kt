@@ -253,8 +253,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         notification_history_ToolbarMultiSelectModeDelete!!.setOnClickListener {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
-                    .setMessage("Vous allez supprimer ces notifs")
+                    .setTitle(getString(R.string.notification_history_delete_notifications))
+                    .setMessage(getString(R.string.notification_history_delete_notifications_confirmation))
                     .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
                         listOfItemSelected.forEach {
                             notification_history_NotificationsDatabase!!.notificationsDao().deleteNotificationById(it.id!!)
@@ -621,6 +621,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             NotificationListener.GMAIL_PACKAGE -> true
             NotificationListener.MESSAGE_PACKAGE, NotificationListener.MESSAGE_SAMSUNG_PACKAGE, NotificationListener.XIAOMI_MESSAGE_PACKAGE -> true
             NotificationListener.TELEGRAM_PACKAGE -> true
+            NotificationListener.INSTAGRAM_PACKAGE -> true
             else -> false
         }
     }

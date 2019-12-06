@@ -135,6 +135,7 @@ class NotificationListener : NotificationListenerService() {
                                         val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
                                         i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                         i.putExtra("notification", sbp)
+                                        this.cancelNotification(sbn.key)
                                         startActivity(i)
                                     } else {
                                         println("screenIsUnlocked")
@@ -366,9 +367,9 @@ class NotificationListener : NotificationListenerService() {
 
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
-        adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view!!)
-        notificationPopupRecyclerView = view.findViewById(R.id.notification_popup_recycler_view)
+        notificationPopupRecyclerView = view!!.findViewById(R.id.notification_popup_recycler_view)
         notificationPopupRecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
+        adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view)
         notificationPopupRecyclerView?.adapter = adapterNotification
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
@@ -447,6 +448,7 @@ class NotificationListener : NotificationListenerService() {
         const val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
         const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
         const val TELEGRAM_PACKAGE = "org.telegram.messenger"
+        const val INSTAGRAM_PACKAGE = "com.instagram.android"
 
         // var listNotif: MutableList<StatusBarParcelable> = mutableListOf<StatusBarParcelable>()
         @SuppressLint("StaticFieldLeak")

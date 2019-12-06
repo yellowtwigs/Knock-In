@@ -744,7 +744,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -799,7 +799,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -854,7 +854,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -909,7 +909,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -964,7 +964,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1019,7 +1019,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1076,7 +1076,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1131,7 +1131,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1186,7 +1186,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1241,7 +1241,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1296,7 +1296,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1350,7 +1350,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1408,7 +1408,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1463,7 +1463,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1518,7 +1518,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1573,7 +1573,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1628,7 +1628,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1686,7 +1686,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                                 goToPremiumActivity()
                             }
-                            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                                 refreshChecked()
                             }
                             .show()
@@ -1754,7 +1754,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                     edit.apply()
                     closeContextMenu()
                 }
-                .setNegativeButton(R.string.alert_dialog_no)
+                .setNegativeButton(R.string.alert_dialog_later)
                 { _, _ ->
                     closeContextMenu()
 

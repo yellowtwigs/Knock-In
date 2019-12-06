@@ -267,13 +267,6 @@ class AddNewContactActivity : AppCompatActivity() {
             isFavorite = false
         }
 
-        //endregion
-
-        // drop list
-        val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
-        val array_adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, priority_list)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-
         //disable keyboard window
         add_new_contact_layout.setOnTouchListener { _, _ ->
             val view = this@AddNewContactActivity.currentFocus
@@ -283,7 +276,12 @@ class AddNewContactActivity : AppCompatActivity() {
             }
             true
         }
-        //
+
+        //endregion
+
+        // drop list
+        val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
+        val array_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
         add_new_contact_Priority!!.adapter = array_adapter
         add_new_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {

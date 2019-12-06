@@ -241,7 +241,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         final ImageView buttonSMS = new ImageView(context);
         final ImageView buttonEdit = new ImageView(context);
         final ImageView buttonMail = new ImageView(context);
-        final ImageView buttonMessenger = new ImageView(context);
+//        final ImageView buttonMessenger = new ImageView(context);
 
         //  buttonMessenger.setId(0);
         buttonCall.setId(1);
@@ -249,7 +249,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         buttonWhatsApp.setId(3);
         buttonEdit.setId(4);
         buttonMail.setId(5);
-        buttonMessenger.setId(6);
+//        buttonMessenger.setId(6);
 
         //buttonMessenger.setImageDrawable(iconMessenger);
         if (contact.getFavorite() == 1) {
@@ -262,8 +262,8 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms_selector);
         buttonEdit.setImageResource(R.drawable.ic_circular_edit);
-        buttonMail.setImageResource(R.drawable.ic_circular_mail);
-        buttonMessenger.setImageResource(R.drawable.ic_circular_messenger);
+        buttonMail.setImageResource(R.drawable.ic_circular_mail); // toto
+//        buttonMessenger.setImageResource(R.drawable.ic_circular_messenger);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
@@ -312,7 +312,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                     .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
         if (!getItem(position).getMessengerID().equals("")) {
-            builder.addSubActionView(builderIcon.setContentView(buttonMessenger, layoutParams).build(), diametreBoutton, diametreBoutton);
+//            builder.addSubActionView(builderIcon.setContentView(buttonMessenger, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
         /*if (!getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber()).equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
@@ -361,22 +361,26 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                 context.startActivity(i);
 
-            } else if (v.getId() == buttonMessenger.getId()) {
-
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + getItem(position).getMessengerID()));
-                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-
             } else if (v.getId() == buttonMail.getId()) {
 
                 String mail = getItem(position).getFirstMail();
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:"));
+                //intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
+                System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                 context.startActivity(intent);
             }
+
+//            else if (v.getId() == buttonMessenger.getId()) {
+//
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + getItem(position).getMessengerID()));
+//                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
+//
+//            }
             selectMenu.close(false);
         };
 
@@ -472,7 +476,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);
-        buttonMessenger.setOnClickListener(buttonListener);
+//        buttonMessenger.setOnClickListener(buttonListener);
 
 //        holder.gridContactItemLayout.setOnClickListener(v -> {
 //            if (selectMenu.isOpen()) {

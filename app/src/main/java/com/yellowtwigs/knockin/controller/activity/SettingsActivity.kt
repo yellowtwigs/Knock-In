@@ -187,9 +187,6 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-    }
-
     companion object {
         const val REQUEST_CODE_SMS_AND_CALL = 5
     }

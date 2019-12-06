@@ -82,7 +82,7 @@ class MultiSelectActivity : AppCompatActivity() {
                             startActivity(Intent(this@MultiSelectActivity, PremiumActivity::class.java).putExtra("fromMultiSelectActivity", true))
                             firstClick = true
                         }
-                        .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                        .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                         }
                         .show()
 //                firstClick = false

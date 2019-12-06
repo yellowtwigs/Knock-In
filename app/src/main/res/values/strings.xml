@@ -134,7 +134,7 @@
     <string name="add_new_contact_mail">E-mail</string>
     <string name="add_new_contact_mail_mobile">Office</string>
 
-    <string name="add_new_contact_priority_0">Unwanted</string>
+    <string name="add_new_contact_priority_0">No notification</string>
 
     <string-array name="add_new_contact_mail_arrays">
         <item>Office</item>
@@ -315,6 +315,8 @@
     <!-- region Notification History -->
 
     <string name="notification_history_search_hint">Search</string>
+    <string name="notification_history_delete_notifications">Delete one or more notifications</string>
+    <string name="notification_history_delete_notifications_confirmation">Are you sure ?</string>
 
     <!-- endregion -->
 

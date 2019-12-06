@@ -315,6 +315,9 @@
     <!-- region Notification History -->
 
     <string name="notification_history_search_hint">Rechercher</string>
+    <string name="notification_history_delete_notifications">Supprimer une ou plusieurs notifications</string>
+    <string name="notification_history_delete_notifications_confirmation">Êtes-vous sûr de votre choix ?</string>
+
 
     <!-- endregion -->
 

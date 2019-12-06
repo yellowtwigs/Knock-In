@@ -8,8 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -36,6 +35,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
 
+    private var sharedAlarmNotifDurationPreferences: SharedPreferences? = null
+    private var duration = 0
+
+    private var sharedAlarmNotifCanRingtonePreferences: SharedPreferences? = null
+    private var canRingtone = false
+
     private var isSMS = false
 
     //endregion
@@ -48,6 +53,17 @@ class NotificationAlarmActivity : AppCompatActivity() {
         //region ==================================== SharedPreferences =====================================
 
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
+
+        sharedAlarmNotifDurationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
+        duration = sharedAlarmNotifDurationPreferences!!.getInt("Alarm_Notif_Duration", 0)
+
+        sharedAlarmNotifCanRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
+        canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", false)
+
+        if (canRingtone) {
+            alartNotifTone(sound)
+        }
 
         //endregion
 
@@ -116,14 +132,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
         //region sound + vibration
         /* sound.start()
          sound.isLooping=true*/
-        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
-        alartNotifTone(sound)
 
 //        val vibration = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            val thread = Thread {
 //                val timeWhenLaunch = System.currentTimeMillis()
-//                while (isOpen && System.currentTimeMillis() - timeWhenLaunch < 20 * 1000) {
+//                while (System.currentTimeMillis() - timeWhenLaunch < 20 * 1000) {
 //                    vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
 //                    Thread.sleep(1000)
 //                }
@@ -135,6 +149,19 @@ class NotificationAlarmActivity : AppCompatActivity() {
 //            //deprecated in API 26
 //            vibration.vibrate(500)
 //        }
+
+        val handler = Handler()
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                canRingtone = true
+
+                val edit: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
+                edit.putBoolean("Can_RingTone", canRingtone)
+                edit.apply()
+
+                handler.postDelayed(this, duration.toLong())
+            }
+        }, duration.toLong())
 
         //endregion
 
@@ -209,107 +236,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
     }
 
     fun alartNotifTone(sound : Int){
-        when (sound) {
-            R.raw.xylophone_tone -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.sms_ring -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.bass_slap -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.off_the_curve_groove -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.funk_yall -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.u_cant_hold_no_groove -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.cold_sweat -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.keyboard_funky_tone -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.caravan -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.moanin_jazz -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.blue_bossa -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.dolphin_dance -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.autumn_leaves -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.freddie_freeloader -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.beautiful_chords_progression -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.interstellar_main_theme -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.relax_sms -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.gravity -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.slow_dancing -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-            R.raw.fade_to_black -> {
-                notification_alarm_NotificationMessagesAlarmSound?.stop()
-                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-                notification_alarm_NotificationMessagesAlarmSound!!.start()
-            }
-        }
+        notification_alarm_NotificationMessagesAlarmSound?.stop()
+        notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
+        notification_alarm_NotificationMessagesAlarmSound!!.start()
     }
 }
