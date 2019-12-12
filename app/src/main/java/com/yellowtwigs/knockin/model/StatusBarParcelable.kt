@@ -22,7 +22,7 @@ class StatusBarParcelable : Parcelable {
     private var tailleList: Int = 0 //Taille de la list contenant tous les champs de la notification
     val key = ArrayList<String>() //List des clés des attributs de la notification
 
-    val statusBarNotificationInfo = HashMap<String, Any?>()
+    val statusBarNotificationInfo = HashMap<String, Any>()
 
     constructor(sbn: StatusBarNotification) {
         id = sbn.id
@@ -46,6 +46,8 @@ class StatusBarParcelable : Parcelable {
         }
         //Log.i(TAG, "ID:" + sbn.getId());
         //Log.i(TAG, "Posted by:" + sbn.getPackageName());
+
+
     }
 
     override fun describeContents(): Int {
@@ -86,7 +88,7 @@ class StatusBarParcelable : Parcelable {
         for (i in 0 until tailleList) {
             val keysbn = `in`.readString()
             val value = `in`.readString()
-            key.add(keysbn!!)
+            key.add(keysbn)
             statusBarNotificationInfo[keysbn] = value
             if (key != null) {
             }
@@ -137,4 +139,5 @@ class StatusBarParcelable : Parcelable {
     }
 
     var TAG = StatusBarParcelable::class.java.simpleName
+
 }
