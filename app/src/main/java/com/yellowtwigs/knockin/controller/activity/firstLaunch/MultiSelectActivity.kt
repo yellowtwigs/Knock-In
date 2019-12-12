@@ -58,6 +58,9 @@ class MultiSelectActivity : AppCompatActivity() {
 
         val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
 
+        val sharedAlarmNotifInAppPreferences : SharedPreferences = getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
+        val contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false)
+
         adapter = SelectContactAdapter(this, gestionnaireContact, 4)
 
         multi_select_NumberOfContactsSelected!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
@@ -74,7 +77,7 @@ class MultiSelectActivity : AppCompatActivity() {
             adapter!!.itemSelected(position)
             selectedItem(listItemSelect, gestionnaireContact!!.contactList[position])
 
-            if (listItemSelect.size > 5 && firstClick) {
+            if (listItemSelect.size > 5 && firstClick && !contactsUnlimitedIsBought) {
                 MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                         .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
                         .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
@@ -85,15 +88,14 @@ class MultiSelectActivity : AppCompatActivity() {
                         .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                         }
                         .show()
-//                firstClick = false
             } else {
                 adapter!!.notifyDataSetChanged()
                 multi_select_NumberOfContactsSelected!!.text = String.format(applicationContext.resources.getString(R.string.multi_select_nb_contact), adapter!!.listContactSelect.size)
-            }
 
-            val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
-            edit.putInt("nb_Contacts_VIP", listItemSelect.size)
-            edit.apply()
+                val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                edit.putInt("nb_Contacts_VIP", listItemSelect.size)
+                edit.apply()
+            }
         }
         //endregion
     }

@@ -324,12 +324,12 @@ class AddNewContactActivity : AppCompatActivity() {
 
         val phoneTagList = resources.getStringArray(R.array.add_new_contact_phone_number_arrays)
         val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+//        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         add_new_contact_PhoneProperty!!.adapter = adapterPhoneTagList
 
         val mailTagList = resources.getStringArray(R.array.add_new_contact_mail_arrays)
         val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
-        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+//        array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         add_new_contact_MailProperty!!.adapter = adapterMailTagList
         android.R.layout.simple_spinner_item
     }

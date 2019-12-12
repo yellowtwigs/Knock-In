@@ -381,6 +381,10 @@ class NotificationListener : NotificationListenerService() {
             alartNotifTone(sound)
         }
 
+        if (notifications.size == 0) {
+            notification_alarm_NotificationMessagesAlarmSound?.stop()
+        }
+
         val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE
         imgClose.setOnClickListener {

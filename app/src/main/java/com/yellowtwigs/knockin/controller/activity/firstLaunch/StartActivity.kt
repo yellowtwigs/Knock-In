@@ -157,7 +157,6 @@ class StartActivity : AppCompatActivity() {
                 }
             }
             verifiedNotification.start()
-
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
@@ -221,14 +220,16 @@ class StartActivity : AppCompatActivity() {
             start_activity_Permissions!!.visibility = View.INVISIBLE
             start_activity_PermissionsLoading!!.visibility = View.VISIBLE
         }
+
         //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
         start_activity_Next!!.setOnClickListener {
             buildMultiSelectAlertDialog()
         }
         //lors du click affichage d'un message de prévention
         start_activity_Skip!!.setOnClickListener {
+//            start_activity_ImportContacts!!.visibility = View.INVISIBLE
             buildMultiSelectAlertDialog()
-//            buildLeaveAlertDialog()
+            buildLeaveAlertDialog()
         }
 
 
