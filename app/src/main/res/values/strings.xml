@@ -133,6 +133,8 @@
 
     <string name="add_new_contact_mail">E-mail</string>
     <string name="add_new_contact_mail_mobile">Office</string>
+    <string name="add_new_contact_mail_identifier">Identifier E-mail</string>
+    <string name="add_new_contact_mail_identifier_help">Corresponds to the identifier visible when receiving an email</string>
 
     <string name="add_new_contact_priority_0">No notification</string>
 

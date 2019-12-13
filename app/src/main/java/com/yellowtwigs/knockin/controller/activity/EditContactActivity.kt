@@ -69,13 +69,14 @@ class EditContactActivity : AppCompatActivity() {
     //    private var edit_contact_Messenger: TextInputLayout? = null
     private var edit_contact_Mail_Name: TextInputLayout? = null
 
+    private var edit_contact_Mail_Identifier_Help: AppCompatImageView? = null
+
     private var edit_contact_RoundedImageView: CircularImageView? = null
     private var edit_contact_Priority: Spinner? = null
     private var edit_contact_Priority_explain: TextView? = null
     private var edit_contact_Phone_Property: Spinner? = null
     private var edit_contact_Fix_Property: Spinner? = null
     private var edit_contact_Mail_Property: Spinner? = null
-    private var edit_contact_AddFieldButton: Button? = null
 
     private var edit_contact_Return: AppCompatImageView? = null
     private var edit_contact_DeleteContact: AppCompatImageView? = null
@@ -188,6 +189,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
 //        edit_contact_Messenger = findViewById(R.id.edit_contact_messenger_id_edit_text)
         edit_contact_Mail_Name = findViewById(R.id.edit_contact_mail_id_edit_text)
+        edit_contact_Mail_Identifier_Help = findViewById(R.id.edit_contact_mail_id_help)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Fix_Property = findViewById(R.id.edit_contact_phone_number_spinner_fix)
@@ -436,6 +438,14 @@ class EditContactActivity : AppCompatActivity() {
 
         edit_contact_DeleteContact!!.setOnClickListener {
             deleteContact()
+        }
+
+        edit_contact_Mail_Identifier_Help!!.setOnClickListener {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.add_new_contact_mail_identifier))
+                    .setView(R.layout.alert_dialog_mail_identifier_help)
+                    .setMessage(getString(R.string.add_new_contact_mail_identifier_help))
+                    .show()
         }
 
         edit_contact_AddContactToFavorite!!.setOnClickListener {

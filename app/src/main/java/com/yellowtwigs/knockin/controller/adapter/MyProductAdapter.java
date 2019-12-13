@@ -16,8 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.SkuDetails;
-import com.yellowtwigs.knockin.controller.IProductClickListener;
+import com.google.android.material.button.MaterialButton;
 import com.yellowtwigs.knockin.R;
+import com.yellowtwigs.knockin.controller.IProductClickListener;
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity;
 
 import java.util.List;
@@ -28,8 +29,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
     private PremiumActivity premiumActivity;
     private List<SkuDetails> skuDetailsList;
     private BillingClient billingClient;
-    private IProductClickListener iProductClickListener;
-
 
     public MyProductAdapter(PremiumActivity premiumActivity, List<SkuDetails> skuDetailsList, BillingClient billingClient) {
         this.premiumActivity = premiumActivity;
@@ -76,26 +75,24 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_relax);
         }
 
-        myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_selector);
+        myViewHolder.myProductBuyImage.setIcon(premiumActivity.getDrawable(R.drawable.ic_buying_in_app));
 
         if (skuDetailsList.get(i).getTitle().contains("Contacts") && contactsUnlimitedIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
+            myViewHolder.myProductBuyImage.setBackgroundColor(premiumActivity.getColor(R.color.textColorDarkGrey));
             myViewHolder.myProductBuyImage.setEnabled(false);
         } else if (skuDetailsList.get(i).getTitle().contains("Jazzy") && notifJazzySoundIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
+            myViewHolder.myProductBuyImage.setBackgroundColor(premiumActivity.getColor(R.color.textColorDarkGrey));
             myViewHolder.myProductBuyImage.setEnabled(false);
         } else if (skuDetailsList.get(i).getTitle().contains("Funky") && notifFunkySoundIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
+            myViewHolder.myProductBuyImage.setBackgroundColor(premiumActivity.getColor(R.color.textColorDarkGrey));
             myViewHolder.myProductBuyImage.setEnabled(false);
-        }else if (skuDetailsList.get(i).getTitle().contains("Relaxation") && notifRelaxationSoundIsBought) {
-            myViewHolder.myProductBuyImage.setImageResource(R.drawable.ic_buying_in_app_not_enabled);
+        } else if (skuDetailsList.get(i).getTitle().contains("Relaxation") && notifRelaxationSoundIsBought) {
+            myViewHolder.myProductBuyImage.setBackgroundColor(premiumActivity.getColor(R.color.textColorDarkGrey));
             myViewHolder.myProductBuyImage.setEnabled(false);
         }
 
-        myViewHolder.myProductLayout.setOnClickListener(v -> {
-            Toast.makeText(premiumActivity, skuDetailsList.get(i).getDescription() + " " +
-                    skuDetailsList.get(i).getPrice(), Toast.LENGTH_LONG).show();
-        });
+        myViewHolder.myProductLayout.setOnClickListener(v -> Toast.makeText(premiumActivity, skuDetailsList.get(i).getDescription() + " " +
+                skuDetailsList.get(i).getPrice(), Toast.LENGTH_LONG).show());
 
         //Product click
         myViewHolder.setIProductClickListener((view, position) -> {
@@ -116,7 +113,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         RelativeLayout myProductLayout;
         AppCompatImageView myProductImage;
         TextView myProductName;
-        AppCompatImageView myProductBuyImage;
+        //        AppCompatImageView myProductBuyImage;
+        MaterialButton myProductBuyImage;
 
         IProductClickListener iProductClickListener;
 

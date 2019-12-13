@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.controller.activity
 
-import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -12,13 +11,13 @@ import android.os.Bundle
 import android.telephony.SmsManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -27,9 +26,12 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.baoyz.swipemenulistview.SwipeMenuListView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationListener
+import com.yellowtwigs.knockin.controller.NotificationsHistoryRecyclerViewAdapter
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
@@ -37,10 +39,6 @@ import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.controller.NotificationsHistoryRecyclerViewAdapter
 
 
 /**
@@ -200,6 +198,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
         updateFilter()
 
         //region ======================================== Listeners =========================================
+
+        notification_history_ToolbarMultiSelectModeClose!!.setOnClickListener {
+            refreshActivity()
+        }
 
 //        notification_history_ListView!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
 //            val gestionnaireContacts = ContactManager(this.applicationContext)
@@ -510,9 +512,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     private fun openWhatsapp() {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("http://api.whatsapp.com/")
-        startActivity(intent)
+        val i = packageManager.getLaunchIntentForPackage("com.whatsapp")
+        try {
+            startActivity(i)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://whatsapp.com/")))
+        }
     }
 
     //endregion
@@ -671,6 +677,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
                 notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
                 notification_history_RecyclerView!!.adapter = notification_Adapter
+                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
             }
             sharedPreferences.getString("tri", "date") == "priorite" -> {
                 val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
@@ -684,6 +691,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
                 notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
                 notification_history_RecyclerView!!.adapter = notification_Adapter
+                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
             }
             sharedPreferences.getString("tri", "date") == "contact" -> {
                 val listNotif: ArrayList<NotificationDB> = arrayListOf()
@@ -693,6 +701,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
                 notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
                 notification_history_RecyclerView!!.adapter = notification_Adapter
+                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
             }
             else -> println("thats a problem test")
         }

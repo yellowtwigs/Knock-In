@@ -21,7 +21,7 @@
         android:layout_toEndOf="@+id/product_item_image"
         android:text="Contacts VIP"
         android:textColor="?attr/darkColor"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
 <!--    <TextView-->
 <!--        android:id="@+id/product_item_price"-->
@@ -44,10 +44,10 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/product_item_buy_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="15dp"
@@ -56,5 +56,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+<!--    <androidx.appcompat.widget.AppCompatImageView-->
+<!--        android:id="@+id/product_item_buy_image"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_marginEnd="15dp"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </RelativeLayout>

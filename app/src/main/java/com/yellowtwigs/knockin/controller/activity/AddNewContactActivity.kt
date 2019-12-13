@@ -52,6 +52,10 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_PhoneNumber: TextInputLayout? = null
     private var add_new_contact_fixNumber: TextInputLayout? = null
     private var add_new_contact_Email: TextInputLayout? = null
+    private var add_new_contact_Mail_Identifier: TextInputLayout? = null
+
+    private var add_new_contact_Mail_Identifier_Help: AppCompatImageView? = null
+
     private var add_new_contact_RoundedImageView: CircularImageView? = null
     private var add_new_contact_Priority: Spinner? = null
     private var add_new_contact_PhoneProperty: Spinner? = null
@@ -126,11 +130,15 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_PhoneNumber = findViewById(R.id.add_new_contact_phone_number_id)
         add_new_contact_fixNumber = findViewById(R.id.add_new_contact_phone_number_fix_id)
         add_new_contact_Email = findViewById(R.id.add_new_contact_mail_id)
+        add_new_contact_Mail_Identifier = findViewById(R.id.edit_contact_mail_id_edit_text)
         add_new_contact_RoundedImageView = findViewById(R.id.add_new_contact_rounded_image_view_id)
         add_new_contact_Priority = findViewById(R.id.add_new_contact_priority)
         add_new_contact_PhoneProperty = findViewById(R.id.add_new_contact_phone_number_spinner)
         add_new_contact_MailProperty = findViewById(R.id.add_new_contact_mail_spinner_id)
         add_new_contact_PriorityExplain = findViewById(R.id.add_new_contact_priority_explain)
+
+        add_new_contact_Mail_Identifier_Help = findViewById(R.id.add_new_contact_mail_id_help)
+
         val add_new_contact_layout: ConstraintLayout = findViewById(R.id.add_new_contact_layout)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
@@ -170,6 +178,14 @@ class AddNewContactActivity : AppCompatActivity() {
             }
         }
 
+        add_new_contact_Mail_Identifier_Help!!.setOnClickListener {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.add_new_contact_mail_identifier))
+                    .setView(R.layout.alert_dialog_mail_identifier_help)
+                    .setMessage(getString(R.string.add_new_contact_mail_identifier_help))
+                    .show()
+        }
+
         add_new_contact_Validate!!.setOnClickListener {
 
             if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
@@ -184,7 +200,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     val contactData = ContactDB(null,
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
-                            "", avatar, add_new_contact_Priority!!.selectedItemPosition,
+                            add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
                             add_new_contact_ImgString!!, 0, "")
 
                     println(contactData)

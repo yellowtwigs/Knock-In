@@ -51,7 +51,7 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private var numberForPermission = ""
 
-    private var thisParent : ViewGroup? = null
+    private var thisParent: ViewGroup? = null
 
     private var lastChanged: Long = 0
     private var lastChangedPosition = 0
@@ -114,7 +114,7 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
 
         holder.appPlateform!!.text = convertPackageToString(sbp.appNotifier!!)
 
-        holder.messageToSendEditText!!.setText(listOftext.get(position))
+        holder.messageToSendEditText!!.setText(listOftext[position])
         System.out.println("text content" + listOftext[position] + " message" + sbp.statusBarNotificationInfo["android.text"])
 
         when (convertPackageToString(sbp.appNotifier!!)) {
@@ -255,9 +255,9 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
                         closeNotificationPopup()
 
                         if (contact != null) {
-                            sendMail(contact.getFirstMail(), holder.messageToSendEditText!!.text.toString())
+                            sendMail(contact.getFirstMail(), sbp.statusBarNotificationInfo["android.text"].toString(), holder.messageToSendEditText!!.text.toString())
                         } else {
-                            sendMail("", holder.messageToSendEditText!!.text.toString())
+                            sendMail("", sbp.statusBarNotificationInfo["android.text"].toString(), holder.messageToSendEditText!!.text.toString())
                         }
                     }
                     "Message" -> {
@@ -356,7 +356,6 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     }
 
     private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
-
         val intent = Intent(Intent.ACTION_VIEW)
         intent.flags = FLAG_ACTIVITY_NEW_TASK
         val message = "phone=" + converter06To33(phoneNumber)
@@ -387,12 +386,14 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
 //                Toast.LENGTH_LONG).show()
     }
 
-    private fun sendMail(mail: String, msg: String) {
+    private fun sendMail(mail: String, subject: String, msg: String) {
         val intent = Intent(Intent.ACTION_SEND)
+        val mailSubject = "RE: $subject"
         intent.putExtra(Intent.EXTRA_EMAIL, mail)
         intent.data = Uri.parse("mailto:")
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, msg)
+        intent.putExtra(Intent.EXTRA_SUBJECT, mailSubject)
         intent.flags = FLAG_ACTIVITY_NEW_TASK
 
         context.startActivity(intent)
@@ -446,10 +447,7 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
             return "WhatsApp"
         } else if (packageName == GMAIL_PACKAGE) {
             return "Gmail"
-        } else if (packageName == MESSAGE_PACKAGE || packageName ==
-
-
-                MESSAGE_SAMSUNG_PACKAGE) {
+        } else if (packageName == MESSAGE_PACKAGE || packageName == MESSAGE_SAMSUNG_PACKAGE) {
             return "Message"
         }
         return ""

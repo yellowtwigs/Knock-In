@@ -423,6 +423,72 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/add_new_contact_mail_id_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_layout_no_pressed_with_border"
+            android:backgroundTint="?attr/backgroundColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_phone_mail_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/add_new_contact_mail_id_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
+                android:visibility="gone">
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/add_new_contact_mail_id_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparentColor">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_email" />
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/add_new_contact_mail_id_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/add_new_contact_mail_id_icon"
+                android:backgroundTint="?attr/backgroundColor"
+                android:hint="@string/add_new_contact_mail_identifier"
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/custom_edit_text"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_new_contact_mail_id_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_help" />
+        </RelativeLayout>
+
         <View
             android:id="@+id/add_new_contact_add_field_view"
             android:layout_width="match_parent"
@@ -463,17 +529,7 @@
             android:textColor="?attr/textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/add_new_contact_priority_layout"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/add_new_contact_add_field_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/backgroundColor"
-            android:text="@string/add_new_contact_add_field"
-            android:textColor="?attr/textColor"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
+            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_id_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -359,6 +359,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
+            main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)
 
             val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -424,6 +425,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+            main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
 
             if(position == 0){
                 val index = sharedPreferences.getInt("index", 0)

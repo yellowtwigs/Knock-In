@@ -131,6 +131,8 @@
 
     <string name="add_new_contact_mail">E-mail</string>
     <string name="add_new_contact_mail_mobile">Bureau</string>
+    <string name="add_new_contact_mail_identifier">Identifiant E-mail</string>
+    <string name="add_new_contact_mail_identifier_help">Correspond à l\'identifiant visible lors de la réception d\'un mail</string>
 
     <string name="add_new_contact_priority_0">Sans notification</string>
 
