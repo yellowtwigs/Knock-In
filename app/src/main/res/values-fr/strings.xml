@@ -90,7 +90,7 @@
     <string name="main_android_edited_contact">Android</string>
 
     <string name="main_contact_grid_title">Voulez-vous appeler ce contact ?</string>
-    <string name="main_contact_grid_message">Vous pouvez désactiver cette validation depuis les options</string>
+    <string name="main_contact_grid_message">Vous pouvez désactiver cette validation depuis les paramètres</string>
 
 
     <string name="main_alert_dialog_delete_contact_title">Supprimer un ou plusieurs contacts</string>
@@ -250,9 +250,9 @@
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>
-    <string name="notification_manager_stop_service">Activer la gestion des notifications par priorités</string>
+    <string name="notification_manager_stop_service">Activer la gestion des notifications</string>
     <string name="notification_manager_stop_popup">Afficher les notifications VIP</string>
-    <string name="notification_reminder">M’envoyer un rappel pour consulter mes nouveaux messages non prioritaires</string>
+    <string name="notification_reminder">Envoyez un rappel pour consulter mes nouveaux messages non prioritaires</string>
     <string name="notification_manager_horaire">Choisir l\'heure de rappel : </string>
     <string name="notification_manager_prio_1">Masquer les notifications standard (priorité 1)</string>
 
@@ -260,13 +260,13 @@
     <string name="notification_alert_dialog_title">Sélection des contacts VIP</string>
     <string name="notification_alert_dialog_message">Voulez-vous choisir vos contacts prioritaires ?</string>
 
-    <string name="settings_contact_popup_phone_call">Popup d\'appel</string>
+    <string name="settings_contact_popup_phone_call">Appels vocaux</string>
 
-    <string name="notification_vip_message_tone">Sons des messages VIP</string>
-    <string name="notification_vip_default_message_tone">Sons des messages VIP par défaut</string>
-    <string name="notification_vip_jazzy_message_tone">Sons Jazz des messages VIP</string>
-    <string name="notification_vip_funky_message_tone">Sons Funky des messages VIP</string>
-    <string name="notification_vip_relaxation_message_tone">Sons Relaxation des messages VIP</string>
+    <string name="notification_vip_message_tone">Sonneries des notifications VIP</string>
+    <string name="notification_vip_default_message_tone">Sonneries par défaut</string>
+    <string name="notification_vip_jazzy_message_tone">Sonneries Jazz</string>
+    <string name="notification_vip_funky_message_tone">Sonneries Funky</string>
+    <string name="notification_vip_relaxation_message_tone">Sonneries relaxantes</string>
 
     <string name="notification_vip_message_tone_no_sound">Aucune</string>
     <string name="notification_vip_message_tone_default">Par défaut</string>
@@ -358,7 +358,7 @@
     <string name="first_launch_welcome">Bienvenue dans %s</string>
     <string name="first_launch_welcome_long_text">Découvrez une nouvelle façon de gérer vos contacts et de communiquer avec eux</string>
     <string name="first_launch_welcome_accept">Accepter et continuer</string>
-    <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisations sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a> Pour les accepter, cliquez sur le bouton ci-dessous</string>
+    <string name="first_launch_confidentiality">Veuillez lire notre politique de confidentialité ainsi que nos conditions d\'utilisation sur le site <a href="https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina">CLUF.</a> Pour les accepter, cliquez sur le bouton ci-dessous</string>
 
     <!-- endregion -->
 
@@ -498,11 +498,11 @@
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Démarrage de Knock In Notifications</string>
+    <string name="start_activity_title">Knock In Notifications</string>
     <string name="start_activity_import_title">Contacts</string>
     <string name="start_activity_import_subtitle">Importez vos contacts dans Knock In Notifications pour communiquer plus efficacement avec eux</string>
     <string name="start_activity_notification_title">Notifications</string>
-    <string name="start_activity_notification_subtitle">Activez le service de notifications pour recevoir des notifications personnalisés</string>
+    <string name="start_activity_notification_subtitle">Activez le service de notifications pour recevoir des notifications priorisées et personnalisées</string>
     <string name="start_activity_button_notification">Activer</string>
     <string name="start_activity_superposition_title">Superposition</string>
     <string name="start_activity_superposition_subtitle">Autorisez Knock In Notifications à afficher les notifications VIP pendant que vous exécutez d’autres applications</string>
@@ -545,7 +545,7 @@
     <!-- region In App -->
 
     <string name="in_app_popup_nb_vip_max_title">Nombre maximum de contacts VIP atteint</string>
-    <string name="in_app_popup_nb_vip_max_message">Vous n\'avez le droit qu\'à 5 contacts VIP maximum en version Freemium, voulez-vous accèder à la boutique ?</string>
+    <string name="in_app_popup_nb_vip_max_message">Vous n\'avez le droit qu\'à 5 contacts VIP en version gratuite, voulez-vous accèder à la boutique ?</string>
     <string name="in_app_popup_tone_available_title">Pack de sonnerie disponible dans la boutique</string>
     <string name="in_app_popup_tone_available_message">Voulez-vous accèder à la boutique ?</string>
     <string name="in_app_purchase_made_message">Achat effectué</string>

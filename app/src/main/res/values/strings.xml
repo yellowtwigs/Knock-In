@@ -251,22 +251,22 @@
     <!-- region Notification Manager -->
 
     <string name="notification_manager_toolbar_title">Notification parameters</string>
-    <string name="notification_manager_stop_service"> Enable the management of notification by priority</string>
+    <string name="notification_manager_stop_service"> Enable the management of notifications by priority</string>
     <string name="notification_manager_stop_popup"> Display VIP notifications</string>
     <string name="notification_reminder">Send a reminder to view all the non-VIP messages </string>
     <string name="notification_manager_horaire"> Select recall daily time: </string>
     <string name="notification_manager_prio_1"> Hide priority 1 notifications</string>
 
     <string name="notification_alert_dialog_title">Selection of VIP contacts</string>
-    <string name="notification_alert_dialog_message">Do you want to choose your priority contacts? </string>
+    <string name="notification_alert_dialog_message">Do you want to choose your high-priority contacts ?</string>
 
     <string name="settings_contact_popup_phone_call">Phone call Popup</string>
 
-    <string name="notification_vip_message_tone">VIP Messages Tone</string>
-    <string name="notification_vip_default_message_tone">VIP Default Messages Tone</string>
-    <string name="notification_vip_jazzy_message_tone">VIP Jazzy Messages Tone</string>
-    <string name="notification_vip_funky_message_tone">VIP Funky Messages Tone</string>
-    <string name="notification_vip_relaxation_message_tone">VIP Relaxation Messages Tone</string>
+    <string name="notification_vip_message_tone">VIP Notifications Tone</string>
+    <string name="notification_vip_default_message_tone">Default Tone</string>
+    <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
+    <string name="notification_vip_funky_message_tone">Funky Tone</string>
+    <string name="notification_vip_relaxation_message_tone">Relaxing Tone</string>
 
     <string name="notification_vip_message_tone_no_sound">None</string>
     <string name="notification_vip_message_tone_default">Default</string>
@@ -501,7 +501,7 @@
 
     <!-- region startActivity -->
 
-    <string name="start_activity_title">Starting Knock In Notifications</string>
+    <string name="start_activity_title">Knock In Notifications</string>
     <string name="start_activity_import_title">Contacts</string>
     <string name="start_activity_import_subtitle">Import your contacts into Knock In Notifications to communicate with them more effectively</string>
     <string name="start_activity_notification_title">Notifications</string>
