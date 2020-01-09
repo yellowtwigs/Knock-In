@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -175,7 +176,7 @@ public class NotificationsHistoryRecyclerViewAdapter extends RecyclerView.Adapte
 
     class NotificationHistoryViewHolder extends RecyclerView.ViewHolder {
 
-        ConstraintLayout notif_history_item_Layout;
+        RelativeLayout notif_history_item_Layout;
         TextView notif_history_item_SenderName;
         TextView notif_history_item_NotificationContent;
         TextView notif_history_item_NotificationDate;
