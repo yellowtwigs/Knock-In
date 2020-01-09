@@ -425,7 +425,7 @@ class GroupActivity : AppCompatActivity() {
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                                 .setTitle("Contact modifié")
                                 .setMessage("Le Contact " + changedContact.first.firstName + " " + changedContact.first.lastName + " a été changé, garder la version du carnet d'adresse d'Android ou de Knockin ?")
-                                .setPositiveButton("Knockin") { _, _ ->
+                                .setPositiveButton("Knock In Notifications") { _, _ ->
                                 }
                                 .setNegativeButton("Android") { _, _ ->
                                     val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
