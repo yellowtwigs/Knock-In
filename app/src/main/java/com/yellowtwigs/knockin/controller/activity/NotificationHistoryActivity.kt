@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.controller.activity
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
@@ -21,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -73,6 +76,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private var firstClick: Boolean = true
     private var multiSelectMode: Boolean = false
+
+    private var numberForPermission = ""
+    private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -291,6 +297,10 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 } else {
                     openWhatsapp()
                 }
+            }
+
+            "com.android.incallui" -> {
+                phoneCall(notification_history_ListOfNotificationDB[position].contactName)
             }
 
             "com.google.android.gm" -> openGmail(this, gestionnaireContacts.getContact(notification_history_ListOfNotificationDB[position].contactName))
@@ -521,6 +531,28 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun phoneCall(phoneNumber: String) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
+            numberForPermission = phoneNumber
+        } else {
+            if (numberForPermission.isEmpty()) {
+                startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+            } else {
+                startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                numberForPermission = ""
+            }
+        }
+    }
+
+//    private fun phoneCall() {
+//        val i = packageManager.getLaunchIntentForPackage("com.android.incallui")
+//        try {
+//            startActivity(i)
+//        } catch (e: ActivityNotFoundException) {
+//        }
+//    }
+
     //endregion
 
     private fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String) {
@@ -684,7 +716,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 val listTmp2 = mutableListOf<NotificationDB>()
                 listTmp2.addAll(notification_history_ListOfNotificationDB)
                 listTmp2.removeAll(listTmp)
-                listTmp.addAll(Math.max(firstContactPrio0(listTmp), 0), listTmp2)
+                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
                 notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
