@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
@@ -157,6 +158,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             finish()
         }
 
+        val importWhatsappSharedPreferences: SharedPreferences = getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
+        val importWhatsapp = importWhatsappSharedPreferences.getBoolean("importWhatsappPreferences", false)
+
         //endregion
 
         //region ======================================== Theme Dark ========================================
@@ -226,6 +230,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     break
                 }
                 counter++
+            }
+
+            if (importWhatsapp) {
+                importWhatsappContacts(main_ContactsDatabase!!.contactsDao().getAllContacts())
             }
         }
 
@@ -339,13 +347,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 //        main_GridView!!.numColumns = len // permet de changer
 
-        if(position != 0){
+        if (position != 0) {
             main_GridView!!.smoothScrollToPosition(position)
         }
- 
+
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ===================================== set ListContact ======================================
+
         when {//Verification du mode de tri des contacts pour afficher le bon tri
             sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
             sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
@@ -368,7 +377,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             // La gridView va mettre en place un écouteur sur l'action Scroll,
             // nous avons alors défini un ensemble d'action à effectuer lorsque la gridView détecte ce scroll
-            main_GridView!!.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            main_GridView!!.setOnScrollChangeListener { _, _, _, _, _ ->
                 if (gridViewAdapter != null) {
                     gridViewAdapter!!.closeMenu()
                 }
@@ -427,13 +436,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
             main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
 
-            if(position == 0){
+            if (position == 0) {
                 val index = sharedPreferences.getInt("index", 0)
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                 main_RecyclerView!!.scrollToPosition(index)
                 edit.putInt("index", 0)
                 edit.apply()
-            }else{
+            } else {
                 main_RecyclerView!!.layoutManager!!.scrollToPosition(position)
             }
 
@@ -590,6 +599,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
             }
             main_mDbWorkerThread.postTask(sync)
+
+            importWhatsappContacts(main_ContactsDatabase!!.contactsDao().getAllContacts())
+
             true
         }
 
@@ -604,7 +616,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // Lors du click sur le bouton hamburger  dans la toolbar, nous ouvrons le drawer layout
         main_toolbar_OpenDrawer!!.setOnClickListener {
-            if(gridViewAdapter != null){
+            if (gridViewAdapter != null) {
                 gridViewAdapter!!.closeMenu()
             }
             mainDrawerLayout!!.openDrawer(GravityCompat.START)
@@ -1674,6 +1686,76 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_FloatingButtonMail!!.visibility = View.GONE
         main_FloatingButtonSMS!!.visibility = View.GONE
         main_FloatingButtonGroup!!.visibility = View.GONE
+    }
+
+
+    private fun importWhatsappContacts(listContact: List<ContactDB>) {
+        //This class provides applications access to the content model.
+        val cr = contentResolver
+
+        //RowContacts for filter Account Types
+        val contactCursor = cr.query(
+                ContactsContract.RawContacts.CONTENT_URI,
+                arrayOf(
+                        ContactsContract.RawContacts._ID,
+                        ContactsContract.RawContacts.CONTACT_ID
+                ),
+                ContactsContract.RawContacts.ACCOUNT_TYPE + "= ?",
+                arrayOf("com.whatsapp"),
+                null)
+
+        //ArrayList for Store Whatsapp Contact
+        val myWhatsappContacts = ArrayList<String>()
+
+        if (contactCursor != null) {
+            if (contactCursor.count > 0) {
+                if (contactCursor.moveToFirst()) {
+                    do {
+                        //whatsappContactId for get Number,Name,Id ect... from  ContactsContract.CommonDataKinds.Phone
+                        val whatsappContactId = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.RawContacts.CONTACT_ID))
+
+                        if (whatsappContactId != null) {
+                            //Get Data from ContactsContract.CommonDataKinds.Phone of Specific CONTACT_ID
+                            val whatsAppContactCursor = cr.query(
+                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                    arrayOf(
+                                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                                            ContactsContract.CommonDataKinds.Phone.NUMBER,
+                                            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+                                    ),
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                    arrayOf(whatsappContactId), null);
+
+                            if (whatsAppContactCursor != null) {
+                                whatsAppContactCursor.moveToFirst()
+                                val name = whatsAppContactCursor.getString(whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                                val number = whatsAppContactCursor.getString(whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+                                whatsAppContactCursor.close()
+
+                                //Add Number to ArrayList
+                                myWhatsappContacts.add(number)
+
+                                for (contact in listContact) {
+                                    if (contact.firstName + " " + contact.lastName == name || contact.firstName == name || contact.lastName == name) {
+
+                                        main_ContactsDatabase!!.contactsDao().getContact(contact.id!!).setHasWhatsapp(main_ContactsDatabase)
+
+                                        val detail = ContactDetailDB(null, contact.id, number, "phone", "", 0)
+                                        main_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                                    }
+                                }
+
+//                                showLog(TAG, " WhatsApp contact id  :  " + id);
+//                                showLogI(TAG, " WhatsApp contact name :  " + name);
+//                                showLogI(TAG, " WhatsApp contact number :  " + number);
+                            }
+                        }
+                    } while (contactCursor.moveToNext())
+                    contactCursor.close()
+                }
+            }
+        }
     }
 
     //endregion

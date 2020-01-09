@@ -737,7 +737,11 @@ class EditContactActivity : AppCompatActivity() {
                 if (edit_contact_imgString != null) {
 
                     //println("edit contact rounded != null "+edit_contact_rounded_image )
-                    edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(), edit_contact_FirstName!!.editText!!.text.toString(), edit_contact_LastName!!.editText!!.text.toString(), edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition, edit_contact_Mail_Name!!.editText!!.text.toString()) //edit contact rounded maybe not work
+                    edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(),
+                            edit_contact_FirstName!!.editText!!.text.toString(),
+                            edit_contact_LastName!!.editText!!.text.toString(),
+                            edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition,
+                            edit_contact_Mail_Name!!.editText!!.text.toString()) //edit contact rounded maybe not work
 
                 } else {
                     //println("edit contact rounded == null "+edit_contact_rounded_image )

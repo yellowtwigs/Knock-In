@@ -130,7 +130,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_PhoneNumber = findViewById(R.id.add_new_contact_phone_number_id)
         add_new_contact_fixNumber = findViewById(R.id.add_new_contact_phone_number_fix_id)
         add_new_contact_Email = findViewById(R.id.add_new_contact_mail_id)
-        add_new_contact_Mail_Identifier = findViewById(R.id.edit_contact_mail_id_edit_text)
+        add_new_contact_Mail_Identifier = findViewById(R.id.add_new_contact_mail_id_edit_text)
         add_new_contact_RoundedImageView = findViewById(R.id.add_new_contact_rounded_image_view_id)
         add_new_contact_Priority = findViewById(R.id.add_new_contact_priority)
         add_new_contact_PhoneProperty = findViewById(R.id.add_new_contact_phone_number_spinner)
@@ -188,6 +188,8 @@ class AddNewContactActivity : AppCompatActivity() {
 
         add_new_contact_Validate!!.setOnClickListener {
 
+            add_new_contact_Mail_Identifier!!.editText!!.text.toString()
+
             if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.add_new_contact_first_name_empty_field), Toast.LENGTH_LONG).show()
 
@@ -201,7 +203,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             add_new_contact_FirstName!!.editText!!.text.toString(),
                             add_new_contact_LastName!!.editText!!.text.toString(),
                             add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
-                            add_new_contact_ImgString!!, 0, "")
+                            add_new_contact_ImgString!!, 0, "", 0)
 
                     println(contactData)
                     var isDuplicate = false

@@ -67,10 +67,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
         return listOfItemSelected;
     }
-    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected){
+
+    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected) {
         this.listOfItemSelected.clear();
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
+
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
 
     private String numberForPermission = "";
@@ -205,7 +207,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             }
             if (v.getId() == holder.whatsappCl.getId()) {
                 ContactWithAllInformation contactWithAllInformation = getItem(position);
-                ContactGesture.INSTANCE.openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context);
+                ContactGesture.INSTANCE.openWhatsapp(contactWithAllInformation.getFirstPhoneNumber(), context);
             }
             if (v.getId() == holder.mailCl.getId()) {
                 String mail = getItem(position).getFirstMail();
@@ -338,7 +340,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         };
 
         if (len == 0) {
-            if (whatsappIsNotInstalled()) {
+            if (whatsappIsNotInstalled() || contact.getHasWhatsapp() == 0) {
                 holder.whatsappCl.setVisibility(View.INVISIBLE);
             } else {
                 holder.whatsappCl.setVisibility(View.VISIBLE);
@@ -360,7 +362,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
 
         if (len == 1) {
-            if (whatsappIsNotInstalled()) {
+            if (whatsappIsNotInstalled() || contact.getHasWhatsapp() == 0) {
                 holder.whatsappCl.setVisibility(View.GONE);
             } else {
                 holder.whatsappCl.setVisibility(View.VISIBLE);
@@ -466,12 +468,12 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return listContacts.size();
     }
 
-    private String converter06To33(String phoneNumber) {
-        if (phoneNumber.charAt(0) == '0') {
-            return "+33" + phoneNumber;
-        }
-        return phoneNumber;
-    }
+//    private String converter06To33(String phoneNumber) {
+//        if (phoneNumber.charAt(0) == '0') {
+//            return "+33" + phoneNumber;
+//        }
+//        return phoneNumber;
+//    }
 
     private int randomDefaultImage(int avatarId) {
         switch (avatarId) {

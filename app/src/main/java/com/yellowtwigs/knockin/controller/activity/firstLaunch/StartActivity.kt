@@ -2,28 +2,28 @@ package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.Manifest
 import android.content.*
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Point
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.ContactsContract
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.graphics.Point
-import android.os.Build
-import androidx.appcompat.app.AlertDialog
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
@@ -74,6 +74,8 @@ class StartActivity : AppCompatActivity() {
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
+        val listApp = getAppOnPhone()
+
         //region ========================================== FindViewById ==========================================
 
         start_activity_ImportContacts = findViewById(R.id.start_activity_import_contacts_button)
@@ -113,7 +115,15 @@ class StartActivity : AppCompatActivity() {
                 start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
+
+            if (listApp.contains("com.whatsapp")) {
+                val importWhatsappSharedPreferences: SharedPreferences = getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = importWhatsappSharedPreferences.edit()
+                edit.putBoolean("importWhatsappPreferences", true)
+                edit.apply()
+            }
         }
+
         //Lors du click sur activateNotification nous demandont l'autorisation d'accès au notification
         start_activity_ActivateNotifications!!.setOnClickListener {
             activateNotificationsClick()
@@ -227,7 +237,7 @@ class StartActivity : AppCompatActivity() {
         }
         //lors du click affichage d'un message de prévention
         start_activity_Skip!!.setOnClickListener {
-//            start_activity_ImportContacts!!.visibility = View.INVISIBLE
+            //            start_activity_ImportContacts!!.visibility = View.INVISIBLE
             buildMultiSelectAlertDialog()
             buildLeaveAlertDialog()
         }
@@ -404,6 +414,19 @@ class StartActivity : AppCompatActivity() {
                 start_activity_ImportContactsCheck!!.visibility == View.VISIBLE) {
             start_activity_Next!!.visibility = View.VISIBLE
         }
+    }
+
+    private fun getAppOnPhone(): java.util.ArrayList<String> {
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+        val resolveInfoList = packageManager.queryIntentActivities(intent, 0)
+        val packageNameList = java.util.ArrayList<String>()
+        for (resolveInfo in resolveInfoList) {
+            val activityInfo = resolveInfo.activityInfo
+            packageNameList.add(activityInfo.applicationInfo.packageName)
+        }
+        return packageNameList
     }
 
     //endregion

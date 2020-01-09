@@ -301,7 +301,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
                 .disableAnimations();
-        if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("")) {
+        if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("") && contact.getHasWhatsapp() == 1) {
             builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreBoutton, diametreBoutton);
         }
         if (!getItem(position).getFirstMail().equals("")) {
