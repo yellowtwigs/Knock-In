@@ -47,6 +47,7 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                         .addMigrations(MIGRATION_11_12)
                         .addMigrations(MIGRATION_12_13)
                         .addMigrations(MIGRATION_13_14)
+                        .addMigrations(MIGRATION_14_15)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -126,6 +127,12 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
         private val MIGRATION_13_14 = object : Migration(13, 14) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN messenger_id TEXT DEFAULT '' NOT NULL")
+            }
+        }
+
+        private val MIGRATION_14_15 = object : Migration(14, 15) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN has_whatsapp INTEGER DEFAULT 0 NOT NULL")
             }
         }
 

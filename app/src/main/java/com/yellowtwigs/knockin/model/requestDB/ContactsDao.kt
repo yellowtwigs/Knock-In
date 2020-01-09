@@ -146,6 +146,22 @@ interface ContactsDao {
     fun setIsFavorite(id: Int)
 
     /**
+     * UPDATE si l'user possède ce contact dans son address book whatsapp
+     * @param id Int    Id du contact sélectionné
+     */
+
+    @Query("UPDATE contacts_table SET has_whatsapp = 1 WHERE id = :id ")
+    fun setHasWhatsapp(id: Int)
+
+    /**
+     * UPDATE si l'user ne possède pas ce contact dans son address book whatsapp
+     * @param id Int    Id du contact sélectionné
+     */
+
+    @Query("UPDATE contacts_table SET has_whatsapp = 0 WHERE id = :id ")
+    fun setHasNotWhatsapp(id: Int)
+
+    /**
      * UPDATE si le contact est un favori ou non
      * @param id Int    Id du contact sélectionné
      */

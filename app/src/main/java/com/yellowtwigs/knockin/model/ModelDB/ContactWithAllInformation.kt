@@ -105,6 +105,16 @@ class ContactWithAllInformation {
         println("test getContactID $test")
     }
 
+    fun setHasWhatsapp(contactsDatabase: ContactsRoomDatabase?) {
+        val test = contactsDatabase!!.contactsDao().setHasWhatsapp(this.getContactId())
+        println("test getContactID $test")
+    }
+
+    fun setHasNotWhatsapp(contactsDatabase: ContactsRoomDatabase?) {
+        val test = contactsDatabase!!.contactsDao().setHasNotWhatsapp(this.getContactId())
+        println("test getContactID $test")
+    }
+
     override fun equals(other: Any?): Boolean {
         return if (other is ContactWithAllInformation) {
             if (other.contactDB == this.contactDB) {
