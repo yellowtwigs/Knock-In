@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,12 +10,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_button_color_grey"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/section_sms_imageview"
+        android:background="@drawable/rounded_button_color_grey">
 
         <TextView
             android:id="@+id/section_text"
@@ -39,9 +40,8 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/section_gmail_imageview"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/section_gmail_imageview"
         app:srcCompat="@drawable/ic_sms" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -52,9 +52,8 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/section_more_imageView"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/section_more_imageView"
         app:srcCompat="@drawable/ic_circular_mail" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -63,8 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:background="?attr/actionBarItemBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         app:srcCompat="@drawable/ic_toolbar_menu" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

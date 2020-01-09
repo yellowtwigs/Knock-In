@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.MediaPlayer
 import android.net.Uri
 import android.text.Editable
 import android.text.TextUtils
@@ -37,7 +38,8 @@ import java.util.*
  * La Classe qui permet d'afficher les notifications prioritaires au milieu de l'écran
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class NotifPopupRecyclerViewAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View) : RecyclerView.Adapter<NotifPopupRecyclerViewAdapter.NotificationHistoryViewHolder>() {
+class NotifPopupRecyclerViewAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View, private val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer?
+) : RecyclerView.Adapter<NotifPopupRecyclerViewAdapter.NotificationHistoryViewHolder>() {
 
     /*private val TAG = NotificationListener::class.java.simpleName*/
     private lateinit var notification_adapter_mDbWorkerThread: DbWorkerThread
@@ -432,6 +434,8 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     private fun closeNotificationPopup() {
 
         windowManager.removeView(view)
+
+        notification_alarm_NotificationMessagesAlarmSound?.stop()
         val sharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         edit.putBoolean("view", false)

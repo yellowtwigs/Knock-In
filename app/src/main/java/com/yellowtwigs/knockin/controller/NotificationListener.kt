@@ -144,7 +144,7 @@ class NotificationListener : NotificationListenerService() {
                                     }
                                 }
                                 contact.contactDB!!.contactPriority == 1 -> {
-                                }
+                                 }
                                 contact.contactDB!!.contactPriority == 0 -> {
                                     println("priority 0")
                                     this.cancelNotification(sbn.key)
@@ -369,7 +369,7 @@ class NotificationListener : NotificationListenerService() {
         notifications.add(sbp)
         notificationPopupRecyclerView = view!!.findViewById(R.id.notification_popup_recycler_view)
         notificationPopupRecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-        adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view)
+        adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view, notification_alarm_NotificationMessagesAlarmSound)
         notificationPopupRecyclerView?.adapter = adapterNotification
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
