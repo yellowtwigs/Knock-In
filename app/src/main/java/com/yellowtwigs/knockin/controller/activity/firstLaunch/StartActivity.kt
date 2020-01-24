@@ -27,6 +27,8 @@ import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
+import android.content.ComponentName
+
 
 /**
  * Activité qui nous permet d'importer nos contacts et accepter toutes les autorisations liées aux notifications appel et message
@@ -247,6 +249,20 @@ class StartActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ==========================================
+
+//    fun openSMSappChooser() {
+//        val packageManager = packageManager
+//        val componentName = ComponentName(this, StartActivity.class)
+//        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+//
+//        val selector = Intent(Intent.ACTION_MAIN)
+//        selector.addCategory(Intent.CATEGORY_APP_MESSAGING)
+//        selector.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//        startActivity(selector)
+//
+//        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP)
+//    }
+
     /**
      *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
      */

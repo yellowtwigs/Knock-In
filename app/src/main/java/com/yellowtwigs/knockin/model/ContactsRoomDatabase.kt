@@ -13,7 +13,7 @@ import com.yellowtwigs.knockin.model.requestDB.*
  * La Classe qui permet de créer la base de données et de la garder à jour
  * @author Ryan Granet
  */
-@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class], version = 14)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class], version = 15)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao

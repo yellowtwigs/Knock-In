@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.controller
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
 
@@ -13,14 +14,15 @@ import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import java.util.*
 
-
 class NotificationSender : BroadcastReceiver() {
+    @SuppressLint("ObsoleteSdkInt")
     override fun onReceive(context: Context, intent: Intent) {
         println("received")
         val CHANNEL_ID = "my_channel"
 
         println("extras test" + intent.extras!!.toString())
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             /* Create or update. */

@@ -4,10 +4,10 @@
     package="com.yellowtwigs.knockin">
 
     <application
+        android:allowBackup="false"
         android:icon="@drawable/ic_app_image"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:allowBackup="false"
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
@@ -16,11 +16,12 @@
         <activity android:name="com.yellowtwigs.knockin.controller.activity.MessengerActivity" />
         <activity android:name="com.yellowtwigs.knockin.controller.activity.SettingsActivity" />
         <activity android:name="com.yellowtwigs.knockin.controller.activity.firstLaunch.StartActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.APP_MESSAGING" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity android:name="com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity" />
         <activity android:name="com.yellowtwigs.knockin.controller.activity.group.DeleteContactFromGroupActivity" />
@@ -65,32 +66,39 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
 
-                <activity
-                    android:name="com.facebook.CustomTabActivity"
-                    android:exported="true">
-                    <intent-filter>
-                        <action android:name="android.intent.action.VIEW" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-                        <category android:name="android.intent.category.DEFAULT" />
-                        <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                        <data android:scheme="@string/fb_login_protocol_scheme"
-                            tools:ignore="ManifestResource" />
-                    </intent-filter>
-                </activity>
+                <data
+                    android:scheme="@string/fb_login_protocol_scheme"
+                    tools:ignore="ManifestResource" />
+            </intent-filter>
+        </activity>
 
-                <meta-data
-                    android:name="com.facebook.sdk.ApplicationId"
-                    android:value="@string/facebook_app_id" />
+        <activity android:name=".controller.activity.PremiumActivity"></activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
         <receiver android:name="com.yellowtwigs.knockin.controller.NotificationSender" />
-        <!-- <receiver -->
-        <!-- android:name=".model.MyReceiver" -->
-        <!-- android:enabled="true" -->
-        <!-- android:exported="true"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED" /> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
+        <receiver android:name="com.yellowtwigs.knockin.controller.NotificationMessageSender" />
+
+        <receiver
+            android:name="com.example.Knockin.model.MyReceiver"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <!--                <action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="com.yellowtwigs.knockin.controller.NotificationListener"
             android:label="@string/app_name"
@@ -99,7 +107,6 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-        <activity android:name=".controller.activity.PremiumActivity"></activity>
     </application>
 
     <supports-screens
@@ -115,16 +122,21 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+<!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-<!--    <uses-permission android:name="android.permission.READ_SMS" />-->
-<!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-<!--    <uses-permission android:name="android.permission.RECEIVE_MMS" />-->
+    <!--    <uses-permission android:name="android.permission.READ_SMS" />-->
+    <!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
+    <!--    <uses-permission android:name="android.permission.RECEIVE_MMS" />-->
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.VIBRATE" />
-<!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
+    <!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
     <uses-permission android:name="android.permission.INTERNET" />
+<!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
+    <!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
+    <!--    <uses-permission android:name="android.permission.READ_SMS" />-->
+    <!--    <uses-permission android:name="android.permission.WRITE_SMS" />-->
+    <!--    <uses-permission android:name="android.permission.RECEIVE_MMS" />-->
 
 </manifest>

@@ -1,11 +1,12 @@
 package com.yellowtwigs.knockin.controller
 
 import android.annotation.SuppressLint
-import android.app.KeyguardManager
+import android.app.*
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.os.Build
@@ -16,12 +17,15 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.NotificationAlarmActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
@@ -29,6 +33,8 @@ import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Service qui nous permet de traiter les notifications
@@ -139,12 +145,15 @@ class NotificationListener : NotificationListenerService() {
                                         startActivity(i)
                                     } else {
                                         println("screenIsUnlocked")
-                                        this.cancelNotification(sbn.key)
+
+                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                                            this.cancelNotification(sbn.key)
+                                        }
                                         displayLayout(sbp, sharedPreferences)
                                     }
                                 }
                                 contact.contactDB!!.contactPriority == 1 -> {
-                                 }
+                                }
                                 contact.contactDB!!.contactPriority == 0 -> {
                                     println("priority 0")
                                     this.cancelNotification(sbn.key)
@@ -258,6 +267,11 @@ class NotificationListener : NotificationListenerService() {
                 handler.postDelayed(this, duration.toLong())
             }
         }, duration.toLong())
+
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            sendNotificationMessage(sbp.statusBarNotificationInfo["android.title"]!!.toString(), sbp.statusBarNotificationInfo["android.text"]!!.toString(), "")
+//        }
 
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             //this.cancelNotification(sbn.key)
@@ -419,6 +433,53 @@ class NotificationListener : NotificationListenerService() {
             return "message"
         }
         return ""
+    }
+
+    private fun sendNotificationMessage(contact: String, message: String, platform: String) {
+//        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//        val alarmManager = getSystemService(AppCompatActivity.ALARM_SERVICE) as (AlarmManager)
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+
+        //Get an instance of NotificationManager//
+
+//        val mBuilder = NotificationCompat.Builder(applicationContext)
+//        mBuilder.setSmallIcon(R.drawable.ic_app_image);
+//        mBuilder.setContentTitle(contact);
+//        mBuilder.setContentText("$message on $platform");
+//
+//        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        mNotificationManager.notify(1, mBuilder.build());
+
+        val NOTIFICATION_ID = 234;
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val CHANNEL_ID = "my_channel_01";
+            val name = "my_channel";
+            val Description = "This is my channel";
+            val importance = NotificationManager.IMPORTANCE_HIGH;
+            val mChannel = NotificationChannel(CHANNEL_ID, name, importance);
+            mChannel.description = Description
+            mChannel.enableLights(true)
+            mChannel.lightColor = Color.RED
+            mChannel.enableVibration(true)
+            mChannel.setShowBadge(false)
+            mNotificationManager.createNotificationChannel(mChannel)
+        }
+
+        val mBuilder = NotificationCompat.Builder(applicationContext)
+        mBuilder.setSmallIcon(R.drawable.ic_app_image)
+        mBuilder.setContentTitle(contact)
+        mBuilder.setContentText("$message on $platform")
+
+        val resultIntent = Intent(applicationContext, MainActivity::class.java);
+        val stackBuilder = TaskStackBuilder.create(applicationContext);
+        stackBuilder.addParentStack(MainActivity::class.java);
+        stackBuilder.addNextIntent(resultIntent);
+        val resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     private fun isPhoneNumber(title: String): Boolean {
