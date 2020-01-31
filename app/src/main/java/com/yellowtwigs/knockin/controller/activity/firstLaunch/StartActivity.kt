@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -60,6 +61,7 @@ class StartActivity : AppCompatActivity() {
 
     //endregion
 
+    @SuppressLint("ObsoleteSdkInt")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val display = windowManager.defaultDisplay
@@ -173,6 +175,7 @@ class StartActivity : AppCompatActivity() {
 
         //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
         start_activity_AuthorizeSuperposition!!.setOnClickListener {
+
             start_activity_AuthorizeSuperposition!!.visibility = View.INVISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 3000
@@ -237,6 +240,7 @@ class StartActivity : AppCompatActivity() {
         start_activity_Next!!.setOnClickListener {
             buildMultiSelectAlertDialog()
         }
+
         //lors du click affichage d'un message de prévention
         start_activity_Skip!!.setOnClickListener {
             //            start_activity_ImportContacts!!.visibility = View.INVISIBLE
@@ -421,12 +425,10 @@ class StartActivity : AppCompatActivity() {
     }
 
     /**
-     * Si toutes les autorisations sont validé et que les contact ont fini d'être charger alors nous changons le bouton passer pour un bouton suivant
+     * Si toutes les autorisations sont validées et que les contacts ont fini d'être charger alors nous changeons le bouton passer pour un bouton suivant
      */
     private fun allIsChecked() {
-        if (start_activity_PermissionsCheck!!.visibility == View.VISIBLE &&
-                start_activity_ActivateNotificationsCheck!!.visibility == View.VISIBLE &&
-                start_activity_AuthorizeSuperpositionCheck!!.visibility == View.VISIBLE &&
+        if (start_activity_ActivateNotificationsCheck!!.visibility == View.VISIBLE &&
                 start_activity_ImportContactsCheck!!.visibility == View.VISIBLE) {
             start_activity_Next!!.visibility = View.VISIBLE
         }

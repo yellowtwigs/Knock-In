@@ -666,31 +666,46 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         // En mode Multiselect, le click sur la poubelle permettant de faire un Delete des contacts séléctionnés
         main_ToolbarMultiSelectModeDelete!!.setOnClickListener {
             var suppressWarning = " "
+            var nbVIP = 0
+
+            val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
+            val nb_Contacts_VIP = sharedNumberOfContactsVIPPreferences.getInt("nb_Contacts_VIP", 0)
+
             if (listOfItemSelected.size > 1) {
                 suppressWarning = " :"
                 for (contact in listOfItemSelected) {
                     val contactDb = contact.contactDB
                     suppressWarning += "\n- " + contactDb!!.firstName + " " + contactDb.lastName
+
+                    if(contactDb.contactPriority == 2){
+                        nbVIP++
+                    }
                 }
             } else {
-                val contact = listOfItemSelected.get(0).contactDB
+                val contact = listOfItemSelected[0].contactDB
                 suppressWarning += contact!!.firstName + " " + contact.lastName
             }
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
                     .setMessage(String.format(resources.getString(R.string.main_alert_dialog_delete_contact_message), suppressWarning))
                     .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
+
+                        val nbVIPTT = nb_Contacts_VIP - nbVIP
+
+                        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                        edit.putInt("nb_Contacts_VIP", nbVIPTT)
+                        edit.apply()
+
                         listOfItemSelected.forEach {
                             main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
                         }
                         listOfItemSelected.clear()
                         switchMultiSelectToNormalMode()
                         refreshActivity()
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
-
+                        finish()
+                        overridePendingTransition(0, 0)
+                        startActivity(getIntent())
+                        overridePendingTransition(0, 0)
                     }
                     .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
                     .show()

@@ -437,7 +437,27 @@ class EditContactActivity : AppCompatActivity() {
         }
 
         edit_contact_DeleteContact!!.setOnClickListener {
-            deleteContact()
+
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.edit_contact_delete_contact))
+                    .setMessage(getString(R.string.edit_contact_delete_contact_message))
+                    .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
+                        edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
+                        val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
+                        mainIntent.putExtra("isDelete", true)
+
+                        if (edit_contact_priority == 2) {
+                            val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                            edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP - 1)
+                            edit.apply()
+                        }
+
+                        startActivity(mainIntent)
+                        finish()
+                    }
+                    .setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
+                    }
+                    .show()
         }
 
         edit_contact_Mail_Identifier_Help!!.setOnClickListener {
@@ -808,22 +828,6 @@ class EditContactActivity : AppCompatActivity() {
             finish()
         }
         hideKeyboard()
-    }
-
-    private fun deleteContact() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle(getString(R.string.edit_contact_delete_contact))
-                .setMessage(getString(R.string.edit_contact_delete_contact_message))
-                .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
-                    edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
-                    val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
-                    mainIntent.putExtra("isDelete", true)
-                    startActivity(mainIntent)
-                    finish()
-                }
-                .setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
-                }
-                .show()
     }
 
     private fun hideKeyboard() {

@@ -146,7 +146,7 @@ class NotificationListener : NotificationListenerService() {
                                     } else {
                                         println("screenIsUnlocked")
 
-                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                                             this.cancelNotification(sbn.key)
                                         }
                                         displayLayout(sbp, sharedPreferences)
@@ -171,8 +171,11 @@ class NotificationListener : NotificationListenerService() {
                                     startActivity(i)
                                 } else {
                                     println("screenIsUnlocked")
+
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                                        this.cancelNotification(sbn.key)
+                                    }
                                     displayLayout(sbp, sharedPreferences)
-                                    cancelNotification(sbn.key)
                                 }
                             } else {
                                 println("bad package " + sbn.packageName)

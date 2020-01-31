@@ -85,6 +85,8 @@ class AddNewContactActivity : AppCompatActivity() {
     private var groupId: Long = 0
     private var listContact: ArrayList<ContactDB?> = ArrayList()
 
+    private var contactsUnlimitedIsBought: Boolean? = null
+
     //endregion
 
 
@@ -109,6 +111,12 @@ class AddNewContactActivity : AppCompatActivity() {
         // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
+
+        val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
+        val nb_Contacts_VIP = sharedNumberOfContactsVIPPreferences.getInt("nb_Contacts_VIP", 0)
+
+        val sharedAlarmNotifInAppPreferences: SharedPreferences = getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
+        contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false)
 
         //on get la base de données
         add_new_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
@@ -192,78 +200,167 @@ class AddNewContactActivity : AppCompatActivity() {
 
             if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.add_new_contact_first_name_empty_field), Toast.LENGTH_LONG).show()
-
             } else {
-                val printContacts = Runnable {
-                    //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                    val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
-                    val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(), this)
-
-                    val contactData = ContactDB(null,
-                            add_new_contact_FirstName!!.editText!!.text.toString(),
-                            add_new_contact_LastName!!.editText!!.text.toString(),
-                            add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
-                            add_new_contact_ImgString!!, 0, "", 0)
-
-                    println(contactData)
-                    var isDuplicate = false
-                    val allcontacts = add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
-                    allcontacts?.forEach { contactsDB ->
-                        if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
-                            isDuplicate = true
-                    }
-
-                    if (!isDuplicate) {
-
-                        val contactId = add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-
-                        var contactDetailDB: ContactDetailDB
-                        if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
-                                    add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
-                            add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
-                        }
-                        if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
-                                    add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
-                            add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
-                        }
-                        if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                            contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
-                                    add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
-                            add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
-                        }
-
-                        if (isFavorite) {
-                            addToFavorite(contactId!!.toInt())
-                        }
-
-                        val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-                            type = ContactsContract.RawContacts.CONTENT_TYPE
-                        }
-                        intent.apply {
-                            putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString()
-                                    + " " + add_new_contact_LastName?.editText!!.text.toString())
-
-                            putExtra(ContactsContract.Intents.Insert.EMAIL, add_new_contact_Email?.editText!!.text.toString())
-                            putExtra(
-                                    ContactsContract.Intents.Insert.EMAIL_TYPE,
-                                    ContactsContract.CommonDataKinds.Email.TYPE_WORK
-                            )
-                            putExtra(ContactsContract.Contacts.Photo.PHOTO, add_new_contact_ImgString!!)
-                            putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
-                            putExtra(
-                                    ContactsContract.Intents.Insert.PHONE_TYPE,
-                                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK
-                            )
-                        }
-                        isRetroFit = true
-                        startActivity(intent)
+                if (add_new_contact_Priority!!.selectedItemPosition == 2) {
+                    if (nb_Contacts_VIP > 4 && contactsUnlimitedIsBought == false) {
+                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                                .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
+                                .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
+                                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                    startActivity(Intent(this@AddNewContactActivity, PremiumActivity::class.java))
+                                    finish()
+                                }
+                                .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                                }
+                                .show()
                     } else {
-                        confirmationDuplicate(contactData)
+                        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
+                        edit.apply()
+
+                        val printContacts = Runnable {
+                            //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
+                            val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
+                            val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(), this)
+
+                            val contactData = ContactDB(null,
+                                    add_new_contact_FirstName!!.editText!!.text.toString(),
+                                    add_new_contact_LastName!!.editText!!.text.toString(),
+                                    add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
+                                    add_new_contact_ImgString!!, 0, "", 0)
+
+                            println(contactData)
+                            var isDuplicate = false
+                            val allcontacts = add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
+                            allcontacts?.forEach { contactsDB ->
+                                if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
+                                    isDuplicate = true
+                            }
+
+                            if (!isDuplicate) {
+
+                                val contactId = add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
+
+                                var contactDetailDB: ContactDetailDB
+                                if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                                    contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                            add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
+                                    add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                                }
+                                if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
+                                    contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                            add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
+                                    add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                                }
+                                if (add_new_contact_Email!!.editText!!.text.toString() != "") {
+                                    contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                            add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
+                                    add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                                }
+
+                                if (isFavorite) {
+                                    addToFavorite(contactId!!.toInt())
+                                }
+
+                                val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                                    type = ContactsContract.RawContacts.CONTENT_TYPE
+                                }
+                                intent.apply {
+                                    putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString()
+                                            + " " + add_new_contact_LastName?.editText!!.text.toString())
+
+                                    putExtra(ContactsContract.Intents.Insert.EMAIL, add_new_contact_Email?.editText!!.text.toString())
+                                    putExtra(
+                                            ContactsContract.Intents.Insert.EMAIL_TYPE,
+                                            ContactsContract.CommonDataKinds.Email.TYPE_WORK
+                                    )
+                                    putExtra(ContactsContract.Contacts.Photo.PHOTO, add_new_contact_ImgString!!)
+                                    putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
+                                    putExtra(
+                                            ContactsContract.Intents.Insert.PHONE_TYPE,
+                                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+                                    )
+                                }
+                                isRetroFit = true
+                                startActivity(intent)
+                            } else {
+                                confirmationDuplicate(contactData)
+                            }
+                        }
+                        main_mDbWorkerThread.postTask(printContacts)
                     }
+                } else {
+                    val printContacts = Runnable {
+                        //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
+                        val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
+                        val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(), this)
+
+                        val contactData = ContactDB(null,
+                                add_new_contact_FirstName!!.editText!!.text.toString(),
+                                add_new_contact_LastName!!.editText!!.text.toString(),
+                                add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
+                                add_new_contact_ImgString!!, 0, "", 0)
+
+                        println(contactData)
+                        var isDuplicate = false
+                        val allcontacts = add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
+                        allcontacts?.forEach { contactsDB ->
+                            if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
+                                isDuplicate = true
+                        }
+
+                        if (!isDuplicate) {
+
+                            val contactId = add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
+
+                            var contactDetailDB: ContactDetailDB
+                            if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+                                contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                        add_new_contact_PhoneNumber!!.editText!!.text.toString(), "phone", spinnerChar, 0)
+                                add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                            }
+                            if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
+                                contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                        add_new_contact_fixNumber!!.editText!!.text.toString(), "phone", spinnerChar, 1)
+                                add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                            }
+                            if (add_new_contact_Email!!.editText!!.text.toString() != "") {
+                                contactDetailDB = ContactDetailDB(null, contactId!!.toInt(), "" +
+                                        add_new_contact_Email!!.editText!!.text.toString(), "mail", mailSpinnerChar, 2)
+                                add_new_contact_ContactsDatabase?.contactDetailsDao()?.insert(contactDetailDB)
+                            }
+
+                            if (isFavorite) {
+                                addToFavorite(contactId!!.toInt())
+                            }
+
+                            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                                type = ContactsContract.RawContacts.CONTENT_TYPE
+                            }
+                            intent.apply {
+                                putExtra(ContactsContract.Intents.Insert.NAME, add_new_contact_FirstName?.editText!!.text.toString()
+                                        + " " + add_new_contact_LastName?.editText!!.text.toString())
+
+                                putExtra(ContactsContract.Intents.Insert.EMAIL, add_new_contact_Email?.editText!!.text.toString())
+                                putExtra(
+                                        ContactsContract.Intents.Insert.EMAIL_TYPE,
+                                        ContactsContract.CommonDataKinds.Email.TYPE_WORK
+                                )
+                                putExtra(ContactsContract.Contacts.Photo.PHOTO, add_new_contact_ImgString!!)
+                                putExtra(ContactsContract.Intents.Insert.PHONE, add_new_contact_PhoneNumber?.editText!!.text.toString())
+                                putExtra(
+                                        ContactsContract.Intents.Insert.PHONE_TYPE,
+                                        ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+                                )
+                            }
+                            isRetroFit = true
+                            startActivity(intent)
+                        } else {
+                            confirmationDuplicate(contactData)
+                        }
+                    }
+                    main_mDbWorkerThread.postTask(printContacts)
                 }
-                main_mDbWorkerThread.postTask(printContacts)
             }
         }
 
