@@ -146,9 +146,9 @@ class NotificationListener : NotificationListenerService() {
                                     } else {
                                         println("screenIsUnlocked")
 
-                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+//                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                                             this.cancelNotification(sbn.key)
-                                        }
+//                                        }
                                         displayLayout(sbp, sharedPreferences)
                                     }
                                 }
@@ -172,9 +172,9 @@ class NotificationListener : NotificationListenerService() {
                                 } else {
                                     println("screenIsUnlocked")
 
-                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+//                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                                         this.cancelNotification(sbn.key)
-                                    }
+//                                    }
                                     displayLayout(sbp, sharedPreferences)
                                 }
                             } else {

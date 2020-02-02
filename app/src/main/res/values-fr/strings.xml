@@ -551,6 +551,7 @@
     <string name="in_app_purchase_made_message">Achat effectué</string>
     <string name="in_app_load_products">Charger les produits de la Boutique</string>
     <string name="in_app_shop">Boutique Knock In Notifications</string>
+    <string name="in_app_shop_return_to_notif">Voulez-vous retourner à la page des Notifications ?</string>
 
     <!-- endregion-->
 

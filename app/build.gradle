@@ -9,13 +9,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.dokka-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.yellowtwigs.Knockin"
-        minSdkVersion 24
-        targetSdkVersion 29
-        versionCode 41
-        versionName "5.0"
+        minSdkVersion 25
+        targetSdkVersion 28
+        versionCode 45
+        versionName "5.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {

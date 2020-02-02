@@ -554,6 +554,9 @@
     <string name="in_app_load_products">Load products</string>
     <string name="in_app_shop">Knock In Notifications Shop</string>
 
+    <string name="in_app_shop_purchase_made">Purchase made</string>
+    <string name="in_app_shop_return_to_notif">Do you want to return to the Notifications page?</string>
+
 
     <!-- endregion-->
 

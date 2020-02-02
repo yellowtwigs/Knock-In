@@ -250,8 +250,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     fun backToManageNotifAfterBuying(){
         if (fromManageNotification) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle("Achat Effectué")
-                    .setMessage("Voulez-vous retourner à la page des Notifications ?")
+                    .setTitle(getString(R.string.in_app_purchase_made_message))
+                    .setMessage(getString(R.string.in_app_shop_return_to_notif))
                     .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                         startActivity(Intent(this@PremiumActivity, ManageNotificationActivity::class.java).putExtra("fromMultiSelectActivity", true))
                     }
