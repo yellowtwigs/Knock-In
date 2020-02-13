@@ -357,13 +357,13 @@ class ManageNotificationActivity : AppCompatActivity() {
                     }
                     startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
                 }
-                R.id.nav_in_app -> {
-
-                    if (settings_NotificationMessagesAlarmSound != null) {
-                        settings_NotificationMessagesAlarmSound!!.stop()
-                    }
-                    startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                }
+//                R.id.nav_in_app -> {
+//
+//                    if (settings_NotificationMessagesAlarmSound != null) {
+//                        settings_NotificationMessagesAlarmSound!!.stop()
+//                    }
+//                    startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+//                }
                 R.id.nav_statistics -> {
                 }
                 R.id.nav_help -> {

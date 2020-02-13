@@ -17,7 +17,7 @@
             android:id="@+id/nav_messenger"
             android:icon="@drawable/ic_chat"
             android:title="@string/left_drawer_chat"
-            android:visible="true"/>
+            android:visible="false"/>
         <item
             android:id="@+id/nav_notif_config"
             android:icon="@drawable/ic_notification"

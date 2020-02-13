@@ -170,7 +170,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_manage_screen -> startActivity(Intent(this, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
-                R.id.nav_in_app -> startActivity(Intent(this@NotificationHistoryActivity, PremiumActivity::class.java))
+//                R.id.nav_in_app -> startActivity(Intent(this@NotificationHistoryActivity, PremiumActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }
@@ -273,7 +273,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                         overridePendingTransition(0, 0);
                         startActivity(getIntent());
                         overridePendingTransition(0, 0);
-
                     }
                     .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
                     .show()

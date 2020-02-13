@@ -188,8 +188,8 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_Mail = findViewById(R.id.edit_contact_mail_id)
         edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
 //        edit_contact_Messenger = findViewById(R.id.edit_contact_messenger_id_edit_text)
-        edit_contact_Mail_Name = findViewById(R.id.edit_contact_mail_id_edit_text)
-        edit_contact_Mail_Identifier_Help = findViewById(R.id.edit_contact_mail_id_help)
+//        edit_contact_Mail_Name = findViewById(R.id.edit_contact_mail_id_edit_text)
+//        edit_contact_Mail_Identifier_Help = findViewById(R.id.edit_contact_mail_id_help)
         edit_contact_Priority = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Fix_Property = findViewById(R.id.edit_contact_phone_number_spinner_fix)
@@ -235,7 +235,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_mail_property = tmpMail.tag
             edit_contact_priority = contact.contactDB!!.contactPriority
 //            edit_contact_messenger = contact.contactDB!!.messengerId
-            edit_contact_mail_name = contact.contactDB!!.mail_name
+//            edit_contact_mail_name = contact.contactDB!!.mail_name
             edit_contact_image64 = contact.contactDB!!.profilePicture64
             edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64))
         } else {
@@ -248,7 +248,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_last_name = contact.contactDB!!.lastName
             edit_contact_priority = contact.contactDB!!.contactPriority
             edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
-            edit_contact_mail_name = contact.contactDB!!.mail_name
+//            edit_contact_mail_name = contact.contactDB!!.mail_name
             //TODO :enlever code Dupliquer
 
             edit_contact_phone_property = getString(R.string.edit_contact_phone_number_mobile)
@@ -316,7 +316,7 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_FixNumber!!.editText!!.setText(edit_contact_fix_number)
         edit_contact_Mail!!.editText!!.setText(edit_contact_mail)
 //        edit_contact_Messenger!!.editText!!.setText(edit_contact_messenger)
-        edit_contact_Mail_Name!!.editText!!.setText(edit_contact_mail_name)
+//        edit_contact_Mail_Name!!.editText!!.setText(edit_contact_mail_name)
         edit_contact_Mail_Property!!.setSelection(getPosItemSpinner(edit_contact_mail_property, edit_contact_Mail_Property!!))
         edit_contact_Phone_Property!!.setSelection(getPosItemSpinner(edit_contact_phone_property, edit_contact_Phone_Property!!))
         edit_contact_Fix_Property!!.setSelection(getPosItemSpinner(edit_contact_fix_property, edit_contact_Fix_Property!!))
@@ -325,7 +325,7 @@ class EditContactActivity : AppCompatActivity() {
         textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber!!.editText!!.text?.toString())
         textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
 //        textChanged(edit_contact_Messenger, edit_contact_Messenger!!.editText!!.text?.toString())
-        textChanged(edit_contact_Mail_Name, edit_contact_Mail_Name!!.editText!!.text?.toString())
+//        textChanged(edit_contact_Mail_Name, edit_contact_Mail_Name!!.editText!!.text?.toString())
 
         //endregion
 
@@ -460,13 +460,13 @@ class EditContactActivity : AppCompatActivity() {
                     .show()
         }
 
-        edit_contact_Mail_Identifier_Help!!.setOnClickListener {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(getString(R.string.add_new_contact_mail_identifier))
-                    .setView(R.layout.alert_dialog_mail_identifier_help)
-                    .setMessage(getString(R.string.add_new_contact_mail_identifier_help))
-                    .show()
-        }
+//        edit_contact_Mail_Identifier_Help!!.setOnClickListener {
+//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                    .setTitle(getString(R.string.add_new_contact_mail_identifier))
+//                    .setView(R.layout.alert_dialog_mail_identifier_help)
+//                    .setMessage(getString(R.string.add_new_contact_mail_identifier_help))
+//                    .show()
+//        }
 
         edit_contact_AddContactToFavorite!!.setOnClickListener {
             edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
@@ -493,8 +493,8 @@ class EditContactActivity : AppCompatActivity() {
                         edit_contact_PhoneNumber!!.editText!!.text.toString() != edit_contact_phone_number ||
                         edit_contact_FixNumber!!.editText!!.text.toString() != edit_contact_fix_number ||
                         edit_contact_Mail!!.editText!!.text.toString() != edit_contact_mail ||
-                        isFavorite != isFavoriteChanged || edit_contact_imgStringChanged ||
-                        edit_contact_Mail_Name!!.editText!!.text.toString() != edit_contact_mail_name) {
+                        isFavorite != isFavoriteChanged || edit_contact_imgStringChanged) {
+//                    || edit_contact_Mail_Name!!.editText!!.text.toString() != edit_contact_mail_name
 
 //                    || edit_contact_Messenger!!.editText!!.text.toString() != edit_contact_messenger
 
@@ -760,8 +760,9 @@ class EditContactActivity : AppCompatActivity() {
                     edit_contact_ContactsDatabase?.contactsDao()?.updateContactById(edit_contact_id!!.toInt(),
                             edit_contact_FirstName!!.editText!!.text.toString(),
                             edit_contact_LastName!!.editText!!.text.toString(),
-                            edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition,
-                            edit_contact_Mail_Name!!.editText!!.text.toString()) //edit contact rounded maybe not work
+                            edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition, ""
+                            ) //edit contact rounded maybe not work
+//                    edit_contact_Mail_Name!!.editText!!.text.toString()
 
                 } else {
                     //println("edit contact rounded == null "+edit_contact_rounded_image )

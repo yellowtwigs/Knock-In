@@ -1,18 +1,27 @@
 package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
+import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.model.ModelDB.ContactDB
+import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
+import kotlinx.android.synthetic.main.activity_import_contacts.*
+import kotlinx.android.synthetic.main.activity_start_activity.*
 
 /**
  * Activité Qui Nous permet d'importer nos contact pour les buildVariant Contacter et Converser
@@ -20,73 +29,157 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 class ImportContactsActivity : AppCompatActivity() {
 
-    private var main_loadingPanel: RelativeLayout? = null
+    //region ========================================== Val or Var ==========================================
+
     private lateinit var main_mDbWorkerThread: DbWorkerThread
-    private var import_contacts_accept_button: Button? = null
-    private var import_contacts_not_accept_button: Button? = null
-    private var import_contacts_LongText: TextView? = null
-    private var import_contacts_Title: TextView? = null
+
+    private var import_contacts_activity_ImportContacts: MaterialButton? = null
+    private var import_contacts_activity_Permissions: MaterialButton? = null
+    private var import_contacts_activity_ImportContactsLoading: ProgressBar? = null
+    private var import_contacts_activity_PermissionsLoading: ProgressBar? = null
+
+    private var import_contacts_activity_Next: MaterialButton? = null
+    private var import_contacts_activity_Skip: MaterialButton? = null
+
+    private var import_contacts_ImportContactsCheck: AppCompatImageView? = null
+    private var start_activity_PermissionsCheck: AppCompatImageView? = null
+
+    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_import_contacts)
 
-        import_contacts_accept_button = findViewById(R.id.import_contacts_accept_button)
-        import_contacts_not_accept_button = findViewById(R.id.import_contacts_not_accept_button)
-        main_loadingPanel = findViewById(R.id.loadingPanel)
-        import_contacts_LongText = findViewById(R.id.import_contacts_long_text)
-        import_contacts_Title = findViewById(R.id.import_contacts_title)
+        val listApp = getAppOnPhone()
 
-        import_contacts_LongText!!.setText(String.format(getString(R.string.import_contacts_long_text),getString(R.string.app_name)))
+        //region ========================================== FindViewById ==========================================
+
+        import_contacts_activity_ImportContacts = findViewById(R.id.import_contacts_activity_import_contacts_button)
+        import_contacts_activity_Permissions = findViewById(R.id.import_contacts_activity_permissions_button)
+        import_contacts_activity_ImportContactsLoading = findViewById(R.id.import_contacts_activity_import_contacts_loading)
+        import_contacts_activity_PermissionsLoading = findViewById(R.id.import_contacts_activity_permissions_loading)
+
+        import_contacts_activity_Next = findViewById(R.id.import_contacts_activity_next)
+        import_contacts_activity_Skip = findViewById(R.id.import_contacts_activity_skip)
+
+        import_contacts_ImportContactsCheck = findViewById(R.id.import_contacts_activity_import_contacts_check)
+        start_activity_PermissionsCheck = findViewById(R.id.import_contacts_activity_permissions_check)
+
+        //endregion
+
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
 
 
         //region Listener
 
-        //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact
-        import_contacts_accept_button!!.setOnClickListener {
+        import_contacts_activity_ImportContacts!!.setOnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_READ_CONTACT)
+            import_contacts_activity_ImportContacts!!.visibility = View.INVISIBLE
+
+            val displayLoading = Runnable {
+                import_contacts_activity_ImportContactsLoading!!.visibility = View.VISIBLE
+            }
+            runOnUiThread(displayLoading)
+
+            if (listApp.contains("com.whatsapp")) {
+                val importWhatsappSharedPreferences: SharedPreferences = getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = importWhatsappSharedPreferences.edit()
+                edit.putBoolean("importWhatsappPreferences", true)
+                edit.apply()
+            }
         }
-        // Lors du click sur passer alors nous affichons une alert dialog pour nous prévenir de la possibilité de synchroniser plus tard
-        import_contacts_not_accept_button!!.setOnClickListener {
-            overlayAlertDialog()!!.show()
+
+        import_contacts_activity_Permissions!!.setOnClickListener {
+            val arraylistPermission = ArrayList<String>()
+            arraylistPermission.add(Manifest.permission.SEND_SMS)
+            arraylistPermission.add(Manifest.permission.CALL_PHONE)
+            ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), REQUEST_CODE_SMS_AND_CALL)
+            import_contacts_activity_Permissions!!.visibility = View.INVISIBLE
+            import_contacts_activity_PermissionsLoading!!.visibility = View.VISIBLE
         }
+
+        //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
+        import_contacts_activity_Next!!.setOnClickListener {
+            val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+            intent.putExtra("fromStartActivity", true)
+            startActivity(intent)
+            finish()
+        }
+
+        //lors du click affichage d'un message de prévention
+        import_contacts_activity_Skip!!.setOnClickListener {
+            //            start_activity_ImportContacts!!.visibility = View.INVISIBLE
+//            buildMultiSelectAlertDialog()
+            buildLeaveAlertDialog()
+        }
+
         //endregion
     }
-    /*
+
+    /**
      *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
-     *
      */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {//Si on a accès au contact on les synchronise sinon on affiche un message pour dire à l'utilisateur qu'il pourra synchroniser plus tard
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
-                import_contacts_accept_button!!.visibility = View.GONE
-                import_contacts_not_accept_button!!.visibility = View.GONE
-                import_contacts_LongText!!.visibility = View.GONE
-                import_contacts_Title!!.visibility = View.GONE
-                main_loadingPanel!!.visibility = View.VISIBLE
                 val sync = Runnable {
                     ContactManager(this).getAllContacsInfoSync(contentResolver)
-                    intentToTutorial()
+
+                    val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+                    var index = 1
+                    var stringSet = listOf<String>()
+                    if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                    arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
+                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
+                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                        index++
+                    }
+
+                    val runnable = Runnable {
+                        import_contacts_activity_ImportContactsLoading!!.visibility = View.INVISIBLE
+                        import_contacts_activity_import_contacts_check!!.visibility = View.VISIBLE
+                        allIsChecked()
+                    }
+                    runOnUiThread(runnable)
                 }
                 main_mDbWorkerThread.postTask(sync)
             } else {
-                overlayAlertDialog()!!.show()
+                import_contacts_activity_ImportContactsLoading!!.visibility = View.INVISIBLE
+                import_contacts_activity_ImportContacts!!.visibility = View.VISIBLE
             }
         }
+
+        if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
+
+            import_contacts_activity_PermissionsLoading!!.visibility = View.INVISIBLE
+            import_contacts_activity_permissions_check!!.visibility = View.VISIBLE
+        }
+        allIsChecked()
     }
+
     /**
      *méthode qui lance  l'activity Tutorial
      */
     fun intentToTutorial() {
-        val intent = Intent(this@ImportContactsActivity, TutorialActivity::class.java)
+        val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
         intent.putExtra("fromImportContact", true)
         startActivity(intent)
         finish()
+    }
+
+    /**
+     * Si toutes les autorisations sont validées et que les contacts ont fini d'être charger alors nous changeons le bouton passer pour un bouton suivant
+     */
+    private fun allIsChecked() {
+        if (import_contacts_ImportContactsCheck!!.visibility == View.VISIBLE) {
+            import_contacts_activity_Next!!.visibility = View.VISIBLE
+        }
     }
 
     /**
@@ -108,12 +201,77 @@ class ImportContactsActivity : AppCompatActivity() {
     /**
      * Réécriture de la méthode onBackPressed lorsque nous appuyant sur le boutton retour du téléphone rien n'est fait
      */
-    override fun onBackPressed() {
-
-    }
-
+    override fun onBackPressed() {}
 
     companion object {
         const val REQUEST_CODE_READ_CONTACT = 2
+        const val REQUEST_CODE_SMS_AND_CALL = 5
+    }
+
+    /**
+     * Demande à l'utilisateur si celui-ci désire choisir ses contacts prioritaires
+     * @return [AlertDialog]
+     */
+    private fun buildMultiSelectAlertDialog(): AlertDialog {
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setTitle(applicationContext.resources.getString(R.string.app_name))
+                .setMessage(applicationContext.resources.getString(R.string.import_contacts_alert_dialog))
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    intentToTutorial()
+                }
+                .setNegativeButton(R.string.alert_dialog_later)
+                { _, _ ->
+                    closeContextMenu()
+                    val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
+                    finish()
+                }
+                .show()
+    }
+
+    /**
+     * Permet à l'utilisateur de passer les demandes d'autorisations
+     */
+    private fun buildLeaveAlertDialog(): AlertDialog {
+        val message = if (import_contacts_activity_ImportContactsLoading!!.visibility == View.VISIBLE) {//vérifie que le téléphone ne charge pas les contacts sinon celui-ci prévient l'utilisateur que ces contact ne seront pas tous chargés
+            getString(R.string.start_activity_skip_alert_dialog_message_importation)
+        } else {
+            getString(R.string.start_activity_skip_alert_dialog_message)
+        }
+
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
+                .setMessage(message)
+                .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
+                    val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.apply()
+                    closeContextMenu()
+                }
+                .setNegativeButton(R.string.alert_dialog_cancel)
+                { _, _ ->
+                    closeContextMenu()
+                }
+                .show()
+    }
+
+    private fun getAppOnPhone(): java.util.ArrayList<String> {
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+        val resolveInfoList = packageManager.queryIntentActivities(intent, 0)
+        val packageNameList = java.util.ArrayList<String>()
+        for (resolveInfo in resolveInfoList) {
+            val activityInfo = resolveInfo.activityInfo
+            packageNameList.add(activityInfo.applicationInfo.packageName)
+        }
+        return packageNameList
     }
 }

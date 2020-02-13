@@ -501,12 +501,14 @@
     <string name="start_activity_title">Knock In Notifications</string>
     <string name="start_activity_import_title">Contacts</string>
     <string name="start_activity_import_subtitle">Importez vos contacts dans Knock In Notifications pour communiquer plus efficacement avec eux</string>
+    <string name="import_contact_activity_import_subtitle">Importez vos contacts dans Knock In Contacts pour communiquer plus efficacement avec eux</string>
     <string name="start_activity_notification_title">Notifications</string>
     <string name="start_activity_notification_subtitle">Activez le service de notifications pour recevoir des notifications priorisées et personnalisées</string>
     <string name="start_activity_button_notification">Activer</string>
     <string name="start_activity_superposition_title">Superposition</string>
     <string name="start_activity_superposition_subtitle">Autorisez Knock In Notifications à afficher les notifications VIP pendant que vous exécutez d’autres applications</string>
     <string name="start_activity_button_superposition">Autoriser</string>
+    <string name="start_activity_superposition_not_allowed_message">La superposition n\'est pas possible avec Android 10 (version de votre Smartphone). Les notifications prioritaires ne sont donc pas disponibles pour l\'instant. Une version de l\'application offrant les notifications prioritaires pour Android 10 sera bientôt disponible. Vous pouvez toutefois utiliser les autres fonctions gratuites de l\'application.</string>
     <string name="start_activity_permission_title">Autres autorisations</string>
     <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des SMS depuis l\'application</string>
     <string name="start_activity_button_permission">Autoriser</string>

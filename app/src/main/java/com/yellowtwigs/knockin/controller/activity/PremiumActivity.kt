@@ -98,8 +98,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view_premium)
         val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_in_app)
-        navItem.isChecked = true
+//        val navItem = menu.findItem(R.id.nav_in_app)
+//        navItem.isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true

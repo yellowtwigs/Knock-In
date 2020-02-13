@@ -316,7 +316,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_messenger -> startActivity(Intent(this@MainActivity, MessengerActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-                R.id.nav_in_app -> startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
+//                R.id.nav_in_app -> startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
@@ -900,7 +900,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         when (sharedPreferences.getString("tri", "priorite")) {
             "nom" -> triNom.isChecked = true
-            "priorite" -> triPriority.isChecked = true
+//            "priorite" -> triPriority.isChecked = true
             "favoris" -> triFavorite.isChecked = true
             else -> triLastName.isChecked = true
         }

@@ -14,6 +14,7 @@ import com.yellowtwigs.knockin.controller.SelectContactAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 
 /**
@@ -133,7 +134,7 @@ class MultiSelectActivity : AppCompatActivity() {
                     if (contactList.isNotEmpty()) {
                         gestionnaireContact.setToContactInListPriority2()
                     }
-                    val intent = Intent(this@MultiSelectActivity, TutorialActivity::class.java)
+                    val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     finish()
@@ -170,7 +171,7 @@ class MultiSelectActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                val intent = Intent(this@MultiSelectActivity, TutorialActivity::class.java)
+                val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()

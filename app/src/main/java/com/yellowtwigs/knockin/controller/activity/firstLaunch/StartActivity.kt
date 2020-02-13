@@ -29,6 +29,7 @@ import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 import android.content.ComponentName
+import com.yellowtwigs.knockin.controller.activity.MainActivity
 
 
 /**
@@ -176,54 +177,59 @@ class StartActivity : AppCompatActivity() {
         //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
         start_activity_AuthorizeSuperposition!!.setOnClickListener {
 
-            start_activity_AuthorizeSuperposition!!.visibility = View.INVISIBLE
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
 
-            val SPLASH_DISPLAY_LENGHT = 3000
-            //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:$packageName"))
-                startActivity(intent)
-            }
-            val displayLoading = Runnable {
-                start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
-            }
-            runOnUiThread(displayLoading)
-            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
-            val verifiedSuperposition = Thread {
-                activityVisible = false
-                while (!activityVisible) {
+                start_activity_AuthorizeSuperposition!!.visibility = View.INVISIBLE
+
+                val SPLASH_DISPLAY_LENGHT = 3000
+                //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:$packageName"))
+                    startActivity(intent)
                 }
-                println("NotificationService" + isNotificationServiceEnabled() + " activity visible" + activityVisible)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
-                    println("into before delayed")
-                    //     Handler().postDelayed({
+                val displayLoading = Runnable {
+                    start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
+                }
+                runOnUiThread(displayLoading)
+                //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
+                val verifiedSuperposition = Thread {
+                    activityVisible = false
+                    while (!activityVisible) {
+                    }
+                    println("NotificationService" + isNotificationServiceEnabled() + " activity visible" + activityVisible)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+                        println("into before delayed")
+                        //     Handler().postDelayed({
 
 
-                    val displayLoading = Runnable {
-                        Handler().postDelayed({
+                        val displayLoading = Runnable {
+                            Handler().postDelayed({
+                                start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
+                                start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
+                                val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                                edit.putBoolean("popupNotif", true)
+                                edit.apply()
+                                allIsChecked()
+
+                            }, SPLASH_DISPLAY_LENGHT.toLong())
+                        }
+                        runOnUiThread(displayLoading)
+
+                        //  }, SPLASH_DISPLAY_LENGHT.toLong())
+                    } else {
+                        val displayLoading = Runnable {
                             start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
-                            start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
-                            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                            edit.putBoolean("popupNotif", true)
-                            edit.apply()
-                            allIsChecked()
-
-                        }, SPLASH_DISPLAY_LENGHT.toLong())
+                            start_activity_AuthorizeSuperposition!!.visibility = View.VISIBLE
+                        }
+                        runOnUiThread(displayLoading)
                     }
-                    runOnUiThread(displayLoading)
-
-                    //  }, SPLASH_DISPLAY_LENGHT.toLong())
-                } else {
-                    val displayLoading = Runnable {
-                        start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
-                        start_activity_AuthorizeSuperposition!!.visibility = View.VISIBLE
-                    }
-                    runOnUiThread(displayLoading)
                 }
+                verifiedSuperposition.start()
+            } else {
+                Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message), Toast.LENGTH_LONG).show()
             }
-            verifiedSuperposition.start()
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation des appels et des SMS
@@ -353,7 +359,7 @@ class StartActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.alert_dialog_later)
                 { _, _ ->
                     closeContextMenu()
-                    val intent = Intent(this@StartActivity, TutorialActivity::class.java)
+                    val intent = Intent(this@StartActivity, MainActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     finish()
@@ -376,7 +382,7 @@ class StartActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
                 .setMessage(message)
                 .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                    val intent = Intent(this@StartActivity, TutorialActivity::class.java)
+                    val intent = Intent(this@StartActivity, MainActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)

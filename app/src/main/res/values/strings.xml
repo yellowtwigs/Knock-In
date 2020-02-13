@@ -504,12 +504,14 @@
     <string name="start_activity_title">Knock In Notifications</string>
     <string name="start_activity_import_title">Contacts</string>
     <string name="start_activity_import_subtitle">Import your contacts into Knock In Notifications to communicate with them more effectively</string>
+    <string name="import_contact_activity_import_subtitle">Import your contacts into Knock In Contacts to communicate with them more effectively</string>
     <string name="start_activity_notification_title">Notifications</string>
     <string name="start_activity_notification_subtitle">Activate the notification service and receive custom notifications</string>
     <string name="start_activity_button_notification">Activate</string>
     <string name="start_activity_superposition_title">Superposition</string>
     <string name="start_activity_superposition_subtitle">Allow Knock In Notifications to display VIP notifications while you are using other apps </string>
     <string name="start_activity_button_superposition">Allow</string>
+    <string name="start_activity_superposition_not_allowed_message">Superposition is not possible with Android 10 (version of your Smartphone). VIP notifications are therefore not available for the time being. A new version of our app offering VIP notifications with Android 10 will be available soon. You can anyhow use the other free functions of the app.</string>
     <string name="start_activity_permission_title">Other authorisations</string>
     <string name="start_activity_permission_subtitle">You will be able to make phone calls and send SMS from the app</string>
     <string name="start_activity_button_permission">Allow</string>
@@ -553,8 +555,6 @@
     <string name="in_app_purchase_made_message">Purchase made</string>
     <string name="in_app_load_products">Load products</string>
     <string name="in_app_shop">Knock In Notifications Shop</string>
-
-    <string name="in_app_shop_purchase_made">Purchase made</string>
     <string name="in_app_shop_return_to_notif">Do you want to return to the Notifications page?</string>
 
 

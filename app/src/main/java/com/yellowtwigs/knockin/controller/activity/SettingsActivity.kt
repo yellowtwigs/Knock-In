@@ -116,7 +116,7 @@ class SettingsActivity : AppCompatActivity() {
                 R.id.nav_data_access -> {
                 }
                 R.id.nav_knockons -> startActivity(Intent(this@SettingsActivity, ManageKnockonsActivity::class.java))
-                R.id.nav_in_app -> startActivity(Intent(this@SettingsActivity, PremiumActivity::class.java))
+//                R.id.nav_in_app -> startActivity(Intent(this@SettingsActivity, PremiumActivity::class.java))
                 R.id.nav_help -> startActivity(Intent(this@SettingsActivity, HelpActivity::class.java))
             }
 

@@ -1,86 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightColor"
-    tools:context=".controller.activity.firstLaunch.ImportContactsActivity">
+    android:background="@drawable/space_background">
 
-    <ScrollView
+    <TextView
+        android:id="@+id/import_contacts_activity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:text="Knock In Contacts"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/import_contacts_activity_import_contacts_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/space_background">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/import_contacts_activity_title">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/first_launch_in_scroll"
+        <ProgressBar
+            android:id="@+id/import_contacts_activity_import_contacts_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
+            android:indeterminate="true"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/import_contacts_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="55dp"
-                android:text="@string/import_contacts_title"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="25sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/import_contacts_activity_import_contacts_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/import_contacts_activity_import_contacts_title"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/import_contacts_activity_import_contacts_button"
+            android:text="@string/import_contact_activity_import_subtitle"
+            android:textColor="@color/textColorLight"
+            android:textSize="12sp" />
 
-            <RelativeLayout
-                android:id="@+id/loadingPanel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
+        <TextView
+            android:id="@+id/import_contacts_activity_import_contacts_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="25dp"
+            android:text="@string/start_activity_import_title"
+            android:textColor="@color/lightColor"
+            android:textSize="18sp" />
 
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true" />
-            </RelativeLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/import_contacts_activity_import_contacts_check"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_check" />
 
-            <TextView
-                android:id="@+id/import_contacts_long_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginEnd="50dp"
-                android:maxWidth="300dp"
-                android:text="@string/import_contacts_long_text"
-                android:justificationMode="inter_word"
-                android:textColor="@color/textColorLight"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/import_contacts_title" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/import_contacts_activity_import_contacts_button"
+            android:layout_width="@dimen/start_activity_button_width"
+            android:layout_height="@dimen/start_activity_button_height"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:text="@string/import_contacts_button_yes"
+            android:textColor="#000000"
+            android:textSize="12sp" />
 
-          <com.google.android.material.button.MaterialButton
-                android:id="@+id/import_contacts_accept_button"
-                android:layout_width="185dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="100dp"
-                android:text="@string/import_contacts_button_yes"
-                app:icon="@drawable/ic_import"
-                app:layout_constraintBottom_toTopOf="@+id/import_contacts_not_accept_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/import_contacts_long_text" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/import_contacts_not_accept_button"
-                android:layout_width="185dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/import_contacts_button_no"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/import_contacts_accept_button" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/import_contacts_activity_permissions_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/import_contacts_activity_import_contacts_layout">
+
+        <ProgressBar
+            android:id="@+id/import_contacts_activity_permissions_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/import_contacts_activity_permissions_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/import_contacts_activity_permissions_title"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/import_contacts_activity_permissions_button"
+            android:text="@string/start_activity_permission_subtitle"
+            android:textColor="@color/textColorLight"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/import_contacts_activity_permissions_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="25dp"
+            android:text="@string/start_activity_permission_title"
+            android:textColor="@color/lightColor"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/import_contacts_activity_permissions_check"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_check" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/import_contacts_activity_permissions_button"
+            android:layout_width="@dimen/start_activity_button_width"
+            android:layout_height="@dimen/start_activity_button_height"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:text="@string/start_activity_button_permission"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/import_contacts_activity_skip"
+        android:layout_width="@dimen/start_activity_button_width"
+        android:layout_height="@dimen/start_activity_button_height"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/start_activity_skip"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/import_contacts_activity_permissions_layout" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/import_contacts_activity_next"
+        android:layout_width="@dimen/start_activity_button_width"
+        android:layout_height="@dimen/start_activity_button_height"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/start_activity_next"
+        android:textColor="#000000"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/import_contacts_activity_permissions_layout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
