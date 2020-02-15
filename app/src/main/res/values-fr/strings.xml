@@ -557,4 +557,6 @@
 
     <!-- endregion-->
 
+    <string name="knockin_notif">Knock In Notifications</string>
+
 </resources>

@@ -557,7 +557,9 @@
     <string name="in_app_shop">Knock In Notifications Shop</string>
     <string name="in_app_shop_return_to_notif">Do you want to return to the Notifications page?</string>
 
-
     <!-- endregion-->
+
+    <string name="knockin_notif">Knock In Notifications</string>
+
 
 </resources>
