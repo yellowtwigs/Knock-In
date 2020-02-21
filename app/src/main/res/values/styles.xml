@@ -34,7 +34,7 @@
         <item name="backgroundColor">@color/backgroundColorDark</item>
         <item name="backgroundPressedColor">@color/backgroundPressedColorDark</item>
         <item name="transparentColor">@color/transparentColorDark</item>
-        <item name="textColor">@color/textColorLight</item>
+        <item name="textColor">@color/lightColor</item>
         <item name="textColorLight">@color/textColorDark</item>
         <item name="lightGreyColor">@color/lightGreyColorDark</item>
         <item name="colorSurface">@color/lightGreyColorDark</item>

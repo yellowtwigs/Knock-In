@@ -120,7 +120,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         val onClick = View.OnClickListener {
             if (it.id == help_activity_FAQ!!.id) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/tutorial")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_contact_us_link))))
             }
             if (it.id == help_activity_ContactUs!!.id) {
                 val intent = Intent(Intent.ACTION_SEND)

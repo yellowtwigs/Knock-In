@@ -46,8 +46,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private var nbGrid: Int = 4
     private var nbGrid_group: Int = 4
 
-    private var manage_theme_SwitchTheme: Switch? = null
-
     private var manage_screen_dissociate_cl: ConstraintLayout? = null
     private var manage_screen_dissociate_textView: TextView? = null
     private var manage_screen_dissociate: Boolean? = null
@@ -99,7 +97,25 @@ class ManageMyScreenActivity : AppCompatActivity() {
         tv_five_group = findViewById(R.id.activity_settings_imageView_5_contact_group)
         tv_six_group = findViewById(R.id.activity_settings_imageView_6_contact_group)
 
-        manage_theme_SwitchTheme = findViewById(R.id.manage_theme_switch)
+        val manage_my_screen_Layout = findViewById<LinearLayout>(R.id.manage_my_screen_layout)
+
+        val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch!!.isChecked = true
+            manage_my_screen_Layout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        //region ================================ Call Popup from LeftDrawer ================================
+
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+
+        if (sharedPreferencePopup.getBoolean("popup", true)) {
+            settings_CallPopupSwitch!!.isChecked = true
+        }
+
+        //endregion
 
         //endregion
 
@@ -151,7 +167,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_informations -> startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@ManageMyScreenActivity, SettingsActivity::class.java))
-//                R.id.nav_in_app -> startActivity(Intent(this@ManageMyScreenActivity, PremiumActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@ManageMyScreenActivity, PremiumActivity::class.java))
                 R.id.nav_manage_screen -> {
                 }
                 R.id.nav_data_access -> {
@@ -174,10 +190,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
         manage_screen_dissociate_switch!!.isChecked = manage_screen_dissociate!!
 
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            manage_theme_SwitchTheme!!.isChecked = true
-        }
-
         manage_screen_dissociate_switch?.setOnCheckedChangeListener { _, isChecked ->
             val editor = sharedPreferences.edit()
             editor.putBoolean("dissociate_screen", isChecked)
@@ -194,6 +206,40 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
 
         //region ==================================== SetOnClickListener ====================================
+
+        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", true)
+                edit.apply()
+            } else {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", false)
+                edit.apply()
+            }
+        }
+
+        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+
+                setTheme(R.style.AppThemeDark)
+                manage_my_screen_Layout!!.setBackgroundResource(R.drawable.dark_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", true)
+                edit.apply()
+                startActivity(Intent(this@ManageMyScreenActivity, ManageMyScreenActivity::class.java))
+            } else {
+
+                setTheme(R.style.AppTheme)
+                manage_my_screen_Layout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", false)
+                edit.apply()
+                startActivity(Intent(this@ManageMyScreenActivity, ManageMyScreenActivity::class.java))
+            }
+        }
 
         when (nbGrid) {
             0 -> tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
@@ -380,27 +426,9 @@ class ManageMyScreenActivity : AppCompatActivity() {
             changeGridColumnGroup()
         }
 
-        manage_theme_SwitchTheme!!.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                refreshActivity()
-            } else {
-                setTheme(R.style.AppTheme)
-
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-
-                refreshActivity()
-            }
-        }
-
         // endregion
     }
+
     //region ========================================== Functions ===========================================
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

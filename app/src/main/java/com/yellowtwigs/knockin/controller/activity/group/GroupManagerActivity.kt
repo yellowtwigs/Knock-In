@@ -2,14 +2,17 @@ package com.yellowtwigs.knockin.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.net.Uri
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -40,6 +43,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var group_manager_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var group_mDbWorkerThread: DbWorkerThread
 
+    private var group_manager_MainLayout: ConstraintLayout? = null
+
     private var group_BottomNavigationView: BottomNavigationView? = null
     private var group_manager_NavigationView: NavigationView? = null
 
@@ -61,6 +66,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var group_GridView: RecyclerView? = null
     private var adapterItem: GroupAdapter? = null
     private var sectionAdapter: SectionGroupAdapter? = null
+
+    private var settings_left_drawer_ThemeSwitch : Switch? = null
 
     var touchHelper: ItemTouchHelper? = null
 
@@ -122,6 +129,33 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         group_BottomNavigationView = findViewById(R.id.navigation)
 
         group_manager_ToolbarHelp = findViewById(R.id.group_manager_toolbar_help)
+
+        group_manager_MainLayout = findViewById(R.id.group_manager_main_layout)
+
+        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch!!.isChecked = true
+            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        //region ================================ Call Popup from LeftDrawer ================================
+
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+
+        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch!!.isChecked = true
+            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        if (sharedPreferencePopup.getBoolean("popup", true)) {
+            settings_CallPopupSwitch!!.isChecked = true
+        }
+
+        //endregion
 
         //endregion
 
@@ -210,6 +244,40 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         //region ======================================= Listeners ==========================================
+
+        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", true)
+                edit.apply()
+            } else {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", false)
+                edit.apply()
+            }
+        }
+
+        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+
+                setTheme(R.style.AppThemeDark)
+                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", true)
+                edit.apply()
+                startActivity(Intent(this@GroupManagerActivity, GroupManagerActivity::class.java))
+            } else {
+
+                setTheme(R.style.AppTheme)
+                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", false)
+                edit.apply()
+                startActivity(Intent(this@GroupManagerActivity, GroupManagerActivity::class.java))
+            }
+        }
 
         group_manager_OpenDrawer.setOnClickListener {
             group_manager_DrawerLayout!!.openDrawer(GravityCompat.START)

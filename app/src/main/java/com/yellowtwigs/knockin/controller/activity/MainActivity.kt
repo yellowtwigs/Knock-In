@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -104,7 +105,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
     private var gestionnaireContacts: ContactManager? = null
-    private var main_LinearLayout: LinearLayout? = null
+    private var main_constraintLayout: ConstraintLayout? = null
     private var main_loadingPanel: RelativeLayout? = null
 
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
@@ -116,6 +117,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private val PERMISSION_READ_CONTACT = 99
 
     private var idGroup: Long = 0
+
+    private var settings_left_drawer_ThemeSwitch : Switch? = null
 
     //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -253,11 +256,30 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         main_SearchBar = findViewById(R.id.main_toolbar_search)
-        main_LinearLayout = findViewById(R.id.main_layout)
+        main_constraintLayout = findViewById(R.id.constraintLyout)
         main_loadingPanel = findViewById(R.id.main_loadingPanel)
 
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
+
+
+        //region ================================ Call Popup from LeftDrawer ================================
+
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+
+        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch!!.isChecked = true
+            main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        if (sharedPreferencePopup.getBoolean("popup", true)) {
+            settings_CallPopupSwitch!!.isChecked = true
+        }
+
+        //endregion
 
         //endregion
 
@@ -482,6 +504,40 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
          */
         //region ======================================== Listeners =========================================
 
+        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", true)
+                edit.apply()
+            } else {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", false)
+                edit.apply()
+            }
+        }
+
+        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+
+                setTheme(R.style.AppThemeDark)
+                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", true)
+                edit.apply()
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+
+                setTheme(R.style.AppTheme)
+                main_constraintLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", false)
+                edit.apply()
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+        }
+
         //Sync contact
         navSyncContact.setOnMenuItemClickListener {
             fromStartActivity = true
@@ -518,57 +574,57 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
 
                     //pour chaque contact changé on affiche une popup avec un choix "garder la version Android ou Knockin"
-                    changedContactList.forEach { changedContact ->
-                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                                .setTitle(R.string.main_edited_contact)
-                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + " " + this.resources.getString(R.string.main_content_edited_contact_2))
-                                .setPositiveButton(R.string.app_name) { _, _ ->
-                                    // on garde la version Knockin
-                                }
-                                .setNegativeButton(R.string.main_android_edited_contact) { _, _ ->
-
-                                    val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
-                                    //on get les idAndroid et idKnockin du contact modifier
-                                    allId.forEach {
-                                        if (changedContact.first.id == it.first)
-                                            changedContact.first.id = it.second
-                                    }
-                                    //grâce à l'id on update avec les details récupéré dans save_last_sync
-                                    main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!, changedContact.first.firstName, changedContact.first.lastName)
-                                    main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
-                                    changedContact.second.forEach {
-                                        it.idContact = changedContact.first.id
-                                        main_ContactsDatabase!!.contactDetailsDao().insert(it)
-                                    }
-                                    val displaySync = Runnable {
-                                        //on update soit la grid ou soit la list view en fonction de celle séléctionné
-                                        gestionnaireContacts!!.contactList.clear()
-                                        val shareP = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                                        if (shareP.getString("tri", "") == "priorite") {
-                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByPriority20() }
-                                            val result = executorService.submit(callDb)
-                                            gestionnaireContacts!!.contactList.addAll(result.get())
-                                        } else {
-                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
-                                            val result = executorService.submit(callDb)
-                                            gestionnaireContacts!!.contactList.addAll(result.get())
-                                        }
-
-                                        if (gridViewAdapter != null) {
-                                            gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
-                                            gridViewAdapter!!.notifyDataSetChanged()
-                                        }
-
-                                        if (recyclerViewAdapter != null) {
-                                            recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
-                                            recyclerViewAdapter!!.notifyDataSetChanged()
-                                        }
-                                    }
-                                    runOnUiThread(displaySync)
-                                }
-                                .show()
-                    }
+//                    changedContactList.forEach { changedContact ->
+//                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                                .setTitle(R.string.main_edited_contact)
+//                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + " " + this.resources.getString(R.string.main_content_edited_contact_2))
+//                                .setPositiveButton(R.string.app_name) { _, _ ->
+//                                    // on garde la version Knockin
+//                                }
+//                                .setNegativeButton(R.string.main_android_edited_contact) { _, _ ->
+//
+//                                    val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
+//                                    //on get les idAndroid et idKnockin du contact modifier
+//                                    allId.forEach {
+//                                        if (changedContact.first.id == it.first)
+//                                            changedContact.first.id = it.second
+//                                    }
+//                                    //grâce à l'id on update avec les details récupéré dans save_last_sync
+//                                    main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!, changedContact.first.firstName, changedContact.first.lastName)
+//                                    main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
+//                                    changedContact.second.forEach {
+//                                        it.idContact = changedContact.first.id
+//                                        main_ContactsDatabase!!.contactDetailsDao().insert(it)
+//                                    }
+//                                    val displaySync = Runnable {
+//                                        //on update soit la grid ou soit la list view en fonction de celle séléctionné
+//                                        gestionnaireContacts!!.contactList.clear()
+//                                        val shareP = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+//                                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+//                                        if (shareP.getString("tri", "") == "priorite") {
+//                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByPriority20() }
+//                                            val result = executorService.submit(callDb)
+//                                            gestionnaireContacts!!.contactList.addAll(result.get())
+//                                        } else {
+//                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
+//                                            val result = executorService.submit(callDb)
+//                                            gestionnaireContacts!!.contactList.addAll(result.get())
+//                                        }
+//
+//                                        if (gridViewAdapter != null) {
+//                                            gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
+//                                            gridViewAdapter!!.notifyDataSetChanged()
+//                                        }
+//
+//                                        if (recyclerViewAdapter != null) {
+//                                            recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
+//                                            recyclerViewAdapter!!.notifyDataSetChanged()
+//                                        }
+//                                    }
+//                                    runOnUiThread(displaySync)
+//                                }
+//                                .show()
+//                    }
 
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
@@ -610,7 +666,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             true
         }
 
-        main_LinearLayout!!.setOnTouchListener { _, _ ->
+        main_constraintLayout!!.setOnTouchListener { _, _ ->
             val v = this@MainActivity.currentFocus
             val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (v != null) {

@@ -29,16 +29,27 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
+            android:visible="false"
             android:title="@string/left_drawer_settings" />
         <item
             android:id="@+id/nav_in_app"
             android:icon="@drawable/ic_in_app"
             android:title="@string/left_drawer_in_app" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/left_drawer_help" />
+        <item
+            android:id="@+id/nav_sync_contact"
+            android:icon="@drawable/ic_import"
+            android:title="@string/left_drawer_import"
+            android:visible="false" />
     </group>
 
     <group
         android:id="@+id/menu_bottom"
-        android:checkableBehavior="none">
+        android:checkableBehavior="none"
+        android:visible="false">
         <item
             android:id="@+id/nav_data_access"
             android:enabled="false"
@@ -57,14 +68,5 @@
             android:visible="false"
             android:icon="@drawable/ic_statistics"
             android:title="@string/left_drawer_statistics" />
-        <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/ic_help"
-            android:title="@string/left_drawer_help" />
-        <item
-            android:id="@+id/nav_sync_contact"
-            android:icon="@drawable/ic_import"
-            android:title="@string/left_drawer_import"
-            android:visible="false" />
     </group>
 </menu>

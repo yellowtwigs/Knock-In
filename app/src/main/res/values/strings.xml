@@ -15,6 +15,7 @@
     <string name="help_notification_manager"> In this screen you can chose to enable/disable the priority 2 notifications </string>
     <string name="help_my_informations"> In this screen you can update your personal details </string>
     <string name="help_contact_us_intent">Contact us</string>
+    <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
 
     <!-- endregion-->
 
@@ -232,8 +233,8 @@
     <!-- region Manage My Screen !-->
 
     <string name="manage_my_screen_toolbar_title">Display</string>
-    <string name="manage_my_screen_theme">Change theme</string>
-    <string name="manage_my_screen_theme_long_text">Choose dark theme</string>
+    <string name="manage_my_screen_theme">Dark Mode</string>
+    <string name="manage_my_screen_theme_long_text">Switch between light and dark mode</string>
     <string name="manage_my_screen_number_of_column">Number of contacts per row</string>
     <string name="manage_my_screen_number_of_column_group">Groups display</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Decouple contacts display</string>

@@ -2,13 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?attr/darkColor" />
+            <solid android:color="?attr/transparentColor" />
             <padding android:bottom="1dp" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?attr/backgroundColor" />
+            <solid android:color="?attr/transparentColor" />
         </shape>
     </item>
 </layer-list>

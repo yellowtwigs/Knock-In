@@ -14,6 +14,7 @@
     <string name="help_notification_manager">Dans cet écran vous pouvez choisir d\'activer ou non les notifications prioritaires</string>
     <string name="help_my_informations">Dans cette écran vous pouvez modifier vos informations personnelles</string>
     <string name="help_contact_us_intent">Contactez-nous</string>
+    <string name="help_contact_us_link">https://www.yellowtwigs.com/prise-en-main</string>
 
     <!-- endregion-->
 
@@ -230,8 +231,8 @@
     <!-- region Manage My Screen !-->
 
     <string name="manage_my_screen_toolbar_title">Affichage</string>
-    <string name="manage_my_screen_theme">Changer le thème</string>
-    <string name="manage_my_screen_theme_long_text">Choisir le thème foncé</string>
+    <string name="manage_my_screen_theme">Dark Mode</string>
+    <string name="manage_my_screen_theme_long_text">Basculer entre le mode clair et le mode sombre</string>
     <string name="manage_my_screen_number_of_column">Choix de l\'affichage des contacts</string>
     <string name="manage_my_screen_number_of_column_group">Choix de l\'affichage des groupes</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Dissocier l\'affichage des contacts</string>

@@ -9,7 +9,8 @@
     tools:context=".controller.activity.NotificationHistoryActivity"
     tools:openDrawer="start">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
+        android:id="@+id/notification_history_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,9 +24,8 @@
             android:visibility="visible"
             android:background="@drawable/custom_shadow_background"
             android:elevation="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/notification_history_toolbar"
@@ -61,9 +61,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/backgroundColor"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/notification_history_toolbar_multi_select_mode_close"
@@ -106,18 +105,16 @@
 
         </RelativeLayout>
 
-        <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@+id/listView_notification_history"
+        <ListView
+            android:id="@+id/notification_history_list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:divider="@android:color/transparent"
-            android:dividerHeight="10.0sp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notification_history_toolbar_layout" />
+            android:layout_above="@+id/navigation"
+            android:layout_below="@+id/notification_history_toolbar_layout"
+            android:layout_centerHorizontal="true" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notification_history_recycler_view"
@@ -126,10 +123,9 @@
             android:layout_marginTop="8dp"
             android:divider="@android:color/transparent"
             android:dividerHeight="10.0sp"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notification_history_toolbar_layout" />
+            android:layout_above="@+id/navigation"
+            android:layout_below="@+id/notification_history_toolbar_layout"
+            android:layout_centerHorizontal="true" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
@@ -141,15 +137,14 @@
             android:background="?attr/backgroundColor"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation_view" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -162,6 +157,10 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer_layout" />
+        app:menu="@menu/menu_left_drawer_layout" >
+
+        <include layout="@layout/nav_bottom_drawer" />
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,14 +12,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -29,11 +28,13 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.internal.Utility.arrayList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationListener
+import com.yellowtwigs.knockin.controller.NotificationsHistoryListViewAdapter
 import com.yellowtwigs.knockin.controller.NotificationsHistoryRecyclerViewAdapter
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
@@ -42,6 +43,7 @@ import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
+import java.lang.IndexOutOfBoundsException
 
 
 /**
@@ -62,16 +64,18 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private var notification_history_ToolbarMultiSelectModeDelete: AppCompatImageView? = null
     private var notification_history_ToolbarMultiSelectModeTitle: TextView? = null
 
-    //    private var notification_Adapter: NotificationsHistoryListViewAdapter? = null
+    private var notification_Adapter: NotificationsHistoryListViewAdapter? = null
+    private var notification_history_ListView: ListView? = null
 
-    private var notification_Adapter: NotificationsHistoryRecyclerViewAdapter? = null
+    private var notification_recyclerview_Adapter: NotificationsHistoryRecyclerViewAdapter? = null
     private var notification_history_RecyclerView: RecyclerView? = null
 
     private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
 
     private val listOfItemSelected = ArrayList<NotificationDB>()
-    private val notification_history_ListOfNotificationDB = mutableListOf<NotificationDB>()
+    private val notification_history_ListOfNotificationDB = arrayList<NotificationDB>()
+//    private val notification_history_ListOfNotificationDB = mutableListOf<NotificationDB>()
     private var fromPopup: Boolean = false
 
     private var firstClick: Boolean = true
@@ -130,6 +134,29 @@ class NotificationHistoryActivity : AppCompatActivity() {
         notification_history_ToolbarMultiSelectModeDelete = findViewById(R.id.notification_history_toolbar_multi_select_mode_delete)
         notification_history_ToolbarMultiSelectModeTitle = findViewById(R.id.notification_history_toolbar_multi_select_mode_tv)
 
+        val notification_history_MainLayout = findViewById<RelativeLayout>(R.id.notification_history_layout)
+        val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch!!.isChecked = true
+            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch.isChecked = true
+            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        //region ================================ Call Popup from LeftDrawer ================================
+
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+
+        if (sharedPreferencePopup.getBoolean("popup", true)) {
+            settings_CallPopupSwitch!!.isChecked = true
+        }
+
+        //endregion
+
         //endregion
 
         //region ========================================= Toolbar ==========================================
@@ -184,7 +211,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         //endregion
 
-        //region ====================================== BottomNavigation =======================================
+        //region ==================================== Bottom Navigation =====================================
 
         notification_BottomNavigationView = findViewById(R.id.navigation)
         notification_BottomNavigationView!!.menu.getItem(2).isChecked = true
@@ -204,6 +231,38 @@ class NotificationHistoryActivity : AppCompatActivity() {
         updateFilter()
 
         //region ======================================== Listeners =========================================
+
+        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", true)
+                edit.apply()
+            } else {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", false)
+                edit.apply()
+            }
+        }
+
+        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                setTheme(R.style.AppThemeDark)
+                notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", true)
+                edit.apply()
+                startActivity(Intent(this@NotificationHistoryActivity, NotificationHistoryActivity::class.java))
+            } else {
+                setTheme(R.style.AppTheme)
+                notification_history_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", false)
+                edit.apply()
+                startActivity(Intent(this@NotificationHistoryActivity, NotificationHistoryActivity::class.java))
+            }
+        }
 
         notification_history_ToolbarMultiSelectModeClose!!.setOnClickListener {
             refreshActivity()
@@ -270,9 +329,9 @@ class NotificationHistoryActivity : AppCompatActivity() {
                         listOfItemSelected.clear()
                         refreshActivity()
                         finish()
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        overridePendingTransition(0, 0)
+                        startActivity(intent)
+                        overridePendingTransition(0, 0)
                     }
                     .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
                     .show()
@@ -281,7 +340,252 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //endregion
     }
 
-    //region ========================================== Functions ==========================================
+    //region ========================================== Functions ===========================================
+
+    /**
+     * Met à jour la liste de contact en fonction de changement tri ou de filtre
+     */
+    fun updateFilter() {
+
+        val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+
+        if (sharedPreferences.getBoolean("filtre_message", true)) {
+
+            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
+            if (stringSearch.isEmpty()) {
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
+            } else {
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
+                println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
+            }
+            val listTmp = mutableListOf<NotificationDB>()
+            listTmp.addAll(notification_history_ListOfNotificationDB)
+            listTmp.forEach {
+                if (!isMessagingApp(it.platform)) {
+                    notification_history_ListOfNotificationDB.remove(it)
+                }
+            }
+        } else {
+            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
+            val listTmp = mutableListOf<NotificationDB>()
+            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
+            listTmp.addAll(notification_history_ListOfNotificationDB)
+            if (stringSearch.isNotEmpty()) {
+                val regex = (".*$stringSearch.*").toRegex()
+                listTmp.forEach {
+                    if (!it.contactName.toLowerCase().matches(regex) && !it.description.toLowerCase().matches(regex)) {
+                        notification_history_ListOfNotificationDB.remove(it)
+                    }
+                }
+            }
+        }
+
+        when {
+            sharedPreferences.getString("tri", "date") == "date" -> {
+
+                val listTmp = mutableListOf<NotificationDB>()
+
+                for (i in 0 until notification_history_ListOfNotificationDB.size){
+                    listTmp.add(notification_history_ListOfNotificationDB[i])
+                }
+
+                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
+                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+                notification_recyclerview_Adapter!!.notifyDataSetChanged()
+                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
+                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+            }
+            sharedPreferences.getString("tri", "date") == "priorite" -> {
+                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
+                val listTmp2 = mutableListOf<NotificationDB>()
+                listTmp2.addAll(notification_history_ListOfNotificationDB)
+                listTmp2.removeAll(listTmp)
+                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
+                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+                notification_history_ListOfNotificationDB.addAll(listTmp)
+
+                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
+                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+                notification_recyclerview_Adapter!!.notifyDataSetChanged()
+                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
+                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+            }
+            sharedPreferences.getString("tri", "date") == "contact" -> {
+                val listNotif: ArrayList<NotificationDB> = arrayListOf()
+                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
+                listNotif.retainAll(notification_history_ListOfNotificationDB)
+                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, listNotif)
+                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+                notification_recyclerview_Adapter!!.notifyDataSetChanged()
+                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
+                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+            }
+        }
+
+//        when {
+//            sharedPreferences.getString("tri", "date") == "date" -> {
+//
+//                notification_recyclerview_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_ListView = findViewById(R.id.listView_notification_history)
+//                notification_history_ListView!!.adapter = notification_recyclerview_Adapter
+//                swipeMenuCreator(notification_history_ListView!!)
+//            }
+//            sharedPreferences.getString("tri", "date") == "priorite" -> {
+//
+//                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
+//                val listTmp2 = mutableListOf<NotificationDB>()
+//
+//                listTmp2.addAll(notification_history_ListOfNotificationDB)
+//                listTmp2.removeAll(listTmp)
+//
+//                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
+//                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+//                notification_history_ListOfNotificationDB.addAll(listTmp)
+//
+//                notification_recyclerview_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_ListView = findViewById(R.id.listView_notification_history)
+//                notification_history_ListView!!.adapter = notification_recyclerview_Adapter
+//
+//                swipeMenuCreator(notification_history_ListView!!)
+//            }
+//            sharedPreferences.getString("tri", "date") == "contact" -> {
+//
+//                val listNotif: ArrayList<NotificationDB> = arrayListOf()
+//                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
+//                listNotif.retainAll(notification_history_ListOfNotificationDB)
+//                notification_history_ListOfNotificationDB.clear()
+//                notification_history_ListOfNotificationDB.addAll(listNotif)
+//                notification_recyclerview_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_ListView = findViewById(R.id.listView_notification_history)
+//                notification_history_ListView!!.adapter = notification_recyclerview_Adapter
+//
+//                swipeMenuCreator(notification_history_ListView!!)
+//            }
+//            else -> println("thats a problem test")
+//        }
+
+//        notification_history_ListView!!.isScrollingCacheEnabled = false
+    }
+
+    fun updateFilterMultiSelect() {
+
+        val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean("filtre_message", true)) {
+
+            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
+            if (stringSearch.isEmpty()) {
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
+            } else {
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
+                println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
+            }
+            val listTmp = mutableListOf<NotificationDB>()
+            listTmp.addAll(notification_history_ListOfNotificationDB)
+            listTmp.forEach {
+                if (!isMessagingApp(it.platform)) {
+                    notification_history_ListOfNotificationDB.remove(it)
+                }
+            }
+        } else {
+            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
+            val listTmp = mutableListOf<NotificationDB>()
+            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
+            listTmp.addAll(notification_history_ListOfNotificationDB)
+            if (stringSearch.isNotEmpty()) {
+                val regex = (".*$stringSearch.*").toRegex()
+                listTmp.forEach {
+                    if (!it.contactName.toLowerCase().matches(regex) && !it.description.toLowerCase().matches(regex)) {
+                        notification_history_ListOfNotificationDB.remove(it)
+                    }
+                }
+            }
+        }
+
+//        when {
+//            sharedPreferences.getString("tri", "date") == "date" -> {
+//                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+//                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
+//                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
+//            }
+//            sharedPreferences.getString("tri", "date") == "priorite" -> {
+//                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
+//                val listTmp2 = mutableListOf<NotificationDB>()
+//                listTmp2.addAll(notification_history_ListOfNotificationDB)
+//                listTmp2.removeAll(listTmp)
+//                listTmp.addAll(Math.max(firstContactPrio0(listTmp), 0), listTmp2)
+//                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+//                notification_history_ListOfNotificationDB.addAll(listTmp)
+//                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+//                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
+//                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
+//            }
+//            sharedPreferences.getString("tri", "date") == "contact" -> {
+//                val listNotif: ArrayList<NotificationDB> = arrayListOf()
+//                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
+//                listNotif.retainAll(notification_history_ListOfNotificationDB)
+//                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, listNotif)
+//                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
+//                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
+//                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
+//            }
+//            else -> println("thats a problem test")
+//        }
+
+//        when {
+//            sharedPreferences.getString("tri", "date") == "date" -> {
+//
+//                notification_recyclerview_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_ListView = findViewById(R.id.listView_notification_history)
+//                notification_history_ListView!!.adapter = notification_recyclerview_Adapter
+//                swipeMenuCreator(notification_history_ListView!!)
+//            }
+//            sharedPreferences.getString("tri", "date") == "priorite" -> {
+//
+//                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
+//                val listTmp2 = mutableListOf<NotificationDB>()
+//
+//                listTmp2.addAll(notification_history_ListOfNotificationDB)
+//                listTmp2.removeAll(listTmp)
+//
+//                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
+//                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
+//                notification_history_ListOfNotificationDB.addAll(listTmp)
+//
+//                notification_recyclerview_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_ListView = findViewById(R.id.listView_notification_history)
+//                notification_history_ListView!!.adapter = notification_recyclerview_Adapter
+//
+//                swipeMenuCreator(notification_history_ListView!!)
+//            }
+//            sharedPreferences.getString("tri", "date") == "contact" -> {
+//
+//                val listNotif: ArrayList<NotificationDB> = arrayListOf()
+//                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
+//                listNotif.retainAll(notification_history_ListOfNotificationDB)
+//                notification_history_ListOfNotificationDB.clear()
+//                notification_history_ListOfNotificationDB.addAll(listNotif)
+//                notification_recyclerview_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
+//                notification_history_ListView = findViewById(R.id.listView_notification_history)
+//                notification_history_ListView!!.adapter = notification_recyclerview_Adapter
+//
+//                swipeMenuCreator(notification_history_ListView!!)
+//            }
+//            else -> println("thats a problem test")
+//        }
+
+//        notification_history_ListView!!.isScrollingCacheEnabled = false
+    }
+
+    //region ======================================== recyclerClick =========================================
 
     fun recyclerSimpleClick(position: Int) {
 
@@ -373,6 +677,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
+    //endregion
+
     private fun sendMail(addressMail: String, msg: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_EMAIL, addressMail)
@@ -409,14 +715,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
         intent.putExtra("sms_body", message)
 
         startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (fromPopup) {
-            refreshActivity()
-        }
     }
 
     //region open app TODO supprimer toutes ces méthodes useless pour la plupart des application
@@ -544,6 +842,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (fromPopup) {
+            refreshActivity()
+        }
+    }
+
 //    private fun phoneCall() {
 //        val i = packageManager.getLaunchIntentForPackage("com.android.incallui")
 //        try {
@@ -663,238 +969,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Met à jour la liste de contact en fonction de changement tri ou de filtre
-     */
-    fun updateFilter() {
-
-        val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean("filtre_message", true)) {
-
-            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
-            if (stringSearch.isEmpty()) {
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
-            } else {
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
-                println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
-            }
-            val listTmp = mutableListOf<NotificationDB>()
-            listTmp.addAll(notification_history_ListOfNotificationDB)
-            listTmp.forEach {
-                if (!isMessagingApp(it.platform)) {
-                    notification_history_ListOfNotificationDB.remove(it)
-                }
-            }
-        } else {
-            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
-            val listTmp = mutableListOf<NotificationDB>()
-            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
-            listTmp.addAll(notification_history_ListOfNotificationDB)
-            if (stringSearch.isNotEmpty()) {
-                val regex = (".*$stringSearch.*").toRegex()
-                listTmp.forEach {
-                    if (!it.contactName.toLowerCase().matches(regex) && !it.description.toLowerCase().matches(regex)) {
-                        notification_history_ListOfNotificationDB.remove(it)
-                    }
-                }
-            }
-        }
-
-        when {
-            sharedPreferences.getString("tri", "date") == "date" -> {
-                notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
-                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-                notification_history_RecyclerView!!.adapter = notification_Adapter
-                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
-            }
-            sharedPreferences.getString("tri", "date") == "priorite" -> {
-                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
-                val listTmp2 = mutableListOf<NotificationDB>()
-                listTmp2.addAll(notification_history_ListOfNotificationDB)
-                listTmp2.removeAll(listTmp)
-                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
-                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-                notification_history_ListOfNotificationDB.addAll(listTmp)
-                notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
-                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-                notification_history_RecyclerView!!.adapter = notification_Adapter
-                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
-            }
-            sharedPreferences.getString("tri", "date") == "contact" -> {
-                val listNotif: ArrayList<NotificationDB> = arrayListOf()
-                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
-                listNotif.retainAll(notification_history_ListOfNotificationDB)
-                notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, listNotif)
-                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-                notification_history_RecyclerView!!.adapter = notification_Adapter
-                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
-            }
-            else -> println("thats a problem test")
-        }
-
-//        when {
-//            sharedPreferences.getString("tri", "date") == "date" -> {
-//
-//                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_ListView = findViewById(R.id.listView_notification_history)
-//                notification_history_ListView!!.adapter = notification_Adapter
-//                swipeMenuCreator(notification_history_ListView!!)
-//            }
-//            sharedPreferences.getString("tri", "date") == "priorite" -> {
-//
-//                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
-//                val listTmp2 = mutableListOf<NotificationDB>()
-//
-//                listTmp2.addAll(notification_history_ListOfNotificationDB)
-//                listTmp2.removeAll(listTmp)
-//
-//                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
-//                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-//                notification_history_ListOfNotificationDB.addAll(listTmp)
-//
-//                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_ListView = findViewById(R.id.listView_notification_history)
-//                notification_history_ListView!!.adapter = notification_Adapter
-//
-//                swipeMenuCreator(notification_history_ListView!!)
-//            }
-//            sharedPreferences.getString("tri", "date") == "contact" -> {
-//
-//                val listNotif: ArrayList<NotificationDB> = arrayListOf()
-//                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
-//                listNotif.retainAll(notification_history_ListOfNotificationDB)
-//                notification_history_ListOfNotificationDB.clear()
-//                notification_history_ListOfNotificationDB.addAll(listNotif)
-//                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_ListView = findViewById(R.id.listView_notification_history)
-//                notification_history_ListView!!.adapter = notification_Adapter
-//
-//                swipeMenuCreator(notification_history_ListView!!)
-//            }
-//            else -> println("thats a problem test")
-//        }
-
-//        notification_history_ListView!!.isScrollingCacheEnabled = false
-    }
-
-    fun updateFilterMultiSelect() {
-
-        val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean("filtre_message", true)) {
-
-            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
-            if (stringSearch.isEmpty()) {
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
-            } else {
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
-                println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
-            }
-            val listTmp = mutableListOf<NotificationDB>()
-            listTmp.addAll(notification_history_ListOfNotificationDB)
-            listTmp.forEach {
-                if (!isMessagingApp(it.platform)) {
-                    notification_history_ListOfNotificationDB.remove(it)
-                }
-            }
-        } else {
-            notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-            notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
-            val listTmp = mutableListOf<NotificationDB>()
-            val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
-            listTmp.addAll(notification_history_ListOfNotificationDB)
-            if (stringSearch.isNotEmpty()) {
-                val regex = (".*$stringSearch.*").toRegex()
-                listTmp.forEach {
-                    if (!it.contactName.toLowerCase().matches(regex) && !it.description.toLowerCase().matches(regex)) {
-                        notification_history_ListOfNotificationDB.remove(it)
-                    }
-                }
-            }
-        }
-
-//        when {
-//            sharedPreferences.getString("tri", "date") == "date" -> {
-//                notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-//                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-//                notification_history_RecyclerView!!.adapter = notification_Adapter
-//            }
-//            sharedPreferences.getString("tri", "date") == "priorite" -> {
-//                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
-//                val listTmp2 = mutableListOf<NotificationDB>()
-//                listTmp2.addAll(notification_history_ListOfNotificationDB)
-//                listTmp2.removeAll(listTmp)
-//                listTmp.addAll(Math.max(firstContactPrio0(listTmp), 0), listTmp2)
-//                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-//                notification_history_ListOfNotificationDB.addAll(listTmp)
-//                notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-//                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-//                notification_history_RecyclerView!!.adapter = notification_Adapter
-//            }
-//            sharedPreferences.getString("tri", "date") == "contact" -> {
-//                val listNotif: ArrayList<NotificationDB> = arrayListOf()
-//                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
-//                listNotif.retainAll(notification_history_ListOfNotificationDB)
-//                notification_Adapter = NotificationsHistoryRecyclerViewAdapter(this, listNotif)
-//                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-//                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-//                notification_history_RecyclerView!!.adapter = notification_Adapter
-//            }
-//            else -> println("thats a problem test")
-//        }
-
-//        when {
-//            sharedPreferences.getString("tri", "date") == "date" -> {
-//
-//                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_ListView = findViewById(R.id.listView_notification_history)
-//                notification_history_ListView!!.adapter = notification_Adapter
-//                swipeMenuCreator(notification_history_ListView!!)
-//            }
-//            sharedPreferences.getString("tri", "date") == "priorite" -> {
-//
-//                val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
-//                val listTmp2 = mutableListOf<NotificationDB>()
-//
-//                listTmp2.addAll(notification_history_ListOfNotificationDB)
-//                listTmp2.removeAll(listTmp)
-//
-//                listTmp.addAll(firstContactPrio0(listTmp).coerceAtLeast(0), listTmp2)
-//                notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
-//                notification_history_ListOfNotificationDB.addAll(listTmp)
-//
-//                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_ListView = findViewById(R.id.listView_notification_history)
-//                notification_history_ListView!!.adapter = notification_Adapter
-//
-//                swipeMenuCreator(notification_history_ListView!!)
-//            }
-//            sharedPreferences.getString("tri", "date") == "contact" -> {
-//
-//                val listNotif: ArrayList<NotificationDB> = arrayListOf()
-//                listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
-//                listNotif.retainAll(notification_history_ListOfNotificationDB)
-//                notification_history_ListOfNotificationDB.clear()
-//                notification_history_ListOfNotificationDB.addAll(listNotif)
-//                notification_Adapter = NotificationsHistoryListViewAdapter(this, notification_history_ListOfNotificationDB)
-//                notification_history_ListView = findViewById(R.id.listView_notification_history)
-//                notification_history_ListView!!.adapter = notification_Adapter
-//
-//                swipeMenuCreator(notification_history_ListView!!)
-//            }
-//            else -> println("thats a problem test")
-//        }
-
-//        notification_history_ListView!!.isScrollingCacheEnabled = false
-    }
-
     /*
         fun longNotifHistoryListItemClick(position: Int) {
             val notifSelected = notification_history_ListOfNotificationDB[position]
@@ -928,4 +1002,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     //endregion
+}
+
+class WrapContentLinearLayoutManager(context: Context?) : LinearLayoutManager(context) {
+    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+        try {
+            super.onLayoutChildren(recycler, state)
+        } catch (e: IndexOutOfBoundsException) {
+            Log.e("Error", "IndexOutOfBoundsException in Recycler View")
+        }
+    }
 }
