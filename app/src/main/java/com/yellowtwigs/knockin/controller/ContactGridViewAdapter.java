@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.controller;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,9 +18,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,7 +34,6 @@ import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupActivity;
-import com.yellowtwigs.knockin.controller.activity.group.GroupAdapter;
 import com.yellowtwigs.knockin.model.ContactGesture;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
@@ -47,11 +43,7 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 /**

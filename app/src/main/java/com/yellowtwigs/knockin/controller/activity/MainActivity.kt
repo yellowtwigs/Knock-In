@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Point
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -48,6 +49,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.FirstLaunchActivity
+import com.yellowtwigs.knockin.controller.activity.bubbles.BubbleActivity
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -118,7 +120,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var idGroup: Long = 0
 
-    private var settings_left_drawer_ThemeSwitch : Switch? = null
+    private var settings_left_drawer_ThemeSwitch: Switch? = null
 
     //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -262,6 +264,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
 
+        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+        when {
+            height in 1501..2101 -> {
+            }
+            height < 1500 -> {
+                val params = main_SettingsLeftDrawerLayout.layoutParams
+                params.height = 250
+                main_SettingsLeftDrawerLayout.layoutParams = params
+            }
+        }
+
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -272,7 +290,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
-            main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+//            main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
         }
 
         if (sharedPreferencePopup.getBoolean("popup", true)) {
@@ -522,7 +540,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             if (isChecked) {
 
                 setTheme(R.style.AppThemeDark)
-                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+//                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", true)
                 edit.apply()
@@ -530,7 +548,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             } else {
 
                 setTheme(R.style.AppTheme)
-                main_constraintLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+//                main_constraintLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", false)
                 edit.apply()
@@ -688,6 +706,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_toolbar_Help!!.setOnClickListener {
             startActivity(Intent(this@MainActivity, TutorialActivity::class.java).putExtra("fromMainActivity", true))
             finish()
+
+//            val target = Intent(this, BubbleActivity::class.java)
+//            startActivity(target)
+
         }
 
         // En mode Multiselect, le click sur la croix permet de fermer de ce mode
@@ -738,7 +760,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val contactDb = contact.contactDB
                     suppressWarning += "\n- " + contactDb!!.firstName + " " + contactDb.lastName
 
-                    if(contactDb.contactPriority == 2){
+                    if (contactDb.contactPriority == 2) {
                         nbVIP++
                     }
                 }

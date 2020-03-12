@@ -52,7 +52,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_import_contacts_button"
                 android:text="@string/start_activity_import_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -118,7 +118,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_activate_notifications_button"
                 android:text="@string/start_activity_notification_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -184,7 +184,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_superposition_button"
                 android:text="@string/start_activity_superposition_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -250,7 +250,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_permissions_button"
                 android:text="@string/start_activity_permission_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -288,7 +288,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_activity_skip"
-            android:layout_width="@dimen/start_activity_button_width"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/start_activity_button_height"
             android:textColor="#000000"
             android:layout_alignParentEnd="true"
@@ -303,7 +303,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_activity_next"
-            android:layout_width="@dimen/start_activity_button_width"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/start_activity_button_height"
             android:textColor="#000000"
             android:layout_alignParentEnd="true"

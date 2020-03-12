@@ -14,6 +14,7 @@
         android:layout_marginTop="50dp"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +53,7 @@
         android:textAlignment="center"
         android:textColor="@color/lightColor"
         android:textColorLink="@color/text_link_selector"
+        app:layout_constraintBottom_toTopOf="@+id/first_launch_accept_politique"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/first_launch_logo" />

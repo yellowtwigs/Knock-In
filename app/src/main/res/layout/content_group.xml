@@ -144,7 +144,7 @@
             <RelativeLayout
                 android:id="@+id/settings_left_drawer_layout"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="215dp"
                 android:layout_alignParentBottom="true">
 
                 <RelativeLayout
@@ -182,7 +182,7 @@
                         android:layout_toStartOf="@+id/settings_left_drawer_theme_switch"
                         android:text="@string/manage_my_screen_theme"
                         android:textColor="?attr/textColor"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         android:textStyle="normal" />
 
                 </RelativeLayout>
@@ -224,7 +224,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/settings_call_popup_switch"
                         android:textColor="?attr/textColor"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         android:textStyle="normal" />
 
                 </RelativeLayout>
@@ -238,9 +238,9 @@
                 android:layout_above="@+id/settings_left_drawer_view_horizontal"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="5dp"
-                android:text="Settings"
+                android:text="@string/left_drawer_settings"
                 android:textColor="#000000"
-                android:textSize="23sp" />
+                android:textSize="18sp" />
 
             <View
                 android:id="@+id/settings_left_drawer_view_horizontal"

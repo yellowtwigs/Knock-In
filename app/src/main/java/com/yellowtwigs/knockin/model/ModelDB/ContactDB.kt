@@ -48,5 +48,4 @@ data class ContactDB(
          * Le champ si Oui = 1 ou Non = 0, l'utisateur possède ce contact dans ses contacts Whatsapp
          */
         @ColumnInfo(name = "has_whatsapp") val hasWhatsapp: Int
-
 )

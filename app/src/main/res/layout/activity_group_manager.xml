@@ -15,7 +15,7 @@
             android:id="@+id/group_manager_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/mr_white_blur_background"
+            android:background="?attr/backgroundColor"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -181,7 +181,7 @@
             <RelativeLayout
                 android:id="@+id/settings_left_drawer_layout"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="215dp"
                 android:layout_alignParentBottom="true">
 
                 <RelativeLayout
@@ -275,7 +275,7 @@
                 android:layout_above="@+id/settings_left_drawer_view_horizontal"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="5dp"
-                android:text="Settings"
+                android:text="@string/left_drawer_settings"
                 android:textColor="?attr/textColor"
                 android:textSize="23sp" />
 

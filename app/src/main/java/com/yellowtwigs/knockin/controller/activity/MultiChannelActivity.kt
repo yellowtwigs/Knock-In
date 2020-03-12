@@ -1,23 +1,17 @@
 package com.yellowtwigs.knockin.controller.activity
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.telephony.SmsManager
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.ContactListViewAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity

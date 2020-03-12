@@ -11,11 +11,17 @@
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.ContactDetailsActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.MessengerActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.SettingsActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.firstLaunch.StartActivity">
+        <activity android:name=".controller.activity.bubbles.BubbleActivity"
+            android:allowEmbedded="true"
+            android:documentLaunchMode="always"
+            android:label="Reminder"
+            android:resizeableActivity="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".controller.activity.firstLaunch.TutorialActivity" />
+        <activity android:name=".controller.activity.ContactDetailsActivity" />
+        <activity android:name=".controller.activity.MessengerActivity" />
+        <activity android:name=".controller.activity.SettingsActivity" />
+        <activity android:name=".controller.activity.firstLaunch.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,34 +29,34 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.group.DeleteContactFromGroupActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.group.AddContactToGroupActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.group.GroupActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.MultiChannelActivity" />
+        <activity android:name=".controller.activity.group.AddNewGroupActivity" />
+        <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
+        <activity android:name=".controller.activity.group.AddContactToGroupActivity" />
+        <activity android:name=".controller.activity.group.GroupActivity" />
+        <activity android:name=".controller.activity.MultiChannelActivity" />
         <activity
-            android:name="com.yellowtwigs.knockin.controller.activity.NotificationAlarmActivity"
+            android:name=".controller.activity.NotificationAlarmActivity"
             android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.firstLaunch.ImportContactsActivity" />
-        <activity android:name="com.yellowtwigs.knockin.FirstLaunchActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.CockpitActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.HelpActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.ManageMyScreenActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.EditInformationsActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.ComposeMessageActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.ManageNotificationActivity" />
-        <activity android:name="com.yellowtwigs.knockin.controller.activity.NotificationHistoryActivity" />
+        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
+        <activity android:name=".controller.activity.group.GroupManagerActivity" />
+        <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
+        <activity android:name=".FirstLaunchActivity" />
+        <activity android:name=".controller.activity.CockpitActivity" />
+        <activity android:name=".controller.activity.HelpActivity" />
+        <activity android:name=".controller.activity.ManageMyScreenActivity" />
+        <activity android:name=".controller.activity.EditInformationsActivity" />
+        <activity android:name=".controller.activity.ComposeMessageActivity" />
+        <activity android:name=".controller.activity.ManageNotificationActivity" />
+        <activity android:name=".controller.activity.NotificationHistoryActivity" />
         <activity
-            android:name="com.yellowtwigs.knockin.controller.activity.AddNewContactActivity"
+            android:name=".controller.activity.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.yellowtwigs.knockin.controller.activity.EditContactActivity"
+            android:name=".controller.activity.EditContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.yellowtwigs.knockin.controller.activity.MainActivity"
+            android:name=".controller.activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden">
@@ -60,12 +66,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -80,27 +84,26 @@
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".controller.activity.PremiumActivity"></activity>
+        <activity android:name=".controller.activity.PremiumActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <receiver android:name="com.yellowtwigs.knockin.controller.NotificationSender" />
-        <receiver android:name="com.yellowtwigs.knockin.controller.NotificationMessageSender" />
-
+        <receiver android:name=".controller.NotificationSender" />
+        <receiver android:name=".controller.NotificationMessageSender" />
         <receiver
             android:name="com.example.Knockin.model.MyReceiver"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
-                <!--                <action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
+
+                <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED" /> -->
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name="com.yellowtwigs.knockin.controller.NotificationListener"
+            android:name=".controller.NotificationListener"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -116,27 +119,20 @@
         android:resizeable="true"
         android:smallScreens="true"
         android:xlargeScreens="true" />
-
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
+    <!-- <uses-permission android:name="android.permission.RECEIVE_SMS" /> -->
+    <!-- <uses-permission android:name="android.permission.RECEIVE_MMS" /> -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--    <uses-permission android:name="android.permission.READ_SMS" />-->
-    <!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-    <!--    <uses-permission android:name="android.permission.RECEIVE_MMS" />-->
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
+
     <uses-permission android:name="android.permission.INTERNET" />
-<!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
-    <!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-    <!--    <uses-permission android:name="android.permission.READ_SMS" />-->
-    <!--    <uses-permission android:name="android.permission.WRITE_SMS" />-->
-    <!--    <uses-permission android:name="android.permission.RECEIVE_MMS" />-->
 
 </manifest>

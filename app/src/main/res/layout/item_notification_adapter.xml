@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/notification_adapter_layout"
         android:layout_width="280dp"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_margin="5dp"
         android:background="@drawable/notif_adapter_background_layout"

@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
+import android.graphics.Point
 import android.media.MediaPlayer
 import android.media.session.MediaController
 import androidx.appcompat.app.AppCompatActivity
@@ -295,7 +296,23 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
-            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+        when {
+            height in 1501..2101 -> {
+            }
+            height < 1500 -> {
+                val params = main_SettingsLeftDrawerLayout.layoutParams
+                params.height = 325
+                main_SettingsLeftDrawerLayout.layoutParams = params
+            }
         }
 
         //region ================================ Call Popup from LeftDrawer ================================
@@ -376,13 +393,13 @@ class ManageNotificationActivity : AppCompatActivity() {
                     }
                     startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
                 }
-//                R.id.nav_in_app -> {
-//
-//                    if (settings_NotificationMessagesAlarmSound != null) {
-//                        settings_NotificationMessagesAlarmSound!!.stop()
-//                    }
-//                    startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-//                }
+                R.id.nav_in_app -> {
+
+                    if (settings_NotificationMessagesAlarmSound != null) {
+                        settings_NotificationMessagesAlarmSound!!.stop()
+                    }
+                    startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                }
                 R.id.nav_statistics -> {
                 }
                 R.id.nav_help -> {
@@ -421,7 +438,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             if (isChecked) {
 
                 setTheme(R.style.AppThemeDark)
-                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", true)
                 edit.apply()
@@ -429,7 +446,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             } else {
 
                 setTheme(R.style.AppTheme)
-                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", false)
                 edit.apply()

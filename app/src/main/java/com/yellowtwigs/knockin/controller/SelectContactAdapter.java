@@ -18,13 +18,11 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupActivity;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.DbWorkerThread;

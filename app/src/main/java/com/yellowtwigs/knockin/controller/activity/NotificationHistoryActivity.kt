@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -138,12 +139,28 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
-            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
         }
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch.isChecked = true
-            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+        when {
+            height in 1501..2101 -> {
+            }
+            height < 1500 -> {
+                val params = main_SettingsLeftDrawerLayout.layoutParams
+                params.height = 325
+                main_SettingsLeftDrawerLayout.layoutParams = params
+            }
         }
 
         //region ================================ Call Popup from LeftDrawer ================================
@@ -197,7 +214,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 R.id.nav_manage_screen -> startActivity(Intent(this, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
-//                R.id.nav_in_app -> startActivity(Intent(this@NotificationHistoryActivity, PremiumActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@NotificationHistoryActivity, PremiumActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }
@@ -249,14 +266,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
         settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setTheme(R.style.AppThemeDark)
-                notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//                notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", true)
                 edit.apply()
                 startActivity(Intent(this@NotificationHistoryActivity, NotificationHistoryActivity::class.java))
             } else {
                 setTheme(R.style.AppTheme)
-                notification_history_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+//                notification_history_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", false)
                 edit.apply()

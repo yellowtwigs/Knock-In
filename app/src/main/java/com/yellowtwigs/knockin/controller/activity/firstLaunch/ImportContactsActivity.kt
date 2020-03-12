@@ -21,7 +21,6 @@ import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_import_contacts.*
-import kotlinx.android.synthetic.main.activity_start_activity.*
 
 /**
  * Activité Qui Nous permet d'importer nos contact pour les buildVariant Contacter et Converser

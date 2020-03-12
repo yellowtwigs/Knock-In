@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.Point
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -198,7 +199,23 @@ class CockpitActivity : AppCompatActivity() {
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
-            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+        when {
+            height in 1501..2101 -> {
+            }
+            height < 1500 -> {
+                val params = main_SettingsLeftDrawerLayout.layoutParams
+                params.height = 325
+                main_SettingsLeftDrawerLayout.layoutParams = params
+            }
         }
 
         //region ================================ Call Popup from LeftDrawer ================================
@@ -243,7 +260,7 @@ class CockpitActivity : AppCompatActivity() {
                 R.id.nav_informations -> startActivity(Intent(this@CockpitActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@CockpitActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@CockpitActivity, SettingsActivity::class.java))
-//                R.id.nav_in_app -> startActivity(Intent(this@CockpitActivity, PremiumActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@CockpitActivity, PremiumActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@CockpitActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_data_access -> {
                 }
@@ -279,14 +296,14 @@ class CockpitActivity : AppCompatActivity() {
         settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setTheme(R.style.AppThemeDark)
-                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", true)
                 edit.apply()
                 startActivity(Intent(this@CockpitActivity, CockpitActivity::class.java))
             } else {
                 setTheme(R.style.AppTheme)
-                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", false)
                 edit.apply()

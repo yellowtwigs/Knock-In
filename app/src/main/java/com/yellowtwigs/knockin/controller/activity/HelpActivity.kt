@@ -107,6 +107,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                 R.id.nav_settings -> startActivity(Intent(this@HelpActivity, SettingsActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@HelpActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_help -> startActivity(Intent(this@HelpActivity, HelpActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@HelpActivity, PremiumActivity::class.java))
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.help_drawer_layout)

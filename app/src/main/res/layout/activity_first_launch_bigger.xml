@@ -19,6 +19,7 @@
             android:layout_marginTop="50dp"
             android:textColor="@color/colorPrimary"
             android:textSize="25sp"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +27,7 @@
         <TextView
             android:id="@+id/first_launch_welcome_long_text"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/first_launch_welcome_long_text"
             android:textAlignment="center"
@@ -51,7 +52,7 @@
             android:id="@+id/first_launch_politique"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="150dp"
             android:layout_marginBottom="35dp"
             android:clickable="true"
             android:focusable="true"

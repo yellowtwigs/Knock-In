@@ -10,7 +10,6 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.telephony.PhoneNumberUtils
 import android.util.Base64
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ModelDB.*
 import org.json.JSONArray
@@ -1078,11 +1077,13 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
                     return dbContact
                 } else {
-                    var entireName = name.replace(name[0], ' ')
-                    entireName = entireName.replace(name[entireName.length - 1], ' ')
+                    if (name.isNotEmpty()) {
+                        var entireName = name.replace(name[0], ' ')
+                        entireName = entireName.replace(name[entireName.length - 1], ' ')
 
-                    if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
-                        return dbContact
+                        if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
+                            return dbContact
+                        }
                     }
                 }
             }

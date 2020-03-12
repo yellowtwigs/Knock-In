@@ -52,7 +52,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_import_contacts_button"
                 android:text="@string/start_activity_import_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="15sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -118,7 +118,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_activate_notifications_button"
                 android:text="@string/start_activity_notification_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="15sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -184,7 +184,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_superposition_button"
                 android:text="@string/start_activity_superposition_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="15sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -250,7 +250,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/start_activity_permissions_button"
                 android:text="@string/start_activity_permission_subtitle"
-                android:textColor="@color/textColorLight"
+                android:textColor="@color/darkGreyColorDark"
                 android:textSize="15sp" />
 
             <com.google.android.material.button.MaterialButton

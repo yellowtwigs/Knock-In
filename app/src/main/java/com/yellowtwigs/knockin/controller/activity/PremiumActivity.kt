@@ -3,11 +3,13 @@ package com.yellowtwigs.knockin.controller.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -91,6 +93,39 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         premium_activity_ToolbarLayout!!.visibility = View.VISIBLE
 
+        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+
+        //region ================================ Call Popup from LeftDrawer ================================
+
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+
+        val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch!!.isChecked = true
+//            main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        if (sharedPreferencePopup.getBoolean("popup", true)) {
+            settings_CallPopupSwitch!!.isChecked = true
+        }
+
+        //endregion
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+        when {
+            height in 1501..2101 -> {
+            }
+            height < 1500 -> {
+                val params = main_SettingsLeftDrawerLayout.layoutParams
+                params.height = 325
+                main_SettingsLeftDrawerLayout.layoutParams = params
+            }
+        }
 
         //region ======================================= DrawerLayout =======================================
 
@@ -98,8 +133,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view_premium)
         val menu = navigationView.menu
-//        val navItem = menu.findItem(R.id.nav_in_app)
-//        navItem.isChecked = true
+        val navItem = menu.findItem(R.id.nav_in_app)
+        navItem.isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -166,6 +201,40 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         premium_activity_ToolbarBackOnPressed!!.setOnClickListener {
             startActivity(Intent(this@PremiumActivity, MultiSelectActivity::class.java))
             finish()
+        }
+
+        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", true)
+                edit.apply()
+            } else {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", false)
+                edit.apply()
+            }
+        }
+
+        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+
+                setTheme(R.style.AppThemeDark)
+//                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", true)
+                edit.apply()
+                startActivity(Intent(this@PremiumActivity, PremiumActivity::class.java))
+            } else {
+
+                setTheme(R.style.AppTheme)
+//                main_constraintLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", false)
+                edit.apply()
+                startActivity(Intent(this@PremiumActivity, PremiumActivity::class.java))
+            }
         }
     }
 

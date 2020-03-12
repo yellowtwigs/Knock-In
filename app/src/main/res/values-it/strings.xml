@@ -1,0 +1,423 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--   <string name="app_name">Knockin</string>-->
+    <string name="app_name_by">by YellowTwigs</string>
+    <string name="contact_mail">contacts@yellowtwigs.com</string>
+    <!-- region Help Tutorial -->
+    <string name="help">Help</string>
+    <string name="help_main">Per attivare la modalita\’ multicanale, fai click a lungo su uno dei tuoi contatti </string>
+    <string name="help_group">Per selezionare il gruppo, fai click sul nome del gruppo</string>
+    <string name="help_notification_history">In questa pagina puoi vedere tutte le notifiche ricevute</string>
+    <string name="help_cockpit">Da questa pagina puoi chiamare o inviare SMS a qualcuno non presente nella tua rubrica. Puoi anche connetterti a e-mail o Social </string>
+    <string name="help_manage_screen">In questa pagina puoi vedere i tuoi contatti e configurare varie opzioni di visualizzazione</string>
+    <string name="help_notification_manager"> In questa pagina puoi scegliere di abilitare o disabilitare le notifiche di priorita\’ 2 </string>
+    <string name="help_my_informations"> In questa pagina puoi modificare i dettagli personali </string>
+    <string name="help_contact_us_intent">Contact us</string>
+    <!-- endregion-->
+    <!-- region Facebook Strings-->
+    <!--    <string name="facebook_app_id">2440482259568703</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb2440482259568703</string>-->
+    <string name="facebook_app_id">704152513420071</string>
+    <string name="fb_login_protocol_scheme">fb704152513420071</string>
+    <!-- endregion-->
+    <!-- region Help Activity -->
+    <string name="help_activity_tutorial">Tutorial</string>
+    <string name="help_activity_contact_us">Contattaci</string>
+    <string name="help_activity_contact_terms_of_use">Condizioni di Utilizzo</string>
+    <string name="help_activity_contact_generals_informations">Per maggiori informazioni</string>
+    <!-- endregion-->
+    <!-- region Left Drawer Titles -->
+    <string name="left_drawer_knockons">Knockons</string>
+    <string name="left_drawer_home">Home-Rubrica</string>
+    <string name="left_drawer_my_groups">Gestione gruppi</string>
+    <string name="left_drawer_information">Dati Personali</string>
+    <string name="left_drawer_chat">Messaging</string>
+    <string name="left_drawer_notif_config">Gestione Notifiche</string>
+    <string name="left_drawer_settings">Configurazione</string>
+    <string name="left_drawer_my_screen">Opzioni Display</string>
+    <string name="left_drawer_in_app">Shop</string>
+    <string name="left_drawer_data_access">Accesso ai dati</string>
+    <string name="left_drawer_statistics">Statistiche</string>
+    <string name="left_drawer_help">Help</string>
+    <string name="left_drawer_import">Contatti importanti</string>
+    <!-- endregion-->
+    <!-- region Main Activity !-->
+    <string name="main_filter_sms">Numero Tel</string>
+    <string name="main_filter_mail">E-mail</string>
+    <string name="main_search_hint">Cerca nei contatti</string>
+    <string name="main_change_format_phone_book">Help</string>
+    <string name="main_tri_title">Filtra per:</string>
+    <string name="main_tri_par_nom">Nome</string>
+    <string name="main_tri_par_lastname">Cognome</string>
+    <string name="main_tri_par_priorite">Priorita\’</string>
+    <string name="main_tri_par_favoris">Preferiti</string>
+    <string name="main_tri_par_groupe">Gruppo</string>
+    <string name="main_filtre_title">Filtro notifiche:</string>
+    <string name="notif_filtre_app">Applicazione</string>
+    <string name="notif_filtre_message">Messaggio</string>
+    <string name="notif_filtre_systeme">Sistema</string>
+    <string name="notif_tri_date">Data e ora</string>
+    <string name="notif_tri_par_contact">Contatto</string>
+    <string name="main_toast_delete_contact"> Hai rimosso un contatto </string>
+    <string name="main_toast_multi_select_actived">Abilita Multi-Select mode</string>
+    <string name="main_toast_multi_select_deactived">Disattiva Multi-Select mode</string>
+    <string name="main_toast_multi_select_mode_selected"> selezionato</string>
+    <string name="main_toast_multi_select_mode_selected_more_than_one"> selected</string>
+    <string name="main_alert_dialog_group_title">Crea un nuovo Gruppo</string>
+    <string name="main_alert_dialog_group_subtitle">Scegli un nome per il Gruppo</string>
+    <string name="main_alert_dialog_group_favorites_already_exist">Il gruppo "Preferiti" esiste gia\’</string>
+    <string name="main_edited_contact">Contatto modificato</string>
+    <string name="main_content_edited_contact">Il contatto </string>
+    <string name="main_content_edited_contact_2">e\’ stato cambiato\, vuoi tenere la versione della rubrica Android o quella di the Knock In Notifications?</string>
+    <string name="main_android_edited_contact">Android</string>
+    <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
+    <string name="main_contact_grid_title">Vuoi chiamare questo contatto? </string>
+    <string name="main_contact_grid_message">Puoi disattivare questa validazione dalle opzioni </string>
+    <string name="main_alert_dialog_delete_contact_title">Rimuovi contatto(i) </string>
+    <string name="main_alert_dialog_delete_contact_message">Stai per rimuovere %1s</string>
+    <string name="menu_main_toolbar_multiselect_all_select">Seleziona tutti</string>
+    <!-- endregion -->
+    <!--region Bottom Navigation View !-->
+    <string name="bottom_navigation_view_phone_book">Contatti</string>
+    <string name="bottom_navigation_view_groups">Gruppi</string>
+    <string name="bottom_navigation_view_notify_history">Notifiche</string>
+    <string name="bottom_navigation_view_cockpit">Cockpit</string>
+    <!-- endregion !-->
+    <!-- region Add New Contact !-->
+    <string name="add_new_contact_title">Aggiungi contatto</string>
+    <string name="add_new_contact_last_name">Cognome</string>
+    <string name="add_new_contact_first_name">Nome</string>
+    <string name="add_new_contact_phone_number">Numero Tel</string>
+    <string name="add_new_contact_phone_number_mobile">Mobile</string>
+    <string name="add_new_contact_priority0">Tutte le notifiche per questo contatto saranno solo visibili nello storico</string>
+    <string name="add_new_contact_priority1">Le notifiche per questo contatto saranno trattate come standard </string>
+    <string name="add_new_contact_priority2">I messaggi per questo contatto saranno notificati con priorita\’ alta </string>
+    <string name="add_new_contact_toast">"Il campo nome deve essere riempito!"</string>
+    <string-array name="add_new_contact_phone_number_arrays">
+        <item>Mobile</item>
+        <item>Ufficio</item>
+        <item>Casa</item>
+        <item>Principale</item>
+        <item>Altro</item>
+        <item>Personalizzazione</item>
+    </string-array>
+    <string name="add_new_contact_mail">E-mail</string>
+    <string name="add_new_contact_mail_mobile">Ufficio</string>
+    <string name="add_new_contact_mail_identifier">ID E-mail</string>
+    <string name="add_new_contact_mail_identifier_help">Corrisponde all’identificatore visibile quando si riceve e-mail </string>
+    <string name="add_new_contact_priority_0">Nessuna notifica</string>
+    <string-array name="add_new_contact_mail_arrays">
+        <item>Ufficio</item>
+        <item>Casa</item>
+        <item>Scuola</item>
+        <item>Altro</item>
+        <item>Personalizzazione</item>
+    </string-array>
+    <string name="add_new_contact_add_field">Aggiungi un campo</string>
+    <string name="add_new_contact_validate">Valida</string>
+    <string name="add_new_contact_alert_dialog_title" tools:ignore="Typos">Contatto gia\’ esistente</string>
+    <string name="add_new_contact_toast_empty_name">Il contatto deve avere un nome o cognome</string>
+    <string name="add_new_contact_alert_dialog_message"> Nome gia\’ utilizzato da un altro contatto. Vuoi registrarlo comunque sotto lo stesso nome? </string>
+    <string name="add_new_contact_alert_dialog_cancel_title">Attenzione</string>
+    <string name="add_new_contact_alert_dialog_cancel_message"> Le modifiche non sono state registrate, sei sicuro? </string>
+    <string name="add_new_contact_alert_dialog_photo_title">Aggiungi una foto </string>
+    <string name="add_new_contact_alert_dialog_photo_camera">Camera</string>
+    <string name="add_new_contact_alert_dialog_photo_galery">Galleria</string>
+    <string name="add_new_contact_alert_dialog_photo_cancel">Annulla</string>
+    <string name="add_new_contact_intent_title">Seleziona un file</string>
+    <string name="add_new_contact_camera_open_title">Nuova foto</string>
+    <string name="add_new_contact_camera_open_description">Dal tuo apparecchio </string>
+    <string name="add_new_contact_first_name_empty_field">Il campo nome non puo\’ essere vuoto </string>
+    <!-- endregion !-->
+    <!-- region Edit Contact !-->
+    <string name="edit_contact_title">Aggiungi nuovo contatto </string>
+    <string name="edit_contact_last_name">Cognome</string>
+    <string name="edit_contact_first_name">Nome</string>
+    <string name="edit_contact_phone_number">Numero Tel</string>
+    <string name="edit_contact_phone_number_mobile">Mobile</string>
+    <string name="edit_contact_phone_number_home">Casa</string>
+    <string-array name="edit_contact_phone_number_arrays">
+        <item>Mobile</item>
+        <item>Ufficio</item>
+        <item>Casa</item>
+        <item>Principale</item>
+        <item>Altro</item>
+        <item>Personalizzazione</item>
+    </string-array>
+    <string name="edit_contact_mail">E-mail</string>
+    <string name="edit_contact_mail_mobile">Ufficio</string>
+    <string-array name="edit_contact_mail_arrays">
+        <item>Ufficio</item>
+        <item>Casa</item>
+        <item>Scuola</item>
+        <item>Altro</item>
+        <item>Personalizzazione</item>
+    </string-array>
+    <string name="edit_contact_add_field">Aggiungi un campo</string>
+    <string name="edit_contact_delete_contact">Rimuovi contatto</string>
+    <string name="edit_contact_delete_contact_message">Stai per rimuovere il contatto\, sei sicuro?</string>
+    <string name="edit_contact_validate">Valida</string>
+    <string name="edit_contact_cancel">Annulla</string>
+    <string name="edit_contact_toast">Nome o cognome va indicato </string>
+    <string name="edit_contact_groups">Gruppi</string>
+    <string name="edit_contact_alert_dialog_cancel_title">Attenzione</string>
+    <string name="edit_contact_alert_dialog_cancel_message"> Perderai tutti i dati; vuoi davvero continuare? </string>
+    <string name="edit_contact_alert_dialog_photo_title">Aggiungi una foto</string>
+    <string name="edit_contact_alert_dialog_photo_camera">Camera</string>
+    <string name="edit_contact_alert_dialog_photo_galery">Galleria</string>
+    <string name="edit_contact_alert_dialog_photo_cancel">Annulla</string>
+    <string name="edit_contact_intent_title">Seleziona File</string>
+    <string name="edit_contact_camera_open_title">Nuova foto</string>
+    <string name="edit_contact_camera_open_description">Dal tuo apparecchio</string>
+    <string name="edit_contact_alert_dialog_delete_contact_title">Rimuovi un  contatto</string>
+    <string name="edit_contact_alert_dialog_delete_contact_message">Vuoi veramente cancellare questo contatto? </string>
+    <string name="edit_contact_alert_dialog_sync_contact_title">Hai modificato un contatto</string>
+    <string name="edit_contact_alert_dialog_sync_contact_message">Vuoi modificare la rubrica di Android? </string>
+    <string name="edit_contact">Modifica contatto</string>
+    <!-- endregion !-->
+    <!-- region Edit My Informations !-->
+    <string name="edit_info_toolbar_title">I miei dati personali</string>
+    <string name="edit_informations_name">Nome</string>
+    <string name="edit_informations_phone_number">Numero Tel</string>
+    <string name="edit_informations_email">E-mail</string>
+    <string name="edit_information_toast_enable">Editing Abilitato</string>
+    <string name="edit_information_toast_disable">Editing Disattivato</string>
+    <!-- endregion -->
+    <!-- region Manage My Screen !-->
+    <string name="manage_my_screen_toolbar_title">Display</string>
+    <string name="manage_my_screen_theme">Modalita\’ scura</string>
+    <string name="manage_my_screen_theme_long_text">Cambia tra modalita\’ luminosa e scura </string>
+    <string name="manage_my_screen_number_of_column">Numero di contatti per riga</string>
+    <string name="manage_my_screen_number_of_column_group">Display di Gruppi</string>
+    <string name="manage_my_screen_dissociate_number_of_column_title">Separa visualizzazione di contatti </string>
+    <string name="manage_my_screen_dissociate_number_of_column_long_text">Separa visualizzazione contatti tra “Casa” e “Gruppi” </string>
+    <string name="manage_my_screen_toast_grid">Hai selezionato %1$d contatti per riga</string>
+    <string name="manage_my_screen_toast_list">Visualizzazione a Lista selezionata</string>
+    <string name="manage_my_screen_toast_list_smaller">Visualizzazione Compatta selezionata </string>
+    <string name="manage_my_screen_contact_popup_long_text"> Attiva/Disattiva popup prima di chiamare un contatto</string>
+    <string name="manage_my_screen_searchbar_pos"> Posizione barra di ricerca</string>
+    <string name="manage_my_screen_searchbar_pos_long_text">Posiziona la barra di ricerca in fondo allo schermo</string>
+    <string name="manage_my_screen_display_for_group_title">Abilita la visualizzazione di gruppi specifici </string>
+    <string name="manage_my_screen_display_for_group_subtitle">Cambia visualizzazione per i tuoi gruppi</string>
+    <!-- endregion -->
+    <!-- region Notification Manager -->
+    <string name="notification_manager_toolbar_title">Parametri di notifica</string>
+    <string name="notification_manager_stop_service"> Abilita la gestione di notifiche per priorita\’ </string>
+    <string name="notification_manager_stop_popup"> Visualizza le notifiche VIP</string>
+    <string name="notification_reminder">Invia un reminder per visualizzare i messaggi non-VIP </string>
+    <string name="notification_manager_horaire"> Seleziona l\’orario giornaliero per richiamare: </string>
+    <string name="notification_manager_prio_1"> Nascondi le notifiche di priorita\’ 1 </string>
+    <string name="notification_alert_dialog_title">Selezione dei contatti VIP </string>
+    <string name="notification_alert_dialog_message">Vuoi scegliere i tuoi contatti ad alta priorita\’ ?</string>
+    <string name="settings_contact_popup_phone_call">Popup Chiamate</string>
+    <string name="notification_vip_message_tone">Suoneria Notifiche VIP </string>
+    <string name="notification_vip_default_message_tone">Default Tone</string>
+    <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
+    <string name="notification_vip_funky_message_tone">Funky Tone</string>
+    <string name="notification_vip_relaxation_message_tone">Relaxing Tone</string>
+    <string name="notification_vip_message_tone_no_sound">Nessuno</string>
+    <string name="notification_vip_message_tone_default">Default</string>
+    <string name="notification_vip_message_tone_xylophone">Xylophone</string>
+    <string name="notification_vip_message_tone_moanin">Moanin</string>
+    <string name="notification_vip_message_tone_blue_bossa">Blue bossa</string>
+    <string name="notification_vip_message_tone_dolphin_dance">Dolphin Dance</string>
+    <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
+    <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
+    <string name="notification_vip_message_tone_caravan">Caravan</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
+    <string name="notification_vip_message_tone_funk_yall">Funk Yall ringtone</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_cold_sweat">Cold Sweat</string>
+    <string name="notification_vip_message_tone_keyboard_funky">Keyboard Funky</string>
+    <string name="notification_vip_message_tone_xylo_relax">Xylo-Relax</string>
+    <string name="notification_vip_message_tone_space_relax">First Step</string>
+    <string name="notification_vip_message_tone_guitar_relax">Guitar-Relax</string>
+    <string name="notification_vip_message_tone_slow_dancing">Slow Dancing in a Burning Room</string>
+    <string name="notification_vip_message_tone_gravity">Gravity</string>
+    <string name="notification_vip_message_tone_scorpion_theme">Fade to black</string>
+    <!-- endregion -->
+    <!-- region Cockpit -->
+    <string name="cockpit_toolbar_title">Cockpit</string>
+    <string name="cockpit_toast_phone_number_empty">Inserisci un numero di telefono </string>
+    <string name="cockpit_toast_number_valid">Introdurre un numero di telefono valido</string>
+    <string name="cockpit_toast_facebook_not_install">Facebook non e\’ installato</string>
+    <string name="cockpit_toast_instagram_not_install">Instagram non e\’ installato</string>
+    <string name="cockpit_toast_whatsapp_not_install">Whatsapp non e\’ installato</string>
+    <string name="cockpit_toast_messenger_not_install">Facebook Messenger non e\’ installato</string>
+    <string name="cockpit_toast_youtube_not_install">Youtube non e\’ installato</string>
+    <string name="cockpit_toast_gmail_not_install">Gmail non e\’ installato</string>
+    <string name="cockpit_toast_telegram_not_install">Telegram non e\’ installato</string>
+    <string name="cockpit_toast_outlook_not_install">Outlook non e\’ installato</string>
+    <string name="cockpit_toast_skype_not_install">Skype non e\’ installato</string>
+    <string name="cockpit_toast_linkedin_not_install">Linkedin non e\’ installato</string>
+    <string name="cockpit_toast_twitter_not_install">Twitter non e\’ installato</string>
+    <string name="cockpit_toast_snapchat_not_install">Snapchat non e\’ installato</string>
+    <!-- endregion -->
+    <!-- region Notification History -->
+    <string name="notification_history_search_hint">Ricerca</string>
+    <string name="notification_history_delete_notifications">Rimuovi una o piu\’ notifiche </string>
+    <string name="notification_history_delete_notifications_confirmation">Sei sicuro ?</string>
+    <!-- endregion -->
+    <!-- region Alert Dialog Notifications -->
+    <string name="alert_dialog_notification_message">Autorizza Knock In Notifications ad accedere e prioritizzare le tue notifiche </string>
+    <string name="alert_dialog_notification_allow_it">Autorizzo</string>
+    <string name="alert_dialog_notification_dismiss">Non autorizzo</string>
+    <!-- endregion -->
+    <!-- region List Contact Item -->
+    <string name="list_contact_item_call">Chiamata</string>
+    <string name="list_contact_item_sms">SMS</string>
+    <string name="list_contact_item_whatsapp">Whatsapp</string>
+    <string name="list_contact_item_mail">Mail</string>
+    <string name="list_contact_item_edit">Edition</string>
+    <string name="list_contact_item_messenger">Messenger</string>
+    <!-- endregion -->
+    <!-- region Import Contacts -->
+    <string name="import_contacts_title">Importa contatti di Android </string>
+    <string name="import_contacts_long_text"> Importa i tuoi contatti Android  in %s. Potrai comunicare con loro e cambiarne la priorita\’ </string>
+    <string name="import_contacts_button_yes">Importa</string>
+    <string name="import_contacts_button_no">Salta</string>
+    <string name="import_contacts_toast">Contatti importati</string>
+    <string name="import_contacts_alert_dialog">Potrai importare i tuoi contatti piu\’ tardi dal menu di navigazione attraverso l\’opzione "Importa i tuoi contatti" </string>
+    <!-- endregion -->
+    <!-- region First Launch -->
+    <string name="first_launch_welcome">Benvenuto in %s</string>
+    <string name="first_launch_welcome_long_text"> Prova un nuovo modo di gestire e comunicare con i tuoi contatti </string>
+    <string name="first_launch_welcome_accept">Accetta e Continua</string>
+    <string name="first_launch_confidentiality">Leggi le nostre Condizioni di utilizzo sul nostro sito <a href="https://www.yellowtwigs.com/end-user-license-agreement">EULA. </a> Per accettare le condizioni, fai click su "Accetta e Continua"</string>
+    <!-- endregion -->
+    <!-- region Multi Select in First Launch-->
+    <string name="multi_select_nb_contact">Numero di contatti selezionati: %1s </string>
+    <string name="multi_select_title">Seleziona i tuoi VIP</string>
+    <!-- region Alert Dialog -->
+    <string name="multi_select_alert_dialog_title">Visualizzazione Notifiche</string>
+    <string name="multi_select_alert_dialog_message"> Autorizzi Knock In Notifications a mostrare le notifiche di alta priorita\’ ?</string>
+    <string name="multi_select_alert_dialog_allow_it">Autorizzo</string>
+    <string name="multi_select_alert_dialog_dismiss">Non autorizzo</string>
+    <string name="multi_select_alert_dialog_nb_contact">Hai selezionato  %1s %2s </string>
+    <string name="multi_select_alert_dialog_0_contact">Hai selezionato 0 contatti </string>
+    <string name="multi_select_validate_selection">\n Vuoi validare la tua selezione?</string>
+    <string name="multi_select_contact">Contatto :</string>
+    <string name="multi_select_contacts">Contatti :</string>
+    <string name="multi_select_validate">Valida</string>
+    <string name="multi_select_skip">Salta</string>
+    <!-- endregion -->
+    <!-- endregion  in   -->
+    <!-- region Notification Sender -->
+    <string name="notification_sender_content_title">Interactions summary</string>
+    <string name="notification_sender_content_text">%1s messaggi non sono stati esaminati da ieri</string>
+    <string name="notification_sender_big_text">%1s messaggi non sono stati esaminati dall\’ultimo accesso alle Notifiche</string>
+    <!-- endregion -->
+    <!-- region NotifAdapter -->
+    <string name="notif_adapter_edit_text_hint">Scrivi il tuo messaggio</string>
+    <string name="notif_adapter_show_message_button">Mostra</string>
+    <string name="notif_adapter_call">Chiama</string>
+    <!-- endregion -->
+    <!-- region alert Dialog button !-->
+    <string name="alert_dialog_yes">Si</string>
+    <string name="alert_dialog_no">No</string>
+    <string name="alert_dialog_later">Piu\’ tardi</string>
+    <string name="alert_dialog_cancel">Annulla</string>
+    <string name="alert_dialog_validate">Valida</string>
+    <!-- endregion !-->
+    <!-- region AlertDialog permission overlay !-->
+    <string name="alert_dialog_overlay_title">Notifiche ad alta priorita\’</string>
+    <string name="alert_dialog_overlay_message">Autorizzi Knock In Notifications a mostrare notifiche ad alta priorita\’? </string>
+    <!-- endregion !-->
+    <!-- region Multi Channel -->
+    <string name="multi_channel_no_permission">Non hai il permesso di inviare SMS </string>
+    <string name="multi_channel_empty_field">Il campo messaggi non puo\’ essere vuoto </string>
+    <string name="multi_channel_list_of_channel_selected_empty">Non hai scelto il canale di comunicazione</string>
+    <string name="multi_channel_message_sent">Messaggio inviato</string>
+    <string name="multi_channel_message_edit_text_hint">Scrivi il tuo messaggio</string>
+    <!-- endregion -->
+    <!-- region NotificationListener-->
+    <string name="new_messages">Nuovi messaggi</string>
+    <!-- endregion -->
+    <!-- region GroupManager -->
+    <string name="group_manager_toolbar_title">Group Manager</string>
+    <string name="group_manager_search_hint">Ricerca</string>
+    <string name="menu_group_edit_group">Modifica il gruppo</string>
+    <string name="menu_group_add_contacts">Aggiungi contatti</string>
+    <string name="menu_group_delete_contacts">Rimuovi contatti dal gruppo </string>
+    <string name="menu_group_delete_group">Rimuovi il gruppo</string>
+    <string name="section_alert_delete_group_title">Rimozione di un gruppo</string>
+    <string name="section_alert_delete_group_message">Il gruppo %1 verra\’ cancellato, ne sei sicuro ?</string>
+    <!-- region Delete a contact from a Group -->
+    <string name="delete_contact_from_group_toolbar_title">Rimozione dei contatti da un gruppo </string>
+    <string name="delete_contact_0_contact">Non si possono rimuovere 0 contatti da un gruppo</string>
+    <string name="delete_contact_from_group">Stai per cancellare %1s da questo gruppo </string>
+    <string name="delete_contact_from_group_title">Rimozione contatti da un gruppo </string>
+    <string name="delete_contact_from_group_cancel">Annulla</string>
+    <string name="delete_contact_from_group_alert_dialog_title">Rimuovi dal gruppo</string>
+    <string name="delete_contact_from_group_alert_dialog_message">Stai per rimuovere %1s dal gruppo %2s</string>
+    <!-- endregion-->
+    <!-- region Add a contact to a Group -->
+    <string name="group_search_hint">Ricerca</string>
+    <string name="add_contact_to_group_toolbar_title">Scegli un contatto da aggiungere </string>
+    <string name="add_contact_to_group_alert_dialog_title">Attenzione</string>
+    <string name="add_contact_to_group_alert_dialog_message">Non si possono aggiungere 0 contatti a un gruppo</string>
+    <!--endregion -->
+    <!-- region Add New Group -->
+    <string name="add_new_group_toast_empty_field">Devi scegliere un nome per il gruppo</string>
+    <string name="add_new_group_toast_no_contact_selected">Devi selezionare un contatto</string>
+    <string name="add_new_group_hint_group_name">Dai un nome al gruppo</string>
+    <!-- endregion -->
+    <!-- region Edit Group -->
+    <string name="manager_group_edit_group_alert_dialog_title">Modifica il gruppo: </string>
+    <!-- endregion -->
+    <!--endregion -->
+    <!-- region Compose Message -->
+    <string name="compose_message_toast_send">Messaggio inviato</string>
+    <string name="compose_message_toast_permission_denied">Permesso negato </string>
+    <string name="compose_message_toast_miss_phone">Immetti un messaggio e un numero di telefono</string>
+    <!-- endregion -->
+    <!-- region notifAdapter-->
+    <string name="notif_adapter">Il messaggio non puo\’ essere vuoto</string>
+    <string name="notif_adapter_message_sent">Messaggio inviato </string>
+    <!-- endregion-->
+    <!-- region startActivity -->
+    <string name="start_activity_title">Knock In Notifications</string>
+    <string name="start_activity_import_title">Contatti</string>
+    <string name="start_activity_import_subtitle">Importa i tuoi contatti in Knock In Notifications per comunicare con loro in modo piu\’ efficiente</string>
+    <string name="import_contact_activity_import_subtitle">Importa I tuoi contatti in Knock In Contacts per comunicare con maggiore efficacia</string>
+    <string name="start_activity_notification_title">Notifiche</string>
+    <string name="start_activity_notification_subtitle">Attiva il servizio di notifica e ricevi notifiche personalizzate</string>
+    <string name="start_activity_button_notification">Attiva</string>
+    <string name="start_activity_superposition_title">Sovrapposizione</string>
+    <string name="start_activity_superposition_subtitle">Consenti a Knock In Notifications di visualizzare notifiche VIP mentre stai usando altre applicazioni </string>
+    <string name="start_activity_button_superposition">Consenti</string>
+    <string name="start_activity_superposition_not_allowed_message">La sovrapposizione non e\’ possibile con la corrente versione 10 di Android. Le notifiche VIP sono pertanto al momento indisponibili. Una nuova versione che integri le notifiche VIP con Android 10 sara\’ presto disponibile. Nel frattempo, puoi usare le altre funzioni dell\’applicazione. </string>
+    <string name="start_activity_permission_title">Altre autorizzazioni</string>
+    <string name="start_activity_permission_subtitle">Potrai effettuare chiamate e inviare SMS dalla applicazione</string>
+    <string name="start_activity_button_permission">Consenti</string>
+    <string name="start_activity_skip">Salta</string>
+    <string name="start_activity_next">Prossimo</string>
+    <string name="start_activity_skip_alert_dialog_title">Salta permessi </string>
+    <string name="start_activity_skip_alert_dialog_message">Se salti i permessi, potrai sempre modificarli piu\’ tardi</string>
+    <string name="start_activity_skip_alert_dialog_message_importation">Knock In Notifications sta importando i tuoi contatti; se annulli ora, i tuoi contatti non verranno salvati </string>
+    <string name="start_activity_skip_alert_dialog_positive_button">Salta</string>
+    <!-- endregion -->
+    <!-- region Group -->
+    <string name="group_name">group%s</string>
+    <string name="group_favorites">Preferiti</string>
+    <!-- endregion -->
+    <!-- region Tutorial Activity -->
+    <string name="tutorial_activity_skip">Salta</string>
+    <string name="tutorial_activity_back">Indietro</string>
+    <!-- endregion-->
+    <!-- region Notification Alarm -->
+    <string name="notification_alarm_message_received">nuovo messaggio VIP</string>
+    <string name="notification_alarm_messages_received">nuovi messaggi VIP</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="in_app_popup_nb_vip_max_title">Numero di contatti VIP raggiunto</string>
+    <string name="in_app_popup_nb_vip_max_message">Non puoi superare i 5 contatti VIP nella versione Freemium; vuoi accedere al nostro shop? </string>
+    <string name="in_app_popup_tone_available_title">Ulteriori collezioni di suonerie sono disponibile sul nostro shop</string>
+    <string name="in_app_popup_tone_available_message">Vuoi accedere al nostro shop? </string>
+    <string name="in_app_purchase_made_message">Acquisto effettuato</string>
+    <string name="in_app_load_products">Carica prodotti</string>
+    <string name="in_app_shop">Knock In Notifications Shop</string>
+    <string name="in_app_shop_return_to_notif">Vuoi ritornare alla pagina delle Notifiche?</string>
+    <!-- endregion-->
+    <string name="knockin_notif">Knock In Notifications</string>
+</resources>

@@ -3,11 +3,13 @@ package com.yellowtwigs.knockin.controller.activity.group
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Point
 import android.os.Bundle
 import android.net.Uri
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -136,7 +138,23 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
-            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+        when {
+            height in 1501..2101 -> {
+            }
+            height < 1500 -> {
+                val params = main_SettingsLeftDrawerLayout.layoutParams
+                params.height = 250
+                main_SettingsLeftDrawerLayout.layoutParams = params
+            }
         }
 
         //region ================================ Call Popup from LeftDrawer ================================
@@ -148,7 +166,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
-            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
         }
 
         if (sharedPreferencePopup.getBoolean("popup", true)) {
@@ -184,7 +202,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_settings -> startActivity(Intent(this@GroupManagerActivity, SettingsActivity::class.java))
                 R.id.nav_data_access -> {
                 }
-//                R.id.nav_in_app -> startActivity(Intent(this@GroupManagerActivity, PremiumActivity::class.java))
+                R.id.nav_in_app -> startActivity(Intent(this@GroupManagerActivity, PremiumActivity::class.java))
                 R.id.nav_knockons -> startActivity(Intent(this@GroupManagerActivity, ManageKnockonsActivity::class.java))
                 R.id.nav_statistics -> {
                 }
@@ -263,7 +281,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             if (isChecked) {
 
                 setTheme(R.style.AppThemeDark)
-                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", true)
                 edit.apply()
@@ -271,7 +289,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             } else {
 
                 setTheme(R.style.AppTheme)
-                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
+//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", false)
                 edit.apply()

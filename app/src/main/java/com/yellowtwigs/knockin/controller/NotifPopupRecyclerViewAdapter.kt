@@ -117,7 +117,7 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
         holder.appPlateform!!.text = convertPackageToString(sbp.appNotifier!!)
 
         holder.messageToSendEditText!!.setText(listOftext[position])
-        System.out.println("text content" + listOftext[position] + " message" + sbp.statusBarNotificationInfo["android.text"])
+        println("text content" + listOftext[position] + " message" + sbp.statusBarNotificationInfo["android.text"])
 
         when (convertPackageToString(sbp.appNotifier!!)) {
             "Gmail" -> {
