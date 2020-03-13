@@ -706,7 +706,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_toolbar_Help!!.setOnClickListener {
             startActivity(Intent(this@MainActivity, TutorialActivity::class.java).putExtra("fromMainActivity", true))
             finish()
-
 //            val target = Intent(this, BubbleActivity::class.java)
 //            startActivity(target)
 

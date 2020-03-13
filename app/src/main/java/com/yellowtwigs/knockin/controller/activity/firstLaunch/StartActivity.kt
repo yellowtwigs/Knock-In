@@ -13,8 +13,6 @@ import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -28,6 +26,8 @@ import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 import android.content.ComponentName
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 
 
@@ -80,7 +80,7 @@ class StartActivity : AppCompatActivity() {
 
         val listApp = getAppOnPhone()
 
-        //region ========================================== FindViewById ==========================================
+        //region ======================================= FindViewById =======================================
 
         start_activity_ImportContacts = findViewById(R.id.start_activity_import_contacts_button)
         start_activity_ActivateNotifications = findViewById(R.id.start_activity_activate_notifications_button)
@@ -99,16 +99,39 @@ class StartActivity : AppCompatActivity() {
         start_activity_AuthorizeSuperpositionCheck = findViewById(R.id.start_activity_superposition_check)
         start_activity_PermissionsCheck = findViewById(R.id.start_activity_permissions_check)
 
+        val videoview = findViewById<VideoView>(R.id.start_activity_video)
+        val start_activity_video_Layout = findViewById<RelativeLayout>(R.id.start_activity_video_layout)
+        val start_activity_layout = findViewById<ConstraintLayout>(R.id.start_activity_layout)
+        val start_activity_video_Skip = findViewById<MaterialButton>(R.id.start_activity_video_skip)
+
+        val VIDEO_DISPLAY_LENGHT = 1500
+
+        Handler().postDelayed({
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+
+            val mediaController = MediaController(this)
+            videoview.setMediaController(mediaController)
+            mediaController.setAnchorView(videoview)
+        }, VIDEO_DISPLAY_LENGHT.toLong())
+
         //endregion
 
-        //region ========================================== WorkerThread ==========================================
+        //region ======================================= WorkerThread =======================================
 
         start_activity_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         start_activity_mDbWorkerThread.start()
 
         //endregion
 
-        //region ========================================== Listeners ==========================================
+        //region ======================================== Listeners =========================================
+
+        start_activity_video_Skip.setOnClickListener {
+            start_activity_video_Layout.visibility = View.INVISIBLE
+            start_activity_layout.visibility = View.VISIBLE
+        }
 
         //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact puis nous affichons un loading
         start_activity_ImportContacts!!.setOnClickListener {

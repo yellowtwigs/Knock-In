@@ -5,319 +5,351 @@
     android:layout_height="match_parent"
     android:background="@drawable/space_background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/start_activity_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/start_activity_title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <RelativeLayout
-            android:id="@+id/start_activity_import_contacts_layout"
+            android:id="@+id/start_activity_video_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_activity_title">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/start_activity_import_contacts_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="25dp"
-                android:text="@string/start_activity_import_title"
-                android:textColor="@color/lightColor"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/start_activity_import_contacts_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/start_activity_import_contacts_title"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/start_activity_import_contacts_button"
-                android:text="@string/start_activity_import_subtitle"
-                android:textColor="@color/darkGreyColorDark"
-                android:textSize="15sp" />
+            <VideoView
+                android:id="@+id/start_activity_video"
+                android:layout_width="match_parent"
+                android:layout_height="650dp"
+                android:layout_centerInParent="true"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_activity_import_contacts_button"
-                android:layout_width="@dimen/start_activity_button_width"
-                android:layout_height="@dimen/start_activity_button_height"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:text="@string/import_contacts_button_yes"
-                android:textColor="#000000"
-                android:textSize="13sp" />
-
-            <ProgressBar
-                android:id="@+id/start_activity_import_contacts_loading"
+                android:id="@+id/start_activity_video_skip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
-                android:indeterminate="true"
-                android:visibility="gone" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/start_activity_import_contacts_check"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_check" />
-
-
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/start_activity_video"
+                android:text="@string/start_activity_skip"
+                android:textColor="#000000"
+                android:textSize="15sp" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/start_activity_notifications_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_activity_import_contacts_layout">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/start_activity_activate_notifications_title"
+                android:id="@+id/start_activity_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="25dp"
-                android:text="@string/start_activity_notification_title"
-                android:textColor="@color/lightColor"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/start_activity_activate_notifications_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/start_activity_activate_notifications_title"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/start_activity_activate_notifications_button"
-                android:text="@string/start_activity_notification_subtitle"
-                android:textColor="@color/darkGreyColorDark"
-                android:textSize="15sp" />
+                android:text="@string/start_activity_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RelativeLayout
+                android:id="@+id/start_activity_import_contacts_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_activity_title">
+
+                <TextView
+                    android:id="@+id/start_activity_import_contacts_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_import_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_import_contacts_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_import_contacts_title"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_import_contacts_button"
+                    android:text="@string/start_activity_import_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_import_contacts_button"
+                    android:layout_width="@dimen/start_activity_button_width"
+                    android:layout_height="@dimen/start_activity_button_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/import_contacts_button_yes"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <ProgressBar
+                    android:id="@+id/start_activity_import_contacts_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_import_contacts_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_activity_notifications_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_activity_import_contacts_layout">
+
+                <TextView
+                    android:id="@+id/start_activity_activate_notifications_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_notification_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_activate_notifications_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_activate_notifications_title"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_activate_notifications_button"
+                    android:text="@string/start_activity_notification_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_activate_notifications_button"
+                    android:layout_width="@dimen/start_activity_button_width"
+                    android:layout_height="@dimen/start_activity_button_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/start_activity_button_notification"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <ProgressBar
+                    android:id="@+id/start_activity_activate_notifications_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_activate_notifications_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_activity_superposition_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_activity_notifications_layout">
+
+                <TextView
+                    android:id="@+id/start_activity_superposition_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_superposition_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_superposition_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_superposition_title"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_superposition_button"
+                    android:text="@string/start_activity_superposition_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_superposition_button"
+                    android:layout_width="@dimen/start_activity_button_width"
+                    android:layout_height="@dimen/start_activity_button_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/start_activity_button_superposition"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <ProgressBar
+                    android:id="@+id/start_activity_superposition_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_superposition_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_activity_permissions_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_activity_superposition_layout">
+
+                <TextView
+                    android:id="@+id/start_activity_permissions_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_permission_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_permissions_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_permissions_title"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_permissions_button"
+                    android:text="@string/start_activity_permission_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_permissions_button"
+                    android:layout_width="@dimen/start_activity_button_width"
+                    android:layout_height="@dimen/start_activity_button_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/start_activity_button_permission"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <ProgressBar
+                    android:id="@+id/start_activity_permissions_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_permissions_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+            </RelativeLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_activity_activate_notifications_button"
-                android:layout_width="@dimen/start_activity_button_width"
-                android:layout_height="@dimen/start_activity_button_height"
+                android:id="@+id/start_activity_skip"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:text="@string/start_activity_button_notification"
-                android:textColor="#000000"
-                android:textSize="13sp" />
-
-            <ProgressBar
-                android:id="@+id/start_activity_activate_notifications_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
-                android:indeterminate="true"
-                android:visibility="gone" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/start_activity_activate_notifications_check"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_check" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/start_activity_superposition_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_activity_notifications_layout">
-
-            <TextView
-                android:id="@+id/start_activity_superposition_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="25dp"
-                android:text="@string/start_activity_superposition_title"
-                android:textColor="@color/lightColor"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/start_activity_superposition_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/start_activity_superposition_title"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="70dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/start_activity_superposition_button"
-                android:text="@string/start_activity_superposition_subtitle"
-                android:textColor="@color/darkGreyColorDark"
-                android:textSize="15sp" />
+                android:text="@string/start_activity_skip"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_activity_permissions_layout" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_activity_superposition_button"
-                android:layout_width="@dimen/start_activity_button_width"
-                android:layout_height="@dimen/start_activity_button_height"
+                android:id="@+id/start_activity_next"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:text="@string/start_activity_button_superposition"
-                android:textColor="#000000"
-                android:textSize="13sp" />
-
-            <ProgressBar
-                android:id="@+id/start_activity_superposition_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
-                android:indeterminate="true"
-                android:visibility="gone" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/start_activity_superposition_check"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_check" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/start_activity_permissions_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_activity_superposition_layout">
-
-            <TextView
-                android:id="@+id/start_activity_permissions_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="25dp"
-                android:text="@string/start_activity_permission_title"
-                android:textColor="@color/lightColor"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/start_activity_permissions_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/start_activity_permissions_title"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="70dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/start_activity_permissions_button"
-                android:text="@string/start_activity_permission_subtitle"
-                android:textColor="@color/darkGreyColorDark"
-                android:textSize="15sp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_activity_permissions_button"
-                android:layout_width="@dimen/start_activity_button_width"
-                android:layout_height="@dimen/start_activity_button_height"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:text="@string/start_activity_button_permission"
+                android:text="@string/start_activity_next"
                 android:textColor="#000000"
-                android:textSize="13sp" />
-
-            <ProgressBar
-                android:id="@+id/start_activity_permissions_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
-                android:indeterminate="true"
-                android:visibility="gone" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/start_activity_permissions_check"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
+                android:textSize="15sp"
                 android:visibility="gone"
-                app:srcCompat="@drawable/ic_check" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_activity_permissions_layout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </RelativeLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/start_activity_skip"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/start_activity_skip"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_activity_permissions_layout" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/start_activity_next"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/start_activity_next"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_activity_permissions_layout" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </ScrollView>
