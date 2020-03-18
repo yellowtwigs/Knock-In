@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -29,10 +30,11 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
     //region ========================================== Val or Var ==========================================
 
-    private var help_activity_FAQ: ConstraintLayout? = null
-    private var help_activity_ContactUs: ConstraintLayout? = null
-    private var help_activity_Terms: ConstraintLayout? = null
-    private var help_activity_Infos: ConstraintLayout? = null
+    private var help_activity_VideoTutorial: RelativeLayout? = null
+    private var help_activity_WebsiteTutorial: RelativeLayout? = null
+    private var help_activity_ContactUs: RelativeLayout? = null
+    private var help_activity_Terms: RelativeLayout? = null
+    private var help_activity_Infos: RelativeLayout? = null
     private var help_activity_DrawerLayout: DrawerLayout? = null
     private var sensorManager: SensorManager? = null
 
@@ -77,7 +79,8 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         //region ======================================= FindViewById =======================================
 
-        help_activity_FAQ = findViewById(R.id.help_activity_tutorial)
+        help_activity_VideoTutorial = findViewById(R.id.help_activity_tutorial_video)
+        help_activity_WebsiteTutorial = findViewById(R.id.help_activity_tutorial_website)
         help_activity_ContactUs = findViewById(R.id.help_activity_contact_us_id)
         help_activity_Terms = findViewById(R.id.help_activity_terms_id)
         help_activity_Infos = findViewById(R.id.help_activity_infos_id)
@@ -120,7 +123,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         //region ==================================== SetOnClickListener ====================================
 
         val onClick = View.OnClickListener {
-            if (it.id == help_activity_FAQ!!.id) {
+            if (it.id == help_activity_WebsiteTutorial!!.id) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_contact_us_link))))
             }
             if (it.id == help_activity_ContactUs!!.id) {
@@ -134,16 +137,20 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                 startActivity(Intent.createChooser(intent, getString(R.string.help_contact_us_intent)))
             }
             if (it.id == help_activity_Terms!!.id) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_contact_us_eula))))
             }
             if (it.id == help_activity_Infos!!.id) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com")))
             }
+            if (it.id == help_activity_VideoTutorial!!.id) {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_app_video_link))))
+            }
         }
         help_activity_ContactUs!!.setOnClickListener(onClick)
         help_activity_Infos!!.setOnClickListener(onClick)
-        help_activity_FAQ!!.setOnClickListener(onClick)
+        help_activity_WebsiteTutorial!!.setOnClickListener(onClick)
         help_activity_Terms!!.setOnClickListener(onClick)
+        help_activity_VideoTutorial!!.setOnClickListener(onClick)
 
         //endregion
     }

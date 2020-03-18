@@ -14,7 +14,7 @@
         android:layout_marginStart="20dp"
         android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="25sp" />
 
     <View

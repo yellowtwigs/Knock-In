@@ -280,7 +280,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
         }
 
-
         //region ================================ Call Popup from LeftDrawer ================================
 
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
@@ -541,6 +540,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 setTheme(R.style.AppThemeDark)
 //                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+//                main_constraintLayout!!.setBackgroundResource(R.drawable.galactic_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", true)
                 edit.apply()

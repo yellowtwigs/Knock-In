@@ -15,6 +15,8 @@
     <string name="help_my_informations">Dans cette écran vous pouvez modifier vos informations personnelles</string>
     <string name="help_contact_us_intent">Contactez-nous</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/prise-en-main</string>
+    <string name="help_contact_us_eula">https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina</string>
+    <string name="help_app_video_link">https://www.youtube.com/watch?v=oJ5PDAnHK_w</string>
 
     <!-- endregion-->
 
@@ -29,7 +31,8 @@
 
     <!-- region Help Activity -->
 
-    <string name="help_activity_tutorial">Tutoriel</string>
+    <string name="help_activity_tutorial_website">Tutoriel du site web</string>
+    <string name="help_activity_tutorial_video">Tutoriel vidéo</string>
     <string name="help_activity_contact_us">Contactez-nous</string>
     <string name="help_activity_contact_terms_of_use">Conditions d\'utilisation</string>
     <string name="help_activity_contact_generals_informations">Informations générales</string>
@@ -510,6 +513,7 @@
     <string name="start_activity_superposition_subtitle">Autorisez Knock In Notifications à afficher les notifications VIP pendant que vous exécutez d’autres applications</string>
     <string name="start_activity_button_superposition">Autoriser</string>
     <string name="start_activity_superposition_not_allowed_message">La superposition n\'est pas possible avec Android 10 (version de votre Smartphone). Les notifications prioritaires ne sont donc pas disponibles pour l\'instant. Une version de l\'application offrant les notifications prioritaires pour Android 10 sera bientôt disponible. Vous pouvez toutefois utiliser les autres fonctions gratuites de l\'application.</string>
+    .0<string name="start_activity_video_tutorial_skip_text">La vidéo est disponible dans l\'onglet Aide du menu de l\'application</string>
     <string name="start_activity_permission_title">Autres autorisations</string>
     <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des SMS depuis l\'application</string>
     <string name="start_activity_button_permission">Autoriser</string>

@@ -16,6 +16,8 @@
     <string name="help_my_informations"> In this screen you can update your personal details </string>
     <string name="help_contact_us_intent">Contact us</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
+    <string name="help_contact_us_eula">https://www.yellowtwigs.com/end-user-license-agreement</string>
+    <string name="help_app_video_link">https://www.youtube.com/watch?v=yb1Oa31IjLo</string>
 
     <!-- endregion-->
 
@@ -31,7 +33,8 @@
 
     <!-- region Help Activity -->
 
-    <string name="help_activity_tutorial">Tutorial</string>
+    <string name="help_activity_tutorial_website">Website Tutorial</string>
+    <string name="help_activity_tutorial_video">Video Tutorial</string>
     <string name="help_activity_contact_us">Contact us</string>
     <string name="help_activity_contact_terms_of_use">Terms and conditions</string>
     <string name="help_activity_contact_generals_informations">For more information</string>
@@ -482,6 +485,7 @@
     <string name="start_activity_superposition_subtitle">Allow Knock In Notifications to display VIP notifications while you are using other apps </string>
     <string name="start_activity_button_superposition">Allow</string>
     <string name="start_activity_superposition_not_allowed_message">Superposition is not possible with Android 10 (version of your Smartphone). VIP notifications are therefore not available for the time being. A new version of our app offering VIP notifications with Android 10 will be available soon. You can anyhow use the other free functions of the app.</string>
+    <string name="start_activity_video_tutorial_skip_text">The video is available in the Help tab of the application menu</string>
     <string name="start_activity_permission_title">Other authorisations</string>
     <string name="start_activity_permission_subtitle">You will be able to make phone calls and send SMS from the app</string>
     <string name="start_activity_button_permission">Allow</string>

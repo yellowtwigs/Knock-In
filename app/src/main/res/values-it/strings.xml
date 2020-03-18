@@ -12,6 +12,10 @@
     <string name="help_notification_manager"> In questa pagina puoi scegliere di abilitare o disabilitare le notifiche di priorita\’ 2 </string>
     <string name="help_my_informations"> In questa pagina puoi modificare i dettagli personali </string>
     <string name="help_contact_us_intent">Contact us</string>
+    <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
+    <string name="help_contact_us_eula">https://www.yellowtwigs.com/end-user-license-agreement</string>
+    <string name="help_app_video_link">https://www.youtube.com/watch?v=yb1Oa31IjLo</string>
+
     <!-- endregion-->
     <!-- region Facebook Strings-->
     <!--    <string name="facebook_app_id">2440482259568703</string>-->
@@ -20,7 +24,8 @@
     <string name="fb_login_protocol_scheme">fb704152513420071</string>
     <!-- endregion-->
     <!-- region Help Activity -->
-    <string name="help_activity_tutorial">Tutorial</string>
+    <string name="help_activity_tutorial_website">Tutorial sul sito web</string>
+    <string name="help_activity_tutorial_video">Video Tutorial</string>
     <string name="help_activity_contact_us">Contattaci</string>
     <string name="help_activity_contact_terms_of_use">Condizioni di Utilizzo</string>
     <string name="help_activity_contact_generals_informations">Per maggiori informazioni</string>
@@ -236,6 +241,7 @@
     <string name="notification_vip_message_tone_gravity">Gravity</string>
     <string name="notification_vip_message_tone_scorpion_theme">Fade to black</string>
     <!-- endregion -->
+
     <!-- region Cockpit -->
     <string name="cockpit_toolbar_title">Cockpit</string>
     <string name="cockpit_toast_phone_number_empty">Inserisci un numero di telefono </string>
@@ -387,6 +393,7 @@
     <string name="start_activity_superposition_subtitle">Consenti a Knock In Notifications di visualizzare notifiche VIP mentre stai usando altre applicazioni </string>
     <string name="start_activity_button_superposition">Consenti</string>
     <string name="start_activity_superposition_not_allowed_message">La sovrapposizione non e\’ possibile con la corrente versione 10 di Android. Le notifiche VIP sono pertanto al momento indisponibili. Una nuova versione che integri le notifiche VIP con Android 10 sara\’ presto disponibile. Nel frattempo, puoi usare le altre funzioni dell\’applicazione. </string>
+    <string name="start_activity_video_tutorial_skip_text">Il video è disponibile nella scheda Help del menu dell\'applicazione</string>
     <string name="start_activity_permission_title">Altre autorizzazioni</string>
     <string name="start_activity_permission_subtitle">Potrai effettuare chiamate e inviare SMS dalla applicazione</string>
     <string name="start_activity_button_permission">Consenti</string>

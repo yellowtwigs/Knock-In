@@ -65,13 +65,13 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         myViewHolder.myProductName.setText(text[0]);
 //        myViewHolder.myProductPrice.setText(skuDetailsList.get(i).getPrice());
 
-        if (skuDetailsList.get(i).getTitle().contains("Contacts") || skuDetailsList.get(i).getTitle().contains("Contatti") ) {
+        if (skuDetailsList.get(i).getTitle().contains("Contacts") || skuDetailsList.get(i).getTitle().contains("Contatti") || skuDetailsList.get(i).getTitle().contains("Contactos ")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_vip_icon);
         } else if (skuDetailsList.get(i).getTitle().contains("Jazzy") || skuDetailsList.get(i).getTitle().contains("jazzy")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_jazz_trumpet);
         } else if (skuDetailsList.get(i).getTitle().contains("Funky") || skuDetailsList.get(i).getTitle().contains("funky")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
-        } else if (skuDetailsList.get(i).getTitle().contains("Relaxation") || skuDetailsList.get(i).getTitle().contains("relax")) {
+        } else if (skuDetailsList.get(i).getTitle().contains("Relaxation") || skuDetailsList.get(i).getTitle().contains("Relajación") || skuDetailsList.get(i).getTitle().contains("Relajación")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_relax);
         }
 

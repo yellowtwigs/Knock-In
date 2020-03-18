@@ -112,11 +112,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
         if (len == 0) {
             if (contact.getContactPriority() == 0) {
-                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.priorityZeroColor, null));
             } else if (contact.getContactPriority() == 1) {
                 SharedPreferences sharedPreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE);
                 if (sharedPreferences.getBoolean("darkTheme", false)) {
-                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight, null));
+//                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight, null));
                 } else {
                     holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorDark, null));
                 }
