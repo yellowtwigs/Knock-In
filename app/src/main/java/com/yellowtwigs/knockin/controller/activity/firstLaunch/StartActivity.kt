@@ -26,6 +26,8 @@ import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 import android.content.ComponentName
+import android.content.res.Resources
+import android.media.MediaPlayer
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.yellowtwigs.knockin.controller.activity.MainActivity
@@ -104,18 +106,27 @@ class StartActivity : AppCompatActivity() {
         val start_activity_layout = findViewById<ConstraintLayout>(R.id.start_activity_layout)
         val start_activity_video_Skip = findViewById<MaterialButton>(R.id.start_activity_video_skip)
 
-        val VIDEO_DISPLAY_LENGHT = 1500
-
-        Handler().postDelayed({
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video)
+        if (Resources.getSystem().configuration.locale.language == "fr") {
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_fr)
 
             videoview.setVideoURI(uri)
             videoview.start()
+        } else {
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
 
-            val mediaController = MediaController(this)
-            videoview.setMediaController(mediaController)
-            mediaController.setAnchorView(videoview)
-        }, VIDEO_DISPLAY_LENGHT.toLong())
+            videoview.setVideoURI(uri)
+            videoview.start()
+        }
+
+        val mediaController = MediaController(this)
+        videoview.setMediaController(mediaController)
+        mediaController.setAnchorView(videoview)
+
+        videoview.setOnCompletionListener {
+            start_activity_video_Layout.visibility = View.INVISIBLE
+            start_activity_layout.visibility = View.VISIBLE
+            videoview.stopPlayback()
+        }
 
         //endregion
 
@@ -131,6 +142,9 @@ class StartActivity : AppCompatActivity() {
         start_activity_video_Skip.setOnClickListener {
             start_activity_video_Layout.visibility = View.INVISIBLE
             start_activity_layout.visibility = View.VISIBLE
+            videoview.stopPlayback()
+
+            Toast.makeText(this, getString(R.string.start_activity_video_tutorial_skip_text), Toast.LENGTH_LONG).show()
         }
 
         //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact puis nous affichons un loading
