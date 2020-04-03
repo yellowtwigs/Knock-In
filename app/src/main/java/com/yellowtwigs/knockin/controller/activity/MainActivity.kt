@@ -376,7 +376,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //affiche tous les contactList de la Database dans une RecyclerView ou dans une GridView
 
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        val len = sharedPreferences.getInt("gridview", 4)
+        val len = sharedPreferences.getInt("gridview", 1)
 
         //Vérification du mode d'affichage si c'est 1 ou inférieur alors l'affichage est sous forme de liste
         // sinon il sera sous forme de gridView
@@ -729,11 +729,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         listOfItemSelected.clear()
                         listOfItemSelected.addAll(gestionnaireContacts!!.contactList)
                         if (len > 1) {
-                            gridViewAdapter!!.setListOfItemSelected(listOfItemSelected)
+                            gridViewAdapter!!.listOfItemSelected = listOfItemSelected
                             gridViewAdapter!!.notifyDataSetChanged()
                         } else {
                             recyclerViewAdapter!!.notifyDataSetChanged()
-                            recyclerViewAdapter!!.setListOfItemSelected(listOfItemSelected)
+                            recyclerViewAdapter!!.listOfItemSelected = listOfItemSelected
                         }
                         main_ToolbarMultiSelectModeTitle!!.text = listOfItemSelected.size.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
 

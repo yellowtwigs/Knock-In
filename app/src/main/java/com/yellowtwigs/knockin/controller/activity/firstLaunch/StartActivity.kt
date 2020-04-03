@@ -111,6 +111,11 @@ class StartActivity : AppCompatActivity() {
 
             videoview.setVideoURI(uri)
             videoview.start()
+        } else if (Resources.getSystem().configuration.locale.language == "it") {
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_it)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
         } else {
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
 
