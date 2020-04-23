@@ -49,7 +49,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.FirstLaunchActivity
-import com.yellowtwigs.knockin.controller.activity.bubbles.BubbleActivity
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -982,7 +981,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         when (sharedPreferences.getString("tri", "priorite")) {
             "nom" -> triNom.isChecked = true
-//            "priorite" -> triPriority.isChecked = true
+            "priorite" -> triPriority.isChecked = true
             "favoris" -> triFavorite.isChecked = true
             else -> triLastName.isChecked = true
         }
@@ -1051,11 +1050,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
-                        gridViewAdapter!!.notifyDataSetChanged()
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 } else {
                     //on coche la checkbox
@@ -1082,7 +1079,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 }
                 return true
@@ -1167,7 +1163,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             } else {
                                 recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                                 main_RecyclerView!!.adapter = recyclerViewAdapter
-                                recyclerViewAdapter!!.notifyDataSetChanged()
                                 main_RecyclerView!!.visibility = View.VISIBLE
                             }
                             main_loadingPanel!!.visibility = View.GONE
@@ -1197,7 +1192,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             } else {
                                 recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                                 main_RecyclerView!!.adapter = recyclerViewAdapter
-                                recyclerViewAdapter!!.notifyDataSetChanged()
                                 main_RecyclerView!!.visibility = View.VISIBLE
                             }
                             main_loadingPanel!!.visibility = View.GONE
@@ -1227,7 +1221,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             } else {
                                 recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                                 main_RecyclerView!!.adapter = recyclerViewAdapter
-                                recyclerViewAdapter!!.notifyDataSetChanged()
                                 main_RecyclerView!!.visibility = View.VISIBLE
                             }
                             main_loadingPanel!!.visibility = View.GONE
@@ -1257,7 +1250,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             } else {
                                 recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                                 main_RecyclerView!!.adapter = recyclerViewAdapter
-                                recyclerViewAdapter!!.notifyDataSetChanged()
                                 main_RecyclerView!!.visibility = View.VISIBLE
                             }
                             main_loadingPanel!!.visibility = View.GONE
@@ -1573,13 +1565,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         // Text hint de l'EditText
         mainCreateGroupAlertDialogEditText.hint = getString(R.string.group_name).format(main_ContactsDatabase!!.GroupsDao().getIdNeverUsed())
 
-        mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_image_view)
+        mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_yellow)
         var color = this.getColor(R.color.red_tag_group)
 
         //region ================================= ClickListenerOnColorTag ==================================
 
         mainCreateGroupAlertDialogRedTag.setOnClickListener {
-            mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_yellow)
             mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
@@ -1590,7 +1582,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         mainCreateGroupAlertDialogBlueTag.setOnClickListener {
-            mainCreateGroupAlertDialogBlueTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogBlueTag.setImageResource(R.drawable.border_selected_yellow)
             mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
@@ -1601,7 +1593,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         mainCreateGroupAlertDialogGreenTag.setOnClickListener {
-            mainCreateGroupAlertDialogGreenTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogGreenTag.setImageResource(R.drawable.border_selected_yellow)
             mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
@@ -1612,7 +1604,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         mainCreateGroupAlertDialogYellowTag.setOnClickListener {
-            mainCreateGroupAlertDialogYellowTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogYellowTag.setImageResource(R.drawable.border_selected_yellow)
             mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
@@ -1623,7 +1615,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         mainCreateGroupAlertDialogOrangeTag.setOnClickListener {
-            mainCreateGroupAlertDialogOrangeTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogOrangeTag.setImageResource(R.drawable.border_selected_yellow)
             mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
@@ -1634,7 +1626,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         mainCreateGroupAlertDialogPurpleTag.setOnClickListener { _ ->
-            mainCreateGroupAlertDialogPurpleTag.setImageResource(R.drawable.border_selected_image_view)
+            mainCreateGroupAlertDialogPurpleTag.setImageResource(R.drawable.border_selected_yellow)
             mainCreateGroupAlertDialogRedTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogGreenTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogYellowTag.setImageResource(android.R.color.transparent)
