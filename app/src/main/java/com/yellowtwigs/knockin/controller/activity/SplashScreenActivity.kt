@@ -21,6 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private var splashScreenActivityAppNameCenter: TextView? = null
     private var splashScreenActivityAppNameDown: TextView? = null
+    private var splashScreenActivityYellowTwigs: TextView? = null
     private var splashScreenActivitySubtitle: TextView? = null
 
     private var splashScreenActivityAppIcon: AppCompatImageView? = null
@@ -54,6 +55,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         splashScreenActivityAppNameCenter = findViewById(R.id.splashscreen_activity_app_name_center)
         splashScreenActivityAppNameDown = findViewById(R.id.splashscreen_activity_app_name_down)
+        splashScreenActivityYellowTwigs = findViewById(R.id.splashscreen_activity_yellowtwigs)
         splashScreenActivitySubtitle = findViewById(R.id.splashscreen_activity_subtitle)
         splashScreenActivityAppIcon = findViewById(R.id.splashscreen_activity_app_icon)
 
@@ -80,6 +82,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
             splashScreenActivityAppIcon!!.startAnimation(reappartion)
             splashScreenActivityAppIcon!!.visibility = View.VISIBLE
+            splashScreenActivityYellowTwigs!!.startAnimation(reappartion)
+            splashScreenActivityYellowTwigs!!.visibility = View.VISIBLE
             splashScreenActivitySubtitle!!.startAnimation(reappartion)
             splashScreenActivitySubtitle!!.visibility = View.VISIBLE
         }, SPLASH_DISPLAY_LENGHT.toLong())
