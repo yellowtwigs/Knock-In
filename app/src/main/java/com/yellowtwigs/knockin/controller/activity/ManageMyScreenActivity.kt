@@ -9,18 +9,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-
-import com.yellowtwigs.knockin.R
-import com.google.android.material.navigation.NavigationView
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.R
 
 /**
  * La Classe qui permet de changer le theme de l'application et de changer le nombre de contact par ligne
@@ -31,26 +28,21 @@ class ManageMyScreenActivity : AppCompatActivity() {
     //region ========================================== Val or Var ==========================================
 
     private var drawerLayout: DrawerLayout? = null
-    private var tv_zero: AppCompatImageView? = null
-    private var tv_one: AppCompatImageView? = null
-    private var tv_three: AppCompatImageView? = null
-    private var tv_four: AppCompatImageView? = null
-    private var tv_five: AppCompatImageView? = null
-    private var tv_six: AppCompatImageView? = null
 
-    //  private var //tv_zero_group: ImageView? = null
-    //   private var tv_one_group: ImageView? = null
-    private var tv_three_group: AppCompatImageView? = null
-    private var tv_four_group: AppCompatImageView? = null
-    private var tv_five_group: AppCompatImageView? = null
-    private var tv_six_group: AppCompatImageView? = null
-    private var nbGrid: Int = 4
-    private var nbGrid_group: Int = 4
+    private var manageMyScreenImageContactByLine1: AppCompatImageView? = null
+    private var manageMyScreenImageContactByLine4: AppCompatImageView? = null
+    private var manageMyScreenImageContactByLine5: AppCompatImageView? = null
 
-    private var manage_screen_dissociate_cl: ConstraintLayout? = null
-    private var manage_screen_dissociate_textView: TextView? = null
-    private var manage_screen_dissociate: Boolean? = null
-    private var manage_screen_dissociate_switch: Switch? = null
+    private var manageMyScreenColorContactBlueIndigo: AppCompatImageView? = null
+    private var manageMyScreenColorContactGreenLime: AppCompatImageView? = null
+    private var manageMyScreenColorContactPurpleGrape: AppCompatImageView? = null
+    private var manageMyScreenColorContactRed: AppCompatImageView? = null
+    private var manageMyScreenColorContactGrey: AppCompatImageView? = null
+    private var manageMyScreenColorContactOrange: AppCompatImageView? = null
+    private var manageMyScreenColorContactCyanTeal: AppCompatImageView? = null
+
+    private var manageMyScreenSpinnerSelectColor: AppCompatSpinner? = null
+    private var manageMyScreenButtonSelectColorLayout: HorizontalScrollView? = null
 
     //endregion
 
@@ -70,33 +62,35 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_manage_my_screen)
 
+        //region ======================================= SharedPreferences =======================================
+
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        nbGrid = sharedPreferences.getInt("gridview", 4)
+        val nbGrid = sharedPreferences.getInt("gridview", 1)
 
-        val sharedPreferences_group = getSharedPreferences("group", Context.MODE_PRIVATE)
-        nbGrid_group = sharedPreferences_group.getInt("gridview", 4)
+        val sharedPreferencesIsMultiColor = getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
+        var isMultiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
 
-        manage_screen_dissociate = sharedPreferences.getBoolean("dissociate_screen", false)
+        val sharedPreferencesContactsColor = getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
+        val contactsColor = sharedPreferencesContactsColor.getInt("contactsColor", 0)
+
+        //endregion
 
         //region ======================================= FindViewById =======================================
 
-        manage_screen_dissociate_cl = findViewById(R.id.activity_settings_change_nb_contact_group_cl)
-        manage_screen_dissociate_textView = findViewById(R.id.activity_settings_change_nb_contact_group)
-        manage_screen_dissociate_switch = findViewById(R.id.manage_multi_row_switch)
+        manageMyScreenImageContactByLine1 = findViewById(R.id.activity_manage_my_screen_image_contact_by_line1)
+        manageMyScreenImageContactByLine4 = findViewById(R.id.activity_manage_my_screen_image_contact_by_line4)
+        manageMyScreenImageContactByLine5 = findViewById(R.id.activity_manage_my_screen_image_contact_by_line5)
 
-        tv_zero = findViewById(R.id.activity_settings_imageView_0_contact)
-        tv_one = findViewById(R.id.activity_settings_imageView_1_contact)
-        tv_three = findViewById(R.id.activity_settings_imageView_3_contact)
-        tv_four = findViewById(R.id.activity_settings_imageView_4_contact)
-        tv_five = findViewById(R.id.activity_settings_imageView_5_contact)
-        tv_six = findViewById(R.id.activity_settings_imageView_6_contact)
+        manageMyScreenSpinnerSelectColor = findViewById(R.id.activity_manage_my_screen_change_contact_color_spinner)
+        manageMyScreenButtonSelectColorLayout = findViewById(R.id.activity_manage_my_screen_change_contact_color_scroll_view)
 
-        // //tv_zero_group = findViewById(R.id.activity_settings_imageView_0_contact_group)
-        // tv_one_group = findViewById(R.id.activity_settings_imageView_1_contact_group)
-        tv_three_group = findViewById(R.id.activity_settings_imageView_3_contact_group)
-        tv_four_group = findViewById(R.id.activity_settings_imageView_4_contact_group)
-        tv_five_group = findViewById(R.id.activity_settings_imageView_5_contact_group)
-        tv_six_group = findViewById(R.id.activity_settings_imageView_6_contact_group)
+        manageMyScreenColorContactBlueIndigo = findViewById(R.id.activity_manage_my_screen_color_blue_indigo)
+        manageMyScreenColorContactGreenLime = findViewById(R.id.activity_manage_my_screen_color_green_lime)
+        manageMyScreenColorContactPurpleGrape = findViewById(R.id.activity_manage_my_screen_color_purple_grape)
+        manageMyScreenColorContactRed = findViewById(R.id.activity_manage_my_screen_color_red)
+        manageMyScreenColorContactGrey = findViewById(R.id.activity_manage_my_screen_color_grey)
+        manageMyScreenColorContactOrange = findViewById(R.id.activity_manage_my_screen_color_orange)
+        manageMyScreenColorContactCyanTeal = findViewById(R.id.activity_manage_my_screen_color_cyan_teal)
 
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 
@@ -113,8 +107,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 main_SettingsLeftDrawerLayout.layoutParams = params
             }
         }
-
-        val manage_my_screen_Layout = findViewById<LinearLayout>(R.id.manage_my_screen_layout)
 
         val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
 
@@ -138,19 +130,116 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         //region ===================================== SetImageResource =====================================
 
-        tv_six!!.setImageResource(R.drawable.contactbyline6)
-        tv_five!!.setImageResource(R.drawable.contactbyline5)
-        tv_four!!.setImageResource(R.drawable.contactbyline4)
-        tv_three!!.setImageResource(R.drawable.contactbyline3)
-        tv_one!!.setImageResource(R.drawable.contactbyline1)
-        tv_zero!!.setImageResource(R.drawable.contactbyline0)
+        val arrayImagesContactByLine1 = intArrayOf(R.drawable.ic_contact_by_line1_multi_color,
+                R.drawable.ic_contact_by_line1_blue, R.drawable.ic_contact_by_line1_cyan, R.drawable.ic_contact_by_line1_green,
+                R.drawable.ic_contact_by_line1_blue, R.drawable.ic_contact_by_line1_orange, R.drawable.ic_contact_by_line1_purple,
+                R.drawable.ic_contact_by_line1_red)
 
-        //tv_zero_group!!.setImageResource(R.drawable.contactbyline0)
-        //tv_one_group!!.setImageResource(R.drawable.contactbyline1)
-        tv_three_group!!.setImageResource(R.drawable.contactbyline3)
-        tv_four_group!!.setImageResource(R.drawable.contactbyline4)
-        tv_five_group!!.setImageResource(R.drawable.contactbyline5)
-        tv_six_group!!.setImageResource(R.drawable.contactbyline6)
+        val arrayImagesContactByLine4 = intArrayOf(R.drawable.ic_contact_by_line4_multi_color,
+                R.drawable.ic_contact_by_line4_blue, R.drawable.ic_contact_by_line4_cyan, R.drawable.ic_contact_by_line4_green,
+                R.drawable.ic_contact_by_line4_blue, R.drawable.ic_contact_by_line4_orange, R.drawable.ic_contact_by_line4_purple,
+                R.drawable.ic_contact_by_line4_red)
+
+        val arrayImagesContactByLine5 = intArrayOf(R.drawable.ic_contact_by_line5_multi_color,
+                R.drawable.ic_contact_by_line5_blue, R.drawable.ic_contact_by_line5_blue_om, R.drawable.ic_contact_by_line5_cyan,
+                R.drawable.ic_contact_by_line5_green, R.drawable.ic_contact_by_line5_orange, R.drawable.ic_contact_by_line5_purple,
+                R.drawable.ic_contact_by_line5_red)
+
+        when (contactsColor) {
+            0 -> {
+                manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            1 -> {
+                manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            2 -> {
+                manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            3 -> {
+                manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            4 -> {
+                manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            5 -> {
+                manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            6 -> {
+                manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            }
+        }
+
+        when (nbGrid) {
+            1 -> {
+                manageMyScreenImageContactByLine1!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenImageContactByLine4!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenImageContactByLine5!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            4 -> {
+                manageMyScreenImageContactByLine1!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenImageContactByLine4!!.setBackgroundResource(R.drawable.border_selected_yellow)
+                manageMyScreenImageContactByLine5!!.setBackgroundResource(R.drawable.border_selected_grey)
+            }
+            5 -> {
+                manageMyScreenImageContactByLine1!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenImageContactByLine4!!.setBackgroundResource(R.drawable.border_selected_grey)
+                manageMyScreenImageContactByLine5!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            }
+        }
+
+        manageMyScreenImageContactByLine1!!.setImageDrawable(getDrawable(arrayImagesContactByLine1[0]))
+        manageMyScreenImageContactByLine4!!.setImageDrawable(getDrawable(arrayImagesContactByLine4[0]))
+        manageMyScreenImageContactByLine5!!.setImageDrawable(getDrawable(arrayImagesContactByLine5[0]))
+
+        manageMyScreenColorContactBlueIndigo!!.setImageDrawable(getDrawable(R.drawable.ic_user_blue_indigo1))
+        manageMyScreenColorContactGreenLime!!.setImageDrawable(getDrawable(R.drawable.ic_user_green_lime1))
+        manageMyScreenColorContactPurpleGrape!!.setImageDrawable(getDrawable(R.drawable.ic_user_purple_grape1))
+        manageMyScreenColorContactRed!!.setImageDrawable(getDrawable(R.drawable.ic_user_red))
+        manageMyScreenColorContactGrey!!.setImageDrawable(getDrawable(R.drawable.ic_user_grey1))
+        manageMyScreenColorContactOrange!!.setImageDrawable(getDrawable(R.drawable.ic_user_orange))
+        manageMyScreenColorContactCyanTeal!!.setImageDrawable(getDrawable(R.drawable.ic_user_cyan_teal))
 
         //endregion
 
@@ -202,28 +291,205 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         //endregion
 
-        if (manage_screen_dissociate!!) {
-            manage_screen_dissociate_textView!!.visibility = View.VISIBLE
-            manage_screen_dissociate_cl!!.visibility = View.VISIBLE
+        //region ======================================== Listeners =========================================
+
+        //region ======================================= ItemSelected =======================================
+
+        manageMyScreenImageContactByLine1!!.setOnClickListener {
+            manageMyScreenImageContactByLine1!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenImageContactByLine4!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenImageContactByLine5!!.setBackgroundResource(R.drawable.border_selected_grey)
+
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putInt("gridview", 1)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
         }
-        manage_screen_dissociate_switch!!.isChecked = manage_screen_dissociate!!
 
-        manage_screen_dissociate_switch?.setOnCheckedChangeListener { _, isChecked ->
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("dissociate_screen", isChecked)
-            editor.apply()
-            manage_screen_dissociate = isChecked
-            if (isChecked) {
-                manage_screen_dissociate_textView!!.visibility = View.VISIBLE
-                manage_screen_dissociate_cl!!.visibility = View.VISIBLE
-            } else {
+        manageMyScreenImageContactByLine4!!.setOnClickListener {
+            manageMyScreenImageContactByLine1!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenImageContactByLine4!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenImageContactByLine5!!.setBackgroundResource(R.drawable.border_selected_grey)
 
-                manage_screen_dissociate_textView!!.visibility = View.GONE
-                manage_screen_dissociate_cl!!.visibility = View.GONE
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putInt("gridview", 4)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        manageMyScreenImageContactByLine5!!.setOnClickListener {
+            manageMyScreenImageContactByLine1!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenImageContactByLine4!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenImageContactByLine5!!.setBackgroundResource(R.drawable.border_selected_yellow)
+
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putInt("gridview", 5)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        val colorList = resources.getStringArray(R.array.manage_my_screen_spinner_array)
+        val colorsSpinnerAdapter = ArrayAdapter(this, R.layout.spinner_item, colorList)
+        manageMyScreenSpinnerSelectColor!!.adapter = colorsSpinnerAdapter
+        manageMyScreenSpinnerSelectColor!!.setSelection(isMultiColor)
+        manageMyScreenSpinnerSelectColor!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (position) {
+                    0 -> {
+                        if (isMultiColor == 1) {
+                            buildMaterialAlertDialogBuilder()
+                        }
+
+                        val edit: SharedPreferences.Editor = sharedPreferencesIsMultiColor.edit()
+                        edit.putInt("isMultiColor", position)
+                        edit.apply()
+                        isMultiColor = 0
+
+                        manageMyScreenButtonSelectColorLayout!!.visibility = View.INVISIBLE
+                    }
+                    1 -> {
+                        val edit: SharedPreferences.Editor = sharedPreferencesIsMultiColor.edit()
+                        edit.putInt("isMultiColor", position)
+                        edit.apply()
+                        isMultiColor = 1
+
+                        manageMyScreenButtonSelectColorLayout!!.visibility = View.VISIBLE
+                    }
+                }
             }
         }
 
-        //region ==================================== SetOnClickListener ====================================
+        manageMyScreenColorContactBlueIndigo!!.setOnClickListener {
+
+            manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+
+            val edit: SharedPreferences.Editor = sharedPreferencesContactsColor.edit()
+            edit.putInt("contactsColor", 0)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        manageMyScreenColorContactGreenLime!!.setOnClickListener {
+
+            manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+
+            val edit: SharedPreferences.Editor = sharedPreferencesContactsColor.edit()
+            edit.putInt("contactsColor", 1)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        manageMyScreenColorContactPurpleGrape!!.setOnClickListener {
+
+            manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+
+            val edit: SharedPreferences.Editor = sharedPreferencesContactsColor.edit()
+            edit.putInt("contactsColor", 2)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        manageMyScreenColorContactRed!!.setOnClickListener {
+
+            manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+
+            val edit: SharedPreferences.Editor = sharedPreferencesContactsColor.edit()
+            edit.putInt("contactsColor", 3)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        manageMyScreenColorContactGrey!!.setOnClickListener {
+
+            manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+
+            val edit: SharedPreferences.Editor = sharedPreferencesContactsColor.edit()
+            edit.putInt("contactsColor", 4)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        manageMyScreenColorContactOrange!!.setOnClickListener {
+
+            manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_yellow)
+            manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_grey)
+
+            val edit: SharedPreferences.Editor = sharedPreferencesContactsColor.edit()
+            edit.putInt("contactsColor", 5)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        manageMyScreenColorContactCyanTeal!!.setOnClickListener {
+
+            manageMyScreenColorContactBlueIndigo!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGreenLime!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactPurpleGrape!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactRed!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactGrey!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactOrange!!.setBackgroundResource(R.drawable.border_selected_grey)
+            manageMyScreenColorContactCyanTeal!!.setBackgroundResource(R.drawable.border_selected_yellow)
+
+            val edit: SharedPreferences.Editor = sharedPreferencesContactsColor.edit()
+            edit.putInt("contactsColor", 6)
+            edit.apply()
+
+            buildMaterialAlertDialogBuilder()
+        }
+
+        //endregion
 
         settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -259,191 +525,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
             }
         }
 
-        when (nbGrid) {
-            0 -> tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            1 -> tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            3 -> tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            4 -> tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            5 -> tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            6 -> tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
-        }
-        when (nbGrid_group) {
-            // 0 ->tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            //   1 -> tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            3 -> tv_three_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            4 -> tv_four_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            5 -> tv_five_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            6 -> tv_six_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-        }
-        tv_zero?.setOnClickListener {
-            nbGrid = 0
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list_smaller), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_one!!.background = null
-            tv_three!!.background = null
-            tv_four!!.background = null
-            tv_five!!.background = null
-            tv_six!!.background = null
-            if (!manage_screen_dissociate!!) {
-                changeGridColumnHomeAndGroup()
-            } else {
-                changeGridColumn()
-            }
-        }
-        tv_one?.setOnClickListener {
-            nbGrid = 1
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_one!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_zero!!.background = null
-            tv_three!!.background = null
-            tv_four!!.background = null
-            tv_five!!.background = null
-            tv_six!!.background = null
-            if (!manage_screen_dissociate!!) {
-                changeGridColumnHomeAndGroup()
-            } else {
-                changeGridColumn()
-            }
-        }
-        tv_three?.setOnClickListener {
-            nbGrid = 3
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background = null
-            tv_one!!.background = null
-            tv_four!!.background = null
-            tv_five!!.background = null
-            tv_three!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_six!!.background = null
-            if (!manage_screen_dissociate!!) {
-                changeGridColumnHomeAndGroup()
-            } else {
-                changeGridColumn()
-            }
-        }
-        tv_four?.setOnClickListener {
-            nbGrid = 4
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background = null
-            tv_one!!.background = null
-            tv_three!!.background = null
-            tv_five!!.background = null
-            tv_six!!.background = null
-            tv_four!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            if (!manage_screen_dissociate!!) {
-                changeGridColumnHomeAndGroup()
-            } else {
-                changeGridColumn()
-            }
-        }
-        tv_five?.setOnClickListener {
-            nbGrid = 5
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background = null
-            tv_one!!.background = null
-            tv_three!!.background = null
-            tv_four!!.background = null
-            tv_six!!.background = null
-            tv_five!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            if (!manage_screen_dissociate!!) {
-                changeGridColumnHomeAndGroup()
-            } else {
-                changeGridColumn()
-            }
-        }
-        tv_six?.setOnClickListener {
-            nbGrid = 6
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_zero!!.background = null
-            tv_one!!.background = null
-            tv_three!!.background = null
-            tv_four!!.background = null
-            tv_five!!.background = null
-            tv_six!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            if (!manage_screen_dissociate!!) {
-                changeGridColumnHomeAndGroup()
-            } else {
-                changeGridColumn()
-            }
-        }
-        /*tv_zero_group?.setOnClickListener {
-            nbGrid = 0
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list_smaller), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            //tv_zero_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_one_group!!.background = null
-            tv_three_group!!.background = null
-            tv_four_group!!.background = null
-            tv_five_group!!.background = null
-            tv_six_group!!.background = null
-            changeGridColumnGroup()
-        }*/
-        /*tv_one_group?.setOnClickListener {
-            nbGrid = 1
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_list), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            tv_one_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            //tv_zero_group!!.background = null
-            tv_three_group!!.background = null
-            tv_four_group!!.background = null
-            tv_five_group!!.background = null
-            tv_six_group!!.background = null
-            changeGridColumnGroup()
-        }*/
-        tv_three_group?.setOnClickListener {
-            nbGrid = 3
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            //tv_zero_group!!.background = null
-            // tv_one_group!!.background = null
-            tv_four_group!!.background = null
-            tv_five_group!!.background = null
-            tv_three_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            tv_six_group!!.background = null
-            changeGridColumnGroup()
-        }
-        tv_four_group?.setOnClickListener {
-            nbGrid = 4
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            //tv_zero_group!!.background = null
-            //  tv_one_group!!.background = null
-            tv_three_group!!.background = null
-            tv_five_group!!.background = null
-            tv_six_group!!.background = null
-            tv_four_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            changeGridColumnGroup()
-        }
-        tv_five_group?.setOnClickListener {
-            nbGrid = 5
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            //tv_zero_group!!.background = null
-            // tv_one_group!!.background = null
-            tv_three_group!!.background = null
-            tv_four_group!!.background = null
-            tv_six_group!!.background = null
-            tv_five_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            changeGridColumnGroup()
-        }
-        tv_six_group?.setOnClickListener {
-            nbGrid = 6
-            val mes = String.format(resources.getString(R.string.manage_my_screen_toast_grid), nbGrid)
-            Toast.makeText(applicationContext, mes, Toast.LENGTH_SHORT).show()
-            //tv_zero_group!!.background = null
-            //tv_one_group!!.background = null
-            tv_three_group!!.background = null
-            tv_four_group!!.background = null
-            tv_five_group!!.background = null
-            tv_six_group!!.setBackgroundResource(R.drawable.border_selected_image_view)
-            changeGridColumnGroup()
-        }
-
         // endregion
     }
 
@@ -477,41 +558,17 @@ class ManageMyScreenActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun changeGridColumn() {
-        val loginIntent = Intent(this@ManageMyScreenActivity, MainActivity::class.java)
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-        edit.putInt("gridview", nbGrid)
-        edit.apply()
-        startActivity(loginIntent)
-        finish()
+    private fun buildMaterialAlertDialogBuilder() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title)) // getString(R.string.main_alert_dialog_delete_contact_title)
+                .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
+                .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
+                    startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
+                }
+                .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                }
+                .show()
     }
 
-    private fun changeGridColumnGroup() {
-        val loginIntent = Intent(this@ManageMyScreenActivity, GroupManagerActivity::class.java)
-        val sharedPreferencesGroup: SharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
-        val editGroup: SharedPreferences.Editor = sharedPreferencesGroup.edit()
-        editGroup.putInt("gridview", nbGrid)
-        editGroup.apply()
-        startActivity(loginIntent)
-        finish()
-    }
-
-
-    private fun changeGridColumnHomeAndGroup() {
-        val loginIntent = Intent(this@ManageMyScreenActivity, MainActivity::class.java)
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-        edit.putInt("gridview", nbGrid)
-        edit.apply()
-
-        val sharedPreferencesGroup: SharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
-        val editGroup: SharedPreferences.Editor = sharedPreferencesGroup.edit()
-        editGroup.putInt("gridview", nbGrid)
-        editGroup.apply()
-
-        startActivity(loginIntent)
-        finish()
-    }
     //endregion
 }

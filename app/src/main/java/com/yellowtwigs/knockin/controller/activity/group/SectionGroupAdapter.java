@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
@@ -49,7 +50,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     public SectionGroupAdapter(Context context, int sectionResourceId, RecyclerView recyclerView,
-                               RecyclerView.Adapter baseAdapter) {
+                               RecyclerView.Adapter baseAdapter, int len) {
 
         mSectionResourceId = sectionResourceId;
         mBaseAdapter = baseAdapter;
@@ -83,14 +84,26 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
-        final GridLayoutManager layoutManager = (GridLayoutManager) (recyclerView.getLayoutManager());
-        assert layoutManager != null;
-        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return (isSectionHeaderPosition(position)) ? layoutManager.getSpanCount() : 1;
-            }
-        });
+        if (len >= 4) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) (recyclerView.getLayoutManager());
+            assert gridLayoutManager != null;
+
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return (isSectionHeaderPosition(position)) ? gridLayoutManager.getSpanCount() : 1;
+                }
+            });
+        } else {
+//            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) (recyclerView.getLayoutManager());
+//            assert linearLayoutManager != null;
+//            linearLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+//                @Override
+//                public int getSpanSize(int position) {
+//                    return (isSectionHeaderPosition(position)) ? linearLayoutManager.getSpanCount() : 1;
+//                }
+//            });
+        }
     }
 
     public static class SectionViewHolder extends RecyclerView.ViewHolder {
@@ -132,10 +145,10 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             int i = position + 1;
             System.out.println("position section" + position);
-            String groupName=  mSections.get(position).title.toString();
-            if(groupName.equals("Favorites")){
+            String groupName = mSections.get(position).title.toString();
+            if (groupName.equals("Favorites")) {
                 ((SectionViewHolder) sectionViewHolder).titleTv.setText(R.string.group_favorites);
-            }else {
+            } else {
                 ((SectionViewHolder) sectionViewHolder).titleTv.setText(mSections.get(position).title);
             }
             while (!isSectionHeaderPosition(i) && i < getItemCount()) {
@@ -210,11 +223,11 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             AppCompatImageView edit_group_name_OrangeTag = alertView.findViewById(R.id.manager_group_edit_group_color_orange);
                             AppCompatImageView edit_group_name_PurpleTag = alertView.findViewById(R.id.manager_group_edit_group_color_purple);
 
-                            if(groupName.equals("Favorites")){
+                            if (groupName.equals("Favorites")) {
                                 edit_group_name_AlertDialogTitle.setText(mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "
                                         + mContext.getString(R.string.group_favorites));
                                 edit_group_name_EditText.setText(mContext.getString(R.string.group_favorites));
-                            }else {
+                            } else {
                                 edit_group_name_AlertDialogTitle.setText(mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "
                                         + contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
                                 edit_group_name_EditText.setText(contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getName());
@@ -222,26 +235,26 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
                             if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getSection_color() == R.color.red_tag_group) {
-                                edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_RedTag.setImageResource(R.drawable.border_selected_yellow);
 
                             } else if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getSection_color() == R.color.blue_tag_group) {
-                                edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_yellow);
 
                             } else if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getSection_color() == R.color.green_tag_group) {
-                                edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_yellow);
 
                             } else if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getSection_color() == R.color.yellow_tag_group) {
-                                edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_yellow);
 
                             } else if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getSection_color() == R.color.orange_tag_group) {
-                                edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_yellow);
 
                             } else if (contactsDatabase.GroupsDao().getGroup(mSections.get(position).getIdGroup().intValue()).getSection_color() == R.color.purple_tag_group) {
-                                edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_yellow);
                             }
 
                             edit_group_name_RedTag.setOnClickListener(v1 -> {
-                                edit_group_name_RedTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_RedTag.setImageResource(R.drawable.border_selected_yellow);
                                 edit_group_name_BlueTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_GreenTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_YellowTag.setImageResource(android.R.color.transparent);
@@ -252,7 +265,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             });
 
                             edit_group_name_BlueTag.setOnClickListener(v1 -> {
-                                edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_yellow);
                                 edit_group_name_RedTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_GreenTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_YellowTag.setImageResource(android.R.color.transparent);
@@ -263,7 +276,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             });
 
                             edit_group_name_GreenTag.setOnClickListener(v1 -> {
-                                edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_yellow);
                                 edit_group_name_RedTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_BlueTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_YellowTag.setImageResource(android.R.color.transparent);
@@ -274,7 +287,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             });
 
                             edit_group_name_YellowTag.setOnClickListener(v1 -> {
-                                edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_yellow);
                                 edit_group_name_RedTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_GreenTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_BlueTag.setImageResource(android.R.color.transparent);
@@ -285,7 +298,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             });
 
                             edit_group_name_OrangeTag.setOnClickListener(v1 -> {
-                                edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_yellow);
                                 edit_group_name_RedTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_GreenTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_YellowTag.setImageResource(android.R.color.transparent);
@@ -296,7 +309,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             });
 
                             edit_group_name_PurpleTag.setOnClickListener(v1 -> {
-                                edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_image_view);
+                                edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_yellow);
                                 edit_group_name_RedTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_GreenTag.setImageResource(android.R.color.transparent);
                                 edit_group_name_YellowTag.setImageResource(android.R.color.transparent);
@@ -393,7 +406,7 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
             ((SectionViewHolder) sectionViewHolder).holderName.setOnClickListener(v -> {
-                ((GroupAdapter)mBaseAdapter).SetGroupClick(getGroupPosition(position));
+                ((GroupAdapter) mBaseAdapter).SetGroupClick(getGroupPosition(position));
             });
         } else {
             // System.out.println("position non section"+position);
@@ -476,10 +489,11 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         return 0;
     }
-    public int getGroupPosition(int position){
-        int nbGroup =0;
-        for(int i=position; i>0;i--){
-            if(isSectionHeaderPosition(i)){
+
+    public int getGroupPosition(int position) {
+        int nbGroup = 0;
+        for (int i = position; i > 0; i--) {
+            if (isSectionHeaderPosition(i)) {
                 nbGroup++;
             }
         }

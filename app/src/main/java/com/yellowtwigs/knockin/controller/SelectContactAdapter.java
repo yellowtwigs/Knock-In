@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,9 +22,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
-import com.yellowtwigs.knockin.controller.activity.group.GroupActivity;
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.DbWorkerThread;
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
 import com.yellowtwigs.knockin.model.ModelDB.GroupDB;
@@ -75,8 +73,6 @@ public class SelectContactAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
             holder.contactRoundedImageView = gridview.findViewById(R.id.contactRoundedImageView);
-            holder.groupWordingConstraint = gridview.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
-            holder.groupWordingTv = gridview.findViewById(R.id.grid_adapter_wording_group_tv);
             holder.multi_select_ContactLayout = gridview.findViewById(R.id.multi_select_contact_layout);
 
             int height = holder.contactRoundedImageView.getLayoutParams().height;
@@ -125,8 +121,7 @@ public class SelectContactAdapter extends BaseAdapter {
         String group = "";
 
         GroupDB firstGroup = getItem(position).getFirstGroup(context);
-        if (context instanceof GroupActivity) {
-            holder.groupWordingConstraint.setVisibility(View.VISIBLE);
+        if (context instanceof GroupManagerActivity) {
             if (len == 0) {
                 holder.contactRoundedImageView.setVisibility(View.INVISIBLE);
             }
@@ -137,12 +132,10 @@ public class SelectContactAdapter extends BaseAdapter {
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);
-                holder.groupWordingConstraint.setBackground(roundedLayout);
                 System.out.println(" black color");
             } else {
                 Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
                 roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY);
-                holder.groupWordingConstraint.setBackground(roundedLayout);
             }
 
         } else {
@@ -152,7 +145,6 @@ public class SelectContactAdapter extends BaseAdapter {
             assert roundedLayout != null;
 //            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
             roundedLayout.setColorFilter(firstGroup.getSection_color(), PorterDuff.Mode.MULTIPLY);
-            holder.groupWordingConstraint.setBackground(roundedLayout);
         }
         if (len == 3) {
             Spannable spanFistName = new SpannableString(firstname);
@@ -164,7 +156,6 @@ public class SelectContactAdapter extends BaseAdapter {
             //holder.contactFirstNameView.;
             Spannable spanGroup = new SpannableString(group);
             spanGroup.setSpan(new RelativeSizeSpan(0.95f), 0, group.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
 
         }
         if (len == 4) {
@@ -185,7 +176,6 @@ public class SelectContactAdapter extends BaseAdapter {
                 group = group.substring(0, 7).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
 
         }
         if (len == 5) {
@@ -208,7 +198,6 @@ public class SelectContactAdapter extends BaseAdapter {
                 group = group.substring(0, 7).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
         }
         if (len == 6) {
             if (contact.getFirstName().length() > 8)
@@ -229,7 +218,6 @@ public class SelectContactAdapter extends BaseAdapter {
                 group = group.substring(0, 5).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
         }
 
 
@@ -241,7 +229,7 @@ public class SelectContactAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
 
-        if (context instanceof MainActivity || context instanceof GroupActivity) {
+        if (context instanceof MainActivity || context instanceof GroupManagerActivity) {
             if (listSelectedItem.contains(getItem(position))) {
                 holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
             } else {
@@ -261,17 +249,6 @@ public class SelectContactAdapter extends BaseAdapter {
             }
         }
 
-        holder.groupWordingConstraint.setOnClickListener(v -> {
-            DbWorkerThread group_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-            group_mDbWorkerThread.start();
-            ArrayList<Integer> listPosition = new ArrayList<>();
-
-            if (secondClick) {
-                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick, true);
-                secondClick = false;
-            }
-        });
-
         return gridview;
     }
 
@@ -281,8 +258,6 @@ public class SelectContactAdapter extends BaseAdapter {
         CircularImageView contactRoundedImageView;
         ConstraintLayout multi_select_ContactLayout;
         Boolean isSelect;
-        ConstraintLayout groupWordingConstraint;
-        TextView groupWordingTv;
     }
 
 
@@ -318,23 +293,169 @@ public class SelectContactAdapter extends BaseAdapter {
     }
 
     private int randomDefaultImage(int avatarId) {
-        switch (avatarId) {
-            case 0:
-                return R.drawable.ic_user_purple;
-            case 1:
-                return R.drawable.ic_user_blue;
-            case 2:
-                return R.drawable.ic_user_knocker;
-            case 3:
-                return R.drawable.ic_user_green;
-            case 4:
-                return R.drawable.ic_user_om;
-            case 5:
-                return R.drawable.ic_user_orange;
-            case 6:
-                return R.drawable.ic_user_pink;
-            default:
-                return R.drawable.ic_multiple_users_silhouette_test;
+
+        SharedPreferences sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
+        int multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0);
+
+        SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
+        int contactsColorPosition = sharedPreferencesContactsColor.getInt("IsMultiColor", 0);
+
+        if (multiColor == 0) {
+            switch (avatarId) {
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_cyan_teal;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_orange;
+                case 6:
+                    return R.drawable.ic_user_red;
+                default:
+                    return R.drawable.ic_user_blue;
+            }
+        } else {
+            switch (contactsColorPosition) {
+                case 0:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_blue;
+                        case 1:
+                            return R.drawable.ic_user_blue_indigo1;
+                        case 2:
+                            return R.drawable.ic_user_blue_indigo2;
+                        case 3:
+                            return R.drawable.ic_user_blue_indigo3;
+                        case 4:
+                            return R.drawable.ic_user_blue_indigo4;
+                        case 5:
+                            return R.drawable.ic_user_blue_indigo5;
+                        case 6:
+                            return R.drawable.ic_user_blue_indigo6;
+                        default:
+                            return R.drawable.ic_user_om;
+                    }
+                case 1:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_green;
+                        case 1:
+                            return R.drawable.ic_user_green_lime1;
+                        case 2:
+                            return R.drawable.ic_user_green_lime2;
+                        case 3:
+                            return R.drawable.ic_user_green_lime3;
+                        case 4:
+                            return R.drawable.ic_user_green_lime4;
+                        case 5:
+                            return R.drawable.ic_user_green_lime5;
+                        default:
+                            return R.drawable.ic_user_green_lime6;
+                    }
+                case 2:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_purple_grape1;
+                        case 2:
+                            return R.drawable.ic_user_purple_grape2;
+                        case 3:
+                            return R.drawable.ic_user_purple_grape3;
+                        case 4:
+                            return R.drawable.ic_user_purple_grape4;
+                        case 5:
+                            return R.drawable.ic_user_purple_grape5;
+                        default:
+                            return R.drawable.ic_user_purple;
+                    }
+                case 3:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_red;
+                        case 1:
+                            return R.drawable.ic_user_red1;
+                        case 2:
+                            return R.drawable.ic_user_red2;
+                        case 3:
+                            return R.drawable.ic_user_red3;
+                        case 4:
+                            return R.drawable.ic_user_red4;
+                        case 5:
+                            return R.drawable.ic_user_red5;
+                        default:
+                            return R.drawable.ic_user_red;
+                    }
+                case 4:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_grey;
+                        case 1:
+                            return R.drawable.ic_user_grey1;
+                        case 2:
+                            return R.drawable.ic_user_grey2;
+                        case 3:
+                            return R.drawable.ic_user_grey3;
+                        case 4:
+                            return R.drawable.ic_user_grey4;
+                        default:
+                            return R.drawable.ic_user_grey1;
+                    }
+                case 5:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_orange;
+                        case 1:
+                            return R.drawable.ic_user_orange1;
+                        case 2:
+                            return R.drawable.ic_user_orange2;
+                        case 3:
+                            return R.drawable.ic_user_orange3;
+                        case 4:
+                            return R.drawable.ic_user_orange4;
+                        default:
+                            return R.drawable.ic_user_orange3;
+                    }
+                case 6:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 1:
+                            return R.drawable.ic_user_cyan_teal1;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal2;
+                        case 3:
+                            return R.drawable.ic_user_cyan_teal3;
+                        case 4:
+                            return R.drawable.ic_user_cyan_teal4;
+                        default:
+                            return R.drawable.ic_user_cyan_teal;
+                    }
+                default:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_blue;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 3:
+                            return R.drawable.ic_user_green;
+                        case 4:
+                            return R.drawable.ic_user_om;
+                        case 5:
+                            return R.drawable.ic_user_orange;
+                        case 6:
+                            return R.drawable.ic_user_red;
+                        default:
+                            return R.drawable.ic_user_blue;
+                    }
+            }
         }
     }
 }

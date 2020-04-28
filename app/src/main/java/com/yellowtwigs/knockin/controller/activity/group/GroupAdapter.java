@@ -21,6 +21,8 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -37,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.CircularImageView;
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
+import com.yellowtwigs.knockin.controller.activity.MainActivity;
 import com.yellowtwigs.knockin.model.ContactGesture;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase;
@@ -69,10 +72,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     private Boolean modeMultiSelect = false;
     private Boolean secondClick = false;
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
-    private GridView parentGrid;
     private ArrayList<Integer> sectionPos;
     private int heightWidthImage;
-
+    private View view;
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
@@ -113,9 +115,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     @NotNull
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
+        if (len >= 4) {
+            view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.list_contact_item_layout, parent, false);
+        }
         System.out.println(parent.getClass());
-//        parentGrid = ((GridView) parent);
         ViewHolder holder = new ViewHolder(view);
         heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
         return holder;
@@ -165,8 +170,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         assert contact != null;
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
-        } else if (contact.getContactPriority() == 1) {
-            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityOneColor, null));
         } else if (contact.getContactPriority() == 2) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
         }
@@ -190,33 +193,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
         String group = "";
-        GroupDB firstGroup = getItem(position).getFirstGroup(context);
-        if (context instanceof GroupActivity) {
-            holder.groupWordingConstraint.setVisibility(View.VISIBLE);
-
-        }
-        if (firstGroup == null) {
-            System.out.println("no group " + contact.getFirstName() + " " + contact.getLastName());
-            SharedPreferences sharedThemePreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE);
-            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            assert roundedLayout != null;
-            if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY);
-                holder.groupWordingConstraint.setBackground(roundedLayout);
-            } else {
-                roundedLayout.setColorFilter(context.getResources().getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY);
-                holder.groupWordingConstraint.setBackground(roundedLayout);
-            }
-
-        } else {
-            System.out.println("have group");
-            group = firstGroup.getName();
-            Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            assert roundedLayout != null;
-//            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
-            roundedLayout.setColorFilter(firstGroup.getSection_color(), PorterDuff.Mode.MULTIPLY);
-            holder.groupWordingConstraint.setBackground(roundedLayout);
-        }
 
         if (len == 3) {
             Spannable spanFistName = new SpannableString(firstname);
@@ -225,13 +201,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
-            //holder.contactFirstNameView.;
-            if (group.length() > 12)
-                group = group.substring(0, 11).concat("..");
-            Spannable spanGroup = new SpannableString(group);
-            spanGroup.setSpan(new RelativeSizeSpan(0.95f), 0, group.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
-
         }
         if (len == 4) {
             if (contact.getFirstName().length() > 12)
@@ -251,8 +220,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 group = group.substring(0, 8).concat("..");
             Spannable spanGroup = new SpannableString(group);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
-
         }
         if (len == 5) {
             if (contact.getFirstName().length() > 11)
@@ -269,33 +236,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
-
-            if (group.length() > 6)
-                group = group.substring(0, 5).concat("..");
-            Spannable spanGroup = new SpannableString(group);
-            spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
-        }
-        if (len == 6) {
-            if (contact.getFirstName().length() > 8)
-                firstname = contact.getFirstName().substring(0, 7).concat("..");
-
-            holder.contactFirstNameView.setText(firstname);
-            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.81f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(span);
-            if (contact.getLastName().length() > 8)
-                lastName = contact.getLastName().substring(0, 7).concat("..");
-
-            Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactLastNameView.setText(spanLastName);
-
-            if (group.length() > 6)
-                group = group.substring(0, 5).concat("..");
-            Spannable spanGroup = new SpannableString(group);
-            spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.groupWordingTv.setText(spanGroup);
         }
      /*   if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -465,6 +405,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             }
             return true;
         };
+
         View.OnClickListener gridItemClick = v -> {
             if (modeMultiSelect) {
                 if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
@@ -494,6 +435,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 }
             }
         };
+
         buttonCall.setOnLongClickListener(v -> {
             String phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber());
             if (!phoneNumber.isEmpty()) {
@@ -502,36 +444,87 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             return true;
         });
 
-       /* holder.groupWordingConstraint.setOnClickListener(v -> {
-            DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-            main_mDbWorkerThread.start();
-            ArrayList<Integer> listPosition = new ArrayList<>();
+        View.OnClickListener listItemClick = v -> {
+            if (modeMultiSelect) {
+                if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
+                    listOfItemSelected.remove(contactManager.getContactList().get(position));
 
-            if (!secondClick) {
-                System.out.println("list contact grid size" + contactManager.getContactList().size());
-                for (int i = 0; i < contactManager.getContactList().size(); i++) {
-                    if (contactManager.getContactList().get(i).getFirstGroup(context) != null) {
-                        if (Objects.equals(contactManager.getContactList().get(i).getFirstGroup(context).getId(), Objects.requireNonNull(contactManager.getContactList().get(position).getFirstGroup(context)).getId())) {
-                            System.out.println("id egale a l'autre ");
-                            listPosition.add(i);
-                        } else {
-                            System.out.println(contactManager.getContactList().get(i).getFirstGroup(context).getId() + " id different a " + contactManager.getContactList().get(position).getFirstGroup(context).getId());
-                        }
+                    if (!contact.getProfilePicture64().equals("")) {
+                        Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                        holder.contactRoundedImageView.setImageBitmap(bitmap);
+                    } else {
+                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
                     }
+                    if (listOfItemSelected.isEmpty()) {
+                        modeMultiSelect = false;
+                    }
+                    notifyDataSetChanged();
+                } else {
+                    listOfItemSelected.add(contactManager.getContactList().get(position));
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+                    notifyDataSetChanged();
                 }
-                ((GroupActivity) context).clickGroupGrid(len, listPosition, parentGrid.getFirstVisiblePosition(), secondClick, true);
+                ((GroupManagerActivity) context).recyclerMultiSelectItemClick(position);
+            } else {
+//                if (lastClick) {
+//                    lastClick = false;
+//                } else {
+//                    if (len == 1) {
+//                        if (holder.constraintLayoutMenu != null) {
+//                            if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
+//                                holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
+//                                slideUp(holder.constraintLayoutMenu);
+//                                if (lastSelectMenuLen1 != null)
+//                                    lastSelectMenuLen1.setVisibility(View.GONE);
+//                                lastSelectMenuLen1 = holder.constraintLayoutMenu;
+//                            } else {
+//                                holder.constraintLayoutMenu.setVisibility(View.GONE);
+//                                Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+//                                holder.constraintLayoutMenu.startAnimation(slideDown);
+//                                lastSelectMenuLen1 = null;
+//                            }
+//                        }
+//                    }
+//                }
             }
-        });*/
-        /*holder.gridContactItemLayout.setOnTouchListener(new View.OnTouchListener(){
+        };
+        View.OnLongClickListener listItemLongClick = v -> {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getActionMasked() == MotionEvent.ACTION_DOWN){
-                    ((GroupManagerActivity)context).getTouchHelper().startDrag(holder);
+            if (!modeMultiSelect) {
+                v.setTag(holder);
+                // ContactDB contact1 = contactManager.getContactList().get(position).getContactDB();
+                assert contact != null;
+
+                holder.contactFirstNameView.setText(contact.getFirstName());
+
+                if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
+                    listOfItemSelected.remove(contactManager.getContactList().get(position));
+
+                    if (!contact.getProfilePicture64().equals("")) {
+                        Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+                        holder.contactRoundedImageView.setImageBitmap(bitmap);
+                    } else {
+                        listOfItemSelected.add(contactManager.getContactList().get(position));
+                        holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+                        notifyDataSetChanged();
+                    }
+                } else {
+                    listOfItemSelected.add(contactManager.getContactList().get(position));
+                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+                    notifyDataSetChanged();
                 }
-                return false;
+                closeMenu();
+                ((GroupManagerActivity) context).recyclerMultiSelectItemClick(position);
+                modeMultiSelect = true;
             }
-        });*/
+            return true;
+        };
+
+        if (holder.constraintLayout != null) {
+            holder.constraintLayout.setOnLongClickListener(listItemLongClick);
+            holder.constraintLayout.setOnClickListener(listItemClick);
+        }
+
         holder.gridContactItemLayout.setOnLongClickListener(gridlongClick);
         holder.contactRoundedImageView.setOnLongClickListener(gridlongClick);
         holder.gridContactItemLayout.setOnClickListener(gridItemClick);
@@ -542,21 +535,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         buttonSMS.setOnClickListener(buttonListener);
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);
-
-  /*      holder.gridContactItemLayout.setOnClickListener(v -> {
-            if (quickMenu.isOpen()) {
-                quickMenu.close(false);
-            } else {
-                quickMenu.open(false);
-            }
-        });
-        holder.contactRoundedImageView.setOnClickListener(v -> {
-            if (quickMenu.isOpen()) {
-                quickMenu.close(false);
-            } else {
-                quickMenu.open(false);
-            }
-        });*/
     }
 
     /**
@@ -644,7 +622,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         if (!secondClick) {
             if (!modeMultiSelect) {
                 modeMultiSelect = true;
-
                 for (int i = 0; i < listContactOnGroup.size(); i++) {
                     if (!listOfItemSelected.contains(listContactOnGroup.get(i))) {
                         //System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
@@ -673,24 +650,52 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView contactFirstNameView;
         TextView contactLastNameView;
         CircularImageView contactRoundedImageView;
         ConstraintLayout gridContactItemLayout;
-        ConstraintLayout groupWordingConstraint;
         AppCompatImageView gridAdapterFavoriteShine;
+
+        RelativeLayout constraintLayout;
+        ConstraintLayout constraintLayoutMenu;
+        AppCompatImageView listContactItemFavoriteShine;
+
+        RelativeLayout callCl;
+        RelativeLayout smsCl;
+        RelativeLayout whatsappCl;
+        RelativeLayout mailCl;
+        RelativeLayout editCl;
+
+        ConstraintLayout groupWordingConstraint;
         TextView groupWordingTv;
+        Boolean open;
 
         ViewHolder(View view) {
             super(view);
-            contactRoundedImageView = view.findViewById(R.id.contactRoundedImageView);
-            gridContactItemLayout = view.findViewById(R.id.grid_contact_item_layout);
-            groupWordingConstraint = view.findViewById(R.id.grid_adapter_wording_group_constraint_layout);
-            groupWordingTv = view.findViewById(R.id.grid_adapter_wording_group_tv);
-            contactFirstNameView = view.findViewById(R.id.grid_adapter_contactFirstName);
-            contactLastNameView = view.findViewById(R.id.grid_adapter_contactLastName);
-            gridAdapterFavoriteShine = view.findViewById(R.id.grid_adapter_favorite_shine);
-            heightWidthImage = contactRoundedImageView.getHeight();
+
+            if (len >= 4) {
+                contactRoundedImageView = view.findViewById(R.id.contactRoundedImageView);
+                gridContactItemLayout = view.findViewById(R.id.grid_contact_item_layout);
+                contactFirstNameView = view.findViewById(R.id.grid_adapter_contactFirstName);
+                contactLastNameView = view.findViewById(R.id.grid_adapter_contactLastName);
+                gridAdapterFavoriteShine = view.findViewById(R.id.grid_adapter_favorite_shine);
+                heightWidthImage = contactRoundedImageView.getHeight();
+            } else {
+                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
+                contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
+                constraintLayout = view.findViewById(R.id.list_contact_item_layout);
+                constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
+                callCl = view.findViewById(R.id.list_contact_item_constraint_call);
+                smsCl = view.findViewById(R.id.list_contact_item_constraint_sms);
+                editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
+                whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp);
+                mailCl = view.findViewById(R.id.list_contact_item_constraint_mail);
+                groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
+                groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
+                listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
+                open = false;
+            }
         }
 
 /*        @Override
@@ -755,23 +760,168 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
      */
     private int randomDefaultImage(int avatarId) {
 
-        switch (avatarId) {
-            case 0:
-                return R.drawable.ic_user_purple;
-            case 1:
-                return R.drawable.ic_user_blue;
-            case 2:
-                return R.drawable.ic_user_knocker;
-            case 3:
-                return R.drawable.ic_user_green;
-            case 4:
-                return R.drawable.ic_user_om;
-            case 5:
-                return R.drawable.ic_user_orange;
-            case 6:
-                return R.drawable.ic_user_pink;
-            default:
-                return R.drawable.ic_user_blue;
+        SharedPreferences sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
+        int multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0);
+
+        SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE);
+        int contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0);
+
+        if (multiColor == 0) {
+            switch (avatarId) {
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_cyan_teal;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_orange;
+                case 6:
+                    return R.drawable.ic_user_red;
+                default:
+                    return R.drawable.ic_user_blue;
+            }
+        } else {
+            switch (contactsColorPosition) {
+                case 0:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_blue;
+                        case 1:
+                            return R.drawable.ic_user_blue_indigo1;
+                        case 2:
+                            return R.drawable.ic_user_blue_indigo2;
+                        case 3:
+                            return R.drawable.ic_user_blue_indigo3;
+                        case 4:
+                            return R.drawable.ic_user_blue_indigo4;
+                        case 5:
+                            return R.drawable.ic_user_blue_indigo5;
+                        case 6:
+                            return R.drawable.ic_user_blue_indigo6;
+                        default:
+                            return R.drawable.ic_user_om;
+                    }
+                case 1:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_green;
+                        case 1:
+                            return R.drawable.ic_user_green_lime1;
+                        case 2:
+                            return R.drawable.ic_user_green_lime2;
+                        case 3:
+                            return R.drawable.ic_user_green_lime3;
+                        case 4:
+                            return R.drawable.ic_user_green_lime4;
+                        case 5:
+                            return R.drawable.ic_user_green_lime5;
+                        default:
+                            return R.drawable.ic_user_green_lime6;
+                    }
+                case 2:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_purple_grape1;
+                        case 2:
+                            return R.drawable.ic_user_purple_grape2;
+                        case 3:
+                            return R.drawable.ic_user_purple_grape3;
+                        case 4:
+                            return R.drawable.ic_user_purple_grape4;
+                        case 5:
+                            return R.drawable.ic_user_purple_grape5;
+                        default:
+                            return R.drawable.ic_user_purple;
+                    }
+                case 3:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_red;
+                        case 1:
+                            return R.drawable.ic_user_red1;
+                        case 2:
+                            return R.drawable.ic_user_red2;
+                        case 3:
+                            return R.drawable.ic_user_red3;
+                        case 4:
+                            return R.drawable.ic_user_red4;
+                        case 5:
+                            return R.drawable.ic_user_red5;
+                        default:
+                            return R.drawable.ic_user_red;
+                    }
+                case 4:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_grey;
+                        case 1:
+                            return R.drawable.ic_user_grey1;
+                        case 2:
+                            return R.drawable.ic_user_grey2;
+                        case 3:
+                            return R.drawable.ic_user_grey3;
+                        case 4:
+                            return R.drawable.ic_user_grey4;
+                        default:
+                            return R.drawable.ic_user_grey1;
+                    }
+                case 5:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_orange;
+                        case 1:
+                            return R.drawable.ic_user_orange1;
+                        case 2:
+                            return R.drawable.ic_user_orange2;
+                        case 3:
+                            return R.drawable.ic_user_orange3;
+                        case 4:
+                            return R.drawable.ic_user_orange4;
+                        default:
+                            return R.drawable.ic_user_orange3;
+                    }
+                case 6:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 1:
+                            return R.drawable.ic_user_cyan_teal1;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal2;
+                        case 3:
+                            return R.drawable.ic_user_cyan_teal3;
+                        case 4:
+                            return R.drawable.ic_user_cyan_teal4;
+                        default:
+                            return R.drawable.ic_user_cyan_teal;
+                    }
+                default:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_blue;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 3:
+                            return R.drawable.ic_user_green;
+                        case 4:
+                            return R.drawable.ic_user_om;
+                        case 5:
+                            return R.drawable.ic_user_orange;
+                        case 6:
+                            return R.drawable.ic_user_red;
+                        default:
+                            return R.drawable.ic_user_blue;
+                    }
+            }
         }
     }
 

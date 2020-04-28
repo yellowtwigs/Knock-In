@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
-import com.yellowtwigs.knockin.controller.activity.group.GroupActivity;
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.model.ContactGesture;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.DbWorkerThread;
@@ -96,11 +96,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (len == 0) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout_smaller, parent, false);
-        } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout, parent, false);
-        }
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout, parent, false);
 
         return new ContactViewHolder(view);
     }
@@ -127,7 +123,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             if (contact.getContactPriority() == 0) {
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
             } else if (contact.getContactPriority() == 1) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.lightColor, null));
+                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.transparentColor, null));
             } else if (contact.getContactPriority() == 2) {
                 holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
             }
@@ -146,7 +142,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         holder.contactFirstNameView.setText(contactName);
         String group = "";
         GroupDB firstGroup = getItem(position).getFirstGroup(context);
-        if (context instanceof GroupActivity) {
+        if (context instanceof GroupManagerActivity) {
             holder.groupWordingConstraint.setVisibility(View.VISIBLE);
             if (len == 0) {
                 holder.contactRoundedImageView.setVisibility(View.INVISIBLE);
@@ -188,8 +184,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         }
         if (modeMultiSelect) {
             if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(position))) {
-                if (context instanceof GroupActivity && len == 0) {
-                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+                if (context instanceof GroupManagerActivity && len == 0) {
                 } else {
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
@@ -248,8 +243,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 }
             } else {
                 listOfItemSelected.add(gestionnaireContacts.getContactList().get(position));
-                if (context instanceof GroupActivity && len == 0) {
-                    holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+                if (context instanceof GroupManagerActivity && len == 0) {
                 } else {
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
@@ -291,8 +285,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     }
                 } else {
                     listOfItemSelected.add(gestionnaireContacts.getContactList().get(position));
-                    if (context instanceof GroupActivity && len == 0) {
-                        holder.constraintLayoutSmaller.setBackgroundColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+                    if (context instanceof GroupManagerActivity && len == 0) {
                     } else {
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                     }
@@ -313,12 +306,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 if (lastClick) {
                     lastClick = false;
                 } else {
-                    if (len == 0) {
-                        Intent intent = new Intent(context, EditContactActivity.class);
-                        intent.putExtra("ContactId", contact.getId());
-                        intent.putExtra("position", position);
-                        context.startActivity(intent);
-                    } else if (len == 1) {
+                    if (len == 1) {
                         if (holder.constraintLayoutMenu != null) {
                             if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
                                 holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
@@ -385,9 +373,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         if (holder.constraintLayout != null) {
             holder.constraintLayout.setOnLongClickListener(longClick);
             holder.constraintLayout.setOnClickListener(listItemClick);
-        } else {
-            holder.constraintLayoutSmaller.setOnLongClickListener(longClick);
-            holder.constraintLayoutSmaller.setOnClickListener(listItemClick);
         }
 
         holder.mailCl.setOnClickListener(listener);
@@ -425,7 +410,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                             if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(position).getFirstGroup(context).getId())) {
                                 if (!listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
                                     System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
-                                    ((GroupActivity) context).recyclerMultiSelectItemClick(i, secondClick, true);
+                                    ((GroupManagerActivity) context).recyclerMultiSelectItemClick(i, secondClick, true);
                                     listOfItemSelected.add(gestionnaireContacts.getContactList().get(i));
                                 }
                             }
@@ -439,7 +424,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                     if (gestionnaireContacts.getContactList().get(i).getFirstGroup(context) != null) {
                         if (Objects.equals(Objects.requireNonNull(gestionnaireContacts.getContactList().get(i).getFirstGroup(context)).getId(), gestionnaireContacts.getContactList().get(position).getFirstGroup(context).getId())) {
                             if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(i))) {
-                                ((GroupActivity) context).recyclerMultiSelectItemClick(i, secondClick, true);
+                                ((GroupManagerActivity) context).recyclerMultiSelectItemClick(i, secondClick, true);
                                 listOfItemSelected.remove(gestionnaireContacts.getContactList().get(i));
                             }
                         }
@@ -475,23 +460,169 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 //    }
 
     private int randomDefaultImage(int avatarId) {
-        switch (avatarId) {
-            case 0:
-                return R.drawable.ic_user_purple;
-            case 1:
-                return R.drawable.ic_user_blue;
-            case 2:
-                return R.drawable.ic_user_knocker;
-            case 3:
-                return R.drawable.ic_user_green;
-            case 4:
-                return R.drawable.ic_user_om;
-            case 5:
-                return R.drawable.ic_user_orange;
-            case 6:
-                return R.drawable.ic_user_pink;
-            default:
-                return R.drawable.ic_user_blue;
+
+        SharedPreferences sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
+        int multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0);
+
+        SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE);
+        int contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0);
+
+        if (multiColor == 0) {
+            switch (avatarId) {
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_cyan_teal;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_orange;
+                case 6:
+                    return R.drawable.ic_user_red;
+                default:
+                    return R.drawable.ic_user_blue;
+            }
+        } else {
+            switch (contactsColorPosition) {
+                case 0:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_blue;
+                        case 1:
+                            return R.drawable.ic_user_blue_indigo1;
+                        case 2:
+                            return R.drawable.ic_user_blue_indigo2;
+                        case 3:
+                            return R.drawable.ic_user_blue_indigo3;
+                        case 4:
+                            return R.drawable.ic_user_blue_indigo4;
+                        case 5:
+                            return R.drawable.ic_user_blue_indigo5;
+                        case 6:
+                            return R.drawable.ic_user_blue_indigo6;
+                        default:
+                            return R.drawable.ic_user_om;
+                    }
+                case 1:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_green;
+                        case 1:
+                            return R.drawable.ic_user_green_lime1;
+                        case 2:
+                            return R.drawable.ic_user_green_lime2;
+                        case 3:
+                            return R.drawable.ic_user_green_lime3;
+                        case 4:
+                            return R.drawable.ic_user_green_lime4;
+                        case 5:
+                            return R.drawable.ic_user_green_lime5;
+                        default:
+                            return R.drawable.ic_user_green_lime6;
+                    }
+                case 2:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_purple_grape1;
+                        case 2:
+                            return R.drawable.ic_user_purple_grape2;
+                        case 3:
+                            return R.drawable.ic_user_purple_grape3;
+                        case 4:
+                            return R.drawable.ic_user_purple_grape4;
+                        case 5:
+                            return R.drawable.ic_user_purple_grape5;
+                        default:
+                            return R.drawable.ic_user_purple;
+                    }
+                case 3:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_red;
+                        case 1:
+                            return R.drawable.ic_user_red1;
+                        case 2:
+                            return R.drawable.ic_user_red2;
+                        case 3:
+                            return R.drawable.ic_user_red3;
+                        case 4:
+                            return R.drawable.ic_user_red4;
+                        case 5:
+                            return R.drawable.ic_user_red5;
+                        default:
+                            return R.drawable.ic_user_red;
+                    }
+                case 4:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_grey;
+                        case 1:
+                            return R.drawable.ic_user_grey1;
+                        case 2:
+                            return R.drawable.ic_user_grey2;
+                        case 3:
+                            return R.drawable.ic_user_grey3;
+                        case 4:
+                            return R.drawable.ic_user_grey4;
+                        default:
+                            return R.drawable.ic_user_grey1;
+                    }
+                case 5:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_orange;
+                        case 1:
+                            return R.drawable.ic_user_orange1;
+                        case 2:
+                            return R.drawable.ic_user_orange2;
+                        case 3:
+                            return R.drawable.ic_user_orange3;
+                        case 4:
+                            return R.drawable.ic_user_orange4;
+                        default:
+                            return R.drawable.ic_user_orange3;
+                    }
+                case 6:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 1:
+                            return R.drawable.ic_user_cyan_teal1;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal2;
+                        case 3:
+                            return R.drawable.ic_user_cyan_teal3;
+                        case 4:
+                            return R.drawable.ic_user_cyan_teal4;
+                        default:
+                            return R.drawable.ic_user_cyan_teal;
+                    }
+                default:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_blue;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 3:
+                            return R.drawable.ic_user_green;
+                        case 4:
+                            return R.drawable.ic_user_om;
+                        case 5:
+                            return R.drawable.ic_user_orange;
+                        case 6:
+                            return R.drawable.ic_user_red;
+                        default:
+                            return R.drawable.ic_user_blue;
+                    }
+            }
         }
     }
 
@@ -549,58 +680,40 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         view.startAnimation(animate);
     }
 
-    class ContactViewHolder extends RecyclerView.ViewHolder {
+    static class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView contactFirstNameView;
         RelativeLayout constraintLayout;
         ConstraintLayout constraintLayoutMenu;
         AppCompatImageView listContactItemFavoriteShine;
         CircularImageView contactRoundedImageView;
-        ConstraintLayout constraintLayoutSmaller;
-        ConstraintLayout constraintLayoutMenuSmaller;
 
-        ConstraintLayout callCl;
-        ConstraintLayout smsCl;
-        ConstraintLayout whatsappCl;
-        ConstraintLayout mailCl;
-        ConstraintLayout editCl;
+        RelativeLayout callCl;
+        RelativeLayout smsCl;
+        RelativeLayout whatsappCl;
+        RelativeLayout mailCl;
+        RelativeLayout editCl;
 
         ConstraintLayout groupWordingConstraint;
         TextView groupWordingTv;
         Boolean open;
 
-        public ContactViewHolder(@NonNull View view) {
+        ContactViewHolder(@NonNull View view) {
             super(view);
 
-            if (len == 0) {
-                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
-                contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
-                constraintLayoutSmaller = view.findViewById(R.id.list_contact_item_layout_smaller);
-                constraintLayoutMenuSmaller = view.findViewById(R.id.list_contact_item_menu_smaller);
-                callCl = view.findViewById(R.id.list_contact_item_smaller_constraint_call);
-                smsCl = view.findViewById(R.id.list_contact_item_smaller_constraint_sms);
-                whatsappCl = view.findViewById(R.id.list_contact_item_smaller_constraint_whatsapp);
-                mailCl = view.findViewById(R.id.list_contact_item_smaller_constraint_mail);
-                groupWordingConstraint = view.findViewById(R.id.list_contact_item_wording_group_constraint_layout);
-                groupWordingTv = view.findViewById(R.id.list_contact_item_wording_group_tv);
-                listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
-                open = false;
-            } else {
-                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
-                contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
-                constraintLayout = view.findViewById(R.id.list_contact_item_layout);
-                constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
-                callCl = view.findViewById(R.id.list_contact_item_constraint_call);
-                smsCl = view.findViewById(R.id.list_contact_item_constraint_sms);
-                editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
-                whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp);
-                mailCl = view.findViewById(R.id.list_contact_item_constraint_mail);
-                groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
-                groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
-                listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
-                open = false;
-            }
+            contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
+            contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
+            constraintLayout = view.findViewById(R.id.list_contact_item_layout);
+            constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
+            callCl = view.findViewById(R.id.list_contact_item_constraint_call);
+            smsCl = view.findViewById(R.id.list_contact_item_constraint_sms);
+            editCl = view.findViewById(R.id.list_contact_item_constraint_edit);
+            whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp);
+            mailCl = view.findViewById(R.id.list_contact_item_constraint_mail);
+            groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
+            groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
+            listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
+            open = false;
         }
-
     }
 
     public String getPhonePermission() {

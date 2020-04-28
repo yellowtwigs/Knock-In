@@ -143,7 +143,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             case 1:
                 return R.drawable.ic_user_blue;
             case 2:
-                return R.drawable.ic_user_knocker;
+                return R.drawable.ic_user_cyan_teal;
             case 3:
                 return R.drawable.ic_user_green;
             case 4:
@@ -151,7 +151,7 @@ public class ContactListViewAdapter extends BaseAdapter {
             case 5:
                 return R.drawable.ic_user_orange;
             case 6:
-                return R.drawable.ic_user_pink;
+                return R.drawable.ic_user_red;
             default:
                 return R.drawable.ic_user_blue;
         }
