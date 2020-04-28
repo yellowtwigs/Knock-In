@@ -388,8 +388,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_RecyclerView!!.visibility = View.GONE
         }
 
-//        main_GridView!!.numColumns = len // permet de changer
-
         if (position != 0) {
             main_GridView!!.smoothScrollToPosition(position)
         }
@@ -398,7 +396,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ===================================== set ListContact ======================================
 
-        when {//Verification du mode de tri des contacts pour afficher le bon tri
+        when {
+            //Verification du mode de tri des contacts pour afficher le bon tri
             sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
             sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
             sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
@@ -425,51 +424,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     gridViewAdapter!!.closeMenu()
                 }
             }
-
-//            main_GridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
-//                var lastVisiblePos = main_GridView!!.firstVisiblePosition
-//                /**
-//                 * Méthode lancer par le listener lors du lancement ou de l'arret d'un scroll
-//                 * @param view [AbsListView]
-//                 * @param scrollState [Int]
-//                 */
-//
-//                override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
-//                    if (gridViewAdapter != null) {
-//                        gridViewAdapter!!.closeMenu()
-//                    }
-//                }
-//
-//                /**
-//                 * Méthode appelée par la gridView lorsque il y a un scroll
-//                 * Nous affichons et masquons ici le bouton ajout de contact
-//                 * @param view [AbsListView]
-//                 * @param firstVisibleItem [Int]
-//                 * @param visibleItemCount [Int]
-//                 * @param totalItemCount [Int]
-//                 */
-//                override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-//                    /* if (gridViewAdapter != null) {
-//                          gridViewAdapter!!.closeMenu()
-//                      }*/
-//                    println("last visible pos" + lastVisiblePos + "first visible item " + firstVisibleItem + " visible item count" + visibleItemCount + " total item count " + totalItemCount)
-//                    if (lastVisiblePos < firstVisibleItem) {
-//                        if (main_FloatingButtonAddNewContact!!.visibility == View.VISIBLE) {
-//                            val disappear = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
-//                            main_FloatingButtonAddNewContact!!.startAnimation(disappear)
-//                            main_FloatingButtonAddNewContact!!.visibility = View.GONE
-//                        }
-//                        lastVisiblePos = firstVisibleItem
-//                    } else if (lastVisiblePos > firstVisibleItem) {
-//                        if (main_FloatingButtonAddNewContact!!.visibility == View.GONE && !multiChannelMode) {
-//                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
-//                            main_FloatingButtonAddNewContact!!.startAnimation(apparition)
-//                            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
-//                        }
-//                        lastVisiblePos = firstVisibleItem
-//                    }
-//                }
-//            })
         }
 
         if (main_RecyclerView!!.visibility != View.GONE) {
@@ -590,59 +544,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         index++
                     }
 
-                    //pour chaque contact changé on affiche une popup avec un choix "garder la version Android ou Knockin"
-//                    changedContactList.forEach { changedContact ->
-//                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                                .setTitle(R.string.main_edited_contact)
-//                                .setMessage(this.resources.getString(R.string.main_content_edited_contact) + " " + changedContact.first.firstName + " " + changedContact.first.lastName + " " + this.resources.getString(R.string.main_content_edited_contact_2))
-//                                .setPositiveButton(R.string.app_name) { _, _ ->
-//                                    // on garde la version Knockin
-//                                }
-//                                .setNegativeButton(R.string.main_android_edited_contact) { _, _ ->
-//
-//                                    val allId = gestionnaireContacts!!.sliceLastSync(sharedPreferences.getString("last_sync_2", "")!!)
-//                                    //on get les idAndroid et idKnockin du contact modifier
-//                                    allId.forEach {
-//                                        if (changedContact.first.id == it.first)
-//                                            changedContact.first.id = it.second
-//                                    }
-//                                    //grâce à l'id on update avec les details récupéré dans save_last_sync
-//                                    main_ContactsDatabase!!.contactsDao().updateContactByIdSync(changedContact.first.id!!, changedContact.first.firstName, changedContact.first.lastName)
-//                                    main_ContactsDatabase!!.contactDetailsDao().deleteAllDetailsOfContact(changedContact.first.id!!)
-//                                    changedContact.second.forEach {
-//                                        it.idContact = changedContact.first.id
-//                                        main_ContactsDatabase!!.contactDetailsDao().insert(it)
-//                                    }
-//                                    val displaySync = Runnable {
-//                                        //on update soit la grid ou soit la list view en fonction de celle séléctionné
-//                                        gestionnaireContacts!!.contactList.clear()
-//                                        val shareP = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-//                                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-//                                        if (shareP.getString("tri", "") == "priorite") {
-//                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByPriority20() }
-//                                            val result = executorService.submit(callDb)
-//                                            gestionnaireContacts!!.contactList.addAll(result.get())
-//                                        } else {
-//                                            val callDb = Callable { main_ContactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
-//                                            val result = executorService.submit(callDb)
-//                                            gestionnaireContacts!!.contactList.addAll(result.get())
-//                                        }
-//
-//                                        if (gridViewAdapter != null) {
-//                                            gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
-//                                            gridViewAdapter!!.notifyDataSetChanged()
-//                                        }
-//
-//                                        if (recyclerViewAdapter != null) {
-//                                            recyclerViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
-//                                            recyclerViewAdapter!!.notifyDataSetChanged()
-//                                        }
-//                                    }
-//                                    runOnUiThread(displaySync)
-//                                }
-//                                .show()
-//                    }
-
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
                     while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
@@ -660,7 +561,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     val displaySync = Runnable {
                         main_loadingPanel!!.visibility = View.GONE
 
-                        if (len >= 3) {
+                        if (len >= 4) {
                             main_GridView!!.visibility = View.VISIBLE
                             gridViewAdapter!!.setGestionnaireContact(gestionnaireContacts!!)
                             gridViewAdapter!!.notifyDataSetChanged()
@@ -707,7 +608,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             finish()
 //            val target = Intent(this, BubbleActivity::class.java)
 //            startActivity(target)
-
         }
 
         // En mode Multiselect, le click sur la croix permet de fermer de ce mode
@@ -832,7 +732,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 } else {
                     recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, length)
                     main_RecyclerView!!.adapter = recyclerViewAdapter
-                    recyclerViewAdapter!!.notifyDataSetChanged()
                 }
             }
         })
@@ -894,7 +793,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_FloatingButtonSMS!!.visibility = View.GONE
                 main_FloatingButtonGroup!!.visibility = View.GONE
             } else {
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                 main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
                 main_FloatingButtonMultiChannel!!.visibility = View.GONE
 
@@ -924,12 +823,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         if (fromStartActivity) {
             val sortByPriority = Runnable {
+
                 gestionnaireContacts!!.sortContactByPriority()
                 val sharedDefaultTriPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                val len = sharedDefaultTriPreferences.getInt("gridview", 4)
+                val len = sharedDefaultTriPreferences.getInt("gridview", 1)
                 val edit: SharedPreferences.Editor = sharedDefaultTriPreferences.edit()
                 edit.putString("tri", "priorite")
                 edit.apply()
+
                 runOnUiThread {
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
@@ -938,7 +839,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
                         main_RecyclerView!!.visibility = View.VISIBLE
                     }
                     main_loadingPanel!!.visibility = View.GONE
@@ -950,12 +850,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     //region ========================================== Functions ===========================================
+
     /**
      *  Les affichages du mode Multiselect sont enlevés pour remettre l'affichage initial
      */
     private fun refreshActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        val len = sharedPreferences.getInt("gridview", 4)
+        val len = sharedPreferences.getInt("gridview", 1)
         if (len > 1) {
             gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_GridView!!.adapter = gridViewAdapter
@@ -1019,22 +920,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         when (item.itemId) {
             R.id.sms_filter -> {
-                //clique sur la checkbox filtre SMS
-                //on regarde si la checkbox est coché oui ou non
                 if (item.isChecked) {
-                    //on décoche la checkbox
                     item.isChecked = false
-                    //on enleve sms de la list de filtre
                     main_filter.remove("sms")
-                    /// duplicate
                     main_search_bar_value = main_SearchBar!!.text.toString()
-                    //on récup la taille de la gridview dans la sharedpref
+
                     val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    val len = sharedPreferences.getInt("gridview", 4)
-                    //on récup tout les contactList avec les filtres appliqués
+                    val len = sharedPreferences.getInt("gridview", 1)
                     val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-                    // on regarde le quel tri est activé pour l'appliquer
                     val contactListDb = ContactManager(this)
+
                     when {
                         sharedPreferences.getString("tri", "nom") == "prenom" -> contactListDb.sortContactByFirstNameAZ()
                         sharedPreferences.getString("tri", "nom") == "lastname" -> contactListDb.sortContactByLastname()
@@ -1047,6 +942,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     gestionnaireContacts!!.contactList.clear()
                     gestionnaireContacts!!.contactList.addAll(contactListDb.contactList)
                     //on check si on est en grid ou list view pour savoir laquelle update
+
                     if (len > 1) {
                         gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
@@ -1054,6 +950,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                     }
+
                 } else {
                     //on coche la checkbox
                     item.isChecked = true
@@ -1081,6 +978,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                     }
                 }
+                refreshActivity()
                 return true
             }
             R.id.mail_filter -> {
@@ -1112,7 +1010,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 } else {
                     item.isChecked = true
@@ -1137,23 +1034,27 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         println("gestionnaire contacct  size ===================" + gestionnaireContacts!!.contactList.size)
                         recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
-                        recyclerViewAdapter!!.notifyDataSetChanged()
                     }
                 }
+                refreshActivity()
                 return true
             }
             R.id.tri_par_nom -> {
                 if (!item.isChecked) {
+
                     main_GridView!!.visibility = View.GONE
                     main_RecyclerView!!.visibility = View.GONE
                     main_loadingPanel!!.visibility = View.VISIBLE
+
                     val sortByName = Runnable {
                         gestionnaireContacts!!.sortContactByFirstNameAZ()
+
                         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                        val len = sharedPreferences.getInt("gridview", 4)
+                        val len = sharedPreferences.getInt("gridview", 1)
                         val edit: SharedPreferences.Editor = sharedPreferences.edit()
                         edit.putString("tri", "prenom")
                         edit.apply()
+
                         runOnUiThread {
                             item.isChecked = true
                             if (len > 1) {
@@ -1170,48 +1071,24 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                     main_mDbWorkerThread.postTask(sortByName)
                 }
-            }
-            R.id.tri_par_priorite -> {
-                if (!item.isChecked) {
-                    main_GridView!!.visibility = View.GONE
-                    main_RecyclerView!!.visibility = View.GONE
-                    main_loadingPanel!!.visibility = View.VISIBLE
-                    val sortByPriority = Runnable {
-                        gestionnaireContacts!!.sortContactByPriority()
-                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                        val len = sharedPreferences.getInt("gridview", 4)
-                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                        edit.putString("tri", "priorite")
-                        edit.apply()
-                        runOnUiThread {
-                            item.isChecked = true
-                            if (len > 1) {
-                                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                                main_GridView!!.adapter = gridViewAdapter
-                                main_GridView!!.visibility = View.VISIBLE
-                            } else {
-                                recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                                main_RecyclerView!!.adapter = recyclerViewAdapter
-                                main_RecyclerView!!.visibility = View.VISIBLE
-                            }
-                            main_loadingPanel!!.visibility = View.GONE
-                        }
-                    }
-                    main_mDbWorkerThread.postTask(sortByPriority)
-                }
+                refreshActivity()
             }
             R.id.tri_par_lastname -> {
                 if (!item.isChecked) {
+
                     main_GridView!!.visibility = View.GONE
                     main_RecyclerView!!.visibility = View.GONE
                     main_loadingPanel!!.visibility = View.VISIBLE
+
                     val sortByLastname = Runnable {
                         gestionnaireContacts!!.sortContactByLastname()
+
                         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                        val len = sharedPreferences.getInt("gridview", 4)
+                        val len = sharedPreferences.getInt("gridview", 1)
                         val edit: SharedPreferences.Editor = sharedPreferences.edit()
                         edit.putString("tri", "lastname")
                         edit.apply()
+
                         runOnUiThread {
                             item.isChecked = true
                             if (len > 1) {
@@ -1228,19 +1105,59 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                     main_mDbWorkerThread.postTask(sortByLastname)
                 }
+                refreshActivity()
+            }
+            R.id.tri_par_priorite -> {
+                if (!item.isChecked) {
+
+                    main_GridView!!.visibility = View.GONE
+                    main_RecyclerView!!.visibility = View.GONE
+                    main_loadingPanel!!.visibility = View.VISIBLE
+
+                    val sortByPriority = Runnable {
+                        gestionnaireContacts!!.sortContactByPriority()
+
+                        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                        val len = sharedPreferences.getInt("gridview", 1)
+
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putString("tri", "priorite")
+                        edit.apply()
+
+                        runOnUiThread {
+                            item.isChecked = true
+                            if (len > 1) {
+                                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_GridView!!.adapter = gridViewAdapter
+                                main_GridView!!.visibility = View.VISIBLE
+                            } else {
+                                recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                                main_RecyclerView!!.adapter = recyclerViewAdapter
+                                main_RecyclerView!!.visibility = View.VISIBLE
+                            }
+                            main_loadingPanel!!.visibility = View.GONE
+                        }
+                    }
+                    main_mDbWorkerThread.postTask(sortByPriority)
+                }
+                refreshActivity()
             }
             R.id.tri_par_favoris -> {
                 if (!item.isChecked) {
                     main_GridView!!.visibility = View.GONE
                     main_RecyclerView!!.visibility = View.GONE
                     main_loadingPanel!!.visibility = View.VISIBLE
+
                     val sortByFavorite = Runnable {
                         gestionnaireContacts!!.sortContactByFavorite()
+
                         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                        val len = sharedPreferences.getInt("gridview", 4)
+                        val len = sharedPreferences.getInt("gridview", 1)
+
                         val edit: SharedPreferences.Editor = sharedPreferences.edit()
                         edit.putString("tri", "favoris")
                         edit.apply()
+
                         runOnUiThread {
                             item.isChecked = true
                             if (len > 1) {
@@ -1257,6 +1174,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                     main_mDbWorkerThread.postTask(sortByFavorite)
                 }
+                refreshActivity()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -1316,7 +1234,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param newState [Int]
      */
     override fun onDrawerStateChanged(newState: Int) {
-
     }
 
     /**
@@ -1511,7 +1428,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * On ouvre l'application de SMS avec tous les contacts saisis lors du multiselect
      * @param listOfPhoneNumber [ArrayList<String>]
      */
-
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
 
         var message = "smsto:" + listOfPhoneNumber[0]
@@ -1525,8 +1441,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * On ouvre l'application de mail choisi par l'utilisateur avec tous les contacts saisis lors du multiselect
      * @param listOfMail [ArrayList<String>]
      */
-
-
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)

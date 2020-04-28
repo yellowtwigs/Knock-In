@@ -202,7 +202,8 @@
     <string name="manage_my_screen_toolbar_title">Display</string>
     <string name="manage_my_screen_theme">Dark Mode</string>
     <string name="manage_my_screen_theme_long_text">Switch between light and dark mode</string>
-    <string name="manage_my_screen_number_of_column">Number of contacts per row</string>
+    <string name="manage_my_screen_number_of_column">Choice of contact display mode</string>
+    <string name="manage_my_screen_contacts_color">Contacts Color</string>
 
     <!-- endregion -->
 
@@ -223,6 +224,15 @@
     <string name="notification_manager_stop_service"> Enable the management of notifications by priority</string>
     <string name="notification_manager_stop_popup"> Display VIP notifications</string>
     <string name="notification_reminder">Send a reminder to view all the non-VIP messages </string>
+
+    <string-array name="manage_my_screen_spinner_array">
+        <item>Multi-color palette</item>
+        <item>Single color palette</item>
+    </string-array>
+
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Changing the display of contacts</string>
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_message">You have just changed the display of contacts, do you want to return to the Contacts screen?</string>
+
     <!-- endregion -->
 
     <!-- region Notification Manager -->

@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:id="@+id/notification_popup_main_layout"
-        android:layout_height="300dp"
+        android:layout_height="320dp"
         android:layout_width="320dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@drawable/custom_shape_popup_with_border"
@@ -65,6 +65,6 @@
             android:id="@+id/notification_popup_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/backgroundColor"/>
+            android:background="@drawable/custom_shape_item_message_with_border"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -236,7 +236,8 @@
     <string name="manage_my_screen_toolbar_title">Affichage</string>
     <string name="manage_my_screen_theme">Dark Mode</string>
     <string name="manage_my_screen_theme_long_text">Basculer entre le mode clair et le mode sombre</string>
-    <string name="manage_my_screen_number_of_column">Choix de l\'affichage des contacts</string>
+    <string name="manage_my_screen_number_of_column">Choix du mode d\'affichage des contacts</string>
+    <string name="manage_my_screen_contacts_color">Couleur des contacts</string>
     <string name="manage_my_screen_number_of_column_group">Choix de l\'affichage des groupes</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Dissocier l\'affichage des contacts</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Dissocier le nombre de contacts par colonne pour Accueil et Groupes</string>
@@ -249,6 +250,14 @@
     <string name="manage_my_screen_display_for_group_title">Activer l\'affichage différent pour les groupes</string>
     <string name="manage_my_screen_display_for_group_subtitle">Choix d\'un affichage spécifique pour les groupes </string>
 
+    <string-array name="manage_my_screen_spinner_array">
+        <item>Palette multi-couleur</item>
+        <item>Palette mono-couleur</item>
+    </string-array>
+
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Modification de l\'affichage des contacts</string>
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_message">Vous venez de modifier l\'affichage des contacts, voulez-vous revenir à l\'écran des Contacts ?</string>
+
     <!-- endregion -->
 
     <!-- region Notification Manager -->
@@ -259,7 +268,6 @@
     <string name="notification_reminder">Envoyez un rappel pour consulter mes nouveaux messages non prioritaires</string>
     <string name="notification_manager_horaire">Choisir l\'heure de rappel : </string>
     <string name="notification_manager_prio_1">Masquer les notifications standard (priorité 1)</string>
-
 
     <string name="notification_alert_dialog_title">Sélection des contacts VIP</string>
     <string name="notification_alert_dialog_message">Voulez-vous choisir vos contacts prioritaires ?</string>

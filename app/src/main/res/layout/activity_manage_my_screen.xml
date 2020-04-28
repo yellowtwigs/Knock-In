@@ -37,7 +37,8 @@
                 android:id="@+id/activity_settings_change_nb_contact_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/manage_my_screen_number_of_column"
                 android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
@@ -97,7 +98,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:padding="2dp"
-                android:text="@string/manage_my_screen_number_of_column"
+                android:text="@string/manage_my_screen_contacts_color"
                 android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
                 android:textStyle="normal"
@@ -130,56 +131,56 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_blue_indigo"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_margin="5dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_green_lime"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_margin="5dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_purple_grape"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_margin="5dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_red"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_margin="5dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_grey"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_margin="5dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_orange"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_margin="5dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_cyan_teal"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_margin="5dp" />

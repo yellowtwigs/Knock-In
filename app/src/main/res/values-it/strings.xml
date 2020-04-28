@@ -191,7 +191,8 @@
     <string name="manage_my_screen_toolbar_title">Display</string>
     <string name="manage_my_screen_theme">Modalita\’ scura</string>
     <string name="manage_my_screen_theme_long_text">Cambia tra modalita\’ luminosa e scura </string>
-    <string name="manage_my_screen_number_of_column">Numero di contatti per riga</string>
+    <string name="manage_my_screen_number_of_column">Scelta della modalità di visualizzazione dei contatti</string>
+    <string name="manage_my_screen_contacts_color">Colore di contatti</string>
     <string name="manage_my_screen_number_of_column_group">Display di Gruppi</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Separa visualizzazione di contatti </string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Separa visualizzazione contatti tra “Casa” e “Gruppi” </string>
@@ -203,6 +204,16 @@
     <string name="manage_my_screen_searchbar_pos_long_text">Posiziona la barra di ricerca in fondo allo schermo</string>
     <string name="manage_my_screen_display_for_group_title">Abilita la visualizzazione di gruppi specifici </string>
     <string name="manage_my_screen_display_for_group_subtitle">Cambia visualizzazione per i tuoi gruppi</string>
+
+    <string-array name="manage_my_screen_spinner_array">
+        <item>Tavolozza multicolore</item>
+        <item>Tavolozza monocolore</item>
+    </string-array>
+
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Modifica della visualizzazione dei contatti</string>
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_message">Hai appena cambiato la visualizzazione dei contatti, vuoi tornare alla schermata Contatti?</string>
+
+
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Parametri di notifica</string>

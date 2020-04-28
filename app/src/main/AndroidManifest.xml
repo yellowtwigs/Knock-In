@@ -4,7 +4,7 @@
     package="com.yellowtwigs.knockin">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/ic_app_image"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -30,17 +30,10 @@
         <activity android:name=".controller.activity.MessengerActivity" />
         <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.APP_MESSAGING" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--            </intent-filter>-->
         </activity>
         <activity android:name=".controller.activity.group.AddNewGroupActivity" />
         <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
         <activity android:name=".controller.activity.group.AddContactToGroupActivity" />
-        <activity android:name=".controller.activity.group.GroupActivity" />
         <activity android:name=".controller.activity.MultiChannelActivity" />
         <activity
             android:name=".controller.activity.NotificationAlarmActivity"
@@ -68,11 +61,6 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"

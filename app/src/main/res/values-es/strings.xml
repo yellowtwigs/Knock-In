@@ -185,7 +185,8 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_toolbar_title">Pantalla</string>
     <string name="manage_my_screen_theme">Modo Oscuro</string>
     <string name="manage_my_screen_theme_long_text">Cambiar entre modo claro y oscuro</string>
-    <string name="manage_my_screen_number_of_column">Número de contactos por fila </string>
+    <string name="manage_my_screen_number_of_column">Elección del modo de visualización de contacto</string>
+    <string name="manage_my_screen_contacts_color">Color de contacto</string>
     <!-- endregion -->
 
     <!-- region Manage My Screen !-->
@@ -202,6 +203,14 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_display_for_group_subtitle">Escojer una pantalla diferente para sus grupos</string>
     <string name="notification_manager_toolbar_title">Notificación ajustes</string>
     <string name="notification_manager_stop_service"> Activar ajustes de notificación como prioridad</string>
+
+    <string-array name="manage_my_screen_spinner_array">
+        <item>Paleta multicolor</item>
+        <item>Paleta de un solo color</item>
+    </string-array>
+
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Cambiar la visualización de contactos</string>
+    <string name="manage_my_screen_display_contacts_edit_alert_dialog_message">Acaba de cambiar la visualización de los contactos, ¿desea volver a la pantalla Contactos?</string>
 
     <!-- endregion -->
 

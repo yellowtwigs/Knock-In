@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -13,17 +12,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <com.yellowtwigs.knockin.controller.CircularImageView
-            android:id="@+id/list_contact_item_contactRoundedImageView"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_user_blue"
-            app:civ_border="true" />
 
         <TextView
             android:id="@+id/list_contact_item_contactFirstName"
@@ -44,9 +32,9 @@
             android:id="@+id/list_contact_item_favorite_shine"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
-            android:layout_alignParentEnd="true"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_star_shine" />
 
@@ -79,6 +67,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.yellowtwigs.knockin.controller.CircularImageView
+            android:id="@+id/list_contact_item_contactRoundedImageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_user_blue"
+            app:civ_border="true" />
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,7 +92,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/background_layout_selector"
@@ -101,10 +100,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/list_contact_item_constraint_call"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
@@ -114,32 +113,17 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_call_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_call_tv"
-                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_call_tv"
-                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_call_tv"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_google_call" />
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/list_contact_item_call_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/list_contact_item_call"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/list_contact_item_constraint_sms"
                 android:layout_width="65dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
@@ -149,72 +133,39 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/multi_channel_list_item_sms_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_sms_tv"
-                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_sms_tv"
-                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_sms_tv"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_sms_pressed" />
 
-                <TextView
-                    android:id="@+id/list_contact_item_sms_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/list_contact_item_sms"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/list_contact_item_constraint_whatsapp"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_sms"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_whatsapp_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_whatsapp_tv"
-                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_whatsapp_tv"
-                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_whatsapp_tv"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_whatsapp" />
 
-                <TextView
-                    android:id="@+id/list_contact_item_whatsapp_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/list_contact_item_whatsapp"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/list_contact_item_constraint_mail"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
@@ -224,36 +175,18 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_mail_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_mail_tv"
-                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_mail_tv"
-                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_mail_tv"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_circular_mail" />
 
-                <TextView
-                    android:id="@+id/list_contact_item_mail_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/list_contact_item_mail"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+            </RelativeLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/list_contact_item_constraint_edit"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
@@ -263,29 +196,13 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/list_contact_item_edit_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_edit_tv"
-                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_edit_tv"
-                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_edit_tv"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_circular_edit" />
 
-                <TextView
-                    android:id="@+id/list_contact_item_edit_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/list_contact_item_edit"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/list_contact_item_constraint_messenger"
@@ -299,19 +216,6 @@
                 app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_edit"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/list_contact_item_messenger_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/background_layout_selector"
-                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_messenger_tv"
-                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_messenger_tv"
-                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_messenger_tv"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_messenger" />
-
                 <TextView
                     android:id="@+id/list_contact_item_messenger_tv"
                     android:layout_width="wrap_content"
@@ -324,10 +228,31 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/list_contact_item_messenger_iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_layout_selector"
+                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_messenger_tv"
+                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_messenger_tv"
+                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_messenger_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_messenger" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:layout_marginStart="65dp"
+        android:background="?attr/darkColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_contact_item_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
