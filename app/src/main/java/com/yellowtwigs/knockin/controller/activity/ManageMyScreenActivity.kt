@@ -562,7 +562,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title)) // getString(R.string.main_alert_dialog_delete_contact_title)
                 .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
-                .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
                 }
                 .setNegativeButton(R.string.alert_dialog_no) { _, _ ->

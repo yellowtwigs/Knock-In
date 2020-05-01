@@ -185,7 +185,7 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_toolbar_title">Pantalla</string>
     <string name="manage_my_screen_theme">Modo Oscuro</string>
     <string name="manage_my_screen_theme_long_text">Cambiar entre modo claro y oscuro</string>
-    <string name="manage_my_screen_number_of_column">Elección del modo de visualización de contacto</string>
+    <string name="manage_my_screen_number_of_column">Modo de visualización de contacto</string>
     <string name="manage_my_screen_contacts_color">Color de contacto</string>
     <!-- endregion -->
 

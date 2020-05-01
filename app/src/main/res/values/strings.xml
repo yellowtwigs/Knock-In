@@ -202,7 +202,7 @@
     <string name="manage_my_screen_toolbar_title">Display</string>
     <string name="manage_my_screen_theme">Dark Mode</string>
     <string name="manage_my_screen_theme_long_text">Switch between light and dark mode</string>
-    <string name="manage_my_screen_number_of_column">Choice of contact display mode</string>
+    <string name="manage_my_screen_number_of_column">Contact display mode</string>
     <string name="manage_my_screen_contacts_color">Contacts Color</string>
 
     <!-- endregion -->

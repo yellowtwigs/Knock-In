@@ -236,7 +236,7 @@
     <string name="manage_my_screen_toolbar_title">Affichage</string>
     <string name="manage_my_screen_theme">Dark Mode</string>
     <string name="manage_my_screen_theme_long_text">Basculer entre le mode clair et le mode sombre</string>
-    <string name="manage_my_screen_number_of_column">Choix du mode d\'affichage des contacts</string>
+    <string name="manage_my_screen_number_of_column">Mode d\'affichage des contacts</string>
     <string name="manage_my_screen_contacts_color">Couleur des contacts</string>
     <string name="manage_my_screen_number_of_column_group">Choix de l\'affichage des groupes</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Dissocier l\'affichage des contacts</string>

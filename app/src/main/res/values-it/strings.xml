@@ -191,7 +191,7 @@
     <string name="manage_my_screen_toolbar_title">Display</string>
     <string name="manage_my_screen_theme">Modalita\’ scura</string>
     <string name="manage_my_screen_theme_long_text">Cambia tra modalita\’ luminosa e scura </string>
-    <string name="manage_my_screen_number_of_column">Scelta della modalità di visualizzazione dei contatti</string>
+    <string name="manage_my_screen_number_of_column">Modalità di visualizzazione dei contatti</string>
     <string name="manage_my_screen_contacts_color">Colore di contatti</string>
     <string name="manage_my_screen_number_of_column_group">Display di Gruppi</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Separa visualizzazione di contatti </string>
