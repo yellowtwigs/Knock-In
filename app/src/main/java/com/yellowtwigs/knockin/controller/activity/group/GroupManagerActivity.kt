@@ -360,7 +360,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             startActivity(intent)
         }
 
-        group_manager_RecyclerView!!.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        group_manager_RecyclerView!!.setOnScrollChangeListener { v, _, _, oldScrollX, oldScrollY ->
             adapterItem!!.closeMenu()
         }
 

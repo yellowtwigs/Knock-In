@@ -170,6 +170,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         assert contact != null;
         if (contact.getContactPriority() == 0) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
+        } else if (contact.getContactPriority() == 1) {
+            holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.transparentColor, null));
         } else if (contact.getContactPriority() == 2) {
             holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
         }

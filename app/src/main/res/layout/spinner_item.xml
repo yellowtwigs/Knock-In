@@ -6,5 +6,7 @@
     android:ellipsize="marquee"
     android:padding="5dp"
     android:singleLine="true"
+    android:background="?attr/backgroundColor"
+    android:textColor="?attr/darkColor"
     android:textAlignment="inherit"
     android:textSize="15sp" />

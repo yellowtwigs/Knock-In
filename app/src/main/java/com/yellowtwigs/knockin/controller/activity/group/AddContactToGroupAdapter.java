@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.controller.activity.group;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Spannable;
@@ -32,6 +33,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
     private ArrayList<ContactDB> selectContact;
+    private Context context;
 
     /**
      * Constructeur de l'adapteur
@@ -42,6 +44,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         this.listContacts = listContacts;
         layoutInflater = LayoutInflater.from(context);
         selectContact = new ArrayList<>();
+        this.context = context;
     }
 
     @Override
@@ -134,23 +137,169 @@ public class AddContactToGroupAdapter extends BaseAdapter {
      * @return [Int]
      */
     private int randomDefaultImage(int avatarId) {
-        switch (avatarId) {
-            case 0:
-                return R.drawable.ic_user_purple;
-            case 1:
-                return R.drawable.ic_user_blue;
-            case 2:
-                return R.drawable.ic_user_cyan_teal;
-            case 3:
-                return R.drawable.ic_user_green;
-            case 4:
-                return R.drawable.ic_user_om;
-            case 5:
-                return R.drawable.ic_user_orange;
-            case 6:
-                return R.drawable.ic_user_red;
-            default:
-                return R.drawable.ic_user_blue;
+
+        SharedPreferences sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
+        int multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0);
+
+        SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
+        int contactsColorPosition = sharedPreferencesContactsColor.getInt("IsMultiColor", 0);
+
+        if (multiColor == 0) {
+            switch (avatarId) {
+                case 0:
+                    return R.drawable.ic_user_purple;
+                case 1:
+                    return R.drawable.ic_user_blue;
+                case 2:
+                    return R.drawable.ic_user_cyan_teal;
+                case 3:
+                    return R.drawable.ic_user_green;
+                case 4:
+                    return R.drawable.ic_user_om;
+                case 5:
+                    return R.drawable.ic_user_orange;
+                case 6:
+                    return R.drawable.ic_user_red;
+                default:
+                    return R.drawable.ic_user_blue;
+            }
+        } else {
+            switch (contactsColorPosition) {
+                case 0:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_blue;
+                        case 1:
+                            return R.drawable.ic_user_blue_indigo1;
+                        case 2:
+                            return R.drawable.ic_user_blue_indigo2;
+                        case 3:
+                            return R.drawable.ic_user_blue_indigo3;
+                        case 4:
+                            return R.drawable.ic_user_blue_indigo4;
+                        case 5:
+                            return R.drawable.ic_user_blue_indigo5;
+                        case 6:
+                            return R.drawable.ic_user_blue_indigo6;
+                        default:
+                            return R.drawable.ic_user_om;
+                    }
+                case 1:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_green;
+                        case 1:
+                            return R.drawable.ic_user_green_lime1;
+                        case 2:
+                            return R.drawable.ic_user_green_lime2;
+                        case 3:
+                            return R.drawable.ic_user_green_lime3;
+                        case 4:
+                            return R.drawable.ic_user_green_lime4;
+                        case 5:
+                            return R.drawable.ic_user_green_lime5;
+                        default:
+                            return R.drawable.ic_user_green_lime6;
+                    }
+                case 2:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_purple_grape1;
+                        case 2:
+                            return R.drawable.ic_user_purple_grape2;
+                        case 3:
+                            return R.drawable.ic_user_purple_grape3;
+                        case 4:
+                            return R.drawable.ic_user_purple_grape4;
+                        case 5:
+                            return R.drawable.ic_user_purple_grape5;
+                        default:
+                            return R.drawable.ic_user_purple;
+                    }
+                case 3:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_red;
+                        case 1:
+                            return R.drawable.ic_user_red1;
+                        case 2:
+                            return R.drawable.ic_user_red2;
+                        case 3:
+                            return R.drawable.ic_user_red3;
+                        case 4:
+                            return R.drawable.ic_user_red4;
+                        case 5:
+                            return R.drawable.ic_user_red5;
+                        default:
+                            return R.drawable.ic_user_red;
+                    }
+                case 4:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_grey;
+                        case 1:
+                            return R.drawable.ic_user_grey1;
+                        case 2:
+                            return R.drawable.ic_user_grey2;
+                        case 3:
+                            return R.drawable.ic_user_grey3;
+                        case 4:
+                            return R.drawable.ic_user_grey4;
+                        default:
+                            return R.drawable.ic_user_grey1;
+                    }
+                case 5:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_orange;
+                        case 1:
+                            return R.drawable.ic_user_orange1;
+                        case 2:
+                            return R.drawable.ic_user_orange2;
+                        case 3:
+                            return R.drawable.ic_user_orange3;
+                        case 4:
+                            return R.drawable.ic_user_orange4;
+                        default:
+                            return R.drawable.ic_user_orange3;
+                    }
+                case 6:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 1:
+                            return R.drawable.ic_user_cyan_teal1;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal2;
+                        case 3:
+                            return R.drawable.ic_user_cyan_teal3;
+                        case 4:
+                            return R.drawable.ic_user_cyan_teal4;
+                        default:
+                            return R.drawable.ic_user_cyan_teal;
+                    }
+                default:
+                    switch (avatarId) {
+                        case 0:
+                            return R.drawable.ic_user_purple;
+                        case 1:
+                            return R.drawable.ic_user_blue;
+                        case 2:
+                            return R.drawable.ic_user_cyan_teal;
+                        case 3:
+                            return R.drawable.ic_user_green;
+                        case 4:
+                            return R.drawable.ic_user_om;
+                        case 5:
+                            return R.drawable.ic_user_orange;
+                        case 6:
+                            return R.drawable.ic_user_red;
+                        default:
+                            return R.drawable.ic_user_blue;
+                    }
+            }
         }
     }
 
