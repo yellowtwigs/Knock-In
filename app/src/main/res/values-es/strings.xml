@@ -154,8 +154,6 @@ Sus actualizaciones no se registraron, ¿está seguro? </string>
     <string name="edit_contact_add_field"> Añadir Nuevo campo </string>
     <string name="edit_contact_delete_contact">Borrar contacto</string>
     <string name="edit_contact_delete_contact_message">
-    <string name="edit_contact_validate">Aceptar</string>
-    <string name="edit_contact_cancel">Cancelar</string>
     Va a eliminar este contacto, ¿está seguro? </string>
     <string name="edit_contact_toast">Es necesario nombre o apellido</string>
     <string name="edit_contact_groups">Grupo</string>
@@ -464,4 +462,6 @@ No puedes superar los 5 contactos VIP en la versión Freemium, ¿quiere ir a la 
         <item>Otro</item>
         <item>Personalizar</item>
     </string-array>
+    <string name="edit_contact_validate">Validar</string>
+    <string name="edit_contact_cancel">Cancelar</string>
 </resources>
