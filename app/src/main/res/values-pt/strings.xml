@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!--   <string name="app_name">Knockin</string>-->
     <string name="app_name_by">by YellowTwigs </string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
 
@@ -11,7 +12,7 @@
     <string name="help_notification_history">Nesta tela, você pode ver todas as notificações recebidas</string>
     <string name="help_cockpit">Nessa tela, você pode ligar ou enviar um SMS para alguém não listado no seu catálogo de endereço.  Você também pode conetar ao email e ao SoMe. </string>
     <string name="help_manage_screen">Nesta tela, você pode exibir seus contatos e configurar várias opções de exibição</string>
-    <string name="help_notification_manager">Nesta tela, você pode optar por ativar / desativar as notificações de prioridade 2</string>
+    <string name="help_notification_manager">Nesta tela, você pode optar por ativar/desativar as notificações de prioridade 2</string>
     <string name="help_my_informations">Nesta tela, você pode atualizar seus detalhes pessoais</string>
     <string name="help_contact_us_intent">Contate-nos</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
@@ -91,7 +92,7 @@
 
     <string name="main_edited_contact">Contato modificado</string>
     <string name="main_content_edited_contact">O contato</string>
-    <string name="main_content_edited_contact_2">foi alterado \, você quer manter a versão do catálogo de endereço do Android ou a versão de Knock In Notifications?</string>
+    <string name="main_content_edited_contact_2">foi alterado\, você quer manter a versão do catálogo de endereço do Android ou a versão de Knock In Notifications?</string>
     <string name="main_android_edited_contact">Android</string>
     <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
 
@@ -99,7 +100,7 @@
     <string name="main_contact_grid_message">Você pode desativar esta validação nas opções</string>
 
     <string name="main_alert_dialog_delete_contact_title">Deleta contato (s)</string>
-    <string name="main_alert_dialog_delete_contact_message">Você  vai deletar % 1s</string>
+    <string name="main_alert_dialog_delete_contact_message">Você vai deletar %1s</string>
 
     <string name="menu_main_toolbar_multiselect_all_select">Todas as seleções </string>
 
@@ -141,7 +142,7 @@
 
     <string name="add_new_contact_alert_dialog_message">Um contato existente já está usando esse nome.  Deseja registá-lo com esse nome mesmo assim?</string>
     <string name="add_new_contact_alert_dialog_cancel_title">Aviso</string>
-    <string name="add_new_contact_alert_dialog_cancel_message">Suas atualizações não foram registradas,  tem certeza?</string>
+    <string name="add_new_contact_alert_dialog_cancel_message">Suas atualizações não foram registradas, tem certeza?</string>
     <string name="add_new_contact_alert_dialog_photo_title">Adicione uma imagem</string>
     <string name="add_new_contact_alert_dialog_photo_camera">Câmera</string>
     <string name="add_new_contact_alert_dialog_photo_galery">Galeria</string>
@@ -211,10 +212,10 @@
     <string name="manage_my_screen_number_of_column_group">Exibição dos grupos</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Separar exibição de contatos</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Separar exibição dos contratos entre "Contatos domésticos" e "Grupos"</string>
-    <string name="manage_my_screen_toast_grid">Você selecionou% 1 $ d de contatos por linha</string>
+    <string name="manage_my_screen_toast_grid">Você selecionou %1$d de contatos por linha</string>
     <string name="manage_my_screen_toast_list"> "Lista" de visualização selecionada</string>
     <string name="manage_my_screen_toast_list_smaller">Vista de "Pacto" selecionada</string>
-    <string name="manage_my_screen_contact_popup_long_text">Ativar / desativar o pop-up antes de ligar para um contato</string>
+    <string name="manage_my_screen_contact_popup_long_text">Ativar/desativar o pop-up antes de ligar para um contato</string>
     <string name="manage_my_screen_searchbar_pos">Posição de bar de pesquisa</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Localize o bar de pesquisa no fundo da tela</string>
     <string name="manage_my_screen_display_for_group_title">Ativar exibição de grupos específicos</string>
@@ -257,7 +258,7 @@
     <string name="notification_vip_message_tone_blue_bossa">Blue Bossa</string>
     <string name="notification_vip_message_tone_dolphin_dance">Dolphin Dance</string>
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
-    <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader.</string>
+    <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
     <string name="notification_vip_message_tone_funky_slap">Funky slap</string>
     <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
@@ -321,7 +322,7 @@
     <string name="list_contact_item_edit">Edição</string>
     <string name="list_contact_item_messenger">Messenger</string>
     <string name="import_contacts_title">Importar contatos do Android</string>
-    <string name="import_contacts_long_text">Importe seus contatos do telefone Android em% s.  Você poderá se comunicar facilmente com eles e alterar prioridade deles</string>
+    <string name="import_contacts_long_text">Importe seus contatos do telefone Android em %s.  Você poderá se comunicar facilmente com eles e alterar prioridade deles</string>
     <string name="import_contacts_button_yes">Importar</string>
     <string name="import_contacts_button_no">Pular</string>
 
@@ -340,7 +341,7 @@
 
     <!-- region First Launch -->
 
-    <string name="multi_select_nb_contact">Número de contatos selecionados:% 1s</string>
+    <string name="multi_select_nb_contact">Número de contatos selecionados: %1s</string>
     <string name="multi_select_title">Selecione seu VIPs</string>
     <string name="multi_select_alert_dialog_title">Exibição de notificações</string>
     <string name="multi_select_alert_dialog_message">Você autoriza o Knock In Notifications a exibir notificações de alta prioridade</string>
@@ -354,18 +355,18 @@
 
     <!-- region Alert Dialog -->
 
-    <string name="multi_select_alert_dialog_nb_contact">Você selecionou% 1s% 2s</string>
+    <string name="multi_select_alert_dialog_nb_contact">Você selecionou %1s %2s</string>
     <string name="multi_select_alert_dialog_0_contact">Você selecionou contato 0</string>
-    <string name="multi_select_validate_selection">\ n Deseja validar sua seleção?</string>
+    <string name="multi_select_validate_selection">\n Deseja validar sua seleção?</string>
     <string name="multi_select_contact">Contato :</string>
     <string name="multi_select_contacts">Contatos :</string>
     <string name="multi_select_validate">Validar</string>
     <string name="multi_select_skip">Pular</string>
 
     <string name="notification_sender_content_title">Resumo de interações</string>
-    <string name="notification_sender_content_text">% 1s de mensagens não foram processadas desde ontem</string>
+    <string name="notification_sender_content_text">%1s de mensagens não foram processadas desde ontem</string>
 
-    <string name="notification_sender_big_text">% 1s de mensagens não foram processadas desde que você retornou a "Notificações"</string>
+    <string name="notification_sender_big_text">%1s de mensagens não foram processadas desde que você retornou a "Notificações"</string>
     <string name="notif_adapter_edit_text_hint">Escreva sua mensagem</string>
 
     <!-- endregion -->
@@ -426,17 +427,17 @@
     <string name="menu_group_delete_contacts">Remova contatos do grupo</string>
     <string name="menu_group_delete_group">Remova o grupo</string>
     <string name="section_alert_delete_group_title">Excluindo um grupo</string>
-    <string name="section_alert_delete_group_message">O grupo% 1 será excluído, você tem certeza?</string>
+    <string name="section_alert_delete_group_message">O grupo %1 será excluído, você tem certeza ?</string>
     <string name="delete_contact_from_group_toolbar_title">Removendo contato (s) de um grupo</string>
     <string name="delete_contact_0_contact">Você não pode excluir contato 0 de um grupo</string>
-    <string name="delete_contact_from_group">Você vai excluir% 1s deste grupo</string>
-    <string name="delete_contact_from_group_title">Removendo contato (s) de um grupo</string>
+    <string name="delete_contact_from_group">Você vai excluir %1s deste grupo</string>
+    <string name="delete_contact_from_group_title">Removendo contato(s) de um grupo</string>
 
     <!-- region Delete a contact from a Group -->
 
     <string name="delete_contact_from_group_cancel">Cancelar</string>
     <string name="delete_contact_from_group_alert_dialog_title">Remover do grupo</string>
-    <string name="delete_contact_from_group_alert_dialog_message">Você vai remover% 1s do grupo% 2s</string>
+    <string name="delete_contact_from_group_alert_dialog_message">Você vai remover %1s do grupo %2s</string>
     <string name="group_search_hint">Procurar</string>
     <string name="add_contact_to_group_toolbar_title">Escolha um contato para adicionar</string>
 
@@ -505,7 +506,7 @@
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In Notifications está importando seus contatos;  se você os ignorar agora, seus contatos não serão salvos</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Pular</string>
 
-    <string name="group_name">grupo% s</string>
+    <string name="group_name">Grupo%s</string>
     <string name="group_favorites">Favoritos</string>
     <string name="tutorial_activity_skip">Pular</string>
     <string name="tutorial_activity_back">De volta</string>
@@ -540,7 +541,7 @@
     <string name="in_app_shop">Loja de Knock In Notifications</string>
     <string name="in_app_shop_return_to_notif">Deseja retornar à página de Notificações?</string>
     <string name="knockin_notif">Knock In Notifications</string>
-   <string-array name="add_new_contact_phone_number_arrays">
+    <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
         <item>Office</item>
         <item>Home</item>
