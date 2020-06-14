@@ -97,14 +97,6 @@
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/help_activity_tutorial_website">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/help_activity_contact_us_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="25dp"
-                android:src="@drawable/ic_contact_us"
-                android:layout_centerVertical="true"/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,8 +107,18 @@
                 android:text="@string/help_activity_contact_us"
                 android:layout_toEndOf="@+id/help_activity_contact_us_icon"
                 android:textColor="?attr/textColor"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:ignore="NotSibling" />
         </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/help_activity_contact_us_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_contact_us"
+            tools:layout_editor_absoluteX="25dp"
+            tools:layout_editor_absoluteY="246dp"
+            tools:ignore="MissingConstraints" />
 
         <RelativeLayout
             android:id="@+id/help_activity_terms_id"

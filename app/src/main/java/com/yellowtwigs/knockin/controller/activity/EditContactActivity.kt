@@ -371,6 +371,7 @@ class EditContactActivity : AppCompatActivity() {
 
         val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
         val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
+
         edit_contact_Priority!!.adapter = priority_adapter
         edit_contact_Priority!!.setSelection(edit_contact_priority)
         edit_contact_Priority!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
