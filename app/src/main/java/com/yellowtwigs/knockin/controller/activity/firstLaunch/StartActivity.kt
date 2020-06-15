@@ -63,7 +63,7 @@ class StartActivity : AppCompatActivity() {
 
     //endregion
 
-    @SuppressLint("ObsoleteSdkInt")
+    @SuppressLint("ObsoleteSdkInt", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val display = windowManager.defaultDisplay
@@ -126,8 +126,13 @@ class StartActivity : AppCompatActivity() {
 
             videoview.setVideoURI(uri)
             videoview.start()
-        } else if(Resources.getSystem().configuration.locale.language == "pt"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_pt)
+        } else if(Resources.getSystem().configuration.locale.language == "ru"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_ru)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        } else if(Resources.getSystem().configuration.locale.language == "tr"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_tu)
 
             videoview.setVideoURI(uri)
             videoview.start()
