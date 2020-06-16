@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.controller.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.RelativeLayout
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +22,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 
 /**
  * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de Knockin
@@ -38,6 +41,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     private var help_activity_DrawerLayout: DrawerLayout? = null
     private var sensorManager: SensorManager? = null
 
+    private var settings_left_drawer_ThemeSwitch: Switch? = null
     //endregion
 
     @SuppressLint("IntentReset")
@@ -117,6 +121,34 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
             drawer.closeDrawer(GravityCompat.START)
             true
         }
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            settings_left_drawer_ThemeSwitch!!.isChecked = true
+//            main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+        }
+
+        if (sharedPreferencePopup.getBoolean("popup", true)) {
+            settings_CallPopupSwitch!!.isChecked = true
+        }
+
+        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                setTheme(R.style.AppThemeDark)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", true)
+                edit.apply()
+                startActivity(Intent(this, HelpActivity::class.java))
+            } else {
+                setTheme(R.style.AppTheme)
+                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
+                edit.putBoolean("darkTheme", false)
+                edit.apply()
+                startActivity(Intent(this, GroupManagerActivity::class.java))
+            }
+        }
 
         //endregion
 
@@ -152,7 +184,22 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         help_activity_Terms!!.setOnClickListener(onClick)
         help_activity_VideoTutorial!!.setOnClickListener(onClick)
 
+
+        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", true)
+                edit.apply()
+            } else {
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
+                edit.putBoolean("popup", false)
+                edit.apply()
+            }
+        }
         //endregion
+
     }
 
     //region ========================================== Functions ===========================================

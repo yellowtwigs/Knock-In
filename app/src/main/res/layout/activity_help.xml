@@ -97,28 +97,30 @@
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/help_activity_tutorial_website">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/help_activity_contact_us_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/ic_contact_us"
+                tools:layout_editor_absoluteX="25dp"
+                tools:layout_editor_absoluteY="246dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_centerVertical="true"
-                android:text="@string/help_activity_contact_us"
                 android:layout_toEndOf="@+id/help_activity_contact_us_icon"
+                android:text="@string/help_activity_contact_us"
                 android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 tools:ignore="NotSibling" />
         </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/help_activity_contact_us_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_contact_us"
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="246dp"
-            tools:ignore="MissingConstraints" />
+
 
         <RelativeLayout
             android:id="@+id/help_activity_terms_id"
@@ -189,5 +191,123 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer_layout" />
+        app:menu="@menu/menu_left_drawer_layout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
+
+            <RelativeLayout
+                android:id="@+id/settings_left_drawer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="215dp"
+                android:layout_alignParentBottom="true">
+
+                <RelativeLayout
+                    android:id="@+id/settings_left_drawer_theme_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp">
+
+                    <Switch
+                        android:id="@+id/settings_left_drawer_theme_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp" />
+
+                    <TextView
+                        android:id="@+id/settings_left_drawer_theme_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_left_drawer_theme_title"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="3dp"
+                        android:layout_toStartOf="@+id/settings_left_drawer_theme_switch"
+                        android:text="@string/manage_my_screen_theme_long_text"
+                        android:textColor="?attr/darkGreyColor"
+                        android:textSize="12sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/settings_left_drawer_theme_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/settings_left_drawer_theme_switch"
+                        android:text="@string/manage_my_screen_theme"
+                        android:textColor="?attr/textColor"
+                        android:textSize="17sp"
+                        android:textStyle="normal" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_call_popup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/settings_left_drawer_theme_layout"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp">
+
+                    <Switch
+                        android:id="@+id/settings_call_popup_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp" />
+
+                    <TextView
+                        android:id="@+id/settings_call_popup_long_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/settings_call_popup_title"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="3dp"
+                        android:layout_toStartOf="@+id/settings_call_popup_switch"
+                        android:text="@string/manage_my_screen_contact_popup_long_text"
+                        android:textColor="?attr/darkGreyColor"
+                        android:textSize="12sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/settings_call_popup_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_contact_popup_phone_call"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/settings_call_popup_switch"
+                        android:textColor="?attr/textColor"
+                        android:textSize="17sp"
+                        android:textStyle="normal" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/settings_left_drawer_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/settings_left_drawer_view_horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/left_drawer_settings"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/settings_left_drawer_view_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/settings_left_drawer_layout"
+                android:layout_marginBottom="15dp"
+                android:background="#555555" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
