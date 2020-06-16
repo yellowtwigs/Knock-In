@@ -211,8 +211,8 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_display_for_group_subtitle">Escojer una pantalla diferente para sus grupos</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Tavolozza multicolore</item>
-        <item>Tavolozza monocolore</item>
+        <item>Paleta multicolor</item>
+        <item>Paleta de un color</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Cambiar la visualización de contactos</string>

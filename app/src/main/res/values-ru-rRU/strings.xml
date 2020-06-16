@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Выберите другое отображение для своих групп</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Tavolozza multicolore</item>
-        <item>Tavolozza monocolore</item>
+        <item>Многоцветная палитра</item>
+        <item>Oдноцветная палитра</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Изменение отображения контактов</string>
@@ -409,7 +409,7 @@
     <string name="start_activity_permission_subtitle">Вы сможете совершать телефонные звонки и отправлять СМС из приложения</string>
     <string name="start_activity_button_permission">Разрешить</string>
     <string name="start_activity_skip">Пропустить</string>
-    <string name="start_activity_next">След.</string>
+    <string name="start_activity_next">Cледующий</string>
     <string name="start_activity_skip_alert_dialog_title">Пропустить разрешения</string>
     <string name="start_activity_skip_alert_dialog_message">Если вы пропустите разрешения, их можно будет принять позже</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In импортирует ваши контакты; если вы сейчас нажмете "Пропустить", ваши контакты не будут сохранены</string>

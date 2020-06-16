@@ -46,7 +46,7 @@ android {
         }
         premiumApp {
             applicationId "com.yellowtwigs.Knockin.notification"
-            resValue "string", "app_name", "Knock In Notifications"
+            resValue "string", "app_name", "Knock In"
         }
         appComplete {
             applicationId "com.yellowtwigs.Knockin"

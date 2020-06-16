@@ -474,7 +474,7 @@
     <!-- region Compose Message -->
 
     <string name="notif_adapter_message_sent">Message sent</string>
-    <string name="start_activity_title">Knock In Notifications</string>
+    <string name="start_activity_title">Knock In</string>
     <string name="start_activity_import_title">Contacts</string>
 
     <!-- endregion -->

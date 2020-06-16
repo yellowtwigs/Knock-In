@@ -226,8 +226,8 @@
     <string name="notification_reminder">Envie um lembrete para ver todas as mensagens não VIP</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Multi-color palette</item>
-        <item>Single color palette</item>
+        <item>Paleta de várias cores</item>
+        <item>paleta de uma cor</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Alterando a exibição dos contatos</string>
