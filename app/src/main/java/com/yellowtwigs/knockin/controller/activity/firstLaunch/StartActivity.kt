@@ -131,12 +131,22 @@ class StartActivity : AppCompatActivity() {
 
             videoview.setVideoURI(uri)
             videoview.start()
-        } else if(Resources.getSystem().configuration.locale.language == "tr"){
+        } else if(Resources.getSystem().configuration.locale.language == "in"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_in)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        }else if(Resources.getSystem().configuration.locale.language == "vi"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_vi)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        }else if(Resources.getSystem().configuration.locale.language == "tr"){
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_tu)
 
             videoview.setVideoURI(uri)
             videoview.start()
-        } else {
+        }else{
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
 
             videoview.setVideoURI(uri)

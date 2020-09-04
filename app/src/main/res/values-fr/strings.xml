@@ -14,7 +14,7 @@
     <string name="help_contact_us_intent">Contactez-nous</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/prise-en-main</string>
     <string name="help_contact_us_eula">https://www.yellowtwigs.com/contrat-de-licence-utilisateur-fina</string>
-    <string name="help_app_video_link">hhttps://youtu.be/gVGE32hDG6k</string>
+    <string name="help_app_video_link">https://youtu.be/gVGE32hDG6k</string>
 
     <!-- endregion-->
     <!-- region Facebook Strings-->
@@ -206,7 +206,7 @@
     <string name="manage_my_screen_display_for_group_subtitle">Choix d\'un affichage spécifique pour les groupes </string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Palette multicolore</item>
+        <item> Palette multicolore</item>
         <item>Palette unicolore</item>
     </string-array>
 
