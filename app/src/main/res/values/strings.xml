@@ -239,10 +239,10 @@
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_funky_slap">Funky slap</string>
-    <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
-    <string name="notification_vip_message_tone_funk_yall">Funk Yall ringtone</string>
-    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
+    <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U Can\'t Hold no Groove</string>
     <string name="notification_vip_message_tone_cold_sweat">Cold Sweat</string>
     <string name="notification_vip_message_tone_keyboard_funky">Keyboard Funky</string>
     <string name="notification_vip_message_tone_xylo_relax">Xylo-Relax</string>
@@ -285,6 +285,7 @@
     <string name="list_contact_item_sms">SMS</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
     <string name="list_contact_item_mail">Mail</string>
+    <string name="list_contact_item_mail">Email</string>
     <string name="list_contact_item_edit">Edition</string>
     <string name="list_contact_item_messenger">Messenger</string>
     <!-- endregion -->

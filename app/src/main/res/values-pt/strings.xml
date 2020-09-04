@@ -107,7 +107,7 @@
     </string-array>
     <string name="add_new_contact_mail">Email</string>
     <string name="add_new_contact_mail_mobile">Escritório</string>
-    <string name="add_new_contact_mail_identifier">E-mail do identificador</string>
+    <string name="add_new_contact_mail_identifier">Identificador do Email</string>
     <string name="add_new_contact_mail_identifier_help">Corresponde ao identificador visível ao receber um email</string>
     <string name="add_new_contact_priority_0">Nenhuma notificação</string>
     <string-array name="add_new_contact_mail_arrays">
@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Escolha uma exibição diferente para seus grupos</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Paleta de várias cores</item>
-        <item>paleta de uma cor</item>
+        <item>Tavolozza multicolore</item>
+        <item>Tavolozza monocolore</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Alterando a exibição dos contatos</string>
@@ -239,10 +239,10 @@
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader.</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_funky_slap">Funky slap</string>
-    <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
     <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
-    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U Can\'t Hold no Groove</string>
     <string name="notification_vip_message_tone_cold_sweat">Cold Sweat</string>
     <string name="notification_vip_message_tone_keyboard_funky">Keyboard Funky</string>
     <string name="notification_vip_message_tone_xylo_relax">Xylo-Relax</string>
@@ -262,7 +262,7 @@
     <string name="cockpit_toast_whatsapp_not_install">Whatsapp não está instalado</string>
     <string name="cockpit_toast_messenger_not_install">Facebook Messenger não está instalado</string>
     <string name="cockpit_toast_youtube_not_install">Youtube não está instalado</string>
-    <string name="cockpit_toast_gmail_not_install">G-mail não está instalado</string>
+    <string name="cockpit_toast_gmail_not_install">Gmail não está instalado</string>
     <string name="cockpit_toast_telegram_not_install">Telegram não está instalado</string>
     <string name="cockpit_toast_outlook_not_install">Outlook não está instalado</string>
     <string name="cockpit_toast_skype_not_install">Skype não está instalado</string>
@@ -284,7 +284,7 @@
     <string name="list_contact_item_call">Liga</string>
     <string name="list_contact_item_sms">SMS</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
-    <string name="list_contact_item_mail">Enviar</string>
+    <string name="list_contact_item_mail">Email</string>
     <string name="list_contact_item_edit">Edição</string>
     <string name="list_contact_item_messenger">Messenger</string>
     <!-- endregion -->

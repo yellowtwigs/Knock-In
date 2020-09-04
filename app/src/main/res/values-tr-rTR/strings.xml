@@ -9,7 +9,7 @@
     <string name="help_notification_history">Bu ekranda, alınan tüm bildirimleri görebilirsiniz</string>
     <string name="help_cockpit">Bu ekrandan adres defterinizde listelenmeyen bir kişiyi arayabilir veya SMS gönderebilirsiniz. Ayrıca e-posta ve SoMe\'ye de bağlanabilirsiniz</string>
     <string name="help_manage_screen">Bu ekranda kişilerinizi görüntüleyebilir ve çeşitli ekran seçeneklerini yapılandırabilirsiniz</string>
-    <string name="help_notification_manager">Bu ekranda öncelik 2 bildirimlerini etkinleştirmeyi / devre dışı bırakmayı seçebilirsiniz</string>
+    <string name="help_notification_manager">Bu ekranda öncelik 2 bildirimlerini etkinleştirmeyi/devre dışı bırakmayı seçebilirsiniz</string>
     <string name="help_my_informations">Bu ekranda kişisel bilgilerinizi güncelleyebilirsiniz</string>
     <string name="help_contact_us_intent">Bize ulaşın</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
@@ -78,7 +78,7 @@
     <string name="main_contact_grid_title">Bu kişiyi aramak ister misiniz?</string>
     <string name="main_contact_grid_message">Bu doğrulamayı seçeneklerden devre dışı bırakabilirsiniz</string>
     <string name="main_alert_dialog_delete_contact_title">Kişi(leri)sil</string>
-    <string name="main_alert_dialog_delete_contact_message">%1\'i sileceksiniz</string>
+    <string name="main_alert_dialog_delete_contact_message">%1s sileceksiniz</string>
     <string name="menu_main_toolbar_multiselect_all_select">Tümü seçili</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Gruplarınız için farklı bir ekran seçin</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Çok renkli palet</item>
-        <item>Tek renkli palet</item>
+        <item>Tavolozza multicolore</item>
+        <item>Tavolozza monocolore</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Kişilerin ekranını değiştirme</string>
@@ -234,15 +234,15 @@
     <string name="notification_vip_message_tone_default">Varsayılan</string>
     <string name="notification_vip_message_tone_xylophone">Ksilofon</string>
     <string name="notification_vip_message_tone_moanin">Moanin</string>
-    <string name="notification_vip_message_tone_blue_bossa">Blue bossa</string>
+    <string name="notification_vip_message_tone_blue_bossa">Blue Bossa</string>
     <string name="notification_vip_message_tone_dolphin_dance">Dolphin Dance</string>
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_funky_slap">Funky slap</string>
-    <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
-    <string name="notification_vip_message_tone_funk_yall">Funk Yall ringtone</string>
-    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
+    <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U Can\'t Hold no Groove</string>
     <string name="notification_vip_message_tone_cold_sweat">Cold Sweat</string>
     <string name="notification_vip_message_tone_keyboard_funky">Keyboard Funky</string>
     <string name="notification_vip_message_tone_xylo_relax">Xylo-Relax</string>
@@ -250,7 +250,7 @@
     <string name="notification_vip_message_tone_guitar_relax">Guitar-Relax</string>
     <string name="notification_vip_message_tone_slow_dancing">Slow Dancing in a Burning Room</string>
     <string name="notification_vip_message_tone_gravity">Gravity</string>
-    <string name="notification_vip_message_tone_scorpion_theme">Fade to black</string>
+    <string name="notification_vip_message_tone_scorpion_theme">Fade to Black</string>
     <!-- endregion -->
 
     <!-- region Cockpit -->
@@ -366,7 +366,7 @@
     <string name="delete_contact_from_group_title">Kişileri gruptan kaldırma</string>
     <string name="delete_contact_from_group_cancel">İptal</string>
     <string name="delete_contact_from_group_alert_dialog_title">Gruptan kaldır</string>
-    <string name="delete_contact_from_group_alert_dialog_message">%1s\'i %2s grubundan kaldırmak üzeresiniz</string>
+    <string name="delete_contact_from_group_alert_dialog_message">%1s %2s grubundan kaldırmak üzeresiniz</string>
     <!-- endregion-->
     <!-- region Add a contact to a Group -->
     <string name="group_search_hint">Ara</string>

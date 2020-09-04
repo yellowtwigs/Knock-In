@@ -47,7 +47,7 @@
     <!-- endregion-->
     <!-- region Main Activity !-->
     <string name="main_filter_sms"> Número de teléfono </string>
-    <string name="main_filter_mail">Correo electrónico</string>
+    <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Búsqueda de contactos</string>
     <string name="main_change_format_phone_book">Ayuda</string>
     <string name="main_tri_title">Filtrar por:</string>
@@ -66,8 +66,8 @@
     <string name="main_toast_multi_select_actived">Active modo Multi-Select </string>
     <string name="main_toast_multi_select_deactived">Desactive modo Multi-Select </string>
     <string name="main_toast_multi_select_mode_selected">Seleccionado</string>
-    <string name="main_toast_multi_select_mode_selected_more_than_one"> seleccionado</string>
-    <string name="main_alert_dialog_group_title">Crear Nuevo Grupo</string>
+    <string name="main_toast_multi_select_mode_selected_more_than_one">Seleccionado</string>
+    <string name="main_alert_dialog_group_title">Crear nuevo grupo</string>
     <string name="main_alert_dialog_group_subtitle">Elija nombre para su grupo</string>
     <string name="main_alert_dialog_group_favorites_already_exist">Grupo  "Favoritos" ya exise</string>
     <string name="main_edited_contact">Contacto modificado</string>
@@ -106,7 +106,7 @@ Todos los mensajes de este contacto serán notificados con alta prioridad. </str
         <item>Altro</item>
         <item>Personalizzazione</item>
     </string-array>
-    <string name="add_new_contact_mail"> Correo electrónico </string>
+    <string name="add_new_contact_mail">Email</string>
     <string name="add_new_contact_mail_mobile">Oficina</string>
     <string name="add_new_contact_mail_identifier">ID Correo electrónico </string>
     <string name="add_new_contact_mail_identifier_help">
@@ -151,7 +151,7 @@ Sus actualizaciones no se registraron, ¿está seguro? </string>
         <item>Altro</item>
         <item>Personalizzazione</item>
     </string-array>
-    <string name="edit_contact_mail"> Correo electrónico </string>
+    <string name="edit_contact_mail">Email</string>
     <string name="edit_contact_mail_mobile">Oficina</string>
     <string-array name="edit_contact_mail_arrays">
         <item>Ufficio</item>
@@ -167,7 +167,7 @@ Sus actualizaciones no se registraron, ¿está seguro? </string>
     <string name="edit_contact_validate">Validar</string>
     <string name="edit_contact_cancel">Cancelar</string>
     <string name="edit_contact_toast">Es necesario nombre o apellido</string>
-    <string name="edit_contact_groups">Grupo</string>
+    <string name="edit_contact_groups">Grupos</string>
     <string name="edit_contact_alert_dialog_cancel_title">Atención</string>
     <string name="edit_contact_alert_dialog_cancel_message">
 Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
@@ -188,7 +188,7 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="edit_info_toolbar_title"> Datos personales</string>
     <string name="edit_informations_name">Nombre</string>
     <string name="edit_informations_phone_number"> Número de teléfono </string>
-    <string name="edit_informations_email"> Correo electrónico </string>
+    <string name="edit_informations_email">Email</string>
     <string name="edit_information_toast_enable">Edición activada</string>
     <string name="edit_information_toast_disable">Edición desactivada</string>
     <!-- endregion -->
@@ -207,12 +207,12 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_contact_popup_long_text"> Activar/Desactivar ventana emergente antes de llamar un contacto</string>
     <string name="manage_my_screen_searchbar_pos">Posición barra de búsqueda </string>
     <string name="manage_my_screen_searchbar_pos_long_text"> Posición barra de búsqueda arriba de la pantalla</string>
-    <string name="manage_my_screen_display_for_group_title">Activar pantalla de Grupos específica </string>
+    <string name="manage_my_screen_display_for_group_title">Activar pantalla de grupos específica</string>
     <string name="manage_my_screen_display_for_group_subtitle">Escojer una pantalla diferente para sus grupos</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Paleta multicolor</item>
-        <item>Paleta de un color</item>
+        <item>Tavolozza multicolore</item>
+        <item>Tavolozza monocolore</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Cambiar la visualización de contactos</string>
@@ -241,15 +241,15 @@ Seleccione recordar el tiempo diario: </string>
     <string name="notification_vip_message_tone_default">Por defecto</string>
     <string name="notification_vip_message_tone_xylophone">Xylophone</string>
     <string name="notification_vip_message_tone_moanin">Moanin</string>
-    <string name="notification_vip_message_tone_blue_bossa">Blue bossa</string>
+    <string name="notification_vip_message_tone_blue_bossa">Blue Bossa</string>
     <string name="notification_vip_message_tone_dolphin_dance">Dolphin Dance</string>
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_funky_slap">Funky slap</string>
-    <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
-    <string name="notification_vip_message_tone_funk_yall">Funk Yall ringTono</string>
-    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
+    <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U Can\'t Hold no Groove</string>
     <string name="notification_vip_message_tone_cold_sweat">Cold Sweat</string>
     <string name="notification_vip_message_tone_keyboard_funky">Keyboard Funky</string>
     <string name="notification_vip_message_tone_xylo_relax">Xylo-Relax</string>
@@ -257,7 +257,7 @@ Seleccione recordar el tiempo diario: </string>
     <string name="notification_vip_message_tone_guitar_relax">Guitar-Relax</string>
     <string name="notification_vip_message_tone_slow_dancing">Slow Dancing in a Burning Room</string>
     <string name="notification_vip_message_tone_gravity">Gravity</string>
-    <string name="notification_vip_message_tone_scorpion_theme">Fade to black</string>
+    <string name="notification_vip_message_tone_scorpion_theme">Fade to Black</string>
     <!-- endregion -->
 
     <!-- region Cockpit -->
@@ -291,7 +291,7 @@ Seleccione recordar el tiempo diario: </string>
     <string name="list_contact_item_call">Llamada</string>
     <string name="list_contact_item_sms">SMS</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
-    <string name="list_contact_item_mail">Mail</string>
+    <string name="list_contact_item_mail">Email</string>
     <string name="list_contact_item_edit">Edición</string>
     <string name="list_contact_item_messenger">Messenger</string>
     <!-- endregion -->

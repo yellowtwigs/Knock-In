@@ -11,7 +11,7 @@
     <string name="help_manage_screen">In questa pagina puoi vedere i tuoi contatti e configurare varie opzioni di visualizzazione</string>
     <string name="help_notification_manager"> In questa pagina puoi scegliere di abilitare o disabilitare le notifiche di priorita\’ 2 </string>
     <string name="help_my_informations"> In questa pagina puoi modificare i dettagli personali </string>
-    <string name="help_contact_us_intent">Contact us</string>
+    <string name="help_contact_us_intent">Contattaci</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
     <string name="help_contact_us_eula">https://www.yellowtwigs.com/end-user-license-agreement</string>
     <string name="help_app_video_link">https://youtu.be/5gKwDljgLNI</string>
@@ -35,7 +35,7 @@
     <string name="left_drawer_home">Home-Rubrica</string>
     <string name="left_drawer_my_groups">Gestione gruppi</string>
     <string name="left_drawer_information">Dati Personali</string>
-    <string name="left_drawer_chat">Messaging</string>
+    <string name="left_drawer_chat">Messaggi</string>
     <string name="left_drawer_notif_config">Gestione Notifiche</string>
     <string name="left_drawer_settings">Configurazione</string>
     <string name="left_drawer_my_screen">Opzioni Display</string>
@@ -47,7 +47,7 @@
     <!-- endregion-->
     <!-- region Main Activity !-->
     <string name="main_filter_sms">Numero Tel</string>
-    <string name="main_filter_mail">E-mail</string>
+    <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Cerca nei contatti</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="main_tri_title">Filtra per:</string>
@@ -91,7 +91,7 @@
     <string name="add_new_contact_title">Aggiungi contatto</string>
     <string name="add_new_contact_last_name">Cognome</string>
     <string name="add_new_contact_first_name">Nome</string>
-    <string name="add_new_contact_phone_number">Numero Tel</string>
+    <string name="add_new_contact_phone_number">Numero di telefono</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
     <string name="add_new_contact_priority0">Tutte le notifiche per questo contatto saranno solo visibili nello storico</string>
     <string name="add_new_contact_priority1">Le notifiche per questo contatto saranno trattate come standard </string>
@@ -105,10 +105,10 @@
         <item>Altro</item>
         <item>Personalizzazione</item>
     </string-array>
-    <string name="add_new_contact_mail">E-mail</string>
+    <string name="add_new_contact_mail">Email</string>
     <string name="add_new_contact_mail_mobile">Ufficio</string>
-    <string name="add_new_contact_mail_identifier">ID E-mail</string>
-    <string name="add_new_contact_mail_identifier_help">Corrisponde all’identificatore visibile quando si riceve e-mail </string>
+    <string name="add_new_contact_mail_identifier">ID Email</string>
+    <string name="add_new_contact_mail_identifier_help">Corrisponde all’identificatore visibile quando si riceve email</string>
     <string name="add_new_contact_priority_0">Nessuna notifica</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Ufficio</item>
@@ -137,7 +137,7 @@
     <string name="edit_contact_title">Aggiungi nuovo contatto </string>
     <string name="edit_contact_last_name">Cognome</string>
     <string name="edit_contact_first_name">Nome</string>
-    <string name="edit_contact_phone_number">Numero Tel</string>
+    <string name="edit_contact_phone_number">Numero di telefono</string>
     <string name="edit_contact_phone_number_mobile">Mobile</string>
     <string name="edit_contact_phone_number_home">Casa</string>
     <string-array name="edit_contact_phone_number_arrays">
@@ -148,7 +148,7 @@
         <item>Altro</item>
         <item>Personalizzazione</item>
     </string-array>
-    <string name="edit_contact_mail">E-mail</string>
+    <string name="edit_contact_mail">Email</string>
     <string name="edit_contact_mail_mobile">Ufficio</string>
     <string-array name="edit_contact_mail_arrays">
         <item>Ufficio</item>
@@ -182,10 +182,10 @@
     <!-- region Edit My Informations !-->
     <string name="edit_info_toolbar_title">I miei dati personali</string>
     <string name="edit_informations_name">Nome</string>
-    <string name="edit_informations_phone_number">Numero Tel</string>
-    <string name="edit_informations_email">E-mail</string>
-    <string name="edit_information_toast_enable">Editing Abilitato</string>
-    <string name="edit_information_toast_disable">Editing Disattivato</string>
+    <string name="edit_informations_phone_number">Numero di telefono</string>
+    <string name="edit_informations_email">Email</string>
+    <string name="edit_information_toast_enable">Editing abilitato</string>
+    <string name="edit_information_toast_disable">Editing disattivato</string>
     <!-- endregion -->
     <!-- region Manage My Screen !-->
     <string name="manage_my_screen_toolbar_title">Display</string>
@@ -193,7 +193,7 @@
     <string name="manage_my_screen_theme_long_text">Cambia tra modalita\’ luminosa e scura </string>
     <string name="manage_my_screen_number_of_column">Modalità di visualizzazione dei contatti</string>
     <string name="manage_my_screen_contacts_color">Colore di contatti</string>
-    <string name="manage_my_screen_number_of_column_group">Display di Gruppi</string>
+    <string name="manage_my_screen_number_of_column_group">Display di gruppi</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Separa visualizzazione di contatti </string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Separa visualizzazione contatti tra “Casa” e “Gruppi” </string>
     <string name="manage_my_screen_toast_grid">Hai selezionato %1$d contatti per riga</string>
@@ -224,25 +224,25 @@
     <string name="notification_manager_prio_1"> Nascondi le notifiche di priorita\’ 1 </string>
     <string name="notification_alert_dialog_title">Selezione dei contatti VIP </string>
     <string name="notification_alert_dialog_message">Vuoi scegliere i tuoi contatti ad alta priorita\’ ?</string>
-    <string name="settings_contact_popup_phone_call">Popup Chiamate</string>
+    <string name="settings_contact_popup_phone_call">Chiamate vocali</string>
     <string name="notification_vip_message_tone">Suoneria Notifiche VIP </string>
     <string name="notification_vip_default_message_tone">Default Tone</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
     <string name="notification_vip_funky_message_tone">Funky Tone</string>
     <string name="notification_vip_relaxation_message_tone">Relaxing Tone</string>
     <string name="notification_vip_message_tone_no_sound">Nessuno</string>
-    <string name="notification_vip_message_tone_default">Default</string>
+    <string name="notification_vip_message_tone_default">Predefinita</string>
     <string name="notification_vip_message_tone_xylophone">Xylophone</string>
     <string name="notification_vip_message_tone_moanin">Moanin</string>
-    <string name="notification_vip_message_tone_blue_bossa">Blue bossa</string>
+    <string name="notification_vip_message_tone_blue_bossa">Blue Bossa</string>
     <string name="notification_vip_message_tone_dolphin_dance">Dolphin Dance</string>
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_funky_slap">Funky slap</string>
-    <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
-    <string name="notification_vip_message_tone_funk_yall">Funk Yall ringtone</string>
-    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
+    <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U Can\'t Hold no Groove</string>
     <string name="notification_vip_message_tone_cold_sweat">Cold Sweat</string>
     <string name="notification_vip_message_tone_keyboard_funky">Keyboard Funky</string>
     <string name="notification_vip_message_tone_xylo_relax">Xylo-Relax</string>
@@ -284,8 +284,8 @@
     <string name="list_contact_item_call">Chiamata</string>
     <string name="list_contact_item_sms">SMS</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
-    <string name="list_contact_item_mail">Mail</string>
-    <string name="list_contact_item_edit">Edition</string>
+    <string name="list_contact_item_mail">Email</string>
+    <string name="list_contact_item_edit">Modificare</string>
     <string name="list_contact_item_messenger">Messenger</string>
     <!-- endregion -->
     <!-- region Import Contacts -->
@@ -299,8 +299,8 @@
     <!-- region First Launch -->
     <string name="first_launch_welcome">Benvenuto in %s</string>
     <string name="first_launch_welcome_long_text"> Prova un nuovo modo di gestire e comunicare con i tuoi contatti </string>
-    <string name="first_launch_welcome_accept">Accetta e Continua</string>
-    <string name="first_launch_confidentiality">Leggi le nostre Condizioni di utilizzo sul nostro sito <a href="https://www.yellowtwigs.com/end-user-license-agreement">EULA. </a> Per accettare le condizioni, fai click su "Accetta e Continua"</string>
+    <string name="first_launch_welcome_accept">Accetta e continua</string>
+    <string name="first_launch_confidentiality">Leggi le nostre Condizioni di utilizzo sul nostro sito <a href="https://www.yellowtwigs.com/end-user-license-agreement">EULA. </a> Per accettare le condizioni, fai click su "Accetta e continua"</string>
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Numero di contatti selezionati: %1s </string>
@@ -351,7 +351,7 @@
     <string name="new_messages">Nuovi messaggi</string>
     <!-- endregion -->
     <!-- region GroupManager -->
-    <string name="group_manager_toolbar_title">Group Manager</string>
+    <string name="group_manager_toolbar_title">Gruppo Manager</string>
     <string name="group_manager_search_hint">Ricerca</string>
     <string name="menu_group_edit_group">Modifica il gruppo</string>
     <string name="menu_group_add_contacts">Aggiungi contatti</string>
@@ -424,8 +424,8 @@
     <string name="tutorial_activity_back">Indietro</string>
     <!-- endregion-->
     <!-- region Notification Alarm -->
-    <string name="notification_alarm_message_received">nuovo messaggio VIP</string>
-    <string name="notification_alarm_messages_received">nuovi messaggi VIP</string>
+    <string name="notification_alarm_message_received">Nuovo messaggio VIP</string>
+    <string name="notification_alarm_messages_received">Nuovi messaggi VIP</string>
     <!-- endregion-->
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Numero di contatti VIP raggiunto</string>
