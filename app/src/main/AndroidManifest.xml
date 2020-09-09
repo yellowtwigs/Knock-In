@@ -10,6 +10,7 @@
         android:largeHeap="true"
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".controller.activity.SplashScreenActivity">
             <intent-filter>

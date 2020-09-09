@@ -50,7 +50,7 @@ android {
         }
         appComplete {
             applicationId "com.yellowtwigs.Knockin"
-            resValue "string", "app_name", "Knockin"
+            resValue "string", "app_name", "Knock In"
         }
 
     }

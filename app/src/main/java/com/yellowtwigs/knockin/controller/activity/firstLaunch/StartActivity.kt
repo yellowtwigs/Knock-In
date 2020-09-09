@@ -27,10 +27,18 @@ import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 import android.content.ComponentName
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaPlayer
+import android.net.ConnectivityManager
+import android.view.WindowManager
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.yellowtwigs.knockin.controller.activity.MainActivity
+import java.net.InetAddress
+import java.net.UnknownHostException
 
 
 /**
@@ -77,11 +85,10 @@ class StartActivity : AppCompatActivity() {
             height in 1200..2101 -> setContentView(R.layout.activity_start_activity)
             height < 1200 -> setContentView(R.layout.activity_start_activity)
         }
-
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val listApp = getAppOnPhone()
-
+        setContentView(R.layout.activity_start_activity)
         //region ======================================= FindViewById =======================================
 
         start_activity_ImportContacts = findViewById(R.id.start_activity_import_contacts_button)
@@ -101,42 +108,47 @@ class StartActivity : AppCompatActivity() {
         start_activity_AuthorizeSuperpositionCheck = findViewById(R.id.start_activity_superposition_check)
         start_activity_PermissionsCheck = findViewById(R.id.start_activity_permissions_check)
 
-        val videoview = findViewById<VideoView>(R.id.start_activity_video)
-        val start_activity_video_Layout = findViewById<RelativeLayout>(R.id.start_activity_video_layout)
+
         val start_activity_layout = findViewById<ConstraintLayout>(R.id.start_activity_layout)
+        val start_activity_video_Layout = findViewById<RelativeLayout>(R.id.start_activity_video_layout)
+        val videoview = findViewById<VideoView>(R.id.start_activity_video)
+        val webview: WebView = findViewById(R.id.start_activity_webview)
         val start_activity_video_Skip = findViewById<MaterialButton>(R.id.start_activity_video_skip)
 
+        webview.settings.loadWithOverviewMode = true
+        webview.settings.useWideViewPort = true
+        webview.settings.javaScriptEnabled = true
+        videoview.visibility = View.INVISIBLE
+
         if (Resources.getSystem().configuration.locale.language == "fr") {
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_fr)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/france")
+        } else if (Resources.getSystem().configuration.locale.language == "de") {
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/germany")
+        } else if (Resources.getSystem().configuration.locale.language == "id") {
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/indonesia")
+        } else if (Resources.getSystem().configuration.locale.language == "vi") {
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/vietnam")
         } else if (Resources.getSystem().configuration.locale.language == "it") {
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_it)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/italy")
         } else if (Resources.getSystem().configuration.locale.language == "es") {
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_es)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
-        } else if(Resources.getSystem().configuration.locale.language == "pt"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_pt)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
-        } else if(Resources.getSystem().configuration.locale.language == "ru"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_ru)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
-        } else if(Resources.getSystem().configuration.locale.language == "tr"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_tu)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/spain")
+        } else if (Resources.getSystem().configuration.locale.language == "pt") {
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/portugal")
+        } else if (Resources.getSystem().configuration.locale.language == "ru") {
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/russia")
+        } else if (Resources.getSystem().configuration.locale.language == "tr") {
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/turkey")
         } else {
+            videoview.visibility = View.VISIBLE
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
 
             videoview.setVideoURI(uri)
@@ -165,6 +177,9 @@ class StartActivity : AppCompatActivity() {
         //region ======================================== Listeners =========================================
 
         start_activity_video_Skip.setOnClickListener {
+            webview.removeAllViews()
+            webview.clearCache(true)
+            webview.destroy()
             start_activity_video_Layout.visibility = View.INVISIBLE
             start_activity_layout.visibility = View.VISIBLE
             videoview.stopPlayback()
@@ -317,6 +332,16 @@ class StartActivity : AppCompatActivity() {
 
 
         //endregion
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        try {
+            val address: InetAddress = InetAddress.getByName("www.google.com");
+            return !address.equals("")
+        } catch (e: UnknownHostException) {
+            println("OI OI OI")
+        }
+        return false
     }
 
     //region ========================================== Functions ==========================================
