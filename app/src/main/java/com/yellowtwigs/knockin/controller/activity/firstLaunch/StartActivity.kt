@@ -136,19 +136,36 @@ class StartActivity : AppCompatActivity() {
             webview.visibility = View.VISIBLE
             webview.loadUrl("https://www.yellowtwigs.com/italy")
         } else if (Resources.getSystem().configuration.locale.language == "es") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/spain")
-        } else if (Resources.getSystem().configuration.locale.language == "pt") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/portugal")
-        } else if (Resources.getSystem().configuration.locale.language == "ru") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/russia")
-        } else if (Resources.getSystem().configuration.locale.language == "tr") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/turkey")
-        } else {
-            videoview.visibility = View.VISIBLE
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_es)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        } else if(Resources.getSystem().configuration.locale.language == "pt"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_pt)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        } else if(Resources.getSystem().configuration.locale.language == "ru"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_ru)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        } else if(Resources.getSystem().configuration.locale.language == "in"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_in)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        }else if(Resources.getSystem().configuration.locale.language == "vi"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_vi)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        }else if(Resources.getSystem().configuration.locale.language == "tr"){
+            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_tu)
+
+            videoview.setVideoURI(uri)
+            videoview.start()
+        }else{
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
 
             videoview.setVideoURI(uri)
