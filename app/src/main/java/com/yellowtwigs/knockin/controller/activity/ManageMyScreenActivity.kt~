@@ -41,7 +41,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private var manageMyScreenColorContactOrange: AppCompatImageView? = null
     private var manageMyScreenColorContactCyanTeal: AppCompatImageView? = null
 
-    private var manageMyScreenSpinnerSelectColor: Spinner? = null
+    private var manageMyScreenSpinnerSelectColor: AppCompatSpinner? = null
     private var manageMyScreenButtonSelectColorLayout: HorizontalScrollView? = null
 
     //endregion

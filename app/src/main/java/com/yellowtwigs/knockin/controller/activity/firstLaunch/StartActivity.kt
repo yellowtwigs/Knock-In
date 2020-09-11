@@ -2,9 +2,15 @@ package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
@@ -13,30 +19,23 @@ import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
-import android.content.ComponentName
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.media.MediaPlayer
-import android.net.ConnectivityManager
-import android.view.WindowManager
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.yellowtwigs.knockin.controller.activity.MainActivity
 import java.net.InetAddress
 import java.net.UnknownHostException
 
@@ -118,6 +117,7 @@ class StartActivity : AppCompatActivity() {
         webview.settings.loadWithOverviewMode = true
         webview.settings.useWideViewPort = true
         webview.settings.javaScriptEnabled = true
+        webview.webChromeClient = WebChromeClientCustomPoster()
         videoview.visibility = View.INVISIBLE
 
         if (Resources.getSystem().configuration.locale.language == "fr") {
@@ -126,7 +126,7 @@ class StartActivity : AppCompatActivity() {
         } else if (Resources.getSystem().configuration.locale.language == "de") {
             webview.visibility = View.VISIBLE
             webview.loadUrl("https://www.yellowtwigs.com/germany")
-        } else if (Resources.getSystem().configuration.locale.language == "id") {
+        } else if (Resources.getSystem().configuration.locale.language == "in") {
             webview.visibility = View.VISIBLE
             webview.loadUrl("https://www.yellowtwigs.com/indonesia")
         } else if (Resources.getSystem().configuration.locale.language == "vi") {
@@ -136,38 +136,21 @@ class StartActivity : AppCompatActivity() {
             webview.visibility = View.VISIBLE
             webview.loadUrl("https://www.yellowtwigs.com/italy")
         } else if (Resources.getSystem().configuration.locale.language == "es") {
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_es)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/spain")
         } else if(Resources.getSystem().configuration.locale.language == "pt"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_pt)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/portugal")
         } else if(Resources.getSystem().configuration.locale.language == "ru"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_ru)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
-        } else if(Resources.getSystem().configuration.locale.language == "in"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_in)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
-        }else if(Resources.getSystem().configuration.locale.language == "vi"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_vi)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
-        }else if(Resources.getSystem().configuration.locale.language == "tr"){
-            val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_tu)
-
-            videoview.setVideoURI(uri)
-            videoview.start()
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/russia")
+        } else if(Resources.getSystem().configuration.locale.language == "tr"){
+            webview.visibility = View.VISIBLE
+            webview.loadUrl("https://www.yellowtwigs.com/turkey")
         }else{
+            webview.visibility = View.INVISIBLE
+            videoview.visibility = View.VISIBLE
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
-
             videoview.setVideoURI(uri)
             videoview.start()
         }
@@ -557,4 +540,11 @@ class StartActivity : AppCompatActivity() {
     }
 
     //endregion
+}
+
+//permet de supprimer l'icon grise au lancement d'une video dans la webview
+private class WebChromeClientCustomPoster : WebChromeClient() {
+    override fun getDefaultVideoPoster(): Bitmap? {
+        return Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
+    }
 }

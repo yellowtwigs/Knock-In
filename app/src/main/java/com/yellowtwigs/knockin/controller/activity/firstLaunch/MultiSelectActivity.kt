@@ -113,7 +113,7 @@ class MultiSelectActivity : AppCompatActivity() {
         if (contactList.size == 0) {
             message = applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
         } else if (contactList.size == 1) {
-            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, getString(R.string.multi_select_contact))
+            message = String.format(applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact), contactList.size, getString(R.string.multi_select_contact)) /////////
             if (contactList.size == 1) {
                 val contact = contactList[0]
                 message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
@@ -126,7 +126,7 @@ class MultiSelectActivity : AppCompatActivity() {
         }
 
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle("Knock In Notifications")
+                .setTitle("Knock In")
                 .setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->

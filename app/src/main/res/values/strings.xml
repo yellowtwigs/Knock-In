@@ -284,7 +284,6 @@
     <string name="list_contact_item_call">Call</string>
     <string name="list_contact_item_sms">SMS</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
-    <string name="list_contact_item_mail">Mail</string>
     <string name="list_contact_item_mail">Email</string>
     <string name="list_contact_item_edit">Edition</string>
     <string name="list_contact_item_messenger">Messenger</string>
