@@ -77,8 +77,8 @@
     <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
     <string name="main_contact_grid_title">Quer ligar para este contato?</string>
     <string name="main_contact_grid_message">Você pode desativar esta validação nas opções</string>
-    <string name="main_alert_dialog_delete_contact_title">Deleta contato (s)</string>
-    <string name="main_alert_dialog_delete_contact_message">Você  vai deletar % 1s</string>
+    <string name="main_alert_dialog_delete_contact_title">Deleta contato(s)</string>
+    <string name="main_alert_dialog_delete_contact_message">Você  vai deletar %1s</string>
     <string name="menu_main_toolbar_multiselect_all_select">Todas as seleções </string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
@@ -310,7 +310,7 @@
     <string name="multi_select_alert_dialog_message">Você autoriza o Knock In a exibir notificações de alta prioridade</string>
     <string name="multi_select_alert_dialog_allow_it">Autorizar</string>
     <string name="multi_select_alert_dialog_dismiss">Não autorize</string>
-    <string name="multi_select_alert_dialog_nb_contact">Você selecionou% 1s% 2s</string>
+    <string name="multi_select_alert_dialog_nb_contact">Você selecionou %1s %2s</string>
     <string name="multi_select_alert_dialog_0_contact">Você selecionou contato 0</string>
     <string name="multi_select_validate_selection">\n Deseja validar sua seleção?</string>
     <string name="multi_select_contact">Contato :</string>
@@ -358,9 +358,9 @@
     <string name="menu_group_delete_contacts">Remova contatos do grupo</string>
     <string name="menu_group_delete_group">Remova o grupo</string>
     <string name="section_alert_delete_group_title">Excluindo um grupo</string>
-    <string name="section_alert_delete_group_message">O grupo% 1 será excluído, você tem certeza?</string>
+    <string name="section_alert_delete_group_message">O grupo %1 será excluído, você tem certeza?</string>
     <!-- region Delete a contact from a Group -->
-    <string name="delete_contact_from_group_toolbar_title">Removendo contato (s) de um grupo</string>
+    <string name="delete_contact_from_group_toolbar_title">Removendo contato(s) de um grupo</string>
     <string name="delete_contact_0_contact">Você não pode excluir contato 0 de um grupo</string>
     <string name="delete_contact_from_group">Você vai excluir %1s deste grupo</string>
     <string name="delete_contact_from_group_title">Removendo contato(s) de um grupo</string>
