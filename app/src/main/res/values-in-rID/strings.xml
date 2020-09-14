@@ -47,7 +47,7 @@
     <!-- endregion-->
     <!-- region Main Activity !-->
     <string name="main_filter_sms">Nomor telepon</string>
-    <string name="main_filter_mail">E-mail</string>
+    <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Cari kontak anda</string>
     <string name="main_change_format_phone_book">Menbantu</string>
     <string name="main_tri_title">Filter oleh:</string>
@@ -99,23 +99,23 @@
     <string name="add_new_contact_toast">"Bidang nama depan harus dihuni!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Kantor</item>
+        <item>Rumah</item>
+        <item>Utama</item>
+        <item>Lain</item>
+        <item>Kustomisasi</item>
     </string-array>
-    <string name="add_new_contact_mail">E-mail</string>
+    <string name="add_new_contact_mail">Email</string>
     <string name="add_new_contact_mail_mobile">Kantor</string>
-    <string name="add_new_contact_mail_identifier">Pengidentifikasi E-mail</string>
+    <string name="add_new_contact_mail_identifier">Pengidentifikasi Email</string>
     <string name="add_new_contact_mail_identifier_help">Dapat disamakan dengan pengidentifikasi yang terlihat ketika menerima email</string>
     <string name="add_new_contact_priority_0">Tidak ada notifikasi</string>
     <string-array name="add_new_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Kantor</item>
+        <item>Rumah</item>
+        <item>Sekolah</item>
+        <item>Lain</item>
+        <item>Kustomisasi</item>
     </string-array>
     <string name="add_new_contact_add_field">Tambahkan bidang baru</string>
     <string name="add_new_contact_validate">Mensahkan</string>
@@ -142,20 +142,20 @@
     <string name="edit_contact_phone_number_home">Pulang</string>
     <string-array name="edit_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Kantor</item>
+        <item>Rumah</item>
+        <item>Utama</item>
+        <item>Lain</item>
+        <item>Kustomisasi</item>
     </string-array>
-    <string name="edit_contact_mail">E-mail</string>
+    <string name="edit_contact_mail">Email</string>
     <string name="edit_contact_mail_mobile">Jabatan</string>
     <string-array name="edit_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Kantor</item>
+        <item>Rumah</item>
+        <item>Sekolah</item>
+        <item>Lain</item>
+        <item>Kustomisasi</item>
     </string-array>
     <string name="edit_contact_add_field">Tambahkan bidang baru</string>
     <string name="edit_contact_delete_contact">Hapus kontak</string>
@@ -183,7 +183,7 @@
     <string name="edit_info_toolbar_title">Data pribadi saya</string>
     <string name="edit_informations_name">Nama</string>
     <string name="edit_informations_phone_number">Nomor telepon</string>
-    <string name="edit_informations_email">E-mail</string>
+    <string name="edit_informations_email">Email</string>
     <string name="edit_information_toast_enable">Mode penyuntingan diaktifkan</string>
     <string name="edit_information_toast_disable">Mode sunting dinonaktifkan</string>
     <!-- endregion -->
@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Pilih tampilan yang berbeda untuk kelompok anda</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>palet multicolor</item>
-        <item>palet warna tunggal</item>
+        <item>Palet warna-warni</item>
+        <item>Palet satu warna</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Mengubah tampilan kontak</string>
@@ -239,18 +239,18 @@
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_funky_slap">Tamparan yang funky</string>
-    <string name="notification_vip_message_tone_off_the_curve">Off the curve</string>
-    <string name="notification_vip_message_tone_funk_yall">Funk Yall ringtone</string>
-    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U can\'t hold no groove</string>
+    <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
+    <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
+    <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
+    <string name="notification_vip_message_tone_u_cant_hold_no_groove">U Can\'t Hold no Groove</string>
     <string name="notification_vip_message_tone_cold_sweat">Cold Sweat</string>
-    <string name="notification_vip_message_tone_keyboard_funky">Papan ketik Funky</string>
+    <string name="notification_vip_message_tone_keyboard_funky">Keyboard Funky</string>
     <string name="notification_vip_message_tone_xylo_relax">Xylo-Santai</string>
     <string name="notification_vip_message_tone_space_relax">First Step</string>
-    <string name="notification_vip_message_tone_guitar_relax">Gitar - Santai</string>
+    <string name="notification_vip_message_tone_guitar_relax">Gitar-Santai</string>
     <string name="notification_vip_message_tone_slow_dancing">Slow Dancing in a Burning Room</string>
     <string name="notification_vip_message_tone_gravity">Gravity</string>
-    <string name="notification_vip_message_tone_scorpion_theme">Fade to black</string>
+    <string name="notification_vip_message_tone_scorpion_theme">Fade to Black</string>
     <!-- endregion -->
 
     <!-- region Cockpit -->
@@ -284,7 +284,7 @@
     <string name="list_contact_item_call">Menelepon</string>
     <string name="list_contact_item_sms">SMS</string>
     <string name="list_contact_item_whatsapp">Whatsapp</string>
-    <string name="list_contact_item_mail">Pos</string>
+    <string name="list_contact_item_mail">Email</string>
     <string name="list_contact_item_edit">Edisi</string>
     <string name="list_contact_item_messenger">Pesuruh</string>
     <!-- endregion -->

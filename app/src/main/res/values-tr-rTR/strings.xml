@@ -98,12 +98,12 @@
     <string name="add_new_contact_priority2">Bu kişinin tüm mesajları yüksek öncelikli olarak bildirilecektir</string>
     <string name="add_new_contact_toast">"İsim alanı doldurulmalıdır!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
-        <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Cep Telefonu</item>
+        <item>Ofis</item>
+        <item>Ev</item>
+        <item>Ana</item>
+        <item>Diğer</item>
+        <item>Özelleştirme</item>
     </string-array>
     <string name="add_new_contact_mail">Eposta</string>
     <string name="add_new_contact_mail_mobile">Ofis</string>
@@ -111,11 +111,11 @@
     <string name="add_new_contact_mail_identifier_help">Bir e-posta alırken görünen tanımlayıcıya karşılık gelir</string>
     <string name="add_new_contact_priority_0">Bildirim yok</string>
     <string-array name="add_new_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Ofis</item>
+        <item>Ev</item>
+        <item>Okul</item>
+        <item>Diğer</item>
+        <item>Özelleştirme</item>
     </string-array>
     <string name="add_new_contact_add_field">Yeni alan ekle</string>
     <string name="add_new_contact_validate">Doğrulama</string>
@@ -141,21 +141,21 @@
     <string name="edit_contact_phone_number_mobile">Cep Telefonu</string>
     <string name="edit_contact_phone_number_home">Ev</string>
     <string-array name="edit_contact_phone_number_arrays">
-        <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Cep Telefonu</item>
+        <item>Ofis</item>
+        <item>Ev</item>
+        <item>Ana</item>
+        <item>Diğer</item>
+        <item>Özelleştirme</item>
     </string-array>
     <string name="edit_contact_mail">Eposta</string>
     <string name="edit_contact_mail_mobile">Ofis</string>
     <string-array name="edit_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Ofis</item>
+        <item>Ev</item>
+        <item>Okul</item>
+        <item>Diğer</item>
+        <item>Özelleştirme</item>
     </string-array>
     <string name="edit_contact_add_field">Yeni bir alan ekle</string>
     <string name="edit_contact_delete_contact">Kişiyi kaldır</string>
@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Gruplarınız için farklı bir ekran seçin</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Tavolozza multicolore</item>
-        <item>Tavolozza monocolore</item>
+        <item>Çok renkli palet</item>
+        <item>Tek renkli palet</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Kişilerin ekranını değiştirme</string>

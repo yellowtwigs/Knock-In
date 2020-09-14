@@ -98,12 +98,12 @@
     <string name="add_new_contact_priority2">Все сообщения этого контакта будут иметь высокий приоритет уведомлений</string>
     <string name="add_new_contact_toast">"Поле Фамилия должно быть заполнено!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
-        <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Мобильный</item>
+        <item>Офис</item>
+        <item>Домой</item>
+        <item>Основной</item>
+        <item>Другой</item>
+        <item>Настройка</item>
     </string-array>
     <string name="add_new_contact_mail">Электронная почта</string>
     <string name="add_new_contact_mail_mobile">Управление</string>
@@ -111,11 +111,11 @@
     <string name="add_new_contact_mail_identifier_help">Соответствует идентификатору, видимому при получении сообщения электронной почты</string>
     <string name="add_new_contact_priority_0">Нет уведомлений</string>
     <string-array name="add_new_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Офис</item>
+        <item>Домой</item>
+        <item>Школа</item>
+        <item>Другой</item>
+        <item>Настройка</item>
     </string-array>
     <string name="add_new_contact_add_field">Добавить новое поле</string>
     <string name="add_new_contact_validate">Подтвердить</string>
@@ -141,21 +141,21 @@
     <string name="edit_contact_phone_number_mobile">Мобильный</string>
     <string name="edit_contact_phone_number_home">Домашний</string>
     <string-array name="edit_contact_phone_number_arrays">
-        <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Мобильный</item>
+        <item>Офис</item>
+        <item>Домой</item>
+        <item>Основной</item>
+        <item>Другой</item>
+        <item>Настройка</item>
     </string-array>
     <string name="edit_contact_mail">Электронная почта</string>
     <string name="edit_contact_mail_mobile">Управление</string>
     <string-array name="edit_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Офис</item>
+        <item>Домой</item>
+        <item>Школа</item>
+        <item>Другой</item>
+        <item>Настройка</item>
     </string-array>
     <string name="edit_contact_add_field">Добавить новое поле</string>
     <string name="edit_contact_delete_contact">Удалить контакт</string>
@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Выберите другое отображение для своих групп</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Tavolozza multicolore</item>
-        <item>Tavolozza monocolore</item>
+        <item>Разноцветная палитра</item>
+        <item>Одноцветная палитра</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Изменение отображения контактов</string>

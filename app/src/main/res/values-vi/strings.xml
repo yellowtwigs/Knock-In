@@ -98,12 +98,12 @@
     <string name="add_new_contact_priority2">Tất cả các tin nhắn của liên hệ này sẽ được thông báo với mức độ ưu tiên cao</string>
     <string name="add_new_contact_toast">"Tên phải được điền!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
-        <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Điện thoại di động</item>
+        <item>Văn phòng</item>
+        <item>Trang Chủ</item>
+        <item>Chủ yếu</item>
+        <item>Khác</item>
+        <item>Tùy biến</item>
     </string-array>
     <string name="add_new_contact_mail">Email</string>
     <string name="add_new_contact_mail_mobile">Văn phòng</string>
@@ -111,11 +111,11 @@
     <string name="add_new_contact_mail_identifier_help">Tương ứng với mã định danh hiển thị khi nhận email</string>
     <string name="add_new_contact_priority_0">Không có thông báo</string>
     <string-array name="add_new_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Văn phòng</item>
+        <item>Trang Chủ</item>
+        <item>Trường học</item>
+        <item>Khác</item>
+        <item>Tùy biến</item>
     </string-array>
     <string name="add_new_contact_add_field"> Thêm một lĩnh vực mới</string>
     <string name="add_new_contact_validate">Xác thực</string>
@@ -141,21 +141,21 @@
     <string name="edit_contact_phone_number_mobile">Điện thoại di động</string>
     <string name="edit_contact_phone_number_home">Trang chủ</string>
     <string-array name="edit_contact_phone_number_arrays">
-        <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Điện thoại di động</item>
+        <item>Văn phòng</item>
+        <item>Trang Chủ</item>
+        <item>Chủ yếu</item>
+        <item>Khác</item>
+        <item>Tùy biến</item>
     </string-array>
     <string name="edit_contact_mail">Email</string>
     <string name="edit_contact_mail_mobile">Văn phòng</string>
     <string-array name="edit_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Văn phòng</item>
+        <item>Trang Chủ</item>
+        <item>Trường học</item>
+        <item>Khác</item>
+        <item>Tùy biến</item>
     </string-array>
     <string name="edit_contact_add_field">Thêm một chỗ mới</string>
     <string name="edit_contact_delete_contact">Xóa liên hệ</string>
@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Chọn một màn hình khác cho nhóm của bạn</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Tavolozza multicolore</item>
-        <item>Tavolozza monocolore</item>
+        <item>Bảng màu nhiều màu</item>
+        <item>Bảng màu đơn sắc</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Thay đổi hiển thị danh bạ</string>

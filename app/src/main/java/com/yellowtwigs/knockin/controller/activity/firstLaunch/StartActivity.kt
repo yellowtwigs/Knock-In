@@ -12,6 +12,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Point
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -114,40 +115,56 @@ class StartActivity : AppCompatActivity() {
         val webview: WebView = findViewById(R.id.start_activity_webview)
         val start_activity_video_Skip = findViewById<MaterialButton>(R.id.start_activity_video_skip)
 
-        webview.settings.loadWithOverviewMode = true
-        webview.settings.useWideViewPort = true
-        webview.settings.javaScriptEnabled = true
-        webview.webChromeClient = WebChromeClientCustomPoster()
-        videoview.visibility = View.INVISIBLE
+        val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var isWifiConn: Boolean = false
+        var isMobileConn: Boolean = false
+        connMgr.allNetworks.forEach { network ->
+            connMgr.getNetworkInfo(network).apply {
+                if (type == ConnectivityManager.TYPE_WIFI) {
+                    isWifiConn = isWifiConn or isConnected
+                }
+                if (type == ConnectivityManager.TYPE_MOBILE) {
+                    isMobileConn = isMobileConn or isConnected
+                }
+            }
+        }
+        if (isWifiConn || isMobileConn) {
+            webview.settings.loadWithOverviewMode = true
+            webview.settings.useWideViewPort = true
+            webview.settings.javaScriptEnabled = true
+            webview.webChromeClient = WebChromeClientCustomPoster()
+            videoview.visibility = View.INVISIBLE
 
-        if (Resources.getSystem().configuration.locale.language == "fr") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/france")
-        } else if (Resources.getSystem().configuration.locale.language == "de") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/germany")
-        } else if (Resources.getSystem().configuration.locale.language == "in") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/indonesia")
-        } else if (Resources.getSystem().configuration.locale.language == "vi") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/vietnam")
-        } else if (Resources.getSystem().configuration.locale.language == "it") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/italy")
-        } else if (Resources.getSystem().configuration.locale.language == "es") {
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/spain")
-        } else if(Resources.getSystem().configuration.locale.language == "pt"){
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/portugal")
-        } else if(Resources.getSystem().configuration.locale.language == "ru"){
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/russia")
-        } else if(Resources.getSystem().configuration.locale.language == "tr"){
-            webview.visibility = View.VISIBLE
-            webview.loadUrl("https://www.yellowtwigs.com/turkey")
-        }else{
+            if (Resources.getSystem().configuration.locale.language == "fr") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/france")
+            } else if (Resources.getSystem().configuration.locale.language == "de") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/germany")
+            } else if (Resources.getSystem().configuration.locale.language == "in") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/indonesia")
+            } else if (Resources.getSystem().configuration.locale.language == "vi") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/vietnam")
+            } else if (Resources.getSystem().configuration.locale.language == "it") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/italy")
+            } else if (Resources.getSystem().configuration.locale.language == "es") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/spain")
+            } else if (Resources.getSystem().configuration.locale.language == "pt") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/portugal")
+            } else if (Resources.getSystem().configuration.locale.language == "ru") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/russia")
+            } else if (Resources.getSystem().configuration.locale.language == "tr") {
+                webview.visibility = View.VISIBLE
+                webview.loadUrl("https://www.yellowtwigs.com/turkey")
+            }
+        }
+        if (webview.visibility == View.GONE) {
             webview.visibility = View.INVISIBLE
             videoview.visibility = View.VISIBLE
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
@@ -523,6 +540,7 @@ class StartActivity : AppCompatActivity() {
         if (start_activity_ActivateNotificationsCheck!!.visibility == View.VISIBLE &&
                 start_activity_ImportContactsCheck!!.visibility == View.VISIBLE) {
             start_activity_Next!!.visibility = View.VISIBLE
+            start_activity_Skip!!.visibility = View.GONE
         }
     }
 

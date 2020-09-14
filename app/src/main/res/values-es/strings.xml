@@ -100,11 +100,11 @@ Todos los mensajes de este contacto serán notificados con alta prioridad. </str
     <string name="add_new_contact_toast">" ¡El campo de nombre debe rellenarse!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Oficina</item>
+        <item>Hogar</item>
+        <item>Principal</item>
+        <item>Otra</item>
+        <item>Personalización</item>
     </string-array>
     <string name="add_new_contact_mail">Email</string>
     <string name="add_new_contact_mail_mobile">Oficina</string>
@@ -113,11 +113,11 @@ Todos los mensajes de este contacto serán notificados con alta prioridad. </str
 Corresponde al identificador visible al recibir un correo electrónico</string>
     <string name="add_new_contact_priority_0">No hay notificación</string>
     <string-array name="add_new_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Oficina</item>
+        <item>Hogar</item>
+        <item>Colegio</item>
+        <item>Otra</item>
+        <item>Personalización</item>
     </string-array>
     <string name="add_new_contact_add_field"> Añadir Nuevo campo</string>
     <string name="add_new_contact_validate">Acceptar</string>
@@ -145,20 +145,20 @@ Sus actualizaciones no se registraron, ¿está seguro? </string>
     <string name="edit_contact_phone_number_home">Casa</string>
     <string-array name="edit_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Oficina</item>
+        <item>Hogar</item>
+        <item>Principal</item>
+        <item>Otra</item>
+        <item>Personalización</item>
     </string-array>
     <string name="edit_contact_mail">Email</string>
     <string name="edit_contact_mail_mobile">Oficina</string>
     <string-array name="edit_contact_mail_arrays">
-        <item>Ufficio</item>
-        <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Oficina</item>
+        <item>Hogar</item>
+        <item>Colegio</item>
+        <item>Otra</item>
+        <item>Personalización</item>
     </string-array>
     <string name="edit_contact_add_field"> Añadir Nuevo campo </string>
     <string name="edit_contact_delete_contact">Borrar contacto</string>
@@ -211,8 +211,8 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_display_for_group_subtitle">Escojer una pantalla diferente para sus grupos</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Tavolozza multicolore</item>
-        <item>Tavolozza monocolore</item>
+        <item>Paleta multicolor</item>
+        <item>Paleta de un color</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Cambiar la visualización de contactos</string>

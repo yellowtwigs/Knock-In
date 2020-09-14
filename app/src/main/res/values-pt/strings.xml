@@ -99,11 +99,11 @@
     <string name="add_new_contact_toast">"O campo primeiro nome deve ser preenchido!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Ufficio</item>
+        <item>Escritório</item>
         <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Principal</item>
+        <item>Outro</item>
+        <item>Costumização</item>
     </string-array>
     <string name="add_new_contact_mail">Email</string>
     <string name="add_new_contact_mail_mobile">Escritório</string>
@@ -111,11 +111,11 @@
     <string name="add_new_contact_mail_identifier_help">Corresponde ao identificador visível ao receber um email</string>
     <string name="add_new_contact_priority_0">Nenhuma notificação</string>
     <string-array name="add_new_contact_mail_arrays">
-        <item>Ufficio</item>
+        <item>Escritório</item>
         <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Escola</item>
+        <item>Outro</item>
+        <item>Costumização</item>
     </string-array>
     <string name="add_new_contact_add_field">Adicione um novo campo</string>
     <string name="add_new_contact_validate">Validar</string>
@@ -142,20 +142,20 @@
     <string name="edit_contact_phone_number_home">Casa</string>
     <string-array name="edit_contact_phone_number_arrays">
         <item>Mobile</item>
-        <item>Ufficio</item>
+        <item>Escritório</item>
         <item>Casa</item>
-        <item>Principale</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Principal</item>
+        <item>Outro</item>
+        <item>Costumização</item>
     </string-array>
     <string name="edit_contact_mail">Email</string>
     <string name="edit_contact_mail_mobile">Escritório</string>
     <string-array name="edit_contact_mail_arrays">
-        <item>Ufficio</item>
+        <item>Escritório</item>
         <item>Casa</item>
-        <item>Scuola</item>
-        <item>Altro</item>
-        <item>Personalizzazione</item>
+        <item>Escola</item>
+        <item>Outro</item>
+        <item>Costumização</item>
     </string-array>
     <string name="edit_contact_add_field">Adicione um novo campo</string>
     <string name="edit_contact_delete_contact">Remova o contato</string>
@@ -206,8 +206,8 @@
     <string name="manage_my_screen_display_for_group_subtitle">Escolha uma exibição diferente para seus grupos</string>
 
     <string-array name="manage_my_screen_spinner_array">
-        <item>Tavolozza multicolore</item>
-        <item>Tavolozza monocolore</item>
+        <item>Paleta multicolorida</item>
+        <item>Paleta monocolor</item>
     </string-array>
 
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Alterando a exibição dos contatos</string>
