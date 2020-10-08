@@ -18,26 +18,26 @@
                 android:id="@+id/start_activity_video"
                 android:layout_width="match_parent"
                 android:layout_height="650dp"
-                android:layout_centerInParent="true" />
+                android:layout_centerHorizontal="true"/>
 
             <WebView
                 android:id="@+id/start_activity_webview"
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
-                android:visibility="gone"
-                android:scrollbars="none"
-                android:layout_centerInParent="true"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_activity_video_skip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/start_activity_video"
                 android:layout_centerHorizontal="true"
-                android:text="@string/start_activity_skip"
-                android:textColor="#000000"
-                android:textSize="15sp" />
+                android:scrollbars="none"
+                android:visibility="gone" />
+
         </RelativeLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_activity_video_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/start_activity_video_layout"
+            android:layout_centerHorizontal="true"
+            android:text="@string/start_activity_skip"
+            android:textColor="#000000"
+            android:textSize="15sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/start_activity_layout"

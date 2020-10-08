@@ -14,8 +14,8 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 51
-        versionName "1.7"
+        versionCode 53
+        versionName "1.8.1"
 //        versionCode 46
 //        versionName "5.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

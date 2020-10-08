@@ -19,6 +19,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.TypedValue
+import android.view.Display
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -91,10 +93,10 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start_activity)
         //region ======================================= FindViewById =======================================
 
-        start_activity_ImportContacts = findViewById(R.id.start_activity_import_contacts_button)
-        start_activity_ActivateNotifications = findViewById(R.id.start_activity_activate_notifications_button)
-        start_activity_AuthorizeSuperposition = findViewById(R.id.start_activity_superposition_button)
-        start_activity_Permissions = findViewById(R.id.start_activity_permissions_button)
+        val start_activity_ImportContacts = findViewById<MaterialButton>(R.id.start_activity_import_contacts_button)
+        val start_activity_ActivateNotifications = findViewById<MaterialButton>(R.id.start_activity_activate_notifications_button)
+        val start_activity_AuthorizeSuperposition = findViewById<MaterialButton>(R.id.start_activity_superposition_button)
+        val start_activity_Permissions = findViewById<MaterialButton>(R.id.start_activity_permissions_button)
 
         start_activity_Next = findViewById(R.id.start_activity_next)
         start_activity_Skip = findViewById(R.id.start_activity_skip)
@@ -128,7 +130,12 @@ class StartActivity : AppCompatActivity() {
                 }
             }
         }
+        val layoutSize = Point()
+        val displayScreen = windowManager.defaultDisplay
+        displayScreen.getRealSize(layoutSize)
         if (isWifiConn || isMobileConn) {
+            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150f,resources.displayMetrics)
+            webview.layoutParams.height = layoutSize.y - sizeTest.toInt()
             webview.settings.loadWithOverviewMode = true
             webview.settings.useWideViewPort = true
             webview.settings.javaScriptEnabled = true
@@ -139,9 +146,19 @@ class StartActivity : AppCompatActivity() {
                 webview.visibility = View.VISIBLE
                 webview.loadUrl("https://www.yellowtwigs.com/france")
             } else if (Resources.getSystem().configuration.locale.language == "de") {
+                println("////////////////////////////")
+                println(start_activity_ImportContacts.textSize)
+                start_activity_ImportContacts.textSize = 10f
+                start_activity_ActivateNotifications.textSize = 11f
+                println(start_activity_ImportContacts.textSize)
+                println("////////////////////////////")
                 webview.visibility = View.VISIBLE
                 webview.loadUrl("https://www.yellowtwigs.com/germany")
             } else if (Resources.getSystem().configuration.locale.language == "in") {
+                start_activity_ImportContacts.textSize = 11f
+                start_activity_ActivateNotifications.textSize = 9f
+                start_activity_AuthorizeSuperposition.textSize = 9f
+                start_activity_Permissions.textSize = 9f
                 webview.visibility = View.VISIBLE
                 webview.loadUrl("https://www.yellowtwigs.com/indonesia")
             } else if (Resources.getSystem().configuration.locale.language == "vi") {
@@ -157,6 +174,10 @@ class StartActivity : AppCompatActivity() {
                 webview.visibility = View.VISIBLE
                 webview.loadUrl("https://www.yellowtwigs.com/portugal")
             } else if (Resources.getSystem().configuration.locale.language == "ru") {
+                start_activity_ImportContacts.textSize = 7f
+                start_activity_ActivateNotifications.textSize = 8f
+                start_activity_AuthorizeSuperposition.textSize = 11f
+                start_activity_Permissions.textSize = 11f
                 webview.visibility = View.VISIBLE
                 webview.loadUrl("https://www.yellowtwigs.com/russia")
             } else if (Resources.getSystem().configuration.locale.language == "tr") {
@@ -165,6 +186,8 @@ class StartActivity : AppCompatActivity() {
             }
         }
         if (webview.visibility == View.GONE) {
+            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150f,resources.displayMetrics)
+            videoview.layoutParams.height = layoutSize.y - sizeTest.toInt()
             webview.visibility = View.INVISIBLE
             videoview.visibility = View.VISIBLE
             val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.in_app_video_en)
@@ -178,6 +201,7 @@ class StartActivity : AppCompatActivity() {
 
         videoview.setOnCompletionListener {
             start_activity_video_Layout.visibility = View.INVISIBLE
+            start_activity_video_Skip.visibility = View.INVISIBLE
             start_activity_layout.visibility = View.VISIBLE
             videoview.stopPlayback()
         }
@@ -198,6 +222,7 @@ class StartActivity : AppCompatActivity() {
             webview.clearCache(true)
             webview.destroy()
             start_activity_video_Layout.visibility = View.INVISIBLE
+            start_activity_video_Skip.visibility = View.INVISIBLE
             start_activity_layout.visibility = View.VISIBLE
             videoview.stopPlayback()
 
