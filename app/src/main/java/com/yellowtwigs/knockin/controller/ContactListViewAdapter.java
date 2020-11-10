@@ -59,7 +59,6 @@ public class ContactListViewAdapter extends BaseAdapter {
     @SuppressLint({"InflateParams", "ViewHolder"})
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
         View listview;
         final ViewHolder holder;
         holder = new ViewHolder();
@@ -142,10 +141,10 @@ public class ContactListViewAdapter extends BaseAdapter {
     private int randomDefaultImage(int avatarId) {
 
         SharedPreferences sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
-        int multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0);
+        int multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0);
 
-        SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
-        int contactsColorPosition = sharedPreferencesContactsColor.getInt("IsMultiColor", 0);
+        SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE);
+        int contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0);
 
         if (multiColor == 0) {
             switch (avatarId) {

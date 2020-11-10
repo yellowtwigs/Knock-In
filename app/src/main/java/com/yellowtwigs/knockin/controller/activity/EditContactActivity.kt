@@ -248,6 +248,7 @@ class EditContactActivity : AppCompatActivity() {
             edit_contact_last_name = contact.contactDB!!.lastName
             edit_contact_priority = contact.contactDB!!.contactPriority
             edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
+
             edit_contact_mail_name = contact.contactDB!!.mail_name
             //TODO :enlever code Dupliquer
 
