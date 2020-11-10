@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Point
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Switch
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.GravityCompat
@@ -170,6 +172,32 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         //Event
 //        premium_activity_ToolbarLoadProducts!!.setOnClickListener {
         //Initialize the Handler
+        val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var isWifiConn: Boolean = false
+        var isMobileConn: Boolean = false
+        connMgr.allNetworks.forEach { network ->
+            connMgr.getNetworkInfo(network).apply {
+                if (type == ConnectivityManager.TYPE_WIFI) {
+                    isWifiConn = isWifiConn or isConnected
+                }
+                if (type == ConnectivityManager.TYPE_MOBILE) {
+                    isMobileConn = isMobileConn or isConnected
+                }
+            }
+        }
+        if (!isWifiConn && !isMobileConn) {
+            val popup = AlertDialog.Builder(this@PremiumActivity);
+            popup.setTitle("connectivity failed");
+            popup.setMessage("You are not connected to internet")
+            popup.setPositiveButton("cancel"){ _, _ ->
+                finish()
+            }
+            popup.setNegativeButton("retry") { _, _ ->
+                finish();
+                startActivity(getIntent());
+            }
+            popup.create().show();
+        }
         mDelayHandler = Handler()
 
         val handler = Handler()
