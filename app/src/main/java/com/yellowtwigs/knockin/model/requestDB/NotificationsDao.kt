@@ -71,6 +71,11 @@ interface NotificationsDao {
     @Query("DELETE FROM notifications_table WHERE platform = :platform")
     fun deleteNotificationByPlatform(platform: String)
 
+
+    @Query("DELETE FROM notifications_table WHERE 1=1")
+    fun deleteAllNotification()
+
+
     @Query("SELECT max(id) from notifications_table ")
     fun lastInsert(): Int
 

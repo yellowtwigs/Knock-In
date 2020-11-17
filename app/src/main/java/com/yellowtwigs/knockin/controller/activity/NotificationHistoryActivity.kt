@@ -497,7 +497,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
             val stringSearch = notification_Search_TextView!!.text.toString().toLowerCase()
             if (stringSearch.isEmpty()) {
-                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
+                notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications()            as ArrayList<NotificationDB>)
             } else {
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
                 println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
@@ -1019,6 +1019,26 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     //endregion
+
+    /**
+     * Suppression de toues les notifications systèmes
+     */
+
+    public fun deleteAllNotifSystem(){
+        val listTmp = mutableListOf<NotificationDB>()
+        listTmp.addAll(notification_history_ListOfNotificationDB)
+        listTmp.forEach {
+            if (!isMessagingApp(it.platform)) {
+                it.id?.let { it1 -> notification_history_NotificationsDatabase?.notificationsDao()?.deleteNotificationById(it1) };
+            }
+        }
+    }
+    /**
+     * Suppression de toues les notifications
+     */
+    public fun deleteAllNotif(){
+        notification_history_NotificationsDatabase?.notificationsDao()?.deleteAllNotification();
+    }
 }
 
 class WrapContentLinearLayoutManager(context: Context?) : LinearLayoutManager(context) {
@@ -1030,3 +1050,4 @@ class WrapContentLinearLayoutManager(context: Context?) : LinearLayoutManager(co
         }
     }
 }
+
