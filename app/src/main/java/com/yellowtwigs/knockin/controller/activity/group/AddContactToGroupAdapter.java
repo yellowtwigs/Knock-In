@@ -124,6 +124,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
     }
 
     public List<ContactDB> getAllSelectContact() {
+        System.out.println("tessst");
         return selectContact;
     }
 

@@ -2,17 +2,26 @@ package com.yellowtwigs.knockin.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.adapter.CreateGroupGridViewAdapter
+import com.yellowtwigs.knockin.controller.adapter.CreateGroupListViewAdapter
+import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.GroupDB
 import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
 
@@ -28,6 +37,16 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var addNewGroupListView: ListView? = null
     private var createGroupAdapter: AddContactToGroupAdapter? = null
     private var addNewGroupName: TextView? = null
+
+    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
+
+    private var main_GridView: RecyclerView? = null
+    private var gridViewAdapter: CreateGroupGridViewAdapter? = null
+    private var main_RecyclerView: RecyclerView? = null
+    private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
+
+    private var gestionnaireContacts: ContactManager? = null
+    private val selectContact: MutableList<ContactDB>? = mutableListOf()
 
     //endregion
 
@@ -59,8 +78,56 @@ class AddNewGroupActivity : AppCompatActivity() {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
         actionbar.title = ""
 
+        val position = intent.getIntExtra("position", 0)
         //endregion
+        /////////////////////////////
+        gestionnaireContacts = ContactManager(this.applicationContext)
+        main_GridView = findViewById(R.id.add_contact_to_group_grid_view_id)
+        main_RecyclerView = findViewById(R.id.add_contact_to_group_recycler_view_id)
 
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 1)
+
+        //Vérification du mode d'affichage si c'est 1 ou inférieur alors l'affichage est sous forme de liste
+        // sinon il sera sous forme de gridView
+
+        if (len <= 1) {
+            main_GridView!!.visibility = View.GONE
+            main_RecyclerView!!.visibility = View.VISIBLE
+        } else {
+            main_GridView!!.visibility = View.VISIBLE
+            main_RecyclerView!!.visibility = View.GONE
+        }
+
+        if (main_GridView!!.visibility != View.GONE) {
+
+            gridViewAdapter = CreateGroupGridViewAdapter(this, gestionnaireContacts!!, len, null)
+            main_GridView!!.adapter = gridViewAdapter
+            main_GridView!!.layoutManager = GridLayoutManager(this, len)
+            main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+
+            val index = sharedPreferences.getInt("index", 0)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.apply()
+
+        }
+        if (main_RecyclerView!!.visibility != View.GONE) {
+            recyclerViewAdapter = CreateGroupListViewAdapter(this, gestionnaireContacts, len, null)
+            main_RecyclerView!!.adapter = recyclerViewAdapter
+            main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+            main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+
+            if (position == 0) {
+                val index = sharedPreferences.getInt("index", 0)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                main_RecyclerView!!.scrollToPosition(index)
+                edit.putInt("index", 0)
+                edit.apply()
+            } else {
+                main_RecyclerView!!.layoutManager!!.scrollToPosition(position)
+            }
+
+        }
 
         val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
         createGroupAdapter = AddContactToGroupAdapter(this, allContact)
@@ -86,8 +153,8 @@ class AddNewGroupActivity : AppCompatActivity() {
             }
             R.id.nav_validate -> {//Si l'utilisateur clique sur validé ont crée le groupe avec les contact séléctionner dans l'adapter
                 if (addNewGroupName!!.text.isNotEmpty()) {//Avant de vréer le groupe on vérifie que celui-ci à un nom
-                    if (createGroupAdapter!!.allSelectContact.isNotEmpty()) {//Et qu'il y a des contact dans le groupe
-                        addToGroup(createGroupAdapter!!.allSelectContact, addNewGroupName!!.text.toString())
+                    if (selectContact!!.isNotEmpty()) {//Et qu'il y a des contact dans le groupe
+                        addToGroup(selectContact, addNewGroupName!!.text.toString())
                     } else {
                         Toast.makeText(this, getString(R.string.add_new_group_toast_no_contact_selected), Toast.LENGTH_LONG).show()
                     }
@@ -99,12 +166,39 @@ class AddNewGroupActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    fun gridMultiSelectItemClick(position: Int) { ///// duplicata à changer vite
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
+        } else {
+            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+            //
+            var contact = gestionnaireContacts!!.contactList[position].contactDB!!
+            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+        }
+    }
+
+    fun listMultiSelectItemClick(position: Int) {
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+
+            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
+        } else {
+            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+
+            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+            var contact = gestionnaireContacts!!.contactList[position].contactDB!!
+            println("test")
+            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+        }
+    }
+
     /**
      * crée un groupe et ajoute les contact de la liste a celui-ci
      * @param listContact [List<ContactDB>]
      * @param name [String]
      */
-    private fun addToGroup(listContact: List<ContactDB>, name: String) {
+    private fun addToGroup(listContact: List<ContactDB>?, name: String) {
         val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
         var counter = 0
         var alreadyExist = false
@@ -122,7 +216,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         } else {
             println("list is $listContact")
             val groupId = contactsDatabase!!.GroupsDao().insert(group)
-            listContact.forEach {
+            listContact!!.forEach {
                 val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
                 println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
             }

@@ -847,6 +847,45 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_mDbWorkerThread.postTask(sortByPriority)
             fromStartActivity = false
         }
+        val sharedpopup_shop = getSharedPreferences("popup_shop", Context.MODE_PRIVATE)
+        val shared_timestamp = sharedpopup_shop.getLong("popup_timestamp", 0)
+        val shared_popup_response = sharedpopup_shop.getBoolean("popup_response", false)
+        val edit: SharedPreferences.Editor = sharedpopup_shop.edit()
+        val actual_timestamp = System.currentTimeMillis()/1000
+        val popup_shop = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setTitle(getString(R.string.popup_shop_title))
+                .setMessage(getString(R.string.popup_shop_message))
+                .setPositiveButton(R.string.popup_shop_yes) { _, _ ->
+                    edit.putBoolean("popup_response", true)
+                    edit.apply()
+                    startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
+                }
+                .setNeutralButton(R.string.popup_shop_never) { _, _ ->
+                    edit.putBoolean("popup_response", false)
+                    edit.apply()
+                }
+                .setNegativeButton(R.string.popup_shop_later) {_, _ ->
+                    edit.putBoolean("popup_response", true)
+                    edit.apply()
+                }
+        println("//////////////////////...............//////////////////////////////////")
+        println(shared_timestamp)
+        println(shared_popup_response)
+        //popup_shop.show()
+        if (shared_timestamp == 0L) {
+            popup_shop.show()
+            val timestamp = System.currentTimeMillis()/1000 + 900 // 604 800 = 1semaine ; 900 = 15min ; 300 = 5min
+            edit.putLong("popup_timestamp", timestamp)
+            edit.apply()
+        }
+        else if (shared_timestamp < actual_timestamp) {
+            if (shared_popup_response) {
+                popup_shop.show()
+                val timestamp = System.currentTimeMillis() / 1000 + 900
+                edit.putLong("popup_timestamp", timestamp)
+                edit.apply()
+            }
+        }
     }
 
     //region ========================================== Functions ===========================================
@@ -1277,7 +1316,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * Cela permet d'activer le mode Multiselect et ensuite de sélectionner d'autres contacts
      * @param position [Int]
      */
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n") /////////////////////////////////////
     fun gridMultiSelectItemClick(position: Int) {
         main_FloatingButtonAddNewContact!!.visibility = View.GONE
         main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE

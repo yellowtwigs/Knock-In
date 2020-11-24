@@ -437,5 +437,12 @@
     <string name="in_app_shop">Knock In Shop</string>
     <string name="in_app_shop_return_to_notif">Do you want to return to the Notifications page?</string>
     <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_shop_title">Personnalisez vos notifications</string>
+    <string name="popup_shop_message">Rendez-vous à la Boutique pour découvrir les options disponibles</string>
+    <string name="popup_shop_yes">Maintenant</string>
+    <string name="popup_shop_later">Plus tard</string>
+    <string name="popup_shop_never">Ne plus me rappeler</string>
+    <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>

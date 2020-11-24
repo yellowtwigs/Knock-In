@@ -140,7 +140,7 @@ class StartActivity : AppCompatActivity() {
             webview.settings.useWideViewPort = true
             webview.settings.javaScriptEnabled = true
             webview.webChromeClient = WebChromeClientCustomPoster()
-            videoview.visibility = View.INVISIBLE
+            //videoview.visibility = View.INVISIBLE
 
             if (Resources.getSystem().configuration.locale.language == "fr") {
                 webview.visibility = View.VISIBLE
@@ -149,13 +149,15 @@ class StartActivity : AppCompatActivity() {
                 println("////////////////////////////")
                 println(start_activity_ImportContacts.textSize)
                 start_activity_ImportContacts.textSize = 10f
-                start_activity_ActivateNotifications.textSize = 11f
+                start_activity_ActivateNotifications.textSize = 10f
+                start_activity_AuthorizeSuperposition.textSize = 10f
+                start_activity_Permissions.textSize = 10f
                 println(start_activity_ImportContacts.textSize)
                 println("////////////////////////////")
                 webview.visibility = View.VISIBLE
                 webview.loadUrl("https://www.yellowtwigs.com/germany")
             } else if (Resources.getSystem().configuration.locale.language == "in") {
-                start_activity_ImportContacts.textSize = 11f
+                start_activity_ImportContacts.textSize = 9f
                 start_activity_ActivateNotifications.textSize = 9f
                 start_activity_AuthorizeSuperposition.textSize = 9f
                 start_activity_Permissions.textSize = 9f
@@ -175,9 +177,9 @@ class StartActivity : AppCompatActivity() {
                 webview.loadUrl("https://www.yellowtwigs.com/portugal")
             } else if (Resources.getSystem().configuration.locale.language == "ru") {
                 start_activity_ImportContacts.textSize = 7f
-                start_activity_ActivateNotifications.textSize = 8f
-                start_activity_AuthorizeSuperposition.textSize = 11f
-                start_activity_Permissions.textSize = 11f
+                start_activity_ActivateNotifications.textSize = 7f
+                start_activity_AuthorizeSuperposition.textSize = 7f
+                start_activity_Permissions.textSize = 7f
                 webview.visibility = View.VISIBLE
                 webview.loadUrl("https://www.yellowtwigs.com/russia")
             } else if (Resources.getSystem().configuration.locale.language == "tr") {
