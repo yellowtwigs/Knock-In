@@ -93,32 +93,31 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
 
     @Override
     public void onBindViewHolder(@NonNull CreateGroupGridViewAdapter.ViewHolder holder, int position) {
-        ContactDB actContact = this.gestionnaireContact.getContactList().get(position).getContactDB();
-        Boolean isContained = false;
         if (context instanceof AddContactToGroupActivity) {
-            isContained = true;
+            ContactDB actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
+            Boolean isContained = true; // dans le groupe
             while (isContained) {
-                for (ContactWithAllInformation actualContact : listContact) {
+                for (ContactWithAllInformation actualContact : listContact) { // liste des contact pas dans le groupe
                     if (actualContact.getContactId() == actContact.getId()) {
-                        isContained = false;
-                        contactMap.put(position, positionOnBindViewHolder);
+                        if (!contactMap.containsValue(actContact.getId())) {
+                            isContained = false;
+                            if (!contactMap.containsKey(position))
+                                contactMap.put(position, positionOnBindViewHolder);
+                        }
                     }
                 }
                 if (isContained) {
-                    positionOnBindViewHolder = positionOnBindViewHolder + 1;
+                    if (positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
+                        positionOnBindViewHolder = positionOnBindViewHolder + 1;
                     actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
                 }
             }
         }
         if (context instanceof AddNewGroupActivity) {
-            contactMap.put(position, positionOnBindViewHolder);
+            if (!contactMap.containsKey(position))
+                contactMap.put(position, positionOnBindViewHolder);
         }
-        final ContactDB contact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
-        System.out.println(positionOnBindViewHolder);
-        System.out.println(position);
-            System.out.println("...........................\n");
-            System.out.println(positionOnBindViewHolder);
-            System.out.println(contact);
+        final ContactDB contact = this.gestionnaireContact.getContactList().get(contactMap.get(position)).getContactDB();
 
             int height = heightWidthImage;
             int width = heightWidthImage;
@@ -126,7 +125,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
             RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
             ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
-            if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContactList().get(positionOnBindViewHolder))) {
+            if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContactList().get(contactMap.get(position)))) {
                 assert contact != null;
                 if (!contact.getProfilePicture64().equals("")) {
                     Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -266,7 +265,8 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
 
             holder.gridContactItemLayout.setOnClickListener(gridItemClick);
             holder.contactRoundedImageView.setOnClickListener(gridItemClick);
-        positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
+        if (positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
+            positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
     }
 
     @Override

@@ -84,28 +84,29 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        ContactDB actContact = getItem(position).getContactDB();
-        Boolean isContained = false;
         if (context instanceof AddContactToGroupActivity) {
-            isContained = true;
+            Boolean isContained = true;
+            ContactDB actContact = getItem(positionOnBindViewHolder).getContactDB();
             while (isContained) {
                 for (ContactWithAllInformation actualContact : listContact) {
                     if (actualContact.getContactId() == actContact.getId()) {
                         isContained = false;
-                        contactMap.put(position, positionOnBindViewHolder);
+                        if (!contactMap.containsKey(position))
+                            contactMap.put(position, positionOnBindViewHolder);
                     }
                 }
                 if (isContained) {
-                    positionOnBindViewHolder = positionOnBindViewHolder + 1;
+                    if (positionOnBindViewHolder != listContacts.size()-1)
+                        positionOnBindViewHolder = positionOnBindViewHolder + 1;
                     actContact = getItem(positionOnBindViewHolder).getContactDB();
                 }
             }
         }
         if (context instanceof AddNewGroupActivity) {
-            contactMap.put(position, positionOnBindViewHolder);
-            System.out.println(contactMap);
+            if (!contactMap.containsKey(position))
+                contactMap.put(position, positionOnBindViewHolder);
         }
-        final ContactDB contact = getItem(positionOnBindViewHolder).getContactDB();
+        final ContactDB contact = getItem(contactMap.get(position)).getContactDB();
         System.out.println(contact);
         assert contact != null;
 
@@ -144,7 +145,7 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
         //
         //
 
-        if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(positionOnBindViewHolder))) {
+        if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(contactMap.get(position)))) {
                 holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
 
@@ -193,7 +194,8 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
         } else {
             holder.listContactItemFavoriteShine.setVisibility(View.GONE);
         }
-        positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
+        if (positionOnBindViewHolder != listContacts.size()-1)
+            positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
     }
 
     @Override
