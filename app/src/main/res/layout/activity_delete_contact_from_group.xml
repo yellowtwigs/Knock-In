@@ -35,5 +35,30 @@
         android:layout_centerHorizontal="true"
         android:columnWidth="120dp"
         android:numColumns="auto_fit"
-        android:visibility="visible" />
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/delete_contact_to_group_grid_view_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_below="@+id/delete_contact_from_group_separator"
+        android:backgroundTint="?attr/backgroundColor"
+        android:columnWidth="120dp"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:visibility="invisible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/delete_contact_to_group_recycler_view_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_below="@+id/delete_contact_from_group_separator"
+        android:backgroundTint="?attr/backgroundColor"
+        android:columnWidth="120dp"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:visibility="invisible" />
 </RelativeLayout>

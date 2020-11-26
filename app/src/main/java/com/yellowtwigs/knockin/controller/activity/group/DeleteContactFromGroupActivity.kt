@@ -2,17 +2,25 @@ package com.yellowtwigs.knockin.controller.activity.group
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.controller.adapter.CreateGroupGridViewAdapter
+import com.yellowtwigs.knockin.controller.adapter.CreateGroupListViewAdapter
+import com.yellowtwigs.knockin.model.ContactManager
 
 /**
  * Activité qui nous permet de supprimmer les contact d'un groupe
@@ -22,10 +30,18 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
     //region ========================================= Var or Val ===========================================
 
     private var contactsDatabase: ContactsRoomDatabase? = null
+    private var main_GridView: RecyclerView? = null
+    private var gridViewAdapter: CreateGroupGridViewAdapter? = null
+    private var main_RecyclerView: RecyclerView? = null
+    private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
+    private var gestionnaireContacts: ContactManager? = null
     private var deleteContactFromGroupListView: ListView? = null
     private var deleteContactFromGroupAdapter: AddContactToGroupAdapter? = null
     private var groupId: Int = 0
     private var listIsEmpty = false
+
+    private val selectContact: MutableList<ContactDB>? = mutableListOf()
+    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     //endregion
 
@@ -44,6 +60,9 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         //endregion
 
         setContentView(R.layout.activity_delete_contact_from_group)
+        gestionnaireContacts = ContactManager(this.applicationContext)
+        main_GridView = findViewById(R.id.delete_contact_to_group_grid_view_id)
+        main_RecyclerView = findViewById(R.id.delete_contact_to_group_recycler_view_id)
         deleteContactFromGroupListView = findViewById(R.id.delete_contact_from_group_listview)
         contactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
@@ -58,12 +77,54 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
 
         //endregion
 
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 1)
+
         groupId = intent.getIntExtra("GroupId", 0)
+        val position = intent.getIntExtra("position", 0)
         var allContactInGroup = listOf<ContactWithAllInformation>()
         if (groupId != 0)
             allContactInGroup = getContactInGroup(groupId)
         deleteContactFromGroupAdapter = AddContactToGroupAdapter(this, allContactInGroup)
         deleteContactFromGroupListView!!.adapter = deleteContactFromGroupAdapter
+
+        if (len <= 1) {
+            main_GridView!!.visibility = View.GONE
+            main_RecyclerView!!.visibility = View.VISIBLE
+        } else {
+            main_GridView!!.visibility = View.VISIBLE
+            main_RecyclerView!!.visibility = View.GONE
+        }
+
+        if (main_GridView!!.visibility != View.GONE) {
+
+            gridViewAdapter = CreateGroupGridViewAdapter(this, gestionnaireContacts!!, len, allContactInGroup)
+            main_GridView!!.adapter = gridViewAdapter
+            main_GridView!!.layoutManager = GridLayoutManager(this, len)
+            main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+
+            val index = sharedPreferences.getInt("index", 0)
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.apply()
+        }
+        if (main_RecyclerView!!.visibility != View.GONE) {
+            recyclerViewAdapter = CreateGroupListViewAdapter(this, gestionnaireContacts, len, allContactInGroup)
+            main_RecyclerView!!.adapter = recyclerViewAdapter
+            main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+            main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+
+            if (position == 0) {
+                val index = sharedPreferences.getInt("index", 0)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                main_RecyclerView!!.scrollToPosition(index)
+                edit.putInt("index", 0)
+                edit.apply()
+            } else {
+                main_RecyclerView!!.layoutManager!!.scrollToPosition(position)
+            }
+
+        }
+
     }
 
     //region ========================================= Toolbar ==========================================
@@ -79,13 +140,23 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         finish()
     }
 
+    fun multiSelectItemClick(position: Int) {
+        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
+        } else {
+            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 refreshActivity()
             }
             R.id.nav_validate -> {
-                deleteFromGroup(deleteContactFromGroupAdapter!!.allSelectContact, groupId)
+                deleteFromGroup(selectContact!!, groupId)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -96,7 +167,7 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
      * @param listContact [List<ContactDB>]
      * @param groupId [Int]
      */
-    private fun deleteFromGroup(listContact: List<ContactDB>, groupId: Int) {
+    private fun deleteFromGroup(listContact: MutableList<ContactDB>, groupId: Int) {
 
         if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
             removeFromFavorite()

@@ -21,6 +21,7 @@ import com.yellowtwigs.knockin.controller.CircularImageView;
 import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter;
 import com.yellowtwigs.knockin.controller.activity.group.AddContactToGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity;
+import com.yellowtwigs.knockin.controller.activity.group.DeleteContactFromGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
@@ -84,8 +85,9 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        if (context instanceof AddContactToGroupActivity) {
+        if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
             Boolean isContained = true;
+            System.out.println("......................................................ooooooooooooooooooooooooooooooooooooooo.");
             ContactDB actContact = getItem(positionOnBindViewHolder).getContactDB();
             while (isContained) {
                 for (ContactWithAllInformation actualContact : listContact) {
@@ -183,6 +185,9 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
             if (context instanceof AddContactToGroupActivity) {
                 ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
             }
+            if (context instanceof DeleteContactFromGroupActivity) {
+                ((DeleteContactFromGroupActivity) context).multiSelectItemClick(contactMap.get(position));
+            }
         };
 
         if (holder.constraintLayout != null) {
@@ -209,7 +214,7 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
         if (context instanceof AddNewGroupActivity) {
             itemCount = listContacts.size();
         }
-        if (context instanceof AddContactToGroupActivity) {
+        if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
             itemCount = listContact.size();
         }
         return itemCount;
