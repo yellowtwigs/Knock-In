@@ -43,6 +43,8 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var main_GridView: RecyclerView? = null
     private var gridViewAdapter: CreateGroupGridViewAdapter? = null
     private var main_RecyclerView: RecyclerView? = null
+    private var test: Int = 0
+    private var listtest: Int = 0
     private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
 
     private var gestionnaireContacts: ContactManager? = null
@@ -126,7 +128,6 @@ class AddNewGroupActivity : AppCompatActivity() {
             } else {
                 main_RecyclerView!!.layoutManager!!.scrollToPosition(position)
             }
-
         }
 
         val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
@@ -171,6 +172,7 @@ class AddNewGroupActivity : AppCompatActivity() {
             listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
             selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
         } else {
+            listtest++
             listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
             //
             var contact = gestionnaireContacts!!.contactList[position].contactDB!!
@@ -184,11 +186,10 @@ class AddNewGroupActivity : AppCompatActivity() {
 
             selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
         } else {
+            test++
             listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
 
-            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
             var contact = gestionnaireContacts!!.contactList[position].contactDB!!
-            println("test")
             selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
         }
     }
@@ -214,13 +215,12 @@ class AddNewGroupActivity : AppCompatActivity() {
         if (alreadyExist) {//Si il existe Nous prévenons l'utilisateur sinon nous créons le groupe
             Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
         } else {
-            println("list is $listContact")
             val groupId = contactsDatabase!!.GroupsDao().insert(group)
             listContact!!.forEach {
                 val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
                 println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
             }
-
+            println(contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
             refreshActivity()
         }
     }

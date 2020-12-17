@@ -404,7 +404,6 @@ class AddNewContactActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                println("position equals$position")
                 when (position) {
                     0 -> {
                         add_new_contact_PriorityExplain!!.text = getString(R.string.add_new_contact_priority0)

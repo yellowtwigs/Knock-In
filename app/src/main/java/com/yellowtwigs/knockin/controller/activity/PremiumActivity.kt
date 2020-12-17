@@ -195,12 +195,12 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
         if (!isWifiConn && !isMobileConn) {
             val popup = AlertDialog.Builder(this@PremiumActivity);
-            popup.setTitle("connectivity failed");
-            popup.setMessage("You are not connected to internet")
-            popup.setPositiveButton("cancel"){ _, _ ->
+            popup.setTitle(getString(R.string.popup_connection_title));
+            popup.setMessage(getString(R.string.popup_connection_message))
+            popup.setPositiveButton(getString(R.string.popup_connection_cancel)){ _, _ ->
                 finish()
             }
-            popup.setNegativeButton("retry") { _, _ ->
+            popup.setNegativeButton(getString(R.string.popup_connection_retry)) { _, _ ->
                 finish();
                 startActivity(getIntent());
             }
@@ -224,8 +224,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     billingClient!!.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
 
                         if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
-                            println("///SHOW_RECYCLER///")
-                            println(skuDetailsList)
                             loadProductToRecyclerView(skuDetailsList)
                         }
                     }

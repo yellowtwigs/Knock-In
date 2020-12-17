@@ -168,7 +168,6 @@ class AddContactToGroupActivity : AppCompatActivity() {
                             .setMessage(getString(R.string.add_contact_to_group_alert_dialog_message))
                             .show()
                 } else {
-                    println(selectContact)
                     addToGroup(selectContact, groupId)
                     refreshActivity()
                 }
@@ -189,8 +188,6 @@ class AddContactToGroupActivity : AppCompatActivity() {
 
         listContact.forEach {
             val link = LinkContactGroup(groupId, it.id!!)
-            println(it)
-            println(link)
             contactsDatabase!!.LinkContactGroupDao().insert(link)
         }
     }

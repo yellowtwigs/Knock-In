@@ -439,14 +439,26 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <!-- endregion-->
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Número de contactos VIP alcanzados </string>
-    <string name="in_app_popup_nb_vip_max_message">
-No puedes superar los 5 contactos VIP en la versión Freemium, ¿quiere ir a la tienda?</string>
+    <string name="in_app_popup_nb_vip_max_message">No puedes superar los 5 contactos VIP en la versión Freemium, ¿quiere ir a la tienda?</string>
     <string name="in_app_popup_tone_available_title"> Paquetes RingTonos disponibles en la tienda </string>
     <string name="in_app_popup_tone_available_message">Quiere ir a la tienda? </string>
     <string name="in_app_purchase_made_message">Compra realizada</string>
     <string name="in_app_load_products">Cargar productos</string>
     <string name="in_app_shop">Tienda Knock In</string>
-    <string name="in_app_shop_return_to_notif">Desea volver a la página de  Notificationes?</string>
+    <string name="in_app_shop_return_to_notif">Desea volver a la página de Notificationes?</string>
+    <!-- endregion-->
+ <!-- region In App -->
+    <string name="popup_shop_title">Personaliza tus notificaciones</string>
+    <string name="popup_shop_message">Visita la Tienda para descubrir las opciones disponibles</string>
+    <string name="popup_shop_yes">Ahora</string>
+    <string name="popup_shop_later">Luego</string>
+    <string name="popup_shop_never">No me recuerdes</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_connection_title">La conexión falló</string>
+    <string name="popup_connection_message">No estas conectado a internet</string>
+    <string name="popup_connection_retry">Rever</string>
+    <string name="popup_connection_cancel">Cancelar</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>

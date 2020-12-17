@@ -437,5 +437,18 @@
     <string name="in_app_shop">Knock In 商店</string>
     <string name="in_app_shop_return_to_notif">您想要返回Notifications页面吗？</string>
     <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_shop_title">个性化您的通知</string>
+    <string name="popup_shop_message">前往商店查找可用的选项</string>
+    <string name="popup_shop_yes">现在</string>
+    <string name="popup_shop_later">后来</string>
+    <string name="popup_shop_never">不要提醒我</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_connection_title">连接失败</string>
+    <string name="popup_connection_message">您没有连接到互联网</string>
+    <string name="popup_connection_retry">重试</string>
+    <string name="popup_connection_cancel">取消</string>
+    <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>

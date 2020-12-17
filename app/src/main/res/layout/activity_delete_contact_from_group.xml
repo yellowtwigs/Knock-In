@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,58 +7,66 @@
     android:background="?attr/backgroundColor"
     tools:context=".controller.activity.group.AddContactToGroupActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/delete_contact_from_group_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:titleTextColor="?attr/textColor"
-        app:itemTextColor="?attr/textColor"
-        android:background="?attr/backgroundColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <View
-        android:id="@+id/delete_contact_from_group_separator"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="8dp"
-        android:background="?attr/darkColor"
-        android:layout_below="@+id/delete_contact_from_group_toolbar"/>
-
-
-    <ListView
-        android:id="@+id/delete_contact_from_group_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/delete_contact_from_group_separator"
-        android:backgroundTint="?attr/backgroundColor"
-        android:layout_centerHorizontal="true"
-        android:columnWidth="120dp"
-        android:numColumns="auto_fit"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/delete_contact_to_group_grid_view_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_below="@+id/delete_contact_from_group_separator"
-        android:backgroundTint="?attr/backgroundColor"
-        android:columnWidth="120dp"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:visibility="invisible" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/delete_contact_to_group_recycler_view_id"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLyout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_below="@+id/delete_contact_from_group_separator"
-        android:backgroundTint="?attr/backgroundColor"
-        android:columnWidth="120dp"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:visibility="invisible" />
-</RelativeLayout>
+        android:background="?attr/backgroundColor" >
+
+        <LinearLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/delete_contact_from_group_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="?attr/textColor"
+                app:itemTextColor="?attr/textColor"
+                android:background="?attr/backgroundColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ListView
+                android:id="@+id/delete_contact_from_group_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/backgroundColor"
+                android:columnWidth="120dp"
+                android:numColumns="auto_fit"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/delete_contact_to_group_grid_view_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="?attr/backgroundColor"
+                android:columnWidth="120dp"
+                android:gravity="center"
+                android:numColumns="auto_fit"
+                android:visibility="invisible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/delete_contact_to_group_recycler_view_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="?attr/backgroundColor"
+                android:columnWidth="120dp"
+                android:gravity="center"
+                android:numColumns="auto_fit"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

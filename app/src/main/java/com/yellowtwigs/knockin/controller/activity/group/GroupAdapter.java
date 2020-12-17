@@ -120,7 +120,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         } else {
             view = LayoutInflater.from(context).inflate(R.layout.list_contact_item_layout, parent, false);
         }
-        System.out.println(parent.getClass());
         ViewHolder holder = new ViewHolder(view);
         heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
         return holder;

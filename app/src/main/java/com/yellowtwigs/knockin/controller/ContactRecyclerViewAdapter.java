@@ -134,7 +134,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            System.out.println(contact.getProfilePicture());
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
 

@@ -85,6 +85,7 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
+        Boolean addedInMap = false;
         if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
             Boolean isContained = true;
             System.out.println("......................................................ooooooooooooooooooooooooooooooooooooooo.");
@@ -93,8 +94,10 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
                 for (ContactWithAllInformation actualContact : listContact) {
                     if (actualContact.getContactId() == actContact.getId()) {
                         isContained = false;
-                        if (!contactMap.containsKey(position))
+                        if (!contactMap.containsKey(position)){
                             contactMap.put(position, positionOnBindViewHolder);
+                            addedInMap = true;
+                        }
                     }
                 }
                 if (isContained) {
@@ -105,11 +108,13 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
             }
         }
         if (context instanceof AddNewGroupActivity) {
-            if (!contactMap.containsKey(position))
+            if (!contactMap.containsKey(position)) {
                 contactMap.put(position, positionOnBindViewHolder);
+                addedInMap = true;
+            }
         }
         final ContactDB contact = getItem(contactMap.get(position)).getContactDB();
-        System.out.println(contact);
+        System.out.println(contact.getId());
         assert contact != null;
 
         if (len == 0) {
@@ -138,7 +143,7 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            System.out.println(contact.getProfilePicture());
+            //System.out.println(contact.getProfilePicture());
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
@@ -199,7 +204,7 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
         } else {
             holder.listContactItemFavoriteShine.setVisibility(View.GONE);
         }
-        if (positionOnBindViewHolder != listContacts.size()-1)
+        if (addedInMap && positionOnBindViewHolder != listContacts.size()-1)
             positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
     }
 

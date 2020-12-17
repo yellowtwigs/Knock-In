@@ -5,9 +5,11 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
+import android.content.res.Resources
 import android.graphics.Point
 import android.media.MediaPlayer
 import android.media.session.MediaController
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -1784,11 +1786,13 @@ class ManageNotificationActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(R.string.help)
-                        .setBackground(getDrawable(R.color.backgroundColor))
-                        .setMessage(this.resources.getString(R.string.help_notification_manager))
-                        .show()
+                if (Resources.getSystem().configuration.locale.language == "fr") {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-gestion-des-notifications"))
+                    startActivity(browserIntent)
+                } else {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-notification-management"))
+                    startActivity(browserIntent)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

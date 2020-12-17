@@ -437,5 +437,18 @@
     <string name="in_app_shop">Knock In Mağaza</string>
     <string name="in_app_shop_return_to_notif">Bildirimler sayfasına geri dönmek ister misiniz?</string>
     <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_shop_title">Bildirimlerinizi kişiselleştirin</string>
+    <string name="popup_shop_message">Mevcut seçenekleri keşfetmek için Mağazayı ziyaret edin</string>
+    <string name="popup_shop_yes">Şimdi</string>
+    <string name="popup_shop_later">Sonra</string>
+    <string name="popup_shop_never">Bana hatırlatma</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_connection_title">Bağlantı başarısız oldu</string>
+    <string name="popup_connection_message">İnternete bağlı değilsin</string>
+    <string name="popup_connection_retry">Yeniden dene</string>
+    <string name="popup_connection_cancel">İptal etmek</string>
+    <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>

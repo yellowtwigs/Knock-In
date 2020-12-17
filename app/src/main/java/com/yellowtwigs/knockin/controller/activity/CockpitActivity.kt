@@ -7,11 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.content.res.Resources
 import android.graphics.Point
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +19,7 @@ import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -30,11 +30,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
-import com.google.android.material.navigation.NavigationView
-import java.util.ArrayList
+import java.util.*
 
 /**
  * La Classe qui permet d'afficher la liste des appels reçu
@@ -552,10 +552,13 @@ class CockpitActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                val intentToTuto = Intent(this@CockpitActivity, TutorialActivity::class.java)
-                intentToTuto.putExtra("fromPhoneLogActivity", true)
-                startActivity(intentToTuto)
-                finish()
+                if (Resources.getSystem().configuration.locale.language == "fr") {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit"))
+                    startActivity(browserIntent)
+                } else {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-cockpit"))
+                    startActivity(browserIntent)
+                }
                 return true
             }
         }

@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.controller.activity.group
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.graphics.Point
 import android.os.Bundle
 import android.net.Uri
@@ -73,6 +74,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var sectionAdapter: SectionGroupAdapter? = null
 
     private var settings_left_drawer_ThemeSwitch: Switch? = null
+    private var recyclerLen: Int = 4
 
     var touchHelper: ItemTouchHelper? = null
 
@@ -233,7 +235,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         var len = sharedPreferences.getInt("gridview", 4)
-
+        recyclerLen = len
         if(len < 4){
             len = 4
         }
@@ -310,10 +312,13 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         group_manager_ToolbarHelp!!.setOnClickListener {
-            val intentToTuto = Intent(this@GroupManagerActivity, TutorialActivity::class.java)
-            intentToTuto.putExtra("fromGroupManagerActivity", true)
-            startActivity(intentToTuto)
-            finish()
+            if (Resources.getSystem().configuration.locale.language == "fr") {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-groupes"))
+                startActivity(browserIntent)
+            } else {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-groups"))
+                startActivity(browserIntent)
+            }
         }
 
         group_manager_FloatingButtonSend!!.setOnClickListener {
@@ -358,10 +363,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         group_manager_FloatingButtonAddNewGroup!!.setOnClickListener {
             val intent = Intent(this@GroupManagerActivity, AddNewGroupActivity::class.java)
             startActivity(intent)
-        }
-
-        group_manager_RecyclerView!!.setOnScrollChangeListener { v, _, _, oldScrollX, oldScrollY ->
-            adapterItem!!.closeMenu()
         }
 
         touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
@@ -537,7 +538,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val group: ArrayList<GroupWithContact> = ArrayList()
         group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
         val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
-        val len = sharedPreferences.getInt("gridview", 4)
+        val len = sharedPreferences.getInt("gridview", recyclerLen)
         val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
         val sections = ArrayList<SectionGroupAdapter.Section>()
         var position = 0

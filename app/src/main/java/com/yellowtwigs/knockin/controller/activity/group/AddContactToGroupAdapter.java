@@ -97,7 +97,6 @@ public class AddContactToGroupAdapter extends BaseAdapter {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            System.out.println(contact.getProfilePicture());
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
@@ -124,7 +123,6 @@ public class AddContactToGroupAdapter extends BaseAdapter {
     }
 
     public List<ContactDB> getAllSelectContact() {
-        System.out.println("tessst");
         return selectContact;
     }
 

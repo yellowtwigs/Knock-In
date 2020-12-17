@@ -94,7 +94,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
-        System.out.println(parent.getClass());
 //        parentGrid = ((GridView) parent);
         ContactGridViewAdapter.ViewHolder holder = new ContactGridViewAdapter.ViewHolder(view);
 

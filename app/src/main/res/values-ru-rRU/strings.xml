@@ -437,5 +437,18 @@
     <string name="in_app_shop">Магазин Knock In</string>
     <string name="in_app_shop_return_to_notif">Вернуться на страницу "Уведомления"?</string>
     <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_shop_title">Персонализируйте свои уведомления</string>
+    <string name="popup_shop_message">Посетите Магазин, чтобы узнать о доступных вариантах</string>
+    <string name="popup_shop_yes">Сейчас же</string>
+    <string name="popup_shop_later">Позже</string>
+    <string name="popup_shop_never">Не напоминай мне</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_connection_title">Ошибка подключения</string>
+    <string name="popup_connection_message">Вы не подключены к Интернету</string>
+    <string name="popup_connection_retry">Повторить</string>
+    <string name="popup_connection_cancel">Отмена</string>
+    <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
@@ -604,10 +605,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // Lors du click sur le bouton Help dans la toolbar, nous ouvrons le Tutorial
         main_toolbar_Help!!.setOnClickListener {
-            startActivity(Intent(this@MainActivity, TutorialActivity::class.java).putExtra("fromMainActivity", true))
-            finish()
-//            val target = Intent(this, BubbleActivity::class.java)
-//            startActivity(target)
+            if (Resources.getSystem().configuration.locale.language == "fr") {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-contacts"))
+                startActivity(browserIntent)
+            } else {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-contacts"))
+                startActivity(browserIntent)
+            }
         }
 
         // En mode Multiselect, le click sur la croix permet de fermer de ce mode
@@ -849,7 +853,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         val sharedpopup_shop = getSharedPreferences("popup_shop", Context.MODE_PRIVATE)
         val shared_timestamp = sharedpopup_shop.getLong("popup_timestamp", 0)
-        val shared_popup_response = sharedpopup_shop.getBoolean("popup_response", false)
+        val shared_popup_response = sharedpopup_shop.getBoolean("popup_response", true)
         val edit: SharedPreferences.Editor = sharedpopup_shop.edit()
         val actual_timestamp = System.currentTimeMillis()/1000
         val popup_shop = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -874,14 +878,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //popup_shop.show()
         if (shared_timestamp == 0L) {
             popup_shop.show()
-            val timestamp = System.currentTimeMillis()/1000 + 900 // 604 800 = 1semaine ; 900 = 15min ; 300 = 5min
+            val timestamp = System.currentTimeMillis()/1000 + 300 // 604 800 = 1semaine ; 900 = 15min ; 300 = 5min
             edit.putLong("popup_timestamp", timestamp)
             edit.apply()
         }
         else if (shared_timestamp < actual_timestamp) {
             if (shared_popup_response) {
                 popup_shop.show()
-                val timestamp = System.currentTimeMillis() / 1000 + 900
+                val timestamp = System.currentTimeMillis() / 1000 + 604800
                 edit.putLong("popup_timestamp", timestamp)
                 edit.apply()
             }

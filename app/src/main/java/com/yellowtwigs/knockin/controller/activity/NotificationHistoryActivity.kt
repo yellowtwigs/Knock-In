@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -947,7 +948,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
             }
             R.id.item_help -> {
-                startActivity(Intent(this@NotificationHistoryActivity, TutorialActivity::class.java).putExtra("fromNotificationHistoryActivity", true))
+                if (Resources.getSystem().configuration.locale.language == "fr") {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-historique"))
+                    startActivity(browserIntent)
+                } else {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-history"))
+                    startActivity(browserIntent)
+                }
                 finish()
             }
             R.id.messagefilter -> {

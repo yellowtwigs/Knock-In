@@ -437,5 +437,18 @@
     <string name="in_app_shop">Knock In Toko</string>
     <string name="in_app_shop_return_to_notif">Apakah anda ingin kembali ke halaman notifikasi?</string>
     <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_shop_title">Personalisasikan notifikasi Anda</string>
+    <string name="popup_shop_message">Kunjungi Toko untuk menemukan opsi yang tersedia</string>
+    <string name="popup_shop_yes">Sekarang</string>
+    <string name="popup_shop_later">Kemudian</string>
+    <string name="popup_shop_never">Jangan ingatkan aku</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_connection_title">Koneksi gagal</string>
+    <string name="popup_connection_message">Anda tidak tersambung ke internet</string>
+    <string name="popup_connection_retry">Mencoba kembali</string>
+    <string name="popup_connection_cancel">Membatalkan</string>
+    <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>

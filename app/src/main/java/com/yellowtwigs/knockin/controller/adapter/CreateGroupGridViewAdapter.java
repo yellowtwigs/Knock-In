@@ -94,6 +94,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
 
     @Override
     public void onBindViewHolder(@NonNull CreateGroupGridViewAdapter.ViewHolder holder, int position) {
+        Boolean addedInMap = false;
         if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
             ContactDB actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
             Boolean isContained = true; // dans le groupe
@@ -102,8 +103,10 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
                     if (actualContact.getContactId() == actContact.getId()) {
                         if (!contactMap.containsValue(actContact.getId())) {
                             isContained = false;
-                            if (!contactMap.containsKey(position))
+                            if (!contactMap.containsKey(position)) {
                                 contactMap.put(position, positionOnBindViewHolder);
+                                addedInMap = true;
+                            }
                         }
                     }
                 }
@@ -115,8 +118,10 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
             }
         }
         if (context instanceof AddNewGroupActivity) {
-            if (!contactMap.containsKey(position))
+            if (!contactMap.containsKey(position)) {
                 contactMap.put(position, positionOnBindViewHolder);
+                addedInMap = true;
+            }
         }
         final ContactDB contact = this.gestionnaireContact.getContactList().get(contactMap.get(position)).getContactDB();
 
@@ -269,7 +274,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
 
             holder.gridContactItemLayout.setOnClickListener(gridItemClick);
             holder.contactRoundedImageView.setOnClickListener(gridItemClick);
-        if (positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
+        if (addedInMap && positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
             positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
     }
 

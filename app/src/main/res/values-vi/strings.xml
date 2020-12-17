@@ -437,5 +437,18 @@
     <string name="in_app_shop">Cửa hàng Knock In</string>
     <string name="in_app_shop_return_to_notif">Bạn có muốn quay lại trang Thông báo không?</string>
     <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_shop_title">Cá nhân hóa thông báo của bạn</string>
+    <string name="popup_shop_message">Ghé thăm Cửa hàng để khám phá các tùy chọn có sẵn</string>
+    <string name="popup_shop_yes">Hiện nay</string>
+    <string name="popup_shop_later">Một lát sau</string>
+    <string name="popup_shop_never">Đừng nhắc nhở tôi</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_connection_title">Kết nối thất bại</string>
+    <string name="popup_connection_message">Bạn chưa kết nối với internet</string>
+    <string name="popup_connection_retry">Thử lại</string>
+    <string name="popup_connection_cancel">Huỷ bỏ</string>
+    <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>

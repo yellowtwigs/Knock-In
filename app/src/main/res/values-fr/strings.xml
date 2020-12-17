@@ -438,5 +438,18 @@
     <string name="in_app_shop">Boutique Knock In</string>
     <string name="in_app_shop_return_to_notif">Voulez-vous retourner à la page des Notifications ?</string>
     <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_shop_title">Personnalisez vos notifications</string>
+    <string name="popup_shop_message">Rendez-vous à la Boutique pour découvrir les options disponibles</string>
+    <string name="popup_shop_yes">Maintenant</string>
+    <string name="popup_shop_later">Plus tard</string>
+    <string name="popup_shop_never">Ne plus me le rappeler</string>
+    <!-- endregion-->
+    <!-- region In App -->
+    <string name="popup_connection_title">La connection a échoué</string>
+    <string name="popup_connection_message">Vous n\'êtes pas connecté à Internet</string>
+    <string name="popup_connection_retry">Réessayez</string>
+    <string name="popup_connection_cancel">Annulez</string>
+    <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
 </resources>
