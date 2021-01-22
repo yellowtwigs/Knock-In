@@ -403,7 +403,7 @@
     <string name="start_activity_superposition_title">Superposition</string>
     <string name="start_activity_superposition_subtitle">Autorisez Knock In à afficher les notifications VIP pendant que vous exécutez d’autres applications</string>
     <string name="start_activity_button_superposition">Autoriser</string>
-    <string name="start_activity_superposition_not_allowed_message">La superposition n\'est pas possible avec Android 10 (version de votre Smartphone). Les notifications prioritaires ne sont donc pas disponibles pour l\'instant. Une version de l\'application offrant les notifications prioritaires pour Android 10 sera bientôt disponible. Vous pouvez toutefois utiliser les autres fonctions gratuites de l\'application.</string>
+    <string name="start_activity_superposition_not_allowed_message">Pour afficher les popups des notifications VIP avec Android 10, vous devez activer les "bubbles". Découvrez comment procéder en vous rendant dans le menu "Aide" du drawer de Knock In.</string> 
     <string name="start_activity_video_tutorial_skip_text">La vidéo est disponible dans l\'onglet Aide du menu de l\'application</string>
     <string name="start_activity_permission_title">Autres autorisations</string>
     <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des SMS depuis l\'application</string>

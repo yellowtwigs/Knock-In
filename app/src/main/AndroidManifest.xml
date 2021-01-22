@@ -32,6 +32,13 @@
         <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity">
         </activity>
+        <activity
+            android:name=".controller.BubbleActivity"
+            android:launchMode="singleTop"
+            android:allowEmbedded="true"
+            android:documentLaunchMode="always"
+            android:resizeableActivity="true"
+            />
         <activity android:name=".controller.activity.group.AddNewGroupActivity" />
         <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
         <activity android:name=".controller.activity.group.AddContactToGroupActivity" />
@@ -126,6 +133,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.VIBRATE" />

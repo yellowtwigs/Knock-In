@@ -403,7 +403,7 @@
     <string name="start_activity_superposition_title">Superposition</string>
     <string name="start_activity_superposition_subtitle">Allow Knock In to display VIP notifications while you are using other apps</string>
     <string name="start_activity_button_superposition">Allow</string>
-    <string name="start_activity_superposition_not_allowed_message">Superposition is not possible with Android 10 (version of your Smartphone). VIP notifications are therefore not available for the time being. A new version of our app offering VIP notifications with Android 10 will be available soon. You can anyhow use the other free functions of the app.</string>
+    <string name="start_activity_superposition_not_allowed_message">To display the popups of VIP notifications with Android 10, you must activate the "bubbles". Find out how to proceed by going to the "Help" menu in the Knock In drawer.</string>
     <string name="start_activity_video_tutorial_skip_text">The video is available in the Help tab of the application menu</string>
     <string name="start_activity_permission_title">Other authorisations</string>
     <string name="start_activity_permission_subtitle">You will be able to make phone calls and send SMS from the app</string>

@@ -16,10 +16,10 @@ import java.util.HashMap
  * @author Florian Striebel
  */
 class StatusBarParcelable : Parcelable {
-    private var id: Int = 0
+    var id: Int = 0
     var appNotifier: String? = "" // application qui poste la notification
     var tickerText: String? = "" // ex: Jean-Luc Paulin : Bonjour
-    private var tailleList: Int = 0 //Taille de la list contenant tous les champs de la notification
+    var tailleList: Int = 0 //Taille de la list contenant tous les champs de la notification
     val key = ArrayList<String>() //List des clés des attributs de la notification
 
     val statusBarNotificationInfo = HashMap<String, Any?>()

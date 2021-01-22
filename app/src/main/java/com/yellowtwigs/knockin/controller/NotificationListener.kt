@@ -6,8 +6,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.graphics.drawable.Icon
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Handler
@@ -17,6 +19,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat
@@ -31,6 +34,8 @@ import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
+import com.yellowtwigs.knockin.model.ModelDB.VipNotificationsDB
+import com.yellowtwigs.knockin.model.ModelDB.VipSbnDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import kotlin.collections.ArrayList
 
@@ -144,8 +149,22 @@ class NotificationListener : NotificationListenerService() {
                                     } else {
                                         println("screenIsUnlocked")
 
-                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                                            this.cancelNotification(sbn.key)
+                                        //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                                        this.cancelNotification(sbn.key)
+                                        //}
+                                        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                                            var i = 0
+                                            val vipNotif = VipNotificationsDB(null, sbp.id, sbp.appNotifier!!, sbp.tailleList, sbp.tickerText!!)
+                                            notification_listener_ContactsDatabase!!.VipNotificationsDao().insert(vipNotif)
+                                            while(i < sbp.key.size) {
+                                                if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
+                                                    val VipSbn = VipSbnDB(null, sbp.id, sbp.key[i], sbp.statusBarNotificationInfo[sbp.key[i]].toString())
+                                                    notification_listener_ContactsDatabase!!.VipSbnDao().insert(VipSbn)
+                                                }
+                                                i++
+                                            }
+                                            println("android 10 recois notif")
+                                            //this.cancelNotification(sbn.key)
                                         }
                                         displayLayout(sbp, sharedPreferences)
                                     }
@@ -171,7 +190,7 @@ class NotificationListener : NotificationListenerService() {
                                     println("screenIsUnlocked")
 
                                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                                        this.cancelNotification(sbn.key)
+                                        this.cancelNotification(sbn.key) /////// cancell
                                     }
                                     displayLayout(sbp, sharedPreferences)
                                 }
@@ -309,49 +328,143 @@ class NotificationListener : NotificationListenerService() {
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
         val popupDropable = popupView!!.findViewById<ConstraintLayout>(R.id.notification_dropable)
         val popupContainer = popupView!!.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
-        notifLayout(sbp, popupView)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            notifLayout(sbp, popupView)
+            windowManager!!.addView(popupView, parameters) // affichage de la popupview
 
-        windowManager!!.addView(popupView, parameters) // affichage de la popupview
+            popupDropable!!.setOnTouchListener { view, event ->
 
-        popupDropable!!.setOnTouchListener { view, event ->
+                val metrics = DisplayMetrics()
+                windowManager!!.defaultDisplay.getMetrics(metrics)
+                when (event.action and MotionEvent.ACTION_MASK) {
 
-            val metrics = DisplayMetrics()
-            windowManager!!.defaultDisplay.getMetrics(metrics)
-            when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_DOWN -> {
+                        println("action Down")
+                        oldPosX = event.x
+                        oldPosY = event.y
 
-                MotionEvent.ACTION_DOWN -> {
-                    println("action Down")
-                    oldPosX = event.x
-                    oldPosY = event.y
+                        println("oldx" + oldPosX + "oldy" + oldPosY)
+                        //xDelta = (popupContainer.x - event.rawX).toInt()
+                        //yDelta = (popupContainer.y - event.rawY).toInt()
+                    }
 
-                    println("oldx" + oldPosX + "oldy" + oldPosY)
-                    //xDelta = (popupContainer.x - event.rawX).toInt()
-                    //yDelta = (popupContainer.y - event.rawY).toInt()
+                    MotionEvent.ACTION_UP -> {
+                    }
+                    MotionEvent.ACTION_POINTER_DOWN -> {
+                    }
+                    MotionEvent.ACTION_POINTER_UP -> {
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        println("action move")
+                        val x = event.x
+                        val y = event.y
+
+                        val deplacementX = x - oldPosX
+                        val deplacementY = y - oldPosY
+
+                        popupContainer.x = positionXIntoScreen(popupContainer.x, deplacementX, popupContainer.width.toFloat())//(popupContainer.x + deplacementX)
+                        oldPosX = x - deplacementX
+
+                        popupContainer.y = positionYIntoScreen(popupContainer.y, deplacementY, popupContainer.height.toFloat())//(popupContainer.y + deplacementY)
+                        oldPosY = y - deplacementY
+                    }
                 }
-
-                MotionEvent.ACTION_UP -> {
-                }
-                MotionEvent.ACTION_POINTER_DOWN -> {
-                }
-                MotionEvent.ACTION_POINTER_UP -> {
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    println("action move")
-                    val x = event.x
-                    val y = event.y
-
-                    val deplacementX = x - oldPosX
-                    val deplacementY = y - oldPosY
-
-                    popupContainer.x = positionXIntoScreen(popupContainer.x, deplacementX, popupContainer.width.toFloat())//(popupContainer.x + deplacementX)
-                    oldPosX = x - deplacementX
-
-                    popupContainer.y = positionYIntoScreen(popupContainer.y, deplacementY, popupContainer.height.toFloat())//(popupContainer.y + deplacementY)
-                    oldPosY = y - deplacementY
-                }
+                return@setOnTouchListener true
             }
-            return@setOnTouchListener true
+        } else {
+            println("mdrrrr")
+            //init DB
+            //notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
+            //add Notif VIP
+            //add tout ses sbn
+            displayBubble(sbp)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun displayBubble(sbp: StatusBarParcelable) {
+        val notificationManager = this.getSystemService(NotificationManager::class.java)
+        val icon = createIcon()
+        val person = createPerson(icon)
+        val channel = NotificationChannel("notifications", "vip", NotificationManager.IMPORTANCE_DEFAULT).apply {
+            description = "channel for Vip notifications"
+        }
+        notificationManager?.createNotificationChannel(channel)
+        val notification = createNotification(icon, person, sbp)
+        val bubbleMetaData = createBubbleMetadata(icon, sbp)
+        notification.setBubbleMetadata(bubbleMetaData)
+        startForeground(101, notification.build())
+        //notificationManager?.notify(0,notification.build())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun createPerson(icon: Icon): Person {
+        return Person.Builder()
+                .setName("Knockin")
+                .setIcon(icon)
+                .setBot(true)
+                .setImportant(true)
+                .build()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun createNotification(icon: Icon, person: Person, sbp: StatusBarParcelable): Notification.Builder {
+        return Notification.Builder(this, "notifications")
+                .setContentTitle("KnockIn")
+                .setLargeIcon(icon)
+                .setSmallIcon(R.drawable.ic_app_image)
+                .setCategory(Notification.CATEGORY_CALL)
+                .setStyle(Notification.MessagingStyle(person)
+                        .setGroupConversation(false)
+                        .addMessage(sbp.tickerText.toString(), System.currentTimeMillis(), person) /// [Idée] on pourrait ajouter plusieurs messages // sbp.tickerText.toString()
+                )
+                .addPerson(person)
+                .setShowWhen(true)
+                .setContentIntent(createIntent(1, sbp))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createIcon(): Icon {
+        return Icon.createWithAdaptiveBitmap(
+                BitmapFactory.decodeResource(
+                        resources,
+                        R.drawable.ic_app_image_png
+                )
+        )
+    }
+
+    private fun createIntent(requestCode: Int, sbp: StatusBarParcelable): PendingIntent {
+        val intent = Intent(this, BubbleActivity::class.java)
+        //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        println("c'est le string tickerText")
+        println(sbp.tickerText.toString())
+        //val size = adapterNotification!!.getItemCount()
+        //val allNotif = adapterNotification!!.getAllNotification()
+        ///setAllSbp(size, intent)
+        //intent.putExtra("sizeOfArray", size)
+        //intent.putExtra("com.yellowtwigs.knockin.sbp9", 17)
+        /*intent.putExtra("com.yellowtwigs.knockin.sbp8", 15)
+        intent.putExtra("com.yellowtwigs.knockin.sbp7", 19)
+        intent.putExtra("com.yellowtwigs.knockin.sbp6", 16)
+        intent.putExtra("com.yellowtwigs.knockin.sbp55", 14)*/
+        val pending = PendingIntent.getActivity(
+                this,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        return pending
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun createBubbleMetadata(icon: Icon, sbp: StatusBarParcelable): Notification.BubbleMetadata {
+        val requestbubble = 2
+        return Notification.BubbleMetadata.Builder()
+                .setDesiredHeight(600)
+                .setIcon(icon)
+                .apply {  }
+                .setIntent(createIntent(1, sbp))
+                .build()
     }
 
     private fun positionXIntoScreen(popupX: Float, deplacementX: Float, popupSizeX: Float): Float {

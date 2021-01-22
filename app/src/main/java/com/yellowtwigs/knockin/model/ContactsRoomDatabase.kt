@@ -13,13 +13,15 @@ import com.yellowtwigs.knockin.model.requestDB.*
  * La Classe qui permet de créer la base de données et de la garder à jour
  * @author Ryan Granet
  */
-@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class], version = 15)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class, VipNotificationsDB::class, VipSbnDB::class], version = 16)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
     abstract fun contactDetailsDao(): ContactDetailsDao
     abstract fun GroupsDao(): GroupsDao
     abstract fun LinkContactGroupDao(): LinkContactGroupDao
+    abstract fun VipNotificationsDao(): VipNotificationsDao
+    abstract fun VipSbnDao(): VipSbnDao
 
     companion object {
         private var INSTANCE: ContactsRoomDatabase? = null
@@ -48,6 +50,7 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                         .addMigrations(MIGRATION_12_13)
                         .addMigrations(MIGRATION_13_14)
                         .addMigrations(MIGRATION_14_15)
+                        .addMigrations(MIGRATION_15_16)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -133,6 +136,13 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
         private val MIGRATION_14_15 = object : Migration(14, 15) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN has_whatsapp INTEGER DEFAULT 0 NOT NULL")
+            }
+        }
+
+        private val MIGRATION_15_16 = object : Migration(15, 16) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'vip_notifications_table' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'notification_id' INTEGER NOT NULL, 'app_notifier' TEXT NOT NULL, 'list_size' INTEGER NOT NULL, 'notification_text' TEXT NOT NULL)")
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'vip_sbn_table' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'vip_notification_id' INTEGER NOT NULL, 'sbn_key' TEXT NOT NULL, 'sbn_value' TEXT NOT NULL)")
             }
         }
 
