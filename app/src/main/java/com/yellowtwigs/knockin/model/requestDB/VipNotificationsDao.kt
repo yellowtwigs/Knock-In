@@ -16,7 +16,7 @@ interface VipNotificationsDao {
     fun getAllVipNotificationsById(): List<VipNotificationsDB>
 
     @Insert
-    fun insert(VipNotif: VipNotificationsDB)
+    fun insert(VipNotif: VipNotificationsDB): Long?
 
     @Query("DELETE FROM vip_notifications_table")
     fun deleteAllVipNotifications()

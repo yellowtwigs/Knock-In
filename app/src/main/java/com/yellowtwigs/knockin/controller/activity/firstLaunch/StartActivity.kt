@@ -197,6 +197,11 @@ class StartActivity : AppCompatActivity() {
             videoview.start()
         }
 
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+        edit.putBoolean("popupNotif", true)
+        edit.apply()
+
         val mediaController = MediaController(this)
         videoview.setMediaController(mediaController)
         mediaController.setAnchorView(videoview)

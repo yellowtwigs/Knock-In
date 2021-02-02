@@ -19,6 +19,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -155,11 +156,16 @@ class NotificationListener : NotificationListenerService() {
                                         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
                                             var i = 0
                                             val vipNotif = VipNotificationsDB(null, sbp.id, sbp.appNotifier!!, sbp.tailleList, sbp.tickerText!!)
-                                            notification_listener_ContactsDatabase!!.VipNotificationsDao().insert(vipNotif)
+                                            val notifId = notification_listener_ContactsDatabase!!.VipNotificationsDao().insert(vipNotif)
                                             while(i < sbp.key.size) {
                                                 if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
-                                                    val VipSbn = VipSbnDB(null, sbp.id, sbp.key[i], sbp.statusBarNotificationInfo[sbp.key[i]].toString())
+                                                    val VipSbn = VipSbnDB(null, notifId!!.toInt(), sbp.key[i], sbp.statusBarNotificationInfo[sbp.key[i]].toString())
                                                     notification_listener_ContactsDatabase!!.VipSbnDao().insert(VipSbn)
+                                                    println(sbp.id)
+                                                    println(sbp.tailleList)
+                                                    println(sbp.appNotifier)
+                                                    println(sbp.key)
+                                                    println(sbp.statusBarNotificationInfo)
                                                 }
                                                 i++
                                             }
@@ -295,7 +301,11 @@ class NotificationListener : NotificationListenerService() {
 
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             //this.cancelNotification(sbn.key)
-
+            if (adapterNotification == null) {
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("view", false)
+                edit.apply()
+            }
             if (popupView == null || !sharedPreferences.getBoolean("view", false)) {//SharedPref nous permet de savoir si l'adapter a fermé la notification
                 popupView = null
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
@@ -303,8 +313,10 @@ class NotificationListener : NotificationListenerService() {
                 edit.apply()
                 displayLayout(sbp)
             } else {
-                Log.i(TAG, "different de null" + sharedPreferences.getBoolean("view", true))
                 //notifLayout(sbp, popupView)
+                println(sbp)
+                println(adapterNotification)
+                println(popupView)
                 adapterNotification!!.addNotification(sbp)
             }
         }
@@ -331,7 +343,6 @@ class NotificationListener : NotificationListenerService() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             notifLayout(sbp, popupView)
             windowManager!!.addView(popupView, parameters) // affichage de la popupview
-
             popupDropable!!.setOnTouchListener { view, event ->
 
                 val metrics = DisplayMetrics()
@@ -373,6 +384,16 @@ class NotificationListener : NotificationListenerService() {
             }
         } else {
             println("mdrrrr")
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+            if (sharedPreferences.getBoolean("first_notif", true)) {
+                val view = inflater.inflate(R.layout.layout_notification_pop_up, null)
+                val notifications: ArrayList<StatusBarParcelable> = ArrayList()
+                notifications.add(sbp)
+                adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view, notification_alarm_NotificationMessagesAlarmSound, false)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("first_notif", false)
+                edit.apply()
+            }
             //init DB
             //notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
             //add Notif VIP
@@ -386,7 +407,7 @@ class NotificationListener : NotificationListenerService() {
         val notificationManager = this.getSystemService(NotificationManager::class.java)
         val icon = createIcon()
         val person = createPerson(icon)
-        val channel = NotificationChannel("notifications", "vip", NotificationManager.IMPORTANCE_DEFAULT).apply {
+        val channel = NotificationChannel("notifications", "vip", NotificationManager.IMPORTANCE_LOW).apply {
             description = "channel for Vip notifications"
         }
         notificationManager?.createNotificationChannel(channel)
@@ -497,7 +518,7 @@ class NotificationListener : NotificationListenerService() {
         notifications.add(sbp)
         notificationPopupRecyclerView = view!!.findViewById(R.id.notification_popup_recycler_view)
         notificationPopupRecyclerView!!.layoutManager = LinearLayoutManager(applicationContext)
-        adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view, notification_alarm_NotificationMessagesAlarmSound)
+        adapterNotification = NotifPopupRecyclerViewAdapter(applicationContext, notifications, windowManager!!, view, notification_alarm_NotificationMessagesAlarmSound, false)
         notificationPopupRecyclerView?.adapter = adapterNotification
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)

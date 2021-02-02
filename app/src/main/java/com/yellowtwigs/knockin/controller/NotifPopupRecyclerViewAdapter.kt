@@ -38,7 +38,7 @@ import java.util.*
  * La Classe qui permet d'afficher les notifications prioritaires au milieu de l'écran
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class NotifPopupRecyclerViewAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View, private val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer?
+class NotifPopupRecyclerViewAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View, private val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer?, private val isBubble: Boolean
 ) : RecyclerView.Adapter<NotifPopupRecyclerViewAdapter.NotificationHistoryViewHolder>() {
 
     /*private val TAG = NotificationListener::class.java.simpleName*/
@@ -319,7 +319,7 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
             e.printStackTrace()
         }
 
-        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"] != null) {//image de l'expediteur provenant l'application source
+        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"] != null && !isBubble) {//image de l'expediteur provenant l'application source
             println("bitmap :" + sbp.statusBarNotificationInfo["android.largeIcon"]!!)
             val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
             holder.senderImageView!!.setImageBitmap(bitmap)
@@ -432,10 +432,10 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     }
 
     private fun closeNotificationPopup() {
-
-        windowManager.removeView(view)
-
-        notification_alarm_NotificationMessagesAlarmSound?.stop()
+        if (!isBubble) {
+            windowManager.removeView(view)
+            notification_alarm_NotificationMessagesAlarmSound?.stop()
+        }
         val sharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         edit.putBoolean("view", false)

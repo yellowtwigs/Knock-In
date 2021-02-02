@@ -20,9 +20,9 @@ class StatusBarParcelable : Parcelable {
     var appNotifier: String? = "" // application qui poste la notification
     var tickerText: String? = "" // ex: Jean-Luc Paulin : Bonjour
     var tailleList: Int = 0 //Taille de la list contenant tous les champs de la notification
-    val key = ArrayList<String>() //List des clés des attributs de la notification
+    var key = ArrayList<String>() //List des clés des attributs de la notification
 
-    val statusBarNotificationInfo = HashMap<String, Any?>()
+    var statusBarNotificationInfo = HashMap<String, Any?>()
 
     constructor(sbn: StatusBarNotification) {
         id = sbn.id
@@ -46,8 +46,14 @@ class StatusBarParcelable : Parcelable {
         }
         //Log.i(TAG, "ID:" + sbn.getId());
         //Log.i(TAG, "Posted by:" + sbn.getPackageName());
+    }
 
-
+    constructor(NotifId: Int, listSize: Int, appliNotifier: String, sbnKey: ArrayList<String>, sbnInfo: HashMap<String, Any?>) {
+        id = NotifId
+        tailleList = listSize
+        appNotifier = appliNotifier
+        key = sbnKey
+        statusBarNotificationInfo = sbnInfo
     }
 
     override fun describeContents(): Int {
