@@ -274,6 +274,12 @@
     <string name="notification_history_search_hint">Search</string>
     <string name="notification_history_delete_notifications">Delete one or more notifications</string>
     <string name="notification_history_delete_notifications_confirmation">Are you sure ?</string>
+    <string name="notification_history_alert_dialog_title">Delete notification</string>
+    <string name="notification_history_alert_dialog_text">Reminder: You can delete notification also with a long tap</string>
+    <string name="notification_history_alert_dialog_delete_button">Delete all</string>
+    <string name="notification_history_alert_dialog_cancel_button">Cancel</string>
+    <string name="notification_history_alert_dialog_delete_system_button">Delete not messaging notification</string>
+
     <!-- endregion -->
     <!-- region Alert Dialog Notifications -->
     <string name="alert_dialog_notification_message">Authorize Knock In to access your notifications and prioritize them</string>

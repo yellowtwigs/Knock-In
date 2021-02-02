@@ -1,10 +1,7 @@
 package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -20,6 +17,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -34,6 +32,7 @@ import com.facebook.internal.Utility.arrayList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationListener
 import com.yellowtwigs.knockin.controller.NotificationsHistoryListViewAdapter
@@ -85,7 +84,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private var numberForPermission = ""
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
-
+    private var notification_history_floating_action_button: FloatingActionButton? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
@@ -135,7 +134,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         notification_history_ToolbarMultiSelectModeClose = findViewById(R.id.notification_history_toolbar_multi_select_mode_close)
         notification_history_ToolbarMultiSelectModeDelete = findViewById(R.id.notification_history_toolbar_multi_select_mode_delete)
         notification_history_ToolbarMultiSelectModeTitle = findViewById(R.id.notification_history_toolbar_multi_select_mode_tv)
-
+        notification_history_floating_action_button = findViewById(R.id.notification_history_floating_action_button)
         val notification_history_MainLayout = findViewById<RelativeLayout>(R.id.notification_history_layout)
         val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
@@ -147,7 +146,17 @@ class NotificationHistoryActivity : AppCompatActivity() {
             settings_left_drawer_ThemeSwitch.isChecked = true
 //            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
         }
-
+        notification_history_floating_action_button!!.setOnClickListener(
+        View.OnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setPositiveButton(R.string.notification_history_alert_dialog_delete_button, DialogInterface.OnClickListener { dialog, wich -> deleteAllNotif() })
+            builder.setNegativeButton(R.string.notification_history_alert_dialog_cancel_button,null)
+            builder.setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button,DialogInterface.OnClickListener { dialog, wich -> deleteAllNotifSystem()})
+            builder.setTitle(R.string.notification_history_alert_dialog_title)
+            builder.setMessage(R.string.notification_history_alert_dialog_text)
+            builder.create().show()
+            print("hello")
+        })
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 
         val display = windowManager.defaultDisplay
@@ -1036,15 +1045,17 @@ class NotificationHistoryActivity : AppCompatActivity() {
         listTmp.addAll(notification_history_ListOfNotificationDB)
         listTmp.forEach {
             if (!isMessagingApp(it.platform)) {
-                it.id?.let { it1 -> notification_history_NotificationsDatabase?.notificationsDao()?.deleteNotificationById(it1) };
+                it.id?.let { it1 -> notification_history_NotificationsDatabase?.notificationsDao()?.deleteNotificationById(it1) }
             }
         }
+        refreshActivity()
     }
     /**
      * Suppression de toues les notifications
      */
     public fun deleteAllNotif(){
-        notification_history_NotificationsDatabase?.notificationsDao()?.deleteAllNotification();
+        notification_history_NotificationsDatabase?.notificationsDao()?.deleteAllNotification()
+        refreshActivity()
     }
 }
 

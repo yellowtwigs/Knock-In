@@ -451,4 +451,9 @@
     <string name="popup_connection_cancel">Membatalkan</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
+    <string name="notification_history_alert_dialog_text">Reminder: You can delete notification also with a long tap</string>
+    <string name="notification_history_alert_dialog_delete_button">Delete all</string>
+    <string name="notification_history_alert_dialog_cancel_button">Cancel</string>
+    <string name="notification_history_alert_dialog_delete_system_button">Delete not messaging notification</string>
+    <string name="notification_history_alert_dialog_title">Delete notification</string>
 </resources>
