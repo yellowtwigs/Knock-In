@@ -466,4 +466,6 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="notification_history_alert_dialog_cancel_button">Cancel</string>
     <string name="notification_history_alert_dialog_delete_system_button">Delete not messaging notification</string>
     <string name="notification_history_alert_dialog_title">Delete notification</string>
+    <string name="settings_invite_friend_text">Invit a friend</string>
+    <string name="invite_friend_text">Use Knock\'in a simple app to gesture contact priority</string>
 </resources>

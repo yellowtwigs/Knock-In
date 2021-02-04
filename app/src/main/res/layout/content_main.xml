@@ -320,7 +320,23 @@
                         android:textStyle="normal" />
 
                 </RelativeLayout>
-
+                <RelativeLayout
+                    android:id="@+id/settings_invite_friend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/settings_call_popup"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/settingsinvite_friend_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/settings_invite_friend_text"
+                        android:textColor="?attr/textColor"
+                        android:textSize="16sp"
+                        android:textStyle="normal"  />
+                </RelativeLayout>
             </RelativeLayout>
 
             <TextView
