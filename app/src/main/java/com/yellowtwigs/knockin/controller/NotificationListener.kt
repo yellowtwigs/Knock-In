@@ -133,80 +133,154 @@ class NotificationListener : NotificationListenerService() {
                         contact = gestionnaireContact.getContactWithName(name, app)
                     }
                     //endregion
+                    println("///////////////////////")
+                    println(contact)
+                    println(contact.toString())
                     val notification = saveNotification(sbp, gestionnaireContact.getContactId(name))
                     if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName && sbp.appNotifier != "com.samsung.android.incallui") {
+                        println("loooooooooooooo00000000000")
                         notification.insertNotifications(notification_listener_ContactsDatabase!!) //ajouter notification a la database
-
-                        if (contact != null) {
-                            when {
-                                contact.contactDB!!.contactPriority == 2 -> {
-                                    val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                                    if (screenListener.isKeyguardLocked) {
-                                        val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
-                                        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        i.putExtra("notification", sbp)
-                                        this.cancelNotification(sbn.key)
-                                        startActivity(i)
-                                    } else {
-                                        println("screenIsUnlocked")
-
-                                        //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                                        this.cancelNotification(sbn.key)
-                                        //}
+                        println("loooooooooooooo11111111111")
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                            if (contact != null) {
+                                when {
+                                    contact.contactDB!!.contactPriority == 2 -> {
+                                        println("PRIO2")
+                                        println(contact.contactDB!!.firstName)
+                                        println(sbp.tickerText)
+                                        println(notification_listener_ContactsDatabase!!.VipNotificationsDao().getVipNotificationByContent(sbp.tickerText!!))
+                                        if (notification_listener_ContactsDatabase!!.VipNotificationsDao().getVipNotificationByContent(sbp.tickerText!!) == null) {
+                                            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) { //get le message dans la DB et le cancel si c'est le meme
+                                                println("PRIO22")
+                                                var i = 0
+                                                val vipNotif = VipNotificationsDB(null, sbp.id, sbp.appNotifier!!, sbp.tailleList, sbp.tickerText!!)
+                                                val notifId = notification_listener_ContactsDatabase!!.VipNotificationsDao().insert(vipNotif)
+                                                while (i < sbp.key.size) {
+                                                    if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
+                                                        println("PRIO0O")
+                                                        println(sbp.key[i])
+                                                        println(sbp.statusBarNotificationInfo[sbp.key[i]])
+                                                        val VipSbn = VipSbnDB(null, notifId!!.toInt(), sbp.key[i], sbp.statusBarNotificationInfo[sbp.key[i]].toString())
+                                                        notification_listener_ContactsDatabase!!.VipSbnDao().insert(VipSbn)
+                                                        println(sbp.id)
+                                                        println(sbp.tailleList)
+                                                        println(sbp.appNotifier)
+                                                        println(sbp.key)
+                                                        println(sbp.statusBarNotificationInfo)
+                                                    }
+                                                    i++
+                                                }
+                                                println("android 10 recois notif")
+                                                //this.cancelNotification(sbn.key)
+                                            }
+                                            val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                                            if (screenListener.isKeyguardLocked) {
+                                                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                                                    this.cancelNotification(sbn.key)
+                                                    cancelwhatsappnotif(sbn)
+                                                    val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+                                                    val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
+                                                    notification_alarm_NotificationMessagesAlarmSound?.stop()
+                                                    notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
+                                                    notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                                    displayLayout(sbp, sharedPreferences)
+                                                } else {
+                                                    val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
+                                                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                    i.putExtra("notification", sbp)
+                                                    this.cancelNotification(sbn.key)
+                                                    cancelwhatsappnotif(sbn)
+                                                    startActivity(i)
+                                                }
+                                            } else {
+                                                println("screenIsUnlocked")
+                                                this.cancelNotification(sbn.key)
+                                                cancelwhatsappnotif(sbn)
+                                                displayLayout(sbp, sharedPreferences)
+                                            }
+                                        }
+                                    }
+                                    contact.contactDB!!.contactPriority == 1 -> {
+                                    }
+                                    contact.contactDB!!.contactPriority == 0 -> {
+                                        println("priority 0")
+                                        println(sbn.key)
+                                        this.cancelAllNotifications()
+                                        cancelwhatsappnotif(sbn)
+                                    }
+                                }
+                            } else {
+                                println("I don't know this contact$contact")
+                                println(sbn.packageName)
+                                println(sbp.tickerText)
+                                if (sbn.key.contains("whatsapp")) {
+                                    println("CONTAIN WHATSAPP")
+                                    cancelwhatsappnotif(sbn)
+                                } else {
+                                    if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE) {
                                         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
                                             var i = 0
                                             val vipNotif = VipNotificationsDB(null, sbp.id, sbp.appNotifier!!, sbp.tailleList, sbp.tickerText!!)
                                             val notifId = notification_listener_ContactsDatabase!!.VipNotificationsDao().insert(vipNotif)
-                                            while(i < sbp.key.size) {
+                                            while (i < sbp.key.size) {
                                                 if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
                                                     val VipSbn = VipSbnDB(null, notifId!!.toInt(), sbp.key[i], sbp.statusBarNotificationInfo[sbp.key[i]].toString())
                                                     notification_listener_ContactsDatabase!!.VipSbnDao().insert(VipSbn)
-                                                    println(sbp.id)
-                                                    println(sbp.tailleList)
-                                                    println(sbp.appNotifier)
-                                                    println(sbp.key)
-                                                    println(sbp.statusBarNotificationInfo)
                                                 }
                                                 i++
                                             }
                                             println("android 10 recois notif")
                                             //this.cancelNotification(sbn.key)
                                         }
-                                        displayLayout(sbp, sharedPreferences)
-                                    }
-                                }
-                                contact.contactDB!!.contactPriority == 1 -> {
-                                }
-                                contact.contactDB!!.contactPriority == 0 -> {
-                                    println("priority 0")
-                                    this.cancelNotification(sbn.key)
-                                }
-                            }
-                        } else {
-                            println("I don't know this contact$contact")
-                            if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE) {
-                                val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                                if (screenListener.isKeyguardLocked) {
-                                    println("screenIsLocked")
-                                    val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
-                                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                    i.putExtra("notification", sbp)
-                                    startActivity(i)
-                                } else {
-                                    println("screenIsUnlocked")
+                                        val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                                        if (screenListener.isKeyguardLocked) {
+                                            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                                                this.cancelNotification(sbn.key)
+                                                cancelwhatsappnotif(sbn)
+                                                val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+                                                val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
+                                                notification_alarm_NotificationMessagesAlarmSound?.stop()
+                                                notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
+                                                notification_alarm_NotificationMessagesAlarmSound!!.start()
+                                                println("YOOOOOOOLOOOOOOOO")
+                                                println(sbp.tickerText!!)
+                                                displayLayout(sbp, sharedPreferences)
+                                            } else {
+                                                val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
+                                                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                i.putExtra("notification", sbp)
+                                                println("UNNNNNNNNNNNNNNNNNNNNNNNN3")
+                                                this.cancelNotification(sbn.key)
+                                                cancelwhatsappnotif(sbn)
+                                                startActivity(i)
+                                            }
+                                        } else {
+                                            println("screenIsUnlocked")
 
-                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                                        this.cancelNotification(sbn.key) /////// cancell
+                                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                                                this.cancelNotification(sbn.key)
+                                                cancelwhatsappnotif(sbn)
+                                            }
+                                            displayLayout(sbp, sharedPreferences)
+                                        }
+                                    } else {
+                                        println("bad package " + sbn.packageName)
                                     }
-                                    displayLayout(sbp, sharedPreferences)
                                 }
-                            } else {
-                                println("bad package " + sbn.packageName)
                             }
                         }
                     }
                 }
                 notification_listener_mDbWorkerThread.postTask(addNotification)
+            }
+        }
+    }
+
+    private fun cancelwhatsappnotif(sbn: StatusBarNotification) {
+        println("CANCEL NOTIf")
+        this.activeNotifications.forEach {
+            if (it.key.contains("whatsapp") && sbn.key.takeLast(6) == it.key.takeLast(6)) {
+                this.cancelNotification(it.key)
             }
         }
     }
@@ -223,12 +297,15 @@ class NotificationListener : NotificationListenerService() {
             println(" plateform " + (lastNotif.platform == notification.platform))
             println("description " + (lastNotif.description == notification.description))
             if (lastNotif != null && lastNotif.platform == notification.platform && lastNotif.description == notification.description) {
+                println("fallse1")
                 return false
             }
         }
         if (lastInsert != null && lastInsert.platform == notification.platform && lastInsert.title == notification.title && lastInsert.description == notification.description && notification.timestamp - lastInsert.timestamp < 1000) {
+            println("fallse2")
             return false
         }
+        println("true1")
         return true
     }
     //SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(Calendar.getInstance().timeInMillis.toString().toLong()))    /// timestamp to date
@@ -267,15 +344,14 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
-
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
         val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
         sharedAlarmNotifDurationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
-        duration = sharedAlarmNotifDurationPreferences!!.getInt("Alarm_Notif_Duration", 0)
+        duration = sharedAlarmNotifDurationPreferences!!.getInt("Alarm_Notif_Duration", 3892)
 
         sharedAlarmNotifCanRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
-        canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", false)
+        canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", true)
 
         if (canRingtone) {
             alartNotifTone(sound)
@@ -311,6 +387,7 @@ class NotificationListener : NotificationListenerService() {
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                 edit.putBoolean("view", true)
                 edit.apply()
+                println("googleok?")
                 displayLayout(sbp)
             } else {
                 //notifLayout(sbp, popupView)
@@ -394,10 +471,6 @@ class NotificationListener : NotificationListenerService() {
                 edit.putBoolean("first_notif", false)
                 edit.apply()
             }
-            //init DB
-            //notification_listener_ContactsDatabase!!.notificationsDao().getNotification(lastInsertId)
-            //add Notif VIP
-            //add tout ses sbn
             displayBubble(sbp)
         }
     }
@@ -414,14 +487,16 @@ class NotificationListener : NotificationListenerService() {
         val notification = createNotification(icon, person, sbp)
         val bubbleMetaData = createBubbleMetadata(icon, sbp)
         notification.setBubbleMetadata(bubbleMetaData)
-        startForeground(101, notification.build())
+        println("MDRRRRRRRRRRRRRRRRRRRRRR2222")
+        startForeground(101, notification.build())///
+        println("MDRRRRRRRRRRRRRRRRRRRRRR33333333")
         //notificationManager?.notify(0,notification.build())
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun createPerson(icon: Icon): Person {
         return Person.Builder()
-                .setName("Knockin")
+                .setName("Knock In")
                 .setIcon(icon)
                 .setBot(true)
                 .setImportant(true)
@@ -479,7 +554,6 @@ class NotificationListener : NotificationListenerService() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun createBubbleMetadata(icon: Icon, sbp: StatusBarParcelable): Notification.BubbleMetadata {
-        val requestbubble = 2
         return Notification.BubbleMetadata.Builder()
                 .setDesiredHeight(600)
                 .setIcon(icon)

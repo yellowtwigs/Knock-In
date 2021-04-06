@@ -15,6 +15,9 @@ interface VipSbnDao {
     @Query("SELECT * FROM vip_sbn_table WHERE vip_notification_id = :notificationId")
     fun getSbnWithNotifId(notificationId: String): List<VipSbnDB>
 
+    @Query("DELETE FROM vip_sbn_table WHERE vip_notification_id = :notificationId")
+    fun deleteSbnWithNotifId(notificationId: String)
+
     @Insert
     fun insert(VipSbn: VipSbnDB)
 

@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--   <string name="app_name">Knockin</string>-->
+    <!--   <string name="app_name">Knock In</string>-->
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <string name="location_on_playstore" translatable="false"><a>https://play.google.com/store/apps/details?id=com.yellowtwigs.Knockin.notification</a></string>
@@ -13,6 +13,7 @@
     <string name="help_notification_manager"> In this screen you can chose to enable/disable the priority 2 notifications </string>
     <string name="help_my_informations"> In this screen you can update your personal details </string>
     <string name="help_contact_us_intent">Contact us</string>
+    <string name="help_bubbles_link">http://www.yellowtwigs.com/android10-bubbles-setup</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
     <string name="help_contact_us_eula">https://www.yellowtwigs.com/end-user-license-agreement</string>
     <string name="help_app_video_link">https://youtu.be/5gKwDljgLNI</string>
@@ -27,6 +28,7 @@
     <!-- region Help Activity -->
     <string name="help_activity_tutorial_website">Website Tutorial</string>
     <string name="help_activity_tutorial_video">Presentation Video </string>
+    <string name="help_activity_notifications_bubbles">Activate the "Notification bubbles"</string>
     <string name="help_activity_contact_us">Contact us</string>
     <string name="help_activity_contact_terms_of_use">Terms and conditions</string>
     <string name="help_activity_contact_generals_informations">For more information</string>
@@ -45,6 +47,10 @@
     <string name="left_drawer_statistics">Statistics</string>
     <string name="left_drawer_help">Help</string>
     <string name="left_drawer_import">Import contacts</string>
+    <string name="settings_contact_popup_phone_call">Phone call Popup</string>
+    <string name="manage_my_screen_contact_popup_long_text"> Enable/disable popup before calling a contact</string>
+    <string name="settings_invite_friend_text">Invite your friends</string>
+    <string name="invite_friend_text">Use Knock In for a new communication experience</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
     <string name="main_filter_sms">Phone Number</string>
@@ -75,7 +81,7 @@
     <string name="main_content_edited_contact">The contact </string>
     <string name="main_content_edited_contact_2">was changed\, do you want to keep the Android address book version, or the Knock In one?</string>
     <string name="main_android_edited_contact">Android</string>
-    <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
+    <!--<string name="main_Knockin_edited_contact">Knock In</string>-->
     <string name="main_contact_grid_title">Do you want to call this contact? </string>
     <string name="main_contact_grid_message">You can disable this validation from the options</string>
     <string name="main_alert_dialog_delete_contact_title">Delete contact(s)</string>
@@ -200,7 +206,6 @@
     <string name="manage_my_screen_toast_grid">You have selected %1$d contacts per row</string>
     <string name="manage_my_screen_toast_list">"List" view selected</string>
     <string name="manage_my_screen_toast_list_smaller">"Compact" view selected</string>
-    <string name="manage_my_screen_contact_popup_long_text"> Enable/disable popup before calling a contact</string>
     <string name="manage_my_screen_searchbar_pos">Search bar position</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Position the search bar at the bottom of the screen</string>
     <string name="manage_my_screen_display_for_group_title">Enable specific groups display</string>
@@ -218,16 +223,13 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Notification parameters</string>
-    <string name="notification_manager_stop_service"> Enable the management of notifications by priority</string>
-    <string name="notification_manager_stop_popup"> Display VIP notifications</string>
+    <string name="notification_manager_stop_service">Enable the management of notifications by priority</string>
+    <string name="notification_manager_stop_popup">Display VIP notifications</string>
     <string name="notification_reminder">Send a reminder to view all the non-VIP messages </string>
-    <string name="notification_manager_horaire"> Select recall daily time: </string>
-    <string name="notification_manager_prio_1"> Hide priority 1 notifications</string>
+    <string name="notification_manager_horaire">Select recall daily time: </string>
+    <string name="notification_manager_prio_1">Hide priority 1 notifications</string>
     <string name="notification_alert_dialog_title">Selection of VIP contacts</string>
     <string name="notification_alert_dialog_message">Do you want to choose your high-priority contacts ?</string>
-    <string name="settings_contact_popup_phone_call">Phone call Popup</string>
-    <string name="settings_invite_friend_text">Invit a friend</string>
-    <string name="invite_friend_text">Use Knock\'in a simple app to gesture contact priority </string>
     <string name="notification_vip_message_tone">VIP Notifications Tone</string>
     <string name="notification_vip_default_message_tone">Default Tone</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
@@ -277,12 +279,11 @@
     <string name="notification_history_search_hint">Search</string>
     <string name="notification_history_delete_notifications">Delete one or more notifications</string>
     <string name="notification_history_delete_notifications_confirmation">Are you sure ?</string>
-    <string name="notification_history_alert_dialog_title">Delete notification</string>
-    <string name="notification_history_alert_dialog_text">Reminder: You can delete notification also with a long tap</string>
+    <string name="notification_history_alert_dialog_text">Reminder: you can also select a notification with a long tap and delete it using the top right symbol</string>
     <string name="notification_history_alert_dialog_delete_button">Delete all</string>
     <string name="notification_history_alert_dialog_cancel_button">Cancel</string>
-    <string name="notification_history_alert_dialog_delete_system_button">Delete not messaging notification</string>
-
+    <string name="notification_history_alert_dialog_delete_system_button">System only</string>
+    <string name="notification_history_alert_dialog_title">Delete notifications</string>
     <!-- endregion -->
     <!-- region Alert Dialog Notifications -->
     <string name="alert_dialog_notification_message">Authorize Knock In to access your notifications and prioritize them</string>
@@ -413,6 +414,7 @@
     <string name="start_activity_superposition_subtitle">Allow Knock In to display VIP notifications while you are using other apps</string>
     <string name="start_activity_button_superposition">Allow</string>
     <string name="start_activity_superposition_not_allowed_message">To display the popups of VIP notifications with Android 10, you must activate the "bubbles". Find out how to proceed by going to the "Help" menu in the Knock In drawer.</string>
+    <string name="start_activity_superposition_not_allowed_message_11">Knock In\'s floating notifications (Bubbles) are not supported yet with Android 11 (version of your smartphone).  A version of the app offering floating notifications for Android 11 will be available soon. However, you can use the other functions of the application.</string>
     <string name="start_activity_video_tutorial_skip_text">The video is available in the Help tab of the application menu</string>
     <string name="start_activity_permission_title">Other authorisations</string>
     <string name="start_activity_permission_subtitle">You will be able to make phone calls and send SMS from the app</string>

@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--   <string name="app_name">Knockin</string>-->
+    <!--   <string name="app_name">Knock In</string>-->
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <!-- region Help Tutorial -->
@@ -26,6 +26,7 @@
     <!-- region Help Activity -->
     <string name="help_activity_tutorial_website">Website-Tutorial</string>
     <string name="help_activity_tutorial_video">Video Präsentation</string>
+    <string name="help_activity_notifications_bubbles">Aktiviere die "Blasen"</string>
     <string name="help_activity_contact_us">Kontaktiere uns</string>
     <string name="help_activity_contact_terms_of_use">Nutzungsbedingungen</string>
     <string name="help_activity_contact_generals_informations">Allgemeine Informationen</string>
@@ -44,6 +45,10 @@
     <string name="left_drawer_statistics">Meine Statistiken</string>
     <string name="left_drawer_help">Hilfe</string>
     <string name="left_drawer_import">Kontakte importieren</string>
+    <string name="settings_contact_popup_phone_call">Telefonanruf</string>
+    <string name="manage_my_screen_contact_popup_long_text">Aktivieren/Deaktivieren Sie das Popup, bevor Sie einen Kontakt anrufen</string>
+    <string name="settings_invite_friend_text">Lade deine Freunde ein</string>
+    <string name="invite_friend_text">Verwenden Sie Knock In für ein neues Kommunikationserlebnis</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
     <string name="main_filter_sms">Telefonnummer</string>
@@ -74,7 +79,7 @@
     <string name="main_content_edited_contact">Der Kontakt</string>
     <string name="main_content_edited_contact_2">wurde geändert\, möchten Sie die Android oder Knock In Adressbuchversion behalten?</string>
     <string name="main_android_edited_contact">Android</string>
-    <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
+    <!--<string name="main_Knockin_edited_contact">Knock In</string>-->
     <string name="main_contact_grid_title">Möchten Sie diesen Kontakt anrufen?</string>
     <string name="main_contact_grid_message">Sie können diese Überprüfung in den Parametern deaktivieren</string>
     <string name="main_alert_dialog_delete_contact_title">Löschen Sie einen oder mehrere Kontakte</string>
@@ -199,12 +204,11 @@
     <string name="manage_my_screen_toast_grid">Sie haben %1$d Kontakte pro Zeile ausgewählt</string>
     <string name="manage_my_screen_toast_list">Ansicht "Liste" ausgewählt</string>
     <string name="manage_my_screen_toast_list_smaller">Ansicht "Kompakt" ausgewählt</string>
-    <string name="manage_my_screen_contact_popup_long_text">Aktivieren/Deaktivieren Sie das Popup, bevor Sie einen Kontakt anrufen</string>
+    
     <string name="manage_my_screen_searchbar_pos">Position der Suchleiste</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Positionieren Sie die Suchleiste am unteren Bildschirmrand</string>
     <string name="manage_my_screen_display_for_group_title">Aktivieren Sie die Anzeige bestimmter Gruppen</string>
     <string name="manage_my_screen_display_for_group_subtitle">Wählen Sie eine andere Anzeige für Ihre Gruppen</string>
-
     <string-array name="manage_my_screen_spinner_array">
         <item>Mehrfarbige Palette</item>
         <item>Einfarbige Palette</item>
@@ -224,7 +228,6 @@
     <string name="notification_manager_prio_1">Benachrichtigungen zu Priorität 1 ausblenden</string>
     <string name="notification_alert_dialog_title">Auswahl von VIP-Kontakten</string>
     <string name="notification_alert_dialog_message">Möchten Sie Ihre Kontakte mit hoher Priorität auswählen?</string>
-    <string name="settings_contact_popup_phone_call">Telefonanruf</string>
     <string name="notification_vip_message_tone">Klingeltöne für VIP-Benachrichtigungen</string>
     <string name="notification_vip_default_message_tone">Standardklingeltöne</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Klingeltöne</string>
@@ -274,6 +277,11 @@
     <string name="notification_history_search_hint">Aufsuchen</string>
     <string name="notification_history_delete_notifications">Löschen Sie eine oder mehrere Benachrichtigungen</string>
     <string name="notification_history_delete_notifications_confirmation">Sind sie sicher auf iher Wahl?</string>
+    <string name="notification_history_alert_dialog_text">Erinnerung: Sie können eine Benachrichtigung auch mit einem langen Fingertipp auswählen und mit dem Symbol oben rechts löschen</string>
+    <string name="notification_history_alert_dialog_delete_button">Alles löschen</string>
+    <string name="notification_history_alert_dialog_cancel_button">Stornieren</string>
+    <string name="notification_history_alert_dialog_delete_system_button">Nur System</string>
+    <string name="notification_history_alert_dialog_title">Benachrichtigungen löschen</string>
     <!-- endregion -->
     <!-- region Alert Dialog Notifications -->
     <string name="alert_dialog_notification_message">Gestatten Sie Knock In, um auf Ihre Benachrichtigungen zuzugreifen und diese zu priorisieren</string>
@@ -403,9 +411,10 @@
     <string name="start_activity_superposition_title">Überlagerung</string>
     <string name="start_activity_superposition_subtitle">Gestatten Sie Knock In, VIP-Benachrichtigungen anzuzeigen, während du andere Apps verwendest</string>
     <string name="start_activity_button_superposition">Gestatten</string>
-    <string name="start_activity_superposition_not_allowed_message">Eine Überlagerung ist mit Android 10 (Version Ihres Smartphone) nicht möglich. VIP-Benachrichtigungen sind daher vorerst nicht verfügbar. Eine neue Version unserer App mit VIP-Benachrichtigungen für Android 10 wird in Kürze verfügbar sein. Sie können die anderen kostenlosen Funktionen der App trotzdem nutzen.</string>
+    <string name="start_activity_superposition_not_allowed_message">Um die Popups von VIP-Benachrichtigungen mit Android 10 anzuzeigen, müssen Sie die "Blasen" aktivieren. Informationen zum weiteren Vorgehen finden Sie im Menü "Hilfe" in der Knock In-Schublade.</string>
     <string name="start_activity_video_tutorial_skip_text">Das Video ist auf der Registerkarte Hilfe des Anwendungsmenüs verfügbar</string>
     <string name="start_activity_permission_title">Andere Berechtigungen</string>
+    <string name="start_activity_superposition_not_allowed_message_11">Die schwebenden Benachrichtigungen (Blasen) von Knock In werden von Android 11 (Version Ihres Smartphones) noch nicht unterstützt. Eine Version der App mit schwebenden Benachrichtigungen für Android 11 wird in Kürze verfügbar sein. Sie können jedoch die anderen Funktionen der Anwendung verwenden.</string>
     <string name="start_activity_permission_subtitle">Über die App können Sie telefonieren und SMS senden</string>
     <string name="start_activity_button_permission">Gestatten</string>
     <string name="start_activity_skip">Überspringen</string>
@@ -451,11 +460,4 @@
     <string name="popup_connection_cancel">Stornieren</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
-    <string name="notification_history_alert_dialog_text">Reminder: You can delete notification also with a long tap</string>
-    <string name="notification_history_alert_dialog_delete_button">Delete all</string>
-    <string name="notification_history_alert_dialog_cancel_button">Cancel</string>
-    <string name="notification_history_alert_dialog_delete_system_button">Delete not messaging notification</string>
-    <string name="notification_history_alert_dialog_title">Delete notification</string>
-    <string name="settings_invite_friend_text">Invit a friend</string>
-    <string name="invite_friend_text">Use Knock\'in a simple app to gesture contact priority</string>
 </resources>

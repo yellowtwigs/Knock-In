@@ -30,7 +30,9 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.ModelDB.VipNotificationsDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import java.util.*
 
@@ -423,9 +425,11 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
 
     fun deleteItem(position: Int) {
         val mRecentlyDeletedItem = notifications[position]
+        val contactsDatabase = ContactsRoomDatabase.getDatabase(context)
+        contactsDatabase!!.VipNotificationsDao().deleteVipNotificationsWithId(notifications[position].id.toString())
+        contactsDatabase.VipSbnDao().deleteSbnWithNotifId(notifications[position].id.toString())
         notifications.remove(mRecentlyDeletedItem)
         notifyItemRemoved(position)
-
         if (notifications.size == 0) {
             closeNotificationPopup()
         }
@@ -435,6 +439,15 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
         if (!isBubble) {
             windowManager.removeView(view)
             notification_alarm_NotificationMessagesAlarmSound?.stop()
+        } else {
+            val contactsDatabase = ContactsRoomDatabase.getDatabase(context)
+            val allVipNotif = contactsDatabase!!.VipNotificationsDao().getAllVipNotificationsById()
+            val activity: BubbleActivity = context as BubbleActivity
+            if (allVipNotif.isEmpty()) {
+                activity.closeBubble()
+            } else {
+                activity.reduceBubble()
+            }
         }
         val sharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()

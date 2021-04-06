@@ -295,7 +295,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (sharedPreferencePopup.getBoolean("popup", true)) {
             settings_CallPopupSwitch!!.isChecked = true
         }
-        val settings_InvitFriend = findViewById<RelativeLayout>(R.id.settings_invite_friend)
         //endregion
 
         //endregion
@@ -344,6 +343,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //Nous affichons dans cette activité la possibilité de synchroniser nos contacts
         val navSyncContact = menu.findItem(R.id.nav_sync_contact)
         navSyncContact.isVisible = true
+
+        val navInviteFriend = menu.findItem(R.id.nav_invite_friend)
+        navInviteFriend.isVisible = true
 
         //Lorsque l'utilisateur clique sur un des éléments du drawer nous le fermons puis ouvrons une nouvelle activité
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -488,14 +490,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 edit.apply()
             }
         }
-        settings_InvitFriend!!.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            val messageString = getResources().getString(R.string.invite_friend_text) + " \n"+ getResources().getString(R.string.location_on_playstore)
-            intent.putExtra(Intent.EXTRA_TEXT,messageString)
-            intent.setType("text/plain")
-            val messageIntent = Intent.createChooser(intent,null)
-            startActivity(messageIntent)
-        }
         settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
 
@@ -515,6 +509,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 edit.apply()
                 startActivity(Intent(this, MainActivity::class.java))
             }
+        }
+
+        navInviteFriend.setOnMenuItemClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            val messageString = getResources().getString(R.string.invite_friend_text) + " \n"+ getResources().getString(R.string.location_on_playstore)
+            intent.putExtra(Intent.EXTRA_TEXT,messageString)
+            intent.setType("text/plain")
+            val messageIntent = Intent.createChooser(intent,null)
+            startActivity(messageIntent)
+            true
         }
 
         //Sync contact

@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--   <string name="app_name">Knockin</string>-->
+    <!--   <string name="app_name">Knock In</string>-->
     <string name="app_name_by">YellowTwigs tarafından oluşturulmuştur</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <!-- region Help Tutorial -->
@@ -26,6 +26,7 @@
     <!-- region Help Activity -->
     <string name="help_activity_tutorial_website">Web Sitesi Eğitimi</string>
     <string name="help_activity_tutorial_video">Sunum Videosu</string>
+    <string name="help_activity_notifications_bubbles">"Bildirim balonlarını" etkinleştirin</string>
     <string name="help_activity_contact_us">Bize ulaşın</string>
     <string name="help_activity_contact_terms_of_use">Şartlar ve koşullar</string>
     <string name="help_activity_contact_generals_informations">Daha fazla bilgi için</string>
@@ -44,6 +45,10 @@
     <string name="left_drawer_statistics">İstatistikler</string>
     <string name="left_drawer_help">Yardım</string>
     <string name="left_drawer_import">Kişileri içe aktar</string>
+    <string name="settings_contact_popup_phone_call">Telefon görüşmesi açılır penceresi</string>
+    <string name="manage_my_screen_contact_popup_long_text">Bir kişiyi aramadan önce açılır pencereyi etkinleştirme/devre dışı bırakma</string>
+    <string name="settings_invite_friend_text">Arkadaşlarını davet et</string>
+    <string name="invite_friend_text">Yeni bir iletişim deneyimi için Knock In\'i kullanın</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
     <string name="main_filter_sms">Telefon Numarası</string>
@@ -74,7 +79,7 @@
     <string name="main_content_edited_contact">Kişi</string>
     <string name="main_content_edited_contact_2">değiştirildi\, Android adres defteri sürümünü mü yoksa Knock In sürümünü mü tutmak istiyorsunuz?</string>
     <string name="main_android_edited_contact">Android</string>
-    <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
+    <!--<string name="main_Knockin_edited_contact">Knock In</string>-->
     <string name="main_contact_grid_title">Bu kişiyi aramak ister misiniz?</string>
     <string name="main_contact_grid_message">Bu doğrulamayı seçeneklerden devre dışı bırakabilirsiniz</string>
     <string name="main_alert_dialog_delete_contact_title">Kişi(leri)sil</string>
@@ -199,7 +204,6 @@
     <string name="manage_my_screen_toast_grid">Satır başına %1$d kişi seçtiniz</string>
     <string name="manage_my_screen_toast_list">"Liste" görünümü seçildi</string>
     <string name="manage_my_screen_toast_list_smaller">"Kompakt" görünüm seçildi</string>
-    <string name="manage_my_screen_contact_popup_long_text">Bir kişiyi aramadan önce açılır pencereyi etkinleştirme/devre dışı bırakma</string>
     <string name="manage_my_screen_searchbar_pos">Arama çubuğu konumu</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Arama çubuğunu ekranın altına yerleştirin</string>
     <string name="manage_my_screen_display_for_group_title">Belirli grupların görüntülenmesini etkinleştirin</string>
@@ -224,7 +228,6 @@
     <string name="notification_manager_prio_1">Öncelik 1 bildirimlerini gizle</string>
     <string name="notification_alert_dialog_title">VIP kişilerin seçimi</string>
     <string name="notification_alert_dialog_message">Yüksek öncelikli kişilerinizi seçmek ister misiniz?</string>
-    <string name="settings_contact_popup_phone_call">Telefon görüşmesi açılır penceresi</string>
     <string name="notification_vip_message_tone">VIP Bildirimleri Zil Sesi</string>
     <string name="notification_vip_default_message_tone">Varsayılan Ton</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Ton</string>
@@ -274,6 +277,11 @@
     <string name="notification_history_search_hint">Ara</string>
     <string name="notification_history_delete_notifications">Bir veya daha fazla bildirimi sil</string>
     <string name="notification_history_delete_notifications_confirmation">Emin misiniz?</string>
+    <string name="notification_history_alert_dialog_text">Hatırlatma: Ayrıca uzun bir dokunuşla bir bildirim seçebilir ve sağ üstteki simgeyi kullanarak silebilirsiniz</string>
+    <string name="notification_history_alert_dialog_delete_button">Tümünü sil</string>
+    <string name="notification_history_alert_dialog_cancel_button">İptal etmek</string>
+    <string name="notification_history_alert_dialog_delete_system_button">Yalnızca sistem</string>
+    <string name="notification_history_alert_dialog_title">Bildirimleri silin</string>
     <!-- endregion -->
     <!-- region Alert Dialog Notifications -->
     <string name="alert_dialog_notification_message">Bildirimlerinize erişmek ve bunlara öncelik vermek için Knock In\'i yetkilendirin</string>
@@ -403,7 +411,7 @@
     <string name="start_activity_superposition_title">Superposition </string>
     <string name="start_activity_superposition_subtitle">Diğer uygulamaları kullanırken Knock In\'in VIP bildirimlerini görüntülemesine izin ver</string>
     <string name="start_activity_button_superposition">İzin Ver</string>
-    <string name="start_activity_superposition_not_allowed_message">Superposition Android 10 (Akıllı telefonunuzun sürümü) ile mümkün değildir. VIP bildirimleri şimdilik mevcut değildir. Uygulamamızın Android 10 ile VIP bildirimleri sunan yeni bir sürümü yakında kullanıma sunulacak. Yine de uygulamanın diğer ücretsiz işlevlerini kullanabilirsiniz.</string>
+    <string name="start_activity_superposition_not_allowed_message">Android 10\'da VIP bildirimlerinin pop-up\'larını görüntülemek için "baloncukları" etkinleştirmeniz gerekir. Nasıl ilerleyeceğinizle ilgili bilgiler Knock In çekmecesinin "Yardım" menüsünde bulunabilir.</string>
     <string name="start_activity_video_tutorial_skip_text">Videoya uygulama menüsünün Yardım sekmesinden ulaşılabilir</string>
     <string name="start_activity_permission_title">Diğer yetkiler</string>
     <string name="start_activity_permission_subtitle">Uygulamadan telefon görüşmeleri yapabilir ve SMS gönderebilirsiniz</string>
@@ -451,11 +459,4 @@
     <string name="popup_connection_cancel">İptal etmek</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
-    <string name="notification_history_alert_dialog_text">Reminder: You can delete notification also with a long tap</string>
-    <string name="notification_history_alert_dialog_delete_button">Delete all</string>
-    <string name="notification_history_alert_dialog_cancel_button">Cancel</string>
-    <string name="notification_history_alert_dialog_delete_system_button">Delete not messaging notification</string>
-    <string name="notification_history_alert_dialog_title">Delete notification</string>
-    <string name="settings_invite_friend_text">Invit a friend</string>
-    <string name="invite_friend_text">Use Knock\'in a simple app to gesture contact priority</string>
 </resources>

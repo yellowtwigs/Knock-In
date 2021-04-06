@@ -15,8 +15,14 @@ interface VipNotificationsDao {
     @Query("SELECT * FROM vip_notifications_table ORDER BY id")
     fun getAllVipNotificationsById(): List<VipNotificationsDB>
 
+    @Query("SELECT * FROM vip_notifications_table WHERE notification_text = :notificationContent")
+    fun getVipNotificationByContent(notificationContent: String): VipNotificationsDB
+
     @Insert
     fun insert(VipNotif: VipNotificationsDB): Long?
+
+    @Query("DELETE FROM vip_notifications_table WHERE id = :notificationId")
+    fun deleteVipNotificationsWithId(notificationId: String)
 
     @Query("DELETE FROM vip_notifications_table")
     fun deleteAllVipNotifications()

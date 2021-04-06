@@ -52,7 +52,8 @@
                 android:text="@string/help_activity_tutorial_video"
                 android:layout_centerVertical="true"
                 android:textColor="?attr/textColor"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:layout_toEndOf="@+id/help_activity_tutorial_video_icon"/>
         </RelativeLayout>
 
@@ -83,7 +84,8 @@
                 android:text="@string/help_activity_tutorial_website"
                 android:layout_centerVertical="true"
                 android:textColor="?attr/textColor"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:layout_toEndOf="@+id/help_activity_tutorial_website_icon"/>
         </RelativeLayout>
 
@@ -103,7 +105,7 @@
                 android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="25dp"
-                android:src="@drawable/ic_contact_us"
+                android:src="@drawable/ic_app_bubbles"
                 tools:layout_editor_absoluteX="25dp"
                 tools:layout_editor_absoluteY="246dp" />
             <TextView
@@ -114,9 +116,10 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_toEndOf="@+id/help_activity_bubbles_notifications_icon"
-                android:text="Activer les &quot;Bulles de notifications&quot; "
+                android:text="@string/help_activity_notifications_bubbles"
                 android:textColor="?attr/textColor"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 tools:ignore="NotSibling" />
         </RelativeLayout>
 
@@ -149,7 +152,8 @@
                 android:layout_toEndOf="@+id/help_activity_contact_us_icon"
                 android:text="@string/help_activity_contact_us"
                 android:textColor="?attr/textColor"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 tools:ignore="NotSibling" />
         </RelativeLayout>
 
@@ -178,7 +182,8 @@
                 android:layout_centerVertical="true"
                 android:text="@string/help_activity_contact_terms_of_use"
                 android:textColor="?attr/textColor"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:layout_toEndOf="@+id/help_activity_terms_icon" />
         </RelativeLayout>
 
@@ -207,7 +212,8 @@
                 android:layout_centerVertical="true"
                 android:text="@string/help_activity_contact_generals_informations"
                 android:textColor="?attr/textColor"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:layout_toEndOf="@+id/help_activity_infos_icon" />
         </RelativeLayout>
 

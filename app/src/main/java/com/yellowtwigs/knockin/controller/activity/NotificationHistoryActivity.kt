@@ -145,17 +145,16 @@ class NotificationHistoryActivity : AppCompatActivity() {
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch.isChecked = true
 //            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-        }
+        }///
         notification_history_floating_action_button!!.setOnClickListener(
         View.OnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setPositiveButton(R.string.notification_history_alert_dialog_delete_button, DialogInterface.OnClickListener { dialog, wich -> deleteAllNotif() })
-            builder.setNegativeButton(R.string.notification_history_alert_dialog_cancel_button,null)
-            builder.setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button,DialogInterface.OnClickListener { dialog, wich -> deleteAllNotifSystem()})
-            builder.setTitle(R.string.notification_history_alert_dialog_title)
-            builder.setMessage(R.string.notification_history_alert_dialog_text)
-            builder.create().show()
-            print("hello")
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.notification_history_alert_dialog_title))
+                    .setMessage(getString(R.string.notification_history_alert_dialog_text))
+                    .setPositiveButton(R.string.notification_history_alert_dialog_delete_button, DialogInterface.OnClickListener { dialog, wich -> deleteAllNotif() })
+                    .setNegativeButton(R.string.notification_history_alert_dialog_cancel_button,null)
+                    .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button,DialogInterface.OnClickListener { dialog, wich -> deleteAllNotifSystem()})
+                    .show()
         })
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 

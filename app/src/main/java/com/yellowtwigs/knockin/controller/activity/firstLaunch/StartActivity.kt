@@ -281,9 +281,17 @@ class StartActivity : AppCompatActivity() {
                             start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
                             start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
                             val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                            edit.putBoolean("serviceNotif", true)
-                            edit.apply()
+                            if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                                edit.putBoolean("serviceNotif", true)
+                                edit.putBoolean("popupNotif", true)
+                                edit.apply()
+                            } else {
+                                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                                edit.putBoolean("serviceNotif", true)
+                                edit.putBoolean("popupNotif", false)
+                                edit.apply()
+                            }
                             allIsChecked()
                         }, SPLASH_DISPLAY_LENGHT.toLong())
                     }
@@ -353,7 +361,11 @@ class StartActivity : AppCompatActivity() {
                 }
                 verifiedSuperposition.start()
             } else {
-                Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message), Toast.LENGTH_LONG).show()
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q){
+                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message_11), Toast.LENGTH_LONG).show()
+                }
             }
         }
 

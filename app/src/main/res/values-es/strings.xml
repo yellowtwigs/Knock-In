@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--   <string name="app_name">Knockin</string>-->
+    <!--   <string name="app_name">Knock In</string>-->
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <!-- region Help Tutorial -->
@@ -26,9 +26,10 @@
     <!-- region Help Activity -->
     <string name="help_activity_tutorial_website">Tutorial del sitio web</string>
     <string name="help_activity_tutorial_video">Video de presentación</string>
-    <string name="help_activity_contact_us"> Contacta con nosotros </string>
-    <string name="help_activity_contact_terms_of_use"> Términos y Condiciones</string>
-    <string name="help_activity_contact_generals_informations"> Para más información </string>
+    <string name="help_activity_notifications_bubbles">Activar las "burbujas de notificación"</string>
+    <string name="help_activity_contact_us">Contacta con nosotros </string>
+    <string name="help_activity_contact_terms_of_use">Términos y Condiciones</string>
+    <string name="help_activity_contact_generals_informations">Para más información </string>
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
@@ -44,6 +45,10 @@
     <string name="left_drawer_statistics"> Estadísticas </string>
     <string name="left_drawer_help">Ayuda</string>
     <string name="left_drawer_import">Importar contactos</string>
+    <string name="settings_contact_popup_phone_call">Mensage emergente de Notificación de llamada</string>
+    <string name="manage_my_screen_contact_popup_long_text"> Activar/Desactivar ventana emergente antes de llamar un contacto</string>
+    <string name="settings_invite_friend_text">Invita a tus amigos</string>
+    <string name="invite_friend_text">Use Knock In para una nueva experiencia de comunicación</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
     <string name="main_filter_sms"> Número de teléfono </string>
@@ -74,7 +79,7 @@
     <string name="main_content_edited_contact">Contacto </string>
     <string name="main_content_edited_contact_2">fue cambiado, quiere conservar la version de libreta de direcciones Android o bien la de Knock In</string>
     <string name="main_android_edited_contact">Android</string>
-    <!--<string name="main_Knockin_edited_contact">Knockin</string>-->
+    <!--<string name="main_Knockin_edited_contact">Knock In</string>-->
     <string name="main_contact_grid_title">Quiere llamar a este contacto? </string>
     <string name="main_contact_grid_message">Puede desactivar esta opción</string>
     <string name="main_alert_dialog_delete_contact_title">Borrar  contacto(s)</string>
@@ -125,8 +130,7 @@ Corresponde al identificador visible al recibir un correo electrónico</string>
     <string name="add_new_contact_toast_empty_name">Su contacto debe tener un nombre o apellido</string>
     <string name="add_new_contact_alert_dialog_message">Un contacto existente ya está usando este nombre. ¿Quieres grabarlo con este nombre de todos modos?</string>
     <string name="add_new_contact_alert_dialog_cancel_title">Atención</string>
-    <string name="add_new_contact_alert_dialog_cancel_message">
-Sus actualizaciones no se registraron, ¿está seguro? </string>
+    <string name="add_new_contact_alert_dialog_cancel_message">Sus actualizaciones no se registraron, ¿está seguro?</string>
     <string name="add_new_contact_alert_dialog_photo_title"> Añada un foto</string>
     <string name="add_new_contact_alert_dialog_photo_camera">Cámara </string>
     <string name="add_new_contact_alert_dialog_photo_galery">Galería </string>
@@ -204,12 +208,10 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_toast_grid">Ha seleccionado %1$d contactos por fila</string>
     <string name="manage_my_screen_toast_list">Vista "Lista" seleccionada</string>
     <string name="manage_my_screen_toast_list_smaller"> Vista "Compacta" seleccionada</string>
-    <string name="manage_my_screen_contact_popup_long_text"> Activar/Desactivar ventana emergente antes de llamar un contacto</string>
     <string name="manage_my_screen_searchbar_pos">Posición barra de búsqueda </string>
     <string name="manage_my_screen_searchbar_pos_long_text"> Posición barra de búsqueda arriba de la pantalla</string>
     <string name="manage_my_screen_display_for_group_title">Activar pantalla de grupos específica</string>
     <string name="manage_my_screen_display_for_group_subtitle">Escojer una pantalla diferente para sus grupos</string>
-
     <string-array name="manage_my_screen_spinner_array">
         <item>Paleta multicolor</item>
         <item>Paleta de un color</item>
@@ -224,14 +226,11 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="notification_manager_toolbar_title">Notificación ajustes</string>
     <string name="notification_manager_stop_service"> Activar ajustes de notificación como prioridad</string>
     <string name="notification_manager_stop_popup"> Notificaciones VIP?</string>
-    <string name="notification_reminder">
-Enviar un recordatorio para ver todos los mensajes no VIP </string>
-    <string name="notification_manager_horaire">
-Seleccione recordar el tiempo diario: </string>
+    <string name="notification_reminder">Enviar un recordatorio para ver todos los mensajes no VIP </string>
+    <string name="notification_manager_horaire">Seleccione recordar el tiempo diario: </string>
     <string name="notification_manager_prio_1"> Ocultar notificaciones de prioridad 1</string>
     <string name="notification_alert_dialog_title">Selección de contactos VIP</string>
     <string name="notification_alert_dialog_message">Desea escojer contactos de prioridad alta?</string>
-    <string name="settings_contact_popup_phone_call">Mensage emergente de Notificación de llamada</string>
     <string name="notification_vip_message_tone">Tono de notificaciones VIP</string>
     <string name="notification_vip_default_message_tone">Tono por defecto</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Tono</string>
@@ -281,6 +280,11 @@ Seleccione recordar el tiempo diario: </string>
     <string name="notification_history_search_hint">Buscar</string>
     <string name="notification_history_delete_notifications">Borrar una o más notificaciones</string>
     <string name="notification_history_delete_notifications_confirmation">Está seguro?</string>
+    <string name="notification_history_alert_dialog_text">Recordatorio: también puede seleccionar una notificación con un toque largo y eliminarla usando el símbolo superior derecho</string>
+    <string name="notification_history_alert_dialog_delete_button">Eliminar todos</string>
+    <string name="notification_history_alert_dialog_cancel_button">Cancelar</string>
+    <string name="notification_history_alert_dialog_delete_system_button">Solo sistema</string>
+    <string name="notification_history_alert_dialog_title">Eliminar notificaciones</string>
     <!-- endregion -->
     <!-- region Alert Dialog Notifications -->
     <string name="alert_dialog_notification_message">Dar acceso a Knock In a sus notificaciones y priorizar</string>
@@ -412,7 +416,7 @@ Elija un contacto para agregar </string>
     <string name="start_activity_superposition_title">Superposición</string>
     <string name="start_activity_superposition_subtitle">Permita Knock In mostrar notificaciones VIP mientras usa otras aplicaciones</string>
     <string name="start_activity_button_superposition">Permitir</string>
-    <string name="start_activity_superposition_not_allowed_message"> La superposición no es posible con Android 10 (versión de su teléfono). Las notificaciones VIP no están disponibles por el momento. Pronto estará disponible una nueva versión de nuestra aplicación que ofrece notificaciones VIP con Android 10. De todos modos, puede utilizar las otras funciones gratuitas de la aplicación.</string>
+    <string name="start_activity_superposition_not_allowed_message">Para ver las ventanas emergentes de notificaciones VIP con Android 10, es necesario activar las "burbujas". Puede encontrar información sobre cómo proceder en el menú "Ayuda" del cajón Knock In.</string>
     <string name="start_activity_video_tutorial_skip_text">El video está disponible en la pestaña de Ayuda del menú de la aplicación</string>
     <string name="start_activity_permission_title">Otras autorizaciones</string>
     <string name="start_activity_permission_subtitle">
@@ -461,11 +465,4 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="popup_connection_cancel">Cancelar</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
-    <string name="notification_history_alert_dialog_text">Reminder: You can delete notification also with a long tap</string>
-    <string name="notification_history_alert_dialog_delete_button">Delete all</string>
-    <string name="notification_history_alert_dialog_cancel_button">Cancel</string>
-    <string name="notification_history_alert_dialog_delete_system_button">Delete not messaging notification</string>
-    <string name="notification_history_alert_dialog_title">Delete notification</string>
-    <string name="settings_invite_friend_text">Invit a friend</string>
-    <string name="invite_friend_text">Use Knock\'in a simple app to gesture contact priority</string>
 </resources>

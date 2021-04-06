@@ -67,5 +67,10 @@
             android:icon="@drawable/ic_import"
             android:title="@string/left_drawer_import"
             android:visible="false" />
+        <item
+            android:id="@+id/nav_invite_friend"
+            android:title="@string/settings_invite_friend_text"
+            android:icon="@drawable/ic_invite_friend"
+            android:visible="false" />
     </group>
 </menu>

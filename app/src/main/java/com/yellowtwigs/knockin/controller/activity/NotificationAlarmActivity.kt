@@ -49,6 +49,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_alarm)
+        println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKOOOOOOKKKKKKKKKKKKK")
 
         //region ==================================== SharedPreferences =====================================
 
@@ -60,7 +61,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         sharedAlarmNotifCanRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
         canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", false)
-
+/////////
         if (canRingtone) {
             alartNotifTone(sound)
         }
@@ -117,11 +118,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
         println("I'm into alarm")
 
         if (Build.VERSION.SDK_INT >= 27) {
+            println("2222222222222222222777777777777777777777777")
             setTurnScreenOn(true)
             setShowWhenLocked(true)
             val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             keyguardManager.requestDismissKeyguard(this, null)
         } else {
+            println("NOOOOOOOOOT INTOOOOOOOOO THE GOOOOOOOOOOOOOOOOOD")
             window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                     or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                     or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
