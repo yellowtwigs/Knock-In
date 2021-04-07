@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
@@ -47,10 +48,9 @@ import java.net.UnknownHostException
  * Activité qui nous permet d'importer nos contacts et accepter toutes les autorisations liées aux notifications appel et message
  * @author Florian Striebel, Kenzy Suon
  */
-class StartActivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity(),PurchasesUpdatedListener {
 
     //region ========================================== Val or Var ==========================================
-
     private var start_activity_ImportContacts: MaterialButton? = null
     private var start_activity_ActivateNotifications: MaterialButton? = null
     private var start_activity_AuthorizeSuperposition: MaterialButton? = null
@@ -71,11 +71,78 @@ class StartActivity : AppCompatActivity() {
     private lateinit var start_activity_mDbWorkerThread: DbWorkerThread
     private var activityVisible = false
 
+    private var billingCli : BillingClient?= null
     //endregion
+
+    private var sharedProductNotifFunkySoundPreferences: SharedPreferences? = null
+    private var sharedProductNotifJazzySoundPreferences: SharedPreferences? = null
+    private var sharedProductNotifRelaxationSoundPreferences: SharedPreferences? = null
+    private var sharedProductContactsUnlimitedPreferences: SharedPreferences? = null
 
     @SuppressLint("ObsoleteSdkInt", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        billingCli = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
+
+        billingCli!!.queryPurchaseHistoryAsync(BillingClient.SkuType.SUBS, PurchaseHistoryResponseListener(){ billingResult: BillingResult, purchasesList: MutableList<PurchaseHistoryRecord>? ->
+
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK)
+                {
+                    //Always returning 0 size() of purchasesList
+                    //Toast.makeText(getApplicationContext(), "There are " + purchasesList.size + " items you've purchased.", Toast.LENGTH_LONG).show()
+                    var purchases=billingCli!!.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
+                    for(item in purchases) {
+                        if (purchases != null) {
+                            when {
+                                purchases[0].originalJson.contains("notifications_vip_funk_theme") -> {
+                                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) {
+                                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                                                    .setPurchaseToken(purchases[0].purchaseToken)
+                                            Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
+                                            val edit = sharedProductNotifFunkySoundPreferences!!.edit()
+                                            edit.putBoolean("Notif_Funky_Sound_IsBought", true)
+                                            edit.apply()
+
+                                        }
+                                }
+                                purchases[0].originalJson.contains("notifications_vip_jazz_theme") -> {
+                                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED){
+                                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                                                    .setPurchaseToken(purchases[0].purchaseToken)
+                                            Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
+                                            val edit = sharedProductNotifJazzySoundPreferences!!.edit()
+                                            edit.putBoolean("Notif_Jazzy_Sound_IsBought", true)
+                                            edit.apply()
+
+                                        }
+                                }
+                                purchases[0].originalJson.contains("notifications_vip_relaxation_theme") -> {
+                                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) {
+                                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                                                .setPurchaseToken(purchases[0].purchaseToken)
+                                        Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
+                                        val edit = sharedProductNotifRelaxationSoundPreferences!!.edit()
+                                        edit.putBoolean("Notif_Relaxation_Sound_IsBought", true)
+                                        edit.apply()
+                                    }
+                                }
+                                purchases[0].originalJson.contains("contacts_vip_unlimited") -> {
+                                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) {
+                                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                                                    .setPurchaseToken(purchases[0].purchaseToken)
+                                            Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
+                                            val edit = sharedProductContactsUnlimitedPreferences!!.edit()
+                                            edit.putBoolean("Alarm_Contacts_Unlimited_IsBought", true)
+                                            edit.apply()
+                                        }
+                                }
+                            }
+                        }
+                    }
+
+                }
+        }
+        )
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
@@ -599,6 +666,11 @@ class StartActivity : AppCompatActivity() {
             packageNameList.add(activityInfo.applicationInfo.packageName)
         }
         return packageNameList
+    }
+
+    override fun onPurchasesUpdated(p0: BillingResult?, p1: MutableList<Purchase>?) {
+        //Normalement rien à faire ici
+        println("je ne devrais pas être ici")
     }
 
     //endregion
