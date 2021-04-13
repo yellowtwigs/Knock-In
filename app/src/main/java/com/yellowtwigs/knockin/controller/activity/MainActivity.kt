@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     /**
      * Dans cette region on crée toutes les variables dont l'activité aura besoin
      * Val pour les valeurs constantes
-     * Var pour les valeurs qui seront modifiés
+     * Var pour les valeurs qui seront modifiées
      */
     //region ========================================== Var or Val ==========================================
 

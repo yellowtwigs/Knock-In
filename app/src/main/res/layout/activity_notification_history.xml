@@ -9,156 +9,161 @@
     tools:context=".controller.activity.NotificationHistoryActivity"
     tools:openDrawer="start">
 
-    <RelativeLayout
-        android:id="@+id/notification_history_layout"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/notification_history_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/notification_history_toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="10dp"
-            android:visibility="visible"
-            android:background="@drawable/custom_shadow_background"
-            android:elevation="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/notification_history_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:alpha="0.70"
-                android:background="@color/transparentColor"
-                android:backgroundTint="?attr/transparentColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/notification_history_search_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:background="?attr/backgroundColor"
-                android:backgroundTint="?attr/backgroundColor"
-                android:hint="@string/notification_history_search_hint"
-                android:inputType="textPersonName"
-                android:textColor="?attr/textColor"
-                android:textColorHint="?attr/textColor"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <RelativeLayout
-            android:id="@+id/notification_history_toolbar_multi_select_mode_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/backgroundColor"
-            android:visibility="gone"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true">
+            android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/notification_history_toolbar_multi_select_mode_close"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:background="?attr/actionBarItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                app:srcCompat="@drawable/ic_close" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/notification_history_toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/custom_shadow_background"
+                android:elevation="10dp"
+                android:visibility="visible">
 
-            <TextView
-                android:id="@+id/notification_history_toolbar_multi_select_mode_tv"
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/notification_history_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:alpha="0.70"
+                    android:background="@color/transparentColor"
+                    android:backgroundTint="?attr/transparentColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/notification_history_search_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/backgroundColor"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:hint="@string/notification_history_search_hint"
+                    android:inputType="textPersonName"
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="?attr/textColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/notification_history_toolbar_multi_select_mode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="?attr/backgroundColor"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/notification_history_toolbar_multi_select_mode_close"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/ic_close" />
+
+                <TextView
+                    android:id="@+id/notification_history_toolbar_multi_select_mode_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="35dp"
+                    android:layout_toEndOf="@+id/notification_history_toolbar_multi_select_mode_close"
+                    android:textColor="?attr/textColor"
+                    android:textSize="21sp"
+                    tools:ignore="RelativeOverlap" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/notification_history_toolbar_multi_select_mode_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/ic_garbage" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.05dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="?attr/darkGreyColor" />
+
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/notification_history_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_above="@+id/navigation"
+                android:layout_below="@+id/notification_history_toolbar_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:divider="@android:color/transparent"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notification_history_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_above="@+id/navigation"
+                android:layout_below="@+id/notification_history_toolbar_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp" />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navigation"
+                style="@style/BottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="bottom"
+                android:alpha="0.70"
+                android:background="?attr/backgroundColor"
+                android:fadingEdge="horizontal"
+                android:fadingEdgeLength="20dp"
+                app:itemIconTint="@color/bottom_navigation_color"
+                app:itemTextColor="@color/bottom_navigation_color"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_navigation_view" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/notification_history_floating_action_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="35dp"
-                android:layout_toEndOf="@+id/notification_history_toolbar_multi_select_mode_close"
-                android:textColor="?attr/textColor"
-                android:textSize="21sp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/notification_history_toolbar_multi_select_mode_delete"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/notification_history_recycler_view"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:background="?attr/actionBarItemBackground"
+                android:layout_marginEnd="22dp"
+                android:layout_marginBottom="48dp"
+                android:background="@color/colorPrimary"
+                android:backgroundTint="@color/colorPrimary"
                 android:clickable="true"
-                android:focusable="true"
                 app:srcCompat="@drawable/ic_garbage" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.05dp"
-                android:layout_alignParentBottom="true"
-                android:background="?attr/darkGreyColor" />
-
         </RelativeLayout>
-
-        <ListView
-            android:id="@+id/notification_history_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:divider="@android:color/transparent"
-            android:visibility="gone"
-            android:layout_above="@+id/navigation"
-            android:layout_below="@+id/notification_history_toolbar_layout"
-            android:layout_centerHorizontal="true" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notification_history_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10.0sp"
-            android:layout_above="@+id/navigation"
-            android:layout_below="@+id/notification_history_toolbar_layout"
-            android:layout_centerHorizontal="true" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
-            style="@style/BottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:alpha="0.70"
-            android:background="?attr/backgroundColor"
-            android:fadingEdge="horizontal"
-            android:fadingEdgeLength="20dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            app:itemIconTint="@color/bottom_navigation_color"
-            app:itemTextColor="@color/bottom_navigation_color"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_navigation_view" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/notification_history_floating_action_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/notification_history_recycler_view"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="22dp"
-            android:layout_marginBottom="48dp"
-            android:clickable="true"
-            android:backgroundTint="@color/colorPrimary"
-            android:background="@color/colorPrimary"
-            app:srcCompat="@drawable/ic_garbage" />
-
-
-    </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
