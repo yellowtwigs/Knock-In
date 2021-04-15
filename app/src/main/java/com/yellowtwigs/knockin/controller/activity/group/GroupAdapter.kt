@@ -1,70 +1,44 @@
 package com.yellowtwigs.knockin.controller.activity.group
 
 import android.Manifest
-import com.yellowtwigs.knockin.model.ContactManager.contactList
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation.contactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB.contactPriority
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB.profilePicture64
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB.profilePicture
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB.firstName
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB.lastName
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB.favorite
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation.getFirstPhoneNumber
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation.getFirstMail
-import com.yellowtwigs.knockin.model.ContactGesture.openWhatsapp
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB.id
-import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity.gridLongItemClick
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation.getSecondPhoneNumber
-import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity.recyclerMultiSelectItemClick
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase.GroupsDao
-import com.yellowtwigs.knockin.model.requestDB.GroupsDao.getAllGroupsByNameAZ
-import com.yellowtwigs.knockin.model.ModelDB.GroupWithContact.getListContact
-import com.yellowtwigs.knockin.model.ContactManager
-import androidx.recyclerview.widget.RecyclerView
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import com.yellowtwigs.knockin.R
 import android.annotation.SuppressLint
-import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import android.graphics.Bitmap
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.util.DisplayMetrics
-import android.widget.FrameLayout
-import com.yellowtwigs.knockin.model.ContactGesture
-import android.content.Intent
-import com.yellowtwigs.knockin.controller.activity.EditContactActivity
-import android.os.Bundle
-import android.view.View.OnLongClickListener
-import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
-import androidx.core.content.ContextCompat
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
-import android.content.SharedPreferences
 import android.content.DialogInterface
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import android.widget.TextView
-import com.yellowtwigs.knockin.controller.CircularImageView
-import androidx.appcompat.widget.AppCompatImageView
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.RelativeSizeSpan
 import android.util.Base64
+import android.util.DisplayMetrics
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.ModelDB.GroupWithContact
-import java.lang.Exception
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.controller.activity.EditContactActivity
+import com.yellowtwigs.knockin.model.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
+import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import java.util.*
 
 /**
@@ -78,7 +52,7 @@ class GroupAdapter(private val context: Context,
                     *
                     * @return [ContactManager]
                     */
-                   val contactManager: ContactManager, private val len: Int) : RecyclerView.Adapter<GroupAdapter.ViewHolder>(), MenuStateChangeListener {
+                   private val contactManager: ContactManager, private val len: Int) : RecyclerView.Adapter<GroupAdapter.ViewHolder>(), MenuStateChangeListener {
     private var selectMenu: FloatingActionMenu? = null
     private val listCircularMenu = ArrayList<FloatingActionMenu>()
     private var numberForPermission = ""
@@ -104,7 +78,7 @@ class GroupAdapter(private val context: Context,
         } else {
             LayoutInflater.from(context).inflate(R.layout.list_contact_item_layout, parent, false)
         }
-        val holder: ViewHolder = ViewHolder(view)
+        val holder = ViewHolder(view!!)
         heightWidthImage = holder.contactRoundedImageView!!.layoutParams.height
         return holder
     }
@@ -117,35 +91,47 @@ class GroupAdapter(private val context: Context,
      */
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        //SharedPreferences sharedPreferences = context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE);
-
-        //int len = sharedPreferences.getInt("gridview", 4);
         val height = heightWidthImage
         val width = heightWidthImage
         println(" layout params height $height width $width")
         val layoutParamsTV = holder.contactFirstNameView!!.layoutParams as RelativeLayout.LayoutParams
-        val layoutParamsIV = holder.contactRoundedImageView!!.layoutParams as ConstraintLayout.LayoutParams
-        if (len == 3) {
-            holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.05).toInt()
-            holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.05).toInt()
-            layoutParamsTV.topMargin = 30
-            layoutParamsIV.topMargin = 10
-        } else if (len == 4) {
-            holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.25).toInt()
-            holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.25).toInt()
-            layoutParamsTV.topMargin = 10
-            layoutParamsIV.topMargin = 10
-        } else if (len == 5) {
-            holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.40).toInt()
-            holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.40).toInt()
-            layoutParamsTV.topMargin = 0
-            layoutParamsIV.topMargin = 0
-        } else if (len == 6) {
-            holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.50).toInt()
-            holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.50).toInt()
-            layoutParamsTV.topMargin = 0
-            layoutParamsIV.topMargin = 0
+        val layoutParamsIV = if (len != 1) {
+            holder.contactRoundedImageView!!.layoutParams as ConstraintLayout.LayoutParams
+        } else {
+            holder.contactRoundedImageView!!.layoutParams as RelativeLayout.LayoutParams
+        }
+
+        when (len) {
+            1 -> {
+                holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.05).toInt()
+                holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.05).toInt()
+                layoutParamsTV.topMargin = 30
+                layoutParamsIV.topMargin = 10
+            }
+            3 -> {
+                holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.05).toInt()
+                holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.05).toInt()
+                layoutParamsTV.topMargin = 30
+                layoutParamsIV.topMargin = 10
+            }
+            4 -> {
+                holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.25).toInt()
+                holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.25).toInt()
+                layoutParamsTV.topMargin = 10
+                layoutParamsIV.topMargin = 10
+            }
+            5 -> {
+                holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.40).toInt()
+                holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.40).toInt()
+                layoutParamsTV.topMargin = 0
+                layoutParamsIV.topMargin = 0
+            }
+            6 -> {
+                holder.contactRoundedImageView!!.layoutParams.height = (heightWidthImage - heightWidthImage * 0.50).toInt()
+                holder.contactRoundedImageView!!.layoutParams.width = (heightWidthImage - heightWidthImage * 0.50).toInt()
+                layoutParamsTV.topMargin = 0
+                layoutParamsIV.topMargin = 0
+            }
         }
         val contact = contactManager.contactList[position].contactDB!!
         if (contact.contactPriority == 0) {
@@ -165,7 +151,7 @@ class GroupAdapter(private val context: Context,
                 holder.contactRoundedImageView!!.setImageResource(randomDefaultImage(contact.profilePicture)) //////////////
             }
         }
-        //region set libbellé group
+        //region set libellé group
         // ContactsRoomDatabase main_ContactsDatabase=ContactsRoomDatabase.Companion.getDatabase(context);
         //DbWorkerThread main_mDbWorkerThread=new DbWorkerThread("dbWorkerThread");
         //main_mDbWorkerThread.start() ;
@@ -175,39 +161,50 @@ class GroupAdapter(private val context: Context,
         var firstname = contact.firstName
         var lastName = contact.lastName
         var group = ""
-        if (len == 3) {
-            val spanFistName: Spannable = SpannableString(firstname)
-            spanFistName.setSpan(RelativeSizeSpan(0.95f), 0, firstname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.contactFirstNameView!!.text = spanFistName
-            val spanLastName: Spannable = SpannableString(lastName)
-            spanLastName.setSpan(RelativeSizeSpan(0.95f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.contactLastNameView!!.text = spanLastName
+
+        when (len) {
+            1 -> {
+                val spanFistName: Spannable = SpannableString(firstname)
+                spanFistName.setSpan(RelativeSizeSpan(0.95f), 0, firstname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactFirstNameView!!.text = spanFistName
+                val spanLastName: Spannable = SpannableString(lastName)
+                spanLastName.setSpan(RelativeSizeSpan(0.95f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactLastNameView!!.text = spanLastName
+            }
+            3 -> {
+                val spanFistName: Spannable = SpannableString(firstname)
+                spanFistName.setSpan(RelativeSizeSpan(0.95f), 0, firstname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactFirstNameView!!.text = spanFistName
+                val spanLastName: Spannable = SpannableString(lastName)
+                spanLastName.setSpan(RelativeSizeSpan(0.95f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactLastNameView!!.text = spanLastName
+            }
+            4 -> {
+                if (contact.firstName.length > 12) firstname = contact.firstName.substring(0, 10) + ".."
+                val spanFistName: Spannable = SpannableString(firstname)
+                spanFistName.setSpan(RelativeSizeSpan(0.95f), 0, firstname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactFirstNameView!!.text = spanFistName
+                if (contact.lastName.length > 12) lastName = contact.lastName.substring(0, 10) + ".."
+                val spanLastName: Spannable = SpannableString(lastName)
+                spanLastName.setSpan(RelativeSizeSpan(0.95f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactLastNameView!!.text = spanLastName
+                if (group.length > 9) group = group.substring(0, 8) + ".."
+                spanLastName.setSpan(RelativeSizeSpan(0.95f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            5 -> {
+                if (contact.firstName.length > 11) firstname = contact.firstName.substring(0, 9) + ".."
+                holder.contactFirstNameView!!.text = firstname
+                val span: Spannable = SpannableString(holder.contactFirstNameView!!.text)
+                span.setSpan(RelativeSizeSpan(0.9f), 0, firstname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactFirstNameView!!.text = span
+                //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
+                if (contact.lastName.length > 11) lastName = contact.lastName.substring(0, 9) + ".."
+                val spanLastName: Spannable = SpannableString(lastName)
+                spanLastName.setSpan(RelativeSizeSpan(0.9f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.contactLastNameView!!.text = spanLastName
+            }
         }
-        if (len == 4) {
-            if (contact.firstName.length > 12) firstname = contact.firstName.substring(0, 10) + ".."
-            val spanFistName: Spannable = SpannableString(firstname)
-            spanFistName.setSpan(RelativeSizeSpan(0.95f), 0, firstname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.contactFirstNameView!!.text = spanFistName
-            if (contact.lastName.length > 12) lastName = contact.lastName.substring(0, 10) + ".."
-            val spanLastName: Spannable = SpannableString(lastName)
-            spanLastName.setSpan(RelativeSizeSpan(0.95f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.contactLastNameView!!.text = spanLastName
-            if (group.length > 9) group = group.substring(0, 8) + ".."
-            val spanGroup: Spannable = SpannableString(group)
-            spanLastName.setSpan(RelativeSizeSpan(0.95f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-        if (len == 5) {
-            if (contact.firstName.length > 11) firstname = contact.firstName.substring(0, 9) + ".."
-            holder.contactFirstNameView!!.text = firstname
-            val span: Spannable = SpannableString(holder.contactFirstNameView!!.text)
-            span.setSpan(RelativeSizeSpan(0.9f), 0, firstname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.contactFirstNameView!!.text = span
-            //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
-            if (contact.lastName.length > 11) lastName = contact.lastName.substring(0, 9) + ".."
-            val spanLastName: Spannable = SpannableString(lastName)
-            spanLastName.setSpan(RelativeSizeSpan(0.9f), 0, lastName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.contactLastNameView!!.text = spanLastName
-        }
+
         /*   if (!contact.getProfilePicture64().equals("")) {
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
@@ -231,13 +228,6 @@ class GroupAdapter(private val context: Context,
         buttonMail.id = 5
 
         //buttonMessenger.setImageDrawable(iconMessenger);
-        if (contact.favorite == 1) {
-            holder.gridAdapterFavoriteShine!!.visibility = View.VISIBLE
-        } else {
-            holder.gridAdapterFavoriteShine!!.visibility = View.GONE
-        }
-
-        //buttonMessenger.setImageDrawable(iconMessenger);
         buttonCall.setImageResource(R.drawable.ic_google_call)
         buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp)
         buttonSMS.setImageResource(R.drawable.ic_sms_selector)
@@ -248,18 +238,22 @@ class GroupAdapter(private val context: Context,
         builderIcon.setContentView(buttonCall)
         val startAngle: Int
         val endAngle: Int
-        if ((position - getSectionnedPosition(position)) % len == 0) {
-            println("position vaut " + position + " modulo" + len + " vaut" + position % len)
-            startAngle = 90
-            endAngle = -90
-        } else if ((position - getSectionnedPosition(position)) % len == len - 1) {
-            println("position vaut " + position + " modulo" + len + " vaut" + position % len)
-            startAngle = 90
-            endAngle = 270
-        } else {
-            println("position vaut " + position + " modulo" + len + " vaut" + position % len)
-            startAngle = 0
-            endAngle = -180
+        when {
+            (position - getSectionnedPosition(position)) % len == 0 -> {
+                println("position vaut " + position + " modulo" + len + " vaut" + position % len)
+                startAngle = 90
+                endAngle = -90
+            }
+            (position - getSectionnedPosition(position)) % len == len - 1 -> {
+                println("position vaut " + position + " modulo" + len + " vaut" + position % len)
+                startAngle = 90
+                endAngle = 270
+            }
+            else -> {
+                println("position vaut " + position + " modulo" + len + " vaut" + position % len)
+                startAngle = 0
+                endAngle = -180
+            }
         }
         val metrics = DisplayMetrics()
         context.windowManager.defaultDisplay.getMetrics(metrics)
@@ -301,31 +295,38 @@ class GroupAdapter(private val context: Context,
                 } catch (ActivityNotFoundException e) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + "")));
                 }
-            } else*/if (v.id == buttonWhatsApp.id) {
-            val contactWithAllInformation = getItem(position)
-            openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context)
-        } else if (v.id == buttonEdit.id) {
-            val intent = Intent(context, EditContactActivity::class.java)
-            intent.putExtra("ContactId", contact.id)
-            intent.putExtra("fromGroupActivity", true)
-            context.startActivity(intent)
-        } else if (v.id == buttonCall.id) {
-            callPhone(getItem(position).getFirstPhoneNumber())
-        } else if (v.id == buttonSMS.id) {
-            val phone = getItem(position).getFirstPhoneNumber()
-            val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null))
-            context.startActivity(i)
-        } else if (v.id == buttonMail.id) {
-            val mail = getItem(position).getFirstMail()
-            val intent = Intent(Intent.ACTION_SENDTO)
-            intent.data = Uri.parse("mailto:")
-            //intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
-            intent.putExtra(Intent.EXTRA_SUBJECT, "")
-            intent.putExtra(Intent.EXTRA_TEXT, "")
-            println("intent " + Objects.requireNonNull(intent.extras).toString())
-            context.startActivity(intent)
-        }
+            } else*/
+            when (v.id) {
+                buttonWhatsApp.id -> {
+                    val contactWithAllInformation = getItem(position)
+                    openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context)
+                }
+                buttonEdit.id -> {
+                    val intent = Intent(context, EditContactActivity::class.java)
+                    intent.putExtra("ContactId", contact.id)
+                    intent.putExtra("fromGroupActivity", true)
+                    context.startActivity(intent)
+                }
+                buttonCall.id -> {
+                    callPhone(getItem(position).getFirstPhoneNumber())
+                }
+                buttonSMS.id -> {
+                    val phone = getItem(position).getFirstPhoneNumber()
+                    val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null))
+                    context.startActivity(i)
+                }
+                buttonMail.id -> {
+                    val mail = getItem(position).getFirstMail()
+                    val intent = Intent(Intent.ACTION_SENDTO)
+                    intent.data = Uri.parse("mailto:")
+                    //intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "")
+                    intent.putExtra(Intent.EXTRA_TEXT, "")
+                    println("intent " + Objects.requireNonNull(intent.extras).toString())
+                    context.startActivity(intent)
+                }
+            }
             selectMenu!!.close(false)
         }
         val gridlongClick = OnLongClickListener { v: View ->
@@ -382,89 +383,15 @@ class GroupAdapter(private val context: Context,
                 }
             }
         }
-        buttonCall.setOnLongClickListener { v: View? ->
+        buttonCall.setOnLongClickListener {
             val phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber())
-            if (!phoneNumber.isEmpty()) {
+            if (phoneNumber.isNotEmpty()) {
                 callPhone(phoneNumber)
             }
             true
         }
-        val listItemClick = View.OnClickListener { v: View? ->
-            if (modeMultiSelect) {
-                if (listOfItemSelected.contains(contactManager.contactList[position])) {
-                    listOfItemSelected.remove(contactManager.contactList[position])
-                    if (contact.profilePicture64 != "") {
-                        val bitmap = base64ToBitmap(contact.profilePicture64)
-                        holder.contactRoundedImageView!!.setImageBitmap(bitmap)
-                    } else {
-                        holder.contactRoundedImageView!!.setImageResource(randomDefaultImage(contact.profilePicture))
-                    }
-                    if (listOfItemSelected.isEmpty()) {
-                        modeMultiSelect = false
-                    }
-                    notifyDataSetChanged()
-                } else {
-                    listOfItemSelected.add(contactManager.contactList[position])
-                    holder.contactRoundedImageView!!.setImageResource(R.drawable.ic_item_selected)
-                    notifyDataSetChanged()
-                }
-                (context as GroupManagerActivity).recyclerMultiSelectItemClick(position)
-            } else {
-//                if (lastClick) {
-//                    lastClick = false;
-//                } else {
-//                    if (len == 1) {
-//                        if (holder.constraintLayoutMenu != null) {
-//                            if (holder.constraintLayoutMenu.getVisibility() == View.GONE) {
-//                                holder.constraintLayoutMenu.setVisibility(View.VISIBLE);
-//                                slideUp(holder.constraintLayoutMenu);
-//                                if (lastSelectMenuLen1 != null)
-//                                    lastSelectMenuLen1.setVisibility(View.GONE);
-//                                lastSelectMenuLen1 = holder.constraintLayoutMenu;
-//                            } else {
-//                                holder.constraintLayoutMenu.setVisibility(View.GONE);
-//                                Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-//                                holder.constraintLayoutMenu.startAnimation(slideDown);
-//                                lastSelectMenuLen1 = null;
-//                            }
-//                        }
-//                    }
-//                }
-            }
-        }
-        val listItemLongClick = OnLongClickListener { v: View ->
-            if (!modeMultiSelect) {
-                v.tag = holder
-                assert(contact != null)
-                holder.contactFirstNameView!!.text = contact.firstName
-                if (listOfItemSelected.contains(contactManager.contactList[position])) {
-                    listOfItemSelected.remove(contactManager.contactList[position])
-                    if (contact.profilePicture64 != "") {
-                        val bitmap = base64ToBitmap(contact.profilePicture64)
-                        holder.contactRoundedImageView!!.setImageBitmap(bitmap)
-                    } else {
-                        listOfItemSelected.add(contactManager.contactList[position])
-                        holder.contactRoundedImageView!!.setImageResource(R.drawable.ic_item_selected)
-                        notifyDataSetChanged()
-                    }
-                } else {
-                    listOfItemSelected.add(contactManager.contactList[position])
-                    holder.contactRoundedImageView!!.setImageResource(R.drawable.ic_item_selected)
-                    notifyDataSetChanged()
-                }
-                closeMenu()
-                (context as GroupManagerActivity).recyclerMultiSelectItemClick(position)
-                modeMultiSelect = true
-            }
-            true
-        }
-        if (holder.constraintLayout != null) {
-            holder.constraintLayout!!.setOnLongClickListener(listItemLongClick)
-            holder.constraintLayout!!.setOnClickListener(listItemClick)
-        }
-        holder.gridContactItemLayout!!.setOnLongClickListener(gridlongClick)
+
         holder.contactRoundedImageView!!.setOnLongClickListener(gridlongClick)
-        holder.gridContactItemLayout!!.setOnClickListener(gridItemClick)
         holder.contactRoundedImageView!!.setOnClickListener(gridItemClick)
         //buttonMessenger.setOnClickListener(buttonListener);
         buttonWhatsApp.setOnClickListener(buttonListener)
@@ -585,41 +512,19 @@ class GroupAdapter(private val context: Context,
         var contactFirstNameView: TextView? = null
         var contactLastNameView: TextView? = null
         var contactRoundedImageView: CircularImageView? = null
-        var gridContactItemLayout: ConstraintLayout? = null
-        var gridAdapterFavoriteShine: AppCompatImageView? = null
-        var constraintLayout: RelativeLayout? = null
-        var constraintLayoutMenu: ConstraintLayout? = null
-        var listContactItemFavoriteShine: AppCompatImageView? = null
-        var callCl: RelativeLayout? = null
-        var smsCl: RelativeLayout? = null
-        var whatsappCl: RelativeLayout? = null
-        var mailCl: RelativeLayout? = null
-        var editCl: RelativeLayout? = null
-        var groupWordingConstraint: ConstraintLayout? = null
-        var groupWordingTv: TextView? = null
         var open: Boolean? = null
 
         init {
             if (len >= 4) {
                 contactRoundedImageView = view.findViewById(R.id.contactRoundedImageView)
-                gridContactItemLayout = view.findViewById(R.id.grid_contact_item_layout)
                 contactFirstNameView = view.findViewById(R.id.grid_adapter_contactFirstName)
                 contactLastNameView = view.findViewById(R.id.grid_adapter_contactLastName)
-                gridAdapterFavoriteShine = view.findViewById(R.id.grid_adapter_favorite_shine)
-                heightWidthImage = contactRoundedImageView.getHeight()
+                heightWidthImage = contactRoundedImageView!!.height
             } else {
                 contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
                 contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName)
-                constraintLayout = view.findViewById(R.id.list_contact_item_layout)
-                constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu)
-                callCl = view.findViewById(R.id.list_contact_item_constraint_call)
-                smsCl = view.findViewById(R.id.list_contact_item_constraint_sms)
-                editCl = view.findViewById(R.id.list_contact_item_constraint_edit)
-                whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp)
-                mailCl = view.findViewById(R.id.list_contact_item_constraint_mail)
-                groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout)
-                groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv)
-                listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine)
+                contactLastNameView = view.findViewById(R.id.list_contact_item_contactLastName)
+                heightWidthImage = contactRoundedImageView!!.height
                 open = false
             }
         } /*        @Override

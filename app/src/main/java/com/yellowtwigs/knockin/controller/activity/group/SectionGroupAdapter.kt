@@ -18,9 +18,11 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.BuildConfig
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
@@ -28,26 +30,10 @@ import com.yellowtwigs.knockin.model.DbWorkerThread
 import java.util.*
 
 class SectionGroupAdapter(private val mContext: Context, private val mSectionResourceId: Int, recyclerView: RecyclerView,
-                          private val mBaseAdapter: RecyclerView.Adapter<*>, len: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), PopupMenu.OnMenuItemClickListener {
+                          private val mBaseAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, len: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), PopupMenu.OnMenuItemClickListener {
     private var mValid = true
     private val mSections = SparseArray<Section?>()
     private var color = 0
-
-    class SectionViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
-        var titleTv: TextView
-        var gmailIV: ImageView
-        var smsIV: ImageView
-        var menu: ImageView
-        var holderName: RelativeLayout
-
-        init {
-            titleTv = view.findViewById(R.id.section_text)
-            gmailIV = view.findViewById(R.id.section_gmail_imageview)
-            smsIV = view.findViewById(R.id.section_sms_imageview)
-            menu = view.findViewById(R.id.section_more_imageView)
-            holderName = view.findViewById(R.id.recycler_group_name_relative)
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, typeView: Int): RecyclerView.ViewHolder {
         return if (typeView == SECTION_TYPE) {
@@ -59,7 +45,6 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onBindViewHolder(sectionViewHolder: RecyclerView.ViewHolder, position: Int) {
         if (isSectionHeaderPosition(position)) {
             var i = position + 1
@@ -298,12 +283,12 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                             println("delete contact")
                         }
                         R.id.menu_group_delete_group -> {
-                            val contactsDatabase1: ContactsRoomDatabase?
-                            val mDbWorkerThread: DbWorkerThread
-                            mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+                            val contactsDatabase1: ContactsRoomDatabase? = getDatabase(mContext)
+                            val mDbWorkerThread = DbWorkerThread("dbWorkerThread")
                             mDbWorkerThread.start()
-                            contactsDatabase1 = getDatabase(mContext)
-                            assert(contactsDatabase1 != null)
+                            if (BuildConfig.DEBUG && contactsDatabase1 == null) {
+                                error("Assertion failed")
+                            }
                             alertDialog(mSections[position]!!.idGroup.toInt(), contactsDatabase1)
                         }
                         else -> println("always in default")
@@ -312,11 +297,9 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 }
                 popupMenu.show()
             }
-            sectionViewHolder.holderName.setOnClickListener { v: View? -> (mBaseAdapter as GroupAdapter).SetGroupClick(getGroupPosition(position)) }
+            sectionViewHolder.holderName.setOnClickListener { (mBaseAdapter as GroupAdapter).SetGroupClick(getGroupPosition(position)) }
         } else {
-            // System.out.println("position non section"+position);
             mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position))
-            //System.out.println("contact "+((GroupAdapter)mBaseAdapter).getItem(sectionedPositionToPosition(position)).getContactDB()+ " position "+position);
         }
         val list = ArrayList<Int>()
         for (i in 0 until itemCount) {
@@ -372,7 +355,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
         return 0
     }
 
-    fun getGroupPosition(position: Int): Int {
+    private fun getGroupPosition(position: Int): Int {
         var nbGroup = 0
         for (i in position downTo 1) {
             if (isSectionHeaderPosition(i)) {
@@ -432,10 +415,10 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 .setTitle(R.string.section_alert_delete_group_title)
                 .setMessage(String.format(contactsDatabase!!.GroupsDao().getGroup(idGroup).name, R.string.section_alert_delete_group_message))
                 .setPositiveButton(android.R.string.yes
-                ) { dialog: DialogInterface?, id: Int ->
+                ) { _: DialogInterface?, _: Int ->
                     var counter = 0
                     while (counter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ().size) {
-                        if (Objects.requireNonNull(contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].groupDB).name == "Favorites") {
+                        if (Objects.requireNonNull(contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].groupDB)?.name == "Favorites") {
                             var secondCounter = 0
                             while (secondCounter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(mContext).size) {
                                 contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(mContext)[secondCounter].setIsNotFavorite(contactsDatabase)
@@ -446,7 +429,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                         counter++
                     }
                     contactsDatabase.GroupsDao().deleteGroupById(idGroup)
-                    if (mContext is GroupManagerActivity) mContext.refreshList()
+                    if (mContext is GroupManagerActivity) mContext.refreshActivity()
                 }
                 .setNegativeButton(android.R.string.no, null)
                 .show()
@@ -457,7 +440,6 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
     }
 
     init {
-
 //        color = mContext.getColor(R.color.)
         mBaseAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onChanged() {
@@ -488,14 +470,20 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 }
             }
         } else {
-//            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) (recyclerView.getLayoutManager());
-//            assert linearLayoutManager != null;
-//            linearLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-//                @Override
-//                public int getSpanSize(int position) {
-//                    return (isSectionHeaderPosition(position)) ? linearLayoutManager.getSpanCount() : 1;
+//            val linearLayoutManager = (recyclerView.layoutManager as LinearLayoutManager?)!!
+//            linearLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
+//                override fun getSpanSize(position: Int): Int {
+//                    return if (isSectionHeaderPosition(position)) linearLayoutManager.spanCount else 1
 //                }
-//            });
+//            }
         }
+    }
+
+    class SectionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var titleTv: TextView = view.findViewById(R.id.section_text)
+        var gmailIV: ImageView = view.findViewById(R.id.section_gmail_imageview)
+        var smsIV: ImageView = view.findViewById(R.id.section_sms_imageview)
+        var menu: ImageView = view.findViewById(R.id.section_more_imageView)
+        var holderName: RelativeLayout = view.findViewById(R.id.recycler_group_name_relative)
     }
 }

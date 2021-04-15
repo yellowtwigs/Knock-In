@@ -260,9 +260,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         return listContacts
     }
 
-
     //region region Creation FakeContact
-
 
     private fun loadJSONFromAsset(context: Context): String {
         var json = ""

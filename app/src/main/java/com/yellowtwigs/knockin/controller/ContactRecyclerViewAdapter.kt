@@ -45,19 +45,10 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
     private val listContacts: List<ContactWithAllInformation>
     private var view: View? = null
     private var modeMultiSelect = false
-    private var secondClick = false
     private var lastClick = false
     private var lastSelectMenuLen1: ConstraintLayout?
-    fun getListOfItemSelected(): ArrayList<ContactWithAllInformation> {
-        return listOfItemSelected
-    }
 
-    fun setListOfItemSelected(listOfItemSelected: ArrayList<ContactWithAllInformation>?) {
-        this.listOfItemSelected.clear()
-        this.listOfItemSelected.addAll(listOfItemSelected!!)
-    }
-
-    private val listOfItemSelected = ArrayList<ContactWithAllInformation>()
+    var listOfItemSelected = ArrayList<ContactWithAllInformation>()
     var phonePermission = ""
         private set
 
@@ -71,7 +62,7 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         view = LayoutInflater.from(parent.context).inflate(R.layout.list_contact_item_layout, parent, false)
-        return ContactViewHolder(view)
+        return ContactViewHolder(view!!)
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
@@ -105,10 +96,8 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
         }
         val contactName = contact.firstName + " " + contact.lastName
         holder.contactFirstNameView.text = contactName
-        var group = ""
         val firstGroup = getItem(position).getFirstGroup(context)
         if (context is GroupManagerActivity) {
-            holder.groupWordingConstraint.visibility = View.VISIBLE
             if (len == 0) {
                 holder.contactRoundedImageView.visibility = View.INVISIBLE
             }
@@ -118,33 +107,17 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 val roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group)
                 roundedLayout!!.setColorFilter(context.resources.getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY)
-                holder.groupWordingConstraint.background = roundedLayout
             } else {
                 val roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group)
                 roundedLayout!!.setColorFilter(context.resources.getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY)
-                holder.groupWordingConstraint.background = roundedLayout
             }
             //Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             //roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
             //holder.groupWordingConstraint.setBackground(roundedLayout);
         } else {
-            group = firstGroup.name
             val roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group)!!
             //            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
             roundedLayout.setColorFilter(firstGroup.section_color, PorterDuff.Mode.MULTIPLY)
-            holder.groupWordingConstraint.background = roundedLayout
-        }
-        if (len == 0) {
-            if (group.length > 6) {
-                group = group.substring(0, 6) + ".."
-            }
-        } else {
-            if (group.length > 9) {
-                group = group.substring(0, 9) + ".."
-            }
-        }
-        if (holder.groupWordingTv != null) {
-            holder.groupWordingTv!!.text = group
         }
         if (modeMultiSelect) {
             if (listOfItemSelected.contains(gestionnaireContacts.contactList[position])) {
@@ -155,26 +128,28 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             }
         }
         val listener = View.OnClickListener { v: View ->
-            if (v.id == holder.smsCl.id) {
-                val phone = getItem(position).getFirstPhoneNumber()
-                context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null)))
-            }
-            if (v.id == holder.callCl.id) {
-                callPhone(getItem(position).getFirstPhoneNumber())
-            }
-            if (v.id == holder.whatsappCl.id) {
-                val contactWithAllInformation = getItem(position)
-                openWhatsapp(contactWithAllInformation.getFirstPhoneNumber(), context)
-            }
-            if (v.id == holder.mailCl.id) {
-                val mail = getItem(position).getFirstMail()
-                val intent = Intent(Intent.ACTION_SENDTO)
-                intent.data = Uri.parse("mailto:")
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
-                intent.putExtra(Intent.EXTRA_SUBJECT, "")
-                intent.putExtra(Intent.EXTRA_TEXT, "")
-                DriverManager.println("intent " + Objects.requireNonNull(intent.extras).toString())
-                context.startActivity(intent)
+            when (v.id) {
+                holder.smsCl.id -> {
+                    val phone = getItem(position).getFirstPhoneNumber()
+                    context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null)))
+                }
+                holder.callCl.id -> {
+                    callPhone(getItem(position).getFirstPhoneNumber())
+                }
+                holder.whatsappCl.id -> {
+                    val contactWithAllInformation = getItem(position)
+                    openWhatsapp(contactWithAllInformation.getFirstPhoneNumber(), context)
+                }
+                holder.mailCl.id -> {
+                    val mail = getItem(position).getFirstMail()
+                    val intent = Intent(Intent.ACTION_SENDTO)
+                    intent.data = Uri.parse("mailto:")
+                    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "")
+                    intent.putExtra(Intent.EXTRA_TEXT, "")
+                    DriverManager.println("intent " + Objects.requireNonNull(intent.extras).toString())
+                    context.startActivity(intent)
+                }
             }
             if (len == 1) {
                 if (v.id == holder.editCl!!.id) {
@@ -332,43 +307,6 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             holder.listContactItemFavoriteShine.visibility = View.VISIBLE
         } else {
             holder.listContactItemFavoriteShine.visibility = View.GONE
-        }
-        holder.groupWordingConstraint.setOnClickListener { v: View? ->
-            val main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-            main_mDbWorkerThread.start()
-            println("list contact grid size" + gestionnaireContacts.contactList.size)
-            if (!secondClick) {
-                if (!modeMultiSelect) {
-                    modeMultiSelect = true
-                    for (i in gestionnaireContacts.contactList.indices) {
-                        if (gestionnaireContacts.contactList[i].getFirstGroup(context) != null) {
-                            if (Objects.requireNonNull(gestionnaireContacts.contactList[i].getFirstGroup(context))!!.id == gestionnaireContacts.contactList[position].getFirstGroup(context)!!.id) {
-                                if (!listOfItemSelected.contains(gestionnaireContacts.contactList[i])) {
-                                    println(Objects.requireNonNull(getItem(i).contactDB)!!.firstName + " " + Objects.requireNonNull(getItem(i).contactDB)!!.lastName)
-                                    (context as GroupManagerActivity).recyclerMultiSelectItemClick(i, secondClick, true)
-                                    listOfItemSelected.add(gestionnaireContacts.contactList[i])
-                                }
-                            }
-                        }
-                    }
-                    secondClick = true
-                    notifyDataSetChanged()
-                }
-            } else {
-                for (i in gestionnaireContacts.contactList.indices) {
-                    if (gestionnaireContacts.contactList[i].getFirstGroup(context) != null) {
-                        if (Objects.requireNonNull(gestionnaireContacts.contactList[i].getFirstGroup(context))!!.id == gestionnaireContacts.contactList[position].getFirstGroup(context)!!.id) {
-                            if (listOfItemSelected.contains(gestionnaireContacts.contactList[i])) {
-                                (context as GroupManagerActivity).recyclerMultiSelectItemClick(i, secondClick, true)
-                                listOfItemSelected.remove(gestionnaireContacts.contactList[i])
-                            }
-                        }
-                    }
-                }
-                secondClick = false
-                modeMultiSelect = false
-                notifyDataSetChanged()
-            }
         }
     }
 
@@ -528,45 +466,26 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
     private fun slideUp(view: View?) {
         view!!.visibility = View.VISIBLE
         val animate = TranslateAnimation(
-                0,  // fromXDelta
-                0,  // toXDelta
+                0.toFloat(),  // fromXDelta
+                0.toFloat(),  // toXDelta
                 view.height.toFloat(),  // fromYDelta
-                0) // toYDelta
+                0.toFloat()) // toYDelta
         animate.duration = 500
         animate.fillAfter = true
         view.startAnimation(animate)
     }
 
     class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var contactFirstNameView: TextView
-        var constraintLayout: RelativeLayout?
-        var constraintLayoutMenu: ConstraintLayout?
-        var listContactItemFavoriteShine: AppCompatImageView
-        var contactRoundedImageView: CircularImageView
-        var callCl: RelativeLayout
-        var smsCl: RelativeLayout
-        var whatsappCl: RelativeLayout
-        var mailCl: RelativeLayout
-        var editCl: RelativeLayout?
-        var groupWordingConstraint: ConstraintLayout
-        var groupWordingTv: TextView?
-        var open: Boolean
-
-        init {
-            contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
-            contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName)
-            constraintLayout = view.findViewById(R.id.list_contact_item_layout)
-            constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu)
-            callCl = view.findViewById(R.id.list_contact_item_constraint_call)
-            smsCl = view.findViewById(R.id.list_contact_item_constraint_sms)
-            editCl = view.findViewById(R.id.list_contact_item_constraint_edit)
-            whatsappCl = view.findViewById(R.id.list_contact_item_constraint_whatsapp)
-            mailCl = view.findViewById(R.id.list_contact_item_constraint_mail)
-            groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout)
-            groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv)
-            listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine)
-            open = false
-        }
+        var contactFirstNameView: TextView = view.findViewById(R.id.list_contact_item_contactFirstName)
+        var constraintLayout: RelativeLayout? = view.findViewById(R.id.list_contact_item_layout)
+        var constraintLayoutMenu: ConstraintLayout? = view.findViewById(R.id.list_contact_item_menu)
+        var listContactItemFavoriteShine: AppCompatImageView = view.findViewById(R.id.list_contact_item_favorite_shine)
+        var contactRoundedImageView: CircularImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
+        var callCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_call)
+        var smsCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_sms)
+        var whatsappCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_whatsapp)
+        var mailCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_mail)
+        var editCl: RelativeLayout? = view.findViewById(R.id.list_contact_item_constraint_edit)
     }
 
     init {

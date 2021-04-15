@@ -406,8 +406,6 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
         AppCompatImageView listContactItemFavoriteShine;
         CircularImageView contactRoundedImageView;
 
-        ConstraintLayout groupWordingConstraint;
-        TextView groupWordingTv;
         Boolean open;
 
         ContactViewHolder(@NonNull View view) {
@@ -417,8 +415,6 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
             contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
             constraintLayout = view.findViewById(R.id.list_contact_item_layout);
             constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
-            groupWordingConstraint = view.findViewById(R.id.list_contact_wording_group_constraint_layout);
-            groupWordingTv = view.findViewById(R.id.list_contact_wording_group_tv);
             listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
             open = false;
         }

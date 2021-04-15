@@ -35,6 +35,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
 import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter
@@ -44,11 +49,6 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.*
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -192,6 +192,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (isNotificationServiceEnabled()) {
             toggleNotificationListenerService()
         }
+
+        //endregion
+
+        //region ======================================== Mobile Ads ========================================
+
+//        MobileAds.initialize(this)
+//
+//        val mAdView = findViewById<com.google.android.gms.ads.AdView>(R.id.adView)
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
 
         //endregion
 
@@ -377,17 +387,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ===================================== set ListContact ======================================
 
+        //Verification du mode de tri des contacts pour afficher le bon tri
         when {
-            //Verification du mode de tri des contacts pour afficher le bon tri
             sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
             sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
             sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
             sharedPreferences.getString("tri", "nom") == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
             else -> gestionnaireContacts!!.sortContactByFavorite()
         }
+
         //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
         if (main_GridView!!.visibility != View.GONE) {
-
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
@@ -408,8 +418,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         if (main_RecyclerView!!.visibility != View.GONE) {
-
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts, len)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
             main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
@@ -454,6 +463,30 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
          *  Partie du code qui permet de mettre en place des actions liées aux interactions de l'utilisateur
          */
         //region ======================================== Listeners =========================================
+
+//        mAdView.adListener = object : AdListener() {
+//            override fun onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//            }
+//
+//            override fun onAdFailedToLoad(adError: LoadAdError) {
+//                // Code to be executed when an ad request fails.
+//            }
+//
+//            override fun onAdOpened() {
+//                // Code to be executed when an ad opens an overlay that
+//                // covers the screen.
+//            }
+//
+//            override fun onAdClicked() {
+//                // Code to be executed when the user clicks on an ad.
+//            }
+//
+//            override fun onAdClosed() {
+//                // Code to be executed when the user is about to return
+//                // to the app after tapping on an ad.
+//            }
+//        }
 
         settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -684,7 +717,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         }
 
-        //création du listener de la searchbar
         main_SearchBar!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
 
@@ -692,24 +724,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                            count: Int, after: Int) {
             }
 
-            //fonction appelée à chaque charactère tapé
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
-                //ferme circular
                 if (gridViewAdapter != null) {
                     gridViewAdapter!!.closeMenu()
                 }
 
-                //convertir en string le contenu de la searchbar
                 main_search_bar_value = main_SearchBar!!.text.toString()
 
-                //get le type d'affichage selectionné
                 val sharedPref = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                val length = sharedPref.getInt("gridview", 4)
+                val length = sharedPref.getInt("gridview", 1)
 
-                //on get la list des contactList en appliquant les filtres et la search bar
                 val filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-
-                // on get la list des contactList en appliquant le tri
                 val contactListDb = ContactManager(this@MainActivity)
 
                 if (sharedPref.getString("tri", "nom") == "nom") {
@@ -727,7 +752,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, length)
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, length)
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                 }
             }
@@ -789,7 +814,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_FloatingButtonSMS!!.visibility = View.GONE
                 main_FloatingButtonGroup!!.visibility = View.GONE
             } else {
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
                 main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
                 main_FloatingButtonMultiChannel!!.visibility = View.GONE
 
@@ -832,7 +857,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView!!.adapter = gridViewAdapter
                         main_GridView!!.visibility = View.VISIBLE
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         main_RecyclerView!!.visibility = View.VISIBLE
                     }
@@ -894,7 +919,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_GridView!!.adapter = gridViewAdapter
         } else {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
         }
     }
@@ -1600,7 +1625,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_GridView!!.adapter = gridViewAdapter
         } else {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
         }
         refreshActivity()
@@ -1646,7 +1671,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     main_GridView!!.adapter = gridViewAdapter
                     main_GridView!!.visibility = View.VISIBLE
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                     main_RecyclerView!!.visibility = View.VISIBLE
                 }

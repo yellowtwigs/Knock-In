@@ -18,7 +18,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -33,20 +32,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.internal.Utility.arrayList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationListener
-import com.yellowtwigs.knockin.controller.NotificationsHistoryListViewAdapter
 import com.yellowtwigs.knockin.controller.NotificationsHistoryRecyclerViewAdapter
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
-import java.lang.IndexOutOfBoundsException
 
 
 /**
@@ -136,6 +132,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         notification_history_ToolbarMultiSelectModeDelete = findViewById(R.id.notification_history_toolbar_multi_select_mode_delete)
         notification_history_ToolbarMultiSelectModeTitle = findViewById(R.id.notification_history_toolbar_multi_select_mode_tv)
         notification_history_floating_action_button = findViewById(R.id.notification_history_floating_action_button)
+        notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
 
         val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
@@ -147,16 +144,15 @@ class NotificationHistoryActivity : AppCompatActivity() {
             settings_left_drawer_ThemeSwitch.isChecked = true
 //            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
         }///
-        notification_history_floating_action_button!!.setOnClickListener(
-                View.OnClickListener {
-                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                            .setTitle(getString(R.string.notification_history_alert_dialog_title))
-                            .setMessage(getString(R.string.notification_history_alert_dialog_text))
-                            .setPositiveButton(R.string.notification_history_alert_dialog_delete_button, DialogInterface.OnClickListener { dialog, wich -> deleteAllNotif() })
-                            .setNegativeButton(R.string.notification_history_alert_dialog_cancel_button, null)
-                            .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button, DialogInterface.OnClickListener { dialog, wich -> deleteAllNotifSystem() })
-                            .show()
-                })
+        notification_history_floating_action_button!!.setOnClickListener {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.notification_history_alert_dialog_title))
+                    .setMessage(getString(R.string.notification_history_alert_dialog_text))
+                    .setPositiveButton(R.string.notification_history_alert_dialog_delete_button) { _, wich -> deleteAllNotif() }
+                    .setNegativeButton(R.string.notification_history_alert_dialog_cancel_button, null)
+                    .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button, { _, _ -> deleteAllNotifSystem() })
+                    .show()
+        }
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 
         val display = windowManager.defaultDisplay
@@ -379,19 +375,13 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         when {
             sharedPreferences.getString("tri", "date") == "date" -> {
-
                 val listTmp = mutableListOf<NotificationDB>()
 
                 for (i in 0 until notification_history_ListOfNotificationDB.size) {
                     listTmp.add(notification_history_ListOfNotificationDB[i])
                 }
 
-                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
-                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
-                notification_recyclerview_Adapter!!.notifyDataSetChanged()
-                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
-                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+                initRecyclerView()
             }
             sharedPreferences.getString("tri", "date") == "priorite" -> {
                 val listTmp: MutableList<NotificationDB> = notification_history_NotificationsDatabase?.notificationsDao()?.getContactWithPriority0And2() as MutableList<NotificationDB>
@@ -402,25 +392,24 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_ListOfNotificationDB.removeAll(notification_history_ListOfNotificationDB)
                 notification_history_ListOfNotificationDB.addAll(listTmp)
 
-                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
-                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
-                notification_recyclerview_Adapter!!.notifyDataSetChanged()
-                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
-                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+                initRecyclerView()
             }
             sharedPreferences.getString("tri", "date") == "contact" -> {
                 val listNotif: ArrayList<NotificationDB> = arrayListOf()
                 listNotif.addAll(notification_history_NotificationsDatabase!!.notificationsDao().getNotifSortByContact())
                 listNotif.retainAll(notification_history_ListOfNotificationDB)
-                notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, listNotif)
-                notification_history_RecyclerView = findViewById(R.id.notification_history_recycler_view)
-                notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
-                notification_recyclerview_Adapter!!.notifyDataSetChanged()
-                notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
-                notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+                initRecyclerView()
             }
         }
+    }
+
+    private fun initRecyclerView() {
+        notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
+        notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
+        notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
+        notification_recyclerview_Adapter!!.notifyDataSetChanged()
+        notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+        notification_history_RecyclerView!!.layoutManager!!.scrollToPosition(0)
     }
 
     private fun updateFilterMultiSelect() {
