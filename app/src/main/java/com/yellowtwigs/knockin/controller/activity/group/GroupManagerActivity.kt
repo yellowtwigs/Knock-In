@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.controller.activity.group
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.content.res.Resources
 import android.graphics.Point
 import android.os.Bundle
@@ -111,7 +112,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_group_manager)
+
+        setContentView()
 
         //region ========================================= Toolbar ==========================================
 
@@ -145,20 +147,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        when {
-            height in 1501..2101 -> {
-            }
-            height < 1500 -> {
-                val params = main_SettingsLeftDrawerLayout.layoutParams
-                params.height = 250
-                main_SettingsLeftDrawerLayout.layoutParams = params
-            }
-        }
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -231,11 +219,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("group content" + aGroup.ContactIdList)
 
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-        val len = sharedPreferences.getInt("gridview", 4)
-//        recyclerLen = len
-//        if (len < 4) {
-//            len = 4
-//        }
+        val len = sharedPreferences.getInt("gridview", 1)
 
         val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
 
@@ -389,6 +373,21 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     //region ========================================= Functions ============================================
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_group_manager)
+            height in 1800..2499 -> setContentView(R.layout.activity_group_manager)
+            height in 1100..1799 -> setContentView(R.layout.activity_group_manager_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_group_manager_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
 
     fun recyclerMultiSelectItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
