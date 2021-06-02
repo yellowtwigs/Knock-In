@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
 import android.content.*
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -119,7 +120,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_notification_history)
+        setContentView()
 
         //region ====================================== FindViewById =======================================
 
@@ -150,23 +151,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     .setMessage(getString(R.string.notification_history_alert_dialog_text))
                     .setPositiveButton(R.string.notification_history_alert_dialog_delete_button) { _, wich -> deleteAllNotif() }
                     .setNegativeButton(R.string.notification_history_alert_dialog_cancel_button, null)
-                    .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button, { _, _ -> deleteAllNotifSystem() })
+                    .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button) { _, _ -> deleteAllNotifSystem() }
                     .show()
-        }
-        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        when {
-            height in 1501..2101 -> {
-            }
-            height < 1500 -> {
-                val params = main_SettingsLeftDrawerLayout.layoutParams
-                params.height = 325
-                main_SettingsLeftDrawerLayout.layoutParams = params
-            }
         }
 
         //region ================================ Call Popup from LeftDrawer ================================
@@ -326,6 +312,21 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_notification_history)
+            height in 1800..2499 -> setContentView(R.layout.activity_notification_history)
+            height in 1100..1799 -> setContentView(R.layout.activity_notification_history_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_notification_history_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
 
     private fun swipeRefreshActivity() {
         val handler = Handler()
@@ -906,4 +907,3 @@ class WrapContentLinearLayoutManager(context: Context?) : LinearLayoutManager(co
         }
     }
 }
-
