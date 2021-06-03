@@ -413,6 +413,8 @@
     <string name="start_activity_superposition_subtitle">Разрешите Knock In отображать VIP-уведомления во время использования других приложений</string>
     <string name="start_activity_button_superposition">Разрешить</string>
     <string name="start_activity_superposition_not_allowed_message">Для просмотра всплывающих окон VIP-уведомлений в Android 10 необходимо активировать «пузыри». Информацию о дальнейших действиях можно найти в меню «Помощь» в ящике для Knock In.</string>
+    <string name="start_activity_superposition_not_allowed_message_11">Плавающие уведомления Knock In (пузыри) пока не поддерживаются в Android 11 (версия вашего смартфона). Версия приложения с плавающими уведомлениями для Android 11 скоро будет доступна.
+        Однако вы можете использовать другие функции приложения.</string>
     <string name="start_activity_video_tutorial_skip_text">Видео доступно на вкладке "Помощь" меню приложения.</string>
     <string name="start_activity_permission_title">Другие разрешения</string>
     <string name="start_activity_permission_subtitle">Вы сможете совершать телефонные звонки и отправлять СМС из приложения</string>
@@ -423,6 +425,10 @@
     <string name="start_activity_skip_alert_dialog_message">Если вы пропустите разрешения, их можно будет принять позже</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In импортирует ваши контакты; если вы сейчас нажмете "Пропустить", ваши контакты не будут сохранены</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Пропустить</string>
+
+    <string name="start_activity_go_edition_message">VIP-уведомления и функции истории уведомлений недоступны для версий Android GO Edition.</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">группа%s</string>

@@ -412,6 +412,8 @@
     <string name="start_activity_superposition_subtitle">Diğer uygulamaları kullanırken Knock In\'in VIP bildirimlerini görüntülemesine izin ver</string>
     <string name="start_activity_button_superposition">İzin Ver</string>
     <string name="start_activity_superposition_not_allowed_message">Android 10\'da VIP bildirimlerinin pop-up\'larını görüntülemek için "baloncukları" etkinleştirmeniz gerekir. Nasıl ilerleyeceğinizle ilgili bilgiler Knock In çekmecesinin "Yardım" menüsünde bulunabilir.</string>
+    <string name="start_activity_superposition_not_allowed_message_11">Knock In\'in hareketli bildirimleri (Kabarcıklar) henüz Android 11\'de (akıllı telefonunuzun sürümü) desteklenmemektedir.
+        Android 11 için kayan bildirimler sunan uygulamanın bir sürümü yakında kullanıma sunulacak. Ancak uygulamanın diğer işlevlerini kullanabilirsiniz.</string>
     <string name="start_activity_video_tutorial_skip_text">Videoya uygulama menüsünün Yardım sekmesinden ulaşılabilir</string>
     <string name="start_activity_permission_title">Diğer yetkiler</string>
     <string name="start_activity_permission_subtitle">Uygulamadan telefon görüşmeleri yapabilir ve SMS gönderebilirsiniz</string>
@@ -422,6 +424,10 @@
     <string name="start_activity_skip_alert_dialog_message">İzinleri atlarsanız, daha sonra izin verebilirsiniz</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In kişilerinizi içe aktarıyor; şimdi yoksayarsanız, kişileriniz kaydedilmez</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Atla</string>
+
+    <string name="start_activity_go_edition_message">VIP bildirimleri ve bildirim geçmişi özellikleri, Android\'in "GO Sürümü" sürümlerinde kullanılamaz.</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">grup%s</string>

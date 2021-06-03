@@ -412,6 +412,7 @@
     <string name="start_activity_superposition_subtitle">在使用其他应用程序时，允许Knock In显示VIP通知</string>
     <string name="start_activity_button_superposition">允许</string>
     <string name="start_activity_superposition_not_allowed_message">要在Android 10中显示VIP通知的弹出窗口，必须激活“气泡”。进入“敲入”抽屉中的“帮助”菜单，了解如何继续。</string>
+    <string name="start_activity_superposition_not_allowed_message_11">Android 11（您的智能手机的版本）尚不支持Knock In的浮动通知（气泡）。该应用程序的一个版本将提供针对Android 11的浮动通知。但是，您可以使用应用程序的其他功能。</string>
     <string name="start_activity_video_tutorial_skip_text">该视频可在应用程序菜单的帮助栏中找到</string>
     <string name="start_activity_permission_title">其他授权</string>
     <string name="start_activity_permission_subtitle">您将可以通过该应用拨打电话并发送短信</string>
@@ -422,6 +423,10 @@
     <string name="start_activity_skip_alert_dialog_message">如果您选择跳过授权的话，您接下来将会全部同意</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In正在导入您的联系人；如果您忽略本通知的话，您的联系人信息将不会保存</string>
     <string name="start_activity_skip_alert_dialog_positive_button">跳过</string>
+
+    <string name="start_activity_go_edition_message">VIP通知和通知历史记录功能不适用于Android的“ GO Edition”版本。</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">小组 %s</string>

@@ -412,6 +412,7 @@
     <string name="start_activity_superposition_subtitle">Permita que Knock In mostre notificações VIP enquanto está a utilizar outros aplicativos</string>
     <string name="start_activity_button_superposition">Permitir</string>
     <string name="start_activity_superposition_not_allowed_message">Para visualizar os pop-ups de notificações VIP com Android 10, você precisa ativar as "bolhas". Informações sobre como proceder podem ser encontradas no menu "Ajuda" na gaveta Knock In.</string>
+    <string name="start_activity_superposition_not_allowed_message_11">As notificações flutuantes do Knock In (Bolhas) ainda não são compatíveis com o Android 11 (versão do seu smartphone). Uma versão do aplicativo que oferece notificações flutuantes para o Android 11 estará disponível em breve. No entanto, você pode usar as outras funções do aplicativo.</string>
     <string name="start_activity_video_tutorial_skip_text">O vídeo está disponível na guia da ajuda do menu do aplicativo</string>
     <string name="start_activity_permission_title">Outras autorizações</string>
     <string name="start_activity_permission_subtitle">Você poderá fazer ligações e enviar SMS no aplicativo</string>
@@ -422,6 +423,10 @@
     <string name="start_activity_skip_alert_dialog_message">Se você pular permissões, poderá as permitir mais tarde</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In está importando seus contatos;  se você os ignorar agora, seus contatos não serão salvos</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Pular</string>
+
+    <string name="start_activity_go_edition_message">As notificações VIP e os recursos de histórico de notificações não estão disponíveis para as versões "GO Edition" do Android.</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Grupo%s</string>

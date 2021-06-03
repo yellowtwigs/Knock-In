@@ -204,7 +204,7 @@
     <string name="manage_my_screen_toast_grid">Anda telah memilih %1$d kontak per baris</string>
     <string name="manage_my_screen_toast_list">Tampilan "senarai" terpilih</string>
     <string name="manage_my_screen_toast_list_smaller">Tampilan "kompak" dipilih</string>
-   
+
     <string name="manage_my_screen_searchbar_pos">Cari posisi bar</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Posisi bar pencarian di bagian bawah layar</string>
     <string name="manage_my_screen_display_for_group_title">Aktifkan tampilan grup spesifik</string>
@@ -278,7 +278,7 @@
     <string name="notification_history_search_hint">Mencari</string>
     <string name="notification_history_delete_notifications">Hapus satu atau lebih notifikasi</string>
     <string name="notification_history_delete_notifications_confirmation">Kau yakin?</string>
-    <string name="notification_history_alert_dialog_text">Pengingat: Anda juga dapat memilih pemberitahuan dengan ketukan lama dan menghapusnya menggunakan simbol kanan atas</string> 
+    <string name="notification_history_alert_dialog_text">Pengingat: Anda juga dapat memilih pemberitahuan dengan ketukan lama dan menghapusnya menggunakan simbol kanan atas</string>
 
     <string name="notification_history_alert_dialog_delete_button">Hapus semua</string>
     <string name="notification_history_alert_dialog_cancel_button">Membatalkan</string>
@@ -415,6 +415,8 @@
     <string name="start_activity_button_superposition">Memperbolehkan</string>
     <string name="start_activity_superposition_not_allowed_message">
 Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "gelembung". Informasi tentang cara melanjutkan dapat ditemukan di menu "Bantuan" di laci Knock In.</string>
+    <string name="start_activity_superposition_not_allowed_message_11">Pemberitahuan mengambang Knock In (Gelembung) belum didukung dengan Android 11 (versi ponsel cerdas Anda).
+        Versi aplikasi yang menawarkan pemberitahuan mengambang untuk Android 11 akan segera tersedia. Namun, Anda dapat menggunakan fungsi aplikasi lainnya.</string>
     <string name="start_activity_video_tutorial_skip_text">Video ini tersedia di tab bantuan di menu aplikasi</string>
     <string name="start_activity_permission_title">Otorisasi lainnya</string>
     <string name="start_activity_permission_subtitle">Anda akan dapat membuat panggilan telepon dan mengirim SMS dari aplikasi</string>
@@ -425,6 +427,10 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="start_activity_skip_alert_dialog_message">Jika anda melewatkan izin, anda bisa membiarkan mereka nanti</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In mengimpor kontak anda; Jika anda mengabaikan sekarang, kontak anda tidak akan diselamatkan</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Melompati</string>
+
+    <string name="start_activity_go_edition_message">Notifikasi VIP dan fitur riwayat notifikasi tidak tersedia untuk Android versi "GO Edition".</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Grup%s</string>

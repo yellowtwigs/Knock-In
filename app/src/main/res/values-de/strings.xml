@@ -423,6 +423,10 @@
     <string name="start_activity_skip_alert_dialog_message">Wenn Sie Berechtigungen überspringen, können Sie sie später zulassen</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In importiert Ihre Kontakte. Wenn Sie dies jetzt ignorieren, werden Ihre Kontakte nicht gespeichert</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Überspringen</string>
+
+    <string name="start_activity_go_edition_message">VIP-Benachrichtigungen und Benachrichtigungsverlaufsfunktionen sind für "GO Edition" -Versionen von Android nicht verfügbar.</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Gruppe%s</string>

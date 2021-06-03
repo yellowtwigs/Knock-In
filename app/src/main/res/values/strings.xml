@@ -425,6 +425,10 @@
     <string name="start_activity_skip_alert_dialog_message">If you skip permissions, you could allow them later</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In is importing your contacts; if you ignore now, your contacts will not be saved</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Skip</string>
+
+    <string name="start_activity_go_edition_message">VIP notifications and notification history features are not available for "GO Edition" versions of Android.</string>
+    <string name="start_activity_go_edition_positive_button">Okay</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">group%s</string>

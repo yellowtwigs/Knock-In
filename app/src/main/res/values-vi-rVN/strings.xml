@@ -413,6 +413,8 @@
     <string name="start_activity_superposition_subtitle">Cho phép Knock In để hiển thị thông báo VIP trong khi bạn đang sử dụng các ứng dụng khác</string>
     <string name="start_activity_button_superposition">Cho phép</string>
     <string name="start_activity_superposition_not_allowed_message">Để xem cửa sổ bật lên của thông báo VIP với Android 10, bạn cần kích hoạt "bong bóng". Thông tin về cách tiếp tục có thể được tìm thấy trong menu "Trợ giúp" trong ngăn Knock In.</string>
+    <string name="start_activity_superposition_not_allowed_message_11">Thông báo nổi (Bong bóng) của Knock In chưa được hỗ trợ với Android 11 (phiên bản điện thoại thông minh của bạn).
+        Phiên bản ứng dụng cung cấp thông báo nổi cho Android 11 sẽ sớm ra mắt. Tuy nhiên, bạn có thể sử dụng các chức năng khác của ứng dụng.</string>
     <string name="start_activity_video_tutorial_skip_text">Video có sẵn trong tab trợ giúp của menu ứng dụng</string>
     <string name="start_activity_permission_title">Ủy quyền khác</string>
     <string name="start_activity_permission_subtitle">Bạn sẽ có thể gọi điện thoại và gửi SMS từ ứng dụng</string>
@@ -423,6 +425,10 @@
     <string name="start_activity_skip_alert_dialog_message">Nếu bạn bỏ qua ủy quyền, thì tất cả tiếp theo bạn sẽ đồng ý</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In đang nhập liên hệ của bạn; nếu bạn bỏ qua ngay bây giờ, liên hệ của bạn sẽ không được lưu lại </string>
     <string name="start_activity_skip_alert_dialog_positive_button">Bỏ qua</string>
+
+    <string name="start_activity_go_edition_message">Các tính năng thông báo VIP và lịch sử thông báo không khả dụng cho các phiên bản "GO Edition" của Android.</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Nhóm%s</string>
