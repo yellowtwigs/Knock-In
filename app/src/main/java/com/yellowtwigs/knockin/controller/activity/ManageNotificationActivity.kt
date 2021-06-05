@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
+import android.content.pm.ActivityInfo
 import android.content.res.Resources
 import android.graphics.Point
 import android.media.MediaPlayer
@@ -171,7 +172,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_manage_notification)
+        setContentView()
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
@@ -302,20 +303,6 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
 
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        when {
-            height in 1501..2101 -> {
-            }
-            height < 1500 -> {
-                val params = main_SettingsLeftDrawerLayout.layoutParams
-                params.height = 325
-                main_SettingsLeftDrawerLayout.layoutParams = params
-            }
-        }
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -1772,6 +1759,21 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions =========================================
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_manage_notification)
+            height in 1800..2499 -> setContentView(R.layout.activity_manage_notification)
+            height in 1100..1799 -> setContentView(R.layout.activity_manage_notification_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_manage_notification_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater

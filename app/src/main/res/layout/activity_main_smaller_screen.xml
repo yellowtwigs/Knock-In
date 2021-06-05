@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.activity.MainActivity">
+
+    <include layout="@layout/content_main_smaller_screen" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_group_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="400dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_group"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/main_sms_button" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_sms_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="160dp"
+        android:background="@color/colorPrimary"
+        android:drawableTint="@color/lightColor"
+        android:src="@drawable/ic_message_floating"
+        android:tint="@color/lightColor"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimary"
+        tools:targetApi="P" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_gmail_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="320dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_gmail_floating"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimary" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_floating_button_add_new_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/floating_button_margin"
+        android:layout_marginBottom="80dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_add"
+        android:tint="@color/lightColor"
+        app:backgroundTint="@color/colorPrimary" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_floating_button_multichannel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/floating_button_margin"
+        android:layout_marginBottom="80dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_exchange_arrows"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimary" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

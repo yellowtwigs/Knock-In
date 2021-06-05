@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.controller.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
 import android.view.Menu
@@ -60,7 +61,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_manage_my_screen)
+        setContentView()
 
         //region ======================================= SharedPreferences =======================================
 
@@ -93,20 +94,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
         manageMyScreenColorContactCyanTeal = findViewById(R.id.activity_manage_my_screen_color_cyan_teal)
 
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        when {
-            height in 1501..2101 -> {
-            }
-            height < 1500 -> {
-                val params = main_SettingsLeftDrawerLayout.layoutParams
-                params.height = 325
-                main_SettingsLeftDrawerLayout.layoutParams = params
-            }
-        }
 
         val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
 
@@ -529,6 +516,21 @@ class ManageMyScreenActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_manage_my_screen)
+            height in 1800..2499 -> setContentView(R.layout.activity_manage_my_screen)
+            height in 1100..1799 -> setContentView(R.layout.activity_manage_my_screen_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_manage_my_screen_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater

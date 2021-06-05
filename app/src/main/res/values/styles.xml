@@ -89,6 +89,14 @@
         </item>
     </style>
 
+    <style name="NavigationViewSmallerScreenStyle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="NavigationViewMiniScreenStyle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <!-- blank styles for better code readability-->
     <style name="TextAppearance" />
 

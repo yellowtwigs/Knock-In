@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
+import android.graphics.Point
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -60,7 +62,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         //endregion
 
-        setContentView(R.layout.activity_help)
+        setContentView()
 
         //region ========================================== Toolbar =========================================
 
@@ -119,8 +121,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                 R.id.nav_in_app -> startActivity(Intent(this@HelpActivity, PremiumActivity::class.java))
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.help_drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)
+            help_activity_DrawerLayout!!.closeDrawer(GravityCompat.START)
             true
         }
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
@@ -209,6 +210,21 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     }
 
     //region ========================================== Functions ===========================================
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_help)
+            height in 1800..2499 -> setContentView(R.layout.activity_help)
+            height in 1100..1799 -> setContentView(R.layout.activity_help_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_help_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
 
     override fun onResume() {
         super.onResume()

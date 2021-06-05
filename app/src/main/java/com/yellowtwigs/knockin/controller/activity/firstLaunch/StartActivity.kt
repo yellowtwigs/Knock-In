@@ -2,11 +2,8 @@ package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.content.SharedPreferences
+import android.app.ActivityManager
+import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -20,7 +17,6 @@ import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.TypedValue
-import android.view.Display
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -51,22 +47,27 @@ class StartActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
-    private var start_activity_ImportContacts: MaterialButton? = null
-    private var start_activity_ActivateNotifications: MaterialButton? = null
-    private var start_activity_AuthorizeSuperposition: MaterialButton? = null
-    private var start_activity_Permissions: MaterialButton? = null
+    private var startActivityImportContacts: MaterialButton? = null
+    private var startActivityActivateNotifications: MaterialButton? = null
+    private var startActivityAuthorizeSuperposition: MaterialButton? = null
+    private var startActivityPermissions: MaterialButton? = null
 
-    private var start_activity_Next: MaterialButton? = null
-    private var start_activity_Skip: MaterialButton? = null
-    private var start_activity_ImportContactsLoading: ProgressBar? = null
-    private var start_activity_ActivateNotificationsLoading: ProgressBar? = null
-    private var start_activity_AuthorizeSuperpositionLoading: ProgressBar? = null
-    private var start_activity_PermissionsLoading: ProgressBar? = null
+    private var startActivityImportContactsLayout: RelativeLayout? = null
+    private var startActivityActivateNotificationsLayout: RelativeLayout? = null
+    private var startActivityAuthorizeSuperpositionLayout: RelativeLayout? = null
+    private var startActivityPermissionsLayout: RelativeLayout? = null
 
-    private var start_activity_ImportContactsCheck: AppCompatImageView? = null
-    private var start_activity_ActivateNotificationsCheck: AppCompatImageView? = null
-    private var start_activity_AuthorizeSuperpositionCheck: AppCompatImageView? = null
-    private var start_activity_PermissionsCheck: AppCompatImageView? = null
+    private var startActivityNext: MaterialButton? = null
+    private var startActivitySkip: MaterialButton? = null
+    private var startActivityImportContactsLoading: ProgressBar? = null
+    private var startActivityActivateNotificationsLoading: ProgressBar? = null
+    private var startActivityAuthorizeSuperpositionLoading: ProgressBar? = null
+    private var startActivityPermissionsLoading: ProgressBar? = null
+
+    private var startActivityImportContactsCheck: AppCompatImageView? = null
+    private var startActivityActivateNotificationsCheck: AppCompatImageView? = null
+    private var startActivityAuthorizeSuperpositionCheck: AppCompatImageView? = null
+    private var startActivityPermissionsCheck: AppCompatImageView? = null
 
     private lateinit var start_activity_mDbWorkerThread: DbWorkerThread
     private var activityVisible = false
@@ -76,39 +77,34 @@ class StartActivity : AppCompatActivity() {
     @SuppressLint("ObsoleteSdkInt", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        // Nous permet d'avoir un écran adapté a différente taille d'écran
-        when {
-            height > 2500 -> setContentView(R.layout.activity_start_activity_bigger)
-            height in 2000..2499 -> setContentView(R.layout.activity_start_activity)
-            height in 1200..2101 -> setContentView(R.layout.activity_start_activity)
-            height < 1200 -> setContentView(R.layout.activity_start_activity)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+
+        setContentView()
 
         val listApp = getAppOnPhone()
-        setContentView(R.layout.activity_start_activity)
+
         //region ======================================= FindViewById =======================================
 
-        val start_activity_ImportContacts = findViewById<MaterialButton>(R.id.start_activity_import_contacts_button)
-        val start_activity_ActivateNotifications = findViewById<MaterialButton>(R.id.start_activity_activate_notifications_button)
-        val start_activity_AuthorizeSuperposition = findViewById<MaterialButton>(R.id.start_activity_superposition_button)
-        val start_activity_Permissions = findViewById<MaterialButton>(R.id.start_activity_permissions_button)
+        startActivityImportContacts = findViewById(R.id.start_activity_import_contacts_button)
+        startActivityActivateNotifications = findViewById(R.id.start_activity_activate_notifications_button)
+        startActivityAuthorizeSuperposition = findViewById(R.id.start_activity_superposition_button)
+        startActivityPermissions = findViewById(R.id.start_activity_permissions_button)
 
-        start_activity_Next = findViewById(R.id.start_activity_next)
-        start_activity_Skip = findViewById(R.id.start_activity_skip)
-        start_activity_ImportContactsLoading = findViewById(R.id.start_activity_import_contacts_loading)
-        start_activity_ActivateNotificationsLoading = findViewById(R.id.start_activity_activate_notifications_loading)
-        start_activity_AuthorizeSuperpositionLoading = findViewById(R.id.start_activity_superposition_loading)
-        start_activity_PermissionsLoading = findViewById(R.id.start_activity_permissions_loading)
+        startActivityImportContactsLayout = findViewById(R.id.start_activity_import_contacts_layout)
+        startActivityActivateNotificationsLayout = findViewById(R.id.start_activity_notifications_layout)
+        startActivityAuthorizeSuperpositionLayout = findViewById(R.id.start_activity_superposition_layout)
+        startActivityPermissionsLayout = findViewById(R.id.start_activity_permissions_layout)
 
-        start_activity_ImportContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
-        start_activity_ActivateNotificationsCheck = findViewById(R.id.start_activity_activate_notifications_check)
-        start_activity_AuthorizeSuperpositionCheck = findViewById(R.id.start_activity_superposition_check)
-        start_activity_PermissionsCheck = findViewById(R.id.start_activity_permissions_check)
+        startActivityNext = findViewById(R.id.start_activity_next)
+        startActivitySkip = findViewById(R.id.start_activity_skip)
+        startActivityImportContactsLoading = findViewById(R.id.start_activity_import_contacts_loading)
+        startActivityActivateNotificationsLoading = findViewById(R.id.start_activity_activate_notifications_loading)
+        startActivityAuthorizeSuperpositionLoading = findViewById(R.id.start_activity_superposition_loading)
+        startActivityPermissionsLoading = findViewById(R.id.start_activity_permissions_loading)
+
+        startActivityImportContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
+        startActivityActivateNotificationsCheck = findViewById(R.id.start_activity_activate_notifications_check)
+        startActivityAuthorizeSuperpositionCheck = findViewById(R.id.start_activity_superposition_check)
+        startActivityPermissionsCheck = findViewById(R.id.start_activity_permissions_check)
 
 
         val start_activity_layout = findViewById<ConstraintLayout>(R.id.start_activity_layout)
@@ -134,7 +130,7 @@ class StartActivity : AppCompatActivity() {
         val displayScreen = windowManager.defaultDisplay
         displayScreen.getRealSize(layoutSize)
         if (isWifiConn || isMobileConn) {
-            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150f,resources.displayMetrics)
+            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150f, resources.displayMetrics)
             webview.layoutParams.height = layoutSize.y - sizeTest.toInt()
             webview.settings.loadWithOverviewMode = true
             webview.settings.useWideViewPort = true
@@ -142,53 +138,63 @@ class StartActivity : AppCompatActivity() {
             webview.webChromeClient = WebChromeClientCustomPoster()
             //videoview.visibility = View.INVISIBLE
 
-            if (Resources.getSystem().configuration.locale.language == "fr") {
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/france")
-            } else if (Resources.getSystem().configuration.locale.language == "de") {
-                println("////////////////////////////")
-                println(start_activity_ImportContacts.textSize)
-                start_activity_ImportContacts.textSize = 10f
-                start_activity_ActivateNotifications.textSize = 10f
-                start_activity_AuthorizeSuperposition.textSize = 10f
-                start_activity_Permissions.textSize = 10f
-                println(start_activity_ImportContacts.textSize)
-                println("////////////////////////////")
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/germany")
-            } else if (Resources.getSystem().configuration.locale.language == "in") {
-                start_activity_ImportContacts.textSize = 9f
-                start_activity_ActivateNotifications.textSize = 9f
-                start_activity_AuthorizeSuperposition.textSize = 9f
-                start_activity_Permissions.textSize = 9f
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/indonesia")
-            } else if (Resources.getSystem().configuration.locale.language == "vi") {
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/vietnam")
-            } else if (Resources.getSystem().configuration.locale.language == "it") {
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/italy")
-            } else if (Resources.getSystem().configuration.locale.language == "es") {
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/spain")
-            } else if (Resources.getSystem().configuration.locale.language == "pt") {
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/portugal")
-            } else if (Resources.getSystem().configuration.locale.language == "ru") {
-                start_activity_ImportContacts.textSize = 7f
-                start_activity_ActivateNotifications.textSize = 7f
-                start_activity_AuthorizeSuperposition.textSize = 7f
-                start_activity_Permissions.textSize = 7f
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/russia")
-            } else if (Resources.getSystem().configuration.locale.language == "tr") {
-                webview.visibility = View.VISIBLE
-                webview.loadUrl("https://www.yellowtwigs.com/turkey")
+            when (Resources.getSystem().configuration.locale.language) {
+                "fr" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/france")
+                }
+                "de" -> {
+                    println("////////////////////////////")
+                    println(startActivityImportContacts!!.textSize)
+                    startActivityImportContacts!!.textSize = 10f
+                    startActivityActivateNotifications!!.textSize = 10f
+                    startActivityAuthorizeSuperposition!!.textSize = 10f
+                    startActivityPermissions!!.textSize = 10f
+                    println(startActivityImportContacts!!.textSize)
+                    println("////////////////////////////")
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/germany")
+                }
+                "in" -> {
+                    startActivityImportContacts!!.textSize = 9f
+                    startActivityActivateNotifications!!.textSize = 9f
+                    startActivityAuthorizeSuperposition!!.textSize = 9f
+                    startActivityPermissions!!.textSize = 9f
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/indonesia")
+                }
+                "vi" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/vietnam")
+                }
+                "it" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/italy")
+                }
+                "es" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/spain")
+                }
+                "pt" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/portugal")
+                }
+                "ru" -> {
+                    startActivityImportContacts!!.textSize = 7f
+                    startActivityActivateNotifications!!.textSize = 7f
+                    startActivityAuthorizeSuperposition!!.textSize = 7f
+                    startActivityPermissions!!.textSize = 7f
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/russia")
+                }
+                "tr" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/turkey")
+                }
             }
         }
         if (webview.visibility == View.GONE) {
-            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150f,resources.displayMetrics)
+            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150f, resources.displayMetrics)
             videoview.layoutParams.height = layoutSize.y - sizeTest.toInt()
             webview.visibility = View.INVISIBLE
             videoview.visibility = View.VISIBLE
@@ -222,6 +228,28 @@ class StartActivity : AppCompatActivity() {
 
         //endregion
 
+        if (checkIfGoEdition()) {
+            startActivityActivateNotificationsLayout!!.visibility = View.GONE
+            startActivityAuthorizeSuperpositionLayout!!.visibility = View.GONE
+
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setBackground(getDrawable(R.color.backgroundColor))
+                    .setMessage(getString(R.string.start_activity_go_edition_message))
+                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                    }
+                    .show()
+        }
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setBackground(getDrawable(R.color.backgroundColor))
+                    .setMessage(getString(R.string.start_activity_superposition_not_allowed_message_11))
+                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                    }
+                    .show()
+
+        }
+
         //region ======================================== Listeners =========================================
 
         start_activity_video_Skip.setOnClickListener {
@@ -237,12 +265,12 @@ class StartActivity : AppCompatActivity() {
         }
 
         //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact puis nous affichons un loading
-        start_activity_ImportContacts!!.setOnClickListener {
+        startActivityImportContacts!!.setOnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), ImportContactsActivity.REQUEST_CODE_READ_CONTACT)
-            start_activity_ImportContacts!!.visibility = View.INVISIBLE
+            startActivityImportContacts!!.visibility = View.INVISIBLE
 
             val displayLoading = Runnable {
-                start_activity_ImportContactsLoading!!.visibility = View.VISIBLE
+                startActivityImportContactsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
 
@@ -255,15 +283,15 @@ class StartActivity : AppCompatActivity() {
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation d'accès au notification
-        start_activity_ActivateNotifications!!.setOnClickListener {
+        startActivityActivateNotifications!!.setOnClickListener {
             activateNotificationsClick()
-            start_activity_ActivateNotifications!!.visibility = View.INVISIBLE
-            start_activity_ActivateNotificationsLoading!!.visibility = View.VISIBLE
+            startActivityActivateNotifications!!.visibility = View.INVISIBLE
+            startActivityActivateNotificationsLoading!!.visibility = View.VISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 2000
 
             val displayLoading = Runnable {
-                start_activity_ActivateNotificationsLoading!!.visibility = View.VISIBLE
+                startActivityActivateNotificationsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
             //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
@@ -278,10 +306,10 @@ class StartActivity : AppCompatActivity() {
                         //start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
                         //start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
                         Handler().postDelayed({
-                            start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
-                            start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
+                            startActivityActivateNotificationsLoading!!.visibility = View.INVISIBLE
+                            startActivityActivateNotificationsCheck!!.visibility = View.VISIBLE
                             val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                            if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
                                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                                 edit.putBoolean("serviceNotif", true)
                                 edit.putBoolean("popupNotif", true)
@@ -298,8 +326,8 @@ class StartActivity : AppCompatActivity() {
                     runOnUiThread(displayLoading)
                 } else {
                     val displayLoading = Runnable {
-                        start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
-                        start_activity_ActivateNotifications!!.visibility = View.VISIBLE
+                        startActivityActivateNotificationsLoading!!.visibility = View.INVISIBLE
+                        startActivityActivateNotifications!!.visibility = View.VISIBLE
                     }
                     runOnUiThread(displayLoading)
                 }
@@ -308,11 +336,11 @@ class StartActivity : AppCompatActivity() {
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
-        start_activity_AuthorizeSuperposition!!.setOnClickListener {
+        startActivityAuthorizeSuperposition!!.setOnClickListener {
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
 
-                start_activity_AuthorizeSuperposition!!.visibility = View.INVISIBLE
+                startActivityAuthorizeSuperposition!!.visibility = View.INVISIBLE
 
                 val SPLASH_DISPLAY_LENGHT = 3000
                 //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
@@ -322,7 +350,7 @@ class StartActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 val displayLoading = Runnable {
-                    start_activity_AuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
+                    startActivityAuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
                 }
                 runOnUiThread(displayLoading)
                 //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
@@ -338,8 +366,8 @@ class StartActivity : AppCompatActivity() {
 
                         val displayLoading = Runnable {
                             Handler().postDelayed({
-                                start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
-                                start_activity_AuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
+                                startActivityAuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
+                                startActivityAuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
                                 val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                                 edit.putBoolean("popupNotif", true)
@@ -353,15 +381,15 @@ class StartActivity : AppCompatActivity() {
                         //  }, SPLASH_DISPLAY_LENGHT.toLong())
                     } else {
                         val displayLoading = Runnable {
-                            start_activity_AuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
-                            start_activity_AuthorizeSuperposition!!.visibility = View.VISIBLE
+                            startActivityAuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
+                            startActivityAuthorizeSuperposition!!.visibility = View.VISIBLE
                         }
                         runOnUiThread(displayLoading)
                     }
                 }
                 verifiedSuperposition.start()
             } else {
-                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q){
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
                     Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message), Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message_11), Toast.LENGTH_LONG).show()
@@ -370,29 +398,53 @@ class StartActivity : AppCompatActivity() {
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation des appels et des SMS
-        start_activity_Permissions!!.setOnClickListener {
+        startActivityPermissions!!.setOnClickListener {
             val arraylistPermission = ArrayList<String>()
             arraylistPermission.add(Manifest.permission.SEND_SMS)
             arraylistPermission.add(Manifest.permission.CALL_PHONE)
             ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), REQUEST_CODE_SMS_AND_CALL)
-            start_activity_Permissions!!.visibility = View.INVISIBLE
-            start_activity_PermissionsLoading!!.visibility = View.VISIBLE
+            startActivityPermissions!!.visibility = View.INVISIBLE
+            startActivityPermissionsLoading!!.visibility = View.VISIBLE
         }
 
         //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
-        start_activity_Next!!.setOnClickListener {
-            buildMultiSelectAlertDialog()
+        startActivityNext!!.setOnClickListener {
+            if (!checkIfGoEdition()) {
+                buildMultiSelectAlertDialog()
+            }
         }
 
         //lors du click affichage d'un message de prévention
-        start_activity_Skip!!.setOnClickListener {
-            //            start_activity_ImportContacts!!.visibility = View.INVISIBLE
-            buildMultiSelectAlertDialog()
-            buildLeaveAlertDialog()
+        startActivitySkip!!.setOnClickListener {
+            //            startActivityImportContacts!!!!.visibility = View.INVISIBLE
+            if (!checkIfGoEdition()) {
+                buildMultiSelectAlertDialog()
+                buildLeaveAlertDialog()
+            }
         }
 
 
         //endregion
+    }
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_start_activity)
+            height in 1800..2499 -> setContentView(R.layout.activity_start_activity)
+            height in 1100..1799 -> setContentView(R.layout.activity_start_activity_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_start_activity_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
+
+    private fun checkIfGoEdition(): Boolean {
+        val am = baseContext.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        return am.isLowRamDevice
     }
 
     private fun isNetworkConnected(): Boolean {
@@ -444,23 +496,23 @@ class StartActivity : AppCompatActivity() {
                     }
 
                     val runnable = Runnable {
-                        start_activity_ImportContactsLoading!!.visibility = View.INVISIBLE
-                        start_activity_ImportContactsCheck!!.visibility = View.VISIBLE
+                        startActivityImportContactsLoading!!.visibility = View.INVISIBLE
+                        startActivityImportContactsCheck!!.visibility = View.VISIBLE
                         allIsChecked()
                     }
                     runOnUiThread(runnable)
                 }
                 start_activity_mDbWorkerThread.postTask(sync)
             } else {
-                start_activity_ImportContactsLoading!!.visibility = View.INVISIBLE
-                start_activity_ImportContacts!!.visibility = View.VISIBLE
+                startActivityImportContactsLoading!!.visibility = View.INVISIBLE
+                startActivityImportContacts!!.visibility = View.VISIBLE
             }
         }
 
         if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
 
-            start_activity_PermissionsLoading!!.visibility = View.INVISIBLE
-            start_activity_PermissionsCheck!!.visibility = View.VISIBLE
+            startActivityPermissionsLoading!!.visibility = View.INVISIBLE
+            startActivityPermissionsCheck!!.visibility = View.VISIBLE
         }
         allIsChecked()
     }
@@ -581,10 +633,10 @@ class StartActivity : AppCompatActivity() {
      * Si toutes les autorisations sont validées et que les contacts ont fini d'être charger alors nous changeons le bouton passer pour un bouton suivant
      */
     private fun allIsChecked() {
-        if (start_activity_ActivateNotificationsCheck!!.visibility == View.VISIBLE &&
-                start_activity_ImportContactsCheck!!.visibility == View.VISIBLE) {
-            start_activity_Next!!.visibility = View.VISIBLE
-            start_activity_Skip!!.visibility = View.GONE
+        if (startActivityActivateNotificationsCheck!!.visibility == View.VISIBLE &&
+                startActivityImportContactsCheck!!.visibility == View.VISIBLE) {
+            startActivityNext!!.visibility = View.VISIBLE
+            startActivitySkip!!.visibility = View.GONE
         }
     }
 

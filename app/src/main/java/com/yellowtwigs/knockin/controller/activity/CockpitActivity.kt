@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.Resources
 import android.graphics.Point
@@ -132,7 +133,7 @@ class CockpitActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_cockpit)
+        setContentView()
         hideKeyboard()
         val listApp = getAppOnPhone()
 
@@ -203,20 +204,6 @@ class CockpitActivity : AppCompatActivity() {
         }
 
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        when {
-            height in 1501..2101 -> {
-            }
-            height < 1500 -> {
-                val params = main_SettingsLeftDrawerLayout.layoutParams
-                params.height = 325
-                main_SettingsLeftDrawerLayout.layoutParams = params
-            }
-        }
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -536,6 +523,21 @@ class CockpitActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_cockpit)
+            height in 1800..2499 -> setContentView(R.layout.activity_cockpit)
+            height in 1100..1799 -> setContentView(R.layout.activity_cockpit_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_cockpit_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater

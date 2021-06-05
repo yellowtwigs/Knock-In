@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/space_background">
+
+    <RelativeLayout
+        android:id="@+id/start_activity_video_layout"
+        android:visibility="visible"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <VideoView
+            android:id="@+id/start_activity_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
+        <WebView
+            android:id="@+id/start_activity_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:scrollbars="none"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start_activity_video_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="380dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/start_activity_skip"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:visibility="visible" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/start_activity_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:id="@+id/start_activity_import_contacts_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <ProgressBar
+                    android:id="@+id/start_activity_import_contacts_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/start_activity_import_contacts_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_import_contacts_title"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_import_contacts_button"
+                    android:text="@string/start_activity_import_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_import_contacts_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_import_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_import_contacts_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_import_contacts_button"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:textSize="10sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/import_contacts_button_yes"
+                    android:textColor="#000000"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_activity_notifications_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/start_activity_import_contacts_layout"
+                android:layout_marginTop="35dp"
+                android:layout_centerHorizontal="true">
+
+                <ProgressBar
+                    android:id="@+id/start_activity_activate_notifications_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/start_activity_activate_notifications_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_activate_notifications_title"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_activate_notifications_button"
+                    android:text="@string/start_activity_notification_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_activate_notifications_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_notification_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_activate_notifications_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_activate_notifications_button"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:textSize="10sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/start_activity_button_notification"
+                    android:textColor="#000000" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_activity_superposition_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/start_activity_notifications_layout"
+                android:layout_marginTop="35dp"
+                android:layout_centerHorizontal="true">
+
+                <ProgressBar
+                    android:id="@+id/start_activity_superposition_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/start_activity_superposition_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_superposition_title"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_superposition_button"
+                    android:text="@string/start_activity_superposition_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_superposition_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_superposition_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_superposition_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_superposition_button"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:textSize="10sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/start_activity_button_superposition"
+                    android:textColor="#000000" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_activity_permissions_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/start_activity_superposition_layout"
+                android:layout_marginTop="35dp"
+                android:layout_centerHorizontal="true">
+
+                <ProgressBar
+                    android:id="@+id/start_activity_permissions_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/start_activity_permissions_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_activity_permissions_title"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/start_activity_permissions_button"
+                    android:text="@string/start_activity_permission_subtitle"
+                    android:textColor="@color/darkGreyColorDark"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/start_activity_permissions_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:text="@string/start_activity_permission_title"
+                    android:textColor="@color/lightColor"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_activity_permissions_check"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_check" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_activity_permissions_button"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:textSize="10sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/start_activity_button_permission"
+                    android:textColor="#000000" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/start_activity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/start_activity_title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_activity_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/start_activity_skip"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_activity_next"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/start_activity_next"
+            android:textColor="#000000"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

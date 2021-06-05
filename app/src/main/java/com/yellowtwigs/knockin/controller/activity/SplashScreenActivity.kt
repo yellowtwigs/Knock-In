@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.controller.activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -48,8 +49,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_splash_screen)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+        setContentView()
 
         //region ======================================== Animation =========================================
 
@@ -95,5 +95,20 @@ class SplashScreenActivity : AppCompatActivity() {
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 
         //endregion
+    }
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_splash_screen)
+            height in 1800..2499 -> setContentView(R.layout.activity_splash_screen)
+            height in 1100..1799 -> setContentView(R.layout.activity_splash_screen_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_splash_screen_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 }

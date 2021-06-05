@@ -176,8 +176,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         //On affecte à notre activity son layout correspondant
-        setContentView(R.layout.activity_main)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+        setContentView()
 
         // Si un contact est supprimé, un message s'affichera
         val isDelete = intent.getBooleanExtra("isDelete", false)
@@ -265,20 +264,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
 
         val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        when {
-            height in 1501..2101 -> {
-            }
-            height < 1500 -> {
-                val params = main_SettingsLeftDrawerLayout.layoutParams
-                params.height = 250
-                main_SettingsLeftDrawerLayout.layoutParams = params
-            }
-        }
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -908,6 +893,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     //region ========================================== Functions ===========================================
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_main)
+            height in 1800..2499 -> setContentView(R.layout.activity_main)
+            height in 1100..1799 -> setContentView(R.layout.activity_main_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_main_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
 
     /**
      *  Les affichages du mode Multiselect sont enlevés pour remettre l'affichage initial

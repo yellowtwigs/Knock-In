@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.controller.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -67,7 +68,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //endregion
 
-        setContentView(R.layout.activity_premium)
+        setContentView()
 
         setupBillingClient()
 
@@ -122,20 +123,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         //endregion
-
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-        when {
-            height in 1501..2101 -> {
-            }
-            height < 1500 -> {
-                val params = main_SettingsLeftDrawerLayout.layoutParams
-                params.height = 325
-                main_SettingsLeftDrawerLayout.layoutParams = params
-            }
-        }
 
         //region ======================================= DrawerLayout =======================================
 
@@ -277,6 +264,21 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 startActivity(Intent(this@PremiumActivity, PremiumActivity::class.java))
             }
         }
+    }
+
+    private fun setContentView() {
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val height = size.y
+
+        when {
+            height > 2500 -> setContentView(R.layout.activity_premium)
+            height in 1800..2499 -> setContentView(R.layout.activity_premium)
+            height in 1100..1799 -> setContentView(R.layout.activity_premium_smaller_screen)
+            height < 1099 -> setContentView(R.layout.activity_premium_mini_screen)
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 
     private fun loadProductToRecyclerView(skuDetailsList: List<SkuDetails>) {
