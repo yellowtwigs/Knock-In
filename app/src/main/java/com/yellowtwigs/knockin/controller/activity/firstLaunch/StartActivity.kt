@@ -411,6 +411,11 @@ class StartActivity : AppCompatActivity() {
         startActivityNext!!.setOnClickListener {
             if (!checkIfGoEdition()) {
                 buildMultiSelectAlertDialog()
+            } else {
+                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                intent.putExtra("fromStartActivity", true)
+                startActivity(intent)
+                finish()
             }
         }
 
@@ -420,6 +425,11 @@ class StartActivity : AppCompatActivity() {
             if (!checkIfGoEdition()) {
                 buildMultiSelectAlertDialog()
                 buildLeaveAlertDialog()
+            } else {
+                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                intent.putExtra("fromStartActivity", true)
+                startActivity(intent)
+                finish()
             }
         }
 

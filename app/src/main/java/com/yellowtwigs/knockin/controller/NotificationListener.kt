@@ -508,7 +508,7 @@ class NotificationListener : NotificationListenerService() {
         return Notification.Builder(this, "notifications")
                 .setContentTitle("KnockIn")
                 .setLargeIcon(icon)
-                .setSmallIcon(R.drawable.ic_app_image)
+                .setSmallIcon(R.drawable.ic_letter_k)
                 .setCategory(Notification.CATEGORY_CALL)
                 .setStyle(Notification.MessagingStyle(person)
                         .setGroupConversation(false)
@@ -678,7 +678,7 @@ class NotificationListener : NotificationListenerService() {
         }
 
         val mBuilder = NotificationCompat.Builder(applicationContext)
-        mBuilder.setSmallIcon(R.drawable.ic_app_image)
+        mBuilder.setSmallIcon(R.drawable.ic_letter_k)
         mBuilder.setContentTitle(contact)
         mBuilder.setContentText("$message on $platform")
 
