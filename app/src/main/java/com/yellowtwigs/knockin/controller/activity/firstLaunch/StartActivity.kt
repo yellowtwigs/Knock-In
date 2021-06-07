@@ -85,10 +85,10 @@ class StartActivity : AppCompatActivity(),PurchasesUpdatedListener {
         billingCli = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
         billingCli!!.queryPurchaseHistoryAsync(BillingClient.SkuType.SUBS, PurchaseHistoryResponseListener(){ billingResult: BillingResult, purchasesList: MutableList<PurchaseHistoryRecord>? ->
-
+        billingCli = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK)
                 {
-                    //Always returning 0 size() of purchasesList
+                   var purchases=billingCli!!.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
                     //Toast.makeText(getApplicationContext(), "There are " + purchasesList.size + " items you've purchased.", Toast.LENGTH_LONG).show()
                     var purchases=billingCli!!.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
                     for(item in purchases) {
