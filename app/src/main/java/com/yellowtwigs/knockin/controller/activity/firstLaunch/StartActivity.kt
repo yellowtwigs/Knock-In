@@ -114,8 +114,8 @@ class StartActivity : AppCompatActivity() {
         val start_activity_video_Skip = findViewById<MaterialButton>(R.id.start_activity_video_skip)
 
         val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var isWifiConn: Boolean = false
-        var isMobileConn: Boolean = false
+        var isWifiConn = false
+        var isMobileConn = false
         connMgr.allNetworks.forEach { network ->
             connMgr.getNetworkInfo(network).apply {
                 if (type == ConnectivityManager.TYPE_WIFI) {
@@ -405,6 +405,7 @@ class StartActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), REQUEST_CODE_SMS_AND_CALL)
             startActivityPermissions!!.visibility = View.INVISIBLE
             startActivityPermissionsLoading!!.visibility = View.VISIBLE
+            allIsCheckedGOEdition()
         }
 
         //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
@@ -509,6 +510,7 @@ class StartActivity : AppCompatActivity() {
                         startActivityImportContactsLoading!!.visibility = View.INVISIBLE
                         startActivityImportContactsCheck!!.visibility = View.VISIBLE
                         allIsChecked()
+                        allIsCheckedGOEdition()
                     }
                     runOnUiThread(runnable)
                 }
@@ -525,6 +527,7 @@ class StartActivity : AppCompatActivity() {
             startActivityPermissionsCheck!!.visibility = View.VISIBLE
         }
         allIsChecked()
+        allIsCheckedGOEdition()
     }
 
     /**
@@ -645,6 +648,14 @@ class StartActivity : AppCompatActivity() {
     private fun allIsChecked() {
         if (startActivityActivateNotificationsCheck!!.visibility == View.VISIBLE &&
                 startActivityImportContactsCheck!!.visibility == View.VISIBLE) {
+            startActivityNext!!.visibility = View.VISIBLE
+            startActivitySkip!!.visibility = View.GONE
+        }
+    }
+
+    private fun allIsCheckedGOEdition() {
+        if (startActivityImportContactsCheck!!.visibility == View.VISIBLE &&
+                startActivityPermissionsCheck!!.visibility == View.VISIBLE) {
             startActivityNext!!.visibility = View.VISIBLE
             startActivitySkip!!.visibility = View.GONE
         }

@@ -26,7 +26,6 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
 import com.yellowtwigs.knockin.controller.adapter.MyProductAdapter
 
-
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //region ========================================= Var or Val ===========================================
@@ -69,7 +68,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         //endregion
 
         setContentView()
-
         setupBillingClient()
 
         val fromMultiSelectActivity = intent.getBooleanExtra("fromMultiSelectActivity", false)
@@ -184,7 +182,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             val popup = AlertDialog.Builder(this@PremiumActivity);
             popup.setTitle(getString(R.string.popup_connection_title));
             popup.setMessage(getString(R.string.popup_connection_message))
-            popup.setPositiveButton(getString(R.string.popup_connection_cancel)){ _, _ ->
+            popup.setPositiveButton(getString(R.string.popup_connection_cancel)) { _, _ ->
                 finish()
             }
             popup.setNegativeButton(getString(R.string.popup_connection_retry)) { _, _ ->
@@ -203,6 +201,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                     val list = listOf("contacts_vip_unlimited") + listOf("notifications_vip_funk_theme") + listOf("notifications_vip_jazz_theme") +
                             listOf("notifications_vip_relaxation_theme")
+
                     val params = SkuDetailsParams.newBuilder()
                             .setSkusList(list)
                             .setType(BillingClient.SkuType.INAPP)
@@ -212,6 +211,14 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                         if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
                             loadProductToRecyclerView(skuDetailsList)
+
+                            var purchases = billingClient!!.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
+
+
+                            billingClient!!.queryPurchases(BillingClient.SkuType.INAPP)
+
+                            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED
+
                         }
                     }
                 }
@@ -302,7 +309,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
                     println("////onBillingSetupFinished////")
 //                    Toast.makeText(this@PremiumActivity, "Success to connect Billing", Toast.LENGTH_SHORT).show()
-                }else {
+                    BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED
+                } else {
                     println("///nooooope///")
                     Toast.makeText(this@PremiumActivity, "" + billingResult.responseCode, Toast.LENGTH_SHORT).show()
                 }
@@ -337,7 +345,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         if (!purchases[0].isAcknowledged) {
                             val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
                                     .setPurchaseToken(purchases[0].purchaseToken)
-                                billingClient!!.acknowledgePurchase(acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener)
+                            billingClient!!.acknowledgePurchase(acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener)
                             Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
                             val edit = sharedProductNotifFunkySoundPreferences!!.edit()
                             edit.putBoolean("Notif_Funky_Sound_IsBought", true)
@@ -387,7 +395,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
-    fun backToManageNotifAfterBuying(){
+    fun backToManageNotifAfterBuying() {
         if (fromManageNotification) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle(getString(R.string.in_app_purchase_made_message))

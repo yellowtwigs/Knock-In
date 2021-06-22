@@ -9,13 +9,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.dokka-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.yellowtwigs.Knockin"
         minSdkVersion 24
-        targetSdkVersion 29
-        versionCode 57
-        versionName "2.0.0"
+        targetSdkVersion 30
+        versionCode 73
+        versionName "2.0.1"
 //        versionCode 46
 //        versionName "5.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
