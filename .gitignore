@@ -8,3 +8,11 @@
 .externalNativeBuild
 
 *.apk
+
+app/\.idea/workspace\.xml
+
+app/\.idea/misc\.xml
+
+app/\.idea/modules\.xml
+
+app/\.idea/vcs\.xml
