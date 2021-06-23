@@ -14,7 +14,7 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 66
+        versionCode 74
         versionName "2.0.1 "
 //        versionCode 46
 //        versionName "5.3"
