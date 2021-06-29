@@ -117,7 +117,7 @@ class StartActivity : AppCompatActivity() {
         var isWifiConn = false
         var isMobileConn = false
         connMgr.allNetworks.forEach { network ->
-            connMgr.getNetworkInfo(network).apply {
+            connMgr.getNetworkInfo(network)?.apply {
                 if (type == ConnectivityManager.TYPE_WIFI) {
                     isWifiConn = isWifiConn or isConnected
                 }
@@ -178,6 +178,10 @@ class StartActivity : AppCompatActivity() {
                 "pt" -> {
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/portugal")
+                }
+                "ar" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/arabic")
                 }
                 "ru" -> {
                     startActivityImportContacts!!.textSize = 7f

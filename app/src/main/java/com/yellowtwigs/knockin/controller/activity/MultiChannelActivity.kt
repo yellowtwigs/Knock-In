@@ -82,7 +82,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
         //region ================================= GetContactByIdFromIntent =================================
 
-        intent_listOfContactSelected = intent.getIntegerArrayListExtra("ListContactsSelected")
+        intent_listOfContactSelected = intent.getIntegerArrayListExtra("ListContactsSelected") as ArrayList<Int>
 
         gestionnaireContacts = ContactManager(this.applicationContext)
         gestionnaireContacts!!.sortContactByFirstNameAZ()
