@@ -32,110 +32,87 @@
                 app:title="@string/notification_manager_toolbar_title"
                 app:titleTextColor="?attr/textColor" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/constraintLayout11"
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.127">
-
-                <Switch
-                    android:id="@+id/switch_stop_service"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.51"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp">
 
                 <TextView
                     android:id="@+id/textView_stop_service"
-                    android:layout_width="268dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/switch_stop_service"
                     android:text="@string/notification_manager_stop_service"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:textColor="?attr/textColor" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                <Switch
+                    android:id="@+id/switch_stop_service"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/manage_notif_layout_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <Switch
-                    android:id="@+id/switch_stop_popup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView_manage_notif"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp">
 
                 <TextView
                     android:id="@+id/textView_manage_notif"
-                    android:layout_width="268dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/switch_stop_popup"
                     android:text="@string/notification_manager_stop_popup"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:textColor="?attr/textColor" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                <Switch
+                    android:id="@+id/switch_stop_popup"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/manage_notif_reminder_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginEnd="0dp"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <Switch
-                    android:id="@+id/switch_manage_notif_reminder"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView_manage_reminder"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp">
 
                 <TextView
                     android:id="@+id/textView_manage_reminder"
-                    android:layout_width="268dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/switch_manage_notif_reminder"
                     android:text="@string/notification_reminder"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:textColor="?attr/textColor" />
+
+                <Switch
+                    android:id="@+id/switch_manage_notif_reminder"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/modify_hour_Constariant"
@@ -210,19 +187,20 @@
 
     </ScrollView>
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view_manage_notif"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="?attr/backgroundColor"
-            android:visibility="visible"
-            app:headerLayout="@layout/nav_header_drawer"
-            app:itemIconTint="@color/drawer_navigation_color"
-            app:itemTextColor="@color/drawer_navigation_color"
-            app:menu="@menu/menu_left_drawer_layout" >
-            <include layout="@layout/nav_bottom_drawer" />
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view_manage_notif"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="?attr/backgroundColor"
+        android:visibility="gone"
+        app:headerLayout="@layout/nav_header_drawer"
+        app:itemIconTint="@color/drawer_navigation_color"
+        app:itemTextColor="@color/drawer_navigation_color"
+        app:menu="@menu/menu_left_drawer_layout">
 
-        </com.google.android.material.navigation.NavigationView>
+        <include layout="@layout/nav_bottom_drawer" />
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
