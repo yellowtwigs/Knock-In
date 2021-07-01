@@ -389,6 +389,8 @@
     <!-- endregion -->
     <!-- region Edit Group -->
     <string name="manager_group_edit_group_alert_dialog_title">Edite o grupo:</string>
+    <string name="manager_group_edit_group_name">Nome:</string>
+    <string name="manager_group_edit_group_color">Cor:</string>
     <!-- endregion -->
     <!--endregion -->
     <!-- region Compose Message -->

@@ -391,6 +391,8 @@
     <!-- endregion -->
     <!-- region Edit Group -->
     <string name="manager_group_edit_group_alert_dialog_title">تعديل المجموعة :</string>
+    <string name="manager_group_edit_group_name">الإسم:</string>
+    <string name="manager_group_edit_group_color">اللون:</string>
     <!-- endregion -->
     <!--endregion -->
     <!-- region Compose Message -->
@@ -426,7 +428,7 @@
     <string name="start_activity_skip_alert_dialog_message_importation">يعمل Knock In على استيراد جهات الاتصال الخاصة بك ، إذا قمت بالتبديل الآن ، فلن يتم حفظ جهات الاتصال الخاصة بك</string>
     <string name="start_activity_skip_alert_dialog_positive_button">تخطي</string>
 
-    <string name="start_activity_alert_dialog_android_11_warning">الإشعارات العائمة (الفقاعات) غير مدعومة حتى الآن مع Android 11 سيتوفر قريبًا إصدار من التطبيق مع إشعارات عائمة لنظام Android 11 ومع ذلك ، يمكنك استخدام الوظائف الأخرى للتطبيق</string>
+    <string name="start_activity_alert_dialog_android_11_warning" tools:ignore="ExtraTranslation">الإشعارات العائمة (الفقاعات) غير مدعومة حتى الآن مع Android 11 سيتوفر قريبًا إصدار من التطبيق مع إشعارات عائمة لنظام Android 11 ومع ذلك ، يمكنك استخدام الوظائف الأخرى للتطبيق</string>
 
     <string name="start_activity_go_edition_message">لا تتوفر ميزات سجل الإشعارات والإشعارات VIP لإصدارات (GO Edition) من Android</string>
     <string name="start_activity_go_edition_positive_button">حسنا</string>

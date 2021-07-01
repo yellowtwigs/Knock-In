@@ -390,6 +390,8 @@
     <!-- endregion -->
     <!-- region Edit Group -->
     <string name="manager_group_edit_group_alert_dialog_title">Chỉnh sửa nhóm </string>
+    <string name="manager_group_edit_group_name">Tên:</string>
+    <string name="manager_group_edit_group_color">Màu sắc:</string>
     <!-- endregion -->
     <!--endregion -->
     <!-- region Compose Message -->

@@ -389,6 +389,8 @@
     <!-- endregion -->
     <!-- region Edit Group -->
     <string name="manager_group_edit_group_alert_dialog_title">编辑小组</string>
+    <string name="manager_group_edit_group_name">名称:</string>
+    <string name="manager_group_edit_group_color">颜色:</string>
     <!-- endregion -->
     <!--endregion -->
     <!-- region Compose Message -->

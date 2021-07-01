@@ -390,6 +390,8 @@
     <!-- endregion -->
     <!-- region Edit Group -->
     <string name="manager_group_edit_group_alert_dialog_title">Editer le groupe : </string>
+    <string name="manager_group_edit_group_name">Nom:</string>
+    <string name="manager_group_edit_group_color">Coleur:</string>
     <!-- endregion -->
     <!--endregion -->
     <!-- region Compose Message -->
@@ -426,7 +428,7 @@
         si vous passez maintenant, vos contacts ne seront pas sauvegardés</string>
     <string name="start_activity_skip_alert_dialog_positive_button">Passer</string>
 
-    <string name="start_activity_alert_dialog_android_11_warning">Les notifications flottantes de Knock In (Bulles) ne sont pas encore prises en charge avec Android 11 (version de votre smartphone). Une version de l\'application proposant des notifications flottantes pour Android 11 sera bientôt disponible. Cependant, vous pouvez utiliser les autres fonctions de l`\'application.</string>
+    <string name="start_activity_alert_dialog_android_11_warning" tools:ignore="ExtraTranslation">Les notifications flottantes de Knock In (Bulles) ne sont pas encore prises en charge avec Android 11 (version de votre smartphone). Une version de l\'application proposant des notifications flottantes pour Android 11 sera bientôt disponible. Cependant, vous pouvez utiliser les autres fonctions de l`\'application.</string>
 
     <string name="start_activity_go_edition_message">Les fonctions de notifications VIP et d\’historique des notifications ne sont pas disponibles pour les versions "GO Edition" d\'Android.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>

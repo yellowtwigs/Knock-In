@@ -394,6 +394,8 @@ Elija un contacto para agregar </string>
     <!-- endregion -->
     <!-- region Edit Group -->
     <string name="manager_group_edit_group_alert_dialog_title">Editar grupo: </string>
+    <string name="manager_group_edit_group_name">Nombre:</string>
+    <string name="manager_group_edit_group_color">Color:</string>
     <!-- endregion -->
     <!--endregion -->
     <!-- region Compose Message -->

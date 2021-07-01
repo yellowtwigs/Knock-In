@@ -390,6 +390,8 @@
     <!-- endregion -->
     <!-- region Edit Group -->
     <string name="manager_group_edit_group_alert_dialog_title">Редактировать группу:</string>
+    <string name="manager_group_edit_group_name">Имя:</string>
+    <string name="manager_group_edit_group_color">Цвет:</string>
     <!-- endregion -->
     <!--endregion -->
     <!-- region Compose Message -->

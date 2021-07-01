@@ -169,7 +169,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         var isWifiConn: Boolean = false
         var isMobileConn: Boolean = false
         connMgr.allNetworks.forEach { network ->
-            connMgr.getNetworkInfo(network).apply {
+            connMgr.getNetworkInfo(network)?.apply {
                 if (type == ConnectivityManager.TYPE_WIFI) {
                     isWifiConn = isWifiConn or isConnected
                 }
