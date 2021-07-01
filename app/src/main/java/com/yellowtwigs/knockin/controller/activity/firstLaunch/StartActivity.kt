@@ -179,6 +179,10 @@ class StartActivity : AppCompatActivity() {
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/portugal")
                 }
+                "ar" -> {
+                    webview.visibility = View.VISIBLE
+                    webview.loadUrl("https://www.yellowtwigs.com/arabic")
+                }
                 "ru" -> {
                     startActivityImportContacts!!.textSize = 7f
                     startActivityActivateNotifications!!.textSize = 7f

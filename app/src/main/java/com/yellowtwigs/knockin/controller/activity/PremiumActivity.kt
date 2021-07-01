@@ -166,8 +166,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 //        premium_activity_ToolbarLoadProducts!!.setOnClickListener {
         //Initialize the Handler
         val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var isWifiConn: Boolean = false
-        var isMobileConn: Boolean = false
+        var isWifiConn = false
+        var isMobileConn = false
         connMgr.allNetworks.forEach { network ->
             connMgr.getNetworkInfo(network)?.apply {
                 if (type == ConnectivityManager.TYPE_WIFI) {
@@ -187,7 +187,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
             popup.setNegativeButton(getString(R.string.popup_connection_retry)) { _, _ ->
                 finish();
-                startActivity(getIntent());
+                startActivity(intent)
             }
             popup.create().show();
         }
