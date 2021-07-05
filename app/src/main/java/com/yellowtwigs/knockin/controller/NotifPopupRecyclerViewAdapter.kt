@@ -323,8 +323,8 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
 
         if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"] != null && !isBubble) {//image de l'expediteur provenant l'application source
             println("bitmap :" + sbp.statusBarNotificationInfo["android.largeIcon"]!!)
-            val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
-            holder.senderImageView!!.setImageBitmap(bitmap)
+//            val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
+//            holder.senderImageView!!.setImageBitmap(bitmap)
         }
     }
 
