@@ -429,6 +429,9 @@
     <string name="start_activity_go_edition_message">Le notifiche VIP e le funzioni della cronologia delle notifiche non sono disponibili per le versioni "GO Edition" di Android.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Le notifiche mobili di Knock In (Bolle) non sono ancora supportate con Android 11 (versione del tuo smartphone).
+        Presto sarà disponibile una versione dell\'app che offre notifiche mobili per Android 11. Tuttavia, è possibile utilizzare le altre funzioni dell\'applicazione.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Group%s</string>

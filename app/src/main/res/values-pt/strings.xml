@@ -429,6 +429,9 @@
     <string name="start_activity_go_edition_message">As notificações VIP e os recursos de histórico de notificações não estão disponíveis para as versões "GO Edition" do Android.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">As notificações flutuantes do Knock In (Bolhas) ainda não são compatíveis com o Android 11 (versão do seu smartphone). Uma versão do aplicativo que oferece notificações flutuantes para o Android 11 estará disponível em breve.
+        No entanto, você pode usar as outras funções do aplicativo.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Grupo%s</string>

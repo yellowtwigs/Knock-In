@@ -435,6 +435,9 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="start_activity_go_edition_message">Las notificaciones VIP y las funciones de historial de notificaciones no están disponibles para las versiones de Android "Edición GO".</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Las notificaciones flotantes de Knock In (Burbujas) aún no son compatibles con Android 11 (versión de su smartphone).
+        Pronto estará disponible una versión de la aplicación que ofrece notificaciones flotantes para Android 11. Sin embargo, puede utilizar las demás funciones de la aplicación.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Grupo%s</string>

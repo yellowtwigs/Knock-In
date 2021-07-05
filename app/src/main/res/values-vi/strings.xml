@@ -431,6 +431,9 @@
     <string name="start_activity_go_edition_message">Các tính năng thông báo VIP và lịch sử thông báo không khả dụng cho các phiên bản "GO Edition" của Android.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Thông báo nổi (Bong bóng) của Knock In chưa được hỗ trợ với Android 11 (phiên bản điện thoại thông minh của bạn).
+        Phiên bản ứng dụng cung cấp thông báo nổi cho Android 11 sẽ sớm ra mắt. Tuy nhiên, bạn có thể sử dụng các chức năng khác của ứng dụng.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Nhóm%s</string>

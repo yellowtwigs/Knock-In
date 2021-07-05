@@ -433,6 +433,9 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="start_activity_go_edition_message">Notifikasi VIP dan fitur riwayat notifikasi tidak tersedia untuk Android versi "GO Edition".</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Pemberitahuan mengambang Knock In (Gelembung) belum didukung dengan Android 11 (versi ponsel cerdas Anda). Versi aplikasi yang menawarkan pemberitahuan mengambang untuk Android 11 akan segera tersedia.
+        Namun, Anda dapat menggunakan fungsi aplikasi lainnya.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Grup%s</string>

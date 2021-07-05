@@ -429,6 +429,9 @@
     <string name="start_activity_go_edition_message">VIP-Benachrichtigungen und Benachrichtigungsverlaufsfunktionen sind für "GO Edition" -Versionen von Android nicht verfügbar.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Die schwebenden Benachrichtigungen (Blasen) von Knock In werden von Android 11 (Version Ihres Smartphones) noch nicht unterstützt.
+        Eine Version der App mit schwebenden Benachrichtigungen für Android 11 wird in Kürze verfügbar sein. Sie können jedoch die anderen Funktionen der Anwendung verwenden.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Gruppe%s</string>

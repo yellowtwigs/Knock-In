@@ -433,6 +433,7 @@
     <string name="start_activity_go_edition_message">Les fonctions de notifications VIP et d\’historique des notifications ne sont pas disponibles pour les versions "GO Edition" d\'Android.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">Groupe%s</string>

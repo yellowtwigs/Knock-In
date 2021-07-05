@@ -429,6 +429,8 @@
     <string name="start_activity_go_edition_message">VIP通知和通知历史记录功能不适用于Android的“ GO Edition”版本。</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Android 11（您的智能手机的版本）尚不支持Knock In的浮动通知（气泡）。该应用程序的一个版本将提供针对Android 11的浮动通知。但是，您可以使用应用程序的其他功能。</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">小组 %s</string>

@@ -431,6 +431,8 @@
     <string name="start_activity_go_edition_message">VIP-уведомления и функции истории уведомлений недоступны для версий Android GO Edition.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Плавающие уведомления Knock In (пузыри) пока не поддерживаются в Android 11 (версия вашего смартфона). Версия приложения с плавающими уведомлениями для Android 11 скоро будет доступна. Однако вы можете использовать другие функции приложения.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">группа%s</string>

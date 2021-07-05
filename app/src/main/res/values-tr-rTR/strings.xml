@@ -430,6 +430,8 @@
     <string name="start_activity_go_edition_message">VIP bildirimleri ve bildirim geçmişi özellikleri, Android\'in "GO Sürümü" sürümlerinde kullanılamaz.</string>
     <string name="start_activity_go_edition_positive_button">Ok</string>
 
+    <string name="start_activity_alert_dialog_android_11_warning">Knock In\'in hareketli bildirimleri (Kabarcıklar) henüz Android 11\'de (akıllı telefonunuzun sürümü) desteklenmemektedir. Android 11 için kayan bildirimler sunan uygulamanın bir sürümü yakında kullanıma sunulacak. Ancak uygulamanın diğer işlevlerini kullanabilirsiniz.</string>
+
     <!-- endregion -->
     <!-- region Group -->
     <string name="group_name">grup%s</string>
