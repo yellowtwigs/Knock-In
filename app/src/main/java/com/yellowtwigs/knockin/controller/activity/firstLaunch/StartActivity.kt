@@ -342,23 +342,17 @@ class StartActivity : AppCompatActivity() {
         //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
         startActivityAuthorizeSuperposition!!.setOnClickListener {
 
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
 
                 startActivityAuthorizeSuperposition!!.visibility = View.INVISIBLE
 
                 val SPLASH_DISPLAY_LENGHT = 3000
                 //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    if (!Settings.canDrawOverlays(this)) {
-                        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-                        startActivityForResult(intent, 0)
-                    }
-                } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                             Uri.parse("package:$packageName"))
                     startActivity(intent)
                 }
-
                 val displayLoading = Runnable {
                     startActivityAuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
                 }
@@ -399,15 +393,11 @@ class StartActivity : AppCompatActivity() {
                 }
                 verifiedSuperposition.start()
             } else {
-                if (!Settings.canDrawOverlays(this)) {
-                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-                    startActivityForResult(intent, 0)
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message_11), Toast.LENGTH_LONG).show()
                 }
-//                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-//                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message), Toast.LENGTH_LONG).show()
-//                } else {
-//                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message_11), Toast.LENGTH_LONG).show()
-//                }
             }
         }
 
