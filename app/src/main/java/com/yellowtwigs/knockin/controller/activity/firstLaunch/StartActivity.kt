@@ -244,15 +244,15 @@ class StartActivity : AppCompatActivity() {
                     .show()
         }
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setBackground(getDrawable(R.color.backgroundColor))
-                    .setMessage(getString(R.string.start_activity_superposition_not_allowed_message_11))
-                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                    }
-                    .show()
-
-        }
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                    .setBackground(getDrawable(R.color.backgroundColor))
+//                    .setMessage(getString(R.string.start_activity_superposition_not_allowed_message_11))
+//                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+//                    }
+//                    .show()
+//
+//        }
 
         //region ======================================== Listeners =========================================
 
@@ -342,7 +342,7 @@ class StartActivity : AppCompatActivity() {
         //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
         startActivityAuthorizeSuperposition!!.setOnClickListener {
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
 
                 startActivityAuthorizeSuperposition!!.visibility = View.INVISIBLE
 
@@ -393,11 +393,6 @@ class StartActivity : AppCompatActivity() {
                 }
                 verifiedSuperposition.start()
             } else {
-                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message), Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this, getString(R.string.start_activity_superposition_not_allowed_message_11), Toast.LENGTH_LONG).show()
-                }
             }
         }
 
