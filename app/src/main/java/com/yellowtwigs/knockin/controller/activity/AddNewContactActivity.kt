@@ -94,6 +94,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         //region ======================================== Theme Dark ========================================
 
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
@@ -104,7 +105,6 @@ class AddNewContactActivity : AppCompatActivity() {
         }
 
         //endregion
-
         setContentView(R.layout.activity_add_new_contact)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 

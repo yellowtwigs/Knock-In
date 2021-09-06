@@ -40,6 +40,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var sharedProductNotifRelaxationSoundPreferences: SharedPreferences? = null
     private var sharedProductContactsUnlimitedPreferences: SharedPreferences? = null
 
+    private var sharedProductNotifCustomSoundPreferences: SharedPreferences? = null
+
     private var premium_activity_ToolbarLayout: RelativeLayout? = null
     private var premium_activity_ToolbarOpenDrawer: AppCompatImageView? = null
 
@@ -77,6 +79,9 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         sharedProductNotifJazzySoundPreferences = this.getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
         sharedProductNotifRelaxationSoundPreferences = this.getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
         sharedProductContactsUnlimitedPreferences = this.getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
+        sharedProductNotifCustomSoundPreferences = this.getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE)
+
+
 
         println("//////1///////")
         println(sharedProductNotifFunkySoundPreferences)
@@ -200,7 +205,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 if (billingClient!!.isReady) {
 
                     val list = listOf("contacts_vip_unlimited") + listOf("notifications_vip_funk_theme") + listOf("notifications_vip_jazz_theme") +
-                            listOf("notifications_vip_relaxation_theme")
+                            listOf("notifications_vip_relaxation_theme") + listOf("notifications_vip_custom_tones_theme")
 
                     val params = SkuDetailsParams.newBuilder()
                             .setSkusList(list)
@@ -389,6 +394,19 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             val edit = sharedProductContactsUnlimitedPreferences!!.edit()
                             edit.putBoolean("Alarm_Contacts_Unlimited_IsBought", true)
                             edit.apply()
+                        }
+                }
+                purchases[0].originalJson.contains("notifications_vip_custom_tones_theme") -> {
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
+                        if (!purchases[0].isAcknowledged) {
+                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                                    .setPurchaseToken(purchases[0].purchaseToken)
+                            billingClient!!.acknowledgePurchase(acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener)
+                            Toast.makeText(this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT).show()
+                            val edit = sharedProductNotifCustomSoundPreferences!!.edit()
+                            edit.putBoolean("Notif_Custom_Sound_IsBought", true)
+                            edit.apply()
+                            backToManageNotifAfterBuying()
                         }
                 }
             }

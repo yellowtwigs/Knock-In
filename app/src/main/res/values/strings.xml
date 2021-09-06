@@ -13,7 +13,7 @@
     <string name="help_notification_manager"> In this screen you can chose to enable/disable the priority 2 notifications </string>
     <string name="help_my_informations"> In this screen you can update your personal details </string>
     <string name="help_contact_us_intent">Contact us</string>
-    <string name="help_bubbles_link">http://www.yellowtwigs.com/android10-bubbles-setup</string>
+    <string name="help_bubbles_link" translatable="false">http://www.yellowtwigs.com/android10-bubbles-setup</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
     <string name="help_contact_us_eula">https://www.yellowtwigs.com/end-user-license-agreement</string>
     <string name="help_app_video_link">https://youtu.be/5gKwDljgLNI</string>
@@ -232,6 +232,8 @@
     <string name="notification_alert_dialog_message">Do you want to choose your high-priority contacts ?</string>
     <string name="notification_vip_message_tone">VIP Notifications Tone</string>
     <string name="notification_vip_default_message_tone">Default Tone</string>
+    <string name="notification_vip_message_choose_tone" translatable="false">Choose Your Tone</string>
+    <string name="notification_vip_upload_tone" translatable="false">Upload</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
     <string name="notification_vip_funky_message_tone">Funky Tone</string>
     <string name="notification_vip_relaxation_message_tone">Relaxing Tone</string>

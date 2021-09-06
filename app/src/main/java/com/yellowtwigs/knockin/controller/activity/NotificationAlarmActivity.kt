@@ -54,7 +54,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
         //region ==================================== SharedPreferences =====================================
 
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
-        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
         sharedAlarmNotifDurationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
         duration = sharedAlarmNotifDurationPreferences!!.getInt("Alarm_Notif_Duration", 0)
@@ -63,6 +62,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
         canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", false)
 /////////
         if (canRingtone) {
+            val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
             alartNotifTone(sound)
         }
 

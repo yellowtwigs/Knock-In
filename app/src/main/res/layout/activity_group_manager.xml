@@ -53,6 +53,19 @@
                     android:text="@string/group_manager_toolbar_title"
                     android:textSize="20sp"/>
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/group_manager_floating_button_sms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="35dp"
+                    android:background="@color/colorPrimary"
+                    android:src="@drawable/ic_message_floating"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/colorPrimary"
+                    tools:targetApi="P" />
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/group_manager_toolbar_help"
                     android:layout_width="wrap_content"
@@ -112,21 +125,6 @@
             android:visibility="gone"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_sms"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:targetApi="P" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/group_manager_floating_button_sms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="35dp"
-            android:background="@color/colorPrimary"
-            android:src="@drawable/ic_message_floating"
-            android:visibility="gone"
-            app:backgroundTint="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_send_id"
             app:layout_constraintEnd_toEndOf="parent"
             tools:targetApi="P" />
 

@@ -14,7 +14,7 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 73
+        versionCode 77
         versionName "2.0.1"
 //        versionCode 46
 //        versionName "5.3"
@@ -68,6 +68,11 @@ android {
         targetCompatibility '1.8'
     }
     buildToolsVersion = '30.0.2'
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
 }
 
 dependencies {
