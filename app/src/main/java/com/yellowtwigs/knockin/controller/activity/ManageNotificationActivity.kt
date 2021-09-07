@@ -51,7 +51,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var switchPopupNotif: Switch? = null
     private var switchservice: Switch? = null
     private var isTrue = false
-    private lateinit var filepath: Uri
+    private lateinit var filePath: Uri
 
     //region Default Sound
 
@@ -202,7 +202,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             } else {
                 getTones()
             }
-            if(filepath!=null){
+            if(txtpath!=null){
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
@@ -1944,31 +1944,27 @@ class ManageNotificationActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 10 && resultCode == RESULT_OK){
-            filepath = data!!.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)!!
-            txtpath.setText("From :" + filepath!!.path)
+            filePath = data!!.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)!!
+            txtpath.setText("From :" + filePath!!.path)
 
-           // if (notifCustomSoundIsBought) {
+            if (notifCustomSoundIsBought) {
                 val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
-                edit.putString("Alarm_Custom_Notif_Tone", filepath.toString())
+                edit.putString("Alarm_Custom_Notif_Tone", filePath.toString())
                 edit.apply()
-         //  } else {
-            //    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                      //  .setTitle(getString(R.string.in_app_popup_tone_available_title))
-                        //.setMessage(getString(R.string.in_app_popup_tone_available_message))
-                       // .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                         //   goToPremiumActivity()
-                        //}
-            //            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-              //              refreshChecked()
-                //       }
-                  //      .show()
-           // }
-
-
-
+             } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                              goToPremiumActivity()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                              refreshChecked()
+                            }
+                            .show()
+            }
         }
-
     }
     //EndTones
 
@@ -2781,6 +2777,6 @@ class ManageNotificationActivity : AppCompatActivity() {
     //endregion
 }
 
-private fun Any.putInt(s: String, filepath: Uri) {
+private fun Any.putInt(s: String, filePath: Uri) {
 
 }

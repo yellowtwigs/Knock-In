@@ -232,7 +232,7 @@
     <string name="notification_alert_dialog_message">Do you want to choose your high-priority contacts ?</string>
     <string name="notification_vip_message_tone">VIP Notifications Tone</string>
     <string name="notification_vip_default_message_tone">Default Tone</string>
-    <string name="notification_vip_message_choose_tone" translatable="false">Choose Your Tone</string>
+    <string name="notification_vip_message_choose_tone" translatable="false">Personal Tone</string>
     <string name="notification_vip_upload_tone" translatable="false">Upload</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
     <string name="notification_vip_funky_message_tone">Funky Tone</string>

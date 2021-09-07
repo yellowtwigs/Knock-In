@@ -355,25 +355,12 @@ class NotificationListener : NotificationListenerService() {
         val customSound = sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Notif_Tone", null)
 
         if (canRingtone) {
-          //  if (customSound != null) {
-               // if (customSound.isEmpty()) {
-                    //val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
-                  //  alartNotifTone(sound)
-               // } else {
-               //     alartCustomNotifTone(customSound)
-               // }
-            //}
-
             if (customSound == null) {
-                // if (customSound.isEmpty()) {
-                //val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
                 alartNotifTone(sound)
             } else {
-
                 alartCustomNotifTone(customSound.toString())
             }
         }
-
         val handler = Handler()
         handler.postDelayed(object : Runnable {
             override fun run() {
@@ -621,14 +608,10 @@ class NotificationListener : NotificationListenerService() {
         if (notifications.size == 1) {
             val customSound = sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Notif_Tone", null)
           if (customSound == null) {
-               // if (customSound.isEmpty()) {
-                    //val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
                     alartNotifTone(sound)
                } else {
-
                     alartCustomNotifTone(customSound.toString())
                 }
-            //}
        }
 
         if (notifications.size == 0) {
