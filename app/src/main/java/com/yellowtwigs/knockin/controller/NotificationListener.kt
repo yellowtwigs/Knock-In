@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.Icon
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.service.notification.NotificationListenerService
@@ -175,8 +176,12 @@ class NotificationListener : NotificationListenerService() {
                                         val screenListener: KeyguardManager = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
                                         if (screenListener.isKeyguardLocked) {
                                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+                                                val i = Intent(this@NotificationListener, NotificationAlarmActivity::class.java)
+                                                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                i.putExtra("notification", sbp)
                                                 this.cancelNotification(sbn.key)
                                                 cancelwhatsappnotif(sbn)
+                                                startActivity(i)
                                                 val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
                                                 val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
                                                 notification_alarm_NotificationMessagesAlarmSound?.stop()
@@ -351,10 +356,15 @@ class NotificationListener : NotificationListenerService() {
         sharedAlarmNotifCanRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
         canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", true)
 
-        if (canRingtone) {
-            alartNotifTone(sound)
-        }
+        val customSound = sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Notif_Tone", null)
 
+        if (canRingtone) {
+            if (customSound == null) {
+                alartNotifTone(sound)
+            } else {
+                alartCustomNotifTone(customSound.toString())
+            }
+        }
         val handler = Handler()
         handler.postDelayed(object : Runnable {
             override fun run() {
@@ -598,9 +608,15 @@ class NotificationListener : NotificationListenerService() {
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
         val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
+
         if (notifications.size == 1) {
-            alartNotifTone(sound)
-        }
+            val customSound = sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Notif_Tone", null)
+          if (customSound == null) {
+                    alartNotifTone(sound)
+               } else {
+                    alartCustomNotifTone(customSound.toString())
+                }
+       }
 
         if (notifications.size == 0) {
             notification_alarm_NotificationMessagesAlarmSound?.stop()
@@ -707,6 +723,21 @@ class NotificationListener : NotificationListenerService() {
         val editCanRingtone: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
         editCanRingtone.putBoolean("Can_RingTone", canRingtone)
         editCanRingtone.apply()
+    }
+
+    fun alartCustomNotifTone(customSound: String) {
+        notification_alarm_NotificationMessagesAlarmSound?.stop()
+        notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, Uri.parse(customSound))
+        notification_alarm_NotificationMessagesAlarmSound!!.start()
+
+        val editDuration: SharedPreferences.Editor = sharedAlarmNotifDurationPreferences!!.edit()
+        editDuration.putInt("Alarm_Notif_Duration", notification_alarm_NotificationMessagesAlarmSound!!.duration)
+        editDuration.apply()
+
+        val editCanRingtone: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
+        editCanRingtone.putBoolean("Can_RingTone", canRingtone)
+        editCanRingtone.apply()
+
     }
 
     companion object {
