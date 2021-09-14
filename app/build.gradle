@@ -12,9 +12,9 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.yellowtwigs.Knockin"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 30
-        versionCode 73
+        versionCode 78
         versionName "2.0.1"
 //        versionCode 46
 //        versionName "5.3"
