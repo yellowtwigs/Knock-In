@@ -29,7 +29,6 @@ import java.util.concurrent.Executors
  */
 class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var context: Context) {
     constructor(context: Context) : this(arrayListOf<ContactWithAllInformation>(), context)
-
     private var mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
     private var contactsDatabase: ContactsRoomDatabase? = null
 
@@ -288,15 +287,16 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         }
         return listContacts
     }
-
+    var defaultTone = R.raw.sms_ring
     private fun getContactFromJSONObject(json: JSONObject, id: Int): ContactWithAllInformation {
+
         val firstName: String = json.getString("first_name")
         val lastName: String = json.getString("last_name")
 
         val profilPicture: Int = R.drawable.ic_user_blue
         val contactPriority: Int = json.getInt("contact_priority")
         val profilPictureStr: String = json.getString("profile_picture_str")
-        val contact = ContactDB(id, firstName, lastName, "", profilPicture, contactPriority, profilPictureStr, 0, "", 0)
+        val contact = ContactDB(id, firstName, lastName, "", profilPicture, contactPriority, profilPictureStr, 0, "", 0,"",defaultTone)
         val contactInfo = ContactWithAllInformation()
         contactInfo.contactDB = contact
         contactInfo.contactDetailList = getContactDetailFromJSONObject(json, id)
@@ -746,7 +746,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                             //on regarde si le contact possède un middle name
                             if (fullName.second.second == "") {
                                 //on créé un objet ContactDB que l'on remplis avec les info récolté avant
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, "", randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0, "", 0)
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.third, "", randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0, "", 0,"",defaultTone)
                                 //on recupere la liste des contactList récuperer lors de la derniere synchro sous format idAndroid:id
                                 lastSync = sharedPreferences.getString("last_sync_2", "")!!
                                 //on regarde si on a pas deja enregistré le contact lors de la dernière synchro
@@ -820,7 +820,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                 }
                                 phoneContactsList.add(contacts)
                             } else if (fullName.second.second != "") {
-                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, "", randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0, "", 0)
+                                val contacts = ContactDB(null, fullName.second.first, fullName.second.second + " " + fullName.second.third, "", randomDefaultImage(0, "Create"), 1, numberPic[4].toString(), 0, "", 0,"",defaultTone)
                                 phoneContactsList.add(contacts)
                                 if (!isDuplicate(allcontacts, contacts)) {
                                     contacts.id = contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
@@ -867,7 +867,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             val contactSetSplite = contactset.elementAt(i).split(":")
             detailList.add(ContactDetailDB(null, null, contactSetSplite[1], contactSetSplite[0].drop(1), contactSetSplite[2], i - 2))
         }
-        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), "", 0, 0, "", 0, "", 0), detailList)
+        allContacts = Pair(ContactDB(contactset.elementAt(0).drop(1).toInt(), contactset.elementAt(1).drop(1), contactset.elementAt(2).drop(1), "", 0, 0, "", 0, "", 0,"",defaultTone), detailList)
         return allContacts
     }
 

@@ -411,6 +411,10 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 }
             }
         }
+        else{
+            startActivity(Intent(this@PremiumActivity, MainActivity::class.java).putExtra("fromMultiSelectActivity", true))
+
+        }
     }
 
     fun backToManageNotifAfterBuying() {

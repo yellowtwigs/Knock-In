@@ -1,74 +1,118 @@
 package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
+import android.R.attr
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.app.TimePickerDialog
-import android.content.*
-import android.content.pm.ActivityInfo
+import android.annotation.TargetApi
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Resources
-import android.graphics.Point
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.ExifInterface
 import android.media.MediaPlayer
-import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.Settings
-import android.text.TextUtils
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.util.Base64
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.NotificationSender
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
-import kotlinx.android.synthetic.main.activity_notifications_vip_ringtone_layout.*
-import java.util.*
+import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.controller.GroupEditAdapter
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knockin.model.*
+import com.yellowtwigs.knockin.model.ModelDB.*
+import kotlinx.android.synthetic.main.activity_edit_contact_vip_settings.*
+import java.io.ByteArrayOutputStream
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
 
 /**
- * La Classe qui permet d'activer ou desactiver les notifications de Knockin
- * @author Florian Striebel
+ * La Classe qui permet d'éditer un contact choisi
+ * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class ManageNotificationActivity : AppCompatActivity() {
-
+class EditContactVipSettingsActivity : AppCompatActivity() {
+    companion object {
+        const val PER = 110
+    }
     //region ========================================== Var or Val ==========================================
+    private lateinit var filePath: Uri
 
-    private var drawerLayout: DrawerLayout? = null
-    private var activityVisible: Boolean = false
-    private var switchPopupNotif: Switch? = null
-    private var switchservice: Switch? = null
-    private var isTrue = false
-    //private lateinit var filePath: Uri
+    private var gestionnaireContacts: ContactManager? = null
+    private var edit_contact_ParentLayout: ConstraintLayout? = null
+    private var edit_contact_RoundedImageView: CircularImageView? = null
+    private var edit_contact_Name: TextView? = null
 
-    //region Default Sound
+    private var edit_contact_Return: AppCompatImageView? = null
+    private var edit_contact_DeleteContact: AppCompatImageView? = null
+    private var edit_contact_AddContactToFavorite: AppCompatImageView? = null
+    private var edit_contact_RemoveContactFromFavorite: AppCompatImageView? = null
+    private var edit_contact_Validate: AppCompatImageView? = null
 
-    private var settings_ChooseNotifDefaultSoundLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifDefaultSoundImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifDefaultSoundImageClose: AppCompatImageView? = null
+    private var groupId: Long = 0
+    private var listContact: ArrayList<ContactDB?> = ArrayList()
 
-    private var settings_NotifNoSoundLayout: RelativeLayout? = null
-    private var settings_NotifNoSoundCheckbox: CheckBox? = null
+    private var edit_contact_id: Int? = null
+    private var edit_contact_first_name: String = ""
+    private var edit_contact_last_name: String = ""
+    private var edit_contact_phone_number: String = ""
+    private var edit_contact_phone_property: String = ""
+    private var edit_contact_fix_number: String = ""
+    private var edit_contact_fix_property: String = ""
+    private var edit_contact_mail_property: String = ""
+    private var edit_contact_mail: String = ""
+    private var edit_contact_mail_name: String = ""
+    private var edit_contact_rounded_image: Int = 0
+    private var edit_contact_image64: String = ""
+    private var edit_contact_priority: Int = 1
 
-    private var settings_NotifSoundKnockinLayout: RelativeLayout? = null
-    private var settings_NotifSoundKnockinCheckbox: CheckBox? = null
+    private var notification_tone: String = ""
 
-    private var settings_NotifSoundXyloLayout: RelativeLayout? = null
-    private var settings_NotifSoundXyloCheckbox: CheckBox? = null
+    private var edit_contact_GroupConstraintLayout: ConstraintLayout? = null
+
+    // Database && Thread
+    private var edit_contact_ContactsDatabase: ContactsRoomDatabase? = null
+    private lateinit var edit_contact_mDbWorkerThread: DbWorkerThread
+
+    private var edit_contact_imgString: String? = null
+
+    private var edit_contact_imgStringChanged = false
+
+    private var havePhone: Boolean = false
+    private var haveSecondPhone: Boolean = false
+    private var haveMail: Boolean = false
+
+    private var recyclerGroup: RecyclerView? = null
+
+    private var fromGroupActivity = false
+
+    private var isChanged = false
+    private var editInAndroid = false
+    private var editInGoogle = false
+
+    private var isFavorite: Boolean? = null
+    private var isFavoriteChanged: Boolean? = null
+    private var contactsUnlimitedIsBought: Boolean? = null
+
+    private var position: Int? = null
 
     //endregion
-/*
+
     //region personal tones
 
     private var settings_ChooseNotifPersonalSoundLayoutOpenClose: RelativeLayout? = null
@@ -76,21 +120,8 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var settings_ChooseNotifPersonalSoundImageClose: AppCompatImageView? = null
 
     private var settings_NotifPersonalSoundLayout: RelativeLayout? = null
-    lateinit var txtpath: TextView
 
     //endregion2
-
- */
-
-    //Schedule
-
-    private var settings_ChooseNotifScheduleLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifScheduleImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifScheduleImageClose: AppCompatImageView? = null
-
-    private var settings_Relative1: RelativeLayout? = null
-
-    //end
 
     //region Jazzy Sound
 
@@ -115,6 +146,10 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     private var settings_NotifSoundCaravanLayout: RelativeLayout? = null
     private var settings_NotifSoundCaravanCheckbox: CheckBox? = null
+
+    private var settings_NotifsoundJazzyUploadSoundLayout: RelativeLayout? = null
+    lateinit var settings_NotifsoundJazzyUploadSoundPath: TextView
+
 
     //endregion
 
@@ -142,6 +177,8 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var settings_NotifSoundFunkYallLayout: RelativeLayout? = null
     private var settings_NotifSoundFunkYallCheckbox: CheckBox? = null
 
+    private var settings_NotifsoundFunkyUploadSoundLayout: RelativeLayout? = null
+    lateinit var settings_NotifsoundFunkyUploadSoundPath: TextView
     //endregion
 
     //region Relaxation Sound
@@ -168,25 +205,41 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var settings_NotifSoundFirstStepLayout: RelativeLayout? = null
     private var settings_NotifSoundFirstStepCheckbox: CheckBox? = null
 
-    //endregion
+    private var settings_NotifsoundRelaxUploadSoundLayout: RelativeLayout? = null
+    lateinit var settings_NotifsoundRelaxUploadSoundPath: TextView
 
+    //endregion
     private var settings_NotificationMessagesAlarmSound: MediaPlayer? = null
     private var settings_ChooseNotifSoundTitle: TextView? = null
     private var settings_ChooseNotifSoundLayout: ConstraintLayout? = null
 
     private var notifFunkySoundIsBought: Boolean = false
-    private var notifJazzySoundIsBought: Boolean = false
+    private var notifJazzySoundIsBought: Boolean = true
     private var notifRelaxationSoundIsBought: Boolean = false
     private var notifCustomSoundIsBought: Boolean = false
 
     private var numberDefault: Int = 0
 
     //endregion
-
+    val CONTACT_CHOOSER_ACTIVITY_CODE: Int = 73729
+    @SuppressLint("InflateParams", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notifications_vip_ringtone_layout)
 
+        if (notifJazzySoundIsBought == false && notifFunkySoundIsBought == false && notifRelaxationSoundIsBought == false) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.in_app_popup_personalization_available_title))
+                    .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                    .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                        goToPremiumActivity()
+                    }
+                    .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                        refreshChecked()
+                    }
+                    .show()
+        } else {
+
+        }
         //region ======================================== Theme Dark ========================================
 
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
@@ -195,31 +248,22 @@ class ManageNotificationActivity : AppCompatActivity() {
         } else {
             setTheme(R.style.AppTheme)
         }
-        //endregion
-        setContentView()
-        /*
-        //get the list of  Ringtones
-        var UploadButton= findViewById(R.id.UploadButton) as Button
-        txtpath=findViewById(R.id.Txtpath)
-        UploadButton.setOnClickListener{ //Intent to select Ringtone.
-            //check runtime permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    //permission denied
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE)
-                } else {
-                    getTones()
-                }
-            } else {
-                getTones()
-            }
-            if(txtpath!=null){
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
 
+        //endregion
+        setContentView(R.layout.activity_edit_contact_vip_settings)
+
+        //get the list of  Ringtones
+        settings_NotifsoundJazzyUploadSoundPath = findViewById(R.id.settings_notif_jazzy_upload_sound_path)
+        settings_NotifsoundFunkyUploadSoundPath = findViewById(R.id.settings_notif_funky_upload_sound_path)
+        settings_NotifsoundRelaxUploadSoundPath = findViewById(R.id.settings_notif_relax_upload_sound_path)
+
+
+
+        var settings_NotifsoundJazzyUploadSoundButton= findViewById(R.id.settings_notif_jazzy_upload_sound_button) as Button
+        settings_NotifsoundJazzyUploadSoundButton.setOnClickListener {
+            checkRuntimePermission()
+
+            //settings_NotifsoundFunkyUploadSoundPath?.setText("")
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
@@ -240,17 +284,67 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
-            }
+
         }
+        var settings_NotifsoundFunkyUploadSoundButton= findViewById(R.id.settings_notif_funky_upload_sound_button) as Button
+        settings_NotifsoundFunkyUploadSoundButton.setOnClickListener {
+            checkRuntimePermission()
+            settings_NotifSoundMoaninCheckbox!!.isChecked = false
+            settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+            settings_NotifSoundCaravanCheckbox!!.isChecked = false
+            settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+            settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+            settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+            settings_NotifSoundSlapCheckbox!!.isChecked = false
+            settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+            settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+            settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+            settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+            settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+            settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+            settings_NotifSoundGravityCheckbox!!.isChecked = false
+            settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+            settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+            settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+            settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+
+        }
+        var settings_NotifsoundRelaxUploadSoundButton= findViewById(R.id.settings_notif_relax_upload_sound_button) as Button
+        settings_NotifsoundRelaxUploadSoundButton.setOnClickListener {
+            checkRuntimePermission()
+
+            settings_NotifSoundMoaninCheckbox!!.isChecked = false
+            settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+            settings_NotifSoundCaravanCheckbox!!.isChecked = false
+            settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+            settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+            settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+            settings_NotifSoundSlapCheckbox!!.isChecked = false
+            settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+            settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+            settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+            settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+            settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+            settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+            settings_NotifSoundGravityCheckbox!!.isChecked = false
+            settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+            settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+            settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+            settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+        }
+
         //end
-         */
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
         numberDefault = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
         val sharedNotifJazzySoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
-        notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Notif_Jazzy_Sound_IsBought", false)
+        notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Notif_Jazzy_Sound_IsBought", true)
 
         val sharedNotifRelaxationSoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
         notifRelaxationSoundIsBought = sharedNotifRelaxationSoundInAppPreferences.getBoolean("Notif_Relaxation_Sound_IsBought", false)
@@ -258,57 +352,56 @@ class ManageNotificationActivity : AppCompatActivity() {
         val sharedNotifFunkySoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
         notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Notif_Funky_Sound_IsBought", false)
 
-    //    val sharedNotifCustomSoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE)
-    //    notifCustomSoundIsBought = sharedNotifCustomSoundInAppPreferences.getBoolean("Notif_Custom_Sound_IsBought", false)
+        val sharedNotifCustomSoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE)
+        notifCustomSoundIsBought = sharedNotifCustomSoundInAppPreferences.getBoolean("Notif_Custom_Sound_IsBought", false)
 
+        // on init WorkerThread
+        edit_contact_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        edit_contact_mDbWorkerThread.start()
 
-        //region ======================================= FindViewById =======================================
+        //on get la base de données
+        edit_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
-        switchPopupNotif = this.findViewById(R.id.switch_stop_popup)
-        switchservice = this.findViewById(R.id.switch_stop_service)
-        val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
-        val remindHour = this.findViewById<TextView>(R.id.textView_heure)
-        val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
+        val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
+        val nb_Contacts_VIP = sharedNumberOfContactsVIPPreferences.getInt("nb_Contacts_VIP", 0)
 
-        //region Default Sound
+        val sharedAlarmNotifInAppPreferences: SharedPreferences = getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
+        contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false)
 
-        settings_ChooseNotifDefaultSoundLayoutOpenClose = findViewById(R.id.settings_choose_default_sound_layout)
-        settings_ChooseNotifDefaultSoundImageOpen = findViewById(R.id.settings_choose_notif_default_sound_image_open)
-        settings_ChooseNotifDefaultSoundImageClose = findViewById(R.id.settings_choose_notif_default_sound_image_close)
+        //region ========================================== Intent ==========================================
 
-        settings_NotifNoSoundLayout = findViewById(R.id.settings_notif_no_sound_layout)
-        settings_NotifNoSoundCheckbox = findViewById(R.id.settings_notif_no_sound_checkbox)
+        // Create the Intent, and get the data from the GridView
 
-        settings_NotifSoundKnockinLayout = findViewById(R.id.settings_notif_sound_knockin_layout)
-        settings_NotifSoundKnockinCheckbox = findViewById(R.id.settings_notif_sound_knockin_checkbox)
-
-        settings_NotifSoundXyloLayout = findViewById(R.id.settings_notif_sound_xylo_layout)
-        settings_NotifSoundXyloCheckbox = findViewById(R.id.settings_notif_sound_xylo_checkbox)
+        val intent = intent
+        edit_contact_id = intent.getIntExtra("ContactId", 1)
+        position = intent.getIntExtra("position", 0)
+        fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
+        gestionnaireContacts = ContactManager(this.applicationContext)
 
         //endregion
 
-        //region Schedule
-        settings_ChooseNotifScheduleLayoutOpenClose =findViewById(R.id.settings_choose_schedule_layout)
+        //region ======================================= FindViewById =======================================
 
-        settings_ChooseNotifScheduleImageOpen =findViewById(R.id.settings_choose_notif_schedule_image_open)
-        settings_ChooseNotifScheduleImageClose =findViewById(R.id.settings_choose_notif_schedule_image_close)
-        settings_Relative1 = findViewById(R.id.relativ1)
+        edit_contact_ParentLayout = findViewById(R.id.edit_contact_parent_layout)
+        edit_contact_Name =findViewById(R.id.edit_contact_name_id)
+        edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
+        recyclerGroup = findViewById(R.id.edit_contact_recycler)
+        edit_contact_GroupConstraintLayout = findViewById(R.id.edit_contact_group_constraint_layout)
+        edit_contact_Return = findViewById(R.id.edit_contact_return) // 1531651456
+        edit_contact_DeleteContact = findViewById(R.id.edit_contact_delete) // 1531651455574546
+        edit_contact_AddContactToFavorite = findViewById(R.id.edit_contact_favorite)
+        edit_contact_RemoveContactFromFavorite = findViewById(R.id.edit_contact_favorite_shine)
+        edit_contact_Validate = findViewById(R.id.edit_contact_edit_contact)
 
-
-
-        //end
-/*
         //region personal tones
 
         settings_ChooseNotifPersonalSoundLayoutOpenClose = findViewById(R.id.settings_choose_personally_tone)
         settings_ChooseNotifPersonalSoundImageOpen = findViewById(R.id.settings_choose_notif_personally_tone_sound_image_open)
         settings_ChooseNotifPersonalSoundImageClose = findViewById(R.id.settings_choose_notif_personally_tone_sound_image_close)
-
         settings_NotifPersonalSoundLayout = findViewById(R.id.settings_notif_upload_tone_layout)
 
+        //endregion
 
-        //endregion2
- */
         //region Jazzy Sound
 
         settings_ChooseNotifJazzySoundLayoutOpenClose = findViewById(R.id.settings_choose_jazzy_sound_layout)
@@ -332,6 +425,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         settings_NotifSoundFreddieFreeloaderLayout = findViewById(R.id.settings_notif_sound_freddie_freeloader_layout)
         settings_NotifSoundFreddieFreeloaderCheckbox = findViewById(R.id.settings_notif_sound_freddie_freeloader_checkbox)
+
+        settings_NotifsoundJazzyUploadSoundLayout = findViewById(R.id.settings_notif_jazzy_upload_sound_layout)
+
 
         //endregion
 
@@ -359,6 +455,8 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_NotifSoundColdSweatLayout = findViewById(R.id.settings_notif_sound_cold_sweat_layout)
         settings_NotifSoundColdSweatCheckbox = findViewById(R.id.settings_notif_sound_cold_sweat_checkbox)
 
+        settings_NotifsoundFunkyUploadSoundLayout = findViewById(R.id.settings_notif_funky_upload_sound_layout)
+
         //endregion
 
         //region Relaxation Sound
@@ -385,530 +483,405 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_NotifSoundFirstStepLayout = findViewById(R.id.settings_notif_sound_interstellar_theme_layout)
         settings_NotifSoundFirstStepCheckbox = findViewById(R.id.settings_notif_sound_interstellar_theme_checkbox)
 
-        //endregion
+        settings_NotifsoundRelaxUploadSoundLayout = findViewById(R.id.settings_notif_relax_upload_sound_layout)
 
+
+        //endregion
         settings_ChooseNotifSoundTitle = findViewById(R.id.settings_choose_notif_sound_title)
         settings_ChooseNotifSoundLayout = findViewById(R.id.settings_choose_notif_sound_layout)
 
-        val group_manager_MainLayout = findViewById<LinearLayoutCompat>(R.id.manage_my_notif_layout_id)
-
-        val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch!!.isChecked = true
-//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-        }
-
-        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        //region ================================ Call Popup from LeftDrawer ================================
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch!!.isChecked = true
-        }
-
         //endregion
 
-        //endregion
+        //disable keyboard
 
-        if (this.isNotificationServiceEnabled) {
-            switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
-            switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
-            switchReminder.isChecked = sharedPreferences.getBoolean("reminder", false)
+        edit_contact_ParentLayout!!.setOnTouchListener { _, _ ->
+            val view = this@EditContactVipSettingsActivity.currentFocus
+            val imm = this@EditContactVipSettingsActivity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (view != null) {
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            true
+        }
+
+        //edit_contact_AddFieldButton = findViewById(R.id.edit_contact_add_field_button)
+
+        //TODO wash the code
+        if (edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!.toInt()) == null) {
+
+            val contactList = ContactManager(this)
+            val contact = contactList.getContactById(edit_contact_id!!)!!
+            edit_contact_first_name = contact.contactDB!!.firstName
+            edit_contact_last_name = contact.contactDB!!.lastName
+            edit_contact_priority = contact.contactDB!!.contactPriority
+            val tmpPhone = contact.contactDetailList!![0]
+            edit_contact_phone_number = tmpPhone.content
+            edit_contact_phone_property = tmpPhone.tag
+            val tmpMail = contact.contactDetailList!![1]
+            edit_contact_mail = tmpMail.content
+            edit_contact_mail_property = tmpMail.tag
+//            edit_contact_messenger = contact.contactDB!!.messengerId
+            edit_contact_mail_name = contact.contactDB!!.mail_name
+            edit_contact_image64 = contact.contactDB!!.profilePicture64
+            edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64))
         } else {
-            switchPopupNotif!!.isChecked = false
-            switchservice!!.isChecked = false
-            switchReminder.isChecked = false
-        }
-        if (!switchReminder.isChecked) {
-            viewHour.isEnabled = false
-            viewHour.background = getDrawable(R.color.greyColor)
-        }
-        var hour = sharedPreferences.getInt("remindHour", 18)
-        var minute = sharedPreferences.getInt("remindMinute", 0)
 
-        remindHour.text = hourGetstring(hour, minute)
-        setReminderAlarm(hour, minute)
+            val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+            val callDb = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
+            val result = executorService.submit(callDb)
+            val contact: ContactWithAllInformation = result.get()
+            notification_tone = contact.contactDB!!.notificationTone
+            edit_contact_first_name = contact.contactDB!!.firstName
+            edit_contact_last_name = contact.contactDB!!.lastName
+            edit_contact_priority = contact.contactDB!!.contactPriority
+            edit_contact_rounded_image = gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
 
-        //region ========================================== Toolbar =========================================
+            edit_contact_mail_name = contact.contactDB!!.mail_name
+            //TODO :enlever code Dupliquer
 
-        // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+            edit_contact_phone_property = getString(R.string.edit_contact_phone_number_mobile)
+            edit_contact_fix_number = getString(R.string.edit_contact_phone_number_home)
+            edit_contact_phone_number = ""
+            edit_contact_mail = ""
+            edit_contact_mail_property = getString(R.string.edit_contact_mail_mobile)
 
-        //endregion
+            val tagPhone = contact.getPhoneNumberTag()
+            val phoneNumber = contact.getFirstPhoneNumber()
+            edit_contact_phone_number = phoneNumber
+            edit_contact_phone_property = tagPhone
+            println("phone property of number $phoneNumber is $tagPhone")
+            val tagFix = contact.getSecondPhoneTag(phoneNumber)
+            val fixNumber = contact.getSecondPhoneNumber(phoneNumber)
+            edit_contact_fix_number = fixNumber
+            edit_contact_fix_property = tagFix
+            val tagMail = contact.getMailTag()
+            val mail = contact.getFirstMail()
+            edit_contact_mail = mail
+            edit_contact_mail_property = tagMail
 
-        //region ======================================= DrawerLayout =======================================
+            println("fix number egale à $fixNumber")
+            if (phoneNumber != "") {
+                havePhone = true
+            }
+            if (fixNumber != "") {
+                haveSecondPhone = true
+            }
+            if (mail != "") { ///// havemail toujour false
+                haveMail = true
+            }
 
-        drawerLayout = findViewById(R.id.drawer_layout_manage_notif)
-
-        val navigationView = findViewById<NavigationView>(R.id.nav_view_manage_notif)
-        val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_notif_config)
-        navItem.isChecked = true
-
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            drawerLayout!!.closeDrawers()
-
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    if (settings_NotificationMessagesAlarmSound != null) {
-                        settings_NotificationMessagesAlarmSound!!.stop()
-                    }
-                    startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
+            val id = edit_contact_id
+            val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
+            edit_contact_image64 = contactDB!!.contactDB!!.profilePicture64
+            if (edit_contact_image64 == "") {
+                edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
+            } else {
+                val image64 = edit_contact_image64
+                edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
+            }
+            when (edit_contact_priority) {
+                0 -> {
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor, null))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                 }
-                R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
-                R.id.nav_manage_screen -> {
-
-                    if (settings_NotificationMessagesAlarmSound != null) {
-                        settings_NotificationMessagesAlarmSound!!.stop()
-                    }
-                    startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
+                1 -> {
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor, null))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                 }
-                R.id.nav_settings -> {
-
-                    if (settings_NotificationMessagesAlarmSound != null) {
-                        settings_NotificationMessagesAlarmSound!!.stop()
-                    }
-                    startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
-                }
-                R.id.nav_in_app -> {
-
-                    if (settings_NotificationMessagesAlarmSound != null) {
-                        settings_NotificationMessagesAlarmSound!!.stop()
-                    }
-                    startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
-                }
-                R.id.nav_statistics -> {
-                }
-                R.id.nav_help -> {
-
-                    if (settings_NotificationMessagesAlarmSound != null) {
-                        settings_NotificationMessagesAlarmSound!!.stop()
-                    }
-                    startActivity(Intent(this@ManageNotificationActivity, HelpActivity::class.java))
+                2 -> {
+                    edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor, null))
+                    edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor, null))
                 }
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_manage_notif)
-            drawer.closeDrawer(GravityCompat.START)
-            true
+        }
+
+        //region ===================================== SetViewDataField =====================================
+
+        edit_contact_Name!!.setText(edit_contact_first_name + " " + edit_contact_last_name)
+
+        //endregion
+
+        //region ======================================== Favorites =========================================
+
+        val contactList = ContactManager(this)
+        val contact = contactList.getContactById(edit_contact_id!!)!!
+/*
+        if (contact.contactDB!!.favorite == 1) {
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
+            edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
+
+            isFavorite = true
+            isFavoriteChanged = true
+
+        } else if (contact.contactDB!!.favorite == 0) {
+            edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
+
+            isFavorite = false
+            isFavoriteChanged = false
+        }
+*/
+        //endregion
+
+        //region ========================================== Tags ============================================
+
+        val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
+        val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+
+        val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
+        val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
+        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+
+
+        //endregion
+
+        //region ======================================== Priority ==========================================
+
+        val priority_list = arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
+        val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
+
+
+
+
+        //endregion
+
+        //region ========================================== Groups ==========================================
+
+
+        //edit_contact_ContactsDatabase.contactsDao()
+        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+        val callDbGroup = Callable { edit_contact_ContactsDatabase!!.GroupsDao().getGroupForContact(edit_contact_id!!) }
+        val resultGroup = executorService.submit(callDbGroup)
+        val listGroup: ArrayList<GroupDB> = ArrayList()
+        listGroup.addAll(resultGroup.get())
+
+        val callDBContact = Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
+        val resultContact = executorService.submit(callDBContact)
+        val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
+
+        if (listGroup.size > 0) {
+            edit_contact_GroupConstraintLayout!!.visibility = View.VISIBLE
         }
 
         //endregion
 
         //region ======================================== Listeners =========================================
 
-        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
+        edit_contact_Return!!.setOnClickListener {
+          //  onBackPressed()
+            val intent = Intent(this, EditContactActivity::class.java)
+            intent.putExtra("ContactId", contact.getContactId())
+            startActivity(intent)
         }
+        edit_contact_DeleteContact!!.setOnClickListener {
 
-        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(getString(R.string.edit_contact_delete_contact))
+                    .setMessage(getString(R.string.edit_contact_delete_contact_message))
+                    .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
+                        edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
+                        val mainIntent = Intent(this@EditContactVipSettingsActivity, MainActivity::class.java)
+                        mainIntent.putExtra("isDelete", true)
 
-                setTheme(R.style.AppThemeDark)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(Intent(this@ManageNotificationActivity, ManageNotificationActivity::class.java))
-            } else {
+                        if (edit_contact_priority == 2) {
+                            val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                            edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP - 1)
+                            edit.apply()
+                        }
 
-                setTheme(R.style.AppTheme)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(Intent(this@ManageNotificationActivity, ManageNotificationActivity::class.java))
-            }
-        }
-
-        switchPopupNotif!!.setOnCheckedChangeListener { _, _ ->
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            if (switchPopupNotif!!.isChecked) {
-                /*if (!isNotificationServiceEnabled) {
-                   // buildNotificationServiceAlertDialog().show()
-                }*/
-                switchservice!!.isChecked = true
-                edit.putBoolean("serviceNotif", true)
-                edit.putBoolean("popupNotif", true)
-                edit.apply()
-            } else {
-
-                edit.putBoolean("popupNotif", false)
-                edit.apply()
-            }
-        }
-
-        switchservice!!.setOnCheckedChangeListener { _, _ ->
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            if (switchservice!!.isChecked) {
-                if (!isNotificationServiceEnabled) {
-                    buildNotificationServiceAlertDialog().show()
-                } else {
-                    edit.putBoolean("serviceNotif", true)
-                    edit.apply()
-                }
-            } else {
-
-                switchPopupNotif!!.isChecked = false
-                edit.putBoolean("serviceNotif", false)
-                edit.putBoolean("popupNotif", false)
-                edit.putBoolean("mask_prio_1", false)
-                edit.apply()
-            }
-        }
-
-        switchReminder.setOnCheckedChangeListener { _, _ ->
-            val edit = sharedPreferences.edit()
-            if (switchReminder.isChecked) {
-                edit.putBoolean("reminder", true)
-                viewHour.isEnabled = true
-                if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-                    viewHour.background = getDrawable(R.color.backgroundColorDark)
-                } else {
-                    viewHour.background = getDrawable(R.color.backgroundColor)
-                }
-            } else {
-                edit.putBoolean("reminder", false)
-                viewHour.isEnabled = false
-                viewHour.background = getDrawable(R.color.greyColor)
-            }
-            edit.apply()
-        }
-
-        viewHour.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener(
-                    function = { _, h, m ->
-                        val editor = sharedPreferences.edit()
-                        editor.putInt("remindHour", h)
-                        editor.putInt("remindMinute", m)
-                        editor.apply()
-                        remindHour.text = hourGetstring(h, m)
-                        hour = h
-                        minute = m
-                        setReminderAlarm(hour, minute)
+                        startActivity(mainIntent)
+                        finish()
                     }
-            ), hour, minute, true)
-            timePickerDialog.show()
+                    .setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
+                    }
+                    .show()
+        }
+/*
+        edit_contact_AddContactToFavorite!!.setOnClickListener {
+            edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
+
+            isFavorite = true
         }
 
-        //endregion
+        edit_contact_RemoveContactFromFavorite!!.setOnClickListener {
+            edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
+            edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
+
+            isFavorite = false
+        }
+*/
+        edit_contact_Validate!!.setOnClickListener {
+
+        }
+
 
         //region ======================================== Ring Tones ========================================
 
-        //region OpenClose
+        settings_NotifPersonalSoundLayout!!.visibility = View.GONE
+        settings_ChooseNotifPersonalSoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifPersonalSoundImageClose!!.visibility = View.VISIBLE
 
-        settings_NotifNoSoundLayout!!.visibility = View.VISIBLE
-        settings_NotifSoundKnockinLayout!!.visibility = View.VISIBLE
-
-        /*settings_ChooseNotifDefaultSoundLayoutOpenClose!!.setOnClickListener {
-            if (settings_NotifSoundKnockinLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundXyloLayout!!.visibility == View.VISIBLE) {
-                settings_NotifSoundKnockinLayout!!.visibility = View.GONE
-                settings_NotifSoundXyloLayout!!.visibility = View.GONE
-                settings_NotifNoSoundLayout!!.visibility = View.GONE
-
-                settings_ChooseNotifDefaultSoundImageOpen!!.visibility = View.GONE
-                settings_ChooseNotifDefaultSoundImageClose!!.visibility = View.VISIBLE
-            } else {
-                settings_NotifNoSoundLayout!!.visibility = View.VISIBLE
-                settings_NotifSoundKnockinLayout!!.visibility = View.VISIBLE
-                settings_NotifSoundXyloLayout!!.visibility = View.VISIBLE
-
-                settings_ChooseNotifDefaultSoundImageOpen!!.visibility = View.VISIBLE
-                settings_ChooseNotifDefaultSoundImageClose!!.visibility = View.GONE
-            }
-        }
-        settings_Relative1!!.visibility = View.GONE
-        settings_ChooseNotifScheduleImageOpen!!.visibility = View.GONE
-        settings_ChooseNotifScheduleLayoutOpenClose!!.setOnClickListener {
-            if(settings_Relative1!!.visibility == View.VISIBLE){
-                settings_Relative1!!.visibility = View.GONE
-
-                settings_ChooseNotifScheduleImageOpen!!.visibility = View.GONE
-                settings_ChooseNotifScheduleImageClose!!.visibility = View.VISIBLE
-            }
-            else{
-                settings_Relative1!!.visibility = View.VISIBLE
-                settings_ChooseNotifScheduleImageOpen!!.visibility = View.VISIBLE
-                settings_ChooseNotifScheduleImageClose!!.visibility = View.GONE
-            }
-        }
-
-
-         */
-/*
         settings_ChooseNotifPersonalSoundLayoutOpenClose!!.setOnClickListener {
-            if (settings_NotifPersonalSoundLayout!!.visibility  == View.VISIBLE) {
+            if (settings_NotifPersonalSoundLayout!!.visibility  == View.GONE) {
+
+                settings_NotifPersonalSoundLayout!!.visibility = View.VISIBLE
+                settings_ChooseNotifPersonalSoundImageOpen!!.visibility = View.VISIBLE
+                settings_ChooseNotifPersonalSoundImageClose!!.visibility = View.GONE
+            } else {
                 settings_NotifPersonalSoundLayout!!.visibility = View.GONE
 
                 settings_ChooseNotifPersonalSoundImageOpen!!.visibility = View.GONE
                 settings_ChooseNotifPersonalSoundImageClose!!.visibility = View.VISIBLE
-            } else {
-                settings_NotifPersonalSoundLayout!!.visibility = View.VISIBLE
-
-                settings_ChooseNotifPersonalSoundImageOpen!!.visibility = View.VISIBLE
-                settings_ChooseNotifPersonalSoundImageClose!!.visibility = View.GONE
             }
         }
 
- */
+        settings_NotifSoundMoaninLayout!!.visibility = View.GONE
+        settings_NotifSoundBlueBossaLayout!!.visibility = View.GONE
+        settings_NotifSoundCaravanLayout!!.visibility = View.GONE
+        settings_NotifSoundDolphinDanceLayout!!.visibility = View.GONE
+        settings_NotifSoundAutumnLeavesLayout!!.visibility = View.GONE
+        settings_NotifSoundFreddieFreeloaderLayout!!.visibility = View.GONE
+        settings_NotifsoundJazzyUploadSoundLayout!!.visibility = View.GONE
+        settings_ChooseNotifJazzySoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifJazzySoundImageClose!!.visibility = View.VISIBLE
+
 
         settings_ChooseNotifJazzySoundLayoutOpenClose!!.setOnClickListener {
-            if (settings_NotifSoundMoaninLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundBlueBossaLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundCaravanLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundDolphinDanceLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundAutumnLeavesLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundFreddieFreeloaderLayout!!.visibility == View.VISIBLE) {
+            if ( settings_NotifSoundMoaninLayout!!.visibility == View.GONE &&
+                     settings_NotifSoundBlueBossaLayout!!.visibility == View.GONE &&
+                     settings_NotifSoundCaravanLayout!!.visibility == View.GONE &&
+                     settings_NotifSoundDolphinDanceLayout!!.visibility == View.GONE &&
+                     settings_NotifSoundAutumnLeavesLayout!!.visibility == View.GONE &&
+                     settings_NotifSoundFreddieFreeloaderLayout!!.visibility == View.GONE &&
+                     settings_NotifsoundJazzyUploadSoundLayout!!.visibility == View.GONE) {
 
-                settings_NotifSoundMoaninLayout!!.visibility = View.GONE
-                settings_NotifSoundBlueBossaLayout!!.visibility = View.GONE
-                settings_NotifSoundCaravanLayout!!.visibility = View.GONE
-                settings_NotifSoundDolphinDanceLayout!!.visibility = View.GONE
-                settings_NotifSoundAutumnLeavesLayout!!.visibility = View.GONE
-                settings_NotifSoundFreddieFreeloaderLayout!!.visibility = View.GONE
-
-                settings_ChooseNotifJazzySoundImageOpen!!.visibility = View.GONE
-                settings_ChooseNotifJazzySoundImageClose!!.visibility = View.VISIBLE
-            } else {
                 settings_NotifSoundMoaninLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundBlueBossaLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundCaravanLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundDolphinDanceLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundAutumnLeavesLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundFreddieFreeloaderLayout!!.visibility = View.VISIBLE
+                settings_NotifsoundJazzyUploadSoundLayout!!.visibility = View.VISIBLE
+
 
                 settings_ChooseNotifJazzySoundImageOpen!!.visibility = View.VISIBLE
                 settings_ChooseNotifJazzySoundImageClose!!.visibility = View.GONE
+            } else {
+                settings_NotifSoundMoaninLayout!!.visibility = View.GONE
+                settings_NotifSoundBlueBossaLayout!!.visibility = View.GONE
+                settings_NotifSoundCaravanLayout!!.visibility = View.GONE
+                settings_NotifSoundDolphinDanceLayout!!.visibility = View.GONE
+                settings_NotifSoundAutumnLeavesLayout!!.visibility = View.GONE
+                settings_NotifSoundFreddieFreeloaderLayout!!.visibility = View.GONE
+                settings_NotifsoundJazzyUploadSoundLayout!!.visibility = View.GONE
+
+
+                settings_ChooseNotifJazzySoundImageOpen!!.visibility = View.GONE
+                settings_ChooseNotifJazzySoundImageClose!!.visibility = View.VISIBLE
             }
         }
 
+        settings_NotifSoundSlapLayout!!.visibility = View.GONE
+        settings_NotifSoundOffTheCurveLayout!!.visibility = View.GONE
+        settings_NotifSoundFunkYallLayout!!.visibility = View.GONE
+        settings_NotifSoundKeyboardFunkyToneLayout!!.visibility = View.GONE
+        settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility = View.GONE
+        settings_NotifSoundColdSweatLayout!!.visibility = View.GONE
+        settings_NotifsoundFunkyUploadSoundLayout!!.visibility = View.GONE
+
+
+        settings_ChooseNotifFunkySoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifFunkySoundImageClose!!.visibility = View.VISIBLE
+
         settings_ChooseNotifFunkySoundLayoutOpenClose!!.setOnClickListener {
-            if (settings_NotifSoundSlapLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundOffTheCurveLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundFunkYallLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundKeyboardFunkyToneLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundColdSweatLayout!!.visibility == View.VISIBLE) {
+            if (settings_NotifSoundSlapLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundOffTheCurveLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundFunkYallLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundKeyboardFunkyToneLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundColdSweatLayout!!.visibility == View.GONE &&
+                    settings_NotifsoundFunkyUploadSoundLayout!!.visibility == View.GONE
+            )  {
 
-                settings_NotifSoundSlapLayout!!.visibility = View.GONE
-                settings_NotifSoundOffTheCurveLayout!!.visibility = View.GONE
-                settings_NotifSoundFunkYallLayout!!.visibility = View.GONE
-                settings_NotifSoundKeyboardFunkyToneLayout!!.visibility = View.GONE
-                settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility = View.GONE
-                settings_NotifSoundColdSweatLayout!!.visibility = View.GONE
-
-                settings_ChooseNotifFunkySoundImageOpen!!.visibility = View.GONE
-                settings_ChooseNotifFunkySoundImageClose!!.visibility = View.VISIBLE
-            } else {
                 settings_NotifSoundSlapLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundOffTheCurveLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundFunkYallLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundKeyboardFunkyToneLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundColdSweatLayout!!.visibility = View.VISIBLE
+                settings_NotifsoundFunkyUploadSoundLayout!!.visibility = View.VISIBLE
+
 
                 settings_ChooseNotifFunkySoundImageOpen!!.visibility = View.VISIBLE
                 settings_ChooseNotifFunkySoundImageClose!!.visibility = View.GONE
+            } else {
+                settings_NotifSoundSlapLayout!!.visibility = View.GONE
+                settings_NotifSoundOffTheCurveLayout!!.visibility = View.GONE
+                settings_NotifSoundFunkYallLayout!!.visibility = View.GONE
+                settings_NotifSoundKeyboardFunkyToneLayout!!.visibility = View.GONE
+                settings_NotifSoundUCantHoldNoGrooveLayout!!.visibility = View.GONE
+                settings_NotifSoundColdSweatLayout!!.visibility = View.GONE
+                settings_NotifsoundFunkyUploadSoundLayout!!.visibility = View.GONE
+
+
+                settings_ChooseNotifFunkySoundImageOpen!!.visibility = View.GONE
+                settings_ChooseNotifFunkySoundImageClose!!.visibility = View.VISIBLE
             }
         }
 
+        settings_NotifSoundAcousticGuitarLayout!!.visibility = View.GONE
+        settings_NotifSoundGravityLayout!!.visibility = View.GONE
+        settings_NotifSoundSlowDancingLayout!!.visibility = View.GONE
+        settings_NotifSoundScorpionThemeLayout!!.visibility = View.GONE
+        settings_NotifSoundFirstStepLayout!!.visibility = View.GONE
+        settings_NotifSoundRelaxToneLayout!!.visibility = View.GONE
+        settings_NotifsoundRelaxUploadSoundLayout!!.visibility = View.GONE
+
+        settings_ChooseNotifRelaxationSoundImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.VISIBLE
+
         settings_ChooseNotifRelaxationSoundLayoutOpenClose!!.setOnClickListener {
-            if (settings_NotifSoundAcousticGuitarLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundGravityLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundSlowDancingLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundScorpionThemeLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundFirstStepLayout!!.visibility == View.VISIBLE &&
-                    settings_NotifSoundRelaxToneLayout!!.visibility == View.VISIBLE) {
+            if (settings_NotifSoundAcousticGuitarLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundGravityLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundSlowDancingLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundScorpionThemeLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundFirstStepLayout!!.visibility == View.GONE &&
+                    settings_NotifSoundRelaxToneLayout!!.visibility == View.GONE &&
+                    settings_NotifsoundRelaxUploadSoundLayout!!.visibility == View.GONE
+            ){
 
-                settings_NotifSoundAcousticGuitarLayout!!.visibility = View.GONE
-                settings_NotifSoundGravityLayout!!.visibility = View.GONE
-                settings_NotifSoundSlowDancingLayout!!.visibility = View.GONE
-                settings_NotifSoundScorpionThemeLayout!!.visibility = View.GONE
-                settings_NotifSoundFirstStepLayout!!.visibility = View.GONE
-                settings_NotifSoundRelaxToneLayout!!.visibility = View.GONE
-
-                settings_ChooseNotifRelaxationSoundImageOpen!!.visibility = View.GONE
-                settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.VISIBLE
-            } else {
                 settings_NotifSoundAcousticGuitarLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundGravityLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundSlowDancingLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundScorpionThemeLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundFirstStepLayout!!.visibility = View.VISIBLE
                 settings_NotifSoundRelaxToneLayout!!.visibility = View.VISIBLE
+                settings_NotifsoundRelaxUploadSoundLayout!!.visibility = View.VISIBLE
 
                 settings_ChooseNotifRelaxationSoundImageOpen!!.visibility = View.VISIBLE
                 settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.GONE
+            } else {
+                settings_NotifSoundAcousticGuitarLayout!!.visibility = View.GONE
+                settings_NotifSoundGravityLayout!!.visibility = View.GONE
+                settings_NotifSoundSlowDancingLayout!!.visibility = View.GONE
+                settings_NotifSoundScorpionThemeLayout!!.visibility = View.GONE
+                settings_NotifSoundFirstStepLayout!!.visibility = View.GONE
+                settings_NotifSoundRelaxToneLayout!!.visibility = View.GONE
+                settings_NotifsoundRelaxUploadSoundLayout!!.visibility = View.GONE
+
+                settings_ChooseNotifRelaxationSoundImageOpen!!.visibility = View.GONE
+                settings_ChooseNotifRelaxationSoundImageClose!!.visibility = View.VISIBLE
             }
         }
+
 
         //endregion
 
         refreshChecked()
         ringToneLayoutClosed()
-
-        //region Default
-
-
-
-        settings_NotifNoSoundCheckbox!!.setOnClickListener {
-            if (settings_NotificationMessagesAlarmSound != null) {
-                settings_NotificationMessagesAlarmSound!!.stop()
-            }
-
-            if (settings_NotifNoSoundCheckbox!!.isChecked) {
-               // txtpath.setText("")
-//                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
-
-                settings_NotifSoundMoaninCheckbox!!.isChecked = false
-                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
-                settings_NotifSoundCaravanCheckbox!!.isChecked = false
-                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
-                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
-                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
-
-                settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
-                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
-                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
-                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
-
-                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
-                settings_NotifSoundGravityCheckbox!!.isChecked = false
-                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
-                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
-                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
-                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
-
-                val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
-                edit.putString("Alarm_Custom_Notif_Tone", null)
-                edit.apply()
-                edit.putInt("Alarm_Notif_Tone", 1)
-                edit.apply()
-
-
-            }
-        }
-
-
-        settings_NotifSoundKnockinCheckbox!!.setOnClickListener {
-            if (settings_NotificationMessagesAlarmSound != null) {
-                settings_NotificationMessagesAlarmSound!!.stop()
-            }
-
-            if (settings_NotifSoundKnockinCheckbox!!.isChecked) {
-                settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.sms_ring)
-                settings_NotificationMessagesAlarmSound!!.start()
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-              //  txtpath.setText("")
-//                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
-
-                settings_NotifSoundMoaninCheckbox!!.isChecked = false
-                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
-                settings_NotifSoundCaravanCheckbox!!.isChecked = false
-                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
-                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
-                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
-
-                settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
-                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
-                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
-                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
-
-                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
-                settings_NotifSoundGravityCheckbox!!.isChecked = false
-                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
-                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
-                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
-                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
-
-
-                val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
-
-                edit.putString("Alarm_Custom_Notif_Tone", null)
-                edit.apply()
-                edit.putInt("Alarm_Notif_Tone", R.raw.sms_ring)
-                edit.apply()
-            }
-        }
-
-        //test
-
-
-        //test
-
-
-        settings_NotifSoundXyloCheckbox!!.setOnClickListener {
-            if (settings_NotificationMessagesAlarmSound != null) {
-                settings_NotificationMessagesAlarmSound!!.stop()
-            }
-
-            if (settings_NotifSoundXyloCheckbox!!.isChecked) {
-                settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.xylophone_tone)
-                settings_NotificationMessagesAlarmSound!!.start()
-                //txtpath.setText("")
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-//                settings_NotifSoundXyloCheckbox!!.isChecked = false
-
-                settings_NotifSoundMoaninCheckbox!!.isChecked = false
-                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
-                settings_NotifSoundCaravanCheckbox!!.isChecked = false
-                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
-                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
-                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
-
-                settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
-                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
-                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
-                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
-
-                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
-                settings_NotifSoundGravityCheckbox!!.isChecked = false
-                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
-                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
-                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
-                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
-
-                val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
-
-                edit.putString("Alarm_Custom_Notif_Tone", null)
-                edit.apply()
-                edit.putInt("Alarm_Notif_Tone", R.raw.xylophone_tone)
-                edit.apply()
-            }
-        }
-
-        //endregion
-
         //region Jazzy
 
         settings_NotifSoundMoaninCheckbox!!.setOnClickListener {
@@ -920,17 +893,15 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.moanin_jazz)
                 settings_NotificationMessagesAlarmSound!!.start()
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
 
-//                settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
@@ -938,6 +909,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -973,17 +945,15 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundBlueBossaCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
-
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
 //                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
                 settings_NotifSoundCaravanCheckbox!!.isChecked = false
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
@@ -991,6 +961,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1030,9 +1001,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundCaravanCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1040,7 +1011,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
@@ -1048,6 +1021,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1087,9 +1061,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundDolphinDanceCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1097,7 +1071,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 //                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
@@ -1105,6 +1081,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1144,9 +1121,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundAutumnLeavesCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1154,6 +1131,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
 //                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1162,6 +1142,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1201,9 +1182,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1211,6 +1192,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
 //                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1219,6 +1203,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1264,9 +1249,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.bass_slap)
                 settings_NotificationMessagesAlarmSound!!.start()
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1274,6 +1259,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
 //                settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1282,6 +1270,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1317,9 +1306,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundOffTheCurveCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1327,6 +1316,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
 //                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1335,6 +1327,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1374,9 +1367,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundFunkYallCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1384,6 +1377,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1392,6 +1388,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1431,9 +1428,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1441,6 +1438,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1449,6 +1449,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1488,9 +1489,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1498,6 +1499,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1506,6 +1510,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 //                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1545,9 +1550,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundColdSweatCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1555,6 +1560,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1562,6 +1570,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1605,9 +1614,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundAcousticGuitarCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1615,6 +1624,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1623,6 +1635,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
 //                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1661,9 +1674,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundGravityCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1671,6 +1684,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1679,6 +1695,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
 //                settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1718,9 +1735,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundSlowDancingCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1728,6 +1745,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1736,6 +1756,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
 //                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1775,9 +1796,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundScorpionThemeCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1785,6 +1806,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1793,6 +1817,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1832,9 +1857,9 @@ class ManageNotificationActivity : AppCompatActivity() {
 
             if (settings_NotifSoundFirstStepCheckbox!!.isChecked) {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1842,6 +1867,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -1850,6 +1878,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1892,9 +1921,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.relax_sms)
                 settings_NotificationMessagesAlarmSound!!.start()
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -1902,7 +1931,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
                 settings_NotifSoundFunkYallCheckbox!!.isChecked = false
@@ -1910,6 +1941,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
 
+                settings_NotifsoundRelaxUploadSoundPath?.setText("")
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
                 settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
@@ -1941,11 +1973,14 @@ class ManageNotificationActivity : AppCompatActivity() {
                 }
             }
         }
+        //endregion
+        //endregion
 
-        //endregion
-        //endregion
     }
-/*
+
+
+
+    //region ========================================== Functions ===========================================
     //check if you have permission or not
     override fun onRequestPermissionsResult(
             requestCode: Int,
@@ -1953,7 +1988,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             grantResults: IntArray
     ) {
         when (requestCode) {
-            PERMISSION_CODE -> {
+            ManageNotificationActivity.PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //permission from popup granted
                     getTones()
@@ -1965,222 +2000,106 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
     }
     //End Permission
-
- */
-companion object {
-    const val PERMISSION_CODE = 111
-}
-
+    //check runtime permission
+    private fun checkRuntimePermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                //permission denied
+                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                //show popup to request runtime permission
+                requestPermissions(permissions, ManageNotificationActivity.PERMISSION_CODE)
+            } else {
+                getTones()
+            }
+        } else {
+            getTones()
+        }
+    }
+    //End
     //get personal Tones
-  /*  private fun getTones(){
-           val currentTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(this@ManageNotificationActivity,
-                   RingtoneManager.TYPE_NOTIFICATION)
-           val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
-               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Notification Tone")
-               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currentTone)
-               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
-               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
-               startActivityForResult(intent, 10)
-}
+    private fun getTones(){
+        /*
+        val currentTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(this@EditContactVipSettingsActivity,
+                RingtoneManager.TYPE_NOTIFICATION)
+        val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Notification Tone")
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currentTone)
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+        startActivityForResult(intent, 10)
 
-   */
-/*
+         */
+        val intent: Intent
+        intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "audio/*"
+        startActivityForResult(Intent.createChooser(intent, "Title"), 89)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode === 89 && resultCode === RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                val audioFileUri: Uri = data.getData()!!
+                // use uri to get path
+                val path = audioFileUri.path
+                settings_NotifsoundJazzyUploadSoundPath.setText("From :" + path)
+                val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                edit.putString("Alarm_Custom_Notif_Tone", audioFileUri.toString())
+                edit.apply()
+            }
+        }
+    }
+    /*
+
     @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 10 && resultCode == RESULT_OK){
             filePath = data!!.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)!!
-            txtpath.setText("From :" + filePath!!.path)
 
-            if (notifCustomSoundIsBought) {
+            settings_NotifsoundFunkyUploadSoundPath.setText("From :" + filePath!!.path)
+            settings_NotifsoundJazzyUploadSoundPath.setText("From :" + filePath!!.path)
+            settings_NotifsoundRelaxUploadSoundPath.setText("From :" + filePath!!.path)
+
+            if (notifJazzySoundIsBought) {
                 val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
                 edit.putString("Alarm_Custom_Notif_Tone", filePath.toString())
                 edit.apply()
-             } else {
-                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
-                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
-                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                              goToPremiumActivity()
-                            }
-                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                              refreshChecked()
-                            }
-                            .show()
             }
-        }
-    }
-    //EndTones
 
- */
-
-
-    //region ========================================== Functions =========================================
-
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_manage_notification)
-            height in 1800..2499 -> setContentView(R.layout.activity_manage_notification)
-            height in 1100..1799 -> setContentView(R.layout.activity_manage_notification_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_manage_notification_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.toolbar_menu_help, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                drawerLayout!!.openDrawer(GravityCompat.START)
-                return true
-            }
-            R.id.item_help -> {
-                if (Resources.getSystem().configuration.locale.language == "fr") {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-gestion-des-notifications"))
-                    startActivity(browserIntent)
-                } else {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-notification-management"))
-                    startActivity(browserIntent)
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    @SuppressLint("InflateParams")
-    private fun buildNotificationServiceAlertDialog(): androidx.appcompat.app.AlertDialog {
-        val inflater: LayoutInflater = this.layoutInflater
-        val alertView: View = inflater.inflate(R.layout.alert_dialog_catch_notification, null)
-        val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setView(alertView)
-                .show()
-
-        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_allow_it)
-        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick(alertDialog) }
-
-        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_dismiss)
-        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick(alertDialog) }
-
-        return alertDialog
-    }
-
-    private fun buildMultiSelectAlertDialog(): androidx.appcompat.app.AlertDialog {
-        val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setBackground(getDrawable(R.color.backgroundColor))
-                .setTitle(getString(R.string.notification_alert_dialog_title))
-                .setMessage(getString(R.string.notification_alert_dialog_message))
-                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                    startActivity(Intent(this@ManageNotificationActivity, MultiSelectActivity::class.java))
-                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putBoolean("view", true)
-                    edit.apply()
-                    closeContextMenu()
-                }
-                .setNegativeButton(R.string.alert_dialog_later)
-                { _, _ ->
-                    closeContextMenu()
-
-                }
-                .show()
-
-
-        return alertDialog
-    }
-
-    private fun positiveAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
-        startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("com.yellowtwigs.Knockin.notificationExemple")
-        alertDialog.cancel()
-        val thread = Thread {
-            activityVisible = false
-            while (!isNotificationServiceEnabled && !activityVisible) {
-            }
-            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-            val edit: SharedPreferences.Editor = sharedPreferences.edit()
-            if (isNotificationServiceEnabled) {
-                edit.putBoolean("serviceNotif", true)
+             else if (notifFunkySoundIsBought) {
+                val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                edit.putString("Alarm_Custom_Notif_Tone", filePath.toString())
                 edit.apply()
-
-                isTrue = true
-            } else {
-                val runnable = Runnable {
-                    switchPopupNotif!!.isChecked = false
-                    switchservice!!.isChecked = false
-                }
-                runOnUiThread(runnable)
-            }
-        }
-        thread.start()
-    }
-
-    private fun negativeAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
-        switchPopupNotif!!.isChecked = false
-        switchservice!!.isChecked = false
-        alertDialog.cancel()
-    }
-
-    private val isNotificationServiceEnabled: Boolean
-        get() {
-            val pkgName = packageName
-            val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-            if (!TextUtils.isEmpty(str)) {
-                val names = str.split(":")
-                for (i in names.indices) {
-                    val cn = ComponentName.unflattenFromString(names[i])
-                    if (cn != null) {
-                        if (TextUtils.equals(pkgName, cn.packageName)) {
-                            return true
+            }else if (notifRelaxationSoundIsBought) {
+                val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                edit.putString("Alarm_Custom_Notif_Tone", filePath.toString())
+                edit.apply()
+            }else{
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                        .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                        .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                            goToPremiumActivity()
                         }
-                    }
-                }
+                        .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                            settings_NotifsoundJazzyUploadSoundPath.setText("")
+                            settings_NotifsoundFunkyUploadSoundPath.setText("")
+                            settings_NotifsoundRelaxUploadSoundPath.setText("")
+                            refreshChecked()
+                        }
+                        .show()
             }
-            return false
-        }
 
-    private fun hourGetstring(hour: Int, minute: Int): String {
-        var textRemind = ""
-        if (hour < 10) {
-            textRemind += "0" + hour
-        } else {
-            textRemind += hour
         }
-        textRemind += ":"
-        if (minute < 10) {
-            textRemind += "0" + minute
-        } else {
-            textRemind += minute
-        }
-        println(textRemind)
-        return textRemind
     }
-
-    private fun setReminderAlarm(hour: Int, minute: Int) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE, minute)
-        calendar.set(Calendar.SECOND, 0)
-        val intent = Intent(applicationContext, NotificationSender::class.java)
-        intent.action = "NOTIFICATION_TIME"
-        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
-
-        //cancel previous app
-    }
+    */
+    //EndTones
 
     fun refreshChecked() {
 
@@ -2190,11 +2109,9 @@ companion object {
 
         when (numberDefault) {
             1 -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = true
-
-                //txtpath.setText("")
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2220,10 +2137,10 @@ companion object {
 
             R.raw.sms_ring -> {
 
-                //txtpath.setText("")
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = true
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2247,10 +2164,10 @@ companion object {
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.xylophone_tone -> {
-                //txtpath.setText("")
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = true
+
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2274,9 +2191,9 @@ companion object {
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.moanin_jazz -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = true
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2284,6 +2201,8 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
+
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2291,6 +2210,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2298,11 +2218,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
+
             }
             R.raw.blue_bossa -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = true
@@ -2310,6 +2232,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2317,6 +2240,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2324,11 +2248,12 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.caravan -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2336,6 +2261,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2343,6 +2269,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2350,11 +2277,12 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.dolphin_dance -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2362,6 +2290,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = true
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2369,6 +2298,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2376,11 +2306,12 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.autumn_leaves -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2388,6 +2319,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = true
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2395,6 +2327,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2402,11 +2335,12 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.freddie_freeloader -> {
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2414,6 +2348,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = true
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2421,6 +2356,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2428,12 +2364,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.bass_slap -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2441,6 +2378,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = true
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2448,6 +2386,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2455,12 +2394,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.funk_yall -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2468,6 +2408,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2475,6 +2416,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2482,12 +2424,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.off_the_curve_groove -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2495,6 +2438,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = true
@@ -2502,6 +2446,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2509,12 +2454,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.keyboard_funky_tone -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2522,6 +2468,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2529,6 +2476,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = true
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2536,12 +2484,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.u_cant_hold_no_groove -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2549,6 +2498,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2556,6 +2506,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = true
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2563,12 +2514,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.cold_sweat -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2576,6 +2528,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2583,6 +2536,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = true
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2590,12 +2544,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.beautiful_chords_progression -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2603,6 +2558,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2610,6 +2566,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = true
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2617,12 +2574,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.gravity -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2630,6 +2588,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2637,6 +2596,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = true
@@ -2644,12 +2604,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.fade_to_black -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2657,6 +2618,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2664,6 +2626,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2671,12 +2634,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = true
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.slow_dancing -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2684,6 +2648,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2691,6 +2656,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2698,12 +2664,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.relax_sms -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2711,6 +2678,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = true
@@ -2718,6 +2686,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2725,12 +2694,13 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = true
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
             R.raw.interstellar_main_theme -> {
 
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
+                //settings_NotifNoSoundCheckbox!!.isChecked = false
+                //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
                 settings_NotifSoundMoaninCheckbox!!.isChecked = false
                 settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
@@ -2738,6 +2708,7 @@ companion object {
                 settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
                 settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
                 settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+                settings_NotifsoundJazzyUploadSoundPath?.setText("")
 
                 settings_NotifSoundSlapCheckbox!!.isChecked = false
                 settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
@@ -2745,6 +2716,7 @@ companion object {
                 settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
                 settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
                 settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+                settings_NotifsoundFunkyUploadSoundPath?.setText("")
 
                 settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
                 settings_NotifSoundGravityCheckbox!!.isChecked = false
@@ -2752,6 +2724,7 @@ companion object {
                 settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = true
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+                settings_NotifsoundRelaxUploadSoundPath.setText("")
             }
         }
     }
@@ -2759,9 +2732,9 @@ companion object {
     fun ringToneLayoutClosed() {
         //region OpenClose
 
-        //settings_NotifSoundKnockinLayout!!.visibility = View.GONE
-       // settings_NotifSoundXyloLayout!!.visibility = View.GONE
-      //  settings_NotifNoSoundLayout!!.visibility = View.GONE
+        //settings_NotifNoSoundCheckbox!!.isChecked = false
+        //settings_NotifSoundKnockinCheckbox!!.isChecked = false
+        //settings_NotifSoundXyloCheckbox!!.isChecked = false
 
         //settings_ChooseNotifDefaultSoundImageOpen!!.visibility = View.GONE
         //settings_ChooseNotifDefaultSoundImageClose!!.visibility = View.VISIBLE
@@ -2798,34 +2771,225 @@ companion object {
 
         //endregion
     }
-
     fun goToPremiumActivity(){
-        startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java).putExtra("fromManageNotification", true))
+        startActivity(Intent(this@EditContactVipSettingsActivity, PremiumActivity::class.java).putExtra("fromManageNotification", true))
         finish()
     }
 
-
-
+    override fun onRestart() {
+        super.onRestart()
+        if (editInAndroid) {
+            if (fromGroupActivity) {
+                startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                finish()
+            } else {
+                startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                finish()
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
-        activityVisible = true
+        if (editInGoogle) {
+            if (fromGroupActivity) {
+                startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                finish()
+            } else {
+                startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                finish()
+            }
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        activityVisible = false
+    override fun onBackPressed() {
+        if (isChanged || isFavoriteChanged != isFavorite) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                    .setTitle(R.string.edit_contact_alert_dialog_cancel_title)
+                    .setMessage(R.string.edit_contact_alert_dialog_cancel_message)
+                    .setBackground(getDrawable(R.color.backgroundColor))
+                    .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                        if (fromGroupActivity) {
+                            startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java))
+                        } else {
+                            startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("position", position))
+                        }
+                        finish()
+                    }
+                    .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
+                    }
+                    .show()
+        } else {
+            if (fromGroupActivity) {
+                startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java))
+            } else {
+                startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("position", position))
+            }
+            finish()
+        }
+        hideKeyboard()
     }
 
-    override fun onStart() {
-        super.onStart()
-        activityVisible = true
+    private fun hideKeyboard() {
+        // Check if no view has focus:
+        val view = this.currentFocus
+
+        view?.let { v ->
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
     }
+
+    private fun getPosItemSpinner(item: String, spinner: Spinner): Int {
+        val tailleSpinner: Int = spinner.adapter.count
+        //println("taille spinner" + tailleSpinner)
+        for (x in 0 until tailleSpinner) {
+            if (spinner.getItemAtPosition(x).toString() == NumberAndMailDB.convertStringToSpinnerString(item, this)) {
+                return x
+            } else {
+                println(spinner.getItemAtPosition(x).toString() + "est diférent de " + NumberAndMailDB.convertStringToSpinnerString(item, this))
+            }
+        }
+        return 0
+    }
+
+    //region ========================================== Favorites ===========================================
+
+   /* private fun addToFavorite() {
+        val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
+
+        contact!!.setIsFavorite(edit_contact_ContactsDatabase)
+
+        var counter = 0
+        var alreadyExist = false
+
+        while (counter < edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                alreadyExist = true
+                break
+            }
+            counter++
+        }
+
+        listContact.add(contact.contactDB)
+
+        if (alreadyExist) {
+            addContactToGroup(listContact, groupId)
+        } else {
+            createGroup(listContact, "Favorites")
+        }
+    }
+*/
+
+    /* private fun removeFromFavorite() {
+        val contact = edit_contact_ContactsDatabase?.contactsDao()?.getContact(edit_contact_id!!)
+
+        contact!!.setIsNotFavorite(edit_contact_ContactsDatabase)
+
+        var counter = 0
+
+        while (counter < edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                groupId = edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!
+                break
+            }
+            counter++
+        }
+
+        listContact.remove(contact.contactDB)
+
+        removeContactFromGroup(edit_contact_id!!, groupId)
+
+        counter = 0
+
+        while (counter < edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+            if (edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
+                edit_contact_ContactsDatabase?.GroupsDao()!!.deleteGroupById(edit_contact_ContactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
+                break
+            }
+            counter++
+        }
+    }
+    */
+
+    //endregion
+
+    private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
+        var cursor: Cursor? = null
+        try {
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.contentResolver.query(contentUri, proj, null, null, null)
+            val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            return cursor.getString(columnIndex)
+        } finally {
+            cursor?.close()
+        }
+    }
+
+
+
+    private fun exifToDegrees(exifOrientation: Int): Int {
+        return when (exifOrientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
+        }
+    }
+
+    private fun Bitmap.bitmapToBase64(): String {
+        val baos = ByteArrayOutputStream()
+        compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val imageBytes = baos.toByteArray()
+
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
+
+    private fun base64ToBitmap(base64: String): Bitmap {
+        val imageBytes = Base64.decode(base64, 0)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+    }
+
+    //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun overlayAlertDialog(): AlertDialog? {
+
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setTitle(R.string.alert_dialog_overlay_title)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setMessage(this.resources.getString(R.string.alert_dialog_overlay_message))
+                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    val intentPermission = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+                    startActivity(intentPermission)
+                    val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("popupNotif", true)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+                    edit.putBoolean("serviceNotif", false)
+                    edit.apply()
+                }
+                .setNegativeButton(R.string.alert_dialog_no)
+                { _, _ ->
+                    val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                    edit.putBoolean("popupNotif", false)//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
+                    edit.putBoolean("serviceNotif", true)
+                    edit.apply()
+                }
+                .show()
+    }
+
+    fun addContactIcone(bitmap: Bitmap) {
+        //  add_new_contact_ImgString
+
+        edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
+        edit_contact_imgString = bitmap.bitmapToBase64()
+        edit_contact_imgStringChanged = true
+    }
+
+
 
     //endregion
 }
-/*
-private fun Any.putInt(s: String, filePath: Uri) {
-
-}
- */

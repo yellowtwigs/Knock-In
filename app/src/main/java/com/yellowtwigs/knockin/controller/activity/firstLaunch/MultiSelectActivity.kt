@@ -15,8 +15,10 @@ import com.yellowtwigs.knockin.controller.SelectContactAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.controller.activity.ContactDetailsActivity
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity
+import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 
 /**
  * Activité qui nous permet de faire un multiSelect sur nos contact afin de les prioriser
@@ -144,10 +146,20 @@ class MultiSelectActivity : AppCompatActivity() {
                     if (contactList.isNotEmpty()) {
                         gestionnaireContact.setToContactInListPriority2()
                     }
-                    val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
-                    intent.putExtra("fromStartActivity", true)
-                    startActivity(intent)
-                    finish()
+
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.start_activity_title))
+                            .setMessage(getString(R.string.start_activity_personnalize_alert) + applicationContext.resources.getString(R.string.personnalize_validate_selection))
+                            .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                                startActivity(Intent(this@MultiSelectActivity, PremiumActivity::class.java).putExtra("fromStartActivity", true))
+                                finish()
+                            }
+                            .setNegativeButton(getString(R.string.alert_dialog_later)) { _, _ ->
+                                startActivity(Intent(this@MultiSelectActivity, MainActivity::class.java).putExtra("fromStartActivity", true))
+                                finish()
+                            }
+                            .show()
+
                 }
                 .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                 }

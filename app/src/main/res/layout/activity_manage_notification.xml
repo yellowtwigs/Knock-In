@@ -157,7 +157,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/background_layout_selector">
+                android:background="@drawable/background_layout_selector"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/settings_choose_notif_sound_title"
@@ -181,7 +182,7 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/notifications_vip_ringtone_layout" />
+            <include layout="@layout/activity_notifications_vip_ringtone_layout" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

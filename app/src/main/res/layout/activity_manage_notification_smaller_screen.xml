@@ -195,7 +195,7 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/notifications_vip_ringtone_layout" />
+            <include layout="@layout/activity_notifications_vip_ringtone_layout" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -107,4 +107,5 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:5.1.1'
     implementation 'com.facebook.android:facebook-login:5.1.1'
     implementation 'com.android.billingclient:billing:2.1.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }

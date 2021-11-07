@@ -88,8 +88,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/backgroundColor"
         android:layout_marginTop="25dp"
+        android:background="?attr/backgroundColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_contact_toolbar">
@@ -410,60 +410,60 @@
 
             </RelativeLayout>
 
-<!--                    <RelativeLayout-->
-<!--                        android:id="@+id/edit_contact_messenger_id_layout"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="100dp"-->
-<!--                        android:background="@drawable/background_layout_no_pressed_with_border"-->
-<!--                        android:backgroundTint="?attr/backgroundColor"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/edit_contact_mail_id_layout">-->
+            <!--                    <RelativeLayout-->
+            <!--                        android:id="@+id/edit_contact_messenger_id_layout"-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_marginTop="100dp"-->
+            <!--                        android:background="@drawable/background_layout_no_pressed_with_border"-->
+            <!--                        android:backgroundTint="?attr/backgroundColor"-->
+            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                        app:layout_constraintStart_toStartOf="parent"-->
+            <!--                        app:layout_constraintTop_toBottomOf="@+id/edit_contact_mail_id_layout">-->
 
-<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                            android:id="@+id/edit_contact_messenger_id_view"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:background="?attr/colorSurface"-->
-<!--                            android:visibility="gone">-->
-<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
+            <!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                            android:id="@+id/edit_contact_messenger_id_view"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:background="?attr/colorSurface"-->
+            <!--                            android:visibility="gone">-->
+            <!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-<!--                        <RelativeLayout-->
-<!--                            android:id="@+id/edit_contact_messenger_id_icon"-->
-<!--                            android:layout_width="60dp"-->
-<!--                            android:layout_height="60dp"-->
-<!--                            android:background="@color/transparentColor">-->
+            <!--                        <RelativeLayout-->
+            <!--                            android:id="@+id/edit_contact_messenger_id_icon"-->
+            <!--                            android:layout_width="60dp"-->
+            <!--                            android:layout_height="60dp"-->
+            <!--                            android:background="@color/transparentColor">-->
 
-<!--                            <androidx.appcompat.widget.AppCompatImageView-->
-<!--                                android:layout_width="24dp"-->
-<!--                                android:layout_height="24dp"-->
-<!--                                android:layout_centerInParent="true"-->
-<!--                                app:srcCompat="@drawable/ic_messenger" />-->
-<!--                        </RelativeLayout>-->
+            <!--                            <androidx.appcompat.widget.AppCompatImageView-->
+            <!--                                android:layout_width="24dp"-->
+            <!--                                android:layout_height="24dp"-->
+            <!--                                android:layout_centerInParent="true"-->
+            <!--                                app:srcCompat="@drawable/ic_messenger" />-->
+            <!--                        </RelativeLayout>-->
 
-<!--                        <com.google.android.material.textfield.TextInputLayout-->
-<!--                            android:id="@+id/edit_contact_messenger_id_edit_text"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:layout_toEndOf="@+id/edit_contact_messenger_id_icon"-->
-<!--                            android:backgroundTint="?attr/backgroundColor"-->
-<!--                            android:hint="Messenger ID"-->
-<!--                            android:textColor="?attr/textColor"-->
-<!--                            android:textColorHint="?attr/textColor">-->
+            <!--                        <com.google.android.material.textfield.TextInputLayout-->
+            <!--                            android:id="@+id/edit_contact_messenger_id_edit_text"-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            android:layout_toEndOf="@+id/edit_contact_messenger_id_icon"-->
+            <!--                            android:backgroundTint="?attr/backgroundColor"-->
+            <!--                            android:hint="Messenger ID"-->
+            <!--                            android:textColor="?attr/textColor"-->
+            <!--                            android:textColorHint="?attr/textColor">-->
 
-<!--                            <com.google.android.material.textfield.TextInputEditText-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:background="@drawable/custom_edit_text"-->
-<!--                                android:backgroundTint="?attr/backgroundColor"-->
-<!--                                android:inputType="text"-->
-<!--                                android:maxLines="1"-->
-<!--                                android:textColor="?attr/textColor"-->
-<!--                                android:textColorHint="?attr/textColor" />-->
-<!--                        </com.google.android.material.textfield.TextInputLayout>-->
+            <!--                            <com.google.android.material.textfield.TextInputEditText-->
+            <!--                                android:layout_width="match_parent"-->
+            <!--                                android:layout_height="match_parent"-->
+            <!--                                android:background="@drawable/custom_edit_text"-->
+            <!--                                android:backgroundTint="?attr/backgroundColor"-->
+            <!--                                android:inputType="text"-->
+            <!--                                android:maxLines="1"-->
+            <!--                                android:textColor="?attr/textColor"-->
+            <!--                                android:textColorHint="?attr/textColor" />-->
+            <!--                        </com.google.android.material.textfield.TextInputLayout>-->
 
-<!--                    </RelativeLayout>-->
+            <!--                    </RelativeLayout>-->
 
             <RelativeLayout
                 android:id="@+id/edit_contact_mail_id_layout"
@@ -481,8 +481,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/colorSurface"
-                    android:visibility="gone">
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:visibility="gone"></androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
                     android:id="@+id/edit_contact_mail_id_icon"
@@ -522,8 +521,8 @@
                     android:id="@+id/edit_contact_mail_id_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
                     android:background="?attr/actionBarItemBackground"
                     android:clickable="true"
@@ -566,16 +565,49 @@
                 app:layout_constraintStart_toEndOf="@+id/edit_contact_priority_layout"
                 app:layout_constraintTop_toBottomOf="@+id/edit_contact_mail_id_layout" />
 
+            <TextView
+                android:id="@+id/contact_vip_settings"
+                android:layout_width="127dp"
+                android:layout_height="21dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="?attr/backgroundColor"
+                android:text="@string/contact_vip_settings"
+                android:textColor="?attr/textColor"
+                android:textColorHint="?attr/textColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.617"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/edit_contact_vip_settings"
+                android:layout_width="57dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="7dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.178"
+                app:layout_constraintStart_toEndOf="@+id/contact_vip_settings"
+                app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain"
+                app:srcCompat="@drawable/ic_circular_vip_icon"
+                tools:ignore="MissingConstraints" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/edit_contact_group_constraint_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain">
+                app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_layout">
 
                 <TextView
                     android:id="@+id/edit_contact_group_tv"
@@ -600,4 +632,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-    </LinearLayout>
+</LinearLayout>
