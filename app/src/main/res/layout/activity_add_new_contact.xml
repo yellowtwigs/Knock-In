@@ -531,6 +531,8 @@
             app:layout_constraintStart_toEndOf="@+id/add_new_contact_priority_layout"
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_mail_id_layout" />
 
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

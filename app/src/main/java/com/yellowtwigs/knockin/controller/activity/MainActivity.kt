@@ -44,6 +44,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
 import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter
 import com.yellowtwigs.knockin.controller.NotificationListener
+import com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase

@@ -112,6 +112,16 @@ interface ContactsDao {
     fun updateContactById(id: Int, firstName: String, lastName: String, profilePicture64: String, priority: Int, mailName : String)
 
     /**
+     * Update un [contact][ContactDB] grace à son id
+     * @param notification_Sound Int  sound de notification
+     */
+    @Query("UPDATE contacts_table SET notification_Sound = :notificationSound WHERE id = :id")
+    fun updateSoundById(id: Int, notificationSound:Int)
+
+
+
+
+    /**
      * Update un [contact][ContactDB] sans image de profil grace à son id
      * @param id Int     Id du contact sélectionné
      * @param firstName String  Prénom du contact
@@ -144,6 +154,22 @@ interface ContactsDao {
 
     @Query("UPDATE contacts_table SET is_favorite = 1 WHERE id = :id ")
     fun setIsFavorite(id: Int)
+
+    /**
+     * @param id Int    Id du contact sélectionné
+     * @param notificationTone String   sound de notification
+     *
+     */
+    @Query("UPDATE contacts_table SET notification_tone = :notificationTone WHERE id = :id ")
+    fun setNotification(id: Int, notificationTone: String)
+
+    /**
+     * @param id Int    Id du contact sélectionné
+     * @param notificationSound Int   sound de notification
+     *
+     */
+    @Query("UPDATE contacts_table SET notification_Sound = :notificationSound WHERE id = :id ")
+    fun setNotification(id: Int, notificationSound: Int)
 
     /**
      * UPDATE si l'user possède ce contact dans son address book whatsapp

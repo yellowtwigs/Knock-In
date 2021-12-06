@@ -1,41 +1,41 @@
 package com.yellowtwigs.knockin.controller.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Point
 import android.media.MediaPlayer
-import android.media.session.MediaController
+import android.media.RingtoneManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.*
-import androidx.appcompat.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationSender
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
-import kotlinx.android.synthetic.main.activity_manage_notification.*
+import kotlinx.android.synthetic.main.activity_notifications_vip_ringtone_layout.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  * La Classe qui permet d'activer ou desactiver les notifications de Knockin
@@ -50,6 +50,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var switchPopupNotif: Switch? = null
     private var switchservice: Switch? = null
     private var isTrue = false
+    //private lateinit var filePath: Uri
 
     //region Default Sound
 
@@ -67,6 +68,29 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var settings_NotifSoundXyloCheckbox: CheckBox? = null
 
     //endregion
+/*
+    //region personal tones
+
+    private var settings_ChooseNotifPersonalSoundLayoutOpenClose: RelativeLayout? = null
+    private var settings_ChooseNotifPersonalSoundImageOpen: AppCompatImageView? = null
+    private var settings_ChooseNotifPersonalSoundImageClose: AppCompatImageView? = null
+
+    private var settings_NotifPersonalSoundLayout: RelativeLayout? = null
+    lateinit var txtpath: TextView
+
+    //endregion2
+
+ */
+
+    //Schedule
+
+    private var settings_ChooseNotifScheduleLayoutOpenClose: RelativeLayout? = null
+    private var settings_ChooseNotifScheduleImageOpen: AppCompatImageView? = null
+    private var settings_ChooseNotifScheduleImageClose: AppCompatImageView? = null
+
+    private var settings_Relative1: RelativeLayout? = null
+
+    //end
 
     //region Jazzy Sound
 
@@ -153,6 +177,7 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var notifFunkySoundIsBought: Boolean = false
     private var notifJazzySoundIsBought: Boolean = false
     private var notifRelaxationSoundIsBought: Boolean = false
+    private var notifCustomSoundIsBought: Boolean = false
 
     private var numberDefault: Int = 0
 
@@ -160,6 +185,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_notifications_vip_ringtone_layout)
 
         //region ======================================== Theme Dark ========================================
 
@@ -169,10 +195,55 @@ class ManageNotificationActivity : AppCompatActivity() {
         } else {
             setTheme(R.style.AppTheme)
         }
-
         //endregion
-
         setContentView()
+        /*
+        //get the list of  Ringtones
+        var UploadButton= findViewById(R.id.UploadButton) as Button
+        txtpath=findViewById(R.id.Txtpath)
+        UploadButton.setOnClickListener{ //Intent to select Ringtone.
+            //check runtime permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    //permission denied
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    //show popup to request runtime permission
+                    requestPermissions(permissions, PERMISSION_CODE)
+                } else {
+                    getTones()
+                }
+            } else {
+                getTones()
+            }
+            if(txtpath!=null){
+                settings_NotifNoSoundCheckbox!!.isChecked = false
+                settings_NotifSoundKnockinCheckbox!!.isChecked = false
+                settings_NotifSoundXyloCheckbox!!.isChecked = false
+
+                settings_NotifSoundMoaninCheckbox!!.isChecked = false
+                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
+                settings_NotifSoundCaravanCheckbox!!.isChecked = false
+                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
+                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
+                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
+
+                settings_NotifSoundSlapCheckbox!!.isChecked = false
+                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
+                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
+                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
+                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
+                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
+
+                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
+                settings_NotifSoundGravityCheckbox!!.isChecked = false
+                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
+                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
+                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
+                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
+            }
+        }
+        //end
+         */
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
@@ -186,6 +257,10 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val sharedNotifFunkySoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
         notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Notif_Funky_Sound_IsBought", false)
+
+    //    val sharedNotifCustomSoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE)
+    //    notifCustomSoundIsBought = sharedNotifCustomSoundInAppPreferences.getBoolean("Notif_Custom_Sound_IsBought", false)
+
 
         //region ======================================= FindViewById =======================================
 
@@ -212,6 +287,28 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //endregion
 
+        //region Schedule
+        settings_ChooseNotifScheduleLayoutOpenClose =findViewById(R.id.settings_choose_schedule_layout)
+
+        settings_ChooseNotifScheduleImageOpen =findViewById(R.id.settings_choose_notif_schedule_image_open)
+        settings_ChooseNotifScheduleImageClose =findViewById(R.id.settings_choose_notif_schedule_image_close)
+        settings_Relative1 = findViewById(R.id.relativ1)
+
+
+
+        //end
+/*
+        //region personal tones
+
+        settings_ChooseNotifPersonalSoundLayoutOpenClose = findViewById(R.id.settings_choose_personally_tone)
+        settings_ChooseNotifPersonalSoundImageOpen = findViewById(R.id.settings_choose_notif_personally_tone_sound_image_open)
+        settings_ChooseNotifPersonalSoundImageClose = findViewById(R.id.settings_choose_notif_personally_tone_sound_image_close)
+
+        settings_NotifPersonalSoundLayout = findViewById(R.id.settings_notif_upload_tone_layout)
+
+
+        //endregion2
+ */
         //region Jazzy Sound
 
         settings_ChooseNotifJazzySoundLayoutOpenClose = findViewById(R.id.settings_choose_jazzy_sound_layout)
@@ -519,7 +616,10 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //region OpenClose
 
-        settings_ChooseNotifDefaultSoundLayoutOpenClose!!.setOnClickListener {
+        settings_NotifNoSoundLayout!!.visibility = View.VISIBLE
+        settings_NotifSoundKnockinLayout!!.visibility = View.VISIBLE
+
+        /*settings_ChooseNotifDefaultSoundLayoutOpenClose!!.setOnClickListener {
             if (settings_NotifSoundKnockinLayout!!.visibility == View.VISIBLE &&
                     settings_NotifSoundXyloLayout!!.visibility == View.VISIBLE) {
                 settings_NotifSoundKnockinLayout!!.visibility = View.GONE
@@ -537,6 +637,40 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_ChooseNotifDefaultSoundImageClose!!.visibility = View.GONE
             }
         }
+        settings_Relative1!!.visibility = View.GONE
+        settings_ChooseNotifScheduleImageOpen!!.visibility = View.GONE
+        settings_ChooseNotifScheduleLayoutOpenClose!!.setOnClickListener {
+            if(settings_Relative1!!.visibility == View.VISIBLE){
+                settings_Relative1!!.visibility = View.GONE
+
+                settings_ChooseNotifScheduleImageOpen!!.visibility = View.GONE
+                settings_ChooseNotifScheduleImageClose!!.visibility = View.VISIBLE
+            }
+            else{
+                settings_Relative1!!.visibility = View.VISIBLE
+                settings_ChooseNotifScheduleImageOpen!!.visibility = View.VISIBLE
+                settings_ChooseNotifScheduleImageClose!!.visibility = View.GONE
+            }
+        }
+
+
+         */
+/*
+        settings_ChooseNotifPersonalSoundLayoutOpenClose!!.setOnClickListener {
+            if (settings_NotifPersonalSoundLayout!!.visibility  == View.VISIBLE) {
+                settings_NotifPersonalSoundLayout!!.visibility = View.GONE
+
+                settings_ChooseNotifPersonalSoundImageOpen!!.visibility = View.GONE
+                settings_ChooseNotifPersonalSoundImageClose!!.visibility = View.VISIBLE
+            } else {
+                settings_NotifPersonalSoundLayout!!.visibility = View.VISIBLE
+
+                settings_ChooseNotifPersonalSoundImageOpen!!.visibility = View.VISIBLE
+                settings_ChooseNotifPersonalSoundImageClose!!.visibility = View.GONE
+            }
+        }
+
+ */
 
         settings_ChooseNotifJazzySoundLayoutOpenClose!!.setOnClickListener {
             if (settings_NotifSoundMoaninLayout!!.visibility == View.VISIBLE &&
@@ -635,13 +769,15 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //region Default
 
+
+
         settings_NotifNoSoundCheckbox!!.setOnClickListener {
             if (settings_NotificationMessagesAlarmSound != null) {
                 settings_NotificationMessagesAlarmSound!!.stop()
             }
 
             if (settings_NotifNoSoundCheckbox!!.isChecked) {
-
+               // txtpath.setText("")
 //                settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
@@ -668,10 +804,15 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                edit.putString("Alarm_Custom_Notif_Tone", null)
+                edit.apply()
                 edit.putInt("Alarm_Notif_Tone", 1)
                 edit.apply()
+
+
             }
         }
+
 
         settings_NotifSoundKnockinCheckbox!!.setOnClickListener {
             if (settings_NotificationMessagesAlarmSound != null) {
@@ -681,8 +822,8 @@ class ManageNotificationActivity : AppCompatActivity() {
             if (settings_NotifSoundKnockinCheckbox!!.isChecked) {
                 settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.sms_ring)
                 settings_NotificationMessagesAlarmSound!!.start()
-
                 settings_NotifNoSoundCheckbox!!.isChecked = false
+              //  txtpath.setText("")
 //                settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
 
@@ -709,10 +850,19 @@ class ManageNotificationActivity : AppCompatActivity() {
 
 
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+
+                edit.putString("Alarm_Custom_Notif_Tone", null)
+                edit.apply()
                 edit.putInt("Alarm_Notif_Tone", R.raw.sms_ring)
                 edit.apply()
             }
         }
+
+        //test
+
+
+        //test
+
 
         settings_NotifSoundXyloCheckbox!!.setOnClickListener {
             if (settings_NotificationMessagesAlarmSound != null) {
@@ -722,7 +872,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             if (settings_NotifSoundXyloCheckbox!!.isChecked) {
                 settings_NotificationMessagesAlarmSound = MediaPlayer.create(this, R.raw.xylophone_tone)
                 settings_NotificationMessagesAlarmSound!!.start()
-
+                //txtpath.setText("")
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
 //                settings_NotifSoundXyloCheckbox!!.isChecked = false
@@ -749,6 +899,9 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
 
                 val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+
+                edit.putString("Alarm_Custom_Notif_Tone", null)
+                edit.apply()
                 edit.putInt("Alarm_Notif_Tone", R.raw.xylophone_tone)
                 edit.apply()
             }
@@ -794,6 +947,8 @@ class ManageNotificationActivity : AppCompatActivity() {
 
                 if (notifJazzySoundIsBought) {
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.moanin_jazz)
                     edit.apply()
                 } else {
@@ -849,6 +1004,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.blue_bossa)
                     edit.apply()
                 } else {
@@ -904,6 +1061,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.caravan)
                     edit.apply()
                 } else {
@@ -959,6 +1118,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.dolphin_dance)
                     edit.apply()
                 } else {
@@ -1014,6 +1175,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.autumn_leaves)
                     edit.apply()
                 } else {
@@ -1069,6 +1232,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.freddie_freeloader)
                     edit.apply()
                 } else {
@@ -1126,6 +1291,8 @@ class ManageNotificationActivity : AppCompatActivity() {
 
                 if (notifFunkySoundIsBought) {
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.bass_slap)
                     edit.apply()
                 } else {
@@ -1180,6 +1347,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.off_the_curve_groove)
                     edit.apply()
 
@@ -1236,6 +1405,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.off_the_curve_groove)
                     edit.apply()
                 } else {
@@ -1291,6 +1462,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.keyboard_funky_tone)
                     edit.apply()
                 } else {
@@ -1346,6 +1519,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.u_cant_hold_no_groove)
                     edit.apply()
                 } else {
@@ -1400,6 +1575,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.cold_sweat)
                     edit.apply()
                 } else {
@@ -1458,6 +1635,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.beautiful_chords_progression)
                     edit.apply()
                 } else {
@@ -1512,6 +1691,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.gravity)
                     edit.apply()
 
@@ -1568,6 +1749,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.slow_dancing)
                     edit.apply()
                 } else {
@@ -1623,6 +1806,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.fade_to_black)
                     edit.apply()
                 } else {
@@ -1678,6 +1863,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.interstellar_main_theme)
                     edit.apply()
                 } else {
@@ -1736,6 +1923,8 @@ class ManageNotificationActivity : AppCompatActivity() {
                     settings_NotificationMessagesAlarmSound!!.start()
 
                     val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                    edit.putString("Alarm_Custom_Notif_Tone", null)
+                    edit.apply()
                     edit.putInt("Alarm_Notif_Tone", R.raw.relax_sms)
                     edit.apply()
                 } else {
@@ -1754,9 +1943,79 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
 
         //endregion
-
         //endregion
     }
+/*
+    //check if you have permission or not
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //permission from popup granted
+                    getTones()
+                } else {
+                    //permission from popup denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+    //End Permission
+
+ */
+companion object {
+    const val PERMISSION_CODE = 111
+}
+
+    //get personal Tones
+  /*  private fun getTones(){
+           val currentTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(this@ManageNotificationActivity,
+                   RingtoneManager.TYPE_NOTIFICATION)
+           val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Notification Tone")
+               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currentTone)
+               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
+               intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+               startActivityForResult(intent, 10)
+}
+
+   */
+/*
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 10 && resultCode == RESULT_OK){
+            filePath = data!!.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)!!
+            txtpath.setText("From :" + filePath!!.path)
+
+            if (notifCustomSoundIsBought) {
+                val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedAlarmNotifTonePreferences.edit()
+                edit.putString("Alarm_Custom_Notif_Tone", filePath.toString())
+                edit.apply()
+             } else {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_tone_available_title))
+                            .setMessage(getString(R.string.in_app_popup_tone_available_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                              goToPremiumActivity()
+                            }
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                              refreshChecked()
+                            }
+                            .show()
+            }
+        }
+    }
+    //EndTones
+
+ */
+
 
     //region ========================================== Functions =========================================
 
@@ -1932,6 +2191,8 @@ class ManageNotificationActivity : AppCompatActivity() {
         when (numberDefault) {
             1 -> {
                 settings_NotifNoSoundCheckbox!!.isChecked = true
+
+                //txtpath.setText("")
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
 
@@ -1956,7 +2217,10 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundFirstStepCheckbox!!.isChecked = false
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
+
             R.raw.sms_ring -> {
+
+                //txtpath.setText("")
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = true
                 settings_NotifSoundXyloCheckbox!!.isChecked = false
@@ -1983,6 +2247,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
             }
             R.raw.xylophone_tone -> {
+                //txtpath.setText("")
                 settings_NotifNoSoundCheckbox!!.isChecked = false
                 settings_NotifSoundKnockinCheckbox!!.isChecked = false
                 settings_NotifSoundXyloCheckbox!!.isChecked = true
@@ -2494,12 +2759,12 @@ class ManageNotificationActivity : AppCompatActivity() {
     fun ringToneLayoutClosed() {
         //region OpenClose
 
-        settings_NotifSoundKnockinLayout!!.visibility = View.GONE
-        settings_NotifSoundXyloLayout!!.visibility = View.GONE
-        settings_NotifNoSoundLayout!!.visibility = View.GONE
+        //settings_NotifSoundKnockinLayout!!.visibility = View.GONE
+       // settings_NotifSoundXyloLayout!!.visibility = View.GONE
+      //  settings_NotifNoSoundLayout!!.visibility = View.GONE
 
-        settings_ChooseNotifDefaultSoundImageOpen!!.visibility = View.GONE
-        settings_ChooseNotifDefaultSoundImageClose!!.visibility = View.VISIBLE
+        //settings_ChooseNotifDefaultSoundImageOpen!!.visibility = View.GONE
+        //settings_ChooseNotifDefaultSoundImageClose!!.visibility = View.VISIBLE
 
         settings_NotifSoundMoaninLayout!!.visibility = View.GONE
         settings_NotifSoundBlueBossaLayout!!.visibility = View.GONE
@@ -2539,6 +2804,9 @@ class ManageNotificationActivity : AppCompatActivity() {
         finish()
     }
 
+
+
+
     override fun onResume() {
         super.onResume()
         activityVisible = true
@@ -2556,3 +2824,8 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     //endregion
 }
+/*
+private fun Any.putInt(s: String, filePath: Uri) {
+
+}
+ */

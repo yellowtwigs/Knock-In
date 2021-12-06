@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 16,
-    "identityHash": "9fa009fdd9b2d094bb936516f493c1b4",
+    "identityHash": "c463a0d3a4cb4051467b0fd29cd437f6",
     "entities": [
       {
         "tableName": "contacts_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `mail_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL, `messenger_id` TEXT NOT NULL, `has_whatsapp` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `mail_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL, `messenger_id` TEXT NOT NULL, `has_whatsapp` INTEGER NOT NULL, `notification_tone` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -66,6 +66,12 @@
             "fieldPath": "hasWhatsapp",
             "columnName": "has_whatsapp",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationTone",
+            "columnName": "notification_tone",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -392,7 +398,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9fa009fdd9b2d094bb936516f493c1b4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c463a0d3a4cb4051467b0fd29cd437f6')"
     ]
   }
 }

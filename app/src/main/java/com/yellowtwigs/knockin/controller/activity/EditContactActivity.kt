@@ -34,6 +34,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.CircularImageView
 import com.yellowtwigs.knockin.controller.ContactIconeAdapter
@@ -41,9 +44,6 @@ import com.yellowtwigs.knockin.controller.GroupEditAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -66,6 +66,8 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_PhoneNumber: TextInputLayout? = null
     private var edit_contact_FixNumber: TextInputLayout? = null
     private var edit_contact_Mail: TextInputLayout? = null
+    private var contact_vip_Settings: TextView? = null
+    private var edit_contact_vip_Settings: AppCompatImageView? = null
     //    private var edit_contact_Messenger: TextInputLayout? = null
     private var edit_contact_Mail_Name: TextInputLayout? = null
 
@@ -149,8 +151,9 @@ class EditContactActivity : AppCompatActivity() {
         }
 
         //endregion
-
         setContentView(R.layout.activity_edit_contact)
+
+
 
         // on init WorkerThread
         edit_contact_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -182,6 +185,9 @@ class EditContactActivity : AppCompatActivity() {
         edit_contact_ParentLayout = findViewById(R.id.edit_contact_parent_layout)
         edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
         edit_contact_LastName = findViewById(R.id.edit_contact_last_name_id)
+        contact_vip_Settings = findViewById(R.id.contact_vip_settings)
+        edit_contact_vip_Settings = findViewById(R.id.edit_contact_vip_settings)
+
         edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
         edit_contact_FixNumber = findViewById(R.id.edit_contact_phone_number_fix_id)
         edit_contact_RoundedImageView = findViewById(R.id.edit_contact_rounded_image_view_id)
@@ -311,6 +317,7 @@ class EditContactActivity : AppCompatActivity() {
         //region ===================================== SetViewDataField =====================================
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
         edit_contact_FirstName!!.editText!!.setText(edit_contact_first_name)
         edit_contact_LastName!!.editText!!.setText(edit_contact_last_name)
         edit_contact_PhoneNumber!!.editText!!.setText(edit_contact_phone_number)
@@ -383,12 +390,16 @@ class EditContactActivity : AppCompatActivity() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (position) {
+
                     0 -> {
                         edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority0)
                         edit_contact_RoundedImageView!!.visibility = View.GONE
                         edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityZeroColor, null))
                         edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                         edit_contact_RoundedImageView!!.visibility = View.VISIBLE
+                        edit_contact_vip_Settings!!.visibility = View.GONE
+                        contact_vip_Settings!!.visibility = View.GONE
+
                     }
                     1 -> {
                         edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority1)
@@ -396,13 +407,47 @@ class EditContactActivity : AppCompatActivity() {
                         edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityOneColor))
                         edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                         edit_contact_RoundedImageView!!.visibility = View.VISIBLE
+                        edit_contact_vip_Settings!!.visibility = View.GONE
+                        contact_vip_Settings!!.visibility = View.GONE
+
                     }
                     2 -> {
+
                         edit_contact_Priority_explain!!.text = getString(R.string.add_new_contact_priority2)
                         edit_contact_RoundedImageView!!.visibility = View.GONE
                         edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
                         edit_contact_RoundedImageView!!.setBetweenBorderColor(resources.getColor(R.color.lightColor))
                         edit_contact_RoundedImageView!!.visibility = View.VISIBLE
+                        edit_contact_vip_Settings!!.visibility = View.VISIBLE
+                        contact_vip_Settings!!.visibility = View.VISIBLE
+
+                        if (nb_Contacts_VIP > 4 && edit_contact_priority == 2){
+                            edit_contact_vip_Settings!!.visibility = View.VISIBLE
+                            contact_vip_Settings!!.visibility = View.VISIBLE
+                        }
+                        else if (nb_Contacts_VIP > 4 && edit_contact_priority != 2){
+                            edit_contact_vip_Settings!!.visibility = View.INVISIBLE
+                            contact_vip_Settings!!.visibility = View.INVISIBLE
+                            if (nb_Contacts_VIP > 4 && edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_Priority!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
+                                MaterialAlertDialogBuilder(this@EditContactActivity, R.style.AlertDialog)
+                                        .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
+                                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
+                                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                            startActivity(Intent(this@EditContactActivity, PremiumActivity::class.java))
+                                            finish()
+                                        }
+                                        .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                                        }
+                                        .show()
+                            }
+                        }
+                        else if (edit_contact_priority != 2){
+                            edit_contact_vip_Settings!!.visibility = View.VISIBLE
+                            contact_vip_Settings!!.visibility = View.VISIBLE
+                        }
+
+
+
                     }
                 }
             }
@@ -470,6 +515,11 @@ class EditContactActivity : AppCompatActivity() {
 //                    .show()
 //        }
 
+        edit_contact_vip_Settings!!.setOnClickListener {
+            val intent = Intent(this, EditContactVipSettingsActivity::class.java)
+            intent.putExtra("ContactId", contact.getContactId())
+            startActivity(intent)
+        }
         edit_contact_AddContactToFavorite!!.setOnClickListener {
             edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
             edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
@@ -764,6 +814,7 @@ class EditContactActivity : AppCompatActivity() {
                             edit_contact_FirstName!!.editText!!.text.toString(),
                             edit_contact_LastName!!.editText!!.text.toString(),
                             edit_contact_imgString!!, edit_contact_Priority!!.selectedItemPosition, edit_contact_Mail_Name!!.editText!!.text.toString()
+
                     ) //edit contact rounded maybe not work
 //                    edit_contact_Mail_Name!!.editText!!.text.toString()
 

@@ -101,24 +101,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/premium_activity_toolbar_layout" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view_premium"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="?attr/backgroundColor"
-        app:headerLayout="@layout/nav_header_drawer_mini_screen"
-        app:itemIconTint="@color/drawer_navigation_color"
-        app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer_layout"
-        app:theme="@style/NavigationViewMiniScreenStyle">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
+            tools:layout_editor_absoluteX="-2dp"
+            tools:layout_editor_absoluteY="5dp">
 
             <TextView
                 android:id="@+id/settings_left_drawer_title"
@@ -230,6 +217,20 @@
             </RelativeLayout>
 
         </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view_premium"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="?attr/backgroundColor"
+        app:headerLayout="@layout/nav_header_drawer_mini_screen"
+        app:itemIconTint="@color/drawer_navigation_color"
+        app:itemTextColor="@color/drawer_navigation_color"
+        app:menu="@menu/menu_left_drawer_layout"
+        app:theme="@style/NavigationViewMiniScreenStyle">
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

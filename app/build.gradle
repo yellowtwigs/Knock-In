@@ -14,7 +14,7 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 78
+        versionCode 79
         versionName "2.0.1"
 //        versionCode 46
 //        versionName "5.3"
@@ -68,6 +68,11 @@ android {
         targetCompatibility '1.8'
     }
     buildToolsVersion = '30.0.2'
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
 }
 
 dependencies {
@@ -102,4 +107,5 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:5.1.1'
     implementation 'com.facebook.android:facebook-login:5.1.1'
     implementation 'com.android.billingclient:billing:2.1.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }

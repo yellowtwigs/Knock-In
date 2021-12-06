@@ -27,6 +27,7 @@ data class ContactDB(
         /**
          * Avatar utilisé lorsque le contact ne possède pas d'image de profile.
          */
+
         @ColumnInfo(name = "profile_picture") val profilePicture: Int,
         /**
          * Priorité du contact allant de 0 à 2.
@@ -47,5 +48,7 @@ data class ContactDB(
         /**
          * Le champ si Oui = 1 ou Non = 0, l'utisateur possède ce contact dans ses contacts Whatsapp
          */
-        @ColumnInfo(name = "has_whatsapp") val hasWhatsapp: Int
+        @ColumnInfo(name = "has_whatsapp") val hasWhatsapp: Int,
+        @ColumnInfo(name = "notification_tone") var notificationTone: String,
+        @ColumnInfo(name = "notification_Sound") var notificationSound: Int
 )

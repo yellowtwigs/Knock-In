@@ -59,6 +59,10 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
         SharedPreferences sharedAlarmNotifInAppPreferences = premiumActivity.getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE);
         boolean contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false);
 
+        SharedPreferences sharedNotifCustomSoundInAppPreferences = premiumActivity.getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE);
+        boolean notifCustomSoundIsBought = sharedNotifCustomSoundInAppPreferences.getBoolean("Notif_Custom_Sound_IsBought", false);
+
+
         String productName = skuDetailsList.get(i).getTitle(); // Contact VIP Illimités (Knock In Notifications)
         String[] text = productName.split("\\(");
 
@@ -73,6 +77,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
         } else if (skuDetailsList.get(i).getTitle().contains("Relaxation") || skuDetailsList.get(i).getTitle().contains("Relajación") || skuDetailsList.get(i).getTitle().contains("Relajación")) {
             myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_relax);
+        } else if (skuDetailsList.get(i).getTitle().contains("Custom") || skuDetailsList.get(i).getTitle().contains("custom")) {
+            myViewHolder.myProductImage.setImageResource(R.drawable.ic_circular_music_icon);
         }
 
         myViewHolder.myProductBuyImage.setIcon(premiumActivity.getDrawable(R.drawable.ic_buying_in_app));
@@ -87,6 +93,9 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
             myViewHolder.myProductBuyImage.setBackgroundColor(premiumActivity.getColor(R.color.textColorDarkGrey));
             myViewHolder.myProductBuyImage.setEnabled(false);
         } else if (skuDetailsList.get(i).getTitle().contains("Relaxation") && notifRelaxationSoundIsBought) {
+            myViewHolder.myProductBuyImage.setBackgroundColor(premiumActivity.getColor(R.color.textColorDarkGrey));
+            myViewHolder.myProductBuyImage.setEnabled(false);
+        } else if (skuDetailsList.get(i).getTitle().contains("Custom") && notifCustomSoundIsBought) {
             myViewHolder.myProductBuyImage.setBackgroundColor(premiumActivity.getColor(R.color.textColorDarkGrey));
             myViewHolder.myProductBuyImage.setEnabled(false);
         }

@@ -53,9 +53,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_fixNumber: TextInputLayout? = null
     private var add_new_contact_Email: TextInputLayout? = null
     private var add_new_contact_Mail_Identifier: TextInputLayout? = null
-
     private var add_new_contact_Mail_Identifier_Help: AppCompatImageView? = null
-
     private var add_new_contact_RoundedImageView: CircularImageView? = null
     private var add_new_contact_Priority: Spinner? = null
     private var add_new_contact_PhoneProperty: Spinner? = null
@@ -94,6 +92,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         //region ======================================== Theme Dark ========================================
 
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
@@ -104,7 +103,6 @@ class AddNewContactActivity : AppCompatActivity() {
         }
 
         //endregion
-
         setContentView(R.layout.activity_add_new_contact)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
@@ -195,7 +193,7 @@ class AddNewContactActivity : AppCompatActivity() {
         }
 
         add_new_contact_Validate!!.setOnClickListener {
-
+            var defaultTone = R.raw.sms_ring
             //            add_new_contact_Mail_Identifier!!.editText!!.text.toString()
 
             if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
@@ -217,7 +215,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
                         edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
                         edit.apply()
-
+                        var notificatio_tone=R.raw.sms_ring
                         val printContacts = Runnable {
                             //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
                             val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
@@ -226,8 +224,10 @@ class AddNewContactActivity : AppCompatActivity() {
                             val contactData = ContactDB(null,
                                     add_new_contact_FirstName!!.editText!!.text.toString(),
                                     add_new_contact_LastName!!.editText!!.text.toString(),
+
                                     add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
-                                    add_new_contact_ImgString!!, 0, "", 0)
+                                    add_new_contact_ImgString!!, 0, "", 0,"",defaultTone)
+
 
                             println(contactData)
                             var isDuplicate = false
@@ -299,7 +299,7 @@ class AddNewContactActivity : AppCompatActivity() {
                                 add_new_contact_FirstName!!.editText!!.text.toString(),
                                 add_new_contact_LastName!!.editText!!.text.toString(),
                                 add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
-                                add_new_contact_ImgString!!, 0, "", 0)
+                                add_new_contact_ImgString!!, 0, "", 0,"",defaultTone)
 
                         println(contactData)
                         var isDuplicate = false

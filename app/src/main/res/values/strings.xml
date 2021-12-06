@@ -13,7 +13,7 @@
     <string name="help_notification_manager"> In this screen you can chose to enable/disable the priority 2 notifications </string>
     <string name="help_my_informations"> In this screen you can update your personal details </string>
     <string name="help_contact_us_intent">Contact us</string>
-    <string name="help_bubbles_link">http://www.yellowtwigs.com/android10-bubbles-setup</string>
+    <string name="help_bubbles_link" translatable="false">http://www.yellowtwigs.com/android10-bubbles-setup</string>
     <string name="help_contact_us_link">https://www.yellowtwigs.com/getting-started</string>
     <string name="help_contact_us_eula">https://www.yellowtwigs.com/end-user-license-agreement</string>
     <string name="help_app_video_link">https://youtu.be/5gKwDljgLNI</string>
@@ -147,6 +147,13 @@
     <string name="edit_contact_phone_number">Phone number</string>
     <string name="edit_contact_phone_number_mobile">Mobile</string>
     <string name="edit_contact_phone_number_home">Home</string>
+    <string name="settings_choose_notif_schedule_title" translatable="false">VIP Notifications Schedule</string>
+    <string name="settings_notif_schedule_permanent" translatable="false">Permanent</string>
+    <string name="settings_notif_schedule_daytime" translatable="false">Daytime Only</string>
+    <string name="settings_notif_schedule_workweek" translatable="false">Work week</string>
+    <string name="settings_notif_schedule_mix" translatable="false">Mix</string>
+    <string name="contact_vip_settings" translatable="false">VIP Settings</string>
+
     <string-array name="edit_contact_phone_number_arrays">
         <item>Mobile</item>
         <item>Office</item>
@@ -232,6 +239,8 @@
     <string name="notification_alert_dialog_message">Do you want to choose your high-priority contacts ?</string>
     <string name="notification_vip_message_tone">VIP Notifications Tone</string>
     <string name="notification_vip_default_message_tone">Default Tone</string>
+    <string name="notification_vip_message_choose_tone" translatable="false">Personal Tone</string>
+    <string name="notification_vip_upload_tone" translatable="false">Upload</string>
     <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
     <string name="notification_vip_funky_message_tone">Funky Tone</string>
     <string name="notification_vip_relaxation_message_tone">Relaxing Tone</string>
@@ -244,6 +253,7 @@
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
+    <string name="notification_vip_message_tone_personal_sound" translatable="false">Personal Sound</string>
     <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
     <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
     <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
@@ -323,6 +333,8 @@
     <string name="multi_select_alert_dialog_nb_contact">You have selected %1s %2s </string>
     <string name="multi_select_alert_dialog_0_contact">You have selected 0 contact </string>
     <string name="multi_select_validate_selection">\n Do you want to validate your selection?</string>
+    <string name="personnalize_validate_selection" translatable="false">\n Do you want to do this?</string>
+
     <string name="multi_select_contact">Contact :</string>
     <string name="multi_select_contacts">Contacts :</string>
     <string name="multi_select_validate">Validate</string>
@@ -430,7 +442,7 @@
 
     <string name="start_activity_go_edition_message">VIP notifications and notification history features are not available for "GO Edition" versions of Android.</string>
     <string name="start_activity_go_edition_positive_button">Okay</string>
-
+    <string name="start_activity_personnalize_alert" translatable="false">You can personnalize notification for each individual VIP.</string>
     <string name="start_activity_alert_dialog_android_11_warning">Knock In\'s floating notifications (Bubbles) are not supported yet with Android 11 (version of your smartphone).  A version of the app offering floating notifications for Android 11 will be available soon. However, you can use the other functions of the application.</string>
 
     <!-- endregion -->
@@ -450,6 +462,7 @@
     <string name="in_app_popup_nb_vip_max_title">Number of VIP contacts reached</string>
     <string name="in_app_popup_nb_vip_max_message">You cannot exceed 5 VIP contacts in the Freemium version, do you want to go to the shop? </string>
     <string name="in_app_popup_tone_available_title">Ringtones packs available from the shop</string>
+    <string name="in_app_popup_personalization_available_title" translatable="false">Personalization packs available from the shop</string>
     <string name="in_app_popup_tone_available_message">Would you like to go to the shop? </string>
     <string name="in_app_purchase_made_message">Purchase made</string>
     <string name="in_app_load_products">Load products</string>
@@ -470,4 +483,5 @@
     <string name="popup_connection_cancel">Cancel</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
+    <string name="textview">TextView</string>
 </resources>
