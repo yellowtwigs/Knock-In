@@ -42,8 +42,8 @@ import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.NotificationDB
 
 
 /**

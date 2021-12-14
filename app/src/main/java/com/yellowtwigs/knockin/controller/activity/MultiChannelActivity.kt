@@ -16,7 +16,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.ContactListViewAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
 
 class MultiChannelActivity : AppCompatActivity() {
 

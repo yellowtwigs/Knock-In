@@ -26,6 +26,10 @@ import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.models.data.ContactDB
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.GroupDB
+import com.yellowtwigs.knockin.models.data.LinkContactGroup
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

@@ -44,6 +44,7 @@ import com.yellowtwigs.knockin.controller.GroupEditAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
+import com.yellowtwigs.knockin.models.data.*
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService

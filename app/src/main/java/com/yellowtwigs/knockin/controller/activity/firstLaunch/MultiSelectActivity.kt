@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.SelectContactAdapter
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.controller.activity.HomeActivity
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity

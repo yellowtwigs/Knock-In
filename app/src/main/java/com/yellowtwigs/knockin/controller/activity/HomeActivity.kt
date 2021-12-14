@@ -49,6 +49,7 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.*
+import com.yellowtwigs.knockin.models.data.*
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService

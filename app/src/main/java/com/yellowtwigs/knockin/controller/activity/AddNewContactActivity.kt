@@ -29,10 +29,10 @@ import com.yellowtwigs.knockin.*
 import com.yellowtwigs.knockin.controller.CircularImageView
 import com.yellowtwigs.knockin.controller.ContactIconeAdapter
 import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
-import com.yellowtwigs.knockin.model.ModelDB.GroupDB
-import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.models.data.ContactDB
+import com.yellowtwigs.knockin.models.data.ContactDetailDB
+import com.yellowtwigs.knockin.models.data.GroupDB
+import com.yellowtwigs.knockin.models.data.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout

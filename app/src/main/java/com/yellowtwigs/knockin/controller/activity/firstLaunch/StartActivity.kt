@@ -32,8 +32,8 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.HomeActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
+import com.yellowtwigs.knockin.models.data.ContactDB
+import com.yellowtwigs.knockin.models.data.ContactDetailDB
 import kotlinx.android.synthetic.main.activity_start_activity.*
 import java.net.InetAddress
 import java.net.UnknownHostException
