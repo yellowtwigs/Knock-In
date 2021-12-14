@@ -490,7 +490,7 @@ class EditContactActivity : AppCompatActivity() {
                     .setMessage(getString(R.string.edit_contact_delete_contact_message))
                     .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
                         edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
-                        val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
+                        val mainIntent = Intent(this@EditContactActivity, HomeActivity::class.java)
                         mainIntent.putExtra("isDelete", true)
 
                         if (edit_contact_priority == 2) {
@@ -613,7 +613,7 @@ class EditContactActivity : AppCompatActivity() {
                                         startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                                         finish()
                                     } else {
-                                        startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                                        startActivity(Intent(this@EditContactActivity, HomeActivity::class.java).putExtra("position", position!!))
                                         finish()
                                     }
                                 }
@@ -647,7 +647,7 @@ class EditContactActivity : AppCompatActivity() {
                             startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                             finish()
                         } else {
-                            startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                            startActivity(Intent(this@EditContactActivity, HomeActivity::class.java).putExtra("position", position!!))
                             finish()
                         }
                     }
@@ -656,7 +656,7 @@ class EditContactActivity : AppCompatActivity() {
                         startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                         finish()
                     } else {
-                        startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                        startActivity(Intent(this@EditContactActivity, HomeActivity::class.java).putExtra("position", position!!))
                         finish()
                     }
                 }
@@ -838,7 +838,7 @@ class EditContactActivity : AppCompatActivity() {
                 startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
                 finish()
             } else {
-                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                startActivity(Intent(this@EditContactActivity, HomeActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
                 finish()
             }
         }
@@ -851,7 +851,7 @@ class EditContactActivity : AppCompatActivity() {
                 startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
                 finish()
             } else {
-                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                startActivity(Intent(this@EditContactActivity, HomeActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
                 finish()
             }
         }
@@ -867,7 +867,7 @@ class EditContactActivity : AppCompatActivity() {
                         if (fromGroupActivity) {
                             startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
                         } else {
-                            startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position))
+                            startActivity(Intent(this@EditContactActivity, HomeActivity::class.java).putExtra("position", position))
                         }
                         finish()
                     }
@@ -878,7 +878,7 @@ class EditContactActivity : AppCompatActivity() {
             if (fromGroupActivity) {
                 startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
             } else {
-                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position))
+                startActivity(Intent(this@EditContactActivity, HomeActivity::class.java).putExtra("position", position))
             }
             finish()
         }

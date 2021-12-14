@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +20,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -108,7 +106,7 @@ class SettingsActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@SettingsActivity, MainActivity::class.java))
+                    startActivity(Intent(this@SettingsActivity, HomeActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@SettingsActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@SettingsActivity, ManageNotificationActivity::class.java))

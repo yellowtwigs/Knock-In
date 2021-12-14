@@ -30,7 +30,7 @@ class ManageKnockonsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        startActivity(Intent(this@ManageKnockonsActivity, MainActivity::class.java))
+        startActivity(Intent(this@ManageKnockonsActivity, HomeActivity::class.java))
         finish()
         return super.onOptionsItemSelected(item)
     }

@@ -31,8 +31,6 @@ public class TutorialViewPagerAdapter extends FragmentStatePagerAdapter {
 
     /**
      * Return the Fragment associated with a specified position.
-     *
-     * @param position
      */
     @NonNull
     @Override

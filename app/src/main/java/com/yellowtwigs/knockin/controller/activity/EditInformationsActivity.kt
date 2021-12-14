@@ -123,7 +123,7 @@ class EditInformationsActivity : AppCompatActivity() {
             when (menuItem.itemId) {
 
                 R.id.nav_home -> {
-                    startActivity(Intent(this@EditInformationsActivity, MainActivity::class.java))
+                    startActivity(Intent(this@EditInformationsActivity, HomeActivity::class.java))
                 }
                 R.id.nav_notif_config -> startActivity(Intent(this@EditInformationsActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@EditInformationsActivity, SettingsActivity::class.java))

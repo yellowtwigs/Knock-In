@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.models.data.ContactDB
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.controller.adapter.CreateGroupGridViewAdapter
 import com.yellowtwigs.knockin.controller.adapter.CreateGroupListViewAdapter

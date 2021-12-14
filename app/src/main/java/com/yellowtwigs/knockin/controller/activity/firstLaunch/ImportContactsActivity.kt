@@ -17,10 +17,9 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.controller.activity.HomeActivity
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
-import kotlinx.android.synthetic.main.activity_import_contacts.*
 
 /**
  * Activité Qui Nous permet d'importer nos contact pour les buildVariant Contacter et Converser
@@ -101,7 +100,7 @@ class ImportContactsActivity : AppCompatActivity() {
 
         //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
         import_contacts_activity_Next!!.setOnClickListener {
-            val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+            val intent = Intent(this@ImportContactsActivity, HomeActivity::class.java)
             intent.putExtra("fromStartActivity", true)
             startActivity(intent)
             finish()
@@ -166,7 +165,7 @@ class ImportContactsActivity : AppCompatActivity() {
      *méthode qui lance  l'activity Tutorial
      */
     fun intentToTutorial() {
-        val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+        val intent = Intent(this@ImportContactsActivity, HomeActivity::class.java)
         intent.putExtra("fromImportContact", true)
         startActivity(intent)
         finish()
@@ -222,7 +221,7 @@ class ImportContactsActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.alert_dialog_later)
                 { _, _ ->
                     closeContextMenu()
-                    val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+                    val intent = Intent(this@ImportContactsActivity, HomeActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     finish()
@@ -245,7 +244,7 @@ class ImportContactsActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
                 .setMessage(message)
                 .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                    val intent = Intent(this@ImportContactsActivity, MainActivity::class.java)
+                    val intent = Intent(this@ImportContactsActivity, HomeActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)

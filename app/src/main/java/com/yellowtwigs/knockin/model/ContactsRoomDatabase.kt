@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
-import com.yellowtwigs.knockin.model.ModelDB.*
-import com.yellowtwigs.knockin.model.requestDB.*
+import com.yellowtwigs.knockin.models.dao.*
+import com.yellowtwigs.knockin.models.data.*
 
 /**
  * La Classe qui permet de créer la base de données et de la garder à jour

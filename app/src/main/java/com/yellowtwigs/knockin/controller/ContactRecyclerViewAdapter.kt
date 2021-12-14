@@ -27,12 +27,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity
-import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.controller.activity.HomeActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
 import java.sql.DriverManager
 import java.util.*
 
@@ -181,7 +180,7 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
                 }
             }
-            if (context is MainActivity) {
+            if (context is HomeActivity) {
                 context.recyclerMultiSelectItemClick(position)
             }
             if (listOfItemSelected.size > 0) {
@@ -215,7 +214,7 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
                     }
                 }
-                if (context is MainActivity) {
+                if (context is HomeActivity) {
                     context.recyclerMultiSelectItemClick(position)
                 }
                 if (listOfItemSelected.size > 0) {

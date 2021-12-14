@@ -14,7 +14,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.NotificationHistoryActivity
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
+import com.yellowtwigs.knockin.models.data.NotificationDB
 import java.text.SimpleDateFormat
 import java.util.*
 

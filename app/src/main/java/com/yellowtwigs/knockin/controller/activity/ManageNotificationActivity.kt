@@ -1,19 +1,15 @@
 package com.yellowtwigs.knockin.controller.activity
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Point
 import android.media.MediaPlayer
-import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -34,7 +30,6 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationSender
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
-import kotlinx.android.synthetic.main.activity_notifications_vip_ringtone_layout.*
 import java.util.*
 
 /**
@@ -462,7 +457,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                     if (settings_NotificationMessagesAlarmSound != null) {
                         settings_NotificationMessagesAlarmSound!!.stop()
                     }
-                    startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ManageNotificationActivity, HomeActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
                 R.id.nav_manage_screen -> {

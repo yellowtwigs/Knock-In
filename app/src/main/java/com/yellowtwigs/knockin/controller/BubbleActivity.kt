@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.ModelDB.VipSbnDB
+import com.yellowtwigs.knockin.models.data.VipSbnDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import java.util.HashMap
 import java.util.ArrayList

@@ -16,8 +16,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.ContactDB;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;

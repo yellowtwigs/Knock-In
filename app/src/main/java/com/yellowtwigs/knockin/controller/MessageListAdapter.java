@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.model.Message;
 
 import java.util.ArrayList;
 

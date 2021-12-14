@@ -21,12 +21,12 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.controller.activity.MainActivity;
+import com.yellowtwigs.knockin.controller.activity.HomeActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
-import com.yellowtwigs.knockin.model.ModelDB.GroupDB;
+import com.yellowtwigs.knockin.models.data.ContactDB;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.GroupDB;
 
 import java.util.ArrayList;
 
@@ -229,7 +229,7 @@ public class SelectContactAdapter extends BaseAdapter {
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
         }
 
-        if (context instanceof MainActivity || context instanceof GroupManagerActivity) {
+        if (context instanceof HomeActivity || context instanceof GroupManagerActivity) {
             if (listSelectedItem.contains(getItem(position))) {
                 holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
             } else {

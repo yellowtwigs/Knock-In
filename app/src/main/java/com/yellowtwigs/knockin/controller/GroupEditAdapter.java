@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase;
 import com.yellowtwigs.knockin.model.DbWorkerThread;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
-import com.yellowtwigs.knockin.model.ModelDB.GroupDB;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.GroupDB;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;

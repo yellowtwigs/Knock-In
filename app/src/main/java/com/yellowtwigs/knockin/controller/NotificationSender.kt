@@ -6,7 +6,7 @@ import android.content.*
 
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.controller.activity.HomeActivity
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
@@ -91,7 +91,7 @@ class NotificationSender : BroadcastReceiver() {
     }
 
     private fun isNotificationServiceEnabled(context: Context): Boolean {
-        val pkgName = MainActivity::class.java.`package`!!.name
+        val pkgName = HomeActivity::class.java.`package`!!.name
         val str = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
         if (!TextUtils.isEmpty(str)) {
             val names = str.split(":")

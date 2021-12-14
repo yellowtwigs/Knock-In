@@ -142,7 +142,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@PremiumActivity, MainActivity::class.java))
+                    startActivity(Intent(this@PremiumActivity, HomeActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@PremiumActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@PremiumActivity, ManageNotificationActivity::class.java))
@@ -214,8 +214,10 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                     billingClient!!.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
 
-                        if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
-                            loadProductToRecyclerView(skuDetailsList)
+                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                            if (skuDetailsList != null) {
+                                loadProductToRecyclerView(skuDetailsList)
+                            }
 
                             var purchases = billingClient!!.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
 
@@ -293,7 +295,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 
-    private fun loadProductToRecyclerView(skuDetailsList: List<SkuDetails>) {
+    private fun loadProductToRecyclerView(skuDetailsList: MutableList<SkuDetails>) {
         val adapter = MyProductAdapter(this, skuDetailsList, billingClient)
         recyclerProduct!!.adapter = adapter
     }
@@ -310,8 +312,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
              *
              * @param billingResult The [BillingResult] which returns the status of the setup process.
              */
-            override fun onBillingSetupFinished(billingResult: BillingResult?) {
-                if (billingResult!!.responseCode == BillingClient.BillingResponseCode.OK) {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     println("////onBillingSetupFinished////")
 //                    Toast.makeText(this@PremiumActivity, "Success to connect Billing", Toast.LENGTH_SHORT).show()
                     BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED
@@ -342,7 +344,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
      * @param billingResult BillingResult of the update.
      * @param purchases List of updated purchases if present.
      */
-    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
+    override fun onPurchasesUpdated(p0: BillingResult, purchases: MutableList<Purchase>?) {
         if (purchases != null) {
             when {
                 purchases[0].originalJson.contains("notifications_vip_funk_theme") -> {
@@ -412,7 +414,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
         else{
-            startActivity(Intent(this@PremiumActivity, MainActivity::class.java).putExtra("fromMultiSelectActivity", true))
+            startActivity(Intent(this@PremiumActivity, HomeActivity::class.java).putExtra("fromMultiSelectActivity", true))
 
         }
     }

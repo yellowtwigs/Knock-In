@@ -18,14 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.CircularImageView;
-import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter;
 import com.yellowtwigs.knockin.controller.activity.group.AddContactToGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.DeleteContactFromGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.ContactDB;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

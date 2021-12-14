@@ -404,7 +404,7 @@ class ContactDetailsActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.edit_contact_delete_contact_message))
                 .setPositiveButton("Remove") { _, _ ->
                     contact_details_ContactsDatabase!!.contactsDao().deleteContactById(contact_details_ContactId!!)
-                    val mainIntent = Intent(this@ContactDetailsActivity, MainActivity::class.java)
+                    val mainIntent = Intent(this@ContactDetailsActivity, HomeActivity::class.java)
                     mainIntent.putExtra("isDelete", true)
                     startActivity(mainIntent)
                     finish()
@@ -413,7 +413,7 @@ class ContactDetailsActivity : AppCompatActivity() {
 
     private fun backOnPressed() {
         if (!fromGroupActivity) {
-            startActivity(Intent(this@ContactDetailsActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            startActivity(Intent(this@ContactDetailsActivity, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             finish()
         } else {
             startActivity(Intent(this@ContactDetailsActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
@@ -552,7 +552,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this@ContactDetailsActivity, MainActivity::class.java))
+        startActivity(Intent(this@ContactDetailsActivity, HomeActivity::class.java))
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

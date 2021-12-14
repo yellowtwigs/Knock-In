@@ -164,7 +164,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_Return!!.setOnClickListener {
 
             if (isEmptyField(add_new_contact_FirstName) && isEmptyField(add_new_contact_LastName) && isEmptyField(add_new_contact_PhoneNumber) && isEmptyField(add_new_contact_fixNumber) && isEmptyField(add_new_contact_Email)) {
-                val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                val intent = Intent(this@AddNewContactActivity, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
@@ -174,7 +174,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
                 alertDialog.setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
 
-                    startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
+                    startActivity(Intent(this@AddNewContactActivity, HomeActivity::class.java))
                     finish()
                 }
 
@@ -522,7 +522,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 .setMessage(R.string.add_new_contact_alert_dialog_message)
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-                    val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                    val intent = Intent(this@AddNewContactActivity, HomeActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -700,7 +700,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         if (isRetroFit) {
-            startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
+            startActivity(Intent(this@AddNewContactActivity, HomeActivity::class.java))
             finish()
         }
     }

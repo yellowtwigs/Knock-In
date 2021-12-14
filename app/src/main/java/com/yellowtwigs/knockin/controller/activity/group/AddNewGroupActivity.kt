@@ -20,10 +20,10 @@ import com.yellowtwigs.knockin.controller.adapter.CreateGroupGridViewAdapter
 import com.yellowtwigs.knockin.controller.adapter.CreateGroupListViewAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.ModelDB.GroupDB
-import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.models.data.ContactDB
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.GroupDB
+import com.yellowtwigs.knockin.models.data.LinkContactGroup
 
 /**
  * Activité qui nous permet de créer un groupe

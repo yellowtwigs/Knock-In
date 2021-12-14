@@ -32,14 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
-import com.yellowtwigs.knockin.controller.activity.MainActivity;
-import com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity;
+import com.yellowtwigs.knockin.controller.activity.HomeActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.model.ContactGesture;
 import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
-import com.yellowtwigs.knockin.model.ModelDB.NotificationDB;
+import com.yellowtwigs.knockin.models.data.ContactDB;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.NotificationDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
@@ -390,8 +389,8 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 //                    firstPosVisfirstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
                 }
                 System.out.println("selection" + firstPosVis);
-                if (context instanceof MainActivity) {
-                    ((MainActivity) context).gridMultiSelectItemClick(position);
+                if (context instanceof HomeActivity) {
+                    ((HomeActivity) context).gridMultiSelectItemClick(position);
                 } else {
                     ((GroupManagerActivity) context).gridMultiSelectItemClick(len, position, firstPosVis);
                 }
@@ -418,7 +417,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                     listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
-                ((MainActivity) context).gridMultiSelectItemClick(position);
+                ((HomeActivity) context).gridMultiSelectItemClick(position);
             } else {
                 if (quickMenu.isOpen()) {
                     quickMenu.close(false);

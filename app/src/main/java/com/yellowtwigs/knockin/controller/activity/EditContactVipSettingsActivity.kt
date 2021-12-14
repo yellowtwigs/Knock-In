@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
-import android.R.attr
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
@@ -35,7 +34,6 @@ import com.yellowtwigs.knockin.controller.GroupEditAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
-import kotlinx.android.synthetic.main.activity_edit_contact_vip_settings.*
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -682,7 +680,7 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
                     .setMessage(getString(R.string.edit_contact_delete_contact_message))
                     .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
                         edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
-                        val mainIntent = Intent(this@EditContactVipSettingsActivity, MainActivity::class.java)
+                        val mainIntent = Intent(this@EditContactVipSettingsActivity, HomeActivity::class.java)
                         mainIntent.putExtra("isDelete", true)
 
                         if (edit_contact_priority == 2) {
@@ -2783,7 +2781,7 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
                 startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
                 finish()
             } else {
-                startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                startActivity(Intent(this@EditContactVipSettingsActivity, HomeActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
                 finish()
             }
         }
@@ -2796,7 +2794,7 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
                 startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
                 finish()
             } else {
-                startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                startActivity(Intent(this@EditContactVipSettingsActivity, HomeActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
                 finish()
             }
         }
@@ -2812,7 +2810,7 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
                         if (fromGroupActivity) {
                             startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java))
                         } else {
-                            startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("position", position))
+                            startActivity(Intent(this@EditContactVipSettingsActivity, HomeActivity::class.java).putExtra("position", position))
                         }
                         finish()
                     }
@@ -2823,7 +2821,7 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
             if (fromGroupActivity) {
                 startActivity(Intent(this@EditContactVipSettingsActivity, GroupManagerActivity::class.java))
             } else {
-                startActivity(Intent(this@EditContactVipSettingsActivity, MainActivity::class.java).putExtra("position", position))
+                startActivity(Intent(this@EditContactVipSettingsActivity, HomeActivity::class.java).putExtra("position", position))
             }
             finish()
         }

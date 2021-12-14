@@ -9,12 +9,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.StartActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -90,7 +87,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
         Handler().postDelayed({
-            startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashScreenActivity, HomeActivity::class.java))
             finish()
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 

@@ -27,15 +27,15 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.controller.activity.HomeActivity
 import com.yellowtwigs.knockin.controller.activity.NotificationAlarmActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
-import com.yellowtwigs.knockin.model.ModelDB.VipNotificationsDB
-import com.yellowtwigs.knockin.model.ModelDB.VipSbnDB
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.NotificationDB
+import com.yellowtwigs.knockin.models.data.VipNotificationsDB
+import com.yellowtwigs.knockin.models.data.VipSbnDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 
 /**
@@ -693,9 +693,9 @@ class NotificationListener : NotificationListenerService() {
         mBuilder.setContentTitle(contact)
         mBuilder.setContentText("$message on $platform")
 
-        val resultIntent = Intent(applicationContext, MainActivity::class.java);
+        val resultIntent = Intent(applicationContext, HomeActivity::class.java);
         val stackBuilder = TaskStackBuilder.create(applicationContext);
-        stackBuilder.addParentStack(MainActivity::class.java);
+        stackBuilder.addParentStack(HomeActivity::class.java);
         stackBuilder.addNextIntent(resultIntent);
         val resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);

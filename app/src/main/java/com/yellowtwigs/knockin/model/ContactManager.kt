@@ -12,6 +12,7 @@ import android.telephony.PhoneNumberUtils
 import android.util.Base64
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ModelDB.*
+import com.yellowtwigs.knockin.models.data.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
@@ -71,70 +72,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             }
         }
         return null
-    }
-
-    //region SortContact Toutes les méthodes nous permetttant de trier les contacts
-
-    fun sortContactByFirstNameAZ() {
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
-        val result = executorService.submit(callDb)
-        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
-        listChangement.addAll(result.get())
-        listChangement.retainAll(contactList)
-        contactList = listChangement
-    }
-
-    fun sortContactByLastname() {
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByLastNameAZ() }
-        val result = executorService.submit(callDb)
-        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
-        listChangement.addAll(result.get())
-        listChangement.retainAll(contactList)
-        contactList = listChangement
-    }
-
-    fun sortContactByPriority() {
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByPriority20() }
-        val result = executorService.submit(callDb)
-        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
-        listChangement.addAll(result.get())
-        listChangement.retainAll(contactList)
-        contactList = listChangement
-    }
-
-    fun sortContactByFavorite() {
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFavorite() }
-        val result = executorService.submit(callDb)
-        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
-        listChangement.addAll(result.get())
-        listChangement.retainAll(contactList)
-        contactList = listChangement
-    }
-
-    fun sortContactByGroup() {
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-        val callDb = Callable { contactsDatabase!!.contactsDao().sortContactByFirstNameAZ() }
-        val result = executorService.submit(callDb)
-        val listChangement: ArrayList<ContactWithAllInformation> = ArrayList()
-        listChangement.addAll(result.get())
-        val listTmp: ArrayList<ContactWithAllInformation> = ArrayList()
-        //listTmp.addAll(listChangement)
-        for (i in listChangement) {
-            if (i.getFirstGroup(context) == null) {
-                listTmp.add(i)
-            }
-        }
-        val listOfContactWithGroup: ArrayList<ContactWithAllInformation> = ArrayList()
-        listOfContactWithGroup.addAll(listChangement)
-        listOfContactWithGroup.removeAll(listTmp)
-        listOfContactWithGroup.sortBy { it.getFirstGroup(context)?.name?.toUpperCase() }//selector(listChangement.get(i))}
-        listChangement.removeAll(listOfContactWithGroup)
-        listChangement.addAll(0, listOfContactWithGroup)//ajouté à l'index 0 la liste de contact avec groupe
-        contactList = listChangement
     }
 
 

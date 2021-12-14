@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model.ModelDB
+package com.yellowtwigs.knockin.models.data
 
 import androidx.room.*
 

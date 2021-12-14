@@ -33,7 +33,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import java.util.*
 
@@ -99,7 +98,7 @@ class CockpitActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
-                startActivity(Intent(this@CockpitActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                startActivity(Intent(this@CockpitActivity, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
@@ -243,7 +242,7 @@ class CockpitActivity : AppCompatActivity() {
             cockpit_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> startActivity(Intent(this@CockpitActivity, MainActivity::class.java))
+                R.id.nav_home -> startActivity(Intent(this@CockpitActivity, HomeActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this@CockpitActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@CockpitActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@CockpitActivity, SettingsActivity::class.java))

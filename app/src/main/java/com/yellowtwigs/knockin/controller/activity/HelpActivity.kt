@@ -127,7 +127,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@HelpActivity, MainActivity::class.java))
+                    startActivity(Intent(this@HelpActivity, HomeActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@HelpActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@HelpActivity, ManageNotificationActivity::class.java))

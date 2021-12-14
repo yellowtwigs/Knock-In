@@ -139,7 +139,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private fun refreshActivity() {
         if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
-            startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            startActivity(Intent(this@MultiChannelActivity, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             hideKeyboard()
             finish()
         } else {

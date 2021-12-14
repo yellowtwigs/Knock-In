@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.*
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
@@ -34,7 +33,6 @@ import com.yellowtwigs.knockin.model.ModelDB.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
 import com.yellowtwigs.knockin.controller.SelectContactAdapter
 
 /**
@@ -81,7 +79,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_contacts -> {
-                startActivity(Intent(this@GroupManagerActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                startActivity(Intent(this@GroupManagerActivity, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifcations -> {
@@ -185,7 +183,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@GroupManagerActivity, MainActivity::class.java))
+                    startActivity(Intent(this@GroupManagerActivity, HomeActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@GroupManagerActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@GroupManagerActivity, ManageNotificationActivity::class.java))

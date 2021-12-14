@@ -86,7 +86,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.navigation_contacts -> {
-                startActivity(Intent(this@NotificationHistoryActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                startActivity(Intent(this@NotificationHistoryActivity, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_groups -> {
@@ -198,7 +198,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, HomeActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this, ManageNotificationActivity::class.java))

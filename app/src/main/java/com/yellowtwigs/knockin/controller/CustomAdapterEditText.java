@@ -11,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.model.EditTextModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;

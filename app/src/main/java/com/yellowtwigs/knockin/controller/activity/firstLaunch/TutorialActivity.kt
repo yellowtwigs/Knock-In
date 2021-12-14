@@ -10,7 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.TutorialViewPagerAdapter
-import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.controller.activity.HomeActivity
 import com.yellowtwigs.knockin.controller.activity.NotificationHistoryActivity
 import com.yellowtwigs.knockin.controller.activity.CockpitActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
@@ -382,7 +382,7 @@ class TutorialActivity : AppCompatActivity() {
                 fromStartActivity -> goToMainWithIntent()
 
                 fromMainActivity -> {
-                    startActivity(Intent(this@TutorialActivity, MainActivity::class.java))
+                    startActivity(Intent(this@TutorialActivity, HomeActivity::class.java))
                     finish()
                 }
 
@@ -409,7 +409,7 @@ class TutorialActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     fun goToMainWithIntent() {
-        val intentToMain = Intent(this@TutorialActivity, MainActivity::class.java)
+        val intentToMain = Intent(this@TutorialActivity, HomeActivity::class.java)
         intentToMain.putExtra("fromStartActivity", true)
         startActivity(intentToMain)
         finish()

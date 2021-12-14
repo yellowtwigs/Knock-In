@@ -26,7 +26,6 @@ import android.widget.ListView
 import android.widget.Toast
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.MessageListAdapter
-import com.yellowtwigs.knockin.model.Message
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern

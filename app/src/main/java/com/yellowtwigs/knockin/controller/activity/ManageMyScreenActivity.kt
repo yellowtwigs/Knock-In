@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -255,7 +254,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ManageMyScreenActivity, HomeActivity::class.java))
                 }
                 R.id.nav_informations -> startActivity(Intent(this@ManageMyScreenActivity, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
@@ -565,7 +564,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title)) // getString(R.string.main_alert_dialog_delete_contact_title)
                 .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                    startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ManageMyScreenActivity, HomeActivity::class.java))
                 }
                 .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                 }
