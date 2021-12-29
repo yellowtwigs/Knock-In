@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--   <string name="app_name">Knock In</string>-->
+    <string name="app_name">Knock In</string>
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <!-- region Help Tutorial -->
@@ -228,7 +228,7 @@
     <string name="notification_manager_prio_1">Ẩn thông báo ưu tiên cấp 1</string>
     <string name="notification_alert_dialog_title">Lựa chọn liên hệ VIP</string>
     <string name="notification_alert_dialog_message">Bạn có muốn chọn liên hệ ưu tiên cao của bạn không?</string>
-    
+
     <string name="notification_vip_message_tone">Giai điệu thông báo VIP</string>
     <string name="notification_vip_default_message_tone">Giai điệu mặc định</string>
     <string name="notification_vip_jazzy_message_tone">Giai điệu vui nhộn</string>

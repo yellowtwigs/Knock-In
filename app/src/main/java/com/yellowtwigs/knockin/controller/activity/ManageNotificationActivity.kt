@@ -34,7 +34,6 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationSender
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
-import kotlinx.android.synthetic.main.activity_notifications_vip_ringtone_layout.*
 import java.util.*
 
 /**

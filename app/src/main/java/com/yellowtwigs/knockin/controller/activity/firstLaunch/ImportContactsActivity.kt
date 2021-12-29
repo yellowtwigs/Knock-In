@@ -20,7 +20,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
-import kotlinx.android.synthetic.main.activity_import_contacts.*
 
 /**
  * Activité Qui Nous permet d'importer nos contact pour les buildVariant Contacter et Converser
@@ -42,6 +41,7 @@ class ImportContactsActivity : AppCompatActivity() {
 
     private var import_contacts_ImportContactsCheck: AppCompatImageView? = null
     private var start_activity_PermissionsCheck: AppCompatImageView? = null
+    private var import_contacts_activity_import_contacts_check: AppCompatImageView? = null
 
     //endregion
 
@@ -64,6 +64,7 @@ class ImportContactsActivity : AppCompatActivity() {
 
         import_contacts_ImportContactsCheck = findViewById(R.id.import_contacts_activity_import_contacts_check)
         start_activity_PermissionsCheck = findViewById(R.id.import_contacts_activity_permissions_check)
+        import_contacts_activity_import_contacts_check = findViewById(R.id.import_contacts_activity_import_contacts_check)
 
         //endregion
 
@@ -157,7 +158,7 @@ class ImportContactsActivity : AppCompatActivity() {
         if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
 
             import_contacts_activity_PermissionsLoading!!.visibility = View.INVISIBLE
-            import_contacts_activity_permissions_check!!.visibility = View.VISIBLE
+            import_contacts_activity_import_contacts_check!!.visibility = View.VISIBLE
         }
         allIsChecked()
     }

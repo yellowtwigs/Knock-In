@@ -39,12 +39,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
 import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter
 import com.yellowtwigs.knockin.controller.NotificationListener
-import com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
@@ -118,25 +116,40 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var settings_left_drawer_ThemeSwitch: Switch? = null
 
     //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_contacts -> {
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_contacts -> {
+                }
+                R.id.navigation_groups -> {
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            GroupManagerActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_notifcations -> {
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            NotificationHistoryActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_cockpit -> {
+                    startActivity(
+                        Intent(this@MainActivity, CockpitActivity::class.java).addFlags(
+                            Intent.FLAG_ACTIVITY_NO_ANIMATION
+                        )
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-            R.id.navigation_groups -> {
-                startActivity(Intent(this@MainActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifcations -> {
-                startActivity(Intent(this@MainActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_cockpit -> {
-                startActivity(Intent(this@MainActivity, CockpitActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
+            false
         }
-        false
-    }
 
     //endregion
 
@@ -154,12 +167,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         if (sharedFirstLaunch.getBoolean("first_launch", true)) {
-            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
+//            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
 
-        val importWhatsappSharedPreferences: SharedPreferences = getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
-        val importWhatsapp = importWhatsappSharedPreferences.getBoolean("importWhatsappPreferences", false)
+        val importWhatsappSharedPreferences: SharedPreferences =
+            getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
+        val importWhatsapp =
+            importWhatsappSharedPreferences.getBoolean("importWhatsappPreferences", false)
 
         //endregion
 
@@ -225,10 +240,17 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             var counter = 0
 
             while (counter < main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ().size) {
-                if (main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites") {
+                if (main_ContactsDatabase!!.GroupsDao()
+                        .getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites"
+                ) {
                     var secondCounter = 0
-                    while (secondCounter < main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(this).size) {
-                        main_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(this)[secondCounter].setIsFavorite(main_ContactsDatabase)
+                    while (secondCounter < main_ContactsDatabase!!.GroupsDao()
+                            .getAllGroupsByNameAZ()[counter].getListContact(this).size
+                    ) {
+                        main_ContactsDatabase!!.GroupsDao()
+                            .getAllGroupsByNameAZ()[counter].getListContact(this)[secondCounter].setIsFavorite(
+                            main_ContactsDatabase
+                        )
 
                         secondCounter++
                     }
@@ -248,7 +270,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Pour tous nos attributs qui sont des vues (TextView, listView , ConstraintLayout, ImageView etc) sur lesquelles notre activité agit nous les récupérons
 
-        main_FloatingButtonAddNewContact = this.findViewById(R.id.main_floating_button_add_new_contact)
+        main_FloatingButtonAddNewContact =
+            this.findViewById(R.id.main_floating_button_add_new_contact)
         main_FloatingButtonMultiChannel = findViewById(R.id.main_floating_button_multichannel)
         main_FloatingButtonMail = findViewById(R.id.main_gmail_button)
         main_FloatingButtonSMS = findViewById(R.id.main_sms_button)
@@ -264,7 +287,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
 
-        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+        val main_SettingsLeftDrawerLayout =
+            findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -327,18 +351,53 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainDrawerLayout!!.closeDrawers()
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                R.id.nav_informations -> startActivity(Intent(this@MainActivity, EditInformationsActivity::class.java))
-                R.id.nav_messenger -> startActivity(Intent(this@MainActivity, MessengerActivity::class.java))
-                R.id.nav_notif_config -> startActivity(Intent(this@MainActivity, ManageNotificationActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                R.id.nav_informations -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        EditInformationsActivity::class.java
+                    )
+                )
+                R.id.nav_messenger -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        MessengerActivity::class.java
+                    )
+                )
+                R.id.nav_notif_config -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        ManageNotificationActivity::class.java
+                    )
+                )
+                R.id.nav_settings -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        SettingsActivity::class.java
+                    )
+                )
 //                R.id.nav_go_to_kin -> {
 //                    val openURL = Intent(Intent.ACTION_VIEW)
 //                    openURL.data = Uri.parse("https://play.google.com/store/apps/details?id=com.yellowtwigs.Knockin.notification")
 //                    startActivity(openURL)
 //                }
-                R.id.nav_in_app -> startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
-                R.id.nav_manage_screen -> startActivity(Intent(this@MainActivity, ManageMyScreenActivity::class.java))
-                R.id.nav_knockons -> startActivity(Intent(this@MainActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_in_app -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        PremiumActivity::class.java
+                    )
+                )
+                R.id.nav_manage_screen -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        ManageMyScreenActivity::class.java
+                    )
+                )
+                R.id.nav_knockons -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        ManageKnockonsActivity::class.java
+                    )
+                )
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
             }
 
@@ -375,10 +434,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //Verification du mode de tri des contacts pour afficher le bon tri
         when {
-            sharedPreferences.getString("tri", "nom") == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
-            sharedPreferences.getString("tri", "nom") == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
-            sharedPreferences.getString("tri", "nom") == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
-            sharedPreferences.getString("tri", "nom") == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
             else -> gestionnaireContacts!!.sortContactByFavorite()
         }
 
@@ -426,13 +497,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     println("dx $dx dy$dy")
                     if (dy > 10) {
                         if (main_FloatingButtonAddNewContact!!.visibility == View.VISIBLE) {
-                            val disparition = AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
+                            val disparition =
+                                AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
                             main_FloatingButtonAddNewContact!!.startAnimation(disparition)
                             main_FloatingButtonAddNewContact!!.visibility = View.GONE
                         }
                     } else if (dy < -10) {
                         if (main_FloatingButtonAddNewContact!!.visibility == View.GONE) {
-                            val apparition = AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
+                            val apparition =
+                                AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
                             main_FloatingButtonAddNewContact!!.startAnimation(apparition)
                             main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
                         }
@@ -476,12 +549,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", true)
                 edit.apply()
             } else {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", false)
                 edit.apply()
@@ -509,7 +584,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         navInviteFriend.setOnMenuItemClickListener {
             val intent = Intent(Intent.ACTION_SEND)
-            val messageString = getResources().getString(R.string.invite_friend_text) + " \n" + getResources().getString(R.string.location_on_playstore)
+            val messageString =
+                getResources().getString(R.string.invite_friend_text) + " \n" + getResources().getString(
+                    R.string.location_on_playstore
+                )
             intent.putExtra(Intent.EXTRA_TEXT, messageString)
             intent.type = "text/plain"
             val messageIntent = Intent.createChooser(intent, null)
@@ -525,10 +603,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_RecyclerView!!.visibility = View.GONE
             //check les permissions
             val sync = Runnable {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), PERMISSION_READ_CONTACT)
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_CONTACTS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.READ_CONTACTS),
+                        PERMISSION_READ_CONTACT
+                    )
                 }
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_CONTACTS
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
                     //on affiche le loading
                     val displayLoading = Runnable {
                         main_loadingPanel!!.visibility = View.VISIBLE
@@ -539,27 +629,42 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
 
                     //on get tout les contact qui on été modifié lors de la last sync et on les stock dans une arrayList
-                    val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+                    val sharedPreferencesSync =
+                        getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1
                     var stringSet = listOf<String>()
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                        stringSet =
+                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
-                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                    while (sharedPreferencesSync.getStringSet(
+                            index.toString(),
+                            null
+                        ) != null && stringSet.isNotEmpty()
+                    ) {
+                        stringSet =
+                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
                     }
 
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
-                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                    while (sharedPreferencesSync.getStringSet(
+                            index.toString(),
+                            null
+                        ) != null && stringSet.isNotEmpty()
+                    ) {
+                        stringSet =
+                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         edit.remove(index.toString())
                         index++
                     }
                     edit.apply()
-                    val sharedPrefe = applicationContext.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                    val sharedPrefe = applicationContext.getSharedPreferences(
+                        "Gridview_column",
+                        Context.MODE_PRIVATE
+                    )
                     if (sharedPrefe.getString("tri", "") == "priorite")
                         gestionnaireContacts!!.sortContactByPriority()
                     else
@@ -593,7 +698,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_constraintLayout!!.setOnTouchListener { _, _ ->
             val v = this@MainActivity.currentFocus
-            val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (v != null) {
                 imm.hideSoftInputFromWindow(v.windowToken, 0)
             }
@@ -612,17 +718,24 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         // Lors du click sur le bouton Help dans la toolbar, nous ouvrons le Tutorial
         main_toolbar_Help!!.setOnClickListener {
             if (Resources.getSystem().configuration.locale.language == "fr") {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-contacts"))
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-contacts")
+                )
                 startActivity(browserIntent)
             } else {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-contacts"))
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.yellowtwigs.com/help-contacts")
+                )
                 startActivity(browserIntent)
             }
         }
 
         // En mode Multiselect, le click sur la croix permet de fermer de ce mode
         main_ToolbarMultiSelectModeClose!!.setOnClickListener {
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
+                .show()
             startActivity(Intent(this@MainActivity, MainActivity::class.java))
             finish()
         }
@@ -644,14 +757,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                             recyclerViewAdapter!!.notifyDataSetChanged()
                             recyclerViewAdapter!!.listOfItemSelected = listOfItemSelected
                         }
-                        main_ToolbarMultiSelectModeTitle!!.text = listOfItemSelected.size.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+                        main_ToolbarMultiSelectModeTitle!!.text =
+                            listOfItemSelected.size.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
 
                     }
                 }
                 false
             }
             popupMenu.show()
-
         }
 
         // En mode Multiselect, le click sur la poubelle permettant de faire un Delete des contacts séléctionnés
@@ -659,7 +772,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             var suppressWarning = " "
             var nbVIP = 0
 
-            val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
+            val sharedNumberOfContactsVIPPreferences: SharedPreferences =
+                getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
             val nb_Contacts_VIP = sharedNumberOfContactsVIPPreferences.getInt("nb_Contacts_VIP", 0)
 
             if (listOfItemSelected.size > 1) {
@@ -677,40 +791,52 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 suppressWarning += contact!!.firstName + " " + contact.lastName
             }
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
-                    .setMessage(String.format(resources.getString(R.string.main_alert_dialog_delete_contact_message), suppressWarning))
-                    .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
+                .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
+                .setMessage(
+                    String.format(
+                        resources.getString(R.string.main_alert_dialog_delete_contact_message),
+                        suppressWarning
+                    )
+                )
+                .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
 
-                        val nbVIPTT = nb_Contacts_VIP - nbVIP
+                    val nbVIPTT = nb_Contacts_VIP - nbVIP
 
-                        val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
-                        edit.putInt("nb_Contacts_VIP", nbVIPTT)
-                        edit.apply()
+                    val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                    edit.putInt("nb_Contacts_VIP", nbVIPTT)
+                    edit.apply()
 
-                        listOfItemSelected.forEach {
-                            main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
-                        }
-                        listOfItemSelected.clear()
-                        switchMultiSelectToNormalMode()
-                        refreshActivity()
-                        finish()
-                        overridePendingTransition(0, 0)
-                        startActivity(getIntent())
-                        overridePendingTransition(0, 0)
+                    listOfItemSelected.forEach {
+                        main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
                     }
-                    .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
-                    .show()
+                    listOfItemSelected.clear()
+                    switchMultiSelectToNormalMode()
+                    refreshActivity()
+                    finish()
+                    overridePendingTransition(0, 0)
+                    startActivity(getIntent())
+                    overridePendingTransition(0, 0)
+                }
+                .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
+                .show()
 
         }
 
         main_SearchBar!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
             }
 
-            override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 if (gridViewAdapter != null) {
                     gridViewAdapter!!.closeMenu()
                 }
@@ -720,7 +846,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 val sharedPref = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val length = sharedPref.getInt("gridview", 1)
 
-                val filteredList = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
+                val filteredList = gestionnaireContacts!!.getContactConcernByFilter(
+                    main_filter,
+                    main_search_bar_value
+                )
                 val contactListDb = ContactManager(this@MainActivity)
 
                 if (sharedPref.getString("tri", "nom") == "nom") {
@@ -735,10 +864,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 //en fonction de l'affichage on update soit la grid soit la list view
                 if (length > 1) {
-                    gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
+                    gridViewAdapter =
+                        ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, length)
+                    recyclerViewAdapter = ContactRecyclerViewAdapter(
+                        this@MainActivity,
+                        gestionnaireContacts!!,
+                        length
+                    )
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                 }
             }
@@ -751,7 +885,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         // En mode Multiselect, lors du click sur le Floating Button -> -> ->, nous redirige vers la page Multichannel
         main_FloatingButtonMultiChannel!!.setOnClickListener {
-            val intentToMultiChannelActivity = Intent(this@MainActivity, MultiChannelActivity::class.java)
+            val intentToMultiChannelActivity =
+                Intent(this@MainActivity, MultiChannelActivity::class.java)
             intentToMultiChannelActivity.putExtra("fromMainToMultiChannel", true)
             val iterator: IntIterator?
             val listOfIdContactSelected: ArrayList<Int> = ArrayList()
@@ -761,7 +896,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             for (i in iterator) {
                 listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
             }
-            intentToMultiChannelActivity.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+            intentToMultiChannelActivity.putIntegerArrayListExtra(
+                "ListContactsSelected",
+                listOfIdContactSelected
+            )
 
             refreshActivity()
             startActivity(intentToMultiChannelActivity)
@@ -791,7 +929,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             monoChannelMailClick(listOfMailContactSelected)
 
             if (len >= 3) {
-                gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                gridViewAdapter =
+                    ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                 main_GridView!!.adapter = gridViewAdapter
                 main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
                 main_FloatingButtonMultiChannel!!.visibility = View.GONE
@@ -800,7 +939,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 main_FloatingButtonSMS!!.visibility = View.GONE
                 main_FloatingButtonGroup!!.visibility = View.GONE
             } else {
-                main_RecyclerView!!.adapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+                main_RecyclerView!!.adapter =
+                    ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
                 main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
                 main_FloatingButtonMultiChannel!!.visibility = View.GONE
 
@@ -831,7 +971,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (fromStartActivity) {
             val sortByPriority = Runnable {
                 gestionnaireContacts!!.sortContactByPriority()
-                val sharedDefaultTriPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                val sharedDefaultTriPreferences =
+                    getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedDefaultTriPreferences.getInt("gridview", 1)
                 val edit: SharedPreferences.Editor = sharedDefaultTriPreferences.edit()
                 edit.putString("tri", "priorite")
@@ -839,11 +980,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 runOnUiThread {
                     if (len > 1) {
-                        gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        gridViewAdapter =
+                            ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                         main_GridView!!.adapter = gridViewAdapter
                         main_GridView!!.visibility = View.VISIBLE
                     } else {
-                        recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+                        recyclerViewAdapter = ContactRecyclerViewAdapter(
+                            this@MainActivity,
+                            gestionnaireContacts!!,
+                            len
+                        )
                         main_RecyclerView!!.adapter = recyclerViewAdapter
                         main_RecyclerView!!.visibility = View.VISIBLE
                     }
@@ -859,36 +1005,33 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val edit: SharedPreferences.Editor = sharedpopup_shop.edit()
         val actual_timestamp = System.currentTimeMillis() / 1000
         val popup_shop = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle(getString(R.string.popup_shop_title))
-                .setMessage(getString(R.string.popup_shop_message))
-                .setPositiveButton(R.string.popup_shop_yes) { _, _ ->
-                    edit.putBoolean("popup_response", true)
-                    edit.apply()
-                    startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
-                }
-                .setNeutralButton(R.string.popup_shop_never) { _, _ ->
-                    edit.putBoolean("popup_response", false)
-                    edit.apply()
-                }
-                .setNegativeButton(R.string.popup_shop_later) { _, _ ->
-                    edit.putBoolean("popup_response", true)
-                    edit.apply()
-                }
-        println("//////////////////////...............//////////////////////////////////")
-        println(shared_timestamp)
-        println(shared_popup_response)
-        //popup_shop.show()
+            .setPositiveButton(R.string.popup_shop_yes) { _, _ ->
+                edit.putBoolean("popup_response", true)
+                edit.apply()
+                startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
+            }
+            .setNeutralButton(R.string.popup_shop_never) { _, _ ->
+                edit.putBoolean("popup_response", false)
+                edit.apply()
+            }
+            .setNegativeButton(R.string.popup_shop_later) { _, _ ->
+                edit.putBoolean("popup_response", true)
+                edit.apply()
+            }
         if (shared_timestamp == 0L) {
-            popup_shop.show()
-            val timestamp = System.currentTimeMillis() / 1000 + 300 // 604 800 = 1semaine ; 900 = 15min ; 300 = 5min
+//            popup_shop.show()
+            val timestamp =
+                System.currentTimeMillis() / 1000 + 300
             edit.putLong("popup_timestamp", timestamp)
             edit.apply()
-        } else if (shared_timestamp < actual_timestamp) {
-            if (shared_popup_response) {
-                popup_shop.show()
-                val timestamp = System.currentTimeMillis() / 1000 + 604800
-                edit.putLong("popup_timestamp", timestamp)
-                edit.apply()
+        } else {
+            if (shared_timestamp < actual_timestamp) {
+                if (shared_popup_response) {
+//                    popup_shop.show()
+                    val timestamp = System.currentTimeMillis() / 1000 + 604800
+                    edit.putLong("popup_timestamp", timestamp)
+                    edit.apply()
+                }
             }
         }
     }
@@ -920,7 +1063,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_GridView!!.adapter = gridViewAdapter
         } else {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+            recyclerViewAdapter =
+                ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
         }
     }
@@ -1053,8 +1197,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private fun toggleNotificationListenerService() {
         val pm = packageManager
         val cmpName = ComponentName(this, NotificationListener::class.java)
-        pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-        pm.setComponentEnabledSetting(cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+        pm.setComponentEnabledSetting(
+            cmpName,
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
+        pm.setComponentEnabledSetting(
+            cmpName,
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
     /**
@@ -1143,7 +1295,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.adapter = gridViewAdapter
 
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
+                .show()
 
             main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
 
@@ -1158,9 +1311,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val i = listOfItemSelected.size
 
         if (listOfItemSelected.size == 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
+            main_ToolbarMultiSelectModeTitle!!.text =
+                i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
         } else if (listOfItemSelected.size > 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+            main_ToolbarMultiSelectModeTitle!!.text =
+                i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
 
@@ -1185,7 +1340,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val i = listOfItemSelected.size
 
         if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT)
+                .show()
             main_FloatingButtonAddNewContact!!.visibility = View.GONE
             main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE
             firstClick = false
@@ -1194,7 +1350,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_ToolbarLayout!!.visibility = View.GONE
 
         } else if (listOfItemSelected.size == 0) {
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
+                .show()
 
             main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
             main_FloatingButtonMultiChannel!!.visibility = View.GONE
@@ -1209,9 +1366,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         if (listOfItemSelected.size == 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
+            main_ToolbarMultiSelectModeTitle!!.text =
+                i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
         } else if (listOfItemSelected.size > 1) {
-            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+            main_ToolbarMultiSelectModeTitle!!.text =
+                i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
 
@@ -1249,7 +1408,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         if (allContactsHaveMail) {
             main_FloatingButtonMail!!.visibility = View.VISIBLE
-            val params: ViewGroup.MarginLayoutParams = main_FloatingButtonMail!!.layoutParams as ViewGroup.MarginLayoutParams
+            val params: ViewGroup.MarginLayoutParams =
+                main_FloatingButtonMail!!.layoutParams as ViewGroup.MarginLayoutParams
             params.bottomMargin = margin * i
             main_FloatingButtonMail!!.layoutParams = params
             println("height of floating mail" + main_FloatingButtonMail!!.height)
@@ -1259,7 +1419,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             main_FloatingButtonMail!!.visibility = View.GONE
         }
         main_FloatingButtonGroup!!.visibility = View.VISIBLE
-        val params: ViewGroup.MarginLayoutParams = main_FloatingButtonGroup!!.layoutParams as ViewGroup.MarginLayoutParams
+        val params: ViewGroup.MarginLayoutParams =
+            main_FloatingButtonGroup!!.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin = margin * i
         main_FloatingButtonGroup!!.layoutParams = params
 
@@ -1285,7 +1446,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL, contact)/*listOfMail.toArray(new String[listOfMail.size()]*/
+        intent.putExtra(
+            Intent.EXTRA_EMAIL,
+            contact
+        )/*listOfMail.toArray(new String[listOfMail.size()]*/
         intent.data = Uri.parse("mailto:")
         intent.type = "message/rfc822"
         intent.putExtra(Intent.EXTRA_SUBJECT, "")
@@ -1302,23 +1466,35 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private fun createGroupMultiSelectClick(listContacts: ArrayList<ContactWithAllInformation>) {
 
         val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        @SuppressLint("InflateParams") val alertView = inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
+        @SuppressLint("InflateParams") val alertView =
+            inflater.inflate(R.layout.alert_dialog_edit_group, null, true)
 
-        val mainCreateGroupAlertDialogTitle = alertView.findViewById<TextView>(R.id.manager_group_edit_group_alert_dialog_title)
-        val mainCreateGroupAlertDialogEditText = alertView.findViewById<AppCompatEditText>(R.id.manager_group_edit_group_view_edit)
+        val mainCreateGroupAlertDialogTitle =
+            alertView.findViewById<TextView>(R.id.manager_group_edit_group_alert_dialog_title)
+        val mainCreateGroupAlertDialogEditText =
+            alertView.findViewById<AppCompatEditText>(R.id.manager_group_edit_group_view_edit)
 
-        val mainCreateGroupAlertDialogRedTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_red)
-        val mainCreateGroupAlertDialogBlueTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_blue)
-        val mainCreateGroupAlertDialogGreenTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_green)
-        val mainCreateGroupAlertDialogYellowTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_yellow)
-        val mainCreateGroupAlertDialogOrangeTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_orange)
-        val mainCreateGroupAlertDialogPurpleTag = alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_purple)
+        val mainCreateGroupAlertDialogRedTag =
+            alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_red)
+        val mainCreateGroupAlertDialogBlueTag =
+            alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_blue)
+        val mainCreateGroupAlertDialogGreenTag =
+            alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_green)
+        val mainCreateGroupAlertDialogYellowTag =
+            alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_yellow)
+        val mainCreateGroupAlertDialogOrangeTag =
+            alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_orange)
+        val mainCreateGroupAlertDialogPurpleTag =
+            alertView.findViewById<AppCompatImageView>(R.id.manager_group_edit_group_color_purple)
 
         // Titre de la Popup
-        mainCreateGroupAlertDialogTitle.text = this.getString(R.string.main_alert_dialog_group_title)
+        mainCreateGroupAlertDialogTitle.text =
+            this.getString(R.string.main_alert_dialog_group_title)
 
         // Text hint de l'EditText
-        mainCreateGroupAlertDialogEditText.hint = getString(R.string.group_name).format(main_ContactsDatabase!!.GroupsDao().getIdNeverUsed())
+        mainCreateGroupAlertDialogEditText.hint = getString(R.string.group_name).format(
+            main_ContactsDatabase!!.GroupsDao().getIdNeverUsed()
+        )
 
         mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_yellow)
         var color = this.getColor(R.color.red_tag_group)
@@ -1394,94 +1570,100 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setView(alertView)
-                .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
-                    if (mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites" || mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites") {
-                        hideKeyboard()
-                        Toast.makeText(this, getString(R.string.main_alert_dialog_group_favorites_already_exist), Toast.LENGTH_LONG).show()
-                    } else {
-                        val nameGroup = if (mainCreateGroupAlertDialogEditText.text.toString().isNotEmpty()) {
+            .setView(alertView)
+            .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
+                if (mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites" || mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites") {
+                    hideKeyboard()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.main_alert_dialog_group_favorites_already_exist),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    val nameGroup =
+                        if (mainCreateGroupAlertDialogEditText.text.toString().isNotEmpty()) {
                             mainCreateGroupAlertDialogEditText.text.toString()
                         } else {
                             mainCreateGroupAlertDialogEditText.hint.toString()
                         }
-                        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-                        val callDb = Callable {
-                            if (listContacts.size != 0) {
-                                val group = GroupDB(null, nameGroup, "", -500138)
-                                idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)!!
-                                for (contact in listContacts) {
-                                    val link = LinkContactGroup(idGroup.toInt(), contact.getContactId())
-                                    main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
-                                }
+                    val executorService: ExecutorService = Executors.newFixedThreadPool(1)
+                    val callDb = Callable {
+                        if (listContacts.size != 0) {
+                            val group = GroupDB(null, nameGroup, "", -500138)
+                            idGroup = main_ContactsDatabase?.GroupsDao()!!.insert(group)!!
+                            for (contact in listContacts) {
+                                val link = LinkContactGroup(idGroup.toInt(), contact.getContactId())
+                                main_ContactsDatabase?.LinkContactGroupDao()!!.insert(link)
                             }
                         }
-                        executorService.submit(callDb).get()!!
-
-                        if (color == 0) {
-                            val r = Random()
-                            when (r.nextInt(7)) {
-                                0 -> {
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                    color = this.getColor(R.color.green_tag_group)
-                                    color = this.getColor(R.color.orange_tag_group)
-                                    color = this.getColor(R.color.yellow_tag_group)
-                                    color = this.getColor(R.color.purple_tag_group)
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                }
-                                1 -> {
-                                    color = this.getColor(R.color.blue_tag_group)
-                                    color = this.getColor(R.color.green_tag_group)
-                                    color = this.getColor(R.color.orange_tag_group)
-                                    color = this.getColor(R.color.yellow_tag_group)
-                                    color = this.getColor(R.color.purple_tag_group)
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                }
-                                2 -> {
-                                    color = this.getColor(R.color.green_tag_group)
-                                    color = this.getColor(R.color.orange_tag_group)
-                                    color = this.getColor(R.color.yellow_tag_group)
-                                    color = this.getColor(R.color.purple_tag_group)
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                }
-                                3 -> {
-                                    color = this.getColor(R.color.orange_tag_group)
-                                    color = this.getColor(R.color.yellow_tag_group)
-                                    color = this.getColor(R.color.purple_tag_group)
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                }
-                                4 -> {
-                                    color = this.getColor(R.color.yellow_tag_group)
-                                    color = this.getColor(R.color.purple_tag_group)
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                }
-                                5 -> {
-                                    color = this.getColor(R.color.purple_tag_group)
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                }
-                                6 -> {
-                                    color = this.getColor(R.color.red_tag_group)
-                                    color = this.getColor(R.color.blue_tag_group)
-                                }
-                                else -> color = this.getColor(R.color.blue_tag_group)
-                            }
-                        }
-                        hideKeyboard()
-                        main_ContactsDatabase!!.GroupsDao().updateGroupSectionColorById(idGroup.toInt(), color)
-                        startActivity(Intent(this, GroupManagerActivity::class.java))
                     }
-                }
-                .setNegativeButton(R.string.alert_dialog_cancel) { _, _ ->
+                    executorService.submit(callDb).get()!!
+
+                    if (color == 0) {
+                        val r = Random()
+                        when (r.nextInt(7)) {
+                            0 -> {
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                                color = this.getColor(R.color.green_tag_group)
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            1 -> {
+                                color = this.getColor(R.color.blue_tag_group)
+                                color = this.getColor(R.color.green_tag_group)
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            2 -> {
+                                color = this.getColor(R.color.green_tag_group)
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            3 -> {
+                                color = this.getColor(R.color.orange_tag_group)
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            4 -> {
+                                color = this.getColor(R.color.yellow_tag_group)
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            5 -> {
+                                color = this.getColor(R.color.purple_tag_group)
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            6 -> {
+                                color = this.getColor(R.color.red_tag_group)
+                                color = this.getColor(R.color.blue_tag_group)
+                            }
+                            else -> color = this.getColor(R.color.blue_tag_group)
+                        }
+                    }
                     hideKeyboard()
+                    main_ContactsDatabase!!.GroupsDao()
+                        .updateGroupSectionColorById(idGroup.toInt(), color)
+                    startActivity(Intent(this, GroupManagerActivity::class.java))
                 }
-                .show()
+            }
+            .setNegativeButton(R.string.alert_dialog_cancel) { _, _ ->
+                hideKeyboard()
+            }
+            .show()
     }
 
     override fun onRestart() {
@@ -1500,7 +1682,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param permissions [Array<String>]
      * @param grantResults [IntArray]
      */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
 
             PERMISSION_CALL_RESULT -> {
@@ -1508,7 +1695,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     if (main_GridView!!.visibility == View.VISIBLE) {
                         gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
                     } else {
-                        Toast.makeText(this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "Can't do anything until you permit me !",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -1538,14 +1729,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //RowContacts for filter Account Types
         val contactCursor = cr.query(
-                ContactsContract.RawContacts.CONTENT_URI,
-                arrayOf(
-                        ContactsContract.RawContacts._ID,
-                        ContactsContract.RawContacts.CONTACT_ID
-                ),
-                ContactsContract.RawContacts.ACCOUNT_TYPE + "= ?",
-                arrayOf("com.whatsapp"),
-                null)
+            ContactsContract.RawContacts.CONTENT_URI,
+            arrayOf(
+                ContactsContract.RawContacts._ID,
+                ContactsContract.RawContacts.CONTACT_ID
+            ),
+            ContactsContract.RawContacts.ACCOUNT_TYPE + "= ?",
+            arrayOf("com.whatsapp"),
+            null
+        )
 
         //ArrayList for Store Whatsapp Contact
         val myWhatsappContacts = ArrayList<String>()
@@ -1555,24 +1747,30 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 if (contactCursor.moveToFirst()) {
                     do {
                         //whatsappContactId for get Number,Name,Id ect... from  ContactsContract.CommonDataKinds.Phone
-                        val whatsappContactId = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.RawContacts.CONTACT_ID))
+                        val whatsappContactId =
+                            contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.RawContacts.CONTACT_ID))
 
                         if (whatsappContactId != null) {
                             //Get Data from ContactsContract.CommonDataKinds.Phone of Specific CONTACT_ID
                             val whatsAppContactCursor = cr.query(
-                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                    arrayOf(
-                                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-                                            ContactsContract.CommonDataKinds.Phone.NUMBER,
-                                            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
-                                    ),
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                                    arrayOf(whatsappContactId), null);
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                arrayOf(
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                                    ContactsContract.CommonDataKinds.Phone.NUMBER,
+                                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+                                ),
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                arrayOf(whatsappContactId), null
+                            );
 
                             if (whatsAppContactCursor != null) {
                                 whatsAppContactCursor.moveToFirst()
-                                val name = whatsAppContactCursor.getString(whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                                val number = whatsAppContactCursor.getString(whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                                val name = whatsAppContactCursor.getString(
+                                    whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                                )
+                                val number = whatsAppContactCursor.getString(
+                                    whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                                )
 
                                 whatsAppContactCursor.close()
 
@@ -1582,16 +1780,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                 for (contact in listContact) {
                                     if (contact.firstName + " " + contact.lastName == name || contact.firstName == name || contact.lastName == name) {
 
-                                        main_ContactsDatabase!!.contactsDao().getContact(contact.id!!).setHasWhatsapp(main_ContactsDatabase)
+                                        main_ContactsDatabase!!.contactsDao()
+                                            .getContact(contact.id!!)
+                                            .setHasWhatsapp(main_ContactsDatabase)
 
-                                        val detail = ContactDetailDB(null, contact.id, number, "phone", "", 0)
+                                        val detail = ContactDetailDB(
+                                            null,
+                                            contact.id,
+                                            number,
+                                            "phone",
+                                            "",
+                                            0
+                                        )
                                         main_ContactsDatabase!!.contactDetailsDao().insert(detail)
                                     }
                                 }
-
-//                                showLog(TAG, " WhatsApp contact id  :  " + id);
-//                                showLogI(TAG, " WhatsApp contact name :  " + name);
-//                                showLogI(TAG, " WhatsApp contact number :  " + number);
                             }
                         }
                     } while (contactCursor.moveToNext())
@@ -1605,12 +1808,25 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_search_bar_value = main_SearchBar!!.text.toString()
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
-        val filteredContact = gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
+        val filteredContact =
+            gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
         when {
-            sharedPreferences.getString("tri", "nom") == "prenom" -> contactListDb.sortContactByFirstNameAZ()
-            sharedPreferences.getString("tri", "nom") == "lastname" -> contactListDb.sortContactByLastname()
-            sharedPreferences.getString("tri", "nom") == "priorite" -> contactListDb.sortContactByPriority()
-            sharedPreferences.getString("tri", "nom") == "favoris" -> contactListDb.sortContactByFavorite()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "prenom" -> contactListDb.sortContactByFirstNameAZ()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "lastname" -> contactListDb.sortContactByLastname()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "priorite" -> contactListDb.sortContactByPriority()
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "favoris" -> contactListDb.sortContactByFavorite()
             else -> contactListDb.sortContactByGroup()
         }
 
@@ -1626,7 +1842,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
             main_GridView!!.adapter = gridViewAdapter
         } else {
-            recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+            recyclerViewAdapter =
+                ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
             main_RecyclerView!!.adapter = recyclerViewAdapter
         }
         refreshActivity()
@@ -1668,11 +1885,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             runOnUiThread {
                 item.isChecked = true
                 if (len > 1) {
-                    gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                    gridViewAdapter =
+                        ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
                     main_GridView!!.adapter = gridViewAdapter
                     main_GridView!!.visibility = View.VISIBLE
                 } else {
-                    recyclerViewAdapter = ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+                    recyclerViewAdapter =
+                        ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                     main_RecyclerView!!.visibility = View.VISIBLE
                 }

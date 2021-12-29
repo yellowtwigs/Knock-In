@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--   <string name="app_name">Knock In</string>-->
+    <string name="app_name">Knock In</string>
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <!-- region Help Tutorial -->
@@ -320,7 +320,7 @@
     <string name="multi_select_alert_dialog_allow_it">السماح</string>
     <string name="multi_select_alert_dialog_dismiss">عدم السماح</string>
     <string name="multi_select_alert_dialog_nb_contact">عدد جهات الاتصال المحددة</string>
-<!--    <string name="multi_select_alert_dialog_nb_contact">عدد جهات الاتصال المحددة :  1s  %2s%</string>-->
+    <!--    <string name="multi_select_alert_dialog_nb_contact">عدد جهات الاتصال المحددة :  1s  %2s%</string>-->
     <string name="multi_select_alert_dialog_0_contact">لقد حددت 0 جهات اتصال</string>
     <string name="multi_select_validate_selection">هل تريد التحقق من صحة اختيارك ؟</string>
     <string name="multi_select_contact">جهة إتصال :</string>

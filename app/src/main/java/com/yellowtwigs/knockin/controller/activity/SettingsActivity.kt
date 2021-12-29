@@ -21,7 +21,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
 

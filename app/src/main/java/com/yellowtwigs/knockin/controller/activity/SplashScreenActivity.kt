@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.controller.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -9,13 +10,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.StartActivity
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
 
     //region ========================================= Val or Var ===========================================

@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--   <string name="app_name">Knock In</string>-->
+       <string name="app_name">Knock In</string>
     <string name="app_name_by">YellowTwigs tarafından oluşturulmuştur</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <!-- region Help Tutorial -->

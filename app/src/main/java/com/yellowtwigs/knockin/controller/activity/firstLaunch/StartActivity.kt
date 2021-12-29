@@ -34,7 +34,6 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
-import kotlinx.android.synthetic.main.activity_start_activity.*
 import java.net.InetAddress
 import java.net.UnknownHostException
 
@@ -63,6 +62,7 @@ class StartActivity : AppCompatActivity() {
     private var startActivityActivateNotificationsLoading: ProgressBar? = null
     private var startActivityAuthorizeSuperpositionLoading: ProgressBar? = null
     private var startActivityPermissionsLoading: ProgressBar? = null
+    private var start_activity_import_contacts_loading: ProgressBar? = null
 
     private var startActivityImportContactsCheck: AppCompatImageView? = null
     private var startActivityActivateNotificationsCheck: AppCompatImageView? = null
@@ -100,6 +100,7 @@ class StartActivity : AppCompatActivity() {
         startActivityActivateNotificationsLoading = findViewById(R.id.start_activity_activate_notifications_loading)
         startActivityAuthorizeSuperpositionLoading = findViewById(R.id.start_activity_superposition_loading)
         startActivityPermissionsLoading = findViewById(R.id.start_activity_permissions_loading)
+        start_activity_import_contacts_loading = findViewById(R.id.start_activity_import_contacts_loading)
 
         startActivityImportContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
         startActivityActivateNotificationsCheck = findViewById(R.id.start_activity_activate_notifications_check)
@@ -582,7 +583,8 @@ class StartActivity : AppCompatActivity() {
      * Permet à l'utilisateur de passer les demandes d'autorisations
      */
     private fun buildLeaveAlertDialog(): AlertDialog {
-        val message = if (start_activity_import_contacts_loading.visibility == View.VISIBLE) {//vérifie que le téléphone ne charge pas les contacts sinon celui-ci prévient l'utilisateur que ces contact ne seront pas tous chargés
+        val message = if (start_activity_import_contacts_loading?.visibility == View.VISIBLE) {
+            //vérifie que le téléphone ne charge pas les contacts sinon celui-ci prévient l'utilisateur que ces contact ne seront pas tous chargés
             getString(R.string.start_activity_skip_alert_dialog_message_importation)
         } else {
             getString(R.string.start_activity_skip_alert_dialog_message)

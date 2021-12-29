@@ -26,7 +26,7 @@ class ContactWithAllInformation {
     /*@Relation(parentColumn = "id",entityColumn = "id_contact",entity = Notification.class)
     public List<Notification> NotificationList;*/
     fun getFirstPhoneNumber(): String {
-        val regex = "((\\+33)|0|(\\+33 )){1}([67]){1}(( [0-9]{2})|([0-9]{2})){4}".toRegex()
+        val regex = "((\\+33)|0|(\\+33 ))([67])(( [0-9]{2})|([0-9]{2})){4}".toRegex()
         var onlyFix = ""
         for (detail in contactDetailList!!) {
             println(detail.content + "matches with regex ?" + detail.content.matches(regex))
