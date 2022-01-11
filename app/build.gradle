@@ -11,8 +11,8 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 21
         targetSdk 31
-        versionCode 79
-        versionName "2.0.1"
+        versionCode 82
+        versionName "2.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -38,26 +38,26 @@ android {
         viewBinding true
     }
 
-//    flavorDimensions "default"
-//
-//    productFlavors {
-//        onlyContact {
-//            applicationId "com.yellowtwigs.Knockin.contact"
-//            resValue "string", "app_name", "Knock In Contacts"
-//        }
-//        contactAndHistory {
-//            applicationId "com.yellowtwigs.Knockin.contactAndHistory"
-//            resValue "string", "app_name", "Converser"
-//        }
-//        premiumApp {
-//            applicationId "com.yellowtwigs.Knockin.notification"
-//            resValue "string", "app_name", "Knock In"
-//        }
-//        appComplete {
-//            applicationId "com.yellowtwigs.Knockin"
-//            resValue "string", "app_name", "Knock In"
-//        }
-//    }
+    flavorDimensions "default"
+
+    productFlavors {
+        onlyContact {
+            applicationId "com.yellowtwigs.Knockin.contact"
+            resValue "string", "app_name", "Knock In Contacts"
+        }
+        contactAndHistory {
+            applicationId "com.yellowtwigs.Knockin.contactAndHistory"
+            resValue "string", "app_name", "Converser"
+        }
+        premiumApp {
+            applicationId "com.yellowtwigs.Knockin.notification"
+            resValue "string", "app_name", "Knock In"
+        }
+        appComplete {
+            applicationId "com.yellowtwigs.Knockin"
+            resValue "string", "app_name", "Knock In"
+        }
+    }
 //    dokka {
 //        outputFormat = 'html'
 //
@@ -106,8 +106,8 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.0"
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -120,10 +120,13 @@ dependencies {
 
     implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
 
-    implementation 'com.google.android.gms:play-services-maps:18.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.facebook.android:facebook-android-sdk:5.1.1'
     implementation 'com.facebook.android:facebook-login:5.1.1'
-    implementation 'com.android.billingclient:billing:4.0.0'
+
+    def billing_version = "4.0.0"
+    implementation("com.android.billingclient:billing-ktx:$billing_version")
+
 }
 
 // Allow references to generated code

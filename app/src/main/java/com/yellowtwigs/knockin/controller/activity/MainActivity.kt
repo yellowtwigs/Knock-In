@@ -39,6 +39,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
 import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter
@@ -167,7 +168,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         if (sharedFirstLaunch.getBoolean("first_launch", true)) {
-//            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
+            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
             finish()
         }
 

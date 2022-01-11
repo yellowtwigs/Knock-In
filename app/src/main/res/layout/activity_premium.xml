@@ -95,10 +95,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_product"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/premium_activity_toolbar_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -113,7 +112,7 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer_layout" >
+        app:menu="@menu/menu_left_drawer_layout">
 
         <include layout="@layout/nav_bottom_drawer" />
 

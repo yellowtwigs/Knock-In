@@ -43,7 +43,7 @@
         <activity android:name=".controller.activity.EditContactVipSettingsActivity" />
         <activity
             android:name=".controller.activity.SplashScreenActivity"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,6 +62,7 @@
         <activity android:name=".controller.activity.MessengerActivity" />
         <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity" />
+        <activity android:name=".FirstLaunchActivity" />
         <activity
             android:name=".controller.BubbleActivity"
             android:allowEmbedded="true"
