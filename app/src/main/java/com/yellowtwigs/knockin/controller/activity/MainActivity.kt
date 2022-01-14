@@ -27,9 +27,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -114,7 +116,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var idGroup: Long = 0
 
-    private var settings_left_drawer_ThemeSwitch: Switch? = null
+    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
 
     //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener =
@@ -294,7 +296,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //region ================================ Call Popup from LeftDrawer ================================
 
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
 
         settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
 
@@ -1498,7 +1500,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         )
 
         mainCreateGroupAlertDialogRedTag.setImageResource(R.drawable.border_selected_yellow)
-        var color = this.getColor(R.color.red_tag_group)
+        var color = ResourcesCompat.getColor(resources, R.color.red_tag_group, null)
 
         //region ================================= ClickListenerOnColorTag ==================================
 
@@ -1510,7 +1512,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
 
-            color = this.getColor(R.color.red_tag_group)
+            color = ResourcesCompat.getColor(resources, R.color.red_tag_group, null)
         }
 
         mainCreateGroupAlertDialogBlueTag.setOnClickListener {
@@ -1521,7 +1523,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
 
-            color = this.getColor(R.color.blue_tag_group)
+            color = ResourcesCompat.getColor(resources, R.color.blue_tag_group, null)
         }
 
         mainCreateGroupAlertDialogGreenTag.setOnClickListener {
@@ -1532,7 +1534,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
 
-            color = this.getColor(R.color.green_tag_group)
+            color = ResourcesCompat.getColor(resources, R.color.green_tag_group, null)
         }
 
         mainCreateGroupAlertDialogYellowTag.setOnClickListener {
@@ -1543,7 +1545,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
 
-            color = this.getColor(R.color.yellow_tag_group)
+            color = ResourcesCompat.getColor(resources, R.color.yellow_tag_group, null)
         }
 
         mainCreateGroupAlertDialogOrangeTag.setOnClickListener {
@@ -1554,7 +1556,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogPurpleTag.setImageResource(android.R.color.transparent)
 
-            color = this.getColor(R.color.orange_tag_group)
+            color = ResourcesCompat.getColor(resources, R.color.orange_tag_group, null)
         }
 
         mainCreateGroupAlertDialogPurpleTag.setOnClickListener { _ ->
@@ -1565,7 +1567,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainCreateGroupAlertDialogOrangeTag.setImageResource(android.R.color.transparent)
             mainCreateGroupAlertDialogBlueTag.setImageResource(android.R.color.transparent)
 
-            color = this.getColor(R.color.purple_tag_group)
+            color = ResourcesCompat.getColor(resources, R.color.purple_tag_group, null)
         }
 
         //endregion

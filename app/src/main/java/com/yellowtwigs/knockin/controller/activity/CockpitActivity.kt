@@ -23,6 +23,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -196,7 +197,7 @@ class CockpitActivity : AppCompatActivity() {
         cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
 
         val group_manager_MainLayout = findViewById<RelativeLayout>(R.id.cockpit_layout)
-        val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
+        val settings_left_drawer_ThemeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
@@ -208,7 +209,7 @@ class CockpitActivity : AppCompatActivity() {
         //region ================================ Call Popup from LeftDrawer ================================
 
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
 
         if (sharedPreferencePopup.getBoolean("popup", true)) {
             settings_CallPopupSwitch!!.isChecked = true

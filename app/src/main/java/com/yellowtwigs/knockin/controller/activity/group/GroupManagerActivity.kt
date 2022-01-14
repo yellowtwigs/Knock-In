@@ -12,10 +12,10 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.*
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
@@ -73,7 +72,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var groupAdapter: GroupAdapter? = null
     private var sectionAdapter: SectionGroupAdapter? = null
 
-    private var settings_left_drawer_ThemeSwitch: Switch? = null
+    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
     private var recyclerLen: Int = 1
 
     var touchHelper: ItemTouchHelper? = null
@@ -102,7 +101,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================== Theme Dark ========================================
 
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
         } else {
@@ -150,8 +149,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ================================ Call Popup from LeftDrawer ================================
 
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+        val sharedPreferencePopup = getSharedPreferences("Phone_call", MODE_PRIVATE)
+        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
 
         settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
 
@@ -218,7 +217,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         for (aGroup in group)
             println("group content" + aGroup.ContactIdList)
 
-        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("Gridview_column", MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 1)
 
         val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
@@ -261,12 +260,12 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", true)
                 edit.apply()
             } else {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", false)
                 edit.apply()
@@ -536,7 +535,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
         val group: ArrayList<GroupWithContact> = ArrayList()
         group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
-        val sharedPreferences = getSharedPreferences("group", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("group", MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", recyclerLen)
         val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
         val sections = ArrayList<SectionGroupAdapter.Section>()

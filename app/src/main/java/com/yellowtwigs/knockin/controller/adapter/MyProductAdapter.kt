@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -18,7 +17,7 @@ import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import com.yellowtwigs.knockin.databinding.LayoutProductItemBinding
 
 class MyProductAdapter(
-    private val activity: PremiumActivity,
+    private val cxt: PremiumActivity,
     private val billingClient: BillingClient
 ) : ListAdapter<SkuDetails, MyProductAdapter.ViewHolder>(SkuDetailsComparator()) {
 
@@ -44,59 +43,34 @@ class MyProductAdapter(
 
         fun onBind(skuDetails: SkuDetails) {
             binding.apply {
-                val sharedNotifJazzySoundInAppPreferences =
-                    activity.getSharedPreferences(
-                        "Notif_Jazzy_Sound_IsBought",
-                        Context.MODE_PRIVATE
-                    )
-                val notifJazzySoundIsBought =
-                    sharedNotifJazzySoundInAppPreferences.getBoolean(
-                        "Notif_Jazzy_Sound_IsBought",
-                        false
-                    )
-                val sharedNotifFunkySoundInAppPreferences =
-                    activity.getSharedPreferences(
-                        "Notif_Funky_Sound_IsBought",
-                        Context.MODE_PRIVATE
-                    )
-                val notifFunkySoundIsBought =
-                    sharedNotifFunkySoundInAppPreferences.getBoolean(
-                        "Notif_Funky_Sound_IsBought",
-                        false
-                    )
-                val sharedNotifRelaxationSoundInAppPreferences = activity.getSharedPreferences(
-                    "Notif_Relaxation_Sound_IsBought",
-                    Context.MODE_PRIVATE
-                )
-                val notifRelaxationSoundIsBought =
-                    sharedNotifRelaxationSoundInAppPreferences.getBoolean(
-                        "Notif_Relaxation_Sound_IsBought",
-                        false
-                    )
-                val sharedAlarmNotifInAppPreferences = activity.getSharedPreferences(
-                    "Alarm_Contacts_Unlimited_IsBought",
-                    Context.MODE_PRIVATE
-                )
-                val contactsUnlimitedIsBought =
-                    sharedAlarmNotifInAppPreferences.getBoolean(
-                        "Alarm_Contacts_Unlimited_IsBought",
-                        false
-                    )
-                val sharedNotifCustomSoundInAppPreferences = activity.getSharedPreferences(
-                    "Notif_Custom_Sound_IsBought",
-                    Context.MODE_PRIVATE
-                )
-                val notifCustomSoundIsBought =
-                    sharedNotifCustomSoundInAppPreferences.getBoolean(
-                        "Notif_Custom_Sound_IsBought",
-                        false
-                    )
+                val modePrivate = Context.MODE_PRIVATE
+                val jazzyPref = cxt.getSharedPreferences("Jazzy_Sound_Bought", modePrivate)
+                val jazzySoundBought = jazzyPref.getBoolean("Jazzy_Sound_Bought", false)
+
+                val funkyPref = cxt.getSharedPreferences("Funky_Sound_Bought", modePrivate)
+                val funkySoundBought = funkyPref.getBoolean("Funky_Sound_Bought", false)
+
+                val relaxPref = cxt.getSharedPreferences("Relax_Sound_Bought", modePrivate)
+                val relaxationSoundBought = relaxPref.getBoolean("Relax_Sound_Bought", false)
+
+                val customPref = cxt.getSharedPreferences("Custom_Sound_Bought", modePrivate)
+                val customSoundBought = customPref.getBoolean("Custom_Sound_Bought", false)
+
+                val unlimitedPref =
+                    cxt.getSharedPreferences("Contacts_Unlimited_Bought", modePrivate)
+                val contactsUnlimitedBought =
+                    unlimitedPref.getBoolean("Contacts_Unlimited_Bought", false)
 
                 val productName = skuDetails.title
                 val text = productName.split("\\(").toTypedArray()
                 productItemName.text = text[0]
 
-                //        myViewHolder.myProductPrice.setText(skuDetailsList.get(i).getPrice());
+                checkProductNameContains(productName, jazzySoundBought)
+                checkProductNameContains(productName, funkySoundBought)
+                checkProductNameContains(productName, relaxationSoundBought)
+                checkProductNameContains(productName, customSoundBought)
+                checkProductNameContains(productName, contactsUnlimitedBought)
+
                 if (productName.contains("Contacts") || productName.contains("Contatti") ||
                     productName.contains("Contactos")
                 ) {
@@ -123,36 +97,16 @@ class MyProductAdapter(
                     productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
                 }
                 productItemBuyImage.icon = ResourcesCompat.getDrawable(
-                    activity.resources,
+                    cxt.resources,
                     R.drawable.ic_buying_in_app,
                     null
                 )
-
-                with (productName) {
-                    when{
-                        contains("Contacts") && contactsUnlimitedIsBought -> {
-                            changeBackgroundToDarkGrey()
-                        }
-                        contains("Jazzy") && notifJazzySoundIsBought -> {
-                            changeBackgroundToDarkGrey()
-                        }
-                        contains("Funky") && notifFunkySoundIsBought -> {
-                            changeBackgroundToDarkGrey()
-                        }
-                        contains("Relaxation") && notifRelaxationSoundIsBought -> {
-                            changeBackgroundToDarkGrey()
-                        }
-                        contains("Custom") && notifCustomSoundIsBought -> {
-                            changeBackgroundToDarkGrey()
-                        }
-                    }
-                }
 
                 setIProductClickListener { _: View?, _: Int ->
                     val billingFlowParams = BillingFlowParams.newBuilder()
                         .setSkuDetails(skuDetails)
                         .build()
-                    billingClient.launchBillingFlow(activity, billingFlowParams)
+                    billingClient.launchBillingFlow(cxt, billingFlowParams)
                 }
 
                 productItemBuyImage.setOnClickListener {
@@ -161,16 +115,38 @@ class MyProductAdapter(
             }
         }
 
-        fun changeBackgroundToDarkGrey() {
+        private fun changeBackgroundToDarkGrey() {
             binding.apply {
                 productItemBuyImage.apply {
                     setBackgroundColor(
                         ResourcesCompat.getColor(
-                            activity.resources, R.color.textColorDarkGrey,
+                            cxt.resources, R.color.textColorDarkGrey,
                             null
                         )
                     )
                     isEnabled = false
+                }
+            }
+        }
+
+        private fun checkProductNameContains(productName: String, sharedPref: Boolean) {
+            with(productName) {
+                when {
+                    contains("Contacts") && sharedPref -> {
+                        changeBackgroundToDarkGrey()
+                    }
+                    contains("Jazzy") && sharedPref -> {
+                        changeBackgroundToDarkGrey()
+                    }
+                    contains("Funky") && sharedPref -> {
+                        changeBackgroundToDarkGrey()
+                    }
+                    contains("Relaxation") && sharedPref -> {
+                        changeBackgroundToDarkGrey()
+                    }
+                    contains("Custom") && sharedPref -> {
+                        changeBackgroundToDarkGrey()
+                    }
                 }
             }
         }

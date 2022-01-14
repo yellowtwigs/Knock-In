@@ -62,8 +62,8 @@ class MultiSelectActivity : AppCompatActivity() {
 
         val sharedNumberOfContactsVIPPreferences: SharedPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
 
-        val sharedAlarmNotifInAppPreferences: SharedPreferences = getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
-        val contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false)
+        val sharedAlarmNotifInAppPreferences: SharedPreferences = getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
+        val contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Contacts_Unlimited_Bought", false)
 
         adapter = SelectContactAdapter(this, gestionnaireContact, 4)
 

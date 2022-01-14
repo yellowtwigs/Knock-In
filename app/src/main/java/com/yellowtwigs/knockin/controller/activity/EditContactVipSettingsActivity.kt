@@ -352,26 +352,26 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
         numberDefault = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
         val sharedNotifJazzySoundInAppPreferences: SharedPreferences =
-            getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         notifJazzySoundIsBought =
-            sharedNotifJazzySoundInAppPreferences.getBoolean("Notif_Jazzy_Sound_IsBought", true)
+            sharedNotifJazzySoundInAppPreferences.getBoolean("Jazzy_Sound_Bought", true)
 
         val sharedNotifRelaxationSoundInAppPreferences: SharedPreferences =
-            getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         notifRelaxationSoundIsBought = sharedNotifRelaxationSoundInAppPreferences.getBoolean(
-            "Notif_Relaxation_Sound_IsBought",
+            "Relax_Sound_Bought",
             false
         )
 
         val sharedNotifFunkySoundInAppPreferences: SharedPreferences =
-            getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         notifFunkySoundIsBought =
-            sharedNotifFunkySoundInAppPreferences.getBoolean("Notif_Funky_Sound_IsBought", false)
+            sharedNotifFunkySoundInAppPreferences.getBoolean("Funky_Sound_Bought", false)
 
         val sharedNotifCustomSoundInAppPreferences: SharedPreferences =
-            getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
         notifCustomSoundIsBought =
-            sharedNotifCustomSoundInAppPreferences.getBoolean("Notif_Custom_Sound_IsBought", false)
+            sharedNotifCustomSoundInAppPreferences.getBoolean("Custom_Sound_Bought", false)
 
         // on init WorkerThread
         edit_contact_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -385,9 +385,9 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
         val nb_Contacts_VIP = sharedNumberOfContactsVIPPreferences.getInt("nb_Contacts_VIP", 0)
 
         val sharedAlarmNotifInAppPreferences: SharedPreferences =
-            getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
         contactsUnlimitedIsBought =
-            sharedAlarmNotifInAppPreferences.getBoolean("Alarm_Contacts_Unlimited_IsBought", false)
+            sharedAlarmNotifInAppPreferences.getBoolean("Contacts_Unlimited_Bought", false)
 
         //region ========================================== Intent ==========================================
 

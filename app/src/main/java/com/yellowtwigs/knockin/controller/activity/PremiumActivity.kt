@@ -6,15 +6,18 @@ import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
-import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +28,7 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
 import com.yellowtwigs.knockin.controller.adapter.MyProductAdapter
+import com.yellowtwigs.knockin.utils.DrawerLayoutSwitchSingleton
 import kotlinx.coroutines.*
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -40,6 +44,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private var recyclerProduct: RecyclerView? = null
     private var myProductAdapter: MyProductAdapter? = null
+
+    private lateinit var progressBar: ProgressBar
 
     private var sharedProductNotifFunkySoundPreferences: SharedPreferences? = null
     private var sharedProductNotifJazzySoundPreferences: SharedPreferences? = null
@@ -75,24 +81,21 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         //endregion
 
         setContentView()
-
-        // IN APP
         setupBillingClient()
 
         val fromMultiSelectActivity = intent.getBooleanExtra("fromMultiSelectActivity", false)
         fromManageNotification = intent.getBooleanExtra("fromManageNotification", false)
 
         sharedProductNotifFunkySoundPreferences =
-            this.getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         sharedProductNotifJazzySoundPreferences =
-            this.getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         sharedProductNotifRelaxationSoundPreferences =
-            this.getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         sharedProductContactsUnlimitedPreferences =
-            this.getSharedPreferences("Alarm_Contacts_Unlimited_IsBought", Context.MODE_PRIVATE)
+            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
         sharedProductNotifCustomSoundPreferences =
-            this.getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE)
-
+            getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
 
         premium_activity_ToolbarLayout = findViewById(R.id.premium_activity_toolbar_layout)
         premium_activity_ToolbarOpenDrawer = findViewById(R.id.premium_activity_toolbar_open_drawer)
@@ -115,17 +118,15 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         //region ================================ Call Popup from LeftDrawer ================================
 
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
-
-        val settings_left_drawer_ThemeSwitch =
-            findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
+        val callPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
+        val themeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch!!.isChecked = true
+            themeSwitch.isChecked = true
         }
 
         if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch!!.isChecked = true
+            callPopupSwitch.isChecked = true
         }
 
         //endregion
@@ -203,52 +204,20 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 finish();
                 startActivity(intent)
             }
-            popup.create().show();
+            popup.create().show()
         }
 
-        premium_activity_ToolbarOpenDrawer!!.setOnClickListener {
-            drawerLayout!!.openDrawer(GravityCompat.START)
+        premium_activity_ToolbarOpenDrawer?.setOnClickListener {
+            drawerLayout?.openDrawer(GravityCompat.START)
         }
 
-        premium_activity_ToolbarBackOnPressed!!.setOnClickListener {
+        premium_activity_ToolbarBackOnPressed?.setOnClickListener {
             startActivity(Intent(this@PremiumActivity, MultiSelectActivity::class.java))
             finish()
         }
 
-        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-
-        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(Intent(this@PremiumActivity, PremiumActivity::class.java))
-            } else {
-
-                setTheme(R.style.AppTheme)
-//                main_constraintLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(Intent(this@PremiumActivity, PremiumActivity::class.java))
-            }
-        }
+        DrawerLayoutSwitchSingleton.callPopupSwitch(callPopupSwitch, activity)
+        DrawerLayoutSwitchSingleton.themeSwitch(themeSwitch, activity, sharedThemePreferences)
     }
 
     private fun setContentView() {
@@ -292,7 +261,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
              */
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         querySkuDetails()
                     }
                 } else {
@@ -318,28 +287,65 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .setSkusList(skuList)
             .setType(BillingClient.SkuType.INAPP)
 
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.Main) {
             billingClient?.querySkuDetailsAsync(
-                params.build(),
-                object : SkuDetailsResponseListener {
-                    override fun onSkuDetailsResponse(
-                        p0: BillingResult,
-                        skuDetailsList: MutableList<SkuDetails>?
-                    ) {
-                        if (skuDetailsList != null) {
-                            loadProductToRecyclerView(skuDetailsList)
+                params.build()
+            ) { _, skuDetailsList ->
+                if (skuDetailsList != null) {
+                    loadProductToRecyclerView(skuDetailsList)
+                }
+            }
+
+            billingClient?.queryPurchasesAsync(
+                BillingClient.SkuType.INAPP
+            ) { _, listOfPurchases ->
+                if (listOfPurchases.isNotEmpty()) {
+                    for (purchase in listOfPurchases) {
+                        when {
+                            purchase.originalJson.contains("notifications_vip_funk_theme") -> {
+                                val edit =
+                                    sharedProductNotifFunkySoundPreferences!!.edit()
+                                edit.putBoolean("Funky_Sound_Bought", true)
+                                edit.apply()
+                            }
+                            purchase.originalJson.contains("notifications_vip_jazz_theme") -> {
+                                val edit =
+                                    sharedProductNotifJazzySoundPreferences!!.edit()
+                                edit.putBoolean("Jazzy_Sound_Bought", true)
+                                edit.apply()
+                            }
+                            purchase.originalJson.contains("notifications_vip_relaxation_theme") -> {
+                                val edit =
+                                    sharedProductNotifRelaxationSoundPreferences!!.edit()
+                                edit.putBoolean("Relax_Sound_Bought", true)
+                                edit.apply()
+                            }
+                            purchase.originalJson.contains("contacts_vip_unlimited") -> {
+                                val edit =
+                                    sharedProductContactsUnlimitedPreferences!!.edit()
+                                edit.putBoolean(
+                                    "Contacts_Unlimited_Bought",
+                                    true
+                                )
+                                edit.apply()
+                            }
+                            purchase.originalJson.contains("notifications_vip_custom_tones_theme") -> {
+                                val edit =
+                                    sharedProductNotifCustomSoundPreferences!!.edit()
+                                edit.putBoolean("Custom_Sound_Bought", true)
+                                edit.apply()
+                            }
                         }
-//                    billingClient!!.queryPurchasesAsync(
-//                        BillingClient.SkuType.INAPP
-//                    ) { p0, p1 -> Log.i("billingClient", "$p1") }
-//
-//                    billingClient?.queryPurchaseHistoryAsync(
-//                        BillingClient.SkuType.INAPP
-//                    ) { p0, p1 ->
-//                    }
                     }
-                })
+                }
+            }
         }
+    }
+
+    private suspend fun launchProgressBarSpin(time: Long) {
+        progressBar.visibility = View.VISIBLE
+        delay(time)
+        progressBar.visibility = View.GONE
     }
 
     /**
@@ -374,7 +380,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                             val edit = sharedProductNotifFunkySoundPreferences!!.edit()
-                            edit.putBoolean("Notif_Funky_Sound_IsBought", true)
+                            edit.putBoolean("Funky_Sound_Bought", true)
                             edit.apply()
                             backToManageNotifAfterBuying()
                         }
@@ -394,7 +400,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                             val edit = sharedProductNotifJazzySoundPreferences!!.edit()
-                            edit.putBoolean("Notif_Jazzy_Sound_IsBought", true)
+                            edit.putBoolean("Jazzy_Sound_Bought", true)
                             edit.apply()
                             backToManageNotifAfterBuying()
                         }
@@ -414,7 +420,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                             val edit = sharedProductNotifRelaxationSoundPreferences!!.edit()
-                            edit.putBoolean("Notif_Relaxation_Sound_IsBought", true)
+                            edit.putBoolean("Relax_Sound_Bought", true)
                             edit.apply()
                             backToManageNotifAfterBuying()
                         }
@@ -434,7 +440,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                             val edit = sharedProductContactsUnlimitedPreferences!!.edit()
-                            edit.putBoolean("Alarm_Contacts_Unlimited_IsBought", true)
+                            edit.putBoolean("Contacts_Unlimited_Bought", true)
                             edit.apply()
                         }
                 }
@@ -453,20 +459,19 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                             val edit = sharedProductNotifCustomSoundPreferences!!.edit()
-                            edit.putBoolean("Notif_Custom_Sound_IsBought", true)
+                            edit.putBoolean("Custom_Sound_Bought", true)
                             edit.apply()
                             backToManageNotifAfterBuying()
                         }
                 }
             }
         } else {
-            startActivity(
-                Intent(
-                    this@PremiumActivity,
-                    MainActivity::class.java
-                ).putExtra("fromMultiSelectActivity", true)
-            )
-
+//            startActivity(
+//                Intent(
+//                    this@PremiumActivity,
+//                    MainActivity::class.java
+//                ).putExtra("fromMultiSelectActivity", true)
+//            )
         }
     }
 

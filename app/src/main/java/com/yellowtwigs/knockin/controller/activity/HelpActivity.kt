@@ -18,8 +18,8 @@ import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.RelativeLayout
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -53,7 +53,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
     }
 
-    private var settings_left_drawer_ThemeSwitch: Switch? = null
+    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
     //endregion
 
     @SuppressLint("IntentReset")
@@ -78,17 +78,19 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+        actionbar?.setDisplayHomeAsUpEnabled(true)
+        actionbar?.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
 
         //endregion
 
         //region ========================================== Sensor Manager =========================================
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val sensors = sensorManager!!.getSensorList(Sensor.TYPE_ALL)
-        for (sensor in sensors) {
-            Log.i("DEBUG", sensor.name + " --- " + sensor.vendor)
+        val sensors = sensorManager?.getSensorList(Sensor.TYPE_ALL)
+        if (sensors != null) {
+            for (sensor in sensors) {
+                Log.i("DEBUG", sensor.name + " --- " + sensor.vendor)
+            }
         }
 
         //endregion
@@ -104,10 +106,10 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         helpActivityLayout = findViewById(R.id.help_activity_tutorial_layout)
         helpActivityWebView = findViewById(R.id.help_activity_web_view)
-        helpActivityWebView!!.webViewClient = webViewClient
+        helpActivityWebView?.webViewClient = webViewClient
 
-        val settings = helpActivityWebView!!.settings
-        settings.javaScriptEnabled = true
+        val settings = helpActivityWebView?.settings
+        settings?.javaScriptEnabled = true
 
         //endregion
 
@@ -123,37 +125,62 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            help_activity_DrawerLayout!!.closeDrawers()
+            help_activity_DrawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     startActivity(Intent(this@HelpActivity, MainActivity::class.java))
                 }
-                R.id.nav_informations -> startActivity(Intent(this@HelpActivity, EditInformationsActivity::class.java))
-                R.id.nav_notif_config -> startActivity(Intent(this@HelpActivity, ManageNotificationActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this@HelpActivity, SettingsActivity::class.java))
-                R.id.nav_manage_screen -> startActivity(Intent(this@HelpActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_informations -> startActivity(
+                    Intent(
+                        this@HelpActivity,
+                        EditInformationsActivity::class.java
+                    )
+                )
+                R.id.nav_notif_config -> startActivity(
+                    Intent(
+                        this@HelpActivity,
+                        ManageNotificationActivity::class.java
+                    )
+                )
+                R.id.nav_settings -> startActivity(
+                    Intent(
+                        this@HelpActivity,
+                        SettingsActivity::class.java
+                    )
+                )
+                R.id.nav_manage_screen -> startActivity(
+                    Intent(
+                        this@HelpActivity,
+                        ManageMyScreenActivity::class.java
+                    )
+                )
                 R.id.nav_help -> startActivity(Intent(this@HelpActivity, HelpActivity::class.java))
-                R.id.nav_in_app -> startActivity(Intent(this@HelpActivity, PremiumActivity::class.java))
+                R.id.nav_in_app -> startActivity(
+                    Intent(
+                        this@HelpActivity,
+                        PremiumActivity::class.java
+                    )
+                )
             }
 
-            help_activity_DrawerLayout!!.closeDrawer(GravityCompat.START)
+            help_activity_DrawerLayout?.closeDrawer(GravityCompat.START)
             true
         }
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
         settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch!!.isChecked = true
-//            main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
+            settings_left_drawer_ThemeSwitch?.isChecked = true
+//            main_constraintLayout?.setBackgroundResource(R.drawable.dark_background)
         }
 
         if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch!!.isChecked = true
+            settings_CallPopupSwitch?.isChecked = true
         }
 
-        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setTheme(R.style.AppThemeDark)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
@@ -174,19 +201,19 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         //region ==================================== SetOnClickListener ====================================
 
         val onClick = View.OnClickListener {
-            if (it.id == helpActivityWebsiteTutorial!!.id) {
+            if (it.id == helpActivityWebsiteTutorial?.id) {
 //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_contact_us_link))))
-                helpActivityLayout!!.visibility = View.GONE
-                helpActivityWebView!!.visibility = View.VISIBLE
-                helpActivityWebView!!.loadUrl(getString(R.string.help_contact_us_link))
+                helpActivityLayout?.visibility = View.GONE
+                helpActivityWebView?.visibility = View.VISIBLE
+                helpActivityWebView?.loadUrl(getString(R.string.help_contact_us_link))
             }
-            if (it.id == help_activity_BubblesNotifications!!.id) {
+            if (it.id == help_activity_BubblesNotifications?.id) {
 //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_bubbles_link))))
-                helpActivityLayout!!.visibility = View.GONE
-                helpActivityWebView!!.visibility = View.VISIBLE
-                helpActivityWebView!!.loadUrl(getString(R.string.help_bubbles_link))
+                helpActivityLayout?.visibility = View.GONE
+                helpActivityWebView?.visibility = View.VISIBLE
+                helpActivityWebView?.loadUrl(getString(R.string.help_bubbles_link))
             }
-            if (it.id == helpActivityContactUs!!.id) {
+            if (it.id == helpActivityContactUs?.id) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.data = Uri.parse("mailto:")
                 intent.type = "text/html"
@@ -194,43 +221,50 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                 intent.putExtra(Intent.EXTRA_SUBJECT, "")
                 intent.putExtra(Intent.EXTRA_TEXT, "")
                 println("intent " + intent.extras.toString())
-                startActivity(Intent.createChooser(intent, getString(R.string.help_contact_us_intent)))
+                startActivity(
+                    Intent.createChooser(
+                        intent,
+                        getString(R.string.help_contact_us_intent)
+                    )
+                )
             }
-            if (it.id == helpActivityTerms!!.id) {
+            if (it.id == helpActivityTerms?.id) {
 //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_contact_us_eula))))
-                helpActivityLayout!!.visibility = View.GONE
-                helpActivityWebView!!.visibility = View.VISIBLE
-                helpActivityWebView!!.loadUrl(getString(R.string.help_contact_us_eula))
+                helpActivityLayout?.visibility = View.GONE
+                helpActivityWebView?.visibility = View.VISIBLE
+                helpActivityWebView?.loadUrl(getString(R.string.help_contact_us_eula))
             }
-            if (it.id == helpActivityInfos!!.id) {
+            if (it.id == helpActivityInfos?.id) {
 //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com")))
-                helpActivityLayout!!.visibility = View.GONE
-                helpActivityWebView!!.visibility = View.VISIBLE
-                helpActivityWebView!!.loadUrl("https://www.yellowtwigs.com")
+                helpActivityLayout?.visibility = View.GONE
+                helpActivityWebView?.visibility = View.VISIBLE
+                helpActivityWebView?.loadUrl("https://www.yellowtwigs.com")
             }
-            if (it.id == helpActivityVideoTutorial!!.id) {
+            if (it.id == helpActivityVideoTutorial?.id) {
 //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_app_video_link))))
-                helpActivityLayout!!.visibility = View.GONE
-                helpActivityWebView!!.visibility = View.VISIBLE
-                helpActivityWebView!!.loadUrl(getString(R.string.help_app_video_link))
+                helpActivityLayout?.visibility = View.GONE
+                helpActivityWebView?.visibility = View.VISIBLE
+                helpActivityWebView?.loadUrl(getString(R.string.help_app_video_link))
             }
         }
-        helpActivityContactUs!!.setOnClickListener(onClick)
-        helpActivityInfos!!.setOnClickListener(onClick)
-        helpActivityWebsiteTutorial!!.setOnClickListener(onClick)
-        help_activity_BubblesNotifications!!.setOnClickListener(onClick)
-        helpActivityTerms!!.setOnClickListener(onClick)
-        helpActivityVideoTutorial!!.setOnClickListener(onClick)
+        helpActivityContactUs?.setOnClickListener(onClick)
+        helpActivityInfos?.setOnClickListener(onClick)
+        helpActivityWebsiteTutorial?.setOnClickListener(onClick)
+        help_activity_BubblesNotifications?.setOnClickListener(onClick)
+        helpActivityTerms?.setOnClickListener(onClick)
+        helpActivityVideoTutorial?.setOnClickListener(onClick)
 
 
-        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", true)
                 edit.apply()
             } else {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", false)
                 edit.apply()
@@ -242,7 +276,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     //region ========================================== Override ============================================
 
     override fun onBackPressed() {
-        if (helpActivityWebView!!.visibility == View.VISIBLE) {
+        if (helpActivityWebView?.visibility == View.VISIBLE) {
             startActivity(Intent(this@HelpActivity, HelpActivity::class.java))
         } else {
             super.onBackPressed()
@@ -270,9 +304,9 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
-        helpActivityLayout!!.visibility = View.VISIBLE
-        helpActivityWebView!!.visibility = View.GONE
-//        sensorManager!!.registerListener(this., sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER))
+        helpActivityLayout?.visibility = View.VISIBLE
+        helpActivityWebView?.visibility = View.GONE
+//        sensorManager?.registerListener(this., sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER))
     }
 
     override fun onPause() {
@@ -301,11 +335,11 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
      * @param event the [SensorEvent][android.hardware.SensorEvent].
      */
     override fun onSensorChanged(event: SensorEvent?) {
-        val x = event!!.values[0]
-        val y = event.values[1]
-        val z = event.values[2]
-
-//        Log.i("DEBUG", x + " - " + y + " - " + z)
+        event?.apply {
+            val x = values?.get(0)
+            val y = values?.get(1)
+            val z = values?.get(2)
+        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -315,7 +349,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                help_activity_DrawerLayout!!.openDrawer(GravityCompat.START)
+                help_activity_DrawerLayout?.openDrawer(GravityCompat.START)
                 return true
             }
         }

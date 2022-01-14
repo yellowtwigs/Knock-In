@@ -25,6 +25,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -46,8 +47,8 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var activityVisible: Boolean = false
-    private var switchPopupNotif: Switch? = null
-    private var switchservice: Switch? = null
+    private var switchPopupNotif: SwitchCompat? = null
+    private var switchservice: SwitchCompat? = null
     private var isTrue = false
     //private lateinit var filePath: Uri
 
@@ -248,24 +249,24 @@ class ManageNotificationActivity : AppCompatActivity() {
         val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
         numberDefault = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
 
-        val sharedNotifJazzySoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Jazzy_Sound_IsBought", Context.MODE_PRIVATE)
-        notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Notif_Jazzy_Sound_IsBought", false)
+        val sharedNotifJazzySoundInAppPreferences: SharedPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
+        notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Jazzy_Sound_Bought", false)
 
-        val sharedNotifRelaxationSoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Relaxation_Sound_IsBought", Context.MODE_PRIVATE)
-        notifRelaxationSoundIsBought = sharedNotifRelaxationSoundInAppPreferences.getBoolean("Notif_Relaxation_Sound_IsBought", false)
+        val sharedNotifRelaxationSoundInAppPreferences: SharedPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
+        notifRelaxationSoundIsBought = sharedNotifRelaxationSoundInAppPreferences.getBoolean("Relax_Sound_Bought", false)
 
-        val sharedNotifFunkySoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Funky_Sound_IsBought", Context.MODE_PRIVATE)
-        notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Notif_Funky_Sound_IsBought", false)
+        val sharedNotifFunkySoundInAppPreferences: SharedPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
+        notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Funky_Sound_Bought", false)
 
-    //    val sharedNotifCustomSoundInAppPreferences: SharedPreferences = getSharedPreferences("Notif_Custom_Sound_IsBought", Context.MODE_PRIVATE)
-    //    notifCustomSoundIsBought = sharedNotifCustomSoundInAppPreferences.getBoolean("Notif_Custom_Sound_IsBought", false)
+    //    val sharedNotifCustomSoundInAppPreferences: SharedPreferences = getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
+    //    notifCustomSoundIsBought = sharedNotifCustomSoundInAppPreferences.getBoolean("Custom_Sound_Bought", false)
 
 
         //region ======================================= FindViewById =======================================
 
         switchPopupNotif = this.findViewById(R.id.switch_stop_popup)
         switchservice = this.findViewById(R.id.switch_stop_service)
-        val switchReminder = this.findViewById<Switch>(R.id.switch_manage_notif_reminder)
+        val switchReminder = this.findViewById<SwitchCompat>(R.id.switch_manage_notif_reminder)
         val remindHour = this.findViewById<TextView>(R.id.textView_heure)
         val viewHour = this.findViewById<ConstraintLayout>(R.id.modify_hour_Constariant)
 
@@ -391,7 +392,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val group_manager_MainLayout = findViewById<LinearLayoutCompat>(R.id.manage_my_notif_layout_id)
 
-        val settings_left_drawer_ThemeSwitch = findViewById<Switch>(R.id.settings_left_drawer_theme_switch)
+        val settings_left_drawer_ThemeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
@@ -403,7 +404,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         //region ================================ Call Popup from LeftDrawer ================================
 
         val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<Switch>(R.id.settings_call_popup_switch)
+        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
 
         if (sharedPreferencePopup.getBoolean("popup", true)) {
             settings_CallPopupSwitch!!.isChecked = true
