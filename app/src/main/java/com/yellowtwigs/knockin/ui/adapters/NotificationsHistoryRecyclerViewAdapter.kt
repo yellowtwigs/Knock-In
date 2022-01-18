@@ -1,0 +1,168 @@
+package com.yellowtwigs.knockin.ui.adapters
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.recyclerview.widget.RecyclerView
+
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.activity.NotificationHistoryActivity
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
+
+import java.text.SimpleDateFormat
+import java.util.ArrayList
+import java.util.Date
+
+/**
+ * La Classe qui permet de remplir l'historique des notifications
+ *
+ * @author Florian Striebel
+ */
+class NotificationsHistoryRecyclerViewAdapter(private val context: Context, private val notification_history_ListOfNotificationDB: ArrayList<NotificationDB>) : RecyclerView.Adapter<NotificationsHistoryRecyclerViewAdapter.NotificationHistoryViewHolder>() {
+    private var view: View? = null
+    private var modeMultiSelect: Boolean? = false
+    private val secondClick = false
+    private var lastClick: Boolean? = false
+
+    var listOfItemSelected = ArrayList<NotificationDB>()
+        set(listOfItemSelected) {
+            this.listOfItemSelected.clear()
+            this.listOfItemSelected.addAll(listOfItemSelected)
+        }
+
+//    init {
+//        setHasStableIds(true)
+//    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHistoryViewHolder {
+        view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_notification_history, parent, false)
+        return NotificationHistoryViewHolder(view!!)
+    }
+
+    fun getItem(position: Int): NotificationDB {
+        return notification_history_ListOfNotificationDB[position]
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onBindViewHolder(holder: NotificationHistoryViewHolder, position: Int) {
+        val notif_history_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)!!
+//        notification_history_ListOfNotificationDB.addAll(notif_history_ContactsDatabase.notificationsDao().getAllNotifications())
+        //        ArrayList<NotificationDB>
+        val (_, _, contactName, description, platform, _, timestamp) = getItem(position)
+        val text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(timestamp))
+        val pckManager = context.packageManager
+        var icon: Drawable? = null
+        try {
+            icon = pckManager.getApplicationIcon(platform)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
+        val icon2 = icon
+
+        holder.notif_history_item_AppImage.setImageDrawable(icon)
+        if (description.length > 100) {
+            holder.notif_history_item_NotificationContent.text = description.substring(0, 99) + ".."
+        } else {
+            holder.notif_history_item_NotificationContent.text = description
+        }
+        holder.notif_history_item_NotificationDate.text = text
+        holder.notif_history_item_SenderName.text = contactName
+
+        val longClick = View.OnLongClickListener {
+            view!!.tag = holder
+
+            if (this.listOfItemSelected.contains(notification_history_ListOfNotificationDB[position])) {
+                this.listOfItemSelected.remove(notification_history_ListOfNotificationDB[position])
+                holder.notif_history_item_AppImage.setImageDrawable(icon2)
+            } else {
+                this.listOfItemSelected.add(notification_history_ListOfNotificationDB[position])
+                holder.notif_history_item_AppImage.setImageResource(R.drawable.ic_item_selected)
+            }
+
+            if (context is NotificationHistoryActivity) {
+                context.recyclerLongClick(position)
+            }
+
+            if (this.listOfItemSelected.size > 0) {
+                modeMultiSelect = true
+                lastClick = false
+            } else {
+                modeMultiSelect = false
+                lastClick = true
+            }
+
+            modeMultiSelect!!
+        }
+
+        val click = View.OnClickListener {
+            if (modeMultiSelect!!) {
+                view!!.tag = holder
+
+                if (this.listOfItemSelected.contains(notification_history_ListOfNotificationDB[position])) {
+                    this.listOfItemSelected.remove(notification_history_ListOfNotificationDB[position])
+                    holder.notif_history_item_AppImage.setImageDrawable(icon2)
+                } else {
+                    this.listOfItemSelected.add(notification_history_ListOfNotificationDB[position])
+                    holder.notif_history_item_AppImage.setImageResource(R.drawable.ic_item_selected)
+                }
+
+                if (context is NotificationHistoryActivity) {
+                    context.recyclerLongClick(position)
+                }
+
+                if (this.listOfItemSelected.size > 0) {
+                    modeMultiSelect = true
+                    lastClick = false
+                } else {
+                    modeMultiSelect = false
+                    lastClick = true
+                }
+            } else {
+                if (context is NotificationHistoryActivity) {
+                    context.recyclerSimpleClick(position)
+                }
+            }
+        }
+
+        holder.notif_history_item_Layout.setOnLongClickListener(longClick)
+        holder.notif_history_item_Layout.setOnClickListener(click)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    override fun getItemCount(): Int {
+        return notification_history_ListOfNotificationDB.size
+    }
+
+    class NotificationHistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        var notif_history_item_Layout: RelativeLayout
+        var notif_history_item_SenderName: TextView
+        var notif_history_item_NotificationContent: TextView
+        var notif_history_item_NotificationDate: TextView
+        var notif_history_item_AppImage: AppCompatImageView
+
+        init {
+            notif_history_item_Layout = view.findViewById(R.id.notif_history_item_layout)
+            notif_history_item_SenderName = view.findViewById(R.id.notif_history_item_sender_name)
+            notif_history_item_NotificationContent = view.findViewById(R.id.notif_history_item_notification_content)
+            notif_history_item_NotificationDate = view.findViewById(R.id.notif_history_item_notification_time)
+            notif_history_item_AppImage = view.findViewById(R.id.notif_history_item_app_image)
+        }
+    }
+}

@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.*
 import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.controller.ContactIconeAdapter
+import com.yellowtwigs.knockin.ui.adapters.ContactIconeAdapter
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB

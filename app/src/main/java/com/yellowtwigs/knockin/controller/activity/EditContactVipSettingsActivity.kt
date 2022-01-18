@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.controller.activity
 
 import android.Manifest
-import android.R.attr
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
@@ -10,7 +9,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.media.MediaPlayer
 import android.net.Uri
@@ -32,10 +30,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.controller.GroupEditAdapter
+import com.yellowtwigs.knockin.ui.adapters.GroupEditAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
+import com.yellowtwigs.knockin.utils.ConvertBitmap.base64ToBitmap
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -3128,11 +3127,6 @@ class EditContactVipSettingsActivity : AppCompatActivity() {
         val imageBytes = baos.toByteArray()
 
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
-    }
-
-    private fun base64ToBitmap(base64: String): Bitmap {
-        val imageBytes = Base64.decode(base64, 0)
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
     //TODO: modifier l'alert dialog en ajoutant une vue pour le rendre joli.

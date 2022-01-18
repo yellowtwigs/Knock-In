@@ -19,8 +19,8 @@ import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.controller.adapter.CreateGroupGridViewAdapter
-import com.yellowtwigs.knockin.controller.adapter.CreateGroupListViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.CreateGroupGridViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.CreateGroupListViewAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 
 /**

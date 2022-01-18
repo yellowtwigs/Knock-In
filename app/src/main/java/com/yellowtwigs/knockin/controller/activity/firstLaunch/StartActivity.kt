@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.webkit.WebChromeClient
@@ -26,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
@@ -37,12 +39,11 @@ import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
 import java.net.InetAddress
 import java.net.UnknownHostException
 
-
 /**
  * Activité qui nous permet d'importer nos contacts et accepter toutes les autorisations liées aux notifications appel et message
  * @author Florian Striebel, Kenzy Suon
  */
-class StartActivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //region ========================================== Val or Var ==========================================
 
@@ -69,12 +70,18 @@ class StartActivity : AppCompatActivity() {
     private var startActivityAuthorizeSuperpositionCheck: AppCompatImageView? = null
     private var startActivityPermissionsCheck: AppCompatImageView? = null
 
+    private var billingClient: BillingClient? = null
+    private var sharedFunkySoundPreferences: SharedPreferences? = null
+    private var sharedJazzySoundPreferences: SharedPreferences? = null
+    private var sharedRelaxationSoundPreferences: SharedPreferences? = null
+    private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
+    private var sharedCustomSoundPreferences: SharedPreferences? = null
+
     private lateinit var start_activity_mDbWorkerThread: DbWorkerThread
     private var activityVisible = false
 
     //endregion
 
-    @SuppressLint("ObsoleteSdkInt", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -82,34 +89,57 @@ class StartActivity : AppCompatActivity() {
 
         val listApp = getAppOnPhone()
 
+        sharedFunkySoundPreferences =
+            getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
+        sharedJazzySoundPreferences =
+            getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
+        sharedRelaxationSoundPreferences =
+            getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
+        sharedContactsUnlimitedPreferences =
+            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
+        sharedCustomSoundPreferences =
+            getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
+
+        setupBillingClient()
+
         //region ======================================= FindViewById =======================================
 
         startActivityImportContacts = findViewById(R.id.start_activity_import_contacts_button)
-        startActivityActivateNotifications = findViewById(R.id.start_activity_activate_notifications_button)
+        startActivityActivateNotifications =
+            findViewById(R.id.start_activity_activate_notifications_button)
         startActivityAuthorizeSuperposition = findViewById(R.id.start_activity_superposition_button)
         startActivityPermissions = findViewById(R.id.start_activity_permissions_button)
 
         startActivityImportContactsLayout = findViewById(R.id.start_activity_import_contacts_layout)
-        startActivityActivateNotificationsLayout = findViewById(R.id.start_activity_notifications_layout)
-        startActivityAuthorizeSuperpositionLayout = findViewById(R.id.start_activity_superposition_layout)
+        startActivityActivateNotificationsLayout =
+            findViewById(R.id.start_activity_notifications_layout)
+        startActivityAuthorizeSuperpositionLayout =
+            findViewById(R.id.start_activity_superposition_layout)
         startActivityPermissionsLayout = findViewById(R.id.start_activity_permissions_layout)
 
         startActivityNext = findViewById(R.id.start_activity_next)
         startActivitySkip = findViewById(R.id.start_activity_skip)
-        startActivityImportContactsLoading = findViewById(R.id.start_activity_import_contacts_loading)
-        startActivityActivateNotificationsLoading = findViewById(R.id.start_activity_activate_notifications_loading)
-        startActivityAuthorizeSuperpositionLoading = findViewById(R.id.start_activity_superposition_loading)
+        startActivityImportContactsLoading =
+            findViewById(R.id.start_activity_import_contacts_loading)
+        startActivityActivateNotificationsLoading =
+            findViewById(R.id.start_activity_activate_notifications_loading)
+        startActivityAuthorizeSuperpositionLoading =
+            findViewById(R.id.start_activity_superposition_loading)
         startActivityPermissionsLoading = findViewById(R.id.start_activity_permissions_loading)
-        start_activity_import_contacts_loading = findViewById(R.id.start_activity_import_contacts_loading)
+        start_activity_import_contacts_loading =
+            findViewById(R.id.start_activity_import_contacts_loading)
 
         startActivityImportContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
-        startActivityActivateNotificationsCheck = findViewById(R.id.start_activity_activate_notifications_check)
-        startActivityAuthorizeSuperpositionCheck = findViewById(R.id.start_activity_superposition_check)
+        startActivityActivateNotificationsCheck =
+            findViewById(R.id.start_activity_activate_notifications_check)
+        startActivityAuthorizeSuperpositionCheck =
+            findViewById(R.id.start_activity_superposition_check)
         startActivityPermissionsCheck = findViewById(R.id.start_activity_permissions_check)
 
 
         val start_activity_layout = findViewById<ConstraintLayout>(R.id.start_activity_layout)
-        val start_activity_video_Layout = findViewById<RelativeLayout>(R.id.start_activity_video_layout)
+        val start_activity_video_Layout =
+            findViewById<RelativeLayout>(R.id.start_activity_video_layout)
         val videoview = findViewById<VideoView>(R.id.start_activity_video)
         val webview: WebView = findViewById(R.id.start_activity_webview)
         val start_activity_video_Skip = findViewById<MaterialButton>(R.id.start_activity_video_skip)
@@ -131,7 +161,11 @@ class StartActivity : AppCompatActivity() {
         val displayScreen = windowManager.defaultDisplay
         displayScreen.getRealSize(layoutSize)
         if (isWifiConn || isMobileConn) {
-            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150f, resources.displayMetrics)
+            val sizeTest = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                150f,
+                resources.displayMetrics
+            )
             webview.layoutParams.height = layoutSize.y - sizeTest.toInt()
             webview.settings.loadWithOverviewMode = true
             webview.settings.useWideViewPort = true
@@ -199,7 +233,11 @@ class StartActivity : AppCompatActivity() {
             }
         }
         if (webview.visibility == View.GONE) {
-            val sizeTest = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150f, resources.displayMetrics)
+            val sizeTest = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                150f,
+                resources.displayMetrics
+            )
             videoview.layoutParams.height = layoutSize.y - sizeTest.toInt()
             webview.visibility = View.INVISIBLE
             videoview.visibility = View.VISIBLE
@@ -208,7 +246,8 @@ class StartActivity : AppCompatActivity() {
             videoview.start()
         }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit: SharedPreferences.Editor = sharedPreferences.edit()
         edit.putBoolean("popupNotif", true)
         edit.apply()
@@ -238,11 +277,11 @@ class StartActivity : AppCompatActivity() {
             startActivityAuthorizeSuperpositionLayout!!.visibility = View.GONE
 
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setBackground(getDrawable(R.color.backgroundColor))
-                    .setMessage(getString(R.string.start_activity_go_edition_message))
-                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                    }
-                    .show()
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setMessage(getString(R.string.start_activity_go_edition_message))
+                .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                }
+                .show()
         }
 
 //        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
@@ -266,12 +305,20 @@ class StartActivity : AppCompatActivity() {
             start_activity_layout.visibility = View.VISIBLE
             videoview.stopPlayback()
 
-            Toast.makeText(this, getString(R.string.start_activity_video_tutorial_skip_text), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.start_activity_video_tutorial_skip_text),
+                Toast.LENGTH_LONG
+            ).show()
         }
 
         //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact puis nous affichons un loading
         startActivityImportContacts!!.setOnClickListener {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), ImportContactsActivity.REQUEST_CODE_READ_CONTACT)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                ImportContactsActivity.REQUEST_CODE_READ_CONTACT
+            )
             startActivityImportContacts!!.visibility = View.INVISIBLE
 
             val displayLoading = Runnable {
@@ -280,7 +327,8 @@ class StartActivity : AppCompatActivity() {
             runOnUiThread(displayLoading)
 
             if (listApp.contains("com.whatsapp")) {
-                val importWhatsappSharedPreferences: SharedPreferences = getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
+                val importWhatsappSharedPreferences: SharedPreferences =
+                    getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = importWhatsappSharedPreferences.edit()
                 edit.putBoolean("importWhatsappPreferences", true)
                 edit.apply()
@@ -313,7 +361,8 @@ class StartActivity : AppCompatActivity() {
                         Handler().postDelayed({
                             startActivityActivateNotificationsLoading!!.visibility = View.INVISIBLE
                             startActivityActivateNotificationsCheck!!.visibility = View.VISIBLE
-                            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                            val sharedPreferences: SharedPreferences =
+                                getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
                                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                                 edit.putBoolean("serviceNotif", true)
@@ -350,8 +399,10 @@ class StartActivity : AppCompatActivity() {
                 val SPLASH_DISPLAY_LENGHT = 3000
                 //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:$packageName"))
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:$packageName")
+                    )
                     startActivity(intent)
                 }
                 val displayLoading = Runnable {
@@ -364,16 +415,23 @@ class StartActivity : AppCompatActivity() {
                     while (!activityVisible) {
                     }
                     println("NotificationService" + isNotificationServiceEnabled() + " activity visible" + activityVisible)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(
+                            this
+                        )
+                    ) {
                         println("into before delayed")
                         //     Handler().postDelayed({
 
 
                         val displayLoading = Runnable {
                             Handler().postDelayed({
-                                startActivityAuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
+                                startActivityAuthorizeSuperpositionLoading!!.visibility =
+                                    View.INVISIBLE
                                 startActivityAuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
-                                val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                                val sharedPreferences: SharedPreferences = getSharedPreferences(
+                                    "Knockin_preferences",
+                                    Context.MODE_PRIVATE
+                                )
                                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                                 edit.putBoolean("popupNotif", true)
                                 edit.apply()
@@ -402,7 +460,11 @@ class StartActivity : AppCompatActivity() {
             val arraylistPermission = ArrayList<String>()
             arraylistPermission.add(Manifest.permission.SEND_SMS)
             arraylistPermission.add(Manifest.permission.CALL_PHONE)
-            ActivityCompat.requestPermissions(this, arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)), REQUEST_CODE_SMS_AND_CALL)
+            ActivityCompat.requestPermissions(
+                this,
+                arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)),
+                REQUEST_CODE_SMS_AND_CALL
+            )
             startActivityPermissions!!.visibility = View.INVISIBLE
             startActivityPermissionsLoading!!.visibility = View.VISIBLE
             allIsCheckedGOEdition()
@@ -453,6 +515,97 @@ class StartActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 
+    private fun setupBillingClient() {
+        billingClient = BillingClient.newBuilder(this)
+            .setListener(this)
+            .enablePendingPurchases()
+            .build()
+        connectToGooglePlayBilling()
+    }
+
+    private fun connectToGooglePlayBilling() {
+        billingClient?.startConnection(object : BillingClientStateListener {
+            /**
+             * Called to notify that setup is complete.
+             *
+             * @param billingResult The [BillingResult] which returns the status of the setup process.
+             */
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    querySkuDetails()
+                } else {
+                    Log.i("playBilling", "Fail")
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                connectToGooglePlayBilling()
+            }
+        })
+    }
+
+    private fun querySkuDetails() {
+        val skuList = ArrayList<String>()
+        skuList.add("contacts_vip_unlimited")
+        skuList.add("notifications_vip_funk_theme")
+        skuList.add("notifications_vip_jazz_theme")
+        skuList.add("notifications_vip_relaxation_theme")
+        skuList.add("notifications_vip_custom_tones_theme")
+
+        val params = SkuDetailsParams.newBuilder()
+            .setSkusList(skuList)
+            .setType(BillingClient.SkuType.INAPP)
+
+        billingClient?.querySkuDetailsAsync(
+            params.build()
+        ) { _, skuDetailsList ->
+
+            billingClient?.queryPurchasesAsync(
+                BillingClient.SkuType.INAPP
+            ) { _, listOfPurchases ->
+                if (listOfPurchases.isNotEmpty()) {
+                    for (purchase in listOfPurchases) {
+                        when {
+                            purchase.originalJson.contains("notifications_vip_funk_theme") -> {
+                                val edit =
+                                    sharedFunkySoundPreferences?.edit()
+                                edit?.putBoolean("Funky_Sound_Bought", true)
+                                edit?.apply()
+                            }
+                            purchase.originalJson.contains("notifications_vip_jazz_theme") -> {
+                                val edit =
+                                    sharedJazzySoundPreferences?.edit()
+                                edit?.putBoolean("Jazzy_Sound_Bought", true)
+                                edit?.apply()
+                            }
+                            purchase.originalJson.contains("notifications_vip_relaxation_theme") -> {
+                                val edit =
+                                    sharedRelaxationSoundPreferences?.edit()
+                                edit?.putBoolean("Relax_Sound_Bought", true)
+                                edit?.apply()
+                            }
+                            purchase.originalJson.contains("contacts_vip_unlimited") -> {
+                                val edit =
+                                    sharedContactsUnlimitedPreferences?.edit()
+                                edit?.putBoolean(
+                                    "Contacts_Unlimited_Bought",
+                                    true
+                                )
+                                edit?.apply()
+                            }
+                            purchase.originalJson.contains("notifications_vip_custom_tones_theme") -> {
+                                val edit =
+                                    sharedCustomSoundPreferences?.edit()
+                                edit?.putBoolean("Custom_Sound_Bought", true)
+                                edit?.apply()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun checkIfGoEdition(): Boolean {
         val am = baseContext.getSystemService(ACTIVITY_SERVICE) as ActivityManager
         return am.isLowRamDevice
@@ -486,7 +639,11 @@ class StartActivity : AppCompatActivity() {
     /**
      *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
      */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
@@ -495,14 +652,21 @@ class StartActivity : AppCompatActivity() {
                 val sync = Runnable {
                     ContactManager(this).getAllContacsInfoSync(contentResolver)
 
-                    val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
+                    val sharedPreferencesSync =
+                        getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1
                     var stringSet = listOf<String>()
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                        stringSet =
+                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
-                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                    while (sharedPreferencesSync.getStringSet(
+                            index.toString(),
+                            null
+                        ) != null && stringSet.isNotEmpty()
+                    ) {
+                        stringSet =
+                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         index++
                     }
 
@@ -556,27 +720,28 @@ class StartActivity : AppCompatActivity() {
      */
     private fun buildMultiSelectAlertDialog(): AlertDialog {
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setBackground(getDrawable(R.color.backgroundColor))
-                .setTitle(getString(R.string.notification_alert_dialog_title))
-                .setMessage(getString(R.string.notification_alert_dialog_message))
-                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                    startActivity(Intent(this@StartActivity, MultiSelectActivity::class.java))
-                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putBoolean("view", true)
-                    edit.apply()
-                    closeContextMenu()
-                    finish()
-                }
-                .setNegativeButton(R.string.alert_dialog_later)
-                { _, _ ->
-                    closeContextMenu()
-                    val intent = Intent(this@StartActivity, MainActivity::class.java)
-                    intent.putExtra("fromStartActivity", true)
-                    startActivity(intent)
-                    finish()
-                }
-                .show()
+            .setBackground(getDrawable(R.color.backgroundColor))
+            .setTitle(getString(R.string.notification_alert_dialog_title))
+            .setMessage(getString(R.string.notification_alert_dialog_message))
+            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                startActivity(Intent(this@StartActivity, MultiSelectActivity::class.java))
+                val sharedPreferences: SharedPreferences =
+                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("view", true)
+                edit.apply()
+                closeContextMenu()
+                finish()
+            }
+            .setNegativeButton(R.string.alert_dialog_later)
+            { _, _ ->
+                closeContextMenu()
+                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                intent.putExtra("fromStartActivity", true)
+                startActivity(intent)
+                finish()
+            }
+            .show()
     }
 
     /**
@@ -591,24 +756,25 @@ class StartActivity : AppCompatActivity() {
         }
 
         return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setBackground(getDrawable(R.color.backgroundColor))
-                .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
-                .setMessage(message)
-                .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                    val intent = Intent(this@StartActivity, MainActivity::class.java)
-                    intent.putExtra("fromStartActivity", true)
-                    startActivity(intent)
-                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putBoolean("view", true)
-                    edit.apply()
-                    closeContextMenu()
-                }
-                .setNegativeButton(R.string.alert_dialog_cancel)
-                { _, _ ->
-                    closeContextMenu()
-                }
-                .show()
+            .setBackground(getDrawable(R.color.backgroundColor))
+            .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
+            .setMessage(message)
+            .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
+                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                intent.putExtra("fromStartActivity", true)
+                startActivity(intent)
+                val sharedPreferences: SharedPreferences =
+                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("view", true)
+                edit.apply()
+                closeContextMenu()
+            }
+            .setNegativeButton(R.string.alert_dialog_cancel)
+            { _, _ ->
+                closeContextMenu()
+            }
+            .show()
     }
 
     /**
@@ -648,17 +814,19 @@ class StartActivity : AppCompatActivity() {
      */
     private fun allIsChecked() {
         if (startActivityActivateNotificationsCheck!!.visibility == View.VISIBLE &&
-                startActivityImportContactsCheck!!.visibility == View.VISIBLE) {
-            startActivityNext!!.visibility = View.VISIBLE
-            startActivitySkip!!.visibility = View.GONE
+            startActivityImportContactsCheck!!.visibility == View.VISIBLE
+        ) {
+            startActivityNext?.visibility = View.VISIBLE
+            startActivitySkip?.visibility = View.GONE
         }
     }
 
     private fun allIsCheckedGOEdition() {
         if (startActivityImportContactsCheck!!.visibility == View.VISIBLE &&
-                startActivityPermissionsCheck!!.visibility == View.VISIBLE) {
-            startActivityNext!!.visibility = View.VISIBLE
-            startActivitySkip!!.visibility = View.GONE
+            startActivityPermissionsCheck!!.visibility == View.VISIBLE
+        ) {
+            startActivityNext?.visibility = View.VISIBLE
+            startActivitySkip?.visibility = View.GONE
         }
     }
 
@@ -673,6 +841,10 @@ class StartActivity : AppCompatActivity() {
             packageNameList.add(activityInfo.applicationInfo.packageName)
         }
         return packageNameList
+    }
+
+    override fun onPurchasesUpdated(p0: BillingResult, p1: MutableList<Purchase>?) {
+
     }
 
     //endregion

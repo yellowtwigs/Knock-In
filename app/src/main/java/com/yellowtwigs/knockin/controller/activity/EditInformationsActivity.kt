@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
@@ -39,6 +38,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.yellowtwigs.knockin.utils.ConvertBitmap.base64ToBitmap
 import java.io.ByteArrayOutputStream
 
 /**
@@ -324,11 +324,6 @@ class EditInformationsActivity : AppCompatActivity() {
         val imageBytes = baos.toByteArray()
 
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
-    }
-
-    private fun base64ToBitmap(base64: String): Bitmap {
-        val imageBytes = Base64.decode(base64, 0)
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.TutorialViewPagerAdapter
+import com.yellowtwigs.knockin.ui.adapters.TutorialViewPagerAdapter
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.NotificationHistoryActivity
 import com.yellowtwigs.knockin.controller.activity.CockpitActivity

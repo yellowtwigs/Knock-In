@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".controller.activity.MainActivity">
 
-    <include layout="@layout/content_main" />
+    <include
+        android:id="@+id/content_main"
+        layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_group_button"

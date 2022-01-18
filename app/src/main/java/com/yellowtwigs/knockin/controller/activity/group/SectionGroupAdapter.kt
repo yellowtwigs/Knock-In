@@ -6,19 +6,16 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.net.Uri
-import android.os.Build
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -48,15 +45,14 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
     override fun onBindViewHolder(sectionViewHolder: RecyclerView.ViewHolder, position: Int) {
         if (isSectionHeaderPosition(position)) {
             var i = position + 1
-            println("position section$position")
             val groupName = mSections[position]!!.title.toString()
             if (groupName == "Favorites") {
                 (sectionViewHolder as SectionViewHolder).titleTv.setText(R.string.group_favorites)
             } else {
-                (sectionViewHolder as SectionViewHolder).titleTv.text = mSections[position]!!.title
+                (sectionViewHolder as SectionViewHolder).titleTv.text = mSections[position]?.title
             }
             while (!isSectionHeaderPosition(i) && i < itemCount) {
-                val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i))
+                val contact = (mBaseAdapter as GroupAdapter).customGetItem(sectionedPositionToPosition(i))
                 println("contact " + contact.contactDB + " de la section " + position)
                 i++
                 if (contact.getFirstMail().isEmpty()) {
@@ -80,7 +76,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 var i1 = position + 1
                 val groupMail = ArrayList<String>()
                 while (!isSectionHeaderPosition(i1) && i1 < itemCount) {
-                    val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i1))
+                    val contact = (mBaseAdapter as GroupAdapter).customGetItem(sectionedPositionToPosition(i1))
                     groupMail.add(contact.getFirstMail())
                     i1++
                 }
@@ -90,21 +86,16 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 var i12 = position + 1
                 val groupSms = ArrayList<String>()
                 while (!isSectionHeaderPosition(i12) && i12 < itemCount) {
-                    val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i12))
+                    val contact = (mBaseAdapter as GroupAdapter).customGetItem(sectionedPositionToPosition(i12))
                     groupSms.add(contact.getFirstPhoneNumber())
                     i12++
                 }
                 monoChannelSmsClick(groupSms)
             }
             sectionViewHolder.menu.setOnClickListener { v: View? ->
-                println("BUTTON CLICK")
                 val popupMenu = PopupMenu(mContext, v)
                 popupMenu.inflate(R.menu.section_menu_group_manager)
                 popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-                    println("VALUES = " + item.itemId)
-                    println("ok = " + R.id.menu_group_add_contacts)
-                    println("ok = " + R.id.menu_group_delete_contacts)
-                    println("ok = " + R.id.menu_group_delete_group)
                     when (item.itemId) {
                         R.id.menu_group_edit_group -> {
                             val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -297,7 +288,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 }
                 popupMenu.show()
             }
-            sectionViewHolder.holderName.setOnClickListener { (mBaseAdapter as GroupAdapter).SetGroupClick(getGroupPosition(position)) }
+            sectionViewHolder.holderName.setOnClickListener { (mBaseAdapter as GroupAdapter).setGroupClick(getGroupPosition(position)) }
         } else {
             mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position))
         }

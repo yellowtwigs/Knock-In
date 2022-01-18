@@ -5,13 +5,10 @@ import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.TextUtils
-import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -26,6 +23,9 @@ import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ConvertBitmap.base64ToBitmap
+import com.yellowtwigs.knockin.utils.ConverterPhoneNumber.converter06To33
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -546,11 +546,6 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun base64ToBitmap(base64: String): Bitmap {
-        val imageBytes = Base64.decode(base64, 0)
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-    }
-
     override fun onBackPressed() {
         startActivity(Intent(this@ContactDetailsActivity, MainActivity::class.java))
     }
@@ -560,12 +555,6 @@ class ContactDetailsActivity : AppCompatActivity() {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             }
         }
-    }
-
-    private fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0] == '0') {
-            "+33 $phoneNumber"
-        } else phoneNumber
     }
 
     private fun phoneCall(phoneNumber: String) {

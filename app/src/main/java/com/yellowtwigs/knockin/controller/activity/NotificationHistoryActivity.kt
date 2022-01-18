@@ -38,13 +38,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.NotificationListener
-import com.yellowtwigs.knockin.controller.NotificationsHistoryRecyclerViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.NotificationsHistoryRecyclerViewAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
+import com.yellowtwigs.knockin.utils.ConverterPhoneNumber.converter06To33
 
 
 /**
@@ -667,14 +668,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         context.startActivity(i)
     }
 
-    private fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0].toString() == "0") {
-            val phoneNumberConvert = "+33" + phoneNumber.substring(0)
-            phoneNumberConvert
-        } else {
-            phoneNumber
-        }
-    }
+
 
     private fun openWhatsapp(phoneNumber: String) {
         val intent = Intent(Intent.ACTION_VIEW)

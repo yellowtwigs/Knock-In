@@ -37,6 +37,7 @@ import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
 import com.yellowtwigs.knockin.model.ModelDB.VipNotificationsDB
 import com.yellowtwigs.knockin.model.ModelDB.VipSbnDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.ui.adapters.NotifPopupRecyclerViewAdapter
 
 /**
  * Service qui nous permet de traiter les notifications

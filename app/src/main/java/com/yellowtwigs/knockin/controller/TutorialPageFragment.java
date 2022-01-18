@@ -22,11 +22,11 @@ public class TutorialPageFragment extends Fragment {
     private int position;
     private Boolean fromMainActivity = false;
 
-    TutorialPageFragment(Drawable drawable) {
+    public TutorialPageFragment(Drawable drawable) {
         this.drawable = drawable;
     }
 
-    TutorialPageFragment(Drawable drawable, Boolean fromMainActivity, int position) {
+    public TutorialPageFragment(Drawable drawable, Boolean fromMainActivity, int position) {
         this.drawable = drawable;
         this.position = position;
         this.fromMainActivity = fromMainActivity;
