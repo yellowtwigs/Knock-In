@@ -29,9 +29,8 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
-import com.yellowtwigs.knockin.model.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import java.sql.DriverManager
 import java.util.*

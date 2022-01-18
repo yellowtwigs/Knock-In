@@ -33,9 +33,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
-import com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
-import com.yellowtwigs.knockin.model.ContactGesture;
+import com.yellowtwigs.knockin.utils.ContactGesture;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
@@ -44,7 +43,6 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 /**
@@ -109,7 +107,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         int height = heightWidthImage;
         int width = heightWidthImage;
 
-        System.out.println(" layout params height " + height + " width " + width);
         RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
@@ -264,15 +261,12 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         int startAngle;
         int endAngle;
         if (position % len == 0) {
-            System.out.println("position vaut " + position + " modulo" + len + " vaut" + position % len);
             startAngle = 90;
             endAngle = -90;
         } else if (position % len == len - 1) {
-            System.out.println("position vaut " + position + " modulo" + len + " vaut" + position % len);
             startAngle = 90;
             endAngle = 270;
         } else {
-            System.out.println("position vaut " + position + " modulo" + len + " vaut" + position % len);
             startAngle = 0;
             endAngle = -180;
         }
@@ -362,7 +356,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
-                System.out.println("intent " + Objects.requireNonNull(intent.getExtras()).toString());
                 context.startActivity(intent);
             }
 
@@ -389,7 +382,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                     firstPosVis = 0;
 //                    firstPosVisfirstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
                 }
-                System.out.println("selection" + firstPosVis);
                 if (context instanceof MainActivity) {
                     ((MainActivity) context).gridMultiSelectItemClick(position);
                 } else {

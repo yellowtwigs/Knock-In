@@ -11,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:backgroundTint="?attr/backgroundColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="?attr/textColor" />
 
@@ -23,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
-        android:id="@+id/multiSelect_Tv_title"
+        android:id="@+id/multi_select_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -33,19 +31,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <GridView
-        android:id="@+id/multiSelect_gridView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/multi_select_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/multiSelect_Tv_nb_contact"
+        app:layout_constraintBottom_toTopOf="@+id/multi_select_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/multiSelect_Tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/multi_select_title" />
 
     <TextView
-        android:id="@+id/multiSelect_Tv_nb_contact"
+        android:id="@+id/multi_select_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"

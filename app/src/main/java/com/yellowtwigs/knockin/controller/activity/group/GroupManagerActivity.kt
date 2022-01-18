@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.controller.activity.group
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
@@ -31,10 +30,10 @@ import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.ModelDB.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
-import com.yellowtwigs.knockin.controller.SelectContactAdapter
+import com.yellowtwigs.knockin.ui.adapters.MultiSelectAdapter
 
 /**
  * Activité qui nous affiche les groupes de contact sous forme de section
@@ -71,6 +70,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var groupAdapter: GroupAdapter? = null
     private var sectionAdapter: SectionGroupAdapter? = null
+    private lateinit var multiSelectAdapter: MultiSelectAdapter
 
     private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
     private var recyclerLen: Int = 1
@@ -585,9 +585,16 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     fun gridMultiSelectItemClick(len: Int, position: Int, firstPosVis: Int) {
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
-        adapter.itemSelected(position)
-        adapter.notifyDataSetChanged()
+        val multiSelectAdapter = MultiSelectAdapter(this, 4, false) { position ->
+            multiSelectAdapter.itemSelected(position)
+        }
+        multiSelectAdapter.submitList(null)
+        multiSelectAdapter.submitList(gestionnaireContacts?.contactList)
+
+        group_manager_RecyclerView?.adapter = multiSelectAdapter
+        group_manager_RecyclerView?.setHasFixedSize(true)
+        group_manager_RecyclerView?.layoutManager = GridLayoutManager(this, 4, RecyclerView.VERTICAL, false)
+        multiSelectAdapter.itemSelected(position)
         firstClick = true
 
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
@@ -602,16 +609,20 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 
     fun clickGroupGrid(len: Int, positions: List<Int>, firstPosVis: Int, secondClickLibelle: Boolean, fromLibelleClick: Boolean) {
-//        group_GridView!!.setSelection(firstPosVis)
-        val adapter = SelectContactAdapter(this, gestionnaireContacts, len)
-//        group_GridView!!.adapter = adapter
-        adapter.notifyDataSetChanged()
+        val multiSelectAdapter = MultiSelectAdapter(this, 4, false) { position ->
+            multiSelectAdapter.itemSelected(position)
+        }
+        multiSelectAdapter.submitList(null)
+        multiSelectAdapter.submitList(gestionnaireContacts?.contactList)
 
+        group_manager_RecyclerView?.adapter = multiSelectAdapter
+        group_manager_RecyclerView?.setHasFixedSize(true)
+        group_manager_RecyclerView?.layoutManager = GridLayoutManager(this, 4, RecyclerView.VERTICAL, false)
         if (!secondClickLibelle) {
             firstClick = true
 
             for (position in positions) {
-                adapter.itemSelected(position)
+                multiSelectAdapter.itemSelected(position)
             }
 
             verifiedContactsChannel(listOfItemSelected)

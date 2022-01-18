@@ -26,7 +26,6 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.adapters.MyProductAdapter
-import com.yellowtwigs.knockin.utils.ConverterPhoneNumber.converter06To33
 import com.yellowtwigs.knockin.utils.DrawerLayoutSwitch
 import kotlinx.coroutines.*
 
@@ -337,15 +336,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 loadProductToRecyclerView(skuDetailsList)
             }
         }
-    }
-
-    private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        val message = "phone=" + converter06To33(phoneNumber)
-        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
-
-        startActivity(intent)
     }
 
 

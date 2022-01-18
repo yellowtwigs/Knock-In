@@ -34,7 +34,7 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.CircularImageView
 import com.yellowtwigs.knockin.controller.activity.EditContactActivity
-import com.yellowtwigs.knockin.model.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
@@ -483,7 +483,6 @@ class GroupAdapter(private val context: Context,
                 modeMultiSelect = true
                 for (i in listContactOnGroup.indices) {
                     if (!listOfItemSelected.contains(listContactOnGroup[i])) {
-                        //System.out.println(Objects.requireNonNull(getItem(i).getContactDB()).getFirstName() + " " + Objects.requireNonNull(getItem(i).getContactDB()).getLastName());
                         val positionItem = contactManager.contactList.indexOf(listContactOnGroup[i])
                         (context as GroupManagerActivity).recyclerMultiSelectItemClick(positionItem, secondClick, true)
                         listOfItemSelected.add(contactManager.contactList[positionItem])
