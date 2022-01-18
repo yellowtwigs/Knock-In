@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.adapter
+package com.yellowtwigs.knockin.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -65,36 +65,51 @@ class MyProductAdapter(
                 val text = productName.split("\\(").toTypedArray()
                 productItemName.text = text[0]
 
-                checkProductNameContains(productName, jazzySoundBought)
-                checkProductNameContains(productName, funkySoundBought)
-                checkProductNameContains(productName, relaxationSoundBought)
-                checkProductNameContains(productName, customSoundBought)
-                checkProductNameContains(productName, contactsUnlimitedBought)
-
                 if (productName.contains("Contacts") || productName.contains("Contatti") ||
                     productName.contains("Contactos")
                 ) {
                     productItemImage.setImageResource(R.drawable.ic_circular_vip_icon)
+
+                    if (contactsUnlimitedBought) {
+                        changeBackgroundToDarkGrey()
+                    }
+
                 } else if (productName.contains("Jazzy") || productName.contains(
                         "jazzy"
                     )
                 ) {
                     productItemImage.setImageResource(R.drawable.ic_circular_jazz_trumpet)
+
+                    if (jazzySoundBought) {
+                        changeBackgroundToDarkGrey()
+                    }
                 } else if (productName.contains("Funky") || productName.contains(
                         "funky"
                     )
                 ) {
                     productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
+
+                    if (funkySoundBought) {
+                        changeBackgroundToDarkGrey()
+                    }
                 } else if (productName.contains("Relaxation") || productName.contains(
                         "Relajación"
                     ) || productName.contains("Relajación")
                 ) {
                     productItemImage.setImageResource(R.drawable.ic_circular_relax)
+
+                    if (relaxationSoundBought) {
+                        changeBackgroundToDarkGrey()
+                    }
                 } else if (productName.contains("Custom") || productName.contains(
                         "custom"
                     )
                 ) {
                     productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
+
+                    if (customSoundBought) {
+                        changeBackgroundToDarkGrey()
+                    }
                 }
                 productItemBuyImage.icon = ResourcesCompat.getDrawable(
                     cxt.resources,
@@ -129,28 +144,6 @@ class MyProductAdapter(
             }
         }
 
-        private fun checkProductNameContains(productName: String, sharedPref: Boolean) {
-            with(productName) {
-                when {
-                    contains("Contacts") && sharedPref -> {
-                        changeBackgroundToDarkGrey()
-                    }
-                    contains("Jazzy") && sharedPref -> {
-                        changeBackgroundToDarkGrey()
-                    }
-                    contains("Funky") && sharedPref -> {
-                        changeBackgroundToDarkGrey()
-                    }
-                    contains("Relaxation") && sharedPref -> {
-                        changeBackgroundToDarkGrey()
-                    }
-                    contains("Custom") && sharedPref -> {
-                        changeBackgroundToDarkGrey()
-                    }
-                }
-            }
-        }
-
         override fun onProductClickListener(view: View?, position: Int) {
 
         }
@@ -168,6 +161,5 @@ class MyProductAdapter(
                     oldItem.title == newItem.title &&
                     oldItem.type == newItem.type
         }
-
     }
 }

@@ -8,7 +8,7 @@ import androidx.appcompat.widget.SwitchCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 
-object DrawerLayoutSwitchSingleton {
+object DrawerLayoutSwitch {
     fun callPopupSwitch(switchCompat: SwitchCompat, activity: Activity) {
         switchCompat.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

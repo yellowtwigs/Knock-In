@@ -10,9 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -27,8 +25,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.MultiSelectActivity
-import com.yellowtwigs.knockin.controller.adapter.MyProductAdapter
-import com.yellowtwigs.knockin.utils.DrawerLayoutSwitchSingleton
+import com.yellowtwigs.knockin.ui.adapters.MyProductAdapter
+import com.yellowtwigs.knockin.utils.ConverterPhoneNumber.converter06To33
+import com.yellowtwigs.knockin.utils.DrawerLayoutSwitch
 import kotlinx.coroutines.*
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -45,14 +44,11 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var recyclerProduct: RecyclerView? = null
     private var myProductAdapter: MyProductAdapter? = null
 
-    private lateinit var progressBar: ProgressBar
-
-    private var sharedProductNotifFunkySoundPreferences: SharedPreferences? = null
-    private var sharedProductNotifJazzySoundPreferences: SharedPreferences? = null
-    private var sharedProductNotifRelaxationSoundPreferences: SharedPreferences? = null
-    private var sharedProductContactsUnlimitedPreferences: SharedPreferences? = null
-
-    private var sharedProductNotifCustomSoundPreferences: SharedPreferences? = null
+    private var sharedFunkySoundPreferences: SharedPreferences? = null
+    private var sharedJazzySoundPreferences: SharedPreferences? = null
+    private var sharedRelaxationSoundPreferences: SharedPreferences? = null
+    private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
+    private var sharedCustomSoundPreferences: SharedPreferences? = null
 
     private var premium_activity_ToolbarLayout: RelativeLayout? = null
     private var premium_activity_ToolbarOpenDrawer: AppCompatImageView? = null
@@ -80,28 +76,27 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //endregion
 
-        setContentView()
-        setupBillingClient()
-
         val fromMultiSelectActivity = intent.getBooleanExtra("fromMultiSelectActivity", false)
         fromManageNotification = intent.getBooleanExtra("fromManageNotification", false)
 
-        sharedProductNotifFunkySoundPreferences =
+        sharedFunkySoundPreferences =
             getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
-        sharedProductNotifJazzySoundPreferences =
+        sharedJazzySoundPreferences =
             getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
-        sharedProductNotifRelaxationSoundPreferences =
+        sharedRelaxationSoundPreferences =
             getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
-        sharedProductContactsUnlimitedPreferences =
+        sharedContactsUnlimitedPreferences =
             getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
-        sharedProductNotifCustomSoundPreferences =
+        sharedCustomSoundPreferences =
             getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
+
+        setContentView()
+        setupBillingClient()
 
         premium_activity_ToolbarLayout = findViewById(R.id.premium_activity_toolbar_layout)
         premium_activity_ToolbarOpenDrawer = findViewById(R.id.premium_activity_toolbar_open_drawer)
 
-        premium_activity_ToolbarLayoutFromMultiSelect =
-            findViewById(R.id.premium_activity_toolbar_layout)
+        premium_activity_ToolbarLayoutFromMultiSelect = premium_activity_ToolbarLayout
         premium_activity_ToolbarBackOnPressed =
             findViewById(R.id.premium_activity_toolbar_from_multi_select_back)
 
@@ -216,8 +211,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             finish()
         }
 
-        DrawerLayoutSwitchSingleton.callPopupSwitch(callPopupSwitch, activity)
-        DrawerLayoutSwitchSingleton.themeSwitch(themeSwitch, activity, sharedThemePreferences)
+        DrawerLayoutSwitch.callPopupSwitch(callPopupSwitch, activity)
+        DrawerLayoutSwitch.themeSwitch(themeSwitch, activity, sharedThemePreferences)
     }
 
     private fun setContentView() {
@@ -261,9 +256,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
              */
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        querySkuDetails()
-                    }
+                    querySkuDetails()
                 } else {
                     Log.i("playBilling", "Fail")
                 }
@@ -275,7 +268,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         })
     }
 
-    suspend fun querySkuDetails() {
+    private fun querySkuDetails() {
         val skuList = ArrayList<String>()
         skuList.add("contacts_vip_unlimited")
         skuList.add("notifications_vip_funk_theme")
@@ -287,42 +280,43 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .setSkusList(skuList)
             .setType(BillingClient.SkuType.INAPP)
 
-        withContext(Dispatchers.Main) {
-            billingClient?.querySkuDetailsAsync(
-                params.build()
-            ) { _, skuDetailsList ->
-                if (skuDetailsList != null) {
-                    loadProductToRecyclerView(skuDetailsList)
-                }
-            }
+        billingClient?.querySkuDetailsAsync(
+            params.build()
+        ) { _, skuDetailsList ->
 
             billingClient?.queryPurchasesAsync(
                 BillingClient.SkuType.INAPP
             ) { _, listOfPurchases ->
                 if (listOfPurchases.isNotEmpty()) {
+//                val mutableList = mutableListOf<String>()
+//                for (purchase in listOfPurchases) {
+//                    mutableList.add("PURCHASE :: ${purchase.originalJson}")
+//                }
+//                sendMessageWithWhatsapp("0651740903", "$mutableList")
+
                     for (purchase in listOfPurchases) {
                         when {
                             purchase.originalJson.contains("notifications_vip_funk_theme") -> {
                                 val edit =
-                                    sharedProductNotifFunkySoundPreferences!!.edit()
+                                    sharedFunkySoundPreferences!!.edit()
                                 edit.putBoolean("Funky_Sound_Bought", true)
                                 edit.apply()
                             }
                             purchase.originalJson.contains("notifications_vip_jazz_theme") -> {
                                 val edit =
-                                    sharedProductNotifJazzySoundPreferences!!.edit()
+                                    sharedJazzySoundPreferences!!.edit()
                                 edit.putBoolean("Jazzy_Sound_Bought", true)
                                 edit.apply()
                             }
                             purchase.originalJson.contains("notifications_vip_relaxation_theme") -> {
                                 val edit =
-                                    sharedProductNotifRelaxationSoundPreferences!!.edit()
+                                    sharedRelaxationSoundPreferences!!.edit()
                                 edit.putBoolean("Relax_Sound_Bought", true)
                                 edit.apply()
                             }
                             purchase.originalJson.contains("contacts_vip_unlimited") -> {
                                 val edit =
-                                    sharedProductContactsUnlimitedPreferences!!.edit()
+                                    sharedContactsUnlimitedPreferences!!.edit()
                                 edit.putBoolean(
                                     "Contacts_Unlimited_Bought",
                                     true
@@ -331,7 +325,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             }
                             purchase.originalJson.contains("notifications_vip_custom_tones_theme") -> {
                                 val edit =
-                                    sharedProductNotifCustomSoundPreferences!!.edit()
+                                    sharedCustomSoundPreferences!!.edit()
                                 edit.putBoolean("Custom_Sound_Bought", true)
                                 edit.apply()
                             }
@@ -339,14 +333,21 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     }
                 }
             }
+            if (skuDetailsList != null) {
+                loadProductToRecyclerView(skuDetailsList)
+            }
         }
     }
 
-    private suspend fun launchProgressBarSpin(time: Long) {
-        progressBar.visibility = View.VISIBLE
-        delay(time)
-        progressBar.visibility = View.GONE
+    private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        val message = "phone=" + converter06To33(phoneNumber)
+        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
+
+        startActivity(intent)
     }
+
 
     /**
      * Implement this method to get notifications for purchases updates. Both purchases initiated by
@@ -379,9 +380,9 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 getString(R.string.in_app_purchase_made_message),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val edit = sharedProductNotifFunkySoundPreferences!!.edit()
-                            edit.putBoolean("Funky_Sound_Bought", true)
-                            edit.apply()
+                            val edit = sharedFunkySoundPreferences?.edit()
+                            edit?.putBoolean("Funky_Sound_Bought", true)
+                            edit?.apply()
                             backToManageNotifAfterBuying()
                         }
                 }
@@ -399,9 +400,9 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 getString(R.string.in_app_purchase_made_message),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val edit = sharedProductNotifJazzySoundPreferences!!.edit()
-                            edit.putBoolean("Jazzy_Sound_Bought", true)
-                            edit.apply()
+                            val edit = sharedJazzySoundPreferences?.edit()
+                            edit?.putBoolean("Jazzy_Sound_Bought", true)
+                            edit?.apply()
                             backToManageNotifAfterBuying()
                         }
                 }
@@ -419,7 +420,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 getString(R.string.in_app_purchase_made_message),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val edit = sharedProductNotifRelaxationSoundPreferences!!.edit()
+                            val edit = sharedRelaxationSoundPreferences!!.edit()
                             edit.putBoolean("Relax_Sound_Bought", true)
                             edit.apply()
                             backToManageNotifAfterBuying()
@@ -439,7 +440,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 getString(R.string.in_app_purchase_made_message),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val edit = sharedProductContactsUnlimitedPreferences!!.edit()
+                            val edit = sharedContactsUnlimitedPreferences!!.edit()
                             edit.putBoolean("Contacts_Unlimited_Bought", true)
                             edit.apply()
                         }
@@ -458,7 +459,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 getString(R.string.in_app_purchase_made_message),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val edit = sharedProductNotifCustomSoundPreferences!!.edit()
+                            val edit = sharedCustomSoundPreferences!!.edit()
                             edit.putBoolean("Custom_Sound_Bought", true)
                             edit.apply()
                             backToManageNotifAfterBuying()
