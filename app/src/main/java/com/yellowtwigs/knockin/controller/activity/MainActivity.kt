@@ -43,14 +43,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.ContactGridViewAdapter
-import com.yellowtwigs.knockin.controller.ContactRecyclerViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.ContactGridViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.ContactRecyclerViewAdapter
 import com.yellowtwigs.knockin.controller.NotificationListener
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.*
+import com.yellowtwigs.knockin.ui.activities.edit_contact.AddNewContactActivity
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -358,12 +359,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     Intent(
                         this@MainActivity,
                         EditInformationsActivity::class.java
-                    )
-                )
-                R.id.nav_messenger -> startActivity(
-                    Intent(
-                        this@MainActivity,
-                        MessengerActivity::class.java
                     )
                 )
                 R.id.nav_notif_config -> startActivity(

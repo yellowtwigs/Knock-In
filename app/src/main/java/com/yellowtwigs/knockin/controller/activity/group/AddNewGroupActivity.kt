@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.adapter.CreateGroupGridViewAdapter
-import com.yellowtwigs.knockin.controller.adapter.CreateGroupListViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.CreateGroupGridViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.CreateGroupListViewAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
@@ -114,7 +114,13 @@ class AddNewGroupActivity : AppCompatActivity() {
 
         }
         if (main_RecyclerView!!.visibility != View.GONE) {
-            recyclerViewAdapter = CreateGroupListViewAdapter(this, gestionnaireContacts, len, null)
+            recyclerViewAdapter =
+                CreateGroupListViewAdapter(
+                    this,
+                    gestionnaireContacts,
+                    len,
+                    null
+                )
             main_RecyclerView!!.adapter = recyclerViewAdapter
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
             main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)

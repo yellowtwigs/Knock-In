@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.adapter;
+package com.yellowtwigs.knockin.ui.adapters;
 
 import android.content.Context;
 
@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 
 import com.yellowtwigs.knockin.controller.CircularImageView;
-import com.yellowtwigs.knockin.controller.activity.MainActivity;
 import com.yellowtwigs.knockin.controller.activity.group.AddNewGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.AddContactToGroupActivity;
 import com.yellowtwigs.knockin.controller.activity.group.DeleteContactFromGroupActivity;

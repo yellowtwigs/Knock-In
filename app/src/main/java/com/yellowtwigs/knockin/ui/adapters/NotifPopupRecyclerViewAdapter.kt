@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller
+package com.yellowtwigs.knockin.ui.adapters
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.net.Uri
 import android.text.Editable
@@ -29,10 +28,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.BubbleActivity
+import com.yellowtwigs.knockin.controller.NotificationListener
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.VipNotificationsDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import java.util.*
 

@@ -33,7 +33,7 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuSta
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.controller.activity.EditContactActivity
+import com.yellowtwigs.knockin.ui.activities.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
@@ -302,7 +302,7 @@ class GroupAdapter(private val context: Context,
                     openWhatsapp(converter06To33(contactWithAllInformation.getFirstPhoneNumber()), context)
                 }
                 buttonEdit.id -> {
-                    val intent = Intent(context, EditContactActivity::class.java)
+                    val intent = Intent(context, EditContactDetailsActivity::class.java)
                     intent.putExtra("ContactId", contact.id)
                     intent.putExtra("fromGroupActivity", true)
                     context.startActivity(intent)

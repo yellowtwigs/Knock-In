@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller;
+package com.yellowtwigs.knockin.ui.adapters;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,8 +15,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.controller.activity.AddNewContactActivity;
-import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
+import com.yellowtwigs.knockin.ui.activities.edit_contact.AddNewContactActivity;
+import com.yellowtwigs.knockin.ui.activities.edit_contact.EditContactDetailsActivity;
 
 public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapter.ViewHolder> {
 
@@ -53,7 +53,7 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
         holder.iconeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (context instanceof EditContactActivity) {
+                if (context instanceof EditContactDetailsActivity) {
                     Drawable drawable = context.getDrawable(iconeList[position]);
                     Bitmap bitmap = null;
                     if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
@@ -65,7 +65,7 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
                     Canvas canvas = new Canvas(bitmap);
                     drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                     drawable.draw(canvas);
-                    ((EditContactActivity) context).addContactIcone(bitmap);
+                    ((EditContactDetailsActivity) context).addContactIcone(bitmap);
                 } else if (context instanceof AddNewContactActivity) {
                     Drawable drawable = context.getDrawable(iconeList[position]);
                     Bitmap bitmap = null;

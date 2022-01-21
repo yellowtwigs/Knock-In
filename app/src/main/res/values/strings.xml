@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-<!--    <string name="app_name">Knock In</string>-->
+    <!--    <string name="app_name">Knock In</string>-->
     <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <string name="location_on_playstore" translatable="false"><a>https://play.google.com/store/apps/details?id=com.yellowtwigs.Knockin.notification</a></string>
@@ -241,7 +241,7 @@
     <string name="notification_vip_default_message_tone">Default Tone</string>
     <string name="notification_vip_message_choose_tone" translatable="false">Personal Tone</string>
     <string name="notification_vip_upload_tone" translatable="false">Upload</string>
-    <string name="notification_vip_jazzy_message_tone">Jazzy Tone</string>
+    <string name="vip_jazzy_title">Jazzy Tone</string>
     <string name="notification_vip_funky_message_tone">Funky Tone</string>
     <string name="notification_vip_relaxation_message_tone">Relaxing Tone</string>
     <string name="notification_vip_message_tone_no_sound">None</string>
@@ -484,4 +484,6 @@
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
     <string name="textview">TextView</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

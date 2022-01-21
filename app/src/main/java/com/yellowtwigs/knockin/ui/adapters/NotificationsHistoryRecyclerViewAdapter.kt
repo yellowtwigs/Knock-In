@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller
+package com.yellowtwigs.knockin.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context

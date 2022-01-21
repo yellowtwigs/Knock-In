@@ -231,7 +231,7 @@
     
     <string name="notification_vip_message_tone">Тон VIP-уведомлений</string>
     <string name="notification_vip_default_message_tone">Тональный сигнал по умолчанию</string>
-    <string name="notification_vip_jazzy_message_tone">Джаззи Тон</string>
+    <string name="vip_jazzy_title">Джаззи Тон</string>
     <string name="notification_vip_funky_message_tone">Фанки тон</string>
     <string name="notification_vip_relaxation_message_tone">Расслабляющий тон</string>
     <string name="notification_vip_message_tone_no_sound">Никто</string>

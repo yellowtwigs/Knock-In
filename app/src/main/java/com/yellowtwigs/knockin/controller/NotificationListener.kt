@@ -37,6 +37,7 @@ import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
 import com.yellowtwigs.knockin.model.ModelDB.VipNotificationsDB
 import com.yellowtwigs.knockin.model.ModelDB.VipSbnDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.ui.adapters.NotifPopupRecyclerViewAdapter
 
 /**
  * Service qui nous permet de traiter les notifications
@@ -203,11 +204,11 @@ class NotificationListener : NotificationListenerService() {
                                                 startActivity(i)
                                                 val sharedAlarmNotifTonePreferences: SharedPreferences =
                                                     getSharedPreferences(
-                                                        "Alarm_Notif_Tone",
+                                                        "Alarm_Tone",
                                                         Context.MODE_PRIVATE
                                                     )
                                                 val sound = sharedAlarmNotifTonePreferences.getInt(
-                                                    "Alarm_Notif_Tone",
+                                                    "Alarm_Tone",
                                                     R.raw.sms_ring
                                                 )
                                                 notification_alarm_NotificationMessagesAlarmSound?.stop()
@@ -287,11 +288,11 @@ class NotificationListener : NotificationListenerService() {
                                                 cancelwhatsappnotif(sbn)
                                                 val sharedAlarmNotifTonePreferences: SharedPreferences =
                                                     getSharedPreferences(
-                                                        "Alarm_Notif_Tone",
+                                                        "Alarm_Tone",
                                                         Context.MODE_PRIVATE
                                                     )
                                                 val sound = sharedAlarmNotifTonePreferences.getInt(
-                                                    "Alarm_Notif_Tone",
+                                                    "Alarm_Tone",
                                                     R.raw.sms_ring
                                                 )
                                                 notification_alarm_NotificationMessagesAlarmSound?.stop()
@@ -414,8 +415,8 @@ class NotificationListener : NotificationListenerService() {
 
     private fun displayLayout(sbp: StatusBarParcelable, sharedPreferences: SharedPreferences) {
         val sharedAlarmNotifTonePreferences: SharedPreferences =
-            getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
-        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
+            getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
+        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
 
         sharedAlarmNotifDurationPreferences =
             getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
@@ -425,7 +426,7 @@ class NotificationListener : NotificationListenerService() {
             getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
         canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", true)
 
-        val customSound = sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Notif_Tone", null)
+        val customSound = sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Tone", null)
 
         if (canRingtone) {
             if (customSound == null) {
@@ -701,13 +702,13 @@ class NotificationListener : NotificationListenerService() {
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
 
         val sharedAlarmNotifTonePreferences: SharedPreferences =
-            getSharedPreferences("Alarm_Notif_Tone", Context.MODE_PRIVATE)
-        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Notif_Tone", R.raw.sms_ring)
+            getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
+        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
 
 
         if (notifications.size == 1) {
             val customSound =
-                sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Notif_Tone", null)
+                sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Tone", null)
             if (customSound == null) {
                 alartNotifTone(sound)
             } else {

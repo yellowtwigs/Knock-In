@@ -231,7 +231,7 @@
     <string name="notification_alert_dialog_message">هل تريد اختيار جهات الاتصال ذات الأولوية الخاصة بك ؟</string>
     <string name="notification_vip_message_tone">نغمات الإشعارات VIP</string>
     <string name="notification_vip_default_message_tone">نغمات افتراضية</string>
-    <string name="notification_vip_jazzy_message_tone">نغمات جاز</string>
+    <string name="vip_jazzy_title">نغمات جاز</string>
     <string name="notification_vip_funky_message_tone">نغمات غير تقليدية </string>
     <string name="notification_vip_relaxation_message_tone">نغمات الاسترخاء</string>
     <string name="notification_vip_message_tone_no_sound"> Aucune</string>

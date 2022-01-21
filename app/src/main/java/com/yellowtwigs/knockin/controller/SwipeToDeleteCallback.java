@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yellowtwigs.knockin.ui.adapters.NotifPopupRecyclerViewAdapter;
+
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private NotifPopupRecyclerViewAdapter mAdapter;
 

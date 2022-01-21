@@ -230,7 +230,7 @@
     <string name="notification_alert_dialog_message">Quer escolher seus contatos da alta prioridade?</string>
     <string name="notification_vip_message_tone">Tom de notificações VIP</string>
     <string name="notification_vip_default_message_tone">Tom Predefinição </string>
-    <string name="notification_vip_jazzy_message_tone">Tom Jazzy</string>
+    <string name="vip_jazzy_title">Tom Jazzy</string>
     <string name="notification_vip_funky_message_tone">Tom Funky</string>
     <string name="notification_vip_relaxation_message_tone">Tom Relaxing</string>
     <string name="notification_vip_message_tone_no_sound">Nenhum</string>

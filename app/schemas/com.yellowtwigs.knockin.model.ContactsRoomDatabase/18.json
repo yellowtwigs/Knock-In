@@ -290,6 +290,7 @@
               "id_group",
               "id_contact"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_link_contact_group_table_id_group_id_contact` ON `${TABLE_NAME}` (`id_group`, `id_contact`)"
           }
         ],

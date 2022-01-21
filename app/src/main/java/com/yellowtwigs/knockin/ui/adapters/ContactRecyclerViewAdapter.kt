@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller
+package com.yellowtwigs.knockin.ui.adapters
 
 import android.Manifest
 import android.app.Activity
@@ -26,7 +26,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.EditContactActivity
+import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.ui.activities.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
@@ -152,7 +153,7 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             }
             if (len == 1) {
                 if (v.id == holder.editCl!!.id) {
-                    val intent = Intent(context, EditContactActivity::class.java)
+                    val intent = Intent(context, EditContactDetailsActivity::class.java)
                     intent.putExtra("ContactId", contact.id)
                     intent.putExtra("position", position)
                     context.startActivity(intent)

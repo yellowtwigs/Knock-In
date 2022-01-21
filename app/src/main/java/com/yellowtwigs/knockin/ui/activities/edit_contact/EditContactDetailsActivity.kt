@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.activity
+package com.yellowtwigs.knockin.ui.activities.edit_contact
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -39,8 +39,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.controller.ContactIconeAdapter
+import com.yellowtwigs.knockin.ui.adapters.ContactIconeAdapter
 import com.yellowtwigs.knockin.controller.GroupEditAdapter
+import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
@@ -53,7 +55,7 @@ import java.util.concurrent.Executors
  * La Classe qui permet d'éditer un contact choisi
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class EditContactActivity : AppCompatActivity() {
+class EditContactDetailsActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
@@ -68,7 +70,6 @@ class EditContactActivity : AppCompatActivity() {
     private var edit_contact_Mail: TextInputLayout? = null
     private var contact_vip_Settings: TextView? = null
     private var edit_contact_vip_Settings: AppCompatImageView? = null
-    //    private var edit_contact_Messenger: TextInputLayout? = null
     private var edit_contact_Mail_Name: TextInputLayout? = null
 
     private var edit_contact_Mail_Identifier_Help: AppCompatImageView? = null
@@ -151,7 +152,7 @@ class EditContactActivity : AppCompatActivity() {
         }
 
         //endregion
-        setContentView(R.layout.activity_edit_contact)
+        setContentView(R.layout.activity_edit_contact_details)
 
 
 
@@ -215,8 +216,8 @@ class EditContactActivity : AppCompatActivity() {
         //disable keyboard
 
         edit_contact_ParentLayout!!.setOnTouchListener { _, _ ->
-            val view = this@EditContactActivity.currentFocus
-            val imm = this@EditContactActivity.getSystemService(
+            val view = this@EditContactDetailsActivity.currentFocus
+            val imm = this@EditContactDetailsActivity.getSystemService(
                     Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (view != null) {
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -429,11 +430,11 @@ class EditContactActivity : AppCompatActivity() {
                             edit_contact_vip_Settings!!.visibility = View.INVISIBLE
                             contact_vip_Settings!!.visibility = View.INVISIBLE
                             if (nb_Contacts_VIP > 4 && edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_Priority!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
-                                MaterialAlertDialogBuilder(this@EditContactActivity, R.style.AlertDialog)
+                                MaterialAlertDialogBuilder(this@EditContactDetailsActivity, R.style.AlertDialog)
                                         .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
                                         .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
                                         .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                            startActivity(Intent(this@EditContactActivity, PremiumActivity::class.java))
+                                            startActivity(Intent(this@EditContactDetailsActivity, PremiumActivity::class.java))
                                             finish()
                                         }
                                         .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
@@ -490,7 +491,7 @@ class EditContactActivity : AppCompatActivity() {
                     .setMessage(getString(R.string.edit_contact_delete_contact_message))
                     .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
                         edit_contact_ContactsDatabase!!.contactsDao().deleteContactById(edit_contact_id!!)
-                        val mainIntent = Intent(this@EditContactActivity, MainActivity::class.java)
+                        val mainIntent = Intent(this@EditContactDetailsActivity, MainActivity::class.java)
                         mainIntent.putExtra("isDelete", true)
 
                         if (edit_contact_priority == 2) {
@@ -516,7 +517,7 @@ class EditContactActivity : AppCompatActivity() {
 //        }
 
         edit_contact_vip_Settings!!.setOnClickListener {
-            val intent = Intent(this, EditContactVipSettingsActivity::class.java)
+            val intent = Intent(this, VipSettingsActivity::class.java)
             intent.putExtra("ContactId", contact.getContactId())
             startActivity(intent)
         }
@@ -556,7 +557,7 @@ class EditContactActivity : AppCompatActivity() {
                                 .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
                                 .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
                                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                    startActivity(Intent(this@EditContactActivity, PremiumActivity::class.java))
+                                    startActivity(Intent(this@EditContactDetailsActivity, PremiumActivity::class.java))
                                     finish()
                                 }
                                 .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
@@ -610,10 +611,10 @@ class EditContactActivity : AppCompatActivity() {
                                 .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                                     editContactValidation()
                                     if (fromGroupActivity) {
-                                        startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                                        startActivity(Intent(this@EditContactDetailsActivity, GroupManagerActivity::class.java))
                                         finish()
                                     } else {
-                                        startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                                        startActivity(Intent(this@EditContactDetailsActivity, MainActivity::class.java).putExtra("position", position!!))
                                         finish()
                                     }
                                 }
@@ -626,7 +627,7 @@ class EditContactActivity : AppCompatActivity() {
                                 .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
                                 .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
                                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                    startActivity(Intent(this@EditContactActivity, PremiumActivity::class.java))
+                                    startActivity(Intent(this@EditContactDetailsActivity, PremiumActivity::class.java))
                                     finish()
                                 }
                                 .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
@@ -644,19 +645,19 @@ class EditContactActivity : AppCompatActivity() {
                         }
                         editContactValidation()
                         if (fromGroupActivity) {
-                            startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                            startActivity(Intent(this@EditContactDetailsActivity, GroupManagerActivity::class.java))
                             finish()
                         } else {
-                            startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                            startActivity(Intent(this@EditContactDetailsActivity, MainActivity::class.java).putExtra("position", position!!))
                             finish()
                         }
                     }
                 } else {
                     if (fromGroupActivity) {
-                        startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                        startActivity(Intent(this@EditContactDetailsActivity, GroupManagerActivity::class.java))
                         finish()
                     } else {
-                        startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position!!))
+                        startActivity(Intent(this@EditContactDetailsActivity, MainActivity::class.java).putExtra("position", position!!))
                         finish()
                     }
                 }
@@ -835,10 +836,10 @@ class EditContactActivity : AppCompatActivity() {
         super.onRestart()
         if (editInAndroid) {
             if (fromGroupActivity) {
-                startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                startActivity(Intent(this@EditContactDetailsActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
                 finish()
             } else {
-                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                startActivity(Intent(this@EditContactDetailsActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
                 finish()
             }
         }
@@ -848,10 +849,10 @@ class EditContactActivity : AppCompatActivity() {
         super.onResume()
         if (editInGoogle) {
             if (fromGroupActivity) {
-                startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
+                startActivity(Intent(this@EditContactDetailsActivity, GroupManagerActivity::class.java).putExtra("ContactId", edit_contact_id!!))
                 finish()
             } else {
-                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
+                startActivity(Intent(this@EditContactDetailsActivity, MainActivity::class.java).putExtra("ContactId", edit_contact_id!!).putExtra("position", position))
                 finish()
             }
         }
@@ -865,9 +866,9 @@ class EditContactActivity : AppCompatActivity() {
                     .setBackground(getDrawable(R.color.backgroundColor))
                     .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
                         if (fromGroupActivity) {
-                            startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                            startActivity(Intent(this@EditContactDetailsActivity, GroupManagerActivity::class.java))
                         } else {
-                            startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position))
+                            startActivity(Intent(this@EditContactDetailsActivity, MainActivity::class.java).putExtra("position", position))
                         }
                         finish()
                     }
@@ -876,9 +877,9 @@ class EditContactActivity : AppCompatActivity() {
                     .show()
         } else {
             if (fromGroupActivity) {
-                startActivity(Intent(this@EditContactActivity, GroupManagerActivity::class.java))
+                startActivity(Intent(this@EditContactDetailsActivity, GroupManagerActivity::class.java))
             } else {
-                startActivity(Intent(this@EditContactActivity, MainActivity::class.java).putExtra("position", position))
+                startActivity(Intent(this@EditContactDetailsActivity, MainActivity::class.java).putExtra("position", position))
             }
             finish()
         }
@@ -1021,7 +1022,8 @@ class EditContactActivity : AppCompatActivity() {
         val recyclerView = builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
         val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         recyclerView!!.layoutManager = layoutManager
-        val adapter = ContactIconeAdapter(this)
+        val adapter =
+            ContactIconeAdapter(this)
         recyclerView.adapter = adapter
 
         gallery!!.setOnClickListener {

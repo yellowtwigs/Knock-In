@@ -230,7 +230,7 @@
     <string name="notification_alert_dialog_message">Yüksek öncelikli kişilerinizi seçmek ister misiniz?</string>
     <string name="notification_vip_message_tone">VIP Bildirimleri Zil Sesi</string>
     <string name="notification_vip_default_message_tone">Varsayılan Ton</string>
-    <string name="notification_vip_jazzy_message_tone">Jazzy Ton</string>
+    <string name="vip_jazzy_title">Jazzy Ton</string>
     <string name="notification_vip_funky_message_tone">Funky Ton</string>
     <string name="notification_vip_relaxation_message_tone">Relaxing Ton</string>
     <string name="notification_vip_message_tone_no_sound">Hiçbiri</string>

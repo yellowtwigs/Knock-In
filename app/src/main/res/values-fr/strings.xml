@@ -231,7 +231,7 @@
     <string name="notification_alert_dialog_message">Voulez-vous choisir vos contacts prioritaires ?</string>
     <string name="notification_vip_message_tone">Sonneries des notifications VIP</string>
     <string name="notification_vip_default_message_tone">Sonneries par défaut</string>
-    <string name="notification_vip_jazzy_message_tone">Sonneries Jazz</string>
+    <string name="vip_jazzy_title">Sonneries Jazz</string>
     <string name="notification_vip_funky_message_tone">Sonneries Funky</string>
     <string name="notification_vip_relaxation_message_tone">Sonneries relaxantes</string>
     <string name="notification_vip_message_tone_no_sound">Aucune</string>

@@ -101,7 +101,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".controller.activity.AddNewContactActivity">
+        tools:context=".ui.activities.edit_contact.AddNewContactActivity">
 
         <com.yellowtwigs.knockin.controller.CircularImageView
             android:id="@+id/add_new_contact_rounded_image_view_id"

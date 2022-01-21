@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller;
+package com.yellowtwigs.knockin.ui.adapters;
 
 import android.Manifest;
 import android.app.Activity;
@@ -31,7 +31,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.controller.activity.EditContactActivity;
+import com.yellowtwigs.knockin.controller.CircularImageView;
+import com.yellowtwigs.knockin.ui.activities.edit_contact.EditContactDetailsActivity;
 import com.yellowtwigs.knockin.controller.activity.MainActivity;
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.utils.ContactGesture;
@@ -328,7 +329,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
             } else if (v.getId() == buttonEdit.getId()) {
 
-                Intent intent = new Intent(context, EditContactActivity.class);
+                Intent intent = new Intent(context, EditContactDetailsActivity.class);
                 intent.putExtra("ContactId", contact.getId());
                 intent.putExtra("position", position);
 

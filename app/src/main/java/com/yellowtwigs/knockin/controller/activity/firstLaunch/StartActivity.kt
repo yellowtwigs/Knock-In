@@ -100,7 +100,7 @@ class StartActivity : AppCompatActivity() {
         startActivityActivateNotificationsLoading = findViewById(R.id.start_activity_activate_notifications_loading)
         startActivityAuthorizeSuperpositionLoading = findViewById(R.id.start_activity_superposition_loading)
         startActivityPermissionsLoading = findViewById(R.id.start_activity_permissions_loading)
-        start_activity_import_contacts_loading = findViewById(R.id.start_activity_import_contacts_loading)
+        start_activity_import_contacts_loading = startActivityImportContactsLoading
 
         startActivityImportContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
         startActivityActivateNotificationsCheck = findViewById(R.id.start_activity_activate_notifications_check)
@@ -145,14 +145,12 @@ class StartActivity : AppCompatActivity() {
                     webview.loadUrl("https://www.yellowtwigs.com/france")
                 }
                 "de" -> {
-                    println("////////////////////////////")
                     println(startActivityImportContacts!!.textSize)
                     startActivityImportContacts!!.textSize = 10f
                     startActivityActivateNotifications!!.textSize = 10f
                     startActivityAuthorizeSuperposition!!.textSize = 10f
                     startActivityPermissions!!.textSize = 10f
                     println(startActivityImportContacts!!.textSize)
-                    println("////////////////////////////")
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/germany")
                 }
@@ -244,16 +242,6 @@ class StartActivity : AppCompatActivity() {
                     }
                     .show()
         }
-
-//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                    .setBackground(getDrawable(R.color.backgroundColor))
-//                    .setMessage(getString(R.string.start_activity_superposition_not_allowed_message_11))
-//                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-//                    }
-//                    .show()
-//
-//        }
 
         //region ======================================== Listeners =========================================
 
@@ -422,7 +410,6 @@ class StartActivity : AppCompatActivity() {
 
         //lors du click affichage d'un message de prévention
         startActivitySkip!!.setOnClickListener {
-            //            startActivityImportContacts!!!!.visibility = View.INVISIBLE
             if (!checkIfGoEdition()) {
                 buildMultiSelectAlertDialog()
                 buildLeaveAlertDialog()
@@ -469,19 +456,6 @@ class StartActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ==========================================
-
-//    fun openSMSappChooser() {
-//        val packageManager = packageManager
-//        val componentName = ComponentName(this, StartActivity.class)
-//        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-//
-//        val selector = Intent(Intent.ACTION_MAIN)
-//        selector.addCategory(Intent.CATEGORY_APP_MESSAGING)
-//        selector.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//        startActivity(selector)
-//
-//        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP)
-//    }
 
     /**
      *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission

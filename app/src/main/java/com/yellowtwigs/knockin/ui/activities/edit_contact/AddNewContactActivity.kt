@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.activity
+package com.yellowtwigs.knockin.ui.activities.edit_contact
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.*
 import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.controller.ContactIconeAdapter
+import com.yellowtwigs.knockin.ui.adapters.ContactIconeAdapter
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
@@ -36,6 +36,8 @@ import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import java.io.ByteArrayOutputStream
 
 /**
@@ -555,7 +557,8 @@ class AddNewContactActivity : AppCompatActivity() {
 
         recyclerView!!.layoutManager = layoutMananger
 
-        val adapter = ContactIconeAdapter(this)
+        val adapter =
+            ContactIconeAdapter(this)
         recyclerView.adapter = adapter
         gallery!!.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

@@ -18,8 +18,8 @@ import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.controller.adapter.CreateGroupGridViewAdapter
-import com.yellowtwigs.knockin.controller.adapter.CreateGroupListViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.CreateGroupGridViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.CreateGroupListViewAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 
 /**
@@ -108,7 +108,13 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
             edit.apply()
         }
         if (main_RecyclerView!!.visibility != View.GONE) {
-            recyclerViewAdapter = CreateGroupListViewAdapter(this, gestionnaireContacts, len, allContactInGroup)
+            recyclerViewAdapter =
+                CreateGroupListViewAdapter(
+                    this,
+                    gestionnaireContacts,
+                    len,
+                    allContactInGroup
+                )
             main_RecyclerView!!.adapter = recyclerViewAdapter
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
             main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)

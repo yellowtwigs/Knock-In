@@ -230,7 +230,7 @@
     <string name="notification_alert_dialog_message">您想要选择高优先级的联系人吗？</string>
     <string name="notification_vip_message_tone">VIP通知音</string>
     <string name="notification_vip_default_message_tone">预设音</string>
-    <string name="notification_vip_jazzy_message_tone">爵士风格</string>
+    <string name="vip_jazzy_title">爵士风格</string>
     <string name="notification_vip_funky_message_tone">时髦的语气</string>
     <string name="notification_vip_relaxation_message_tone">放松风格</string>
     <string name="notification_vip_message_tone_no_sound">没有铃声</string>

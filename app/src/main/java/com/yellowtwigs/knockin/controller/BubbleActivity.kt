@@ -18,6 +18,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ModelDB.VipSbnDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.ui.adapters.NotifPopupRecyclerViewAdapter
 import java.util.HashMap
 import java.util.ArrayList
 

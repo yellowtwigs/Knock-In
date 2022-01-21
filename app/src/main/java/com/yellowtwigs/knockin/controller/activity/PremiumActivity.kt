@@ -170,7 +170,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //endregion
 
-        //View
         recyclerProduct = findViewById(R.id.recycler_product)
 
         //Initialize the Handler
@@ -287,11 +286,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 BillingClient.SkuType.INAPP
             ) { _, listOfPurchases ->
                 if (listOfPurchases.isNotEmpty()) {
-//                val mutableList = mutableListOf<String>()
-//                for (purchase in listOfPurchases) {
-//                    mutableList.add("PURCHASE :: ${purchase.originalJson}")
-//                }
-//                sendMessageWithWhatsapp("0651740903", "$mutableList")
 
                     for (purchase in listOfPurchases) {
                         when {

@@ -13,7 +13,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.ContactListViewAdapter
+import com.yellowtwigs.knockin.ui.adapters.ContactListViewAdapter
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
