@@ -34,8 +34,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.TutorialActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.activities.edit_contact.AddNewContactActivity
 import java.util.*
 
 /**

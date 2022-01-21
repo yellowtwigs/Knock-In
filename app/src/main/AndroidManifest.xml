@@ -40,7 +40,10 @@
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.EditContactVipSettingsActivity" />
+        <activity
+            android:name=".ui.activities.edit_contact.EditContactActivity"
+            android:exported="false" />
+        <activity android:name=".ui.activities.edit_contact.VipSettingsActivity" />
         <activity
             android:name=".controller.activity.SplashScreenActivity"
             android:exported="true">
@@ -57,9 +60,6 @@
             android:label="Reminder"
             android:resizeableActivity="true"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".controller.activity.firstLaunch.TutorialActivity" />
-        <activity android:name=".controller.activity.ContactDetailsActivity" />
-        <activity android:name=".controller.activity.MessengerActivity" />
         <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity" />
         <activity android:name=".FirstLaunchActivity" />
@@ -84,14 +84,13 @@
         <activity android:name=".controller.activity.HelpActivity" />
         <activity android:name=".controller.activity.ManageMyScreenActivity" />
         <activity android:name=".controller.activity.EditInformationsActivity" />
-        <activity android:name=".controller.activity.ComposeMessageActivity" />
         <activity android:name=".controller.activity.ManageNotificationActivity" />
         <activity android:name=".controller.activity.NotificationHistoryActivity" />
         <activity
-            android:name=".controller.activity.AddNewContactActivity"
+            android:name=".ui.activities.edit_contact.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".controller.activity.EditContactActivity"
+            android:name=".ui.activities.edit_contact.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".controller.activity.MainActivity"
