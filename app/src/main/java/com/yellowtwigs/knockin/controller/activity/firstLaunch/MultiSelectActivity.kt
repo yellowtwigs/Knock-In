@@ -217,16 +217,13 @@ class MultiSelectActivity : AppCompatActivity() {
         listItemSelect: ArrayList<ContactWithAllInformation>,
         contact: ContactWithAllInformation
     ) {
-        Log.i("selectedItem", "Start : ${listItemSelect.size}")
         if (listItemSelect.isEmpty() && firstClick) {
             listItemSelect.add(contact)
             firstClick = false
         } else {
             if (listItemSelect.contains(contact)) {
                 listItemSelect.remove(contact)
-
                 tooMuch = false
-
                 if (listItemSelect.isEmpty())
                     firstClick = true
             } else {
@@ -237,8 +234,6 @@ class MultiSelectActivity : AppCompatActivity() {
                 }
             }
         }
-        Log.i("selectedItem", "End 1 : ${listItemSelect.size}")
-        Log.i("selectedItem", "End 2 : ${listItemSelect.indices}")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

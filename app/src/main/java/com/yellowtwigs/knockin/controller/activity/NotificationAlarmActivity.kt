@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
+import android.util.Log
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -35,13 +36,14 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
 
-    private var sharedAlarmNotifDurationPreferences: SharedPreferences? = null
+    private lateinit var sharedAlarmNotifDurationPreferences: SharedPreferences
     private var duration = 0
 
-    private var sharedAlarmNotifCanRingtonePreferences: SharedPreferences? = null
+    private lateinit var sharedAlarmNotifCanRingtonePreferences: SharedPreferences
     private var canRingtone = false
 
     private var isSMS = false
+    private var sound = 0
 
     //endregion
 
@@ -49,21 +51,22 @@ class NotificationAlarmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_alarm)
-        println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKOOOOOOKKKKKKKKKKKKK")
 
         //region ==================================== SharedPreferences =====================================
 
-        val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
+        val sharedAlarmNotifTonePreferences: SharedPreferences =
+            getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
 
-        sharedAlarmNotifDurationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
-        duration = sharedAlarmNotifDurationPreferences!!.getInt("Alarm_Notif_Duration", 0)
+        sharedAlarmNotifDurationPreferences =
+            getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
+        duration = sharedAlarmNotifDurationPreferences.getInt("Alarm_Notif_Duration", 0)
 
-        sharedAlarmNotifCanRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
-        canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", false)
-/////////
+        sharedAlarmNotifCanRingtonePreferences =
+            getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
+        canRingtone = sharedAlarmNotifCanRingtonePreferences.getBoolean("Can_RingTone", false)
+
         if (canRingtone) {
-            val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
-            alartNotifTone(sound)
+            sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
         }
 
         //endregion
@@ -72,10 +75,14 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         notification_Alarm_Button_ShutDown = findViewById(R.id.notification_alarm_shut_down)
 
-        notification_alarm_ReceiveMessageLayout = findViewById(R.id.notification_alarm_receive_message_layout)
-        notification_alarm_ReceiveMessageContent = findViewById(R.id.notification_alarm_receive_message_content)
-        notification_alarm_ReceiveMessageSender = findViewById(R.id.notification_alarm_receive_message_sender)
-        notification_alarm_ReceiveMessageImage = findViewById(R.id.notification_alarm_receive_message_image)
+        notification_alarm_ReceiveMessageLayout =
+            findViewById(R.id.notification_alarm_receive_message_layout)
+        notification_alarm_ReceiveMessageContent =
+            findViewById(R.id.notification_alarm_receive_message_content)
+        notification_alarm_ReceiveMessageSender =
+            findViewById(R.id.notification_alarm_receive_message_sender)
+        notification_alarm_ReceiveMessageImage =
+            findViewById(R.id.notification_alarm_receive_message_image)
 
         //endregion
 
@@ -85,14 +92,25 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         val sbp = intent.extras!!.get("notification") as StatusBarParcelable
 
-        notification_alarm_ReceiveMessageSender!!.text = sbp.statusBarNotificationInfo["android.title"] as String
-        notification_alarm_ReceiveMessageContent!!.text = sbp.statusBarNotificationInfo["android.text"] as String
+        val notificationSound = intent.extras?.get("notificationSound") as Int
+        if (notificationSound != null) {
+            sound = notificationSound
+        }
+
+        alartNotifTone(sound)
+
+        notification_alarm_ReceiveMessageSender!!.text =
+            sbp.statusBarNotificationInfo["android.title"] as String
+        notification_alarm_ReceiveMessageContent!!.text =
+            sbp.statusBarNotificationInfo["android.text"] as String
 
         if (notification_alarm_ReceiveMessageContent!!.length() > 20)
-            notification_alarm_ReceiveMessageContent!!.text = notification_alarm_ReceiveMessageContent!!.text.substring(0, 19) + ".."
+            notification_alarm_ReceiveMessageContent!!.text =
+                notification_alarm_ReceiveMessageContent!!.text.substring(0, 19) + ".."
 
         val gestionnaireContacts = ContactManager(this.applicationContext)
-        val contact = gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"] as String)
+        val contact =
+            gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"] as String)
 
         when (sbp.appNotifier) {
             "com.google.android.apps.messaging",
@@ -114,22 +132,24 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         //endregion
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        println("I'm into alarm")
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
 
         if (Build.VERSION.SDK_INT >= 27) {
-            println("2222222222222222222777777777777777777777777")
             setTurnScreenOn(true)
             setShowWhenLocked(true)
             val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             keyguardManager.requestDismissKeyguard(this, null)
         } else {
-            println("NOOOOOOOOOT INTOOOOOOOOO THE GOOOOOOOOOOOOOOOOOD")
-            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                    or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                    or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                        or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                        or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                        or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+            )
         }
 
         //region sound + vibration
@@ -183,12 +203,19 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 }
             } else if (sbp.appNotifier == "com.google.android.gm") {
                 val appIntent = Intent(Intent.ACTION_VIEW)
-                appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail")
+                appIntent.setClassName(
+                    "com.google.android.gm",
+                    "com.google.android.gm.ConversationListActivityGmail"
+                )
                 try {
                     startActivity(appIntent)
                 } catch (e: ActivityNotFoundException) {
-                    startActivity(Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://gmail.com/")))
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://gmail.com/")
+                        )
+                    )
                 }
             }
 
@@ -238,9 +265,9 @@ class NotificationAlarmActivity : AppCompatActivity() {
         finish()
     }
 
-    fun alartNotifTone(sound : Int){
+    fun alartNotifTone(sound: Int) {
         notification_alarm_NotificationMessagesAlarmSound?.stop()
         notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-        notification_alarm_NotificationMessagesAlarmSound!!.start()
+        notification_alarm_NotificationMessagesAlarmSound?.start()
     }
 }

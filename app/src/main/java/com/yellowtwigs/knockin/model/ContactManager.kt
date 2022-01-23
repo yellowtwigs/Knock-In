@@ -306,7 +306,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     private fun getContactDetailFromJSONObject(json: JSONObject, idContact: Int): List<ContactDetailDB> {
         val phoneNumber: String = json.getString("phone_number")
         val mail: String = json.getString("mail")
-//        val favorite: Boolean = json.getBoolean("mail")
 
         val contactDetails = ContactDetailDB(null, idContact, phoneNumber, "phone", "", 0)
         val contactDetails2 = ContactDetailDB(null, idContact, mail, "mail", "", 1)

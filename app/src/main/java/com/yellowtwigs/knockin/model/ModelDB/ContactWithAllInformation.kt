@@ -115,6 +115,10 @@ class ContactWithAllInformation {
         println("test getContactID $test")
     }
 
+    fun setNotification(contactsDatabase: ContactsRoomDatabase?, alarmTone:Int) {
+        contactDB?.id?.let { contactsDatabase?.contactsDao()?.setNotification(it, alarmTone) }
+    }
+
     override fun equals(other: Any?): Boolean {
         return if (other is ContactWithAllInformation) {
             if (other.contactDB == this.contactDB) {

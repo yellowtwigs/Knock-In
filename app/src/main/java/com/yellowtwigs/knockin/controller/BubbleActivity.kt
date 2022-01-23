@@ -30,7 +30,6 @@ class BubbleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("ONNNNNNNNNCREATTTTTTTTTTEEEEEEEEE")
     }
 
     fun getSbnInfo(vipSbnList: List<VipSbnDB>): HashMap<String, Any?>{
@@ -47,11 +46,6 @@ class BubbleActivity : AppCompatActivity() {
             vipSbnKeys.add(item.sbnKey)
         }
         return (vipSbnKeys)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        println("RESUMEEEEEEE")
     }
 
     override fun onStart() {
@@ -71,7 +65,7 @@ class BubbleActivity : AppCompatActivity() {
             println(vipNotif.appNotifier)
             println(vipSbnKeys)
             println(statusBarNotificationInfo)
-            val sbp = StatusBarParcelable(vipNotif.id!!, vipNotif.listSize, vipNotif.appNotifier, vipSbnKeys, statusBarNotificationInfo)
+            val sbp = StatusBarParcelable(vipNotif.id, vipNotif.listSize, vipNotif.appNotifier, vipSbnKeys, statusBarNotificationInfo)
             notifications.add(sbp)
         }
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -84,7 +78,6 @@ class BubbleActivity : AppCompatActivity() {
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
         setContentView(popupView)
-        println("STARTOOOOOOOOOOOO")
     }
 
     fun reduceBubble() {
@@ -93,7 +86,6 @@ class BubbleActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun closeBubble() {
-        println("finitoooooo")
         val notificationManager = this.getSystemService(NotificationManager::class.java)
         notificationManager?.deleteNotificationChannel("notifications")
         bubble_activity_ContactsDatabase!!.VipNotificationsDao().deleteAllVipNotifications()
@@ -106,15 +98,9 @@ class BubbleActivity : AppCompatActivity() {
         finishAndRemoveTask()
     }
 
-    override fun onPause() {
-        super.onPause()
-        println("PAUUUUUUUUSEEEEEEEEEE")
-    }
-
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onDestroy() {
         super.onDestroy()
-        println("DESTROYEEEEEEE")
         val notificationManager = this.getSystemService(NotificationManager::class.java)
         notificationManager?.deleteNotificationChannel("notifications")
         bubble_activity_ContactsDatabase!!.VipNotificationsDao().deleteAllVipNotifications()
@@ -124,7 +110,6 @@ class BubbleActivity : AppCompatActivity() {
         edit.putBoolean("first_notif", true)
         edit.putBoolean("view", false)
         edit.apply()
-        println("END DESTROYYYY")
         finishAndRemoveTask()
     }
 }

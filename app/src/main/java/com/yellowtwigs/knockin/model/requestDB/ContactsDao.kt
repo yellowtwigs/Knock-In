@@ -183,7 +183,6 @@ interface ContactsDao {
      * UPDATE si l'user ne possède pas ce contact dans son address book whatsapp
      * @param id Int    Id du contact sélectionné
      */
-
     @Query("UPDATE contacts_table SET has_whatsapp = 0 WHERE id = :id ")
     fun setHasNotWhatsapp(id: Int)
 

@@ -197,57 +197,8 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
         //endregion
         setContentView()
-        /*
-        //get the list of  Ringtones
-        var UploadButton= findViewById(R.id.UploadButton) as Button
-        txtpath=findViewById(R.id.Txtpath)
-        UploadButton.setOnClickListener{ //Intent to select Ringtone.
-            //check runtime permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    //permission denied
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE)
-                } else {
-                    getTones()
-                }
-            } else {
-                getTones()
-            }
-            if(txtpath!=null){
-                settings_NotifNoSoundCheckbox!!.isChecked = false
-                settings_NotifSoundKnockinCheckbox!!.isChecked = false
-                settings_NotifSoundXyloCheckbox!!.isChecked = false
-
-                settings_NotifSoundMoaninCheckbox!!.isChecked = false
-                settings_NotifSoundBlueBossaCheckbox!!.isChecked = false
-                settings_NotifSoundCaravanCheckbox!!.isChecked = false
-                settings_NotifSoundDolphinDanceCheckbox!!.isChecked = false
-                settings_NotifSoundAutumnLeavesCheckbox!!.isChecked = false
-                settings_NotifSoundFreddieFreeloaderCheckbox!!.isChecked = false
-
-                settings_NotifSoundSlapCheckbox!!.isChecked = false
-                settings_NotifSoundOffTheCurveCheckbox!!.isChecked = false
-                settings_NotifSoundFunkYallCheckbox!!.isChecked = false
-                settings_NotifSoundKeyboardFunkyToneCheckbox!!.isChecked = false
-                settings_NotifSoundUCantHoldNoGrooveCheckbox!!.isChecked = false
-                settings_NotifSoundColdSweatCheckbox!!.isChecked = false
-
-                settings_NotifSoundAcousticGuitarCheckbox!!.isChecked = false
-                settings_NotifSoundGravityCheckbox!!.isChecked = false
-                settings_NotifSoundSlowDancingCheckbox!!.isChecked = false
-                settings_NotifSoundScorpionThemeCheckbox!!.isChecked = false
-                settings_NotifSoundFirstStepCheckbox!!.isChecked = false
-                settings_NotifSoundRelaxToneCheckbox!!.isChecked = false
-            }
-        }
-        //end
-         */
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-        val sharedAlarmNotifTonePreferences: SharedPreferences = getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
-        numberDefault = sharedAlarmNotifTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
 
         val sharedNotifJazzySoundInAppPreferences: SharedPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Jazzy_Sound_Bought", false)
@@ -257,10 +208,6 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val sharedNotifFunkySoundInAppPreferences: SharedPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Funky_Sound_Bought", false)
-
-    //    val sharedNotifCustomSoundInAppPreferences: SharedPreferences = getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
-    //    notifCustomSoundIsBought = sharedNotifCustomSoundInAppPreferences.getBoolean("Custom_Sound_Bought", false)
-
 
         //region ======================================= FindViewById =======================================
 

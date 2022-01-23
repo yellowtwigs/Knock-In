@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,7 @@ class VipSettingsActivity : AppCompatActivity() {
     private var jazzyToClose = false
     private var funkyToClose = false
     private var relaxToClose = false
+    private var uploadToClose = false
 
     private lateinit var alarmTonePreferences: SharedPreferences
 
@@ -61,11 +63,11 @@ class VipSettingsActivity : AppCompatActivity() {
         binding = ActivityVipSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        alarmTonePreferences = getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
-        numberDefault = alarmTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
+        alarmTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
+//        jazzySoundBought = true
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)
@@ -87,6 +89,11 @@ class VipSettingsActivity : AppCompatActivity() {
 
         val contactName = "${contact?.contactDB?.firstName} ${contact?.contactDB?.lastName}"
         binding.contactName.text = contactName
+
+        if (contact?.contactDB?.notificationSound != null) {
+            numberDefault = contact.contactDB?.notificationSound!!
+        }
+        Log.i("alarmTone", "Notif Sound : ${contact?.contactDB?.notificationSound}")
 
         ringToneLayoutClosed()
         refreshChecked()
@@ -111,6 +118,9 @@ class VipSettingsActivity : AppCompatActivity() {
             }
             relaxSoundLayout.setOnClickListener {
                 openCloseAllRelax(relaxToClose)
+            }
+            uploadCustomSoundLayout.setOnClickListener {
+                openCloseUpload(uploadToClose)
             }
 
             // Jazz Checkboxes
@@ -337,8 +347,12 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun backIconClick(id: Int) {
+        stopAlarmSound()
         val intent = Intent(this, EditContactDetailsActivity::class.java)
         intent.putExtra("ContactId", id)
+        if (numberDefault != 1) {
+            intent.putExtra("AlarmTone", numberDefault)
+        }
         startActivity(intent)
     }
 
@@ -383,9 +397,8 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun stopAlarmSound() {
-        if (alarmSound != null) {
-            alarmSound?.stop()
-        }
+        Log.i("alarmTone", "stop")
+        alarmSound?.stop()
     }
 
     private fun playAlarmSound(id: Int) {
@@ -398,8 +411,8 @@ class VipSettingsActivity : AppCompatActivity() {
         val edit: SharedPreferences.Editor = alarmTonePreferences.edit()
         edit.putString("Alarm_Custom_Tone", null)
         edit.apply()
-        edit.putInt("Alarm_Tone", id)
-        edit.apply()
+
+        numberDefault = id
     }
 
     //region ======================================= CheckboxGesture ========================================
@@ -562,6 +575,14 @@ class VipSettingsActivity : AppCompatActivity() {
         }
     }
 
+    private fun openCloseUpload(isOpen: Boolean) {
+        binding.apply {
+            uploadSongsLayout.isVisible = !isOpen
+            changeIconOpenLayout(uploadCloseIcon, isOpen)
+            relaxToClose = !relaxToClose
+        }
+    }
+
     //endregion
 
     //check if you have permission or not
@@ -606,12 +627,17 @@ class VipSettingsActivity : AppCompatActivity() {
                 val path = audioFileUri?.path
 //                jazzyUploadSoundPath.text = "From :$path"
                 val alarmTonePreferences: SharedPreferences =
-                    getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
+                    getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = alarmTonePreferences.edit()
                 edit.putString("Alarm_Custom_Tone", audioFileUri.toString())
                 edit.apply()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        stopAlarmSound()
+        super.onBackPressed()
     }
 
     private fun goToPremiumActivity() {
@@ -622,9 +648,6 @@ class VipSettingsActivity : AppCompatActivity() {
             ).putExtra("fromManageNotification", true)
         )
         finish()
-    }
-
-    override fun onBackPressed() {
     }
 
     //endregion

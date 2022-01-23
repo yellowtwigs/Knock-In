@@ -964,8 +964,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/notification_vip_message_tone_personal_sound"
                         android:textColor="?attr/textColor"
                         android:textSize="15sp" />
