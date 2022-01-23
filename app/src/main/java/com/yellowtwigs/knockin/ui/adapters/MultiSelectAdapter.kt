@@ -120,7 +120,7 @@ class MultiSelectAdapter(
         if (listContactSelect.contains(contact)) {
             listContactSelect.remove(contact)
         } else {
-            if (listContactSelect.size <= 5 || contactUnlimited) {
+            if (listContactSelect.size < 5 || contactUnlimited) {
                 listContactSelect.add(contact)
             }
         }

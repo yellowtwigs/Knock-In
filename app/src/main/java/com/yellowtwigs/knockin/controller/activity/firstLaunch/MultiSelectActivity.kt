@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -44,6 +45,7 @@ class MultiSelectActivity : AppCompatActivity() {
 
     private var contactsUnlimitedBought = true
     private var firstClick = true
+    private var tooMuch = false
 
     //endregion
 
@@ -64,11 +66,10 @@ class MultiSelectActivity : AppCompatActivity() {
         //region ===================================== SharedPreferences ====================================
 
         numberOfContactsVIPref = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
-        contactsUnlimitedPref = getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
-//        val contactsUnlimitedBought =
-//            sharedContactsUnlimitedPreferences.getBoolean("Contacts_Unlimited_Bought", false)
-
-        contactsUnlimitedBought = true
+        contactsUnlimitedPref =
+            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
+        contactsUnlimitedBought =
+            contactsUnlimitedPref.getBoolean("Contacts_Unlimited_Bought", false)
 
         //endregion
 
@@ -94,10 +95,11 @@ class MultiSelectActivity : AppCompatActivity() {
     private fun loadRecyclerView() {
         multiSelectAdapter = MultiSelectAdapter(this, 4, contactsUnlimitedBought) { position ->
             multiSelectAdapter.itemSelected(position)
+
             contactManager?.contactList?.get(position)
                 ?.let { selectedItem(listItemSelect, it) }
 
-            if (listItemSelect.size > 5 && firstClick && !contactsUnlimitedBought) {
+            if (tooMuch && !contactsUnlimitedBought) {
                 MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
                     .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
@@ -108,7 +110,6 @@ class MultiSelectActivity : AppCompatActivity() {
                                 PremiumActivity::class.java
                             ).putExtra("fromMultiSelectActivity", true)
                         )
-                        firstClick = true
                     }
                     .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                     }
@@ -216,15 +217,28 @@ class MultiSelectActivity : AppCompatActivity() {
         listItemSelect: ArrayList<ContactWithAllInformation>,
         contact: ContactWithAllInformation
     ) {
-        if (listItemSelect.isEmpty()) {
+        Log.i("selectedItem", "Start : ${listItemSelect.size}")
+        if (listItemSelect.isEmpty() && firstClick) {
             listItemSelect.add(contact)
+            firstClick = false
         } else {
             if (listItemSelect.contains(contact)) {
                 listItemSelect.remove(contact)
+
+                tooMuch = false
+
+                if (listItemSelect.isEmpty())
+                    firstClick = true
             } else {
-                listItemSelect.add(contact)
+                if (listItemSelect.size == 5) {
+                    tooMuch = true
+                } else {
+                    listItemSelect.add(contact)
+                }
             }
         }
+        Log.i("selectedItem", "End 1 : ${listItemSelect.size}")
+        Log.i("selectedItem", "End 2 : ${listItemSelect.indices}")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
