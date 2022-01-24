@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -336,7 +337,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation d'accès au notification
-        startActivityActivateNotifications!!.setOnClickListener {
+        startActivityActivateNotifications?.setOnClickListener {
             activateNotificationsClick()
             startActivityActivateNotifications!!.visibility = View.INVISIBLE
             startActivityActivateNotificationsLoading!!.visibility = View.VISIBLE
@@ -353,8 +354,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 while (!activityVisible) {
                 }
                 if (isNotificationServiceEnabled()) {
-                    //     Handler().postDelayed({
-
                     val displayLoading = Runnable {
                         //start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
                         //start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
@@ -390,11 +389,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
-        startActivityAuthorizeSuperposition!!.setOnClickListener {
-
+        startActivityAuthorizeSuperposition?.setOnClickListener {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
-
-                startActivityAuthorizeSuperposition!!.visibility = View.INVISIBLE
+                startActivityAuthorizeSuperposition?.visibility = View.INVISIBLE
 
                 val SPLASH_DISPLAY_LENGHT = 3000
                 //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
@@ -456,7 +453,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         //Lors du click sur activateNotification nous demandont l'autorisation des appels et des SMS
-        startActivityPermissions!!.setOnClickListener {
+        startActivityPermissions?.setOnClickListener {
             val arraylistPermission = ArrayList<String>()
             arraylistPermission.add(Manifest.permission.SEND_SMS)
             arraylistPermission.add(Manifest.permission.CALL_PHONE)
@@ -471,7 +468,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
-        startActivityNext!!.setOnClickListener {
+        startActivityNext?.setOnClickListener {
             if (!checkIfGoEdition()) {
                 buildMultiSelectAlertDialog()
             } else {
@@ -483,11 +480,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         //lors du click affichage d'un message de prévention
-        startActivitySkip!!.setOnClickListener {
-            //            startActivityImportContacts!!!!.visibility = View.INVISIBLE
+        startActivitySkip?.setOnClickListener {
             if (!checkIfGoEdition()) {
-                buildMultiSelectAlertDialog()
-                buildLeaveAlertDialog()
+                if (startActivityImportContactsCheck?.isVisible == true) {
+                    buildMultiSelectAlertDialog()
+                } else {
+                    buildLeaveAlertDialog()
+                }
             } else {
                 val intent = Intent(this@StartActivity, MainActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
@@ -659,7 +658,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                     val runnable = Runnable {
                         startActivityImportContactsLoading!!.visibility = View.INVISIBLE
-                        startActivityImportContactsCheck!!.visibility = View.VISIBLE
+                        startActivityImportContactsCheck?.visibility = View.VISIBLE
                         allIsChecked()
                         allIsCheckedGOEdition()
                     }
