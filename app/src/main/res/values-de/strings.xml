@@ -469,4 +469,6 @@
     <string name="popup_connection_cancel">Stornieren</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
+    <string name="alert_dialog_vip_custom_settings_msg">Sie können jetzt Ihre VIP-Benachrichtigungen anpassen!</string>
+    <string name="alert_dialog_vip_custom_settings_title">Neue VIP-Benachrichtigungseinstellungen</string>
 </resources>

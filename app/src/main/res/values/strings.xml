@@ -486,4 +486,6 @@
     <string name="textview">TextView</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alert_dialog_vip_custom_settings_title">New Notifications VIP Settings</string>
+    <string name="alert_dialog_vip_custom_settings_msg">You can now customize your VIP notifications!</string>
 </resources>

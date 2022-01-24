@@ -475,4 +475,6 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="popup_connection_cancel">Cancelar</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
+    <string name="alert_dialog_vip_custom_settings_msg">¡Ahora puedes personalizar tus notificaciones VIP!</string>
+    <string name="alert_dialog_vip_custom_settings_title">Nueva configuración de notificaciones VIP</string>
 </resources>

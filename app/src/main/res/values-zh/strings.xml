@@ -468,4 +468,6 @@
     <string name="popup_connection_cancel">取消</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
+    <string name="alert_dialog_vip_custom_settings_msg">您现在可以自定义您的 VIP 通知！</string>
+    <string name="alert_dialog_vip_custom_settings_title">新的 VIP 通知设置</string>
 </resources>

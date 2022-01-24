@@ -470,4 +470,6 @@
     <string name="popup_connection_cancel">Отмена</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
+    <string name="alert_dialog_vip_custom_settings_msg">Теперь вы можете настроить свои VIP-уведомления!</string>
+    <string name="alert_dialog_vip_custom_settings_title">Новые настройки VIP-уведомлений</string>
 </resources>

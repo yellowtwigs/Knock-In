@@ -37,6 +37,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.share.Share
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -118,6 +119,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var idGroup: Long = 0
 
     private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
+
+    private lateinit var sharedFromSplashScreen: SharedPreferences
 
     //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener =
@@ -215,6 +218,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //endregion
 
         //region ======================================== Mobile Ads ========================================
+
+        sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
+        val fromSplashScreen = sharedFromSplashScreen.getBoolean("fromSplashScreen", false)
+        if (fromSplashScreen) {
+            customOptionVipPopupAd()
+        }
 
 //        MobileAds.initialize(this)
 //
@@ -1898,6 +1907,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
         main_mDbWorkerThread.postTask(sortBy)
         refreshActivity()
+    }
+
+    private fun customOptionVipPopupAd() {
+        val edit = sharedFromSplashScreen.edit()
+        edit.putBoolean("fromSplashScreen", false)
+        edit.apply()
+
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+            .setView(R.layout.custom_alert_dialog_vip_notif_ad)
+            .setTitle(getString(R.string.alert_dialog_vip_custom_settings_title))
+            .setMessage(getString(R.string.alert_dialog_vip_custom_settings_msg))
+            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+            }
+            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+            }
+            .show()
     }
 
     //endregion

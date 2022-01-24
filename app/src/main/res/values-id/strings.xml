@@ -473,4 +473,6 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="popup_connection_cancel">Membatalkan</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
+    <string name="alert_dialog_vip_custom_settings_msg">Anda sekarang dapat menyesuaikan pemberitahuan VIP Anda!</string>
+    <string name="alert_dialog_vip_custom_settings_title">Pengaturan pemberitahuan VIP baru</string>
 </resources>

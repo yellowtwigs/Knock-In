@@ -12,6 +12,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
 
 @SuppressLint("CustomSplashScreen")
@@ -60,14 +61,22 @@ class SplashScreenActivity : AppCompatActivity() {
 
         //endregion
 
+        val sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
+        sharedFromSplashScreen.getBoolean("fromSplashScreen", false)
+        val edit = sharedFromSplashScreen.edit()
+        edit.putBoolean("fromSplashScreen", true)
+        edit.apply()
+
         //region ======================================== Animation =========================================
 
-        val slideDown = AnimationUtils.loadAnimation(this,
-                R.anim.slide_to_down
+        val slideDown = AnimationUtils.loadAnimation(
+            this,
+            R.anim.slide_to_down
         )
 
-        val reappartion = AnimationUtils.loadAnimation(this,
-                R.anim.reapparrition
+        val reappartion = AnimationUtils.loadAnimation(
+            this,
+            R.anim.reapparrition
         )
 
         Handler().postDelayed({
