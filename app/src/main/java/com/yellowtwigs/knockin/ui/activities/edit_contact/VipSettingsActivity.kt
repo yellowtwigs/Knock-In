@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -67,7 +68,6 @@ class VipSettingsActivity : AppCompatActivity() {
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
-//        jazzySoundBought = true
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)
@@ -93,22 +93,16 @@ class VipSettingsActivity : AppCompatActivity() {
         if (contact?.contactDB?.notificationSound != null) {
             numberDefault = contact.contactDB?.notificationSound!!
         }
-        Log.i("alarmTone", "Notif Sound : ${contact?.contactDB?.notificationSound}")
 
-        ringToneLayoutClosed()
         refreshChecked()
         checkIfUserBoughtCustomSound()
+        ringToneLayoutClosed()
 
         //region ======================================== Listeners =========================================
 
         binding.apply {
             backIcon.setOnClickListener {
                 backIconClick(contactId)
-            }
-            uploadButton.setOnClickListener {
-                checkRuntimePermission()
-
-                uncheckBoxAll()
             }
             jazzySoundLayout.setOnClickListener {
                 openCloseAllJazzy(jazzyToClose)
@@ -331,6 +325,12 @@ class VipSettingsActivity : AppCompatActivity() {
                     alertDialogBuySound()
                 }
             }
+
+            uploadButton.setOnClickListener {
+                checkRuntimePermission()
+
+                uncheckBoxAll()
+            }
         }
 
         //endregion
@@ -387,13 +387,6 @@ class VipSettingsActivity : AppCompatActivity() {
                 refreshChecked()
             }
             .show()
-    }
-
-    private fun getTones() {
-        val intent = Intent()
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.type = "audio/*"
-        startActivityForResult(Intent.createChooser(intent, "Title"), 89)
     }
 
     private fun stopAlarmSound() {
@@ -585,6 +578,15 @@ class VipSettingsActivity : AppCompatActivity() {
 
     //endregion
 
+    private fun getTones() {
+        val sharePath = Environment.getExternalStorageDirectory().path
+
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "audio/*"
+        startActivityForResult(Intent.createChooser(intent, "Title"), 89)
+    }
+
     //check if you have permission or not
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -622,10 +624,12 @@ class VipSettingsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 89 && resultCode == RESULT_OK) {
             if (data?.data != null) {
+                Log.i("customSound", "Data : ${data.data}")
+                Log.i("customSound", "Path : ${data.data?.path}")
                 val audioFileUri = data.data
                 // use uri to get path
                 val path = audioFileUri?.path
-//                jazzyUploadSoundPath.text = "From :$path"
+                binding.uploadSoundPath.text = "From :$path"
                 val alarmTonePreferences: SharedPreferences =
                     getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = alarmTonePreferences.edit()

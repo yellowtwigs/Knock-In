@@ -909,8 +909,6 @@
                     android:id="@+id/upload_custom_sound_layout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/scorpion_theme_layout">
 
                     <TextView
@@ -952,7 +950,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/upload_custom_sound_layout">
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/upload_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -974,8 +972,9 @@
                         android:id="@+id/upload_sound_path"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/upload_button"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:textColor="?attr/textColor"
                         android:textSize="12sp"
@@ -994,18 +993,21 @@
                 android:text="@string/settings_choose_notif_schedule_title"
                 android:textColor="?attr/textColor"
                 android:textSize="@dimen/settings_subtitle_size"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.75dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/darkGreyColor" />
+                android:background="@color/darkGreyColor"
+                android:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/schedule_constraint"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/settings_notif_schedule_permanent"
@@ -1017,12 +1019,10 @@
                     android:layout_marginTop="12dp"
                     android:text="@string/settings_notif_schedule_permanent"
                     android:textColor="?attr/textColor"
-
                     android:textSize="@dimen/settings_long_text_size"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
                 <RadioButton
                     android:id="@+id/settings_notif_schedule_permanent_radiobutton"
