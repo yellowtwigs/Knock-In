@@ -44,14 +44,13 @@ object InitContactsForListAdapter {
                         width -= (w * 0.05).toInt()
                         paramsTV.topMargin = 30
                         paramsIV.topMargin = 10
-                        spanNameTextView(firstName, lastName, 0.95f, contactFirstName, contactLastName)
-                    }
-                    3 -> {
-                        height -= (h * 0.05).toInt()
-                        width -= (w * 0.05).toInt()
-                        paramsTV.topMargin = 30
-                        paramsIV.topMargin = 10
-                        spanNameTextView(firstName, lastName, 0.95f, contactFirstName, contactLastName)
+                        spanNameTextView(
+                            firstName,
+                            lastName,
+                            0.95f,
+                            contactFirstName,
+                            contactLastName
+                        )
                     }
                     4 -> {
                         height -= (h * 0.25).toInt()
@@ -64,7 +63,13 @@ object InitContactsForListAdapter {
                         if (lastName.length > 12)
                             lastName = lastName.substring(0, 10) + ".."
 
-                        spanNameTextView(firstName, lastName, 0.95f, contactFirstName, contactLastName)
+                        spanNameTextView(
+                            firstName,
+                            lastName,
+                            0.95f,
+                            contactFirstName,
+                            contactLastName
+                        )
                     }
                     5 -> {
                         height -= (h * 0.40).toInt()
@@ -78,27 +83,19 @@ object InitContactsForListAdapter {
                         if (lastName.length > 11)
                             lastName = lastName.substring(0, 9) + ".."
 
-                        spanNameTextView(firstName, lastName, 0.9f, contactFirstName, contactLastName)
-                    }
-                    6 -> {
-                        height -= (h * 0.50).toInt()
-                        width -= (w * 0.50).toInt()
-                        paramsTV.topMargin = 0
-                        paramsIV.topMargin = 0
-
-                        if (firstName.length > 8)
-                            firstName = firstName.substring(0, 7) + ".."
-
-                        if (lastName.length > 8)
-                            lastName = lastName.substring(0, 7) + ".."
-
-                        spanNameTextView(firstName, lastName, 0.81f, contactFirstName, contactLastName)
+                        spanNameTextView(
+                            firstName,
+                            lastName,
+                            0.9f,
+                            contactFirstName,
+                            contactLastName
+                        )
                     }
                 }
             }
         }
 
-        private fun spanNameTextView(
+        fun spanNameTextView(
             firstName: String,
             lastName: String,
             proportion: Float,

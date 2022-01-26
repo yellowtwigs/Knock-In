@@ -6,15 +6,12 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.billingclient.api.SkuDetails
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.adapters.MultiSelectAdapter
 import com.yellowtwigs.knockin.model.ContactManager
@@ -23,7 +20,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
-import com.yellowtwigs.knockin.ui.adapters.MyProductAdapter
 
 /**
  * Activité qui nous permet de faire un multiSelect sur nos contact afin de les prioriser
@@ -137,6 +133,10 @@ class MultiSelectActivity : AppCompatActivity() {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(cxt, 4, RecyclerView.VERTICAL, false)
         }
+
+        binding.multiSelectRecyclerView
+
+        multiSelectAdapter.notifyDataSetChanged()
     }
 
     /**
@@ -176,38 +176,17 @@ class MultiSelectActivity : AppCompatActivity() {
             .setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
             .setBackground(getDrawable(R.color.backgroundColor))
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                val gestionnaireContact = ContactManager(contactList, this)
+                val contactManag = ContactManager(contactList, this)
                 if (contactList.isNotEmpty()) {
-                    gestionnaireContact.setToContactInListPriority2()
+                    contactManag.setToContactInListPriority2()
                 }
-
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(getString(R.string.start_activity_title))
-                    .setMessage(
-                        getString(R.string.start_activity_personnalize_alert) + applicationContext.resources.getString(
-                            R.string.personnalize_validate_selection
-                        )
-                    )
-                    .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                        startActivity(
-                            Intent(
-                                this@MultiSelectActivity,
-                                PremiumActivity::class.java
-                            ).putExtra("fromStartActivity", true)
-                        )
-                        finish()
-                    }
-                    .setNegativeButton(getString(R.string.alert_dialog_later)) { _, _ ->
-                        startActivity(
-                            Intent(
-                                this@MultiSelectActivity,
-                                MainActivity::class.java
-                            ).putExtra("fromStartActivity", true)
-                        )
-                        finish()
-                    }
-                    .show()
-
+                startActivity(
+                    Intent(
+                        this@MultiSelectActivity,
+                        PremiumActivity::class.java
+                    ).putExtra("fromStartActivity", true)
+                )
+                finish()
             }
             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
             }

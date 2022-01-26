@@ -13,7 +13,9 @@ import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.utils.ConvertBitmap.base64ToBitmap
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.initContact
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.spanNameTextView
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import java.util.*
 
@@ -46,8 +48,15 @@ class MultiSelectAdapter(
             binding.apply {
                 val contact = contactWithAllInformation.contactDB
                 if (contact != null)
-                    initContact(contact, contactFirstName, contactLastName, contactImage, len)
+//                    initContact(contact, contactFirstName, contactLastName, contactImage, len)
 
+                    spanNameTextView(
+                        contact.firstName,
+                        contact.lastName,
+                        0.9f,
+                        contactFirstName,
+                        contactLastName
+                    )
                 if (contact?.profilePicture64 != "") {
                     val bitmap = contact?.profilePicture64?.let { base64ToBitmap(it) }
                     contactImage.setImageBitmap(bitmap)

@@ -37,10 +37,12 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/multi_select_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/multi_select_title" />
+        app:layout_constraintTop_toBottomOf="@+id/multi_select_title"
+        tools:listitem="@layout/multi_select_item" />
 
     <TextView
         android:id="@+id/multi_select_text_view"
