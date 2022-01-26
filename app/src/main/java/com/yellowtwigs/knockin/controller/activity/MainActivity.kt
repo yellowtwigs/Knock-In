@@ -1917,10 +1917,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
             .setView(R.layout.custom_alert_dialog_vip_notif_ad)
             .setTitle(getString(R.string.alert_dialog_vip_custom_settings_title))
-            .setMessage(getString(R.string.alert_dialog_vip_custom_settings_msg))
-            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-            }
-            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+            .setPositiveButton(R.string.alert_dialog_cancel) { alertDialog, _ ->
+                alertDialog.dismiss()
+                alertDialog.cancel()
             }
             .show()
     }
