@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -47,6 +48,7 @@ import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.ModelDB.*
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -268,7 +270,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
 
             edit_contact_mail_name = contact.contactDB!!.mail_name
-            //TODO :enlever code Dupliquer
 
             edit_contact_phone_property = getString(R.string.edit_contact_phone_number_mobile)
             edit_contact_fix_number = getString(R.string.edit_contact_phone_number_home)
@@ -280,7 +281,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
             val phoneNumber = contact.getFirstPhoneNumber()
             edit_contact_phone_number = phoneNumber
             edit_contact_phone_property = tagPhone
-            println("phone property of number $phoneNumber is $tagPhone")
             val tagFix = contact.getSecondPhoneTag(phoneNumber)
             val fixNumber = contact.getSecondPhoneNumber(phoneNumber)
             edit_contact_fix_number = fixNumber
@@ -290,14 +290,13 @@ class EditContactDetailsActivity : AppCompatActivity() {
             edit_contact_mail = mail
             edit_contact_mail_property = tagMail
 
-            println("fix number egale à $fixNumber")
             if (phoneNumber != "") {
                 havePhone = true
             }
             if (fixNumber != "") {
                 haveSecondPhone = true
             }
-            if (mail != "") { ///// havemail toujour false
+            if (mail != "") {
                 haveMail = true
             }
 
@@ -310,50 +309,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 val image64 = edit_contact_image64
                 edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
             }
-            when (edit_contact_priority) {
-                0 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(
-                        resources.getColor(
-                            R.color.priorityZeroColor,
-                            null
-                        )
-                    )
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(
-                        resources.getColor(
-                            R.color.lightColor,
-                            null
-                        )
-                    )
-                }
-                1 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(
-                        resources.getColor(
-                            R.color.priorityOneColor,
-                            null
-                        )
-                    )
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(
-                        resources.getColor(
-                            R.color.lightColor,
-                            null
-                        )
-                    )
-                }
-                2 -> {
-                    edit_contact_RoundedImageView!!.setBorderColor(
-                        resources.getColor(
-                            R.color.priorityTwoColor,
-                            null
-                        )
-                    )
-                    edit_contact_RoundedImageView!!.setBetweenBorderColor(
-                        resources.getColor(
-                            R.color.lightColor,
-                            null
-                        )
-                    )
-                }
-            }
+
+            contactPriorityBorder(contact.contactDB!!, edit_contact_RoundedImageView!!, this)
         }
 
         //region ===================================== SetViewDataField =====================================
@@ -441,13 +398,11 @@ class EditContactDetailsActivity : AppCompatActivity() {
             arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
         val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
 
-        edit_contact_Priority!!.adapter = priority_adapter
-        edit_contact_Priority!!.setSelection(edit_contact_priority)
-        edit_contact_Priority!!.onItemSelectedListener =
+        edit_contact_Priority?.adapter = priority_adapter
+        edit_contact_Priority?.setSelection(edit_contact_priority)
+        edit_contact_Priority?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
 
                 override fun onItemSelected(
@@ -457,7 +412,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
                     id: Long
                 ) {
                     when (position) {
-
                         0 -> {
                             edit_contact_Priority_explain!!.text =
                                 getString(R.string.add_new_contact_priority0)
@@ -473,9 +427,9 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                     R.color.lightColor
                                 )
                             )
-                            edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                            edit_contact_vip_Settings!!.visibility = View.GONE
-                            contact_vip_Settings!!.visibility = View.GONE
+                            edit_contact_RoundedImageView?.visibility = View.VISIBLE
+                            edit_contact_vip_Settings?.visibility = View.GONE
+                            contact_vip_Settings?.visibility = View.GONE
 
                         }
                         1 -> {
@@ -494,52 +448,48 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
                         }
                         2 -> {
-
-                            edit_contact_Priority_explain!!.text =
+                            edit_contact_Priority_explain?.text =
                                 getString(R.string.add_new_contact_priority2)
-                            edit_contact_RoundedImageView!!.visibility = View.GONE
-                            edit_contact_RoundedImageView!!.setBorderColor(resources.getColor(R.color.priorityTwoColor))
-                            edit_contact_RoundedImageView!!.setBetweenBorderColor(
+                            edit_contact_RoundedImageView?.visibility = View.GONE
+                            edit_contact_RoundedImageView?.setBorderColor(resources.getColor(R.color.priorityTwoColor))
+                            edit_contact_RoundedImageView?.setBetweenBorderColor(
                                 resources.getColor(
                                     R.color.lightColor
                                 )
                             )
-                            edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                            edit_contact_vip_Settings!!.visibility = View.VISIBLE
-                            contact_vip_Settings!!.visibility = View.VISIBLE
+                            edit_contact_RoundedImageView?.visibility = View.VISIBLE
 
-                            if (nb_Contacts_VIP > 4 && edit_contact_priority == 2) {
-                                edit_contact_vip_Settings!!.visibility = View.VISIBLE
-                                contact_vip_Settings!!.visibility = View.VISIBLE
-                            } else if (nb_Contacts_VIP > 4 && edit_contact_priority != 2) {
-                                edit_contact_vip_Settings!!.visibility = View.INVISIBLE
-                                contact_vip_Settings!!.visibility = View.INVISIBLE
-                                if (nb_Contacts_VIP > 4 && edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_Priority!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
-                                    MaterialAlertDialogBuilder(
-                                        this@EditContactDetailsActivity,
-                                        R.style.AlertDialog
-                                    )
-                                        .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
-                                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
-                                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                            startActivity(
-                                                Intent(
-                                                    this@EditContactDetailsActivity,
-                                                    PremiumActivity::class.java
-                                                )
+                            edit_contact_vip_Settings?.isVisible = nb_Contacts_VIP <= 5
+                            contact_vip_Settings?.isVisible = nb_Contacts_VIP <= 5
+
+                            if (nb_Contacts_VIP > 4 &&
+                                edit_contact_priority != edit_contact_Priority?.selectedItemPosition &&
+                                contactsUnlimitedIsBought == false
+                            ) {
+                                MaterialAlertDialogBuilder(
+                                    this@EditContactDetailsActivity,
+                                    R.style.AlertDialog
+                                )
+                                    .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
+                                    .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
+                                    .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                        startActivity(
+                                            Intent(
+                                                this@EditContactDetailsActivity,
+                                                PremiumActivity::class.java
                                             )
-                                            finish()
-                                        }
-                                        .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                                        }
-                                        .show()
-                                }
-                            } else if (edit_contact_priority != 2) {
-                                edit_contact_vip_Settings!!.visibility = View.VISIBLE
-                                contact_vip_Settings!!.visibility = View.VISIBLE
+                                        )
+                                        finish()
+                                    }
+                                    .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                                    }
+                                    .show()
                             }
 
-
+                            if (nb_Contacts_VIP > 5 && contactsUnlimitedIsBought == true) {
+                                edit_contact_vip_Settings?.isVisible = true
+                                contact_vip_Settings?.isVisible = true
+                            }
                         }
                     }
                 }
@@ -552,7 +502,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
         val layoutMananger =
             LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         recyclerGroup!!.layoutManager = layoutMananger
-        //edit_contact_ContactsDatabase.contactsDao()
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDbGroup = Callable {
             edit_contact_ContactsDatabase!!.GroupsDao().getGroupForContact(edit_contact_id!!)

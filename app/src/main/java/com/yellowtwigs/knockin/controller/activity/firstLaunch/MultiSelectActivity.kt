@@ -183,7 +183,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@MultiSelectActivity,
-                        PremiumActivity::class.java
+                        MainActivity::class.java
                     ).putExtra("fromStartActivity", true)
                 )
                 finish()
