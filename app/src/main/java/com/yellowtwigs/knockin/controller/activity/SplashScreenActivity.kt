@@ -98,7 +98,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
         Handler().postDelayed({
-            startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashScreenActivity, FirstLaunchActivity::class.java))
             finish()
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 

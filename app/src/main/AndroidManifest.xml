@@ -29,7 +29,8 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
 
     <application
         android:allowBackup="false"
@@ -62,7 +63,14 @@
             android:resizeableActivity="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".controller.activity.SettingsActivity" />
-        <activity android:name=".controller.activity.firstLaunch.StartActivity" />
+        <activity android:name=".controller.activity.firstLaunch.StartActivity"
+            android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity android:name=".FirstLaunchActivity" />
         <activity
             android:name=".controller.BubbleActivity"

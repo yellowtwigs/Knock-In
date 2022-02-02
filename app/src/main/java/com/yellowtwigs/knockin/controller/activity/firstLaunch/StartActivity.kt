@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.controller.activity.firstLaunch
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.*
 import android.content.pm.ActivityInfo
@@ -28,6 +27,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import bolts.Task.delay
 import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -37,6 +37,9 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.ModelDB.ContactDB
 import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.net.InetAddress
 import java.net.UnknownHostException
 
@@ -48,28 +51,28 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //region ========================================== Val or Var ==========================================
 
-    private var startActivityImportContacts: MaterialButton? = null
-    private var startActivityActivateNotifications: MaterialButton? = null
-    private var startActivityAuthorizeSuperposition: MaterialButton? = null
-    private var startActivityPermissions: MaterialButton? = null
+    private var importContactsButton: MaterialButton? = null
+    private var importContactsLayout: RelativeLayout? = null
+    private var importContactsLoading: ProgressBar? = null
+    private var importContactsCheck: AppCompatImageView? = null
 
-    private var startActivityImportContactsLayout: RelativeLayout? = null
-    private var startActivityActivateNotificationsLayout: RelativeLayout? = null
-    private var startActivityAuthorizeSuperpositionLayout: RelativeLayout? = null
-    private var startActivityPermissionsLayout: RelativeLayout? = null
+    private var activateNotificationsButton: MaterialButton? = null
+    private var activateNotificationsLayout: RelativeLayout? = null
+    private var activateNotificationsLoading: ProgressBar? = null
+    private var activateNotificationsCheck: AppCompatImageView? = null
+
+    private var superpositionButton: MaterialButton? = null
+    private var superpositionLayout: RelativeLayout? = null
+    private var superpositionLoading: ProgressBar? = null
+    private var superpositionCheck: AppCompatImageView? = null
+
+    private var permissionsButton: MaterialButton? = null
+    private var permissionsLoading: ProgressBar? = null
+    private var permissionsLayout: RelativeLayout? = null
+    private var permissionsCheck: AppCompatImageView? = null
 
     private var startActivityNext: MaterialButton? = null
     private var startActivitySkip: MaterialButton? = null
-    private var startActivityImportContactsLoading: ProgressBar? = null
-    private var startActivityActivateNotificationsLoading: ProgressBar? = null
-    private var startActivityAuthorizeSuperpositionLoading: ProgressBar? = null
-    private var startActivityPermissionsLoading: ProgressBar? = null
-    private var start_activity_import_contacts_loading: ProgressBar? = null
-
-    private var startActivityImportContactsCheck: AppCompatImageView? = null
-    private var startActivityActivateNotificationsCheck: AppCompatImageView? = null
-    private var startActivityAuthorizeSuperpositionCheck: AppCompatImageView? = null
-    private var startActivityPermissionsCheck: AppCompatImageView? = null
 
     private var billingClient: BillingClient? = null
     private var sharedFunkySoundPreferences: SharedPreferences? = null
@@ -78,8 +81,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
     private var sharedCustomSoundPreferences: SharedPreferences? = null
 
-    private lateinit var start_activity_mDbWorkerThread: DbWorkerThread
-    private var activityVisible = false
+    private lateinit var workerThread: DbWorkerThread
+    private var activityNotificationVisible = false
+
+    private var activitySuperpositionVisible = false
+    private var clickSuperpositionButton = false
 
     //endregion
 
@@ -105,37 +111,35 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //region ======================================= FindViewById =======================================
 
-        startActivityImportContacts = findViewById(R.id.start_activity_import_contacts_button)
-        startActivityActivateNotifications =
+        importContactsButton = findViewById(R.id.start_activity_import_contacts_button)
+        activateNotificationsButton =
             findViewById(R.id.start_activity_activate_notifications_button)
-        startActivityAuthorizeSuperposition = findViewById(R.id.start_activity_superposition_button)
-        startActivityPermissions = findViewById(R.id.start_activity_permissions_button)
+        superpositionButton = findViewById(R.id.start_activity_superposition_button)
+        permissionsButton = findViewById(R.id.start_activity_permissions_button)
 
-        startActivityImportContactsLayout = findViewById(R.id.start_activity_import_contacts_layout)
-        startActivityActivateNotificationsLayout =
+        importContactsLayout = findViewById(R.id.start_activity_import_contacts_layout)
+        activateNotificationsLayout =
             findViewById(R.id.start_activity_notifications_layout)
-        startActivityAuthorizeSuperpositionLayout =
+        superpositionLayout =
             findViewById(R.id.start_activity_superposition_layout)
-        startActivityPermissionsLayout = findViewById(R.id.start_activity_permissions_layout)
+        permissionsLayout = findViewById(R.id.start_activity_permissions_layout)
 
         startActivityNext = findViewById(R.id.start_activity_next)
         startActivitySkip = findViewById(R.id.start_activity_skip)
-        startActivityImportContactsLoading =
+        importContactsLoading =
             findViewById(R.id.start_activity_import_contacts_loading)
-        startActivityActivateNotificationsLoading =
+        activateNotificationsLoading =
             findViewById(R.id.start_activity_activate_notifications_loading)
-        startActivityAuthorizeSuperpositionLoading =
+        superpositionLoading =
             findViewById(R.id.start_activity_superposition_loading)
-        startActivityPermissionsLoading = findViewById(R.id.start_activity_permissions_loading)
-        start_activity_import_contacts_loading =
-            findViewById(R.id.start_activity_import_contacts_loading)
+        permissionsLoading = findViewById(R.id.start_activity_permissions_loading)
 
-        startActivityImportContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
-        startActivityActivateNotificationsCheck =
+        importContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
+        activateNotificationsCheck =
             findViewById(R.id.start_activity_activate_notifications_check)
-        startActivityAuthorizeSuperpositionCheck =
+        superpositionCheck =
             findViewById(R.id.start_activity_superposition_check)
-        startActivityPermissionsCheck = findViewById(R.id.start_activity_permissions_check)
+        permissionsCheck = findViewById(R.id.start_activity_permissions_check)
 
 
         val start_activity_layout = findViewById<ConstraintLayout>(R.id.start_activity_layout)
@@ -181,21 +185,21 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 }
                 "de" -> {
                     println("////////////////////////////")
-                    println(startActivityImportContacts!!.textSize)
-                    startActivityImportContacts!!.textSize = 10f
-                    startActivityActivateNotifications!!.textSize = 10f
-                    startActivityAuthorizeSuperposition!!.textSize = 10f
-                    startActivityPermissions!!.textSize = 10f
-                    println(startActivityImportContacts!!.textSize)
+                    println(importContactsButton!!.textSize)
+                    importContactsButton!!.textSize = 10f
+                    activateNotificationsButton!!.textSize = 10f
+                    superpositionButton!!.textSize = 10f
+                    permissionsButton!!.textSize = 10f
+                    println(importContactsButton!!.textSize)
                     println("////////////////////////////")
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/germany")
                 }
                 "in" -> {
-                    startActivityImportContacts!!.textSize = 9f
-                    startActivityActivateNotifications!!.textSize = 9f
-                    startActivityAuthorizeSuperposition!!.textSize = 9f
-                    startActivityPermissions!!.textSize = 9f
+                    importContactsButton!!.textSize = 9f
+                    activateNotificationsButton!!.textSize = 9f
+                    superpositionButton!!.textSize = 9f
+                    permissionsButton!!.textSize = 9f
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/indonesia")
                 }
@@ -220,10 +224,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     webview.loadUrl("https://www.yellowtwigs.com/arabic")
                 }
                 "ru" -> {
-                    startActivityImportContacts!!.textSize = 7f
-                    startActivityActivateNotifications!!.textSize = 7f
-                    startActivityAuthorizeSuperposition!!.textSize = 7f
-                    startActivityPermissions!!.textSize = 7f
+                    importContactsButton!!.textSize = 7f
+                    activateNotificationsButton!!.textSize = 7f
+                    superpositionButton!!.textSize = 7f
+                    permissionsButton!!.textSize = 7f
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/russia")
                 }
@@ -268,14 +272,14 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //region ======================================= WorkerThread =======================================
 
-        start_activity_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        start_activity_mDbWorkerThread.start()
+        workerThread = DbWorkerThread("dbWorkerThread")
+        workerThread.start()
 
         //endregion
 
         if (checkIfGoEdition()) {
-            startActivityActivateNotificationsLayout!!.visibility = View.GONE
-            startActivityAuthorizeSuperpositionLayout!!.visibility = View.GONE
+            activateNotificationsLayout!!.visibility = View.GONE
+            superpositionLayout!!.visibility = View.GONE
 
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))
@@ -284,16 +288,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 }
                 .show()
         }
-
-//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                    .setBackground(getDrawable(R.color.backgroundColor))
-//                    .setMessage(getString(R.string.start_activity_superposition_not_allowed_message_11))
-//                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-//                    }
-//                    .show()
-//
-//        }
 
         //region ======================================== Listeners =========================================
 
@@ -313,17 +307,16 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             ).show()
         }
 
-        //Lors du click sur synchroniser alors nous demandons l'autorisation d'accéder aux contact puis nous affichons un loading
-        startActivityImportContacts!!.setOnClickListener {
+        importContactsButton?.setOnClickListener {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.READ_CONTACTS),
                 ImportContactsActivity.REQUEST_CODE_READ_CONTACT
             )
-            startActivityImportContacts!!.visibility = View.INVISIBLE
+            importContactsButton!!.visibility = View.INVISIBLE
 
             val displayLoading = Runnable {
-                startActivityImportContactsLoading!!.visibility = View.VISIBLE
+                importContactsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
 
@@ -336,30 +329,29 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
 
-        //Lors du click sur activateNotification nous demandont l'autorisation d'accès au notification
-        startActivityActivateNotifications?.setOnClickListener {
+        activateNotificationsButton?.setOnClickListener {
             activateNotificationsClick()
-            startActivityActivateNotifications!!.visibility = View.INVISIBLE
-            startActivityActivateNotificationsLoading!!.visibility = View.VISIBLE
+            activateNotificationsButton!!.visibility = View.INVISIBLE
+            activateNotificationsLoading!!.visibility = View.VISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 2000
 
             val displayLoading = Runnable {
-                startActivityActivateNotificationsLoading!!.visibility = View.VISIBLE
+                activateNotificationsLoading!!.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
             //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
             val verifiedNotification = Thread {
-                activityVisible = false
-                while (!activityVisible) {
+                activityNotificationVisible = false
+                while (!activityNotificationVisible) {
                 }
                 if (isNotificationServiceEnabled()) {
                     val displayLoading = Runnable {
                         //start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
                         //start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
                         Handler().postDelayed({
-                            startActivityActivateNotificationsLoading!!.visibility = View.INVISIBLE
-                            startActivityActivateNotificationsCheck!!.visibility = View.VISIBLE
+                            activateNotificationsLoading!!.visibility = View.INVISIBLE
+                            activateNotificationsCheck!!.visibility = View.VISIBLE
                             val sharedPreferences: SharedPreferences =
                                 getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
@@ -379,8 +371,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     runOnUiThread(displayLoading)
                 } else {
                     val displayLoading = Runnable {
-                        startActivityActivateNotificationsLoading!!.visibility = View.INVISIBLE
-                        startActivityActivateNotifications!!.visibility = View.VISIBLE
+                        activateNotificationsLoading!!.visibility = View.INVISIBLE
+                        activateNotificationsButton!!.visibility = View.VISIBLE
                     }
                     runOnUiThread(displayLoading)
                 }
@@ -388,72 +380,16 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             verifiedNotification.start()
         }
 
-        //Lors du click sur activateNotification nous demandont l'autorisation de superposition des écrans
-        startActivityAuthorizeSuperposition?.setOnClickListener {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
-                startActivityAuthorizeSuperposition?.visibility = View.INVISIBLE
-
-                val SPLASH_DISPLAY_LENGHT = 3000
-                //si nous sommes sous l'api 24 alors nous n'avons pas besoin de l'autorisation est nous validons directement
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    val intent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:$packageName")
-                    )
-                    startActivity(intent)
-                }
-                val displayLoading = Runnable {
-                    startActivityAuthorizeSuperpositionLoading!!.visibility = View.VISIBLE
-                }
-                runOnUiThread(displayLoading)
-                //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
-                val verifiedSuperposition = Thread {
-                    activityVisible = false
-                    while (!activityVisible) {
-                    }
-                    println("NotificationService" + isNotificationServiceEnabled() + " activity visible" + activityVisible)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(
-                            this
-                        )
-                    ) {
-                        println("into before delayed")
-                        //     Handler().postDelayed({
-
-
-                        val displayLoading = Runnable {
-                            Handler().postDelayed({
-                                startActivityAuthorizeSuperpositionLoading!!.visibility =
-                                    View.INVISIBLE
-                                startActivityAuthorizeSuperpositionCheck!!.visibility = View.VISIBLE
-                                val sharedPreferences: SharedPreferences = getSharedPreferences(
-                                    "Knockin_preferences",
-                                    Context.MODE_PRIVATE
-                                )
-                                val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                                edit.putBoolean("popupNotif", true)
-                                edit.apply()
-                                allIsChecked()
-
-                            }, SPLASH_DISPLAY_LENGHT.toLong())
-                        }
-                        runOnUiThread(displayLoading)
-
-                        //  }, SPLASH_DISPLAY_LENGHT.toLong())
-                    } else {
-                        val displayLoading = Runnable {
-                            startActivityAuthorizeSuperpositionLoading!!.visibility = View.INVISIBLE
-                            startActivityAuthorizeSuperposition!!.visibility = View.VISIBLE
-                        }
-                        runOnUiThread(displayLoading)
-                    }
-                }
-                verifiedSuperposition.start()
+        superpositionButton?.setOnClickListener {
+            if (clickSuperpositionButton) {
+                verifiedOverlaySettings()
             } else {
+                clickSuperpositionButton = true
+                openOverlaySettings()
             }
         }
 
-        //Lors du click sur activateNotification nous demandont l'autorisation des appels et des SMS
-        startActivityPermissions?.setOnClickListener {
+        permissionsButton?.setOnClickListener {
             val arraylistPermission = ArrayList<String>()
             arraylistPermission.add(Manifest.permission.SEND_SMS)
             arraylistPermission.add(Manifest.permission.CALL_PHONE)
@@ -462,12 +398,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)),
                 REQUEST_CODE_SMS_AND_CALL
             )
-            startActivityPermissions!!.visibility = View.INVISIBLE
-            startActivityPermissionsLoading!!.visibility = View.VISIBLE
+            permissionsButton!!.visibility = View.INVISIBLE
+            permissionsLoading!!.visibility = View.VISIBLE
             allIsCheckedGOEdition()
         }
 
-        //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
         startActivityNext?.setOnClickListener {
             if (!checkIfGoEdition()) {
                 buildMultiSelectAlertDialog()
@@ -479,10 +414,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
 
-        //lors du click affichage d'un message de prévention
         startActivitySkip?.setOnClickListener {
             if (!checkIfGoEdition()) {
-                if (startActivityImportContactsCheck?.isVisible == true) {
+                if (importContactsCheck?.isVisible == true) {
                     buildMultiSelectAlertDialog()
                 } else {
                     buildLeaveAlertDialog()
@@ -495,8 +429,68 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
 
-
         //endregion
+    }
+
+    //region ========================================== Functions ==========================================
+
+    private fun openOverlaySettings() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            superpositionButton?.visibility = View.INVISIBLE
+            if (checkAndroid6()) {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:$packageName")
+                )
+                startActivity(intent)
+            }
+            val displayLoading = Runnable {
+                superpositionLoading?.visibility = View.VISIBLE
+            }
+            runOnUiThread(displayLoading)
+        } else {
+        }
+    }
+
+    private fun verifiedOverlaySettings() {
+        val verifiedSuperposition = Thread {
+            while (!activitySuperpositionVisible) {
+            }
+            if (checkAndroid6() && Settings.canDrawOverlays(this) || checkAndroid8()) {
+                val displayLoading = Runnable {
+                    Handler().postDelayed({
+                        superpositionLoading?.visibility =
+                            View.INVISIBLE
+                        superpositionCheck?.visibility = View.VISIBLE
+                        val sharedPreferences: SharedPreferences = getSharedPreferences(
+                            "Knockin_preferences",
+                            Context.MODE_PRIVATE
+                        )
+                        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                        edit.putBoolean("popupNotif", true)
+                        edit.apply()
+                        allIsChecked()
+
+                    }, 3000)
+                }
+                runOnUiThread(displayLoading)
+            } else {
+                val displayLoading = Runnable {
+                    superpositionLoading?.visibility = View.INVISIBLE
+                    superpositionButton?.visibility = View.VISIBLE
+                }
+                runOnUiThread(displayLoading)
+            }
+        }
+        verifiedSuperposition.start()
+    }
+
+    private fun checkAndroid6(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+    }
+
+    private fun checkAndroid8(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
     }
 
     private fun setContentView() {
@@ -620,8 +614,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         return false
     }
 
-    //region ========================================== Functions ==========================================
-
     /**
      *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
      */
@@ -657,24 +649,24 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     }
 
                     val runnable = Runnable {
-                        startActivityImportContactsLoading!!.visibility = View.INVISIBLE
-                        startActivityImportContactsCheck?.visibility = View.VISIBLE
+                        importContactsLoading!!.visibility = View.INVISIBLE
+                        importContactsCheck?.visibility = View.VISIBLE
                         allIsChecked()
                         allIsCheckedGOEdition()
                     }
                     runOnUiThread(runnable)
                 }
-                start_activity_mDbWorkerThread.postTask(sync)
+                workerThread.postTask(sync)
             } else {
-                startActivityImportContactsLoading!!.visibility = View.INVISIBLE
-                startActivityImportContacts!!.visibility = View.VISIBLE
+                importContactsLoading!!.visibility = View.INVISIBLE
+                importContactsButton!!.visibility = View.VISIBLE
             }
         }
 
         if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
 
-            startActivityPermissionsLoading!!.visibility = View.INVISIBLE
-            startActivityPermissionsCheck!!.visibility = View.VISIBLE
+            permissionsLoading!!.visibility = View.INVISIBLE
+            permissionsCheck!!.visibility = View.VISIBLE
         }
         allIsChecked()
         allIsCheckedGOEdition()
@@ -734,7 +726,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
      * Permet à l'utilisateur de passer les demandes d'autorisations
      */
     private fun buildLeaveAlertDialog(): AlertDialog {
-        val message = if (start_activity_import_contacts_loading?.visibility == View.VISIBLE) {
+        val message = if (importContactsButton?.visibility == View.VISIBLE) {
             //vérifie que le téléphone ne charge pas les contacts sinon celui-ci prévient l'utilisateur que ces contact ne seront pas tous chargés
             getString(R.string.start_activity_skip_alert_dialog_message_importation)
         } else {
@@ -782,25 +774,14 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
         return false
-    }//TODO enlever duplicate code
-
-    //ActivityVisible nous permet de savoir lorsque nous retournons dans cette activité
-    override fun onStart() {
-        super.onStart()
-        activityVisible = true
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activityVisible = true
     }
 
     /**
      * Si toutes les autorisations sont validées et que les contacts ont fini d'être charger alors nous changeons le bouton passer pour un bouton suivant
      */
     private fun allIsChecked() {
-        if (startActivityActivateNotificationsCheck!!.visibility == View.VISIBLE &&
-            startActivityImportContactsCheck!!.visibility == View.VISIBLE
+        if (activateNotificationsCheck!!.visibility == View.VISIBLE &&
+            importContactsCheck!!.visibility == View.VISIBLE
         ) {
             startActivityNext?.visibility = View.VISIBLE
             startActivitySkip?.visibility = View.GONE
@@ -808,8 +789,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun allIsCheckedGOEdition() {
-        if (startActivityImportContactsCheck!!.visibility == View.VISIBLE &&
-            startActivityPermissionsCheck!!.visibility == View.VISIBLE
+        if (importContactsCheck!!.visibility == View.VISIBLE &&
+            permissionsCheck!!.visibility == View.VISIBLE
         ) {
             startActivityNext?.visibility = View.VISIBLE
             startActivitySkip?.visibility = View.GONE
@@ -834,9 +815,21 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     //endregion
+
+    //region =========================================== Lifecycle ==========================================
+
+    override fun onRestart() {
+        super.onRestart()
+        activityNotificationVisible = true
+        activitySuperpositionVisible = true
+
+        if (clickSuperpositionButton)
+            verifiedOverlaySettings()
+    }
+
+    //endregion
 }
 
-//permet de supprimer l'icon grise au lancement d'une video dans la webview
 private class WebChromeClientCustomPoster : WebChromeClient() {
     override fun getDefaultVideoPoster(): Bitmap? {
         return Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)

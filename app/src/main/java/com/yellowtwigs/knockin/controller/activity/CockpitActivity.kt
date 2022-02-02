@@ -13,6 +13,7 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -97,25 +98,40 @@ class CockpitActivity : AppCompatActivity() {
     //    private var cockpit_Calls: TextView? = null
     /*private var cockpit_CallsListView: ListView? = null*/
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_contacts -> {
-                startActivity(Intent(this@CockpitActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_contacts -> {
+                    startActivity(
+                        Intent(this@CockpitActivity, MainActivity::class.java).addFlags(
+                            Intent.FLAG_ACTIVITY_NO_ANIMATION
+                        )
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_groups -> {
+                    startActivity(
+                        Intent(
+                            this@CockpitActivity,
+                            GroupManagerActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_notifcations -> {
+                    startActivity(
+                        Intent(
+                            this@CockpitActivity,
+                            NotificationHistoryActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_cockpit -> {
+                }
             }
-            R.id.navigation_groups -> {
-                startActivity(Intent(this@CockpitActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifcations -> {
-                startActivity(Intent(this@CockpitActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_cockpit -> {
-            }
+            false
         }
-        false
-    }
 
     //endregion
 
@@ -143,13 +159,13 @@ class CockpitActivity : AppCompatActivity() {
         val cockpit_Toolbar = findViewById<Toolbar>(R.id.cockpit_toolbar)
         setSupportActionBar(cockpit_Toolbar)
         val actionbar = supportActionBar
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.run {
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        actionbar?.setDisplayHomeAsUpEnabled(true)
+        actionbar?.run {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_open_drawer)
         }
-        cockpit_Toolbar.setTitle(R.string.cockpit_toolbar_title)
+        cockpit_Toolbar?.setTitle(R.string.cockpit_toolbar_title)
 
         //endregion
 
@@ -197,14 +213,16 @@ class CockpitActivity : AppCompatActivity() {
         cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
 
         val group_manager_MainLayout = findViewById<RelativeLayout>(R.id.cockpit_layout)
-        val settings_left_drawer_ThemeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
+        val settings_left_drawer_ThemeSwitch =
+            findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
 //            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
         }
 
-        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
+        val main_SettingsLeftDrawerLayout =
+            findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -244,18 +262,58 @@ class CockpitActivity : AppCompatActivity() {
             cockpit_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> startActivity(Intent(this@CockpitActivity, MainActivity::class.java))
-                R.id.nav_informations -> startActivity(Intent(this@CockpitActivity, EditInformationsActivity::class.java))
-                R.id.nav_notif_config -> startActivity(Intent(this@CockpitActivity, ManageNotificationActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this@CockpitActivity, SettingsActivity::class.java))
-                R.id.nav_in_app -> startActivity(Intent(this@CockpitActivity, PremiumActivity::class.java))
-                R.id.nav_manage_screen -> startActivity(Intent(this@CockpitActivity, ManageMyScreenActivity::class.java))
+                R.id.nav_home -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        MainActivity::class.java
+                    )
+                )
+                R.id.nav_informations -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        EditInformationsActivity::class.java
+                    )
+                )
+                R.id.nav_notif_config -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        ManageNotificationActivity::class.java
+                    )
+                )
+                R.id.nav_settings -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        SettingsActivity::class.java
+                    )
+                )
+                R.id.nav_in_app -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        PremiumActivity::class.java
+                    )
+                )
+                R.id.nav_manage_screen -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        ManageMyScreenActivity::class.java
+                    )
+                )
                 R.id.nav_data_access -> {
                 }
-                R.id.nav_knockons -> startActivity(Intent(this@CockpitActivity, ManageKnockonsActivity::class.java))
+                R.id.nav_knockons -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        ManageKnockonsActivity::class.java
+                    )
+                )
                 R.id.nav_statistics -> {
                 }
-                R.id.nav_help -> startActivity(Intent(this@CockpitActivity, HelpActivity::class.java))
+                R.id.nav_help -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        HelpActivity::class.java
+                    )
+                )
             }
 
             val drawer = findViewById<DrawerLayout>(R.id.cockpit_drawer_layout)
@@ -269,12 +327,14 @@ class CockpitActivity : AppCompatActivity() {
 
         settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", true)
                 edit.apply()
             } else {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", false)
                 edit.apply()
@@ -301,84 +361,156 @@ class CockpitActivity : AppCompatActivity() {
 
         if (!listApp.contains("com.facebook.katana")) {
             link_socials_networks_Messenger!!.setImageResource(R.drawable.ic_facebook_disable)
-            link_socials_networks_Messenger!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_facebook_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Messenger!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_facebook_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
         }
 
         if (!listApp.contains("com.instagram.android")) {
             link_socials_networks_Instagram!!.setImageResource(R.drawable.ic_instagram_disable)
-            link_socials_networks_Instagram!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_instagram_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Instagram!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_instagram_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
         }
 
         if (!listApp.contains("com.whatsapp")) {
             link_socials_networks_Whatsapp!!.setImageResource(R.drawable.ic_whatsapp_disable)
-            link_socials_networks_Whatsapp!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_whatsapp_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Whatsapp!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_whatsapp_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
         }
 
         if (!listApp.contains("com.facebook.orca")) {
             link_socials_networks_Facebook!!.setImageResource(R.drawable.ic_messenger_disable)
-            link_socials_networks_Facebook!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_messenger_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Facebook!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_messenger_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
         }
 
         if (!listApp.contains("com.google.android.youtube")) {
             link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
-            link_socials_networks_Youtube!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_youtube_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Youtube!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_youtube_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
         }
 
         if (!listApp.contains("com.google.android.gm")) {
             link_socials_networks_Gmail!!.setImageResource(R.drawable.ic_gmail_disable)
-            link_socials_networks_Gmail!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_gmail_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Gmail!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_gmail_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
         }
 
         if (!listApp.contains("com.snapchat.android")) {
             link_socials_networks_Snapchat!!.setImageResource(R.drawable.ic_snapchat_disable)
-            link_socials_networks_Snapchat!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_snapchat_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Snapchat!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_snapchat_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Snapchat!!.setOnClickListener { goToSnapchat() }
         }
 
         if (!listApp.contains("org.telegram.messenger")) {
             link_socials_networks_Telegram!!.setImageResource(R.drawable.ic_telegram_disable)
-            link_socials_networks_Telegram!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_telegram_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Telegram!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_telegram_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
         }
 
         if (!listApp.contains("com.microsoft.office.outlook")) {
             link_socials_networks_Outlook!!.setImageResource(R.drawable.ic_outlook_disable)
-            link_socials_networks_Outlook!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_outlook_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Outlook!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_outlook_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
         }
 
         if (!listApp.contains("com.skype.raider")) {
             link_socials_networks_Skype!!.setImageResource(R.drawable.ic_skype_disable)
-            link_socials_networks_Skype!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_skype_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Skype!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_skype_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
         }
 
         if (!listApp.contains("com.linkedin.android")) {
             link_socials_networks_Linkedin!!.setImageResource(R.drawable.ic_linkedin_disable)
-            link_socials_networks_Linkedin!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_linkedin_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Linkedin!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_linkedin_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
         }
 
         if (!listApp.contains("com.twitter.android")) {
             link_socials_networks_Twitter!!.setImageResource(R.drawable.ic_twitter_disable)
-            link_socials_networks_Twitter!!.setOnClickListener { Toast.makeText(this, R.string.cockpit_toast_twitter_not_install, Toast.LENGTH_SHORT).show() }
+            link_socials_networks_Twitter!!.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_twitter_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
         }
@@ -394,15 +526,22 @@ class CockpitActivity : AppCompatActivity() {
                 val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null))
                 startActivity(i)
             } else {
-                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
         cockpit_ButtonAddContact!!.setOnClickListener {
             if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                startActivity(Intent(this@CockpitActivity, AddNewContactActivity::class.java).putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString()))
+                startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        AddNewContactActivity::class.java
+                    ).putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString())
+                )
             } else {
-                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -494,8 +633,9 @@ class CockpitActivity : AppCompatActivity() {
         cockpit_CallBackSpace!!.setOnClickListener {
             if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
                 cockpit_PhoneNumberEditText!!.text!!.delete(
-                        cockpit_PhoneNumberEditText!!.length() - 1,
-                        cockpit_PhoneNumberEditText!!.length())
+                    cockpit_PhoneNumberEditText!!.length() - 1,
+                    cockpit_PhoneNumberEditText!!.length()
+                )
             }
         }
 
@@ -505,18 +645,6 @@ class CockpitActivity : AppCompatActivity() {
             }
             true
         }
-//        cockpit_CallKeyboard_1!!.setOnLongClickListener {
-//            val telecomManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-//            if (ContextCompat.checkSelfPermission(this@CockpitActivity, Manifest.permission.READ_PHONE_STATE)
-//                    != PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this@CockpitActivity, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
-//            } else {
-//                val numberVoiceMail = telecomManager.voiceMailNumber
-//                val dial = "tel:$numberVoiceMail"
-//                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(dial)))
-//            }
-//            true
-//        }
 
         //endregion
 
@@ -556,10 +684,16 @@ class CockpitActivity : AppCompatActivity() {
             }
             R.id.item_help -> {
                 if (Resources.getSystem().configuration.locale.language == "fr") {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit"))
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit")
+                    )
                     startActivity(browserIntent)
                 } else {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-cockpit"))
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.yellowtwigs.com/help-cockpit")
+                    )
                     startActivity(browserIntent)
                 }
                 return true
@@ -572,10 +706,11 @@ class CockpitActivity : AppCompatActivity() {
     private fun slideUp(view: View) {
         val height = view.height.toFloat()
         val animate = TranslateAnimation(
-                0F,                 // fromXDelta
-                0F,                 // toXDelta
-                height,  // fromYDelta
-                0F)               // toYDelta
+            0F,                 // fromXDelta
+            0F,                 // toXDelta
+            height,  // fromYDelta
+            0F
+        )               // toYDelta
         animate.duration = 500
         animate.fillAfter = true
         view.startAnimation(animate)
@@ -609,8 +744,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(i)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://snapchat.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://snapchat.com/")
+                )
+            )
         }
     }
 
@@ -619,8 +758,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(i)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://whatsapp.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://whatsapp.com/")
+                )
+            )
         }
     }
 
@@ -633,8 +776,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(likeIng)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://instagram.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://instagram.com/")
+                )
+            )
         }
     }
 
@@ -644,19 +791,30 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(likeIng)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://facebook.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://facebook.com/")
+                )
+            )
         }
     }
 
     private fun goToGmail() {
         val appIntent = Intent(Intent.ACTION_VIEW)
-        appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail")
+        appIntent.setClassName(
+            "com.google.android.gm",
+            "com.google.android.gm.ConversationListActivityGmail"
+        )
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://gmail.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://gmail.com/")
+                )
+            )
         }
     }
 
@@ -666,8 +824,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://linkedin.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://linkedin.com/")
+                )
+            )
         }
     }
 
@@ -676,8 +838,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://outlook.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://outlook.com/")
+                )
+            )
         }
     }
 
@@ -686,8 +852,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://skype.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://skype.com/")
+                )
+            )
         }
     }
 
@@ -696,8 +866,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://web.telegram.org/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://web.telegram.org/")
+                )
+            )
         }
     }
 
@@ -707,8 +881,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://twitter.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/")
+                )
+            )
         }
     }
 
@@ -717,8 +895,12 @@ class CockpitActivity : AppCompatActivity() {
         try {
             startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://youtube.com/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://youtube.com/")
+                )
+            )
         }
     }
 
@@ -735,7 +917,11 @@ class CockpitActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 cockpit_IncomingCallButton!!.isEnabled = true
@@ -745,19 +931,38 @@ class CockpitActivity : AppCompatActivity() {
 
     private fun phoneCall(phoneNumber: String) {
         if (!TextUtils.isEmpty(phoneNumber)) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CALL_PHONE
+                ) != PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    MAKE_CALL_PERMISSION_REQUEST_CODE
+                )
                 numberForPermission = phoneNumber
             } else {
                 if (numberForPermission.isEmpty()) {
-                    startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_CALL,
+                            Uri.fromParts("tel", phoneNumber, null)
+                        )
+                    )
                 } else {
-                    startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_CALL,
+                            Uri.fromParts("tel", phoneNumber, null)
+                        )
+                    )
                     numberForPermission = ""
                 }
             }
         } else {
-            Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.firstLaunch.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
@@ -26,21 +28,31 @@ class FirstLaunchActivity : AppCompatActivity() {
             height in 1100..1999 -> setContentView(R.layout.activity_first_launch_smaller_screen)
             height < 1100 -> setContentView(R.layout.activity_first_launch_mini_screen)
         }
-
-        println(height)
-
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
-        val buttonAccept: Button = findViewById(R.id.first_launch_accept_politique)
+        //region ======================================= First Launch =======================================
+
+        //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
+        if (sharedFirstLaunch.getBoolean("first_launch", false)) {
+            startActivity(Intent(this@FirstLaunchActivity, MainActivity::class.java))
+            finish()
+        }
+
+        //endregion
+
+        val buttonAccept: Button = findViewById(R.id.first_launch_accept_politique)
         val edit = sharedFirstLaunch.edit()
         val textView = findViewById<TextView>(R.id.first_launch_welcome)
-        textView.setText(String.format(getString(R.string.first_launch_welcome,getString(R.string.app_name))))
+        textView.text = getString(
+            R.string.first_launch_welcome,
+            getString(R.string.app_name)
+        )
         val textViewCLUF = findViewById<TextView>(R.id.first_launch_politique)
         textViewCLUF.movementMethod = LinkMovementMethod.getInstance()
 
         buttonAccept.setOnClickListener {
-            edit.putBoolean("first_launch", false)
+            edit.putBoolean("first_launch", true)
             edit.apply()
             startActivity(Intent(this@FirstLaunchActivity, StartActivity::class.java))
             finish()
