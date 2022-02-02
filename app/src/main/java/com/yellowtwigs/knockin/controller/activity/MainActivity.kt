@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
 
     private lateinit var sharedFromSplashScreen: SharedPreferences
+    private lateinit var sharedShowPopup: SharedPreferences
 
     //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener =
@@ -169,22 +170,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================= First Launch =======================================
-
-        //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
-        val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
-        if (sharedFirstLaunch.getBoolean("first_launch", true)) {
-            startActivity(Intent(this@MainActivity, FirstLaunchActivity::class.java))
-            finish()
-        }
-
-        val importWhatsappSharedPreferences: SharedPreferences =
-            getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
-        val importWhatsapp =
-            importWhatsappSharedPreferences.getBoolean("importWhatsappPreferences", false)
-
-        //endregion
-
         //region ======================================== Theme Dark ========================================
 
         //On affecte le Thème light ou le dark en fonction de ce que l'utilisateur à choisi
@@ -197,6 +182,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         //endregion
+
+        val importWhatsappSharedPreferences: SharedPreferences =
+            getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
+        val importWhatsapp =
+            importWhatsappSharedPreferences.getBoolean("importWhatsappPreferences", false)
 
         //On affecte à notre activity son layout correspondant
         setContentView()
@@ -220,9 +210,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         //region ======================================== Mobile Ads ========================================
 
         sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
+        sharedShowPopup = getSharedPreferences("sharedShowPopup", Context.MODE_PRIVATE)
         val fromSplashScreen = sharedFromSplashScreen.getBoolean("fromSplashScreen", false)
-        if (fromSplashScreen) {
-            customOptionVipPopupAd()
+        val showPopup = sharedShowPopup.getBoolean("sharedShowPopup", true)
+
+        if (showPopup) {
+            if (fromSplashScreen) {
+                customOptionVipPopupAd()
+            }
         }
 
 //        MobileAds.initialize(this)
@@ -273,7 +268,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
 
             if (importWhatsapp) {
-                importWhatsappContacts(main_ContactsDatabase!!.contactsDao().getAllContacts())
+                main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                    ?.let { importWhatsappContacts(it) }
             }
         }
 
@@ -1916,8 +1912,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
             .setView(R.layout.custom_alert_dialog_vip_notif_ad)
-            .setTitle(getString(R.string.alert_dialog_vip_custom_settings_title))
-            .setPositiveButton(R.string.alert_dialog_cancel) { alertDialog, _ ->
+            .setMessage(getString(R.string.alert_dialog_vip_custom_settings_msg))
+            .setPositiveButton(R.string.show_popup_positive_button) { alertDialog, _ ->
+                val edit1 = sharedShowPopup.edit()
+                edit1.putBoolean("sharedShowPopup", false)
+                edit1.apply()
+                alertDialog.dismiss()
+                alertDialog.cancel()
+            }.setNegativeButton(R.string.alert_dialog_cancel) { alertDialog, _ ->
                 alertDialog.dismiss()
                 alertDialog.cancel()
             }

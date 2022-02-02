@@ -283,16 +283,10 @@ class NotificationListener : NotificationListenerService() {
                                                 this.cancelNotification(sbn.key)
                                                 cancelWhatsappNotif(sbn)
                                             }
-
-                                            Log.i(
-                                                "displayLayout",
-                                                "Sound 3 : ${contact?.contactDB!!.notificationSound}"
-                                            )
-
                                             displayLayout(
                                                 sbp,
                                                 sharedPreferences,
-                                                contact.contactDB!!.notificationSound
+                                                contact?.contactDB!!.notificationSound
                                             )
                                         }
                                     }
@@ -335,6 +329,7 @@ class NotificationListener : NotificationListenerService() {
      * Crée une notification qui sera sauvegardé
      */
     private fun saveNotification(sbp: StatusBarParcelable, contactId: Int): NotificationDB? {
+        Log.i("saveNotification", "${sbp.appNotifier!!}")
         return if (sbp.statusBarNotificationInfo["android.title"] != null && sbp.statusBarNotificationInfo["android.text"] != null) {
             NotificationDB(
                 null,

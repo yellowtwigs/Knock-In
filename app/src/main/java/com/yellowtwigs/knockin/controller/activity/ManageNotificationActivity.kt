@@ -52,124 +52,6 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var isTrue = false
     //private lateinit var filePath: Uri
 
-    //region Default Sound
-
-    private var settings_ChooseNotifDefaultSoundLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifDefaultSoundImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifDefaultSoundImageClose: AppCompatImageView? = null
-
-    private var settings_NotifNoSoundLayout: RelativeLayout? = null
-    private var settings_NotifNoSoundCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundKnockinLayout: RelativeLayout? = null
-    private var settings_NotifSoundKnockinCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundXyloLayout: RelativeLayout? = null
-    private var settings_NotifSoundXyloCheckbox: CheckBox? = null
-
-    //endregion
-/*
-    //region personal tones
-
-    private var settings_ChooseNotifPersonalSoundLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifPersonalSoundImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifPersonalSoundImageClose: AppCompatImageView? = null
-
-    private var settings_NotifPersonalSoundLayout: RelativeLayout? = null
-    lateinit var txtpath: TextView
-
-    //endregion2
-
- */
-
-    //Schedule
-
-    private var settings_ChooseNotifScheduleLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifScheduleImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifScheduleImageClose: AppCompatImageView? = null
-
-    private var settings_Relative1: RelativeLayout? = null
-
-    //end
-
-    //region Jazzy Sound
-
-    private var settings_ChooseNotifJazzySoundLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifJazzySoundImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifJazzySoundImageClose: AppCompatImageView? = null
-
-    private var settings_NotifSoundMoaninLayout: RelativeLayout? = null
-    private var settings_NotifSoundMoaninCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundBlueBossaLayout: RelativeLayout? = null
-    private var settings_NotifSoundBlueBossaCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundAutumnLeavesLayout: RelativeLayout? = null
-    private var settings_NotifSoundAutumnLeavesCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundDolphinDanceLayout: RelativeLayout? = null
-    private var settings_NotifSoundDolphinDanceCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundFreddieFreeloaderLayout: RelativeLayout? = null
-    private var settings_NotifSoundFreddieFreeloaderCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundCaravanLayout: RelativeLayout? = null
-    private var settings_NotifSoundCaravanCheckbox: CheckBox? = null
-
-    //endregion
-
-    //region Funky Sound
-
-    private var settings_ChooseNotifFunkySoundLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifFunkySoundImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifFunkySoundImageClose: AppCompatImageView? = null
-
-    private var settings_NotifSoundSlapLayout: RelativeLayout? = null
-    private var settings_NotifSoundSlapCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundOffTheCurveLayout: RelativeLayout? = null
-    private var settings_NotifSoundOffTheCurveCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundKeyboardFunkyToneLayout: RelativeLayout? = null
-    private var settings_NotifSoundKeyboardFunkyToneCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundUCantHoldNoGrooveLayout: RelativeLayout? = null
-    private var settings_NotifSoundUCantHoldNoGrooveCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundColdSweatLayout: RelativeLayout? = null
-    private var settings_NotifSoundColdSweatCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundFunkYallLayout: RelativeLayout? = null
-    private var settings_NotifSoundFunkYallCheckbox: CheckBox? = null
-
-    //endregion
-
-    //region Relaxation Sound
-
-    private var settings_ChooseNotifRelaxationSoundLayoutOpenClose: RelativeLayout? = null
-    private var settings_ChooseNotifRelaxationSoundImageOpen: AppCompatImageView? = null
-    private var settings_ChooseNotifRelaxationSoundImageClose: AppCompatImageView? = null
-
-    private var settings_NotifSoundAcousticGuitarLayout: RelativeLayout? = null
-    private var settings_NotifSoundAcousticGuitarCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundRelaxToneLayout: RelativeLayout? = null
-    private var settings_NotifSoundRelaxToneCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundGravityLayout: RelativeLayout? = null
-    private var settings_NotifSoundGravityCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundSlowDancingLayout: RelativeLayout? = null
-    private var settings_NotifSoundSlowDancingCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundScorpionThemeLayout: RelativeLayout? = null
-    private var settings_NotifSoundScorpionThemeCheckbox: CheckBox? = null
-
-    private var settings_NotifSoundFirstStepLayout: RelativeLayout? = null
-    private var settings_NotifSoundFirstStepCheckbox: CheckBox? = null
-
-    //endregion
-
     private var settings_NotificationMessagesAlarmSound: MediaPlayer? = null
     private var settings_ChooseNotifSoundTitle: TextView? = null
     private var settings_ChooseNotifSoundLayout: ConstraintLayout? = null
@@ -196,7 +78,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             setTheme(R.style.AppTheme)
         }
         //endregion
-        setContentView()
+        setContentView(R.layout.activity_manage_notification)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
 

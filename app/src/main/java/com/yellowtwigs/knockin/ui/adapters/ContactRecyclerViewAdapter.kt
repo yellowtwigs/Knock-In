@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
@@ -41,7 +42,11 @@ import java.util.*
  *
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class ContactRecyclerViewAdapter(private val context: Context, private var gestionnaireContacts: ContactManager, private val len: Int) : RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder>() {
+class ContactRecyclerViewAdapter(
+    private val context: Context,
+    private var gestionnaireContacts: ContactManager,
+    private val len: Int
+) : RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder>() {
     private val listContacts: List<ContactWithAllInformation>
     private var view: View? = null
     private var modeMultiSelect = false
@@ -61,7 +66,8 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        view = LayoutInflater.from(parent.context).inflate(R.layout.list_contact_item_layout, parent, false)
+        view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.list_contact_item_layout, parent, false)
         return ContactViewHolder(view!!)
     }
 
@@ -70,22 +76,47 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
         if (len == 0) {
             if (contact.contactPriority == 0) {
             } else if (contact.contactPriority == 1) {
-                val sharedPreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+                val sharedPreferences =
+                    context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
                 if (sharedPreferences.getBoolean("darkTheme", false)) {
-//                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight, null));
                 } else {
-                    holder.contactFirstNameView.setTextColor(context.resources.getColor(R.color.textColorDark, null))
+                    holder.contactFirstNameView.setTextColor(
+                        context.resources.getColor(
+                            R.color.textColorDark,
+                            null
+                        )
+                    )
                 }
             } else if (contact.contactPriority == 2) {
-                holder.contactFirstNameView.setTextColor(context.resources.getColor(R.color.colorPrimaryDark, null))
+                holder.contactFirstNameView.setTextColor(
+                    context.resources.getColor(
+                        R.color.colorPrimaryDark,
+                        null
+                    )
+                )
             }
         } else {
             if (contact.contactPriority == 0) {
-                holder.contactRoundedImageView.setBorderColor(context.resources.getColor(R.color.priorityZeroColor, null))
+                holder.contactRoundedImageView.setBorderColor(
+                    context.resources.getColor(
+                        R.color.priorityZeroColor,
+                        null
+                    )
+                )
             } else if (contact.contactPriority == 1) {
-                holder.contactRoundedImageView.setBorderColor(context.resources.getColor(R.color.transparentColor, null))
+                holder.contactRoundedImageView.setBorderColor(
+                    context.resources.getColor(
+                        R.color.transparentColor,
+                        null
+                    )
+                )
             } else if (contact.contactPriority == 2) {
-                holder.contactRoundedImageView.setBorderColor(context.resources.getColor(R.color.priorityTwoColor, null))
+                holder.contactRoundedImageView.setBorderColor(
+                    context.resources.getColor(
+                        R.color.priorityTwoColor,
+                        null
+                    )
+                )
             }
         }
         if (contact.profilePicture64 != "") {
@@ -103,13 +134,24 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             }
         }
         if (firstGroup == null) {
-            val sharedThemePreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+            val sharedThemePreferences =
+                context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
             if (sharedThemePreferences.getBoolean("darkTheme", false)) {
                 val roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group)
-                roundedLayout!!.setColorFilter(context.resources.getColor(R.color.backgroundColorDark, null), PorterDuff.Mode.MULTIPLY)
+                roundedLayout!!.setColorFilter(
+                    context.resources.getColor(
+                        R.color.backgroundColorDark,
+                        null
+                    ), PorterDuff.Mode.MULTIPLY
+                )
             } else {
                 val roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group)
-                roundedLayout!!.setColorFilter(context.resources.getColor(R.color.backgroundColor, null), PorterDuff.Mode.MULTIPLY)
+                roundedLayout!!.setColorFilter(
+                    context.resources.getColor(
+                        R.color.backgroundColor,
+                        null
+                    ), PorterDuff.Mode.MULTIPLY
+                )
             }
             //Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
             //roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
@@ -131,7 +173,12 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             when (v.id) {
                 holder.smsCl.id -> {
                     val phone = getItem(position).getFirstPhoneNumber()
-                    context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null)))
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_SENDTO,
+                            Uri.fromParts("sms", phone, null)
+                        )
+                    )
                 }
                 holder.callCl.id -> {
                     callPhone(getItem(position).getFirstPhoneNumber())
@@ -147,7 +194,9 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
                     intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
                     intent.putExtra(Intent.EXTRA_SUBJECT, "")
                     intent.putExtra(Intent.EXTRA_TEXT, "")
-                    DriverManager.println("intent " + Objects.requireNonNull(intent.extras).toString())
+                    DriverManager.println(
+                        "intent " + Objects.requireNonNull(intent.extras).toString()
+                    )
                     context.startActivity(intent)
                 }
             }
@@ -234,11 +283,13 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
                             if (holder.constraintLayoutMenu!!.visibility == View.GONE) {
                                 holder.constraintLayoutMenu!!.visibility = View.VISIBLE
                                 slideUp(holder.constraintLayoutMenu)
-                                if (lastSelectMenuLen1 != null) lastSelectMenuLen1!!.visibility = View.GONE
+                                if (lastSelectMenuLen1 != null) lastSelectMenuLen1!!.visibility =
+                                    View.GONE
                                 lastSelectMenuLen1 = holder.constraintLayoutMenu
                             } else {
                                 holder.constraintLayoutMenu!!.visibility = View.GONE
-                                val slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down)
+                                val slideDown =
+                                    AnimationUtils.loadAnimation(context, R.anim.slide_down)
                                 holder.constraintLayoutMenu!!.startAnimation(slideDown)
                                 lastSelectMenuLen1 = null
                             }
@@ -267,7 +318,10 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             }
         }
         if (len == 1) {
-            if (whatsappIsNotInstalled() || contact.hasWhatsapp == 0) {
+
+            Log.i("Whatsapp", "Whatsapp : ${contact.hasWhatsapp}")
+            Log.i("Whatsapp", "Whatsapp : ${whatsappIsNotInstalled()}")
+            if (whatsappIsNotInstalled() && contact.hasWhatsapp == 0) {
                 holder.whatsappCl.visibility = View.GONE
             } else {
                 holder.whatsappCl.visibility = View.VISIBLE
@@ -294,7 +348,8 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
         holder.callCl.setOnClickListener(listener)
         holder.smsCl.setOnClickListener(listener)
         holder.callCl.setOnLongClickListener { v: View? ->
-            val phoneNumber = getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber())
+            val phoneNumber =
+                getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber())
             if (!phoneNumber.isEmpty()) {
                 callPhone(phoneNumber)
             }
@@ -330,9 +385,11 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
     //        return phoneNumber;
     //    }
     private fun randomDefaultImage(avatarId: Int): Int {
-        val sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
+        val sharedPreferencesIsMultiColor =
+            context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
         val multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
-        val sharedPreferencesContactsColor = context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
+        val sharedPreferencesContactsColor =
+            context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
         val contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0)
         return if (multiColor == 0) {
             when (avatarId) {
@@ -430,9 +487,17 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
     }
 
     fun callPhone(phoneNumber: String) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             val PERMISSION_CALL_RESULT = 1
-            ActivityCompat.requestPermissions((context as Activity), arrayOf(Manifest.permission.CALL_PHONE), PERMISSION_CALL_RESULT)
+            ActivityCompat.requestPermissions(
+                (context as Activity),
+                arrayOf(Manifest.permission.CALL_PHONE),
+                PERMISSION_CALL_RESULT
+            )
             phonePermission = phoneNumber
         } else {
             //Intent intent=new Intent(Intent.ACTION_CALL);
@@ -441,13 +506,22 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
             val popup = sharedPreferences.getBoolean("popup", true)
             if (popup && phonePermission.isEmpty()) {
                 AlertDialog.Builder(context)
-                        .setTitle(R.string.main_contact_grid_title)
-                        .setMessage(R.string.main_contact_grid_message)
-                        .setPositiveButton(android.R.string.yes) { dialog: DialogInterface?, id: Int -> context.startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))) }
-                        .setNegativeButton(android.R.string.no, null)
-                        .show()
+                    .setTitle(R.string.main_contact_grid_title)
+                    .setMessage(R.string.main_contact_grid_message)
+                    .setPositiveButton(android.R.string.yes) { dialog: DialogInterface?, id: Int ->
+                        context.startActivity(
+                            Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
+                        )
+                    }
+                    .setNegativeButton(android.R.string.no, null)
+                    .show()
             } else {
-                context.startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_CALL,
+                        Uri.fromParts("tel", phoneNumber, null)
+                    )
+                )
                 phonePermission = ""
             }
         }
@@ -466,24 +540,29 @@ class ContactRecyclerViewAdapter(private val context: Context, private var gesti
     private fun slideUp(view: View?) {
         view!!.visibility = View.VISIBLE
         val animate = TranslateAnimation(
-                0.toFloat(),  // fromXDelta
-                0.toFloat(),  // toXDelta
-                view.height.toFloat(),  // fromYDelta
-                0.toFloat()) // toYDelta
+            0.toFloat(),  // fromXDelta
+            0.toFloat(),  // toXDelta
+            view.height.toFloat(),  // fromYDelta
+            0.toFloat()
+        ) // toYDelta
         animate.duration = 500
         animate.fillAfter = true
         view.startAnimation(animate)
     }
 
     class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var contactFirstNameView: TextView = view.findViewById(R.id.list_contact_item_contactFirstName)
+        var contactFirstNameView: TextView =
+            view.findViewById(R.id.list_contact_item_contactFirstName)
         var constraintLayout: RelativeLayout? = view.findViewById(R.id.list_contact_item_layout)
         var constraintLayoutMenu: ConstraintLayout? = view.findViewById(R.id.list_contact_item_menu)
-        var listContactItemFavoriteShine: AppCompatImageView = view.findViewById(R.id.list_contact_item_favorite_shine)
-        var contactRoundedImageView: CircularImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
+        var listContactItemFavoriteShine: AppCompatImageView =
+            view.findViewById(R.id.list_contact_item_favorite_shine)
+        var contactRoundedImageView: CircularImageView =
+            view.findViewById(R.id.list_contact_item_contactRoundedImageView)
         var callCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_call)
         var smsCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_sms)
-        var whatsappCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_whatsapp)
+        var whatsappCl: RelativeLayout =
+            view.findViewById(R.id.list_contact_item_constraint_whatsapp)
         var mailCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_mail)
         var editCl: RelativeLayout? = view.findViewById(R.id.list_contact_item_constraint_edit)
     }

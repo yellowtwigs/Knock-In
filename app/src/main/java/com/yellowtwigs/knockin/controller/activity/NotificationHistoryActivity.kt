@@ -139,13 +139,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val settings_left_drawer_ThemeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
-//            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
         }
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch.isChecked = true
-//            notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-        }///
+        }
         notification_history_floating_action_button!!.setOnClickListener {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                     .setTitle(getString(R.string.notification_history_alert_dialog_title))
@@ -191,16 +189,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
         val menu = navigationView.menu
         val navItem = menu.findItem(R.id.nav_manage_screen)
         navItem.isChecked = true
-        navigationView!!.menu.getItem(0).isChecked = true
+        navigationView?.menu?.getItem(0)?.isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             notification_history_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                }
+                R.id.nav_home -> startActivity(Intent(this, MainActivity::class.java))
                 R.id.nav_informations -> startActivity(Intent(this, EditInformationsActivity::class.java))
                 R.id.nav_notif_config -> startActivity(Intent(this, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@NotificationHistoryActivity, SettingsActivity::class.java))
@@ -350,7 +346,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getAllNotifications() as ArrayList<NotificationDB>)
             } else {
                 notification_history_ListOfNotificationDB.addAll(notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch) as ArrayList<NotificationDB>)
-                println("notification list after request" + notification_history_NotificationsDatabase?.notificationsDao()?.getNotificationFiltered(stringSearch))
             }
             val listTmp = mutableListOf<NotificationDB>()
             listTmp.addAll(notification_history_ListOfNotificationDB)
@@ -407,11 +402,11 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         notification_recyclerview_Adapter = NotificationsHistoryRecyclerViewAdapter(this, notification_history_ListOfNotificationDB)
-        notification_history_RecyclerView!!.adapter = notification_recyclerview_Adapter
-        notification_history_RecyclerView!!.layoutManager = LinearLayoutManager(this)
-        notification_recyclerview_Adapter!!.notifyDataSetChanged()
-        notification_history_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
-        notification_history_RecyclerView!!.layoutManager!!.scrollToPosition(0)
+        notification_history_RecyclerView?.adapter = notification_recyclerview_Adapter
+        notification_history_RecyclerView?.layoutManager = LinearLayoutManager(this)
+        notification_recyclerview_Adapter?.notifyDataSetChanged()
+        notification_history_RecyclerView?.recycledViewPool?.setMaxRecycledViews(0, 0)
+        notification_history_RecyclerView?.layoutManager?.scrollToPosition(0)
     }
 
     private fun updateFilterMultiSelect() {
@@ -566,7 +561,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     private fun appIsInstalled(): Boolean {
-        val pm = getPackageManager()
+        val pm = packageManager
         return try {
             pm.getApplicationInfo("com.whatsapp", 0)
             true
@@ -583,7 +578,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    //region open app TODO supprimer toutes ces méthodes useless pour la plupart des application
     private fun goToSkype() {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
         try {
@@ -776,7 +770,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 editor.apply()
                 item.isChecked = true
                 updateFilter()
-                // this.recreate()
             }
             R.id.notif_tri_par_priorite -> {
                 val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
@@ -816,7 +809,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     item.isChecked = true
                 }
                 editor.apply()
-                //  this.recreate()
             }
         }
         updateFilter()
@@ -841,33 +833,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
         }
     }
 
-    /*
-        fun longNotifHistoryListItemClick(position: Int) {
-            val notifSelected = notification_history_ListOfNotificationDB[position]
-            if (listOfItemSelected.contains(notification_history_NotificationsDatabase!!.notificationsDao().getNotification(notifSelected.id!!))) {
-                listOfItemSelected.remove(notification_history_NotificationsDatabase!!.notificationsDao().getNotification(notifSelected.id))
-            } else {
-                listOfItemSelected.add(notification_history_NotificationsDatabase!!.notificationsDao().getNotification(notifSelected.id))
-            }
-
-            if (listOfItemSelected.size == 1 && firstClick) {
-                Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_LONG).show()
-                firstClick = false
-                multiSelectMode = true
-                notification_history_ToolbarLayout!!.visibility = View.INVISIBLE
-                notification_history_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
-
-            } else if (listOfItemSelected.size == 0) {
-                Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG).show()
-
-                notification_history_ToolbarLayout!!.visibility = View.VISIBLE
-                notification_history_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
-
-                firstClick = true
-                multiSelectMode = false
-            }
-        }
-    */
     private fun refreshActivity() {
         startActivity(Intent(this@NotificationHistoryActivity, NotificationHistoryActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
         finish()
@@ -896,15 +861,5 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private fun deleteAllNotif() {
         notification_history_NotificationsDatabase?.notificationsDao()?.deleteAllNotification()
         refreshActivity()
-    }
-}
-
-class WrapContentLinearLayoutManager(context: Context?) : LinearLayoutManager(context) {
-    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
-        try {
-            super.onLayoutChildren(recycler, state)
-        } catch (e: IndexOutOfBoundsException) {
-            Log.e("Error", "IndexOutOfBoundsException in Recycler View")
-        }
     }
 }

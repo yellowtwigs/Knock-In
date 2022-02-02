@@ -471,6 +471,7 @@
     <string name="popup_connection_cancel">Huỷ bỏ</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
-    <string name="alert_dialog_vip_custom_settings_msg">Bây giờ bạn có thể tùy chỉnh các thông báo VIP của mình!</string>
+    <string name="alert_dialog_vip_custom_settings_msg">Giờ đây, bạn có thể tùy chỉnh thông báo cho từng VIP của mình</string>
     <string name="alert_dialog_vip_custom_settings_title">Cài đặt thông báo VIP mới</string>
+    <string name="show_popup_positive_button">Không hiển thị nữa</string>
 </resources>

@@ -469,6 +469,7 @@
     <string name="popup_connection_cancel">İptal etmek</string>
     <!-- endregion-->
     <string name="knockin_notif">Knock In</string>
-    <string name="alert_dialog_vip_custom_settings_msg">Artık VIP bildirimlerinizi özelleştirebilirsiniz!</string>
+    <string name="alert_dialog_vip_custom_settings_msg">Artık her bir VIP\'niz için bildirimlerinizi özelleştirebilirsiniz.</string>
     <string name="alert_dialog_vip_custom_settings_title">Nueva configuración de notificaciones VIP</string>
+    <string name="show_popup_positive_button">artık gösterme</string>
 </resources>

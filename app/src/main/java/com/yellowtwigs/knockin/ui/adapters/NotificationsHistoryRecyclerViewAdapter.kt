@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,10 @@ import java.util.Date
  *
  * @author Florian Striebel
  */
-class NotificationsHistoryRecyclerViewAdapter(private val context: Context, private val notification_history_ListOfNotificationDB: ArrayList<NotificationDB>) : RecyclerView.Adapter<NotificationsHistoryRecyclerViewAdapter.NotificationHistoryViewHolder>() {
+class NotificationsHistoryRecyclerViewAdapter(
+    private val context: Context,
+    private val notification_history_ListOfNotificationDB: ArrayList<NotificationDB>
+) : RecyclerView.Adapter<NotificationsHistoryRecyclerViewAdapter.NotificationHistoryViewHolder>() {
     private var view: View? = null
     private var modeMultiSelect: Boolean? = false
     private val secondClick = false
@@ -38,12 +42,12 @@ class NotificationsHistoryRecyclerViewAdapter(private val context: Context, priv
             this.listOfItemSelected.addAll(listOfItemSelected)
         }
 
-//    init {
-//        setHasStableIds(true)
-//    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHistoryViewHolder {
-        view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_notification_history, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): NotificationHistoryViewHolder {
+        view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.list_item_notification_history, parent, false)
         return NotificationHistoryViewHolder(view!!)
     }
 
@@ -51,20 +55,21 @@ class NotificationsHistoryRecyclerViewAdapter(private val context: Context, priv
         return notification_history_ListOfNotificationDB[position]
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NotificationHistoryViewHolder, position: Int) {
-        val notif_history_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)!!
-//        notification_history_ListOfNotificationDB.addAll(notif_history_ContactsDatabase.notificationsDao().getAllNotifications())
-        //        ArrayList<NotificationDB>
         val (_, _, contactName, description, platform, _, timestamp) = getItem(position)
         val text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(timestamp))
+
         val pckManager = context.packageManager
         var icon: Drawable? = null
         try {
             icon = pckManager.getApplicationIcon(platform)
+
+            Log.i("notifIcon", "Platform : $platform")
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
+        Log.i("notifIcon", "Icon : $icon")
 
         val icon2 = icon
 
@@ -78,7 +83,7 @@ class NotificationsHistoryRecyclerViewAdapter(private val context: Context, priv
         holder.notif_history_item_SenderName.text = contactName
 
         val longClick = View.OnLongClickListener {
-            view!!.tag = holder
+            view?.tag = holder
 
             if (this.listOfItemSelected.contains(notification_history_ListOfNotificationDB[position])) {
                 this.listOfItemSelected.remove(notification_history_ListOfNotificationDB[position])
@@ -160,8 +165,10 @@ class NotificationsHistoryRecyclerViewAdapter(private val context: Context, priv
         init {
             notif_history_item_Layout = view.findViewById(R.id.notif_history_item_layout)
             notif_history_item_SenderName = view.findViewById(R.id.notif_history_item_sender_name)
-            notif_history_item_NotificationContent = view.findViewById(R.id.notif_history_item_notification_content)
-            notif_history_item_NotificationDate = view.findViewById(R.id.notif_history_item_notification_time)
+            notif_history_item_NotificationContent =
+                view.findViewById(R.id.notif_history_item_notification_content)
+            notif_history_item_NotificationDate =
+                view.findViewById(R.id.notif_history_item_notification_time)
             notif_history_item_AppImage = view.findViewById(R.id.notif_history_item_app_image)
         }
     }
