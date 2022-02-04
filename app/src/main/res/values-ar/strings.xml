@@ -473,4 +473,5 @@
     <string name="alert_dialog_vip_custom_settings_msg">يمكنك الآن تخصيص إشعاراتك لكل من الشخصيات المهمة الخاصة بك</string>
     <string name="alert_dialog_vip_custom_settings_title">إعدادات إخطار VIP جديدة</string>
     <string name="show_popup_positive_button">لا تعرض بعد الآن</string>
+    <string name="alert_dialog_close">اغلاق</string>
 </resources>

@@ -1912,14 +1912,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
             .setView(R.layout.custom_alert_dialog_vip_notif_ad)
-            .setMessage(getString(R.string.alert_dialog_vip_custom_settings_msg))
             .setPositiveButton(R.string.show_popup_positive_button) { alertDialog, _ ->
                 val edit1 = sharedShowPopup.edit()
                 edit1.putBoolean("sharedShowPopup", false)
                 edit1.apply()
                 alertDialog.dismiss()
                 alertDialog.cancel()
-            }.setNegativeButton(R.string.alert_dialog_cancel) { alertDialog, _ ->
+            }.setNegativeButton(R.string.alert_dialog_close) { alertDialog, _ ->
                 alertDialog.dismiss()
                 alertDialog.cancel()
             }

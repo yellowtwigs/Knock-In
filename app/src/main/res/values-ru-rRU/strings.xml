@@ -473,4 +473,5 @@
     <string name="alert_dialog_vip_custom_settings_msg">Теперь вы можете настроить уведомления для каждого из ваших VIP-персон.</string>
     <string name="alert_dialog_vip_custom_settings_title">Новые настройки VIP-уведомлений</string>
     <string name="show_popup_positive_button">Больше не отображать</string>
+    <string name="alert_dialog_close">Закрывать</string>
 </resources>

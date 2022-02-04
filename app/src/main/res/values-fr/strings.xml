@@ -474,4 +474,5 @@
     <string name="alert_dialog_vip_custom_settings_title">Nouveaux paramètres VIP de notifications</string>
     <string name="alert_dialog_vip_custom_settings_msg">Vous pouvez à présent personnaliser vos notifications pour chacun de vos VIP</string>
     <string name="show_popup_positive_button">Ne plus afficher</string>
+    <string name="alert_dialog_close">Fermer</string>
 </resources>

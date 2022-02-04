@@ -478,4 +478,5 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="alert_dialog_vip_custom_settings_msg">Ahora puedes personalizar tus notificaciones para cada uno de tus VIP</string>
     <string name="alert_dialog_vip_custom_settings_title">Nueva configuración de notificaciones VIP</string>
     <string name="show_popup_positive_button">No mostrar</string>
+    <string name="alert_dialog_close">Cerca</string>
 </resources>
