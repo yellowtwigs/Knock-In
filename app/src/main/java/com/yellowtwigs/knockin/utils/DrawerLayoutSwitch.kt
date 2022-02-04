@@ -50,4 +50,21 @@ object DrawerLayoutSwitch {
             }
         }
     }
+
+    fun checkSwitchFromLeftDrawer(cxt: Activity, sharedThemePreferences: SharedPreferences) {
+        val sharedPreferencePopup = cxt.getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+        val callPopupSwitch = cxt.findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
+        val themeSwitch = cxt.findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
+
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            themeSwitch.isChecked = true
+        }
+
+        if (sharedPreferencePopup.getBoolean("popup", true)) {
+            callPopupSwitch.isChecked = true
+        }
+
+        callPopupSwitch(callPopupSwitch, cxt)
+        themeSwitch(themeSwitch, cxt, sharedThemePreferences)
+    }
 }

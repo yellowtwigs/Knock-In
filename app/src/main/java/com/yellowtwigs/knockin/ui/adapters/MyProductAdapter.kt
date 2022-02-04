@@ -15,15 +15,14 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.controller.IProductClickListener
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import com.yellowtwigs.knockin.databinding.LayoutProductItemBinding
+import com.yellowtwigs.knockin.utils.ContactGesture
 
 class MyProductAdapter(
-    private val cxt: PremiumActivity,
-    private val billingClient: BillingClient
+    private val cxt: PremiumActivity, private val billingClient: BillingClient
 ) : ListAdapter<SkuDetails, MyProductAdapter.ViewHolder>(SkuDetailsComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            LayoutProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -145,7 +144,6 @@ class MyProductAdapter(
         }
 
         override fun onProductClickListener(view: View?, position: Int) {
-
         }
     }
 
@@ -153,7 +151,6 @@ class MyProductAdapter(
         override fun areItemsTheSame(oldItem: SkuDetails, newItem: SkuDetails): Boolean {
             return oldItem == newItem
         }
-
         override fun areContentsTheSame(oldItem: SkuDetails, newItem: SkuDetails): Boolean {
             return oldItem.description == newItem.description &&
                     oldItem.iconUrl == newItem.iconUrl &&

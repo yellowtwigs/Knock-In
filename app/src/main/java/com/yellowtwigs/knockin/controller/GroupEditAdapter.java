@@ -45,8 +45,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final GroupEditAdapter.ViewHolder holder, final int position) {
         holder.close.setOnClickListener(v -> {
-            System.out.println("click close");
-            new MaterialAlertDialogBuilder(context)
+            new MaterialAlertDialogBuilder(context, R.style.AlertDialog)
                     .setTitle(R.string.delete_contact_from_group_alert_dialog_title)
                     .setMessage(String.format(context.getString(R.string.delete_contact_from_group_alert_dialog_message), Objects.requireNonNull(contact.getContactDB()).getFirstName() + " " + contact.getContactDB().getLastName(), listGroup.get(position).getName()))
                     .setPositiveButton(R.string.edit_contact_validate, (dialog, which) -> {
@@ -61,8 +60,6 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                     }).setNegativeButton(R.string.alert_dialog_cancel, (dialog, which) -> {
 
             }).show();
-
-            // holder.layoutGroup.setVisibility(View.GONE);
         });
         Drawable drawable = context.getDrawable(R.drawable.rounded_rectangle_group);
         assert drawable != null;

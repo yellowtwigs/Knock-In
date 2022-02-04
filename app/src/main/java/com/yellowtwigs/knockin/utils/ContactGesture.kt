@@ -60,6 +60,15 @@ object ContactGesture {
         } else phoneNumber
     }
 
+    fun sendMessageWithWhatsapp(phoneNumber: String, msg: String, activity: Activity) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        val message = "phone=" + converter06To33(phoneNumber)
+        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
+
+        activity.startActivity(intent)
+    }
+
     fun callPhone(phoneNumber: String, context: Context) {
         var numberForPermission = ""
 
