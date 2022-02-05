@@ -77,6 +77,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
         sharedCustomSoundPreferences =
             getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
+
         setupLeftDrawerLayout(sharedThemePreferences)
         toolbarClick()
     }

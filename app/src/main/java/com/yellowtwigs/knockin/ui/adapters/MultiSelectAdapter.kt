@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.adapters
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
@@ -8,27 +9,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.controller.CircularImageView
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.yellowtwigs.knockin.utils.ConvertBitmap.base64ToBitmap
-import com.yellowtwigs.knockin.utils.InitContactsForListAdapter
-import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.initContact
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.spanNameTextView
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
-import java.util.*
 
 class MultiSelectAdapter(
-    private val cxt: Activity, private val len: Int,
-   private val contactUnlimited: Boolean ,
+    private val cxt: Activity,
+    private val contactUnlimited: Boolean,
     private val onClicked: (Int) -> Unit
 ) :
     ListAdapter<ContactWithAllInformation, MultiSelectAdapter.ViewHolder>(
         ContactWithAllInformationComparator()
     ) {
 
-    val listContactSelect: ArrayList<ContactWithAllInformation> = ArrayList()
+    val listContactSelect = arrayListOf<ContactWithAllInformation>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -41,15 +40,18 @@ class MultiSelectAdapter(
         holder.onBind(contact, position)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     inner class ViewHolder(private val binding: MultiSelectItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contactWithAllInformation: ContactWithAllInformation, position: Int) {
+            Log.i("testScroll", "$listContactSelect")
             binding.apply {
                 val contact = contactWithAllInformation.contactDB
                 if (contact != null)
-//                    initContact(contact, contactFirstName, contactLastName, contactImage, len)
-
                     spanNameTextView(
                         contact.firstName,
                         contact.lastName,
@@ -85,25 +87,17 @@ class MultiSelectAdapter(
                         }
                     } else {
                         if (listContactSelect.contains(contactWithAllInformation)) {
-                            contactImage.setBorderColor(
-                                ResourcesCompat.getColor(
-                                    cxt.resources,
-                                    R.color.priorityTwoColor,
-                                    null
-                                )
-                            )
+                            setBorderColor(contactImage, R.color.priorityTwoColor)
                         } else {
-                            contactImage.setBorderColor(
-                                ResourcesCompat.getColor(
-                                    cxt.resources,
-                                    R.color.lightColor,
-                                    null
-                                )
-                            )
+                            setBorderColor(contactImage, R.color.lightColor)
                         }
                     }
                 }
             }
+        }
+
+        private fun setBorderColor(cv: CircularImageView, res: Int) {
+            cv.setBorderColor(ResourcesCompat.getColor(cxt.resources, res, null))
         }
     }
 

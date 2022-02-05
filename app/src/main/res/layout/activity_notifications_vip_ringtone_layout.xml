@@ -68,8 +68,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_choose_default_sound_layout">
 
-        <CheckBox
-            android:id="@+id/settings_notif_no_sound_checkbox"
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/no_sound_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -107,8 +107,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_notif_no_sound_layout">
 
-        <CheckBox
-            android:id="@+id/settings_notif_sound_knockin_checkbox"
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/knockin_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

@@ -23,9 +23,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -50,24 +48,15 @@ class ManageNotificationActivity : AppCompatActivity() {
     private var switchPopupNotif: SwitchCompat? = null
     private var switchservice: SwitchCompat? = null
     private var isTrue = false
-    //private lateinit var filePath: Uri
 
     private var settings_NotificationMessagesAlarmSound: MediaPlayer? = null
     private var settings_ChooseNotifSoundTitle: TextView? = null
     private var settings_ChooseNotifSoundLayout: ConstraintLayout? = null
 
-    private var notifFunkySoundIsBought: Boolean = false
-    private var notifJazzySoundIsBought: Boolean = false
-    private var notifRelaxationSoundIsBought: Boolean = false
-    private var notifCustomSoundIsBought: Boolean = false
-
-    private var numberDefault: Int = 0
-
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notifications_vip_ringtone_layout)
 
         //region ======================================== Theme Dark ========================================
 
@@ -77,19 +66,13 @@ class ManageNotificationActivity : AppCompatActivity() {
         } else {
             setTheme(R.style.AppTheme)
         }
+
         //endregion
+
         setContentView(R.layout.activity_manage_notification)
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-
-        val sharedNotifJazzySoundInAppPreferences: SharedPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
-        notifJazzySoundIsBought = sharedNotifJazzySoundInAppPreferences.getBoolean("Jazzy_Sound_Bought", false)
-
-        val sharedNotifRelaxationSoundInAppPreferences: SharedPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
-        notifRelaxationSoundIsBought = sharedNotifRelaxationSoundInAppPreferences.getBoolean("Relax_Sound_Bought", false)
-
-        val sharedNotifFunkySoundInAppPreferences: SharedPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
-        notifFunkySoundIsBought = sharedNotifFunkySoundInAppPreferences.getBoolean("Funky_Sound_Bought", false)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
 
         //region ======================================= FindViewById =======================================
 
@@ -102,15 +85,12 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_ChooseNotifSoundTitle = findViewById(R.id.settings_choose_notif_sound_title)
         settings_ChooseNotifSoundLayout = findViewById(R.id.settings_choose_notif_sound_layout)
 
-        val group_manager_MainLayout = findViewById<LinearLayoutCompat>(R.id.manage_my_notif_layout_id)
-
-        val settings_left_drawer_ThemeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
+        val settings_left_drawer_ThemeSwitch =
+            findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
         }
-
-        val main_SettingsLeftDrawerLayout = findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -175,27 +155,47 @@ class ManageNotificationActivity : AppCompatActivity() {
                     }
                     startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
                 }
-                R.id.nav_informations -> startActivity(Intent(this@ManageNotificationActivity, EditInformationsActivity::class.java))
+                R.id.nav_informations -> startActivity(
+                    Intent(
+                        this@ManageNotificationActivity,
+                        EditInformationsActivity::class.java
+                    )
+                )
                 R.id.nav_manage_screen -> {
 
                     if (settings_NotificationMessagesAlarmSound != null) {
                         settings_NotificationMessagesAlarmSound!!.stop()
                     }
-                    startActivity(Intent(this@ManageNotificationActivity, ManageMyScreenActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@ManageNotificationActivity,
+                            ManageMyScreenActivity::class.java
+                        )
+                    )
                 }
                 R.id.nav_settings -> {
 
                     if (settings_NotificationMessagesAlarmSound != null) {
                         settings_NotificationMessagesAlarmSound!!.stop()
                     }
-                    startActivity(Intent(this@ManageNotificationActivity, SettingsActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@ManageNotificationActivity,
+                            SettingsActivity::class.java
+                        )
+                    )
                 }
                 R.id.nav_in_app -> {
 
                     if (settings_NotificationMessagesAlarmSound != null) {
                         settings_NotificationMessagesAlarmSound!!.stop()
                     }
-                    startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@ManageNotificationActivity,
+                            PremiumActivity::class.java
+                        )
+                    )
                 }
                 R.id.nav_statistics -> {
                 }
@@ -219,12 +219,14 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", true)
                 edit.apply()
             } else {
-                val sharedCallPopupPreferences: SharedPreferences = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
+                val sharedCallPopupPreferences: SharedPreferences =
+                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
                 edit.putBoolean("popup", false)
                 edit.apply()
@@ -239,7 +241,12 @@ class ManageNotificationActivity : AppCompatActivity() {
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", true)
                 edit.apply()
-                startActivity(Intent(this@ManageNotificationActivity, ManageNotificationActivity::class.java))
+                startActivity(
+                    Intent(
+                        this@ManageNotificationActivity,
+                        ManageNotificationActivity::class.java
+                    )
+                )
             } else {
 
                 setTheme(R.style.AppTheme)
@@ -247,7 +254,12 @@ class ManageNotificationActivity : AppCompatActivity() {
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", false)
                 edit.apply()
-                startActivity(Intent(this@ManageNotificationActivity, ManageNotificationActivity::class.java))
+                startActivity(
+                    Intent(
+                        this@ManageNotificationActivity,
+                        ManageNotificationActivity::class.java
+                    )
+                )
             }
         }
 
@@ -307,43 +319,45 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         viewHour.setOnClickListener {
             val timePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener(
-                    function = { _, h, m ->
-                        val editor = sharedPreferences.edit()
-                        editor.putInt("remindHour", h)
-                        editor.putInt("remindMinute", m)
-                        editor.apply()
-                        remindHour.text = hourGetstring(h, m)
-                        hour = h
-                        minute = m
-                        setReminderAlarm(hour, minute)
-                    }
+                function = { _, h, m ->
+                    val editor = sharedPreferences.edit()
+                    editor.putInt("remindHour", h)
+                    editor.putInt("remindMinute", m)
+                    editor.apply()
+                    remindHour.text = hourGetstring(h, m)
+                    hour = h
+                    minute = m
+                    setReminderAlarm(hour, minute)
+                }
             ), hour, minute, true)
             timePickerDialog.show()
         }
 
         //endregion
 
+        val noSoundCheckbox = findViewById<AppCompatCheckBox>(R.id.no_sound_checkbox)
+        val knockinCheckbox = findViewById<AppCompatCheckBox>(R.id.knockin_checkbox)
+
+        val defaultSoundCheck = getSharedPreferences("defaultSoundCheck", Context.MODE_PRIVATE)
+        knockinCheckbox.isChecked = defaultSoundCheck.getBoolean("defaultSoundCheck", true)
+        noSoundCheckbox.isChecked = !knockinCheckbox.isChecked
+
+        knockinCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            val edit = defaultSoundCheck.edit()
+            edit.putBoolean("defaultSoundCheck", isChecked)
+            edit.apply()
+            noSoundCheckbox.isChecked = !knockinCheckbox.isChecked
+        }
+        noSoundCheckbox.setOnCheckedChangeListener { _, _ ->
+            knockinCheckbox.isChecked = !noSoundCheckbox.isChecked
+        }
     }
-companion object {
-    const val PERMISSION_CODE = 111
-}
+
+    companion object {
+        const val PERMISSION_CODE = 111
+    }
 
     //region ========================================== Functions =========================================
-
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_manage_notification)
-            height in 1800..2499 -> setContentView(R.layout.activity_manage_notification)
-            height in 1100..1799 -> setContentView(R.layout.activity_manage_notification_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_manage_notification_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
@@ -359,10 +373,16 @@ companion object {
             }
             R.id.item_help -> {
                 if (Resources.getSystem().configuration.locale.language == "fr") {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-gestion-des-notifications"))
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.yellowtwigs.com/aide-gestion-des-notifications")
+                    )
                     startActivity(browserIntent)
                 } else {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-notification-management"))
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.yellowtwigs.com/help-notification-management")
+                    )
                     startActivity(browserIntent)
                 }
             }
@@ -375,38 +395,24 @@ companion object {
         val inflater: LayoutInflater = this.layoutInflater
         val alertView: View = inflater.inflate(R.layout.alert_dialog_catch_notification, null)
         val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setView(alertView)
-                .show()
+            .setView(alertView)
+            .show()
 
-        val manage_notif_ButtonAlertDialogAllow = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_allow_it)
-        manage_notif_ButtonAlertDialogAllow.setOnClickListener { positiveAlertDialogButtonClick(alertDialog) }
+        val manage_notif_ButtonAlertDialogAllow =
+            alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_allow_it)
+        manage_notif_ButtonAlertDialogAllow.setOnClickListener {
+            positiveAlertDialogButtonClick(
+                alertDialog
+            )
+        }
 
-        val manage_notif_ButtonAlertDialogDismiss = alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_dismiss)
-        manage_notif_ButtonAlertDialogDismiss.setOnClickListener { negativeAlertDialogButtonClick(alertDialog) }
-
-        return alertDialog
-    }
-
-    private fun buildMultiSelectAlertDialog(): androidx.appcompat.app.AlertDialog {
-        val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setBackground(getDrawable(R.color.backgroundColor))
-                .setTitle(getString(R.string.notification_alert_dialog_title))
-                .setMessage(getString(R.string.notification_alert_dialog_message))
-                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                    startActivity(Intent(this@ManageNotificationActivity, MultiSelectActivity::class.java))
-                    val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                    val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                    edit.putBoolean("view", true)
-                    edit.apply()
-                    closeContextMenu()
-                }
-                .setNegativeButton(R.string.alert_dialog_later)
-                { _, _ ->
-                    closeContextMenu()
-
-                }
-                .show()
-
+        val manage_notif_ButtonAlertDialogDismiss =
+            alertView.findViewById<Button>(R.id.alert_dialog_catch_notification_button_dismiss)
+        manage_notif_ButtonAlertDialogDismiss.setOnClickListener {
+            negativeAlertDialogButtonClick(
+                alertDialog
+            )
+        }
 
         return alertDialog
     }
@@ -420,7 +426,8 @@ companion object {
             activityVisible = false
             while (!isNotificationServiceEnabled && !activityVisible) {
             }
-            val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+            val sharedPreferences: SharedPreferences =
+                getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (isNotificationServiceEnabled) {
                 edit.putBoolean("serviceNotif", true)
@@ -486,15 +493,30 @@ companion object {
         calendar.set(Calendar.SECOND, 0)
         val intent = Intent(applicationContext, NotificationSender::class.java)
         intent.action = "NOTIFICATION_TIME"
-        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            100,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
         val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
 
         //cancel previous app
     }
 
-    fun goToPremiumActivity(){
-        startActivity(Intent(this@ManageNotificationActivity, PremiumActivity::class.java).putExtra("fromManageNotification", true))
+    fun goToPremiumActivity() {
+        startActivity(
+            Intent(this@ManageNotificationActivity, PremiumActivity::class.java).putExtra(
+                "fromManageNotification",
+                true
+            )
+        )
         finish()
     }
 

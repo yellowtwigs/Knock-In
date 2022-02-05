@@ -6,10 +6,12 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
@@ -17,6 +19,7 @@ import com.yellowtwigs.knockin.ui.adapters.MultiSelectAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yellowtwigs.knockin.controller.CircularImageView
 import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
@@ -42,6 +45,8 @@ class MultiSelectActivity : AppCompatActivity() {
     private var contactsUnlimitedBought = true
     private var firstClick = true
     private var tooMuch = false
+
+    private val listOfIds = arrayListOf<Int>()
 
     //endregion
 
@@ -89,7 +94,7 @@ class MultiSelectActivity : AppCompatActivity() {
     }
 
     private fun loadRecyclerView() {
-        multiSelectAdapter = MultiSelectAdapter(this, 4, contactsUnlimitedBought) { position ->
+        multiSelectAdapter = MultiSelectAdapter(this, contactsUnlimitedBought) { position ->
             multiSelectAdapter.itemSelected(position)
 
             contactManager?.contactList?.get(position)
@@ -127,16 +132,12 @@ class MultiSelectActivity : AppCompatActivity() {
             }
         }
         multiSelectAdapter.submitList(null)
-        multiSelectAdapter.submitList(contactManager?.contactList)
         binding.multiSelectRecyclerView.apply {
             adapter = multiSelectAdapter
+            multiSelectAdapter.submitList(contactManager?.contactList)
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(cxt, 4, RecyclerView.VERTICAL, false)
         }
-
-        binding.multiSelectRecyclerView
-
-        multiSelectAdapter.notifyDataSetChanged()
     }
 
     /**
@@ -213,6 +214,14 @@ class MultiSelectActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun getListOfIds() {
+        listOfIds
+    }
+
+    private fun setBorderColor(cv: CircularImageView, res: Int) {
+        cv.setBorderColor(ResourcesCompat.getColor(cxt.resources, res, null))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
