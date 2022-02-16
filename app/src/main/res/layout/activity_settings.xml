@@ -90,7 +90,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/settings_permissions_phone_button"
-                android:text="@string/start_activity_permission_subtitle"
+                android:text="@string/permissions_subtitle"
                 android:textColor="?attr/textColor"
                 android:textSize="12sp" />
 
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="25dp"
-                android:text="@string/start_activity_permission_title"
+                android:text="@string/permissions_title"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp" />
 
@@ -121,7 +121,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:text="@string/start_activity_button_permission"
+                android:text="@string/button_permission"
                 android:textColor="#000000"
                 android:textSize="12sp" />
 

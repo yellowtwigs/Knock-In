@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -22,7 +23,8 @@ class MyProductAdapter(
 ) : ListAdapter<SkuDetails, MyProductAdapter.ViewHolder>(SkuDetailsComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = LayoutProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -64,9 +66,7 @@ class MyProductAdapter(
                 val text = productName.split("\\(").toTypedArray()
                 productItemName.text = text[0]
 
-                if (productName.contains("Contacts") || productName.contains("Contatti") ||
-                    productName.contains("Contactos")
-                ) {
+                if (productName.contains("VIP")) {
                     productItemImage.setImageResource(R.drawable.ic_circular_vip_icon)
 
                     if (contactsUnlimitedBought) {
@@ -126,6 +126,13 @@ class MyProductAdapter(
                 productItemBuyImage.setOnClickListener {
                     iProductClickListener?.onProductClickListener(it, adapterPosition)
                 }
+
+                root.setOnClickListener {
+                    Toast.makeText(
+                        cxt, skuDetails.description + " " +
+                                skuDetails.price, Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
 
@@ -143,14 +150,14 @@ class MyProductAdapter(
             }
         }
 
-        override fun onProductClickListener(view: View?, position: Int) {
-        }
+        override fun onProductClickListener(view: View?, position: Int) {}
     }
 
     class SkuDetailsComparator : DiffUtil.ItemCallback<SkuDetails>() {
         override fun areItemsTheSame(oldItem: SkuDetails, newItem: SkuDetails): Boolean {
             return oldItem == newItem
         }
+
         override fun areContentsTheSame(oldItem: SkuDetails, newItem: SkuDetails): Boolean {
             return oldItem.description == newItem.description &&
                     oldItem.iconUrl == newItem.iconUrl &&

@@ -77,7 +77,7 @@ class SettingsActivity : AppCompatActivity() {
         settings_PermissionsPhoneChecked = findViewById(R.id.settings_permissions_phone_check)
         val phoneCallAlertTv = findViewById<TextView>(R.id.settings_permissions_phone_subtitle)
 
-        phoneCallAlertTv.text = String.format(getString(R.string.start_activity_permission_subtitle), getString(R.string.app_name))
+        phoneCallAlertTv.text = String.format(getString(R.string.permissions_subtitle), getString(R.string.app_name))
 
         //endregion
 

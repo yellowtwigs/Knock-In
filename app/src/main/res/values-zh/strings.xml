@@ -410,15 +410,15 @@
     <string name="start_activity_notification_title">通知</string>
     <string name="start_activity_notification_subtitle">激活通知服务并接收自定义通知</string>
     <string name="start_activity_button_notification">激活</string>
-    <string name="start_activity_superposition_title">叠加</string>
-    <string name="start_activity_superposition_subtitle">在使用其他应用程序时，允许Knock In显示VIP通知</string>
-    <string name="start_activity_button_superposition">允许</string>
+    <string name="superposition_title">叠加</string>
+    <string name="superposition_subtitle">在使用其他应用程序时，允许Knock In显示VIP通知</string>
+    <string name="button_superposition">允许</string>
     <string name="start_activity_superposition_not_allowed_message">要在Android 10中显示VIP通知的弹出窗口，必须激活“气泡”。进入“敲入”抽屉中的“帮助”菜单，了解如何继续。</string>
     <string name="start_activity_superposition_not_allowed_message_11">Android 11（您的智能手机的版本）尚不支持Knock In的浮动通知（气泡）。该应用程序的一个版本将提供针对Android 11的浮动通知。但是，您可以使用应用程序的其他功能。</string>
     <string name="start_activity_video_tutorial_skip_text">该视频可在应用程序菜单的帮助栏中找到</string>
-    <string name="start_activity_permission_title">其他授权</string>
-    <string name="start_activity_permission_subtitle">您将可以通过该应用拨打电话并发送短信</string>
-    <string name="start_activity_button_permission">同意</string>
+    <string name="permissions_title">其他授权</string>
+    <string name="permissions_subtitle">您将可以通过该应用拨打电话并发送短信</string>
+    <string name="button_permission">同意</string>
     <string name="start_activity_skip">跳过</string>
     <string name="start_activity_next">下一步</string>
     <string name="start_activity_skip_alert_dialog_title">跳过授权</string>
@@ -472,4 +472,5 @@
     <string name="alert_dialog_vip_custom_settings_title">新的 VIP 通知设置</string>
     <string name="show_popup_positive_button">不再显示</string>
     <string name="alert_dialog_close">关闭</string>
+    <string name="contact_vip_settings">VIP  设置</string>
 </resources>

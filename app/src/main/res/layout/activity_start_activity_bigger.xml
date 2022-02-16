@@ -21,7 +21,7 @@
                 android:layout_centerInParent="true"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_activity_video_skip"
+                android:id="@+id/video_skip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -64,7 +64,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/start_activity_title">
 
                 <TextView
-                    android:id="@+id/start_activity_import_contacts_title"
+                    android:id="@+id/import_contacts_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -74,20 +74,20 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/start_activity_import_contacts_subtitle"
+                    android:id="@+id/import_contacts_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/start_activity_import_contacts_title"
+                    android:layout_below="@+id/import_contacts_title"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_toStartOf="@+id/start_activity_import_contacts_button"
+                    android:layout_toStartOf="@+id/import_contacts_button"
                     android:text="@string/start_activity_import_subtitle"
                     android:textColor="@color/darkGreyColorDark"
                     android:textSize="15sp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/start_activity_import_contacts_button"
+                    android:id="@+id/import_contacts_button"
                     android:layout_width="@dimen/start_activity_button_width"
                     android:layout_height="@dimen/start_activity_button_height"
                     android:layout_alignParentEnd="true"
@@ -98,7 +98,7 @@
                     android:textSize="13sp" />
 
                 <ProgressBar
-                    android:id="@+id/start_activity_import_contacts_loading"
+                    android:id="@+id/import_contacts_loading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -108,7 +108,7 @@
                     android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/start_activity_import_contacts_check"
+                    android:id="@+id/import_contacts_check"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
@@ -130,7 +130,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/start_activity_import_contacts_layout">
 
                 <TextView
-                    android:id="@+id/start_activity_activate_notifications_title"
+                    android:id="@+id/activate_notifications_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -140,20 +140,20 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/start_activity_activate_notifications_subtitle"
+                    android:id="@+id/activate_notifications_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/start_activity_activate_notifications_title"
+                    android:layout_below="@+id/activate_notifications_title"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_toStartOf="@+id/start_activity_activate_notifications_button"
+                    android:layout_toStartOf="@+id/activate_notifications_button"
                     android:text="@string/start_activity_notification_subtitle"
                     android:textColor="@color/darkGreyColorDark"
                     android:textSize="15sp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/start_activity_activate_notifications_button"
+                    android:id="@+id/activate_notifications_button"
                     android:layout_width="@dimen/start_activity_button_width"
                     android:layout_height="@dimen/start_activity_button_height"
                     android:layout_alignParentEnd="true"
@@ -174,7 +174,7 @@
                     android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/start_activity_activate_notifications_check"
+                    android:id="@+id/activate_notifications_check"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
@@ -195,42 +195,42 @@
                 app:layout_constraintTop_toBottomOf="@+id/start_activity_notifications_layout">
 
                 <TextView
-                    android:id="@+id/start_activity_superposition_title"
+                    android:id="@+id/superposition_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="25dp"
-                    android:text="@string/start_activity_superposition_title"
+                    android:text="@string/superposition_title"
                     android:textColor="@color/lightColor"
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/start_activity_superposition_subtitle"
+                    android:id="@+id/superposition_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/start_activity_superposition_title"
+                    android:layout_below="@+id/superposition_title"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_toStartOf="@+id/start_activity_superposition_button"
-                    android:text="@string/start_activity_superposition_subtitle"
+                    android:layout_toStartOf="@+id/superposition_button"
+                    android:text="@string/superposition_subtitle"
                     android:textColor="@color/darkGreyColorDark"
                     android:textSize="15sp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/start_activity_superposition_button"
+                    android:id="@+id/superposition_button"
                     android:layout_width="@dimen/start_activity_button_width"
                     android:layout_height="@dimen/start_activity_button_height"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/start_activity_button_superposition"
+                    android:text="@string/button_superposition"
                     android:textColor="#000000"
                     android:textSize="13sp" />
 
                 <ProgressBar
-                    android:id="@+id/start_activity_superposition_loading"
+                    android:id="@+id/superposition_loading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -240,7 +240,7 @@
                     android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/start_activity_superposition_check"
+                    android:id="@+id/superposition_check"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
@@ -261,42 +261,42 @@
                 app:layout_constraintTop_toBottomOf="@+id/start_activity_superposition_layout">
 
                 <TextView
-                    android:id="@+id/start_activity_permissions_title"
+                    android:id="@+id/permissions_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="25dp"
-                    android:text="@string/start_activity_permission_title"
+                    android:text="@string/permissions_title"
                     android:textColor="@color/lightColor"
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/start_activity_permissions_subtitle"
+                    android:id="@+id/permissions_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/start_activity_permissions_title"
+                    android:layout_below="@+id/permissions_title"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_toStartOf="@+id/start_activity_permissions_button"
-                    android:text="@string/start_activity_permission_subtitle"
+                    android:layout_toStartOf="@+id/permissions_button"
+                    android:text="@string/permissions_subtitle"
                     android:textColor="@color/darkGreyColorDark"
                     android:textSize="15sp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/start_activity_permissions_button"
+                    android:id="@+id/permissions_button"
                     android:layout_width="@dimen/start_activity_button_width"
                     android:layout_height="@dimen/start_activity_button_height"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/start_activity_button_permission"
+                    android:text="@string/button_permission"
                     android:textColor="#000000"
                     android:textSize="13sp" />
 
                 <ProgressBar
-                    android:id="@+id/start_activity_permissions_loading"
+                    android:id="@+id/permissions_loading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -306,7 +306,7 @@
                     android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/start_activity_permissions_check"
+                    android:id="@+id/permissions_check"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"

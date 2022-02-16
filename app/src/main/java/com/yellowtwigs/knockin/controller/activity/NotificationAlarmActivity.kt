@@ -58,8 +58,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
             getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
 
         sharedAlarmNotifDurationPreferences =
-            getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
-        duration = sharedAlarmNotifDurationPreferences.getInt("Alarm_Notif_Duration", 0)
+            getSharedPreferences("ringtone_duration", Context.MODE_PRIVATE)
+        duration = sharedAlarmNotifDurationPreferences.getInt("ringtone_duration", 0)
 
         sharedAlarmNotifCanRingtonePreferences =
             getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)

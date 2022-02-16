@@ -415,16 +415,16 @@ Elija un contacto para agregar </string>
     <string name="start_activity_notification_title">Notificaciones</string>
     <string name="start_activity_notification_subtitle"> Active el servicio de notificaciones y reciba notificaciones personalizadas </string>
     <string name="start_activity_button_notification">Activar</string>
-    <string name="start_activity_superposition_title">Superposición</string>
-    <string name="start_activity_superposition_subtitle">Permita Knock In mostrar notificaciones VIP mientras usa otras aplicaciones</string>
-    <string name="start_activity_button_superposition">Permitir</string>
+    <string name="superposition_title">Superposición</string>
+    <string name="superposition_subtitle">Permita Knock In mostrar notificaciones VIP mientras usa otras aplicaciones</string>
+    <string name="button_superposition">Permitir</string>
     <string name="start_activity_superposition_not_allowed_message">Para ver las ventanas emergentes de notificaciones VIP con Android 10, es necesario activar las "burbujas". Puede encontrar información sobre cómo proceder en el menú "Ayuda" del cajón Knock In.</string>
     <string name="start_activity_superposition_not_allowed_message_11">Las notificaciones flotantes de Knock In (Burbujas) aún no son compatibles con Android 11 (versión de su smartphone). Pronto estará disponible una versión de la aplicación que ofrece notificaciones flotantes para Android 11. Sin embargo, puede utilizar las demás funciones de la aplicación.</string>
     <string name="start_activity_video_tutorial_skip_text">El video está disponible en la pestaña de Ayuda del menú de la aplicación</string>
-    <string name="start_activity_permission_title">Otras autorizaciones</string>
-    <string name="start_activity_permission_subtitle">
+    <string name="permissions_title">Otras autorizaciones</string>
+    <string name="permissions_subtitle">
 Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
-    <string name="start_activity_button_permission">Permitir</string>
+    <string name="button_permission">Permitir</string>
     <string name="start_activity_skip">Omitir</string>
     <string name="start_activity_next">Siguiente</string>
     <string name="start_activity_skip_alert_dialog_title">Omitir permisos</string>
@@ -479,4 +479,5 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="alert_dialog_vip_custom_settings_title">Nueva configuración de notificaciones VIP</string>
     <string name="show_popup_positive_button">No mostrar</string>
     <string name="alert_dialog_close">Cerca</string>
+    <string name="contact_vip_settings">VIP Ajustes</string>
 </resources>

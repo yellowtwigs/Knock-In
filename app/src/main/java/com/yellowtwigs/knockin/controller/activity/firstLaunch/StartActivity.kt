@@ -14,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.provider.Telephony
 import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
@@ -111,11 +112,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //region ======================================= FindViewById =======================================
 
-        importContactsButton = findViewById(R.id.start_activity_import_contacts_button)
+        importContactsButton = findViewById(R.id.import_contacts_button)
         activateNotificationsButton =
-            findViewById(R.id.start_activity_activate_notifications_button)
-        superpositionButton = findViewById(R.id.start_activity_superposition_button)
-        permissionsButton = findViewById(R.id.start_activity_permissions_button)
+            findViewById(R.id.activate_notifications_button)
+        superpositionButton = findViewById(R.id.superposition_button)
+        permissionsButton = findViewById(R.id.permissions_button)
 
         importContactsLayout = findViewById(R.id.start_activity_import_contacts_layout)
         activateNotificationsLayout =
@@ -127,19 +128,19 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         startActivityNext = findViewById(R.id.start_activity_next)
         startActivitySkip = findViewById(R.id.start_activity_skip)
         importContactsLoading =
-            findViewById(R.id.start_activity_import_contacts_loading)
+            findViewById(R.id.import_contacts_loading)
         activateNotificationsLoading =
             findViewById(R.id.start_activity_activate_notifications_loading)
         superpositionLoading =
-            findViewById(R.id.start_activity_superposition_loading)
-        permissionsLoading = findViewById(R.id.start_activity_permissions_loading)
+            findViewById(R.id.superposition_loading)
+        permissionsLoading = findViewById(R.id.permissions_loading)
 
-        importContactsCheck = findViewById(R.id.start_activity_import_contacts_check)
+        importContactsCheck = findViewById(R.id.import_contacts_check)
         activateNotificationsCheck =
-            findViewById(R.id.start_activity_activate_notifications_check)
+            findViewById(R.id.activate_notifications_check)
         superpositionCheck =
-            findViewById(R.id.start_activity_superposition_check)
-        permissionsCheck = findViewById(R.id.start_activity_permissions_check)
+            findViewById(R.id.superposition_check)
+        permissionsCheck = findViewById(R.id.permissions_check)
 
 
         val start_activity_layout = findViewById<ConstraintLayout>(R.id.start_activity_layout)
@@ -147,7 +148,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             findViewById<RelativeLayout>(R.id.start_activity_video_layout)
         val videoview = findViewById<VideoView>(R.id.start_activity_video)
         val webview: WebView = findViewById(R.id.start_activity_webview)
-        val start_activity_video_Skip = findViewById<MaterialButton>(R.id.start_activity_video_skip)
+        val video_skip = findViewById<MaterialButton>(R.id.video_skip)
 
         val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var isWifiConn = false
@@ -263,7 +264,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         videoview.setOnCompletionListener {
             start_activity_video_Layout.visibility = View.INVISIBLE
-            start_activity_video_Skip.visibility = View.INVISIBLE
+            video_skip.visibility = View.INVISIBLE
             start_activity_layout.visibility = View.VISIBLE
             videoview.stopPlayback()
         }
@@ -278,8 +279,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         //endregion
 
         if (checkIfGoEdition()) {
-            activateNotificationsLayout!!.visibility = View.GONE
-            superpositionLayout!!.visibility = View.GONE
+            activateNotificationsLayout?.visibility = View.GONE
+            superpositionLayout?.visibility = View.GONE
 
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))
@@ -289,14 +290,16 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 .show()
         }
 
+        Log.i("Telephony", "${Telephony.Sms.getDefaultSmsPackage(this)}")
+
         //region ======================================== Listeners =========================================
 
-        start_activity_video_Skip.setOnClickListener {
+        video_skip.setOnClickListener {
             webview.removeAllViews()
             webview.clearCache(true)
             webview.destroy()
             start_activity_video_Layout.visibility = View.INVISIBLE
-            start_activity_video_Skip.visibility = View.INVISIBLE
+            video_skip.visibility = View.INVISIBLE
             start_activity_layout.visibility = View.VISIBLE
             videoview.stopPlayback()
 
@@ -331,8 +334,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         activateNotificationsButton?.setOnClickListener {
             activateNotificationsClick()
-            activateNotificationsButton!!.visibility = View.INVISIBLE
-            activateNotificationsLoading!!.visibility = View.VISIBLE
+            activateNotificationsButton?.visibility = View.INVISIBLE
+            activateNotificationsLoading?.visibility = View.VISIBLE
 
             val SPLASH_DISPLAY_LENGHT = 2000
 
@@ -435,7 +438,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region ========================================== Functions ==========================================
 
     private fun openOverlaySettings() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             superpositionButton?.visibility = View.INVISIBLE
             if (checkAndroid6()) {
                 val intent = Intent(
@@ -448,7 +451,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 superpositionLoading?.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
-        } else {
         }
     }
 

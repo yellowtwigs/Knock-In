@@ -411,15 +411,15 @@
     <string name="start_activity_notification_title">Notifications</string>
     <string name="start_activity_notification_subtitle">Activez le service de notifications pour recevoir des notifications priorisées et personnalisées</string>
     <string name="start_activity_button_notification">Activer</string>
-    <string name="start_activity_superposition_title">Superposition</string>
-    <string name="start_activity_superposition_subtitle">Autorisez Knock In à afficher les notifications VIP pendant que vous exécutez d’autres applications</string>
-    <string name="start_activity_button_superposition">Autoriser</string>
+    <string name="superposition_title">Superposition</string>
+    <string name="superposition_subtitle">Autorisez Knock In à afficher les notifications VIP pendant que vous exécutez d’autres applications</string>
+    <string name="button_superposition">Autoriser</string>
     <string name="start_activity_superposition_not_allowed_message">Pour afficher les popups des notifications VIP avec Android 10, vous devez activer les "bubbles". Découvrez comment procéder en vous rendant dans le menu "Aide" du drawer de Knock In.</string>
     <string name="start_activity_superposition_not_allowed_message_11">Les notifications flottantes de Knock In (Bulles) ne sont pas encore prises en charge avec Android 11 (version de votre smartphone). Une version de l\'application proposant des notifications flottantes pour Android 11 sera bientôt disponible. Cependant, vous pouvez utiliser les autres fonctions de l\'application.</string>
     <string name="start_activity_video_tutorial_skip_text">La vidéo est disponible dans l\'onglet Aide du menu de l\'application</string>
-    <string name="start_activity_permission_title">Autres autorisations</string>
-    <string name="start_activity_permission_subtitle">Vous pourrez appeler et envoyer des SMS depuis l\'application</string>
-    <string name="start_activity_button_permission">Autoriser</string>
+    <string name="permissions_title">Autres autorisations</string>
+    <string name="permissions_subtitle">Vous pourrez appeler et envoyer des SMS depuis l\'application</string>
+    <string name="button_permission">Autoriser</string>
     <string name="start_activity_skip">Passer</string>
     <string name="start_activity_next">Suivant</string>
     <string name="start_activity_skip_alert_dialog_title">Passer les autorisations</string>
@@ -475,4 +475,5 @@
     <string name="alert_dialog_vip_custom_settings_msg">Vous pouvez à présent personnaliser vos notifications pour chacun de vos VIP</string>
     <string name="show_popup_positive_button">Ne plus afficher</string>
     <string name="alert_dialog_close">Fermer</string>
+    <string name="contact_vip_settings">Paramètres VIP</string>
 </resources>

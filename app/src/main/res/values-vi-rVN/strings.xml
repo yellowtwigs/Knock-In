@@ -411,16 +411,16 @@
     <string name="start_activity_notification_title">Thông báo</string>
     <string name="start_activity_notification_subtitle">Kích hoạt dịch vụ thông báo và nhận thông báo tùy chỉnh</string>
     <string name="start_activity_button_notification">Kích hoạt</string>
-    <string name="start_activity_superposition_title">Xếp chồng</string>
-    <string name="start_activity_superposition_subtitle">Cho phép Knock In để hiển thị thông báo VIP trong khi bạn đang sử dụng các ứng dụng khác</string>
-    <string name="start_activity_button_superposition">Cho phép</string>
+    <string name="superposition_title">Xếp chồng</string>
+    <string name="superposition_subtitle">Cho phép Knock In để hiển thị thông báo VIP trong khi bạn đang sử dụng các ứng dụng khác</string>
+    <string name="button_superposition">Cho phép</string>
     <string name="start_activity_superposition_not_allowed_message">Để xem cửa sổ bật lên của thông báo VIP với Android 10, bạn cần kích hoạt "bong bóng". Thông tin về cách tiếp tục có thể được tìm thấy trong menu "Trợ giúp" trong ngăn Knock In.</string>
     <string name="start_activity_superposition_not_allowed_message_11">Thông báo nổi (Bong bóng) của Knock In chưa được hỗ trợ với Android 11 (phiên bản điện thoại thông minh của bạn).
         Phiên bản ứng dụng cung cấp thông báo nổi cho Android 11 sẽ sớm ra mắt. Tuy nhiên, bạn có thể sử dụng các chức năng khác của ứng dụng.</string>
     <string name="start_activity_video_tutorial_skip_text">Video có sẵn trong tab trợ giúp của menu ứng dụng</string>
-    <string name="start_activity_permission_title">Ủy quyền khác</string>
-    <string name="start_activity_permission_subtitle">Bạn sẽ có thể gọi điện thoại và gửi SMS từ ứng dụng</string>
-    <string name="start_activity_button_permission">Đồng ý</string>
+    <string name="permissions_title">Ủy quyền khác</string>
+    <string name="permissions_subtitle">Bạn sẽ có thể gọi điện thoại và gửi SMS từ ứng dụng</string>
+    <string name="button_permission">Đồng ý</string>
     <string name="start_activity_skip">Bỏ qua</string>
     <string name="start_activity_next">Bước tiếp theo</string>
     <string name="start_activity_skip_alert_dialog_title">Bỏ qua ủy quyền</string>
@@ -472,4 +472,5 @@
     <string name="alert_dialog_vip_custom_settings_title">Cài đặt thông báo VIP mới</string>
     <string name="show_popup_positive_button">Không hiển thị nữa</string>
     <string name="alert_dialog_close">Đóng</string>
+    <string name="contact_vip_settings">VIP đặt</string>
 </resources>

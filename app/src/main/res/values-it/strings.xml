@@ -410,15 +410,15 @@
     <string name="start_activity_notification_title">Notifiche</string>
     <string name="start_activity_notification_subtitle">Attiva il servizio di notifica e ricevi notifiche personalizzate</string>
     <string name="start_activity_button_notification">Attiva</string>
-    <string name="start_activity_superposition_title">Sovrapposizione</string>
-    <string name="start_activity_superposition_subtitle">Consenti a Knock In di visualizzare notifiche VIP mentre stai usando altre applicazioni</string>
-    <string name="start_activity_button_superposition">Consenti</string>
+    <string name="superposition_title">Sovrapposizione</string>
+    <string name="superposition_subtitle">Consenti a Knock In di visualizzare notifiche VIP mentre stai usando altre applicazioni</string>
+    <string name="button_superposition">Consenti</string>
     <string name="start_activity_superposition_not_allowed_message">Per visualizzare i pop-up delle notifiche VIP con Android 10, è necessario attivare le "bolle". Le informazioni su come procedere sono disponibili nel menu "Aiuto" nel drawer Knock In.</string>
     <string name="start_activity_video_tutorial_skip_text">Il video è disponibile nella scheda Help del menu dell\'applicazione</string>
-    <string name="start_activity_permission_title">Altre autorizzazioni</string>
+    <string name="permissions_title">Altre autorizzazioni</string>
     <string name="start_activity_superposition_not_allowed_message_11">Le notifiche mobili di Knock In (Bolle) non sono ancora supportate con Android 11 (versione del tuo smartphone). Presto sarà disponibile una versione dell\'app che offre notifiche mobili per Android 11. Tuttavia, è possibile utilizzare le altre funzioni dell\'applicazione.</string>
-    <string name="start_activity_permission_subtitle">Potrai effettuare chiamate e inviare SMS dalla applicazione</string>
-    <string name="start_activity_button_permission">Consenti</string>
+    <string name="permissions_subtitle">Potrai effettuare chiamate e inviare SMS dalla applicazione</string>
+    <string name="button_permission">Consenti</string>
     <string name="start_activity_skip">Salta</string>
     <string name="start_activity_next">Prossimo</string>
     <string name="start_activity_skip_alert_dialog_title">Salta permessi </string>
@@ -473,4 +473,5 @@
     <string name="alert_dialog_vip_custom_settings_title">Nuove impostazioni di notifica VIP</string>
     <string name="show_popup_positive_button">Non visualizzare più</string>
     <string name="alert_dialog_close">Chiudere</string>
+    <string name="contact_vip_settings">VIP Configurazione</string>
 </resources>

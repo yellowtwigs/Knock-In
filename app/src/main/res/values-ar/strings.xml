@@ -412,15 +412,15 @@
     <string name="start_activity_notification_title">الإشعارات</string>
     <string name="start_activity_notification_subtitle">قم بتنشيط خدمة الإعلام لتلقي الإشعارات ذات الأولوية والشخصية</string>
     <string name="start_activity_button_notification">تفعيل</string>
-    <string name="start_activity_superposition_title">تداخل</string>
-    <string name="start_activity_superposition_subtitle">السماح لـ Knock In بعرض إشعارات VIP أثناء تشغيل تطبيقات أخرى</string>
-    <string name="start_activity_button_superposition">السماح</string>
+    <string name="superposition_title">تداخل</string>
+    <string name="superposition_subtitle">السماح لـ Knock In بعرض إشعارات VIP أثناء تشغيل تطبيقات أخرى</string>
+    <string name="button_superposition">السماح</string>
     <string name="start_activity_superposition_not_allowed_message">لعرض النوافذ المنبثقة لإشعارات VIP مع Android 10 يجب عليك تنشيط الفقاعات . تعرف على كيفية القيام بذلك من خلال الانتقال إلى قائمة تعليمات في درج Knock In</string>
     <string name="start_activity_superposition_not_allowed_message_11">الإشعارات العائمة (الفقاعات) غير مدعومة حتى الآن مع Android 11 سيتوفر قريبًا إصدار من التطبيق مع إشعارات عائمة لنظام Android 11 ومع ذلك ، يمكنك استخدام الوظائف الأخرى للتطبيق</string>
     <string name="start_activity_video_tutorial_skip_text">يتوفر الفيديو في علامة التبويب تعليمات في قائمة التطبيق</string>
-    <string name="start_activity_permission_title">تراخيص أخرى</string>
-    <string name="start_activity_permission_subtitle">ستتمكن من الاتصال وإرسال الرسائل القصيرة من التطبيق</string>
-    <string name="start_activity_button_permission">السماح</string>
+    <string name="permissions_title">تراخيص أخرى</string>
+    <string name="permissions_subtitle">ستتمكن من الاتصال وإرسال الرسائل القصيرة من التطبيق</string>
+    <string name="button_permission">السماح</string>
     <string name="start_activity_skip">تخطي</string>
     <string name="start_activity_next">التالي</string>
     <string name="start_activity_skip_alert_dialog_title">تمرير الصلاحيات</string>
@@ -474,4 +474,5 @@
     <string name="alert_dialog_vip_custom_settings_title">إعدادات إخطار VIP جديدة</string>
     <string name="show_popup_positive_button">لا تعرض بعد الآن</string>
     <string name="alert_dialog_close">اغلاق</string>
+    <string name="contact_vip_settings">"الإعدادات VIP "</string>
 </resources>
