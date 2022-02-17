@@ -31,9 +31,8 @@ class VipSettingsActivity : AppCompatActivity() {
     private var alarmSound: MediaPlayer? = null
 
     private var funkySoundBought: Boolean = false
-    private var jazzySoundBought: Boolean = true
+    private var jazzySoundBought: Boolean = false
     private var relaxSoundBought: Boolean = false
-    private var customSoundBought: Boolean = false
 
     private var jazzyToClose = false
     private var funkyToClose = false
@@ -74,10 +73,6 @@ class VipSettingsActivity : AppCompatActivity() {
 
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
-
-        val customSoundPreferences =
-            getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
-        customSoundBought = customSoundPreferences.getBoolean("Custom_Sound_Bought", false)
 
         //region ========================================== Intent ==========================================
 
@@ -339,21 +334,39 @@ class VipSettingsActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     private fun checkIfUserBoughtCustomSound() {
-        binding.apply {
-            uploadButton.isVisible = customSoundBought
-            uploadSongsLayout.isVisible = customSoundBought
-            uploadCustomSoundLayout.isVisible = customSoundBought
-        }
+//        binding.apply {
+//            uploadButton.isVisible = customSoundBought
+//            uploadSongsLayout.isVisible = customSoundBought
+//            uploadCustomSoundLayout.isVisible = customSoundBought
+//        }
     }
 
     private fun backIconClick(id: Int) {
         stopAlarmSound()
-        val intent = Intent(this, EditContactDetailsActivity::class.java)
-        intent.putExtra("ContactId", id)
+        val intentBack = Intent(this, EditContactDetailsActivity::class.java)
+        fillIntent(intentBack, id)
         if (numberDefault != 1) {
-            intent.putExtra("AlarmTone", numberDefault)
+            intentBack.putExtra("AlarmTone", numberDefault)
         }
-        startActivity(intent)
+        startActivity(intentBack)
+    }
+
+    private fun fillIntent(intentBack: Intent, id: Int) {
+        intentBack.apply {
+            putExtra("ContactId", id)
+
+            if (intent.getBooleanExtra("hasChanged", false)) {
+                putExtra("FirstName", intent.getStringExtra("FirstName"))
+                putExtra("Lastname", intent.getStringExtra("Lastname"))
+                putExtra("PhoneNumber", intent.getStringExtra("PhoneNumber"))
+                putExtra("FixNumber", intent.getStringExtra("FixNumber"))
+                putExtra("Mail", intent.getStringExtra("Mail"))
+                putExtra("MailId", intent.getStringExtra("MailId"))
+                putExtra("Priority", intent.getIntExtra("Priority", 0))
+                putExtra("isFavorite", intent.getBooleanExtra("isFavorite", false))
+                putExtra("hasChanged", intent.getBooleanExtra("hasChanged", false))
+            }
+        }
     }
 
     private fun changeIconOpenLayout(img: AppCompatImageView, toClose: Boolean) {
@@ -390,7 +403,6 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun stopAlarmSound() {
-        Log.i("alarmTone", "stop")
         alarmSound?.stop()
     }
 

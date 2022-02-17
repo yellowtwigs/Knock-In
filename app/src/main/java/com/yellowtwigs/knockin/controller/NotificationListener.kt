@@ -44,7 +44,6 @@ import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 /**
  * Service qui nous permet de traiter les notifications
  */
-
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
     // Database && Thread
@@ -56,7 +55,6 @@ class NotificationListener : NotificationListenerService() {
     private var windowManager: WindowManager? = null
     private var notificationPopupRecyclerView: RecyclerView? = null
 
-    private var alarmSound: MediaPlayer? = null
     private lateinit var popupViewSharedPreferences: SharedPreferences
 
     private var sharedAlarmNotifDurationPreferences: SharedPreferences? = null
@@ -109,7 +107,6 @@ class NotificationListener : NotificationListenerService() {
                 val addNotification = Runnable {
                     val contact: ContactWithAllInformation?
 
-                    //region Permet de Changer un numéro de téléphone en Prenom Nom
                     if (isPhoneNumber(name)) {
                         contact = contactManager.getContactFromNumber(name)
                         if (contact != null)
@@ -117,7 +114,6 @@ class NotificationListener : NotificationListenerService() {
                     } else {
                         contact = contactManager.getContactWithName(name, app)
                     }
-                    //endregion
 
                     val notification = saveNotification(sbp, contactManager.getContactId(name))
                     if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName &&
@@ -128,7 +124,7 @@ class NotificationListener : NotificationListenerService() {
                             if (contact != null) {
                                 when (contact.contactDB!!.contactPriority) {
                                     2 -> {
-                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) { //get le message dans la DB et le cancel si c'est le meme
+                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                                             var i = 0
                                             val vipNotif = VipNotificationsDB(
                                                 null,
@@ -376,17 +372,16 @@ class NotificationListener : NotificationListenerService() {
         handler.postDelayed(object : Runnable {
             override fun run() {
                 canRingtone = true
-
-                val edit: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
-                edit.putBoolean("Can_RingTone", canRingtone)
-                edit.apply()
+                val edit = sharedAlarmNotifCanRingtonePreferences?.edit()
+                edit?.putBoolean("Can_RingTone", canRingtone)
+                edit?.apply()
 
                 handler.postDelayed(this, duration.toLong())
             }
         }, duration.toLong())
 
         if (appNotifiable(sbp) && popupViewSharedPreferences.getBoolean("popupNotif", false)) {
-            if(adapterNotification == null){
+            if (adapterNotification == null) {
                 val edit = popupViewSharedPreferences.edit()
                 edit.putBoolean("view", false)
                 edit.apply()
@@ -427,7 +422,6 @@ class NotificationListener : NotificationListenerService() {
         val popupContainer =
             popupView?.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
 
-        Log.i("displayLayout", "Passe par la 2")
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             notifLayout(sbp, popupView, idSound)
             windowManager?.addView(popupView, parameters) // affichage de la popupview
@@ -482,8 +476,7 @@ class NotificationListener : NotificationListenerService() {
                     applicationContext,
                     notifications,
                     windowManager!!,
-                    view,
-                    alarmSound
+                    view
                 )
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
                 edit.putBoolean("first_notif", false)
@@ -528,12 +521,11 @@ class NotificationListener : NotificationListenerService() {
             applicationContext,
             notifications,
             windowManager!!,
-            view!!,
-            alarmSound
+            view!!
         )
         notificationPopupRecyclerView?.adapter = adapterNotification
-        val itemTouchHelper =
-            ItemTouchHelper(SwipeToDeleteCallback(adapterNotification, alarmSound))
+
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
 
         val sharedAlarmNotifTonePreferences: SharedPreferences =
@@ -557,6 +549,11 @@ class NotificationListener : NotificationListenerService() {
         }
 
         if (notifications.size == 0) {
+            alarmSound?.stop()
+        }
+
+        Log.i("alarmTone", "2 ${adapterNotification?.isClose}")
+        if (adapterNotification?.isClose == true) {
             alarmSound?.stop()
         }
 
@@ -636,6 +633,8 @@ class NotificationListener : NotificationListenerService() {
         const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
         const val TELEGRAM_PACKAGE = "org.telegram.messenger"
         const val INSTAGRAM_PACKAGE = "com.instagram.android"
+
+        var alarmSound: MediaPlayer? = null
 
         @SuppressLint("StaticFieldLeak")
         var adapterNotification: NotifPopupRecyclerViewAdapter? = null

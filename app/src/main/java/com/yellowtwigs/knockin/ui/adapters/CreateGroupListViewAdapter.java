@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGroupListViewAdapter.ContactViewHolder>{
+public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroupListViewAdapter.ContactViewHolder> {
 
     private List<ContactWithAllInformation> listContacts;
     private View view;
@@ -92,14 +92,14 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
                 for (ContactWithAllInformation actualContact : listContact) {
                     if (actualContact.getContactId() == actContact.getId()) {
                         isContained = false;
-                        if (!contactMap.containsKey(position)){
+                        if (!contactMap.containsKey(position)) {
                             contactMap.put(position, positionOnBindViewHolder);
                             addedInMap = true;
                         }
                     }
                 }
                 if (isContained) {
-                    if (positionOnBindViewHolder != listContacts.size()-1)
+                    if (positionOnBindViewHolder != listContacts.size() - 1)
                         positionOnBindViewHolder = positionOnBindViewHolder + 1;
                     actContact = getItem(positionOnBindViewHolder).getContactDB();
                 }
@@ -141,20 +141,15 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
             Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
             holder.contactRoundedImageView.setImageBitmap(bitmap);
         } else {
-            //System.out.println(contact.getProfilePicture());
             holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
         }
         String contactName = contact.getFirstName() + " " + contact.getLastName();
 
         holder.contactFirstNameView.setText(contactName);
-        //
-        //
 
         if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(contactMap.get(position)))) {
-                holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+            holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
-
-        //((AddNewGroupActivity) context).listMultiSelectItemClick(position);
 
         View.OnClickListener listItemClick = v -> {
             if (listOfItemSelected.size() == 0 && len == 1 && holder.constraintLayoutMenu != null) {
@@ -196,14 +191,14 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
         if (holder.constraintLayout != null) {
             holder.constraintLayout.setOnClickListener(listItemClick);
         }
-        
+
         if (contact.getFavorite() == 1) {
             holder.listContactItemFavoriteShine.setVisibility(View.VISIBLE);
         } else {
             holder.listContactItemFavoriteShine.setVisibility(View.GONE);
         }
-        if (addedInMap && positionOnBindViewHolder != listContacts.size()-1)
-            positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
+        if (addedInMap && positionOnBindViewHolder != listContacts.size() - 1)
+            positionOnBindViewHolder = positionOnBindViewHolder + 1;
     }
 
     @Override

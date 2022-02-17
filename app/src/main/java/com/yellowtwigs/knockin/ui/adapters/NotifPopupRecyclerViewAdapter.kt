@@ -13,6 +13,7 @@ import android.net.Uri
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
+import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import java.util.*
 
 /**
@@ -44,14 +46,15 @@ class NotifPopupRecyclerViewAdapter(
     private val context: Context,
     private val notifications: ArrayList<StatusBarParcelable>,
     private val windowManager: WindowManager,
-    private val view: View,
-    private val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer?
-) : RecyclerView.Adapter<NotifPopupRecyclerViewAdapter.NotificationHistoryViewHolder>() {
+    private val view: View
+) : RecyclerView.Adapter<NotifPopupRecyclerViewAdapter.ViewHolder>() {
 
     private lateinit var mDbWorkerThread: DbWorkerThread
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private var numberForPermission = ""
+
+    var isClose = false
 
     private var thisParent: ViewGroup? = null
 
@@ -67,11 +70,11 @@ class NotifPopupRecyclerViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): NotificationHistoryViewHolder {
+    ): ViewHolder {
         thisParent = parent
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_notification_adapter, parent, false)
-        return NotificationHistoryViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemId(position: Int): Long {
@@ -91,7 +94,7 @@ class NotifPopupRecyclerViewAdapter(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: NotificationHistoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
 
@@ -113,7 +116,7 @@ class NotifPopupRecyclerViewAdapter(
             AppCompatResources.getDrawable(context, R.drawable.item_notif_adapter_top_bar)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
-        holder.appPlateform?.text = convertPackageToString(sbp.appNotifier!!, context)
+        holder.appPlatform?.text = convertPackageToString(sbp.appNotifier!!, context)
         holder.messageToSendEditText?.setText(listOftext[position])
 
         when (convertPackageToString(sbp.appNotifier!!, context)) {
@@ -146,7 +149,7 @@ class NotifPopupRecyclerViewAdapter(
             newMessage = false
         }
 
-        if (holder.appPlateform!!.text == "WhatsApp" || holder.appPlateform?.text == "Message") {
+        if (holder.appPlatform!!.text == "WhatsApp" || holder.appPlatform?.text == "Message") {
             holder.callButton?.visibility = View.VISIBLE
         }
 
@@ -156,7 +159,7 @@ class NotifPopupRecyclerViewAdapter(
 
         holder.goToAppButton?.setOnClickListener {
             closeNotificationPopup()
-            when (holder.appPlateform!!.text) {
+            when (holder.appPlatform!!.text) {
                 "Facebook" -> {
                     val uri = Uri.parse("facebook:/newsfeed")
                     val likeIng = Intent(Intent.ACTION_VIEW, uri)
@@ -218,7 +221,7 @@ class NotifPopupRecyclerViewAdapter(
         }
 
         holder.callButton?.setOnClickListener {
-            when (holder.appPlateform!!.text) {
+            when (holder.appPlatform!!.text) {
                 "WhatsApp" -> {
                     phoneCall(contact!!.getFirstPhoneNumber())
                     closeNotificationPopup()
@@ -335,7 +338,7 @@ class NotifPopupRecyclerViewAdapter(
 //                        }
                     }
                 }
-                holder.messageToSendEditText!!.setText("")
+                holder.messageToSendEditText?.setText("")
                 if (notifications.size > 1) {
                     notifications.removeAt(position)
                 } else {
@@ -357,9 +360,7 @@ class NotifPopupRecyclerViewAdapter(
                 lastChangedPosition = position
                 listOftext.removeAt(position)
                 listOftext.add(position, holder.messageToSendEditText!!.text.toString())
-                println("text change at$lastChanged at position $position")
             }
-
         })
         try {
             val pckManager = context.packageManager
@@ -420,7 +421,6 @@ class NotifPopupRecyclerViewAdapter(
     }
 
     private fun openWhatsapp(phoneNumber: String) {
-
         val intent = Intent(Intent.ACTION_VIEW)
         val message = "phone=" + converter06To33(phoneNumber)
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
@@ -433,12 +433,6 @@ class NotifPopupRecyclerViewAdapter(
         val i = Intent(Intent.ACTION_SENDTO, Uri.parse(message))
         i.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(i.putExtra("sms_body", msg))
-
-//        val smsManager = SmsManager.getDefault()
-//        smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
-//
-//        Toast.makeText(context, R.string.notif_adapter_message_sent,
-//                Toast.LENGTH_LONG).show()
     }
 
     private fun sendMail(mail: String, subject: String, msg: String) {
@@ -461,28 +455,17 @@ class NotifPopupRecyclerViewAdapter(
         context.startActivity(intent)
     }
 
-    private fun checkPermission(permission: String): Boolean {
-        val checkPermission = ContextCompat.checkSelfPermission(context, permission)
-        return checkPermission == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0].toString() == "0") {
-            val phoneNumberConvert = "+33" + phoneNumber.substring(0)
-            phoneNumberConvert
-        } else {
-            phoneNumber
-        }
-    }
-
     fun deleteItem(position: Int) {
         val mRecentlyDeletedItem = notifications[position]
         val contactsDatabase = ContactsRoomDatabase.getDatabase(context)
-        contactsDatabase!!.VipNotificationsDao()
-            .deleteVipNotificationsWithId(notifications[position].id.toString())
-        contactsDatabase.VipSbnDao().deleteSbnWithNotifId(notifications[position].id.toString())
+        contactsDatabase?.VipNotificationsDao()
+            ?.deleteVipNotificationsWithId(notifications[position].id.toString())
+        contactsDatabase?.VipSbnDao()?.deleteSbnWithNotifId(notifications[position].id.toString())
         notifications.remove(mRecentlyDeletedItem)
         notifyItemRemoved(position)
+
+        NotificationListener.alarmSound?.stop()
+
         if (notifications.size == 0) {
             closeNotificationPopup()
         }
@@ -490,7 +473,6 @@ class NotifPopupRecyclerViewAdapter(
 
     private fun closeNotificationPopup() {
         windowManager.removeView(view)
-        notification_alarm_NotificationMessagesAlarmSound?.stop()
         val sharedPreferences =
             context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
@@ -498,9 +480,8 @@ class NotifPopupRecyclerViewAdapter(
         edit.apply()
     }
 
-    class NotificationHistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        var appPlateform: TextView? = null
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var appPlatform: TextView? = null
         var notifContent: TextView? = null
         var appImageView: AppCompatImageView? = null
         var senderImageView: AppCompatImageView? = null
@@ -510,7 +491,7 @@ class NotifPopupRecyclerViewAdapter(
         var callButton: AppCompatButton? = null
 
         init {
-            appPlateform = view.findViewById(R.id.notification_adapter_platform)
+            appPlatform = view.findViewById(R.id.notification_adapter_platform)
             notifContent = view.findViewById(R.id.notification_adapter_content)
             appImageView = view.findViewById(R.id.notification_adapter_plateforme_img)
             senderImageView = view.findViewById(R.id.notification_adapter_sender_img)

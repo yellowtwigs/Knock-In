@@ -65,7 +65,6 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder = new ViewHolder();
         holder.position = position;
         final ContactDB contact = getItem(position).getContactDB();
-        System.out.print(contact);
 
         listview = layoutInflater.inflate(R.layout.list_contact_selected_with_channel, null);
 

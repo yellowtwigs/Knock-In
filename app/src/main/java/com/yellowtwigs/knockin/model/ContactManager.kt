@@ -1037,16 +1037,31 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             "message" -> {
                 return getContact(name)
             }
+            "Message" -> {
+                return getContact(name)
+            }
             "WhatsApp" -> {
+                return getContact(name)
+            }
+            "whatsApp" -> {
                 return getContact(name)
             }
             "gmail" -> {
                 return getContact(name)
             }
+            "Gmail" -> {
+                return getContact(name)
+            }
             "Outlook" -> {
                 return getContact(name)
             }
+            "outlook" -> {
+                return getContact(name)
+            }
             "Messenger" -> {
+                return getContact(name)
+            }
+            "messenger" -> {
                 return getContact(name)
             }
         }
