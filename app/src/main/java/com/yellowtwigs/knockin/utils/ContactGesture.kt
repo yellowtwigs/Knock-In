@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.utils.Converter.converter06To33
 
 /**
  * L'objet qui permet d'ouvrir messenger, whatsapp et gmail
@@ -52,12 +53,6 @@ object ContactGesture {
             Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
-    }
-
-    fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0] == '0') {
-            "+33$phoneNumber"
-        } else phoneNumber
     }
 
     fun sendMessageWithWhatsapp(phoneNumber: String, msg: String, activity: Activity) {

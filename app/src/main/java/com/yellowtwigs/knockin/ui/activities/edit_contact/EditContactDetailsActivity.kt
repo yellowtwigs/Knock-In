@@ -62,7 +62,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
-    private var gestionnaireContacts: ContactManager? = null
+    private var contactManager: ContactManager? = null
 
     private var edit_contact_ParentLayout: ConstraintLayout? = null
 
@@ -70,15 +70,15 @@ class EditContactDetailsActivity : AppCompatActivity() {
     private var edit_contact_LastName: TextInputLayout? = null
     private var edit_contact_PhoneNumber: TextInputLayout? = null
     private var edit_contact_FixNumber: TextInputLayout? = null
-    private var edit_contact_Mail: TextInputLayout? = null
     private var contact_vip_Settings: TextView? = null
-    private var edit_contact_vip_Settings: AppCompatImageView? = null
-    private var edit_contact_Mail_Name: TextInputLayout? = null
+    private var vipSettingsIcon: AppCompatImageView? = null
 
+    private var edit_contact_Mail: TextInputLayout? = null
+    private var edit_contact_Mail_Name: TextInputLayout? = null
     private var edit_contact_Mail_Identifier_Help: AppCompatImageView? = null
 
     private var edit_contact_RoundedImageView: CircularImageView? = null
-    private var edit_contact_Priority: Spinner? = null
+    private var prioritySpinner: Spinner? = null
     private var edit_contact_Priority_explain: TextView? = null
     private var edit_contact_Phone_Property: Spinner? = null
     private var edit_contact_Fix_Property: Spinner? = null
@@ -181,13 +181,12 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
         // Create the Intent, and get the data from the GridView
 
-        val intent = intent
         edit_contact_id = intent.getIntExtra("ContactId", 1)
         alarmTone = intent.getIntExtra("AlarmTone", 1)
         Log.i("alarmTone", "Notif Sound : $alarmTone")
         position = intent.getIntExtra("position", 0)
         fromGroupActivity = intent.getBooleanExtra("fromGroupActivity", false)
-        gestionnaireContacts = ContactManager(this.applicationContext)
+        contactManager = ContactManager(this.applicationContext)
 
         //endregion
 
@@ -197,7 +196,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
         edit_contact_FirstName = findViewById(R.id.edit_contact_first_name_id)
         edit_contact_LastName = findViewById(R.id.edit_contact_last_name_id)
         contact_vip_Settings = findViewById(R.id.contact_vip_settings)
-        edit_contact_vip_Settings = findViewById(R.id.edit_contact_vip_settings)
+        vipSettingsIcon = findViewById(R.id.edit_contact_vip_settings)
 
         edit_contact_PhoneNumber = findViewById(R.id.edit_contact_phone_number_id)
         edit_contact_FixNumber = findViewById(R.id.edit_contact_phone_number_fix_id)
@@ -207,7 +206,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 //        edit_contact_Messenger = findViewById(R.id.edit_contact_messenger_id_edit_text)
         edit_contact_Mail_Name = findViewById(R.id.edit_contact_mail_id_edit_text)
         edit_contact_Mail_Identifier_Help = findViewById(R.id.edit_contact_mail_id_help)
-        edit_contact_Priority = findViewById(R.id.edit_contact_priority)
+        prioritySpinner = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Fix_Property = findViewById(R.id.edit_contact_phone_number_spinner_fix)
         edit_contact_Priority_explain = findViewById(R.id.edit_contact_priority_explain)
@@ -267,7 +266,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
             edit_contact_last_name = contact.contactDB!!.lastName
             edit_contact_priority = contact.contactDB!!.contactPriority
             edit_contact_rounded_image =
-                gestionnaireContacts!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
+                contactManager!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
 
             edit_contact_mail_name = contact.contactDB!!.mail_name
 
@@ -317,13 +316,13 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-        edit_contact_FirstName!!.editText!!.setText(edit_contact_first_name)
-        edit_contact_LastName!!.editText!!.setText(edit_contact_last_name)
-        edit_contact_PhoneNumber!!.editText!!.setText(edit_contact_phone_number)
-        edit_contact_FixNumber!!.editText!!.setText(edit_contact_fix_number)
-        edit_contact_Mail!!.editText!!.setText(edit_contact_mail)
+        edit_contact_FirstName?.editText?.setText(edit_contact_first_name)
+        edit_contact_LastName?.editText?.setText(edit_contact_last_name)
+        edit_contact_PhoneNumber?.editText?.setText(edit_contact_phone_number)
+        edit_contact_FixNumber?.editText?.setText(edit_contact_fix_number)
+        edit_contact_Mail?.editText?.setText(edit_contact_mail)
 //        edit_contact_Messenger!!.editText!!.setText(edit_contact_messenger)
-        edit_contact_Mail_Name!!.editText!!.setText(edit_contact_mail_name)
+        edit_contact_Mail_Name?.editText?.setText(edit_contact_mail_name)
         edit_contact_Mail_Property!!.setSelection(
             getPosItemSpinner(
                 edit_contact_mail_property,
@@ -342,15 +341,11 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 edit_contact_Fix_Property!!
             )
         )
-        textChanged(edit_contact_FirstName, edit_contact_FirstName!!.editText!!.text?.toString())
-        textChanged(edit_contact_LastName, edit_contact_LastName!!.editText!!.text?.toString())
-        textChanged(
-            edit_contact_PhoneNumber,
-            edit_contact_PhoneNumber!!.editText!!.text?.toString()
-        )
-        textChanged(edit_contact_Mail, edit_contact_Mail!!.editText!!.text?.toString())
-//        textChanged(edit_contact_Messenger, edit_contact_Messenger!!.editText!!.text?.toString())
-        textChanged(edit_contact_Mail_Name, edit_contact_Mail_Name!!.editText!!.text?.toString())
+        textChanged(edit_contact_FirstName, edit_contact_FirstName?.editText?.text?.toString())
+        textChanged(edit_contact_LastName, edit_contact_LastName?.editText?.text?.toString())
+        textChanged(edit_contact_PhoneNumber, edit_contact_PhoneNumber?.editText?.text?.toString())
+        textChanged(edit_contact_Mail, edit_contact_Mail?.editText?.text?.toString())
+        textChanged(edit_contact_Mail_Name, edit_contact_Mail_Name?.editText?.text?.toString())
 
         //endregion
 
@@ -359,7 +354,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
         val contactList = ContactManager(this)
         val contact = contactList.getContactById(edit_contact_id!!)!!
 
-        if (contact.contactDB!!.favorite == 1) {
+        if (contact.contactDB?.favorite == 1) {
             edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
             edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
 
@@ -376,19 +371,43 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
         //endregion
 
+        if (intent.getBooleanExtra("hasChanged", false)) {
+            edit_contact_FirstName?.editText?.setText(intent.getStringExtra("FirstName"))
+            edit_contact_LastName?.editText?.setText(intent.getStringExtra("Lastname"))
+            edit_contact_PhoneNumber?.editText?.setText(intent.getStringExtra("PhoneNumber"))
+            edit_contact_FixNumber?.editText?.setText(intent.getStringExtra("FixNumber"))
+            edit_contact_Mail?.editText?.setText(intent.getStringExtra("Mail"))
+            edit_contact_Mail_Name?.editText?.setText(intent.getStringExtra("MailId"))
+
+            if (intent.getBooleanExtra("isFavorite", false)) {
+                edit_contact_RemoveContactFromFavorite?.visibility = View.VISIBLE
+                edit_contact_AddContactToFavorite?.visibility = View.INVISIBLE
+
+                isFavorite = true
+                isFavoriteChanged = true
+            } else if (contact.contactDB?.favorite == 0) {
+                edit_contact_AddContactToFavorite?.visibility = View.VISIBLE
+                edit_contact_RemoveContactFromFavorite?.visibility = View.INVISIBLE
+
+                isFavorite = false
+                isFavoriteChanged = false
+            }
+            intent.putExtra("isFavorite", intent.getBooleanExtra("isFavorite", false))
+
+            edit_contact_priority = 2
+        }
+
         //region ========================================== Tags ============================================
 
         val phoneTagList = resources.getStringArray(R.array.edit_contact_phone_number_arrays)
         val adapterPhoneTagList = ArrayAdapter(this, R.layout.spinner_item, phoneTagList)
-        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
 
         val mailTagList = resources.getStringArray(R.array.edit_contact_mail_arrays)
         val adapterMailTagList = ArrayAdapter(this, R.layout.spinner_item, mailTagList)
-        //array_adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
 
-        edit_contact_Mail_Property!!.adapter = adapterMailTagList
-        edit_contact_Phone_Property!!.adapter = adapterPhoneTagList
-        edit_contact_Fix_Property!!.adapter = adapterPhoneTagList
+        edit_contact_Mail_Property?.adapter = adapterMailTagList
+        edit_contact_Phone_Property?.adapter = adapterPhoneTagList
+        edit_contact_Fix_Property?.adapter = adapterPhoneTagList
 
         //endregion
 
@@ -398,9 +417,10 @@ class EditContactDetailsActivity : AppCompatActivity() {
             arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
         val priority_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
 
-        edit_contact_Priority?.adapter = priority_adapter
-        edit_contact_Priority?.setSelection(edit_contact_priority)
-        edit_contact_Priority?.onItemSelectedListener =
+        prioritySpinner?.adapter = priority_adapter
+        prioritySpinner?.setSelection(edit_contact_priority)
+        Log.i("Priority", "$edit_contact_priority")
+        prioritySpinner?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
@@ -428,9 +448,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 )
                             )
                             edit_contact_RoundedImageView?.visibility = View.VISIBLE
-                            edit_contact_vip_Settings?.visibility = View.GONE
+                            vipSettingsIcon?.visibility = View.GONE
                             contact_vip_Settings?.visibility = View.GONE
-
                         }
                         1 -> {
                             edit_contact_Priority_explain!!.text =
@@ -442,9 +461,9 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                     R.color.lightColor
                                 )
                             )
-                            edit_contact_RoundedImageView!!.visibility = View.VISIBLE
-                            edit_contact_vip_Settings!!.visibility = View.GONE
-                            contact_vip_Settings!!.visibility = View.GONE
+                            edit_contact_RoundedImageView?.visibility = View.VISIBLE
+                            vipSettingsIcon?.visibility = View.GONE
+                            contact_vip_Settings?.visibility = View.GONE
 
                         }
                         2 -> {
@@ -459,11 +478,11 @@ class EditContactDetailsActivity : AppCompatActivity() {
                             )
                             edit_contact_RoundedImageView?.visibility = View.VISIBLE
 
-                            edit_contact_vip_Settings?.isVisible = nb_Contacts_VIP <= 5
+                            vipSettingsIcon?.isVisible = nb_Contacts_VIP <= 5
                             contact_vip_Settings?.isVisible = nb_Contacts_VIP <= 5
 
                             if (nb_Contacts_VIP > 4 &&
-                                edit_contact_priority != edit_contact_Priority?.selectedItemPosition &&
+                                edit_contact_priority != prioritySpinner?.selectedItemPosition &&
                                 contactsUnlimitedIsBought == false
                             ) {
                                 MaterialAlertDialogBuilder(
@@ -487,7 +506,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                             }
 
                             if (nb_Contacts_VIP > 5 && contactsUnlimitedIsBought == true) {
-                                edit_contact_vip_Settings?.isVisible = true
+                                vipSettingsIcon?.isVisible = true
                                 contact_vip_Settings?.isVisible = true
                             }
                         }
@@ -499,22 +518,22 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
         //region ========================================== Groups ==========================================
 
-        val layoutMananger =
+        val layoutManager =
             LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        recyclerGroup!!.layoutManager = layoutMananger
+        recyclerGroup!!.layoutManager = layoutManager
         val executorService: ExecutorService = Executors.newFixedThreadPool(1)
         val callDbGroup = Callable {
-            edit_contact_ContactsDatabase!!.GroupsDao().getGroupForContact(edit_contact_id!!)
+            edit_contact_ContactsDatabase?.GroupsDao()?.getGroupForContact(edit_contact_id!!)
         }
         val resultGroup = executorService.submit(callDbGroup)
         val listGroup: ArrayList<GroupDB> = ArrayList()
-        listGroup.addAll(resultGroup.get())
+        resultGroup.get()?.let { listGroup.addAll(it) }
 
         val callDBContact =
             Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
         val resultContact = executorService.submit(callDBContact)
         val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
-        recyclerGroup!!.adapter = adapter
+        recyclerGroup?.adapter = adapter
 
         if (listGroup.size > 0) {
             edit_contact_GroupConstraintLayout!!.visibility = View.VISIBLE
@@ -524,11 +543,11 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
         //region ======================================== Listeners =========================================
 
-        edit_contact_Return!!.setOnClickListener {
+        edit_contact_Return?.setOnClickListener {
             onBackPressed()
         }
 
-        edit_contact_DeleteContact!!.setOnClickListener {
+        edit_contact_DeleteContact?.setOnClickListener {
 
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(getString(R.string.edit_contact_delete_contact))
@@ -555,36 +574,48 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 .show()
         }
 
-//        edit_contact_Mail_Identifier_Help!!.setOnClickListener {
-//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                    .setTitle(getString(R.string.add_new_contact_mail_identifier))
-//                    .setView(R.layout.alert_dialog_mail_identifier_help)
-//                    .setMessage(getString(R.string.add_new_contact_mail_identifier_help))
-//                    .show()
-//        }
-
-        edit_contact_vip_Settings!!.setOnClickListener {
-            val intent = Intent(this, VipSettingsActivity::class.java)
-            intent.putExtra("ContactId", contact.getContactId())
-            startActivity(intent)
+        vipSettingsIcon?.setOnClickListener {
+            if (checkIfADataWasChanged()) {
+                val intentToVipSettings = Intent(this, VipSettingsActivity::class.java)
+                intentToVipSettings.apply {
+                    putExtra("ContactId", contact.getContactId())
+                    putExtra("hasChanged", true)
+                    putExtra("FirstName", edit_contact_FirstName?.editText?.text.toString())
+                    putExtra("Lastname", edit_contact_LastName?.editText?.text.toString())
+                    putExtra("PhoneNumber", edit_contact_PhoneNumber?.editText?.text.toString())
+                    putExtra("FixNumber", edit_contact_FixNumber?.editText?.text.toString())
+                    putExtra("Mail", edit_contact_Mail?.editText?.text.toString())
+                    putExtra("MailId", edit_contact_Mail_Name?.editText?.text.toString())
+                    putExtra("Priority", prioritySpinner?.selectedItemPosition)
+                    putExtra("isFavorite", isFavorite)
+                    Log.i("Priority", "${prioritySpinner?.selectedItemPosition}")
+                }
+                startActivity(intentToVipSettings)
+            } else {
+                val intentToVipSettings = Intent(this, VipSettingsActivity::class.java)
+                intentToVipSettings.putExtra("ContactId", contact.getContactId())
+                intentToVipSettings.putExtra("hasChanged", false)
+                startActivity(intentToVipSettings)
+            }
         }
-        edit_contact_AddContactToFavorite!!.setOnClickListener {
+
+        edit_contact_AddContactToFavorite?.setOnClickListener {
             edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
             edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
 
             isFavorite = true
         }
 
-        edit_contact_RemoveContactFromFavorite!!.setOnClickListener {
-            edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
-            edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
+        edit_contact_RemoveContactFromFavorite?.setOnClickListener {
+            edit_contact_RemoveContactFromFavorite?.visibility = View.INVISIBLE
+            edit_contact_AddContactToFavorite?.visibility = View.VISIBLE
 
             isFavorite = false
         }
 
         edit_contact_Validate?.setOnClickListener {
             hideKeyboard()
-            if (edit_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
+            if (edit_contact_FirstName?.editText?.text.toString().isEmpty()) {
                 Toast.makeText(
                     this,
                     getString(R.string.add_new_contact_first_name_empty_field),
@@ -592,15 +623,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 ).show()
 
             } else {
-                if (edit_contact_FirstName!!.editText!!.text.toString() != edit_contact_first_name ||
-                    edit_contact_LastName!!.editText!!.text.toString() != edit_contact_last_name ||
-                    edit_contact_PhoneNumber!!.editText!!.text.toString() != edit_contact_phone_number ||
-                    edit_contact_FixNumber!!.editText!!.text.toString() != edit_contact_fix_number ||
-                    edit_contact_Mail!!.editText!!.text.toString() != edit_contact_mail ||
-                    isFavorite != isFavoriteChanged || edit_contact_imgStringChanged ||
-                    edit_contact_Mail_Name!!.editText!!.text.toString() != edit_contact_mail_name
-                ) {
-                    if (nb_Contacts_VIP > 4 && edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_Priority!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
+                if (checkIfADataWasChanged()) {
+                    if (nb_Contacts_VIP > 4 && edit_contact_priority != prioritySpinner!!.selectedItemPosition && prioritySpinner!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                             .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
                             .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
@@ -617,14 +641,14 @@ class EditContactDetailsActivity : AppCompatActivity() {
                             }
                             .show()
                     } else {
-                        if (edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_Priority!!.selectedItemPosition == 2) {
+                        if (edit_contact_priority != prioritySpinner!!.selectedItemPosition && prioritySpinner!!.selectedItemPosition == 2) {
                             val edit: SharedPreferences.Editor =
                                 sharedNumberOfContactsVIPPreferences.edit()
                             edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
                             edit.apply()
                         }
 
-                        if (edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_priority == 2) {
+                        if (edit_contact_priority != prioritySpinner!!.selectedItemPosition && edit_contact_priority == 2) {
                             val edit: SharedPreferences.Editor =
                                 sharedNumberOfContactsVIPPreferences.edit()
                             edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP - 1)
@@ -697,9 +721,9 @@ class EditContactDetailsActivity : AppCompatActivity() {
                             }
                             .show()
                     }
-                } else if (edit_contact_priority != edit_contact_Priority!!.selectedItemPosition) {
+                } else if (edit_contact_priority != prioritySpinner!!.selectedItemPosition) {
 
-                    if (nb_Contacts_VIP > 4 && edit_contact_Priority!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
+                    if (nb_Contacts_VIP > 4 && prioritySpinner!!.selectedItemPosition == 2 && contactsUnlimitedIsBought == false) {
                         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                             .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
                             .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
@@ -716,12 +740,12 @@ class EditContactDetailsActivity : AppCompatActivity() {
                             }
                             .show()
                     } else {
-                        if (edit_contact_Priority!!.selectedItemPosition == 2) {
+                        if (prioritySpinner!!.selectedItemPosition == 2) {
                             val edit: SharedPreferences.Editor =
                                 sharedNumberOfContactsVIPPreferences.edit()
                             edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
                             edit.apply()
-                        } else if (edit_contact_priority != edit_contact_Priority!!.selectedItemPosition && edit_contact_priority == 2) {
+                        } else if (edit_contact_priority != prioritySpinner!!.selectedItemPosition && edit_contact_priority == 2) {
                             val edit: SharedPreferences.Editor =
                                 sharedNumberOfContactsVIPPreferences.edit()
                             edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP - 1)
@@ -795,6 +819,17 @@ class EditContactDetailsActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
+
+    private fun checkIfADataWasChanged(): Boolean {
+        return edit_contact_FirstName?.editText?.text.toString() != edit_contact_first_name ||
+                edit_contact_LastName?.editText?.text.toString() != edit_contact_last_name ||
+                edit_contact_PhoneNumber?.editText?.text.toString() != edit_contact_phone_number ||
+                edit_contact_FixNumber?.editText?.text.toString() != edit_contact_fix_number ||
+                edit_contact_Mail?.editText?.text.toString() != edit_contact_mail ||
+                isFavorite != isFavoriteChanged || edit_contact_imgStringChanged ||
+                edit_contact_Mail_Name?.editText?.text.toString() != edit_contact_mail_name ||
+                prioritySpinner?.selectedItemPosition != edit_contact_priority
+    }
 
     fun editContactValidation() {
         val editContact = Runnable {
@@ -1006,7 +1041,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                         edit_contact_FirstName!!.editText!!.text.toString(),
                         edit_contact_LastName!!.editText!!.text.toString(),
                         edit_contact_imgString!!,
-                        edit_contact_Priority!!.selectedItemPosition,
+                        prioritySpinner!!.selectedItemPosition,
                         edit_contact_Mail_Name!!.editText!!.text.toString()
 
                     ) //edit contact rounded maybe not work
@@ -1017,7 +1052,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                         edit_contact_id!!.toInt(),
                         edit_contact_FirstName!!.editText!!.text.toString(),
                         edit_contact_LastName!!.editText!!.text.toString(),
-                        edit_contact_Priority!!.selectedItemPosition,
+                        prioritySpinner!!.selectedItemPosition,
                         edit_contact_Mail_Name!!.editText!!.text.toString()
                     )
                 }

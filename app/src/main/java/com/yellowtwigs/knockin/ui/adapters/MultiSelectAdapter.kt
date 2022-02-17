@@ -14,7 +14,7 @@ import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
 import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knockin.utils.ConvertBitmap.base64ToBitmap
+import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.spanNameTextView
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 

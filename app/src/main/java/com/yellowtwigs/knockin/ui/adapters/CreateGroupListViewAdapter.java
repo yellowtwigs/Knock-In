@@ -87,7 +87,6 @@ public class CreateGroupListViewAdapter extends  RecyclerView.Adapter<CreateGrou
         Boolean addedInMap = false;
         if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
             Boolean isContained = true;
-            System.out.println("......................................................ooooooooooooooooooooooooooooooooooooooo.");
             ContactDB actContact = getItem(positionOnBindViewHolder).getContactDB();
             while (isContained) {
                 for (ContactWithAllInformation actualContact : listContact) {

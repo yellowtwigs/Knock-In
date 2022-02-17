@@ -1033,7 +1033,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
 //endregion
 
     fun getContactWithName(name: String, platform: String): ContactWithAllInformation? {
-        println("test platform $platform test name $name")
         when (platform) {
             "message" -> {
                 return getContact(name)

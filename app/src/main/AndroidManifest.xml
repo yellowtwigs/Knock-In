@@ -55,13 +55,6 @@
                             <category android:name="android.intent.category.LAUNCHER" />
                         </intent-filter>
         </activity>
-        <activity
-            android:name=".controller.activity.bubbles.BubbleActivity"
-            android:allowEmbedded="true"
-            android:documentLaunchMode="always"
-            android:label="Reminder"
-            android:resizeableActivity="true"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".controller.activity.SettingsActivity" />
         <activity android:name=".controller.activity.firstLaunch.StartActivity"
             android:exported="true">
@@ -72,12 +65,6 @@
             <!--            </intent-filter>-->
         </activity>
         <activity android:name=".FirstLaunchActivity" />
-        <activity
-            android:name=".controller.BubbleActivity"
-            android:allowEmbedded="true"
-            android:documentLaunchMode="always"
-            android:launchMode="singleTop"
-            android:resizeableActivity="true" />
         <activity android:name=".controller.activity.group.AddNewGroupActivity" />
         <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
         <activity android:name=".controller.activity.group.AddContactToGroupActivity" />

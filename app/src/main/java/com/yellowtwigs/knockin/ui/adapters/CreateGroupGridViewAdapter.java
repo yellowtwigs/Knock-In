@@ -83,8 +83,6 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
-        System.out.println(parent.getClass());
-//        parentGrid = ((GridView) parent);
         CreateGroupGridViewAdapter.ViewHolder holder = new CreateGroupGridViewAdapter.ViewHolder(view);
 
         heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;

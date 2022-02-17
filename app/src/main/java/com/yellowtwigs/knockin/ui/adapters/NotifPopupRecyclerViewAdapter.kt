@@ -28,29 +28,27 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.BubbleActivity
 import com.yellowtwigs.knockin.controller.NotificationListener
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 import java.util.*
 
 /**
  * La Classe qui permet d'afficher les notifications prioritaires au milieu de l'écran
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
-class NotifPopupRecyclerViewAdapter(private val context: Context, private val notifications: ArrayList<StatusBarParcelable>, private val windowManager: WindowManager, private val view: View, private val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer?, private val isBubble: Boolean
+class NotifPopupRecyclerViewAdapter(
+    private val context: Context,
+    private val notifications: ArrayList<StatusBarParcelable>,
+    private val windowManager: WindowManager,
+    private val view: View,
+    private val notification_alarm_NotificationMessagesAlarmSound: MediaPlayer?
 ) : RecyclerView.Adapter<NotifPopupRecyclerViewAdapter.NotificationHistoryViewHolder>() {
 
-    /*private val TAG = NotificationListener::class.java.simpleName*/
-    private lateinit var notification_adapter_mDbWorkerThread: DbWorkerThread
-    private val FACEBOOK_PACKAGE = "com.facebook.katana"
-    private val MESSENGER_PACKAGE = "com.facebook.orca"
-    private val WHATSAPP_SERVICE = "com.whatsapp"
-    private val GMAIL_PACKAGE = "com.google.android.gm"
-    private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
-    private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+    private lateinit var mDbWorkerThread: DbWorkerThread
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private var numberForPermission = ""
@@ -62,20 +60,17 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     private var newMessage: Boolean = false
     private val listOftext: MutableList<String> = mutableListOf()
 
-//    private var mRecentlyDeletedItem = StatusBarParcelable
-//    private var mRecentlyDeletedItemPosition
-
     override fun getItemCount(): Int {
         return notifications.size
     }
 
-//    override fun getItem(position: Int): StatusBarParcelable {
-//        return notifications[position]
-//    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHistoryViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): NotificationHistoryViewHolder {
         thisParent = parent
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_notification_adapter, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_notification_adapter, parent, false)
         return NotificationHistoryViewHolder(view)
     }
 
@@ -97,8 +92,8 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NotificationHistoryViewHolder, position: Int) {
-        notification_adapter_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        notification_adapter_mDbWorkerThread.start()
+        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        mDbWorkerThread.start()
 
         if (listOftext.isEmpty()) {
             for (i in 1..notifications.size) {
@@ -110,37 +105,36 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
 
         val sbp = getItem(position)
 
-        val gestionnaireContacts = ContactManager(context)
-        val contact = gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"].toString())
+        val contactManager = ContactManager(context)
+        val contact =
+            contactManager.getContact(sbp.statusBarNotificationInfo["android.title"].toString())
 
-        val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.item_notif_adapter_top_bar)
+        val unwrappedDrawable =
+            AppCompatResources.getDrawable(context, R.drawable.item_notif_adapter_top_bar)
         val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
 
-        holder.appPlateform!!.text = convertPackageToString(sbp.appNotifier!!)
+        holder.appPlateform?.text = convertPackageToString(sbp.appNotifier!!, context)
+        holder.messageToSendEditText?.setText(listOftext[position])
 
-        holder.messageToSendEditText!!.setText(listOftext[position])
-        println("text content" + listOftext[position] + " message" + sbp.statusBarNotificationInfo["android.text"])
-
-        when (convertPackageToString(sbp.appNotifier!!)) {
+        when (convertPackageToString(sbp.appNotifier!!, context)) {
             "Gmail" -> {
-                holder.callButton!!.visibility = View.INVISIBLE
+                holder.callButton?.visibility = View.INVISIBLE
             }
             "Messenger" -> {
-                holder.callButton!!.visibility = View.INVISIBLE
-                holder.buttonSend!!.visibility = View.INVISIBLE
-                holder.messageToSendEditText!!.visibility = View.INVISIBLE
+                holder.callButton?.visibility = View.INVISIBLE
+                holder.buttonSend?.visibility = View.INVISIBLE
+                holder.messageToSendEditText?.visibility = View.INVISIBLE
             }
         }
 
         if (newMessage && System.currentTimeMillis() - NotificationListener.adapterNotification!!.getlastChangeMillis() <= 10000) {
-            println("last text changed")
             (thisParent!! as RecyclerView).post {
                 val thisParentRecyclerView = thisParent as RecyclerView
                 thisParentRecyclerView.requestFocusFromTouch()
                 thisParentRecyclerView.scrollToPosition(lastChangedPosition + 1)
                 thisParentRecyclerView.requestFocus()
             }
-            holder.messageToSendEditText!!.isFocusable = true
+            holder.messageToSendEditText?.isFocusable = true
             newMessage = false
         } else if (newMessage && System.currentTimeMillis() - NotificationListener.adapterNotification!!.getlastChangeMillis() > 10000) {
             (thisParent!! as RecyclerView).post {
@@ -152,14 +146,15 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
             newMessage = false
         }
 
-        if (holder.appPlateform!!.text == "WhatsApp" || holder.appPlateform!!.text == "Message") {
-            holder.callButton!!.visibility = View.VISIBLE
+        if (holder.appPlateform!!.text == "WhatsApp" || holder.appPlateform?.text == "Message") {
+            holder.callButton?.visibility = View.VISIBLE
         }
 
-        holder.notifContent!!.text = sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
+        holder.notifContent?.text =
+            sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
         //appImg.setImageResource(getApplicationNotifier(sbp));
 
-        holder.goToAppButton!!.setOnClickListener {
+        holder.goToAppButton?.setOnClickListener {
             closeNotificationPopup()
             when (holder.appPlateform!!.text) {
                 "Facebook" -> {
@@ -168,8 +163,12 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
                     try {
                         context.startActivity(likeIng)
                     } catch (e: ActivityNotFoundException) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://facebook.com/")))
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("http://facebook.com/")
+                            )
+                        )
                     }
                     closeNotificationPopup()
                 }
@@ -178,7 +177,8 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
                     if (contact.getMessengerID() != "") {
                         openMessenger(contact.getMessengerID())
                     } else {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/"))
+                        val intent =
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/"))
                         intent.flags = FLAG_ACTIVITY_NEW_TASK
                         context.startActivity(intent)
                     }
@@ -190,12 +190,19 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
                 "Gmail" -> {
                     val appIntent = Intent(Intent.ACTION_VIEW)
                     appIntent.flags = FLAG_ACTIVITY_NEW_TASK
-                    appIntent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail")
+                    appIntent.setClassName(
+                        "com.google.android.gm",
+                        "com.google.android.gm.ConversationListActivityGmail"
+                    )
                     try {
                         context.startActivity(appIntent)
                     } catch (e: ActivityNotFoundException) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://gmail.com/")))
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://gmail.com/")
+                            )
+                        )
                     }
                     closeNotificationPopup()
                 }
@@ -210,7 +217,7 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
             }
         }
 
-        holder.callButton!!.setOnClickListener {
+        holder.callButton?.setOnClickListener {
             when (holder.appPlateform!!.text) {
                 "WhatsApp" -> {
                     phoneCall(contact!!.getFirstPhoneNumber())
@@ -227,49 +234,93 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
             }
         }
 
-        when (convertPackageToString(sbp.appNotifier!!)) {
+        when (convertPackageToString(sbp.appNotifier!!, context)) {
             "Facebook" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_facebook, null))
+                DrawableCompat.setTint(
+                    wrappedDrawable,
+                    context.resources.getColor(
+                        R.color.custom_shape_top_bar_notif_adapter_facebook,
+                        null
+                    )
+                )
             }
             "Messenger" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_messenger, null))
+                DrawableCompat.setTint(
+                    wrappedDrawable,
+                    context.resources.getColor(
+                        R.color.custom_shape_top_bar_notif_adapter_messenger,
+                        null
+                    )
+                )
             }
             "WhatsApp" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_whatsapp, null))
+                DrawableCompat.setTint(
+                    wrappedDrawable,
+                    context.resources.getColor(
+                        R.color.custom_shape_top_bar_notif_adapter_whatsapp,
+                        null
+                    )
+                )
             }
             "Gmail" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.custom_shape_top_bar_notif_adapter_gmail, null))
+                DrawableCompat.setTint(
+                    wrappedDrawable,
+                    context.resources.getColor(
+                        R.color.custom_shape_top_bar_notif_adapter_gmail,
+                        null
+                    )
+                )
             }
             "Message" -> {
-                DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorPrimary, null))
+                DrawableCompat.setTint(
+                    wrappedDrawable,
+                    context.resources.getColor(R.color.colorPrimary, null)
+                )
             }
         }
 
-        holder.buttonSend!!.setOnClickListener {
+        holder.buttonSend?.setOnClickListener {
             if (holder.messageToSendEditText!!.text.toString() == "") {
                 Toast.makeText(context, R.string.notif_adapter, Toast.LENGTH_SHORT).show()
             } else {
 
-                when (convertPackageToString(sbp.appNotifier!!)) {
+                when (convertPackageToString(sbp.appNotifier!!, context)) {
                     "WhatsApp" -> {
-                        sendMessageWithWhatsapp(contact!!.getFirstPhoneNumber(), holder.messageToSendEditText!!.text.toString())
+                        sendMessageWithWhatsapp(
+                            contact!!.getFirstPhoneNumber(),
+                            holder.messageToSendEditText!!.text.toString()
+                        )
                         closeNotificationPopup()
                     }
                     "Gmail" -> {
                         closeNotificationPopup()
 
                         if (contact != null) {
-                            sendMail(contact.getFirstMail(), sbp.statusBarNotificationInfo["android.text"].toString(), holder.messageToSendEditText!!.text.toString())
+                            sendMail(
+                                contact.getFirstMail(),
+                                sbp.statusBarNotificationInfo["android.text"].toString(),
+                                holder.messageToSendEditText!!.text.toString()
+                            )
                         } else {
-                            sendMail("", sbp.statusBarNotificationInfo["android.text"].toString(), holder.messageToSendEditText!!.text.toString())
+                            sendMail(
+                                "",
+                                sbp.statusBarNotificationInfo["android.text"].toString(),
+                                holder.messageToSendEditText!!.text.toString()
+                            )
                         }
                     }
                     "Message" -> {
 //                        if (checkPermission(Manifest.permission.SEND_SMS)) {
                         if (contact != null) {
-                            sendMessageWithAndroidMessage(contact.getFirstPhoneNumber(), holder.messageToSendEditText!!.text.toString())
+                            sendMessageWithAndroidMessage(
+                                contact.getFirstPhoneNumber(),
+                                holder.messageToSendEditText!!.text.toString()
+                            )
                         } else {
-                            sendMessageWithAndroidMessage(sbp.statusBarNotificationInfo["android.title"].toString(), holder.messageToSendEditText!!.text.toString())
+                            sendMessageWithAndroidMessage(
+                                sbp.statusBarNotificationInfo["android.title"].toString(),
+                                holder.messageToSendEditText!!.text.toString()
+                            )
                         }
                         closeNotificationPopup()
 //                        } else {
@@ -310,9 +361,6 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
             }
 
         })
-        /* if (sbp.statusBarNotificationInfo["android.icon"] != null) {
-              val iconID = Integer.parseInt(sbp.statusBarNotificationInfo["android.icon"]!!.toString())
-          }*/
         try {
             val pckManager = context.packageManager
             val icon = pckManager.getApplicationIcon(sbp.appNotifier!!)
@@ -320,19 +368,21 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-
-        if (sbp.statusBarNotificationInfo["android.largeIcon"] != "" && sbp.statusBarNotificationInfo["android.largeIcon"] != null && !isBubble) {//image de l'expediteur provenant l'application source
-            println("bitmap :" + sbp.statusBarNotificationInfo["android.largeIcon"]!!)
-//            val bitmap = sbp.statusBarNotificationInfo["android.largeIcon"] as Bitmap?
-//            holder.senderImageView!!.setImageBitmap(bitmap)
-        }
     }
 
     //TODO Ask for the permission before call
     private fun phoneCall(phoneNumber: String) {
         if (!TextUtils.isEmpty(phoneNumber)) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.CALL_PHONE), MAKE_CALL_PERMISSION_REQUEST_CODE)
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    context as Activity,
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    MAKE_CALL_PERMISSION_REQUEST_CODE
+                )
                 numberForPermission = phoneNumber
             } else {
                 val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
@@ -345,7 +395,8 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
                 }
             }
         } else {
-            Toast.makeText(context, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -404,7 +455,8 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     }
 
     private fun openMessenger(messengerId: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$messengerId"))
+        val intent =
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$messengerId"))
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
@@ -426,7 +478,8 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     fun deleteItem(position: Int) {
         val mRecentlyDeletedItem = notifications[position]
         val contactsDatabase = ContactsRoomDatabase.getDatabase(context)
-        contactsDatabase!!.VipNotificationsDao().deleteVipNotificationsWithId(notifications[position].id.toString())
+        contactsDatabase!!.VipNotificationsDao()
+            .deleteVipNotificationsWithId(notifications[position].id.toString())
         contactsDatabase.VipSbnDao().deleteSbnWithNotifId(notifications[position].id.toString())
         notifications.remove(mRecentlyDeletedItem)
         notifyItemRemoved(position)
@@ -436,38 +489,13 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
     }
 
     private fun closeNotificationPopup() {
-        if (!isBubble) {
-            windowManager.removeView(view)
-            notification_alarm_NotificationMessagesAlarmSound?.stop()
-        } else {
-            val contactsDatabase = ContactsRoomDatabase.getDatabase(context)
-            val allVipNotif = contactsDatabase!!.VipNotificationsDao().getAllVipNotificationsById()
-            val activity: BubbleActivity = context as BubbleActivity
-            if (allVipNotif.isEmpty()) {
-                activity.closeBubble()
-            } else {
-                activity.reduceBubble()
-            }
-        }
-        val sharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        windowManager.removeView(view)
+        notification_alarm_NotificationMessagesAlarmSound?.stop()
+        val sharedPreferences =
+            context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         edit.putBoolean("view", false)
         edit.apply()
-    }
-
-    private fun convertPackageToString(packageName: String): String {
-        if (packageName == FACEBOOK_PACKAGE) {
-            return "Facebook"
-        } else if (packageName == MESSENGER_PACKAGE) {
-            return "Messenger"
-        } else if (packageName == WHATSAPP_SERVICE) {
-            return "WhatsApp"
-        } else if (packageName == GMAIL_PACKAGE) {
-            return "Gmail"
-        } else if (packageName == MESSAGE_PACKAGE || packageName == MESSAGE_SAMSUNG_PACKAGE) {
-            return "Message"
-        }
-        return ""
     }
 
     class NotificationHistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -493,28 +521,6 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
         }
     }
 
-//    private fun canResponse(packageName: String): Boolean {
-//        if ((checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) && (packageName == MESSAGE_PACKAGE || packageName == WHATSAPP_SERVICE || packageName == MESSAGE_SAMSUNG_PACKAGE)) {
-//            return true
-//        }
-//        return false
-//    }
-
-    /*private fun getApplicationNotifier(sbp: StatusBarParcelable): Int {
-
-        if ((sbp.appNotifier == FACEBOOK_PACKAGE || sbp.appNotifier == MESSENGER_PACKAGE)) {
-            return R.drawable.ic_facebook
-        } else if (sbp.appNotifier == GMAIL_PACKAGE) {
-            return R.drawable.ic_gmail
-        } else if (sbp.appNotifier == WHATSAPP_SERVICE) {
-            return R.drawable.ic_whatsapp_circle_menu
-        }
-        return R.drawable.ic_sms_selector
-    }*/
-
-
-    /////****** code dupliqué faire attention trouvé un moyen de ne plus en avoir *******//////
-
     fun addNotification(sbp: StatusBarParcelable) {
         if (!notifications.contains(sbp)) {
             notifications.add(0, sbp)
@@ -522,36 +528,6 @@ class NotifPopupRecyclerViewAdapter(private val context: Context, private val no
             this.notifyDataSetChanged()
         }
     }
-
-//    private fun getContactNameFromString(NameFromSbp: String): String {
-//        val pregMatchString: String = ".*\\([0-9]*\\)"
-//        if (NameFromSbp.matches(pregMatchString.toRegex())) {
-//            return NameFromSbp.substring(0, TextUtils.lastIndexOf(NameFromSbp, '(')).dropLast(1)
-//        } else {
-//            println("pregmatch fail$NameFromSbp")
-//            return NameFromSbp
-//        }
-//    }
-
-//    fun getContact(name: String, listContact: List<ContactDB>?): ContactDB? {
-//
-//        if (name.contains(" ")) {
-//            listContact!!.forEach { dbContact ->
-//
-//                //                println("contact "+dbContact+ "différent de name"+name)
-//                if (dbContact.firstName + " " + dbContact.lastName == name) {
-//                    return dbContact
-//                }
-//            }
-//        } else {
-//            listContact!!.forEach { dbContact ->
-//                if (dbContact.firstName == name && dbContact.lastName == "" || dbContact.firstName == "" && dbContact.lastName == name) {
-//                    return dbContact
-//                }
-//            }
-//        }
-//        return null
-//    }//TODO : trouver une place pour toutes les méthodes des contactList
 
     //endregion
 }
