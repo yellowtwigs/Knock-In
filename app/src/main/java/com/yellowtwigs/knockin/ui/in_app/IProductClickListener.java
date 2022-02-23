@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller;
+package com.yellowtwigs.knockin.ui.in_app;
 
 import android.view.View;
 

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters;
+package com.yellowtwigs.knockin.ui.contacts;
 
 import android.Manifest;
 import android.app.Activity;
@@ -31,15 +31,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.controller.CircularImageView;
+import com.yellowtwigs.knockin.ui.CircularImageView;
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity;
-import com.yellowtwigs.knockin.controller.activity.MainActivity;
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.utils.ContactGesture;
 import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
-import com.yellowtwigs.knockin.model.ModelDB.NotificationDB;
+import com.yellowtwigs.knockin.model.data.ContactDB;
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.model.data.NotificationDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 

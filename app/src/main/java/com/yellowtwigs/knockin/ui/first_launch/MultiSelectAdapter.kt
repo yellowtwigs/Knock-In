@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters
+package com.yellowtwigs.knockin.ui.first_launch
 
 import android.app.Activity
 import android.util.Log
@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.spanNameTextView
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage

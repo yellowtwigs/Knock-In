@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.notifications
+package com.yellowtwigs.knockin.ui.notifications.history
 
 import android.Manifest
 import android.content.*
@@ -49,6 +49,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 
 

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.activity.group
+package com.yellowtwigs.knockin.ui.group
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -32,13 +32,13 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import java.util.*
 
 /**

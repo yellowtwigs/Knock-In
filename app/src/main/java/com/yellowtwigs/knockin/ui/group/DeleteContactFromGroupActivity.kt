@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.activity.group
+package com.yellowtwigs.knockin.ui.group
 
 import android.content.Context
 import android.content.Intent
@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.ui.adapters.CreateGroupGridViewAdapter
-import com.yellowtwigs.knockin.ui.adapters.CreateGroupListViewAdapter
 import com.yellowtwigs.knockin.model.ContactManager
 
 /**
@@ -98,7 +96,13 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
 
         if (main_GridView!!.visibility != View.GONE) {
 
-            gridViewAdapter = CreateGroupGridViewAdapter(this, gestionnaireContacts!!, len, allContactInGroup)
+            gridViewAdapter =
+                CreateGroupGridViewAdapter(
+                    this,
+                    gestionnaireContacts!!,
+                    len,
+                    allContactInGroup
+                )
             main_GridView!!.adapter = gridViewAdapter
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.firstLaunch
+package com.yellowtwigs.knockin.ui.first_launch
 
 import android.Manifest
 import android.content.Context
@@ -18,8 +18,8 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
+import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.data.ContactDetailDB
 
 /**
  * Activité Qui Nous permet d'importer nos contact pour les buildVariant Contacter et Converser

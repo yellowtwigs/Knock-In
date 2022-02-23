@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.activities.edit_contact
+package com.yellowtwigs.knockin.ui.edit_contact
 
 import android.Manifest
 import android.content.Context
@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -18,11 +17,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.ManageNotificationActivity
-import com.yellowtwigs.knockin.controller.activity.PremiumActivity
+import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
 import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.ModelDB.*
 
 class VipSettingsActivity : AppCompatActivity() {
 
@@ -66,7 +64,7 @@ class VipSettingsActivity : AppCompatActivity() {
         alarmTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
-        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
+        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)

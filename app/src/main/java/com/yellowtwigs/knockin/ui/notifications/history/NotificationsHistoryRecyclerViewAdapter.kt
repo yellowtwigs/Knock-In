@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.notifications
+package com.yellowtwigs.knockin.ui.notifications.history
 
 import android.content.Context
 import android.content.pm.PackageManager

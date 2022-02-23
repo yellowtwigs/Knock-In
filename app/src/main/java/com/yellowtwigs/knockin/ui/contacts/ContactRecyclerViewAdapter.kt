@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters
+package com.yellowtwigs.knockin.ui.contacts
 
 import android.Manifest
 import android.app.Activity
@@ -27,13 +27,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
-import com.yellowtwigs.knockin.controller.activity.MainActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import java.sql.DriverManager
 import java.util.*
 

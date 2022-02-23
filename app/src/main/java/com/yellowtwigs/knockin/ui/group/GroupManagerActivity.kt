@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.activity.group
+package com.yellowtwigs.knockin.ui.group
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -23,17 +23,24 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.*
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.ModelDB.GroupWithContact
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.ui.adapters.MultiSelectAdapter
+import com.yellowtwigs.knockin.ui.CockpitActivity
+import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
+import com.yellowtwigs.knockin.ui.settings.SettingsActivity
+import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
+import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 
 /**
  * Activité qui nous affiche les groupes de contact sous forme de section
@@ -207,12 +214,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_home -> {
                     startActivity(Intent(this@GroupManagerActivity, MainActivity::class.java))
                 }
-                R.id.nav_informations -> startActivity(
-                    Intent(
-                        this@GroupManagerActivity,
-                        EditInformationsActivity::class.java
-                    )
-                )
                 R.id.nav_notif_config -> startActivity(
                     Intent(
                         this@GroupManagerActivity,
@@ -231,22 +232,12 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         SettingsActivity::class.java
                     )
                 )
-                R.id.nav_data_access -> {
-                }
                 R.id.nav_in_app -> startActivity(
                     Intent(
                         this@GroupManagerActivity,
                         PremiumActivity::class.java
                     )
                 )
-                R.id.nav_knockons -> startActivity(
-                    Intent(
-                        this@GroupManagerActivity,
-                        ManageKnockonsActivity::class.java
-                    )
-                )
-                R.id.nav_statistics -> {
-                }
                 R.id.nav_help -> startActivity(
                     Intent(
                         this@GroupManagerActivity,

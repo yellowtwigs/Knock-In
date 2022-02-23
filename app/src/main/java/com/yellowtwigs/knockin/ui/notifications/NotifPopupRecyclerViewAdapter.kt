@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters
+package com.yellowtwigs.knockin.ui.notifications
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -8,12 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.net.Uri
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +27,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.NotificationListener
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
@@ -158,6 +155,7 @@ class NotifPopupRecyclerViewAdapter(
         //appImg.setImageResource(getApplicationNotifier(sbp));
 
         holder.goToAppButton?.setOnClickListener {
+            NotificationListener.alarmSound?.stop()
             closeNotificationPopup()
             when (holder.appPlatform!!.text) {
                 "Facebook" -> {
@@ -221,6 +219,7 @@ class NotifPopupRecyclerViewAdapter(
         }
 
         holder.callButton?.setOnClickListener {
+            NotificationListener.alarmSound?.stop()
             when (holder.appPlatform!!.text) {
                 "WhatsApp" -> {
                     phoneCall(contact!!.getFirstPhoneNumber())
@@ -283,6 +282,7 @@ class NotifPopupRecyclerViewAdapter(
         }
 
         holder.buttonSend?.setOnClickListener {
+            NotificationListener.alarmSound?.stop()
             if (holder.messageToSendEditText!!.text.toString() == "") {
                 Toast.makeText(context, R.string.notif_adapter, Toast.LENGTH_SHORT).show()
             } else {
@@ -348,6 +348,7 @@ class NotifPopupRecyclerViewAdapter(
             }
 
         }
+
         holder.messageToSendEditText!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -360,6 +361,7 @@ class NotifPopupRecyclerViewAdapter(
                 lastChangedPosition = position
                 listOftext.removeAt(position)
                 listOftext.add(position, holder.messageToSendEditText!!.text.toString())
+                NotificationListener.alarmSound?.stop()
             }
         })
         try {
@@ -371,7 +373,6 @@ class NotifPopupRecyclerViewAdapter(
         }
     }
 
-    //TODO Ask for the permission before call
     private fun phoneCall(phoneNumber: String) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             if (ContextCompat.checkSelfPermission(

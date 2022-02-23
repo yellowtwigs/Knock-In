@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters;
+package com.yellowtwigs.knockin.ui.contacts;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,9 +16,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.controller.CircularImageView;
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knockin.ui.CircularImageView;
+import com.yellowtwigs.knockin.model.data.ContactDB;
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;

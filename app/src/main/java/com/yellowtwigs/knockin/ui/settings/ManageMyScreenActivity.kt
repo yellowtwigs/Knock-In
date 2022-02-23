@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui
+package com.yellowtwigs.knockin.ui.settings
 
 import android.content.Context
 import android.content.Intent
@@ -19,9 +19,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.notifications.ManageNotificationActivity
 
 /**
  * La Classe qui permet de changer le theme de l'application et de changer le nombre de contact par ligne

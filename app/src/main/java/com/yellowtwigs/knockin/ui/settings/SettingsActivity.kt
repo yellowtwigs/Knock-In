@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui
+package com.yellowtwigs.knockin.ui.settings
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,9 +20,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.notifications.ManageNotificationActivity
 
 class SettingsActivity : AppCompatActivity() {
 

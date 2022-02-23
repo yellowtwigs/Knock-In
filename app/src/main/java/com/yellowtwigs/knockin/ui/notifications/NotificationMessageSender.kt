@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller
+package com.yellowtwigs.knockin.ui.notifications
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -10,10 +10,8 @@ import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.MainActivity
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import java.util.*
 
 class NotificationMessageSender : BroadcastReceiver() {
     @SuppressLint("ObsoleteSdkInt")

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model.ModelDB
+package com.yellowtwigs.knockin.model.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

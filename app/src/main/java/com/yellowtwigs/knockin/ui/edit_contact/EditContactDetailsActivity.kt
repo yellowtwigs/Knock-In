@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.activities.edit_contact
+package com.yellowtwigs.knockin.ui.edit_contact
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -40,14 +40,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.ui.adapters.ContactIconeAdapter
-import com.yellowtwigs.knockin.controller.GroupEditAdapter
-import com.yellowtwigs.knockin.controller.activity.MainActivity
-import com.yellowtwigs.knockin.controller.activity.PremiumActivity
-import com.yellowtwigs.knockin.controller.activity.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.group.GroupEditAdapter
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.ModelDB.*
+import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
@@ -531,7 +530,11 @@ class EditContactDetailsActivity : AppCompatActivity() {
         val callDBContact =
             Callable { edit_contact_ContactsDatabase!!.contactsDao().getContact(edit_contact_id!!) }
         val resultContact = executorService.submit(callDBContact)
-        val adapter = GroupEditAdapter(this, listGroup, resultContact.get())
+        val adapter = GroupEditAdapter(
+            this,
+            listGroup,
+            resultContact.get()
+        )
         recyclerGroup?.adapter = adapter
 
         if (listGroup.size > 0) {

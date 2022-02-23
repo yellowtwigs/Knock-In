@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller
+package com.yellowtwigs.knockin.ui.notifications
 
 import com.yellowtwigs.knockin.ui.notifications.NotifPopupRecyclerViewAdapter
 import androidx.recyclerview.widget.ItemTouchHelper

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller
+package com.yellowtwigs.knockin.ui.notifications
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -6,10 +6,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.PixelFormat
-import android.graphics.drawable.Icon
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -20,25 +17,20 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.MainActivity
-import com.yellowtwigs.knockin.controller.activity.NotificationAlarmActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.ModelDB.NotificationDB
-import com.yellowtwigs.knockin.model.ModelDB.VipNotificationsDB
-import com.yellowtwigs.knockin.model.ModelDB.VipSbnDB
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.model.data.VipNotificationsDB
+import com.yellowtwigs.knockin.model.data.VipSbnDB
 import com.yellowtwigs.knockin.model.StatusBarParcelable
-import com.yellowtwigs.knockin.ui.adapters.NotifPopupRecyclerViewAdapter
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 
 /**
@@ -113,8 +105,6 @@ class NotificationListener : NotificationListenerService() {
                             sbp.changeToContactName(contact)
                     } else {
                         contact = contactManager.getContactWithName(name, app)
-
-                        Log.i("AlertSound", "$contact")
                     }
 
                     val notification = saveNotification(sbp, contactManager.getContactId(name))
@@ -581,7 +571,6 @@ class NotificationListener : NotificationListenerService() {
     }
 
     fun alertNotificationTone(sound: Int) {
-        Log.i("AlertSound", "1 : $sound")
         alarmSound?.stop()
         alarmSound = MediaPlayer.create(this, sound)
         alarmSound?.start()

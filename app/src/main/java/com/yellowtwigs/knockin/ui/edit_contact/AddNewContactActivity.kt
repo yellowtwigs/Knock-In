@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.activities.edit_contact
+package com.yellowtwigs.knockin.ui.edit_contact
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -26,18 +26,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.*
-import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.ui.adapters.ContactIconeAdapter
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
-import com.yellowtwigs.knockin.model.ModelDB.ContactDetailDB
-import com.yellowtwigs.knockin.model.ModelDB.GroupDB
-import com.yellowtwigs.knockin.model.ModelDB.LinkContactGroup
+import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.data.ContactDetailDB
+import com.yellowtwigs.knockin.model.data.GroupDB
+import com.yellowtwigs.knockin.model.data.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.controller.activity.MainActivity
-import com.yellowtwigs.knockin.controller.activity.PremiumActivity
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import java.io.ByteArrayOutputStream
 
 /**

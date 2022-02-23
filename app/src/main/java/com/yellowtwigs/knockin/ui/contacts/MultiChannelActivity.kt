@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.activity
+package com.yellowtwigs.knockin.ui.contacts
 
 import android.content.Context
 import android.content.Intent
@@ -13,10 +13,9 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.adapters.ContactListViewAdapter
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 
 class MultiChannelActivity : AppCompatActivity() {
 

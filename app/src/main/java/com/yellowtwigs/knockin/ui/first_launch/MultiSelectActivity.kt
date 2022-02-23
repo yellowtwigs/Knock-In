@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.firstLaunch
+package com.yellowtwigs.knockin.ui.first_launch
 
 import android.content.Context
 import android.content.Intent
@@ -13,11 +13,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.adapters.MultiSelectAdapter
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.controller.CircularImageView
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding

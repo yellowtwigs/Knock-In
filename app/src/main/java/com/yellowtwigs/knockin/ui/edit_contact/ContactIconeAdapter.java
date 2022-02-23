@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters;
+package com.yellowtwigs.knockin.ui.edit_contact;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,8 +15,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity;
-import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity;
 
 public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapter.ViewHolder> {
 

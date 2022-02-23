@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters
+package com.yellowtwigs.knockin.ui.in_app
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -13,10 +13,7 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.SkuDetails
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.IProductClickListener
-import com.yellowtwigs.knockin.controller.activity.PremiumActivity
 import com.yellowtwigs.knockin.databinding.LayoutProductItemBinding
-import com.yellowtwigs.knockin.utils.ContactGesture
 
 class MyProductAdapter(
     private val cxt: PremiumActivity, private val billingClient: BillingClient
@@ -34,7 +31,8 @@ class MyProductAdapter(
     }
 
     inner class ViewHolder(private val binding: LayoutProductItemBinding) :
-        RecyclerView.ViewHolder(binding.root), IProductClickListener {
+        RecyclerView.ViewHolder(binding.root),
+        IProductClickListener {
         var iProductClickListener: IProductClickListener? = null
 
         @JvmName("setIProductClickListener1")

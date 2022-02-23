@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller
+package com.yellowtwigs.knockin.ui.notifications
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -6,7 +6,7 @@ import android.content.*
 
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.activity.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils

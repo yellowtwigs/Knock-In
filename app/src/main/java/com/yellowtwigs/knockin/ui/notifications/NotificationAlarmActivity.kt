@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.controller.activity
+package com.yellowtwigs.knockin.ui.notifications
 
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
-import android.util.Log
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView

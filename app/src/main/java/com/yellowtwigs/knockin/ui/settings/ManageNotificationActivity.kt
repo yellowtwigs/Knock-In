@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.notifications
+package com.yellowtwigs.knockin.ui.settings
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -26,10 +26,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.SettingsActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import java.util.*
 
 /**

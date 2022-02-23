@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.adapters;
+package com.yellowtwigs.knockin.ui.group;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,13 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.ui.group.AddContactToGroupActivity;
-import com.yellowtwigs.knockin.ui.group.AddNewGroupActivity;
-import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB;
-import com.yellowtwigs.knockin.model.ModelDB.ContactWithAllInformation;
+import com.yellowtwigs.knockin.model.data.ContactDB;
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
