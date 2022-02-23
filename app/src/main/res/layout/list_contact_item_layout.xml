@@ -51,7 +51,7 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_star_shine" />
 
-        <com.yellowtwigs.knockin.controller.CircularImageView
+        <com.yellowtwigs.knockin.ui.CircularImageView
             android:id="@+id/list_contact_item_contactRoundedImageView"
             android:layout_width="48dp"
             android:layout_height="48dp"

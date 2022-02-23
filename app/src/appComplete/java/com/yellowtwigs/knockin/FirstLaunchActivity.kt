@@ -2,7 +2,6 @@ package com.yellowtwigs.knockin
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
@@ -10,8 +9,8 @@ import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.yellowtwigs.knockin.controller.activity.MainActivity
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.StartActivity
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.first_launch.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
 

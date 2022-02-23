@@ -9,7 +9,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schemas.android.com/tools ">
 
-    <com.yellowtwigs.knockin.controller.CircularImageView
+    <com.yellowtwigs.knockin.ui.CircularImageView
         android:id="@+id/item_message_received_profile_image"
         android:layout_width="32dp"
         android:layout_height="32dp"

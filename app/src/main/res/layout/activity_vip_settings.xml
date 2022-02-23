@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
     android:orientation="vertical"
-    tools:context=".ui.activities.edit_contact.VipSettingsActivity">
+    tools:context=".ui.edit_contact.VipSettingsActivity">
 
     <RelativeLayout
         android:id="@+id/toolbar"

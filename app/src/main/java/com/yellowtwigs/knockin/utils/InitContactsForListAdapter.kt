@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.controller.CircularImageView
-import com.yellowtwigs.knockin.model.ModelDB.ContactDB
+import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.model.data.ContactDB
 
 object InitContactsForListAdapter {
 

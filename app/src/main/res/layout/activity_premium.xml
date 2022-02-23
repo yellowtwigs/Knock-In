@@ -122,7 +122,7 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer_layout">
+        app:menu="@menu/menu_left_drawer">
 
         <include layout="@layout/nav_bottom_drawer" />
 

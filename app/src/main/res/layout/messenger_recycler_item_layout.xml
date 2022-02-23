@@ -23,7 +23,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true">
 
-            <com.yellowtwigs.knockin.controller.CircularImageView
+            <com.yellowtwigs.knockin.ui.CircularImageView
                 android:id="@+id/messenger_recycler_item_contact_image"
                 android:layout_width="45dp"
                 android:layout_height="45dp"

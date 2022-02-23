@@ -14,7 +14,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".ui.activities.edit_contact.EditContactDetailsActivity">
+        tools:context=".ui.edit_contact.EditContactDetailsActivity">
 
         <RelativeLayout
             android:id="@+id/edit_contact_toolbar"
@@ -93,7 +93,7 @@
             android:background="?attr/darkGreyColor"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_toolbar" />
 
-        <com.yellowtwigs.knockin.controller.CircularImageView
+        <com.yellowtwigs.knockin.ui.CircularImageView
             android:id="@+id/edit_contact_rounded_image_view_id"
             android:layout_width="@dimen/rounded_image_view_height_width"
             android:layout_height="@dimen/rounded_image_view_height_width"

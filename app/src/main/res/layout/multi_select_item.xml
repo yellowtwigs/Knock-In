@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true">
 
-    <com.yellowtwigs.knockin.controller.CircularImageView
+    <com.yellowtwigs.knockin.ui.CircularImageView
         android:id="@+id/contact_image"
         android:layout_width="80dp"
         android:layout_height="80dp"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
-    tools:context=".controller.activity.MultiChannelActivity">
+    tools:context=".ui.contacts.MultiChannelActivity">
 
     <ListView
         android:id="@+id/multi_channel_list_of_contacts_selected"

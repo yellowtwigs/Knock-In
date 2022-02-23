@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_background"
-    tools:context=".controller.activity.NotificationAlarmActivity"
+    tools:context=".ui.notifications.NotificationAlarmActivity"
     tools:ignore="PrivateResource">
 
     <!-- android:background="@drawable/space_background" -->

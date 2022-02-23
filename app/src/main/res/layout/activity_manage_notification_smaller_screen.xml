@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible"
-            tools:context=".controller.activity.ManageNotificationActivity">
+            tools:context=".ui.settings.ManageNotificationActivity">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -210,7 +210,7 @@
         app:headerLayout="@layout/nav_header_drawer_smaller_screen"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer_layout"
+        app:menu="@menu/menu_left_drawer"
         app:theme="@style/NavigationViewSmallerScreenStyle">
 
         <RelativeLayout

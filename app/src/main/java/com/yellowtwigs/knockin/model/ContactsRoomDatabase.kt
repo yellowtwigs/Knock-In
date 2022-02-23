@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
-import com.yellowtwigs.knockin.model.ModelDB.*
-import com.yellowtwigs.knockin.model.requestDB.*
+import com.yellowtwigs.knockin.model.data.*
+import com.yellowtwigs.knockin.model.dao.*
 
 /**
  * La Classe qui permet de créer la base de données et de la garder à jour
@@ -26,7 +26,6 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: ContactsRoomDatabase? = null
 
-        //creation de la base de données
         fun getDatabase(context: Context): ContactsRoomDatabase? {
             if (INSTANCE != null) {
                 return INSTANCE
@@ -157,9 +156,5 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN notification_Sound INTEGER DEFAULT 0 NOT NULL")
             }
         }
-
-        /*fun destroyInstance() {
-            INSTANCE = null
-        }*/
     }
 }

@@ -43,11 +43,11 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.activities.edit_contact.EditContactActivity"
+            android:name="com.yellowtwigs.knockin.ui.edit_contact.EditContactActivity"
             android:exported="false" />
-        <activity android:name=".ui.activities.edit_contact.VipSettingsActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.edit_contact.VipSettingsActivity" />
         <activity
-            android:name=".controller.activity.SplashScreenActivity"
+            android:name=".ui.SplashScreenActivity"
             android:exported="true">
                         <intent-filter>
                             <action android:name="android.intent.action.MAIN" />
@@ -55,8 +55,8 @@
                             <category android:name="android.intent.category.LAUNCHER" />
                         </intent-filter>
         </activity>
-        <activity android:name=".controller.activity.SettingsActivity" />
-        <activity android:name=".controller.activity.firstLaunch.StartActivity"
+        <activity android:name=".ui.settings.SettingsActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.first_launch.StartActivity"
             android:exported="true">
 <!--            <intent-filter>-->
             <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -65,31 +65,31 @@
             <!--            </intent-filter>-->
         </activity>
         <activity android:name=".FirstLaunchActivity" />
-        <activity android:name=".controller.activity.group.AddNewGroupActivity" />
-        <activity android:name=".controller.activity.group.DeleteContactFromGroupActivity" />
-        <activity android:name=".controller.activity.group.AddContactToGroupActivity" />
-        <activity android:name=".controller.activity.MultiChannelActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.group.AddNewGroupActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.group.AddContactToGroupActivity" />
+        <activity android:name=".ui.contacts.MultiChannelActivity" />
         <activity
-            android:name=".controller.activity.NotificationAlarmActivity"
+            android:name=".ui.notifications.NotificationAlarmActivity"
             android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
-        <activity android:name=".controller.activity.firstLaunch.MultiSelectActivity" />
-        <activity android:name=".controller.activity.group.GroupManagerActivity" />
-        <activity android:name=".controller.activity.firstLaunch.ImportContactsActivity" />
-        <activity android:name=".controller.activity.CockpitActivity" />
-        <activity android:name=".controller.activity.HelpActivity" />
-        <activity android:name=".controller.activity.ManageMyScreenActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.group.GroupManagerActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.first_launch.ImportContactsActivity" />
+        <activity android:name=".ui.CockpitActivity" />
+        <activity android:name=".ui.HelpActivity" />
+        <activity android:name=".ui.settings.ManageMyScreenActivity" />
         <activity android:name=".controller.activity.EditInformationsActivity" />
-        <activity android:name=".controller.activity.ManageNotificationActivity" />
-        <activity android:name=".controller.activity.NotificationHistoryActivity" />
+        <activity android:name=".ui.settings.ManageNotificationActivity" />
+        <activity android:name=".ui.notifications.history.NotificationHistoryActivity" />
         <activity
-            android:name=".ui.activities.edit_contact.AddNewContactActivity"
+            android:name="com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".ui.activities.edit_contact.EditContactDetailsActivity"
+            android:name="com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".controller.activity.MainActivity"
+            android:name=".ui.contacts.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden" />
@@ -111,17 +111,17 @@
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.activity.PremiumActivity" />
+        <activity android:name=".ui.in_app.PremiumActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <receiver android:name=".controller.NotificationSender" />
-        <receiver android:name=".controller.NotificationMessageSender" />
+        <receiver android:name=".ui.notifications.NotificationSender" />
+        <receiver android:name=".ui.notifications.NotificationMessageSender" />
 
         <service
-            android:name=".controller.NotificationListener"
+            android:name=".ui.notifications.NotificationListener"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
