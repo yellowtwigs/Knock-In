@@ -20,7 +20,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
-import com.yellowtwigs.knockin.model.*
+import com.yellowtwigs.knockin.models.*
 
 class VipSettingsActivity : AppCompatActivity() {
 
@@ -80,11 +80,11 @@ class VipSettingsActivity : AppCompatActivity() {
 
         //endregion
 
-        val contactName = "${contact?.contactDB?.firstName} ${contact?.contactDB?.lastName}"
+        val contactName = "${contact?.contact?.firstName} ${contact?.contact?.lastName}"
         binding.contactName.text = contactName
 
-        if (contact?.contactDB?.notificationSound != null) {
-            numberDefault = contact.contactDB?.notificationSound!!
+        if (contact?.contact?.notificationSound != null) {
+            numberDefault = contact.contact?.notificationSound!!
         }
 
         refreshChecked()

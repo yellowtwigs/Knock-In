@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.spanNameTextView
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
@@ -50,7 +49,7 @@ class MultiSelectAdapter(
         fun onBind(contactWithAllInformation: ContactWithAllInformation, position: Int) {
             Log.i("testScroll", "$listContactSelect")
             binding.apply {
-                val contact = contactWithAllInformation.contactDB
+                val contact = contactWithAllInformation.contact
                 if (contact != null)
                     spanNameTextView(
                         contact.firstName,
@@ -69,7 +68,7 @@ class MultiSelectAdapter(
                 root.setOnClickListener {
                     onClicked(position)
 
-                    if (cxt is MainActivity || cxt is GroupManagerActivity) {
+                    if (cxt is ContactListActivity || cxt is GroupManagerActivity) {
                         if (listContactSelect.contains(contactWithAllInformation)) {
                             contactImage.setImageResource(R.drawable.ic_item_selected)
                         } else {
@@ -113,7 +112,7 @@ class MultiSelectAdapter(
             oldItem: ContactWithAllInformation,
             newItem: ContactWithAllInformation
         ): Boolean {
-            return oldItem.contactDB == newItem.contactDB &&
+            return oldItem.contact == newItem.contact &&
                     oldItem.contactDetailList == newItem.contactDetailList
         }
     }

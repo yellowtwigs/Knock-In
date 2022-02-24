@@ -6,12 +6,12 @@ import android.content.*
 
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.DbWorkerThread
 import java.util.*
 
 class NotificationSender : BroadcastReceiver() {
@@ -34,11 +34,11 @@ class NotificationSender : BroadcastReceiver() {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         if (!isNotificationServiceEnabled(context) && sharedPreferences.getBoolean("reminder",false)) {
 
-            val main_ContactsDatabase: ContactsRoomDatabase?
+            val main_ContactsDatabase: AppDatabase?
             lateinit var main_mDbWorkerThread: DbWorkerThread
             main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
             main_mDbWorkerThread.start()
-            main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
+            main_ContactsDatabase = AppDatabase.getDatabase(context)
             val runnableSendNotif = Runnable {
                 val list = main_ContactsDatabase!!.notificationsDao().getAllNotifications()
                 val calendar = GregorianCalendar()
@@ -91,7 +91,7 @@ class NotificationSender : BroadcastReceiver() {
     }
 
     private fun isNotificationServiceEnabled(context: Context): Boolean {
-        val pkgName = MainActivity::class.java.`package`!!.name
+        val pkgName = ContactListActivity::class.java.`package`!!.name
         val str = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
         if (!TextUtils.isEmpty(str)) {
             val names = str.split(":")

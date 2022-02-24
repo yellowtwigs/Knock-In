@@ -14,12 +14,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.data.Contact
+import com.yellowtwigs.knockin.models.data.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.models.ContactManager
 
 /**
  * Activité qui nous permet d'ajouter des contacts a un groupe précis
@@ -27,7 +26,7 @@ import com.yellowtwigs.knockin.model.ContactManager
  */
 class AddContactToGroupActivity : AppCompatActivity() {
 
-    private var contactsDatabase: ContactsRoomDatabase? = null
+    private var contactsDatabase: AppDatabase? = null
     private var addContactToGroupListView: ListView? = null
     private var addContactToGroupAdapter: AddContactToGroupAdapter? = null
 
@@ -37,7 +36,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
     private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
     private var gestionnaireContacts: ContactManager? = null
 
-    private val selectContact: MutableList<ContactDB>? = mutableListOf()
+    private val selectContact: MutableList<Contact>? = mutableListOf()
     private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var groupId: Int = 0
@@ -64,7 +63,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
         main_GridView = findViewById(R.id.add_contact_to_group_grid_view_id)
         main_RecyclerView = findViewById(R.id.add_contact_to_group_recycler_view_id)
 
-        contactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        contactsDatabase = AppDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 
@@ -155,10 +154,10 @@ class AddContactToGroupActivity : AppCompatActivity() {
     fun multiSelectItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
+            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contact!!)
         } else {
             listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+            selectContact!!.add(gestionnaireContacts!!.contactList[position].contact!!)
         }
     }
 
@@ -191,7 +190,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
      * @param listContact [List<ContactDB>]
      * @param groupId [Int]
      */
-    private fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
+    private fun addToGroup(listContact: List<Contact>, groupId: Int) {
         if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
             addToFavorite()
         }
@@ -230,7 +229,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
         val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
         allContact.forEach { all ->
             groupMember.forEach {
-                if (all.contactDB!!.id == it.contactDB!!.id) {
+                if (all.contactDB!!.id == it.contact!!.id) {
                     allInGroup.add(all)
                 }
             }

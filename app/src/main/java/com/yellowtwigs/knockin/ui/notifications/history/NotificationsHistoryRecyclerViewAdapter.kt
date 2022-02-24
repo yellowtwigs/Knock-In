@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.models.data.NotificationDB
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList

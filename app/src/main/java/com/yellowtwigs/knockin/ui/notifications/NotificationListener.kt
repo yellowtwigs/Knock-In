@@ -14,7 +14,6 @@ import android.os.Handler
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
@@ -23,14 +22,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.data.NotificationDB
-import com.yellowtwigs.knockin.model.data.VipNotificationsDB
-import com.yellowtwigs.knockin.model.data.VipSbnDB
-import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.DbWorkerThread
+import com.yellowtwigs.knockin.models.data.NotificationDB
+import com.yellowtwigs.knockin.models.data.VipNotificationsDB
+import com.yellowtwigs.knockin.models.data.VipSbnDB
+import com.yellowtwigs.knockin.models.StatusBarParcelable
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 
 /**
@@ -39,7 +37,7 @@ import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
     // Database && Thread
-    private var database: ContactsRoomDatabase? = null
+    private var database: AppDatabase? = null
     private lateinit var mDbWorkerThread: DbWorkerThread
     private var oldPosX: Float = 0.0f
     private var oldPosY: Float = 0.0f
@@ -62,7 +60,7 @@ class NotificationListener : NotificationListenerService() {
         super.onCreate()
         mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
-        database = ContactsRoomDatabase.getDatabase(this)
+        database = AppDatabase.getDatabase(this)
     }
 
     /**
@@ -114,7 +112,7 @@ class NotificationListener : NotificationListenerService() {
                         notification.insertNotifications(database!!) //ajouter notification a la database
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                             if (contact != null) {
-                                when (contact.contactDB!!.contactPriority) {
+                                when (contact.contact!!.contactPriority) {
                                     2 -> {
                                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                                             var i = 0
@@ -155,7 +153,7 @@ class NotificationListener : NotificationListenerService() {
                                                 i.putExtra("notification", sbp)
                                                 i.putExtra(
                                                     "notificationSound",
-                                                    contact.contactDB?.notificationSound
+                                                    contact.contact?.notificationSound
                                                 )
                                                 this.cancelNotification(sbn.key)
                                                 cancelWhatsappNotif(sbn)
@@ -176,7 +174,7 @@ class NotificationListener : NotificationListenerService() {
                                             cancelWhatsappNotif(sbn)
                                             displayLayoutWithSharedPreferences(
                                                 sbp,
-                                                contact.contactDB!!.notificationSound
+                                                contact.contact!!.notificationSound
                                             )
                                         }
                                     }

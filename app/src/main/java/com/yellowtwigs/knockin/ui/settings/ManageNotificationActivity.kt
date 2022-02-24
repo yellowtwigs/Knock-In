@@ -26,7 +26,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import java.util.*
@@ -149,7 +149,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                     if (settings_NotificationMessagesAlarmSound != null) {
                         settings_NotificationMessagesAlarmSound!!.stop()
                     }
-                    startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ManageNotificationActivity, ContactListActivity::class.java))
                 }
                 R.id.nav_manage_screen -> {
 

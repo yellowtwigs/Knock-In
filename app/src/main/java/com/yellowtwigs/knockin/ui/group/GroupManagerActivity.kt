@@ -23,11 +23,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.data.GroupWithContact
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.DbWorkerThread
+import com.yellowtwigs.knockin.models.data.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -36,7 +35,7 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
@@ -52,7 +51,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     //region ========================================= Val or Var ===========================================
 
     private var group_manager_DrawerLayout: DrawerLayout? = null
-    private var group_manager_ContactsDatabase: ContactsRoomDatabase? = null
+    private var group_manager_ContactsDatabase: AppDatabase? = null
     private lateinit var group_mDbWorkerThread: DbWorkerThread
 
     private var group_manager_MainLayout: ConstraintLayout? = null
@@ -91,7 +90,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     startActivity(
                         Intent(
                             this@GroupManagerActivity,
-                            MainActivity::class.java
+                            ContactListActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -212,7 +211,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@GroupManagerActivity, MainActivity::class.java))
+                    startActivity(Intent(this@GroupManagerActivity, ContactListActivity::class.java))
                 }
                 R.id.nav_notif_config -> startActivity(
                     Intent(
@@ -254,7 +253,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ===================================== WorkerThread =========================================
 
-        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        group_manager_ContactsDatabase = AppDatabase.getDatabase(this)
 
         group_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         group_mDbWorkerThread.start()
@@ -601,7 +600,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     fun refreshList() {
-        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        group_manager_ContactsDatabase = AppDatabase.getDatabase(this)
         val group: ArrayList<GroupWithContact> = ArrayList()
         group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
         val sharedPreferences = getSharedPreferences("group", MODE_PRIVATE)

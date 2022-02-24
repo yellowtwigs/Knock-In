@@ -20,7 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 
 /**
@@ -258,7 +258,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ManageMyScreenActivity, ContactListActivity::class.java))
                 }
                 R.id.nav_notif_config -> startActivity(Intent(this@ManageMyScreenActivity, ManageNotificationActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this@ManageMyScreenActivity, SettingsActivity::class.java))
@@ -560,7 +560,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title)) // getString(R.string.main_alert_dialog_delete_contact_title)
                 .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                    startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ManageMyScreenActivity, ContactListActivity::class.java))
                 }
                 .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                 }

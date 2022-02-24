@@ -35,10 +35,10 @@ import com.yellowtwigs.knockin.ui.CircularImageView;
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity;
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity;
 import com.yellowtwigs.knockin.utils.ContactGesture;
-import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
-import com.yellowtwigs.knockin.model.data.NotificationDB;
+import com.yellowtwigs.knockin.models.ContactManager;
+import com.yellowtwigs.knockin.models.data.Contact;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.NotificationDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
@@ -102,7 +102,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final ContactDB contact = this.gestionnaireContact.getContactList().get(position).getContactDB();
+        final Contact contact = this.gestionnaireContact.getContactList().get(position).getContact();
 
         int height = heightWidthImage;
         int width = heightWidthImage;
@@ -382,8 +382,8 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                     firstPosVis = 0;
 //                    firstPosVisfirstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
                 }
-                if (context instanceof MainActivity) {
-                    ((MainActivity) context).gridMultiSelectItemClick(position);
+                if (context instanceof ContactListActivity) {
+                    ((ContactListActivity) context).gridMultiSelectItemClick(position);
                 } else {
                     ((GroupManagerActivity) context).gridMultiSelectItemClick(len, position, firstPosVis);
                 }
@@ -410,7 +410,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                     listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
-                ((MainActivity) context).gridMultiSelectItemClick(position);
+                ((ContactListActivity) context).gridMultiSelectItemClick(position);
             } else {
                 if (quickMenu.isOpen()) {
                     quickMenu.close(false);

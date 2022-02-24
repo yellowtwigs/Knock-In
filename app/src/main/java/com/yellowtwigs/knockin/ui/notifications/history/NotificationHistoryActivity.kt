@@ -38,16 +38,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.DbWorkerThread
+import com.yellowtwigs.knockin.models.data.NotificationDB
 import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
@@ -76,7 +75,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private var notification_recyclerview_Adapter: NotificationsHistoryRecyclerViewAdapter? = null
     private var notification_history_RecyclerView: RecyclerView? = null
 
-    private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
+    private var notification_history_NotificationsDatabase: AppDatabase? = null
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
 
     private val listOfItemSelected = ArrayList<NotificationDB>()
@@ -97,7 +96,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     startActivity(
                         Intent(
                             this@NotificationHistoryActivity,
-                            MainActivity::class.java
+                            ContactListActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -225,7 +224,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             notification_history_DrawerLayout!!.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> startActivity(Intent(this, MainActivity::class.java))
+                R.id.nav_home -> startActivity(Intent(this, ContactListActivity::class.java))
                 R.id.nav_notif_config -> startActivity(
                     Intent(
                         this,
@@ -278,7 +277,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //endregion
 
         //on get la base de données
-        notification_history_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
+        notification_history_NotificationsDatabase = AppDatabase.getDatabase(this)
         updateFilter()
 
         //region ======================================== Listeners =========================================
@@ -888,7 +887,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             while (i > 0) {
                 val contact = notification_history_NotificationsDatabase!!.contactsDao()
                     .getContact(notifList[i].idContact)
-                if (contact.contactDB!!.contactPriority != 0) {
+                if (contact.contact!!.contactPriority != 0) {
                     return i + 1
                 }
                 i--

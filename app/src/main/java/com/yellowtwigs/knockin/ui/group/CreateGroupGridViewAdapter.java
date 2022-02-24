@@ -28,10 +28,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.ContactManager;
+import com.yellowtwigs.knockin.models.ContactManager;
 
-import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.Contact;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
     public void onBindViewHolder(@NonNull CreateGroupGridViewAdapter.ViewHolder holder, int position) {
         Boolean addedInMap = false;
         if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
-            ContactDB actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
+            Contact actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContact();
             Boolean isContained = true; // dans le groupe
             while (isContained) {
                 for (ContactWithAllInformation actualContact : listContact) { // liste des contact pas dans le groupe
@@ -107,7 +107,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
                 if (isContained) {
                     if (positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
                         positionOnBindViewHolder = positionOnBindViewHolder + 1;
-                    actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
+                    actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContact();
                 }
             }
         }
@@ -117,7 +117,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
                 addedInMap = true;
             }
         }
-        final ContactDB contact = this.gestionnaireContact.getContactList().get(contactMap.get(position)).getContactDB();
+        final Contact contact = this.gestionnaireContact.getContactList().get(contactMap.get(position)).getContact();
 
             int height = heightWidthImage;
             int width = heightWidthImage;

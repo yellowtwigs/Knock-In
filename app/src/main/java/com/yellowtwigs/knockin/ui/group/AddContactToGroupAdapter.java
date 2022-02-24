@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.Contact;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
 
     private List<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
-    private ArrayList<ContactDB> selectContact;
+    private ArrayList<Contact> selectContact;
     private Context context;
 
     /**
@@ -78,7 +78,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         final ViewHolder holder;
         holder = new ViewHolder();
         holder.position = position;
-        final ContactDB contact = getItem(position).getContactDB();
+        final Contact contact = getItem(position).getContact();
         listview = layoutInflater.inflate(R.layout.list_contact_selected_group, null);
 
         holder.contactRoundedImageView = listview.findViewById(R.id.add_group_contact_list_item_contactRoundedImageView);
@@ -122,11 +122,11 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         return listview;
     }
 
-    public List<ContactDB> getAllSelectContact() {
+    public List<Contact> getAllSelectContact() {
         return selectContact;
     }
 
-    public void setAllSelectContact(ArrayList<ContactDB> selectContact) {
+    public void setAllSelectContact(ArrayList<Contact> selectContact) {
         this.selectContact = selectContact;
     }
 

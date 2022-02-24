@@ -16,12 +16,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.data.GroupDB
-import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.data.Contact
+import com.yellowtwigs.knockin.models.data.GroupDB
+import com.yellowtwigs.knockin.models.data.LinkContactGroup
 
 /**
  * Activité qui nous permet de créer un groupe
@@ -31,7 +30,7 @@ class AddNewGroupActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
-    private var contactsDatabase: ContactsRoomDatabase? = null
+    private var contactsDatabase: AppDatabase? = null
     private var addNewGroupListView: ListView? = null
     private var createGroupAdapter: AddContactToGroupAdapter? = null
     private var addNewGroupName: TextView? = null
@@ -46,7 +45,7 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
 
     private var gestionnaireContacts: ContactManager? = null
-    private val selectContact: MutableList<ContactDB>? = mutableListOf()
+    private val selectContact: MutableList<Contact>? = mutableListOf()
 
     //endregion
 
@@ -67,7 +66,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_new_group)
         addNewGroupListView = findViewById(R.id.add_new_group_list_view)
         addNewGroupName = findViewById(R.id.add_new_group_name)
-        contactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        contactsDatabase = AppDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 
@@ -180,13 +179,13 @@ class AddNewGroupActivity : AppCompatActivity() {
     fun gridMultiSelectItemClick(position: Int) { ///// duplicata à changer vite
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
+            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contact!!)
         } else {
             listtest++
             listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
             //
-            var contact = gestionnaireContacts!!.contactList[position].contactDB!!
-            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+            var contact = gestionnaireContacts!!.contactList[position].contact!!
+            selectContact!!.add(gestionnaireContacts!!.contactList[position].contact!!)
         }
     }
 
@@ -194,13 +193,13 @@ class AddNewGroupActivity : AppCompatActivity() {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
             listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
 
-            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
+            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contact!!)
         } else {
             test++
             listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
 
-            var contact = gestionnaireContacts!!.contactList[position].contactDB!!
-            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+            var contact = gestionnaireContacts!!.contactList[position].contact!!
+            selectContact!!.add(gestionnaireContacts!!.contactList[position].contact!!)
         }
     }
 
@@ -209,7 +208,7 @@ class AddNewGroupActivity : AppCompatActivity() {
      * @param listContact [List<ContactDB>]
      * @param name [String]
      */
-    private fun addToGroup(listContact: List<ContactDB>?, name: String) {
+    private fun addToGroup(listContact: List<Contact>?, name: String) {
         val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
         var counter = 0
         var alreadyExist = false

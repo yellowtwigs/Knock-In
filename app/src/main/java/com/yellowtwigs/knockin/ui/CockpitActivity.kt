@@ -34,7 +34,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
@@ -108,7 +108,7 @@ class CockpitActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.navigation_contacts -> {
                     startActivity(
-                        Intent(this@CockpitActivity, MainActivity::class.java).addFlags(
+                        Intent(this@CockpitActivity, ContactListActivity::class.java).addFlags(
                             Intent.FLAG_ACTIVITY_NO_ANIMATION
                         )
                     )
@@ -270,7 +270,7 @@ class CockpitActivity : AppCompatActivity() {
                 R.id.nav_home -> startActivity(
                     Intent(
                         this@CockpitActivity,
-                        MainActivity::class.java
+                        ContactListActivity::class.java
                     )
                 )
                 R.id.nav_notif_config -> startActivity(

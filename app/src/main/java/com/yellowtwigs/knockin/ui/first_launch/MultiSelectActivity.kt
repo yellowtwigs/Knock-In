@@ -13,11 +13,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.ContactManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
 
@@ -156,7 +155,7 @@ class MultiSelectActivity : AppCompatActivity() {
             )
             if (contactList.size == 1) {
                 val contact = contactList[0]
-                message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
+                message += "\n- " + contact.contact!!.firstName + " " + contact.contact!!.lastName
             }
         } else {
             message = String.format(
@@ -165,7 +164,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 getString(R.string.multi_select_contacts)
             )
             for (contact in contactList) {
-                message += "\n- " + contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName
+                message += "\n- " + contact.contact!!.firstName + " " + contact.contact!!.lastName
             }
         }
 
@@ -181,7 +180,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@MultiSelectActivity,
-                        MainActivity::class.java
+                        ContactListActivity::class.java
                     ).putExtra("fromStartActivity", true)
                 )
                 finish()
@@ -230,7 +229,7 @@ class MultiSelectActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
+                val intent = Intent(this@MultiSelectActivity, ContactListActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()

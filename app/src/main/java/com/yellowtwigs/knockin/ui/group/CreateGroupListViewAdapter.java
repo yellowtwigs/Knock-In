@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.ContactManager;
-import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.ContactManager;
+import com.yellowtwigs.knockin.models.data.Contact;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +83,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
         Boolean addedInMap = false;
         if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
             Boolean isContained = true;
-            ContactDB actContact = getItem(positionOnBindViewHolder).getContactDB();
+            Contact actContact = getItem(positionOnBindViewHolder).getContact();
             while (isContained) {
                 for (ContactWithAllInformation actualContact : listContact) {
                     if (actualContact.getContactId() == actContact.getId()) {
@@ -97,7 +97,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
                 if (isContained) {
                     if (positionOnBindViewHolder != listContacts.size() - 1)
                         positionOnBindViewHolder = positionOnBindViewHolder + 1;
-                    actContact = getItem(positionOnBindViewHolder).getContactDB();
+                    actContact = getItem(positionOnBindViewHolder).getContact();
                 }
             }
         }
@@ -107,7 +107,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
                 addedInMap = true;
             }
         }
-        final ContactDB contact = getItem(contactMap.get(position)).getContactDB();
+        final Contact contact = getItem(contactMap.get(position)).getContact();
         System.out.println(contact.getId());
         assert contact != null;
 
@@ -153,7 +153,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
             }
 
             view.setTag(holder);
-            ContactDB contactDB = gestionnaireContacts.getContactList().get(contactMap.get(position)).getContactDB();
+            Contact contactDB = gestionnaireContacts.getContactList().get(contactMap.get(position)).getContact();
             assert contactDB != null;
 
             if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(contactMap.get(position)))) {

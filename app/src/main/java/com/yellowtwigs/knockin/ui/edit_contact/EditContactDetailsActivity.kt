@@ -42,12 +42,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.group.GroupEditAdapter
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
-import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.data.*
+import com.yellowtwigs.knockin.models.*
+import com.yellowtwigs.knockin.models.data.*
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
+import com.yellowtwigs.knockin.utils.NumberAndMailDB
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -90,7 +91,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
     private var edit_contact_Validate: AppCompatImageView? = null
 
     private var groupId: Long = 0
-    private var listContact: ArrayList<ContactDB?> = ArrayList()
+    private var listContact: ArrayList<Contact?> = ArrayList()
 
     private var edit_contact_id: Int? = null
     private var edit_contact_first_name: String = ""
@@ -113,7 +114,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
     private var edit_contact_GroupConstraintLayout: ConstraintLayout? = null
 
     // Database && Thread
-    private var edit_contact_ContactsDatabase: ContactsRoomDatabase? = null
+    private var edit_contact_ContactsDatabase: AppDatabase? = null
     private lateinit var edit_contact_mDbWorkerThread: DbWorkerThread
 
     private var imageUri: Uri? = null
@@ -165,7 +166,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
         edit_contact_mDbWorkerThread.start()
 
         //on get la base de données
-        edit_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        edit_contact_ContactsDatabase = AppDatabase.getDatabase(this)
 
         val sharedNumberOfContactsVIPPreferences: SharedPreferences =
             getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
@@ -239,18 +240,18 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
             val contactList = ContactManager(this)
             val contact = contactList.getContactById(edit_contact_id!!)!!
-            edit_contact_first_name = contact.contactDB!!.firstName
-            edit_contact_last_name = contact.contactDB!!.lastName
+            edit_contact_first_name = contact.contact!!.firstName
+            edit_contact_last_name = contact.contact!!.lastName
             val tmpPhone = contact.contactDetailList!![0]
             edit_contact_phone_number = tmpPhone.content
             edit_contact_phone_property = tmpPhone.tag
             val tmpMail = contact.contactDetailList!![1]
             edit_contact_mail = tmpMail.content
             edit_contact_mail_property = tmpMail.tag
-            edit_contact_priority = contact.contactDB!!.contactPriority
+            edit_contact_priority = contact.contact!!.contactPriority
 //            edit_contact_messenger = contact.contactDB!!.messengerId
-            edit_contact_mail_name = contact.contactDB!!.mail_name
-            edit_contact_image64 = contact.contactDB!!.profilePicture64
+            edit_contact_mail_name = contact.contact!!.mail_name
+            edit_contact_image64 = contact.contact!!.profilePicture64
             edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(edit_contact_image64))
         } else {
 
@@ -260,13 +261,13 @@ class EditContactDetailsActivity : AppCompatActivity() {
             }
             val result = executorService.submit(callDb)
             val contact: ContactWithAllInformation = result.get()
-            edit_contact_first_name = contact.contactDB!!.firstName
-            edit_contact_last_name = contact.contactDB!!.lastName
-            edit_contact_priority = contact.contactDB!!.contactPriority
+            edit_contact_first_name = contact.contact!!.firstName
+            edit_contact_last_name = contact.contact!!.lastName
+            edit_contact_priority = contact.contact!!.contactPriority
             edit_contact_rounded_image =
-                contactManager!!.randomDefaultImage(contact.contactDB!!.profilePicture, "Get")
+                contactManager!!.randomDefaultImage(contact.contact!!.profilePicture, "Get")
 
-            edit_contact_mail_name = contact.contactDB!!.mail_name
+            edit_contact_mail_name = contact.contact!!.mail_name
 
             edit_contact_phone_property = getString(R.string.edit_contact_phone_number_mobile)
             edit_contact_fix_number = getString(R.string.edit_contact_phone_number_home)
@@ -299,7 +300,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
             val id = edit_contact_id
             val contactDB = edit_contact_ContactsDatabase?.contactsDao()?.getContact(id!!.toInt())
-            edit_contact_image64 = contactDB!!.contactDB!!.profilePicture64
+            edit_contact_image64 = contactDB!!.contact!!.profilePicture64
             if (edit_contact_image64 == "") {
                 edit_contact_RoundedImageView!!.setImageResource(edit_contact_rounded_image)
             } else {
@@ -307,7 +308,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
             }
 
-            contactPriorityBorder(contact.contactDB!!, edit_contact_RoundedImageView!!, this)
+            contactPriorityBorder(contact.contact!!, edit_contact_RoundedImageView!!, this)
         }
 
         //region ===================================== SetViewDataField =====================================
@@ -352,14 +353,14 @@ class EditContactDetailsActivity : AppCompatActivity() {
         val contactList = ContactManager(this)
         val contact = contactList.getContactById(edit_contact_id!!)!!
 
-        if (contact.contactDB?.favorite == 1) {
+        if (contact.contact?.favorite == 1) {
             edit_contact_RemoveContactFromFavorite!!.visibility = View.VISIBLE
             edit_contact_AddContactToFavorite!!.visibility = View.INVISIBLE
 
             isFavorite = true
             isFavoriteChanged = true
 
-        } else if (contact.contactDB!!.favorite == 0) {
+        } else if (contact.contact!!.favorite == 0) {
             edit_contact_AddContactToFavorite!!.visibility = View.VISIBLE
             edit_contact_RemoveContactFromFavorite!!.visibility = View.INVISIBLE
 
@@ -383,7 +384,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
                 isFavorite = true
                 isFavoriteChanged = true
-            } else if (contact.contactDB?.favorite == 0) {
+            } else if (contact.contact?.favorite == 0) {
                 edit_contact_AddContactToFavorite?.visibility = View.VISIBLE
                 edit_contact_RemoveContactFromFavorite?.visibility = View.INVISIBLE
 
@@ -558,7 +559,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                     edit_contact_ContactsDatabase!!.contactsDao()
                         .deleteContactById(edit_contact_id!!)
                     val mainIntent =
-                        Intent(this@EditContactDetailsActivity, MainActivity::class.java)
+                        Intent(this@EditContactDetailsActivity, ContactListActivity::class.java)
                     mainIntent.putExtra("isDelete", true)
 
                     if (edit_contact_priority == 2) {
@@ -715,7 +716,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                     startActivity(
                                         Intent(
                                             this@EditContactDetailsActivity,
-                                            MainActivity::class.java
+                                            ContactListActivity::class.java
                                         ).putExtra("position", position!!)
                                     )
                                     finish()
@@ -766,7 +767,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                             startActivity(
                                 Intent(
                                     this@EditContactDetailsActivity,
-                                    MainActivity::class.java
+                                    ContactListActivity::class.java
                                 ).putExtra("position", position!!)
                             )
                             finish()
@@ -786,7 +787,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 this@EditContactDetailsActivity,
-                                MainActivity::class.java
+                                ContactListActivity::class.java
                             ).putExtra("position", position!!)
                         )
                         finish()
@@ -804,7 +805,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 this@EditContactDetailsActivity,
-                                MainActivity::class.java
+                                ContactListActivity::class.java
                             ).putExtra("position", position!!)
                         )
                         finish()
@@ -1079,7 +1080,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@EditContactDetailsActivity,
-                        MainActivity::class.java
+                        ContactListActivity::class.java
                     ).putExtra("ContactId", edit_contact_id!!).putExtra("position", position)
                 )
                 finish()
@@ -1102,7 +1103,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@EditContactDetailsActivity,
-                        MainActivity::class.java
+                        ContactListActivity::class.java
                     ).putExtra("ContactId", edit_contact_id!!).putExtra("position", position)
                 )
                 finish()
@@ -1128,7 +1129,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 this@EditContactDetailsActivity,
-                                MainActivity::class.java
+                                ContactListActivity::class.java
                             ).putExtra("position", position)
                         )
                     }
@@ -1149,7 +1150,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@EditContactDetailsActivity,
-                        MainActivity::class.java
+                        ContactListActivity::class.java
                     ).putExtra("position", position)
                 )
             }
@@ -1215,7 +1216,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.add(contact.contactDB)
+        listContact.add(contact.contact)
 
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
@@ -1242,7 +1243,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.remove(contact.contactDB)
+        listContact.remove(contact.contact)
 
         removeContactFromGroup(edit_contact_id!!, groupId)
 
@@ -1266,7 +1267,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
     //region =========================================== Groups =============================================
 
-    private fun createGroup(listContact: ArrayList<ContactDB?>, name: String) {
+    private fun createGroup(listContact: ArrayList<Contact?>, name: String) {
         val group = GroupDB(null, name, "", -500138)
 
         val groupId = edit_contact_ContactsDatabase!!.GroupsDao().insert(group)
@@ -1278,7 +1279,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addContactToGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
+    private fun addContactToGroup(listContact: ArrayList<Contact?>, groupId: Long?) {
         listContact.forEach {
             val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
             edit_contact_ContactsDatabase!!.LinkContactGroupDao().insert(link)

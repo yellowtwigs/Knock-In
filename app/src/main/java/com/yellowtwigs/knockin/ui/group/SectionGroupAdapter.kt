@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.BuildConfig
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.AppDatabase.Companion.getDatabase
+import com.yellowtwigs.knockin.models.DbWorkerThread
 import java.util.*
 
 class SectionGroupAdapter(private val mContext: Context, private val mSectionResourceId: Int, recyclerView: RecyclerView,
@@ -54,14 +54,14 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
             }
             while (!isSectionHeaderPosition(i) && i < itemCount) {
                 val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i))
-                println("contact " + contact.contactDB + " de la section " + position)
+                println("contact " + contact.contact + " de la section " + position)
                 i++
                 if (contact.getFirstMail().isEmpty()) {
-                    println("contact " + contact.contactDB + "n'as pas de mail " + contact.getFirstMail())
+                    println("contact " + contact.contact + "n'as pas de mail " + contact.getFirstMail())
                     sectionViewHolder.gmailIV.visibility = View.GONE
                 }
                 if (contact.getFirstPhoneNumber().isEmpty()) {
-                    println("contact " + contact.contactDB + "n'as pas de num " + contact.getFirstPhoneNumber())
+                    println("contact " + contact.contact + "n'as pas de num " + contact.getFirstPhoneNumber())
                     sectionViewHolder.smsIV.visibility = View.GONE
                 }
             }
@@ -280,7 +280,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                             println("delete contact")
                         }
                         R.id.menu_group_delete_group -> {
-                            val contactsDatabase1: ContactsRoomDatabase? = getDatabase(mContext)
+                            val contactsDatabase1: AppDatabase? = getDatabase(mContext)
                             val mDbWorkerThread = DbWorkerThread("dbWorkerThread")
                             mDbWorkerThread.start()
                             if (BuildConfig.DEBUG && contactsDatabase1 == null) {
@@ -407,7 +407,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
         mContext.startActivity(intent)
     }
 
-    private fun alertDialog(idGroup: Int, contactsDatabase: ContactsRoomDatabase?) {
+    private fun alertDialog(idGroup: Int, contactsDatabase: AppDatabase?) {
         MaterialAlertDialogBuilder(mContext, R.style.AlertDialog)
                 .setTitle(R.string.section_alert_delete_group_title)
                 .setMessage(String.format(contactsDatabase!!.GroupsDao().getGroup(idGroup).name, R.string.section_alert_delete_group_message))

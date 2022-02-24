@@ -27,16 +27,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.*
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactDetailDB
-import com.yellowtwigs.knockin.model.data.GroupDB
-import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import com.yellowtwigs.knockin.models.*
+import com.yellowtwigs.knockin.models.data.Contact
+import com.yellowtwigs.knockin.models.data.GroupDB
+import com.yellowtwigs.knockin.models.data.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.utils.NumberAndMailDB
 import java.io.ByteArrayOutputStream
 
 /**
@@ -72,7 +72,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private val IMAGE_CAPTURE_CODE = 1001
 
     // Database && Thread
-    private var add_new_contact_ContactsDatabase: ContactsRoomDatabase? = null
+    private var add_new_contact_ContactsDatabase: AppDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
     //private var REQUEST_CAMERA: Int? = 1
@@ -82,7 +82,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var isFavorite = false
     private var isRetroFit: Boolean = false
     private var groupId: Long = 0
-    private var listContact: ArrayList<ContactDB?> = ArrayList()
+    private var listContact: ArrayList<Contact?> = ArrayList()
 
     private var contactsUnlimitedIsBought: Boolean? = null
 
@@ -118,7 +118,7 @@ class AddNewContactActivity : AppCompatActivity() {
         contactsUnlimitedIsBought = sharedAlarmNotifInAppPreferences.getBoolean("Contacts_Unlimited_Bought", false)
 
         //on get la base de données
-        add_new_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        add_new_contact_ContactsDatabase = AppDatabase.getDatabase(this)
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ========================================== Toolbar =========================================
@@ -165,7 +165,7 @@ class AddNewContactActivity : AppCompatActivity() {
         add_new_contact_Return!!.setOnClickListener {
 
             if (isEmptyField(add_new_contact_FirstName) && isEmptyField(add_new_contact_LastName) && isEmptyField(add_new_contact_PhoneNumber) && isEmptyField(add_new_contact_fixNumber) && isEmptyField(add_new_contact_Email)) {
-                val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                val intent = Intent(this@AddNewContactActivity, ContactListActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
@@ -175,7 +175,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
                 alertDialog.setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
 
-                    startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
+                    startActivity(Intent(this@AddNewContactActivity, ContactListActivity::class.java))
                     finish()
                 }
 
@@ -222,7 +222,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
                             val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(), this)
 
-                            val contactData = ContactDB(null,
+                            val contactData = Contact(null,
                                     add_new_contact_FirstName!!.editText!!.text.toString(),
                                     add_new_contact_LastName!!.editText!!.text.toString(),
 
@@ -296,7 +296,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(add_new_contact_PhoneProperty!!.selectedItem.toString(), this)
                         val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(add_new_contact_MailProperty!!.selectedItem.toString(), add_new_contact_Email!!.editText!!.text.toString(), this)
 
-                        val contactData = ContactDB(null,
+                        val contactData = Contact(null,
                                 add_new_contact_FirstName!!.editText!!.text.toString(),
                                 add_new_contact_LastName!!.editText!!.text.toString(),
                                 add_new_contact_Mail_Identifier!!.editText!!.text.toString(), avatar, add_new_contact_Priority!!.selectedItemPosition,
@@ -473,7 +473,7 @@ class AddNewContactActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.add(contact.contactDB)
+        listContact.add(contact.contact)
 
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
@@ -490,7 +490,7 @@ class AddNewContactActivity : AppCompatActivity() {
      * @param listContact [ArrayList<ContactDB>]
      * @param name [String]
      */
-    private fun createGroup(listContact: ArrayList<ContactDB?>, name: String) {
+    private fun createGroup(listContact: ArrayList<Contact?>, name: String) {
         val group = GroupDB(null, name, "", -500138)
 
         val groupId = add_new_contact_ContactsDatabase!!.GroupsDao().insert(group)
@@ -505,7 +505,7 @@ class AddNewContactActivity : AppCompatActivity() {
      * @param listContact [ArrayList<ContactDB>]
      * @param groupId [Long]
      */
-    private fun addContactToGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
+    private fun addContactToGroup(listContact: ArrayList<Contact?>, groupId: Long?) {
         listContact.forEach {
             val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
             add_new_contact_ContactsDatabase!!.LinkContactGroupDao().insert(link)
@@ -517,13 +517,13 @@ class AddNewContactActivity : AppCompatActivity() {
      *demande de confirmation de la création d'un contact en double
      * @param contactData [contactDB]
      */
-    private fun confirmationDuplicate(contactData: ContactDB) {
+    private fun confirmationDuplicate(contactData: Contact) {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.add_new_contact_alert_dialog_title)
                 .setMessage(R.string.add_new_contact_alert_dialog_message)
                 .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-                    val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                    val intent = Intent(this@AddNewContactActivity, ContactListActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -702,7 +702,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         if (isRetroFit) {
-            startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
+            startActivity(Intent(this@AddNewContactActivity, ContactListActivity::class.java))
             finish()
         }
     }

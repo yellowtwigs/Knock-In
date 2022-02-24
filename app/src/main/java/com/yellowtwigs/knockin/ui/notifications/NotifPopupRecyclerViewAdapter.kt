@@ -27,10 +27,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.AppDatabase
+import com.yellowtwigs.knockin.models.DbWorkerThread
+import com.yellowtwigs.knockin.models.StatusBarParcelable
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import java.util.*
@@ -458,7 +458,7 @@ class NotifPopupRecyclerViewAdapter(
 
     fun deleteItem(position: Int) {
         val mRecentlyDeletedItem = notifications[position]
-        val contactsDatabase = ContactsRoomDatabase.getDatabase(context)
+        val contactsDatabase = AppDatabase.getDatabase(context)
         contactsDatabase?.VipNotificationsDao()
             ?.deleteVipNotificationsWithId(notifications[position].id.toString())
         contactsDatabase?.VipSbnDao()?.deleteSbnWithNotifId(notifications[position].id.toString())

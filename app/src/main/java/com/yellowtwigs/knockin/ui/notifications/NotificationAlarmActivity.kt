@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.StatusBarParcelable
 
 
 class NotificationAlarmActivity : AppCompatActivity() {

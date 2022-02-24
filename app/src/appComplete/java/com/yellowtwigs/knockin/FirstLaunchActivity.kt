@@ -9,7 +9,7 @@ import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
 import com.yellowtwigs.knockin.ui.first_launch.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
@@ -34,7 +34,7 @@ class FirstLaunchActivity : AppCompatActivity() {
         //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         if (sharedFirstLaunch.getBoolean("first_launch", false)) {
-            startActivity(Intent(this@FirstLaunchActivity, MainActivity::class.java))
+            startActivity(Intent(this@FirstLaunchActivity, ContactListActivity::class.java))
             finish()
         }
 

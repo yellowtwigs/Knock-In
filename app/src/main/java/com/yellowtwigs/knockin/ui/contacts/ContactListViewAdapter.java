@@ -17,8 +17,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.Contact;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         final ViewHolder holder;
         holder = new ViewHolder();
         holder.position = position;
-        final ContactDB contact = getItem(position).getContactDB();
+        final Contact contact = getItem(position).getContact();
 
         listview = layoutInflater.inflate(R.layout.list_contact_selected_with_channel, null);
 

@@ -14,10 +14,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase;
-import com.yellowtwigs.knockin.model.DbWorkerThread;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
-import com.yellowtwigs.knockin.model.data.GroupDB;
+import com.yellowtwigs.knockin.models.AppDatabase;
+import com.yellowtwigs.knockin.models.DbWorkerThread;
+import com.yellowtwigs.knockin.models.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.models.data.GroupDB;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -47,9 +47,9 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         holder.close.setOnClickListener(v -> {
             new MaterialAlertDialogBuilder(context, R.style.AlertDialog)
                     .setTitle(R.string.delete_contact_from_group_alert_dialog_title)
-                    .setMessage(String.format(context.getString(R.string.delete_contact_from_group_alert_dialog_message), Objects.requireNonNull(contact.getContactDB()).getFirstName() + " " + contact.getContactDB().getLastName(), listGroup.get(position).getName()))
+                    .setMessage(String.format(context.getString(R.string.delete_contact_from_group_alert_dialog_message), Objects.requireNonNull(contact.getContact()).getFirstName() + " " + contact.getContact().getLastName(), listGroup.get(position).getName()))
                     .setPositiveButton(R.string.edit_contact_validate, (dialog, which) -> {
-                        ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
+                        AppDatabase ContactsDatabase = AppDatabase.Companion.getDatabase(context);
                         DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
                         mDbWorkerThread.start();
                         assert ContactsDatabase != null;

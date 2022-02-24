@@ -14,8 +14,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.ContactManager
 
 class MultiChannelActivity : AppCompatActivity() {
 
@@ -138,7 +137,7 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private fun refreshActivity() {
         if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
-            startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            startActivity(Intent(this@MultiChannelActivity, ContactListActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             hideKeyboard()
             finish()
         } else {

@@ -13,6 +13,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
+import java.sql.DriverManager
+import java.util.*
 
 /**
  * L'objet qui permet d'ouvrir messenger, whatsapp et gmail
@@ -20,17 +22,6 @@ import com.yellowtwigs.knockin.utils.Converter.converter06To33
  */
 object ContactGesture {
 
-    /*fun putContactIntent(contact: ContactWithAllInformation, context: Context, classToSend: Class<*>): Intent {
-        *//*
-        intent.putExtra("ContactFirstName", contact.firstName)
-        intent.putExtra("ContactLastName", contact.lastName)
-        intent.putExtra("ContactPhoneNumber",phoneNumber)
-        intent.putExtra("ContactMail",mail)
-        intent.putExtra("ContactImage", contact.profilePicture)
-        intent.putExtra("ContactId", contact.id)
-        intent.putExtra("ContactPriority", contact.contactPriority)
-      *//*  return Intent(context, classToSend)
-    }*/
     fun isWhatsappInstalled(context: Context): Boolean {
         val pm = context.packageManager
         return try {
@@ -41,8 +32,8 @@ object ContactGesture {
         }
     }
 
-    fun openWhatsapp(contact: CharSequence, context: Context) {
-        val url = "https://api.whatsapp.com/send?phone=$contact"
+    fun openWhatsapp(phoneNumber: String, context: Context) {
+        val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
         try {
             val pm = context.packageManager
             pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
@@ -50,7 +41,8 @@ object ContactGesture {
             i.data = Uri.parse(url)
             context.startActivity(i)
         } catch (e: PackageManager.NameNotFoundException) {
-            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT)
+                .show()
             e.printStackTrace()
         }
     }
@@ -64,8 +56,16 @@ object ContactGesture {
         activity.startActivity(intent)
     }
 
+    fun sendSms(phoneNumber: String, context: Context) {
+        context.startActivity(
+            Intent(
+                Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null)
+            )
+        )
+    }
+
     fun callPhone(phoneNumber: String, context: Context) {
-        var numberForPermission = ""
+        val numberForPermission = ""
 
         if (ContextCompat.checkSelfPermission(
                 context,
@@ -78,7 +78,6 @@ object ContactGesture {
                 arrayOf(Manifest.permission.CALL_PHONE),
                 PERMISSION_CALL_RESULT
             )
-            numberForPermission = phoneNumber
         } else {
             val sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
             val popup = sharedPreferences.getBoolean("popup", true)
@@ -100,9 +99,20 @@ object ContactGesture {
                         Uri.fromParts("tel", phoneNumber, null)
                     )
                 )
-                numberForPermission = ""
             }
         }
+    }
+
+    fun openMail(mail: String, context: Context){
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("mailto:")
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+        intent.putExtra(Intent.EXTRA_TEXT, "")
+        DriverManager.println(
+            "intent " + Objects.requireNonNull(intent.extras).toString()
+        )
+        context.startActivity(intent)
     }
 
     /*fun openMessenger(id: String, context: Context) {

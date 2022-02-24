@@ -29,10 +29,12 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
     <application
+        android:name=".di.App"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_app_image"
@@ -41,55 +43,64 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
-            android:name="com.yellowtwigs.knockin.ui.edit_contact.EditContactActivity"
-            android:exported="false" />
-        <activity android:name="com.yellowtwigs.knockin.ui.edit_contact.VipSettingsActivity" />
-        <activity
-            android:name=".ui.SplashScreenActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
-                        <intent-filter>
-                            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                            <category android:name="android.intent.category.LAUNCHER" />
-                        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name="com.yellowtwigs.knockin.ui.first_launch.StartActivity"
-            android:exported="true">
-<!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+
+
+
+
+
+        <activity
+            android:name=".ui.edit_contact.EditContactActivity"
+            android:exported="false" />
+        <activity android:name=".ui.edit_contact.VipSettingsActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.first_launch.StartActivity"
+            android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".FirstLaunchActivity" />
-        <activity android:name="com.yellowtwigs.knockin.ui.group.AddNewGroupActivity" />
-        <activity android:name="com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity" />
-        <activity android:name="com.yellowtwigs.knockin.ui.group.AddContactToGroupActivity" />
+        <activity android:name=".ui.group.AddNewGroupActivity" />
+        <activity android:name=".ui.group.DeleteContactFromGroupActivity" />
+        <activity android:name=".ui.group.AddContactToGroupActivity" />
         <activity android:name=".ui.contacts.MultiChannelActivity" />
         <activity
             android:name=".ui.notifications.NotificationAlarmActivity"
             android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
-        <activity android:name="com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity" />
-        <activity android:name="com.yellowtwigs.knockin.ui.group.GroupManagerActivity" />
-        <activity android:name="com.yellowtwigs.knockin.ui.first_launch.ImportContactsActivity" />
+        <activity android:name=".ui.first_launch.MultiSelectActivity" />
+        <activity android:name=".ui.group.GroupManagerActivity" />
+        <activity android:name=".ui.first_launch.ImportContactsActivity" />
         <activity android:name=".ui.CockpitActivity" />
         <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
-        <activity android:name=".controller.activity.EditInformationsActivity" />
         <activity android:name=".ui.settings.ManageNotificationActivity" />
         <activity android:name=".ui.notifications.history.NotificationHistoryActivity" />
         <activity
-            android:name="com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity"
+            android:name=".ui.edit_contact.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity"
+            android:name=".ui.edit_contact.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".ui.contacts.MainActivity"
+            android:name=".ui.contacts.ContactListActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden" />

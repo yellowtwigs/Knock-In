@@ -32,11 +32,10 @@ import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactDetailDB
+import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.DbWorkerThread
+import com.yellowtwigs.knockin.models.data.Contact
 import java.net.InetAddress
 import java.net.UnknownHostException
 
@@ -406,7 +405,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             if (!checkIfGoEdition()) {
                 buildMultiSelectAlertDialog()
             } else {
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, ContactListActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -421,7 +420,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     buildLeaveAlertDialog()
                 }
             } else {
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, ContactListActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -635,7 +634,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
                         stringSet =
                             sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
-                    arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
+                    arrayListOf<Pair<Contact, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(
                             index.toString(),
                             null
@@ -712,7 +711,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .setNegativeButton(R.string.alert_dialog_later)
             { _, _ ->
                 closeContextMenu()
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, ContactListActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -736,7 +735,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
             .setMessage(message)
             .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, ContactListActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 val sharedPreferences: SharedPreferences =

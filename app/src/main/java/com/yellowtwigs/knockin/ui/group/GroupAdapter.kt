@@ -35,10 +35,9 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.ContactManager
+import com.yellowtwigs.knockin.models.AppDatabase.Companion.getDatabase
+import com.yellowtwigs.knockin.models.DbWorkerThread
 import java.util.*
 
 /**
@@ -133,7 +132,7 @@ class GroupAdapter(private val context: Context,
                 layoutParamsIV.topMargin = 0
             }
         }
-        val contact = contactManager.contactList[position].contactDB!!
+        val contact = contactManager.contactList[position].contact!!
         if (contact.contactPriority == 0) {
             holder.contactRoundedImageView!!.setBorderColor(context.resources.getColor(R.color.priorityZeroColor, null))
         } else if (contact.contactPriority == 1) {
