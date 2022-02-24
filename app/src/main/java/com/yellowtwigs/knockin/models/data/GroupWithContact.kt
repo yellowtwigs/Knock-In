@@ -1,13 +1,13 @@
-package com.yellowtwigs.knockin.model.data
+package com.yellowtwigs.knockin.models.data
 
 import android.content.Context
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.models.AppDatabase
 
 class GroupWithContact {
     fun getListContact(context: Context): ArrayList<ContactWithAllInformation> {
-        val contactRoom = ContactsRoomDatabase.getDatabase(context)
+        val contactRoom = AppDatabase.getDatabase(context)
         val listContact: ArrayList<ContactWithAllInformation> = arrayListOf()
         for (idContact in ContactIdList!!) {
             listContact.add(contactRoom!!.contactsDao().getContact(idContact))

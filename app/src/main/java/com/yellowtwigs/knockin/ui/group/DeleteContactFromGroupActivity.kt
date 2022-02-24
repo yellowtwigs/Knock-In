@@ -17,7 +17,6 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.models.AppDatabase
 import com.yellowtwigs.knockin.models.data.Contact
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.models.ContactManager
 
 /**
  * Activité qui nous permet de supprimmer les contact d'un groupe

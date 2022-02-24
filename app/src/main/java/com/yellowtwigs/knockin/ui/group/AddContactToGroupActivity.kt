@@ -18,7 +18,6 @@ import com.yellowtwigs.knockin.models.AppDatabase
 import com.yellowtwigs.knockin.models.data.Contact
 import com.yellowtwigs.knockin.models.data.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.models.ContactManager
 
 /**
  * Activité qui nous permet d'ajouter des contacts a un groupe précis

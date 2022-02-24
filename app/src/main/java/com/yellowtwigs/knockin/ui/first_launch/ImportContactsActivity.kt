@@ -14,7 +14,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.models.ContactManager
 import com.yellowtwigs.knockin.models.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.ui.contacts.ContactListActivity

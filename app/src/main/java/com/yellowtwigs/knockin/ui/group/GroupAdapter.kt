@@ -35,7 +35,6 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
-import com.yellowtwigs.knockin.models.ContactManager
 import com.yellowtwigs.knockin.models.AppDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.models.DbWorkerThread
 import java.util.*
@@ -75,7 +74,7 @@ class GroupAdapter(private val context: Context,
         view = if (len >= 4) {
             LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false)
         } else {
-            LayoutInflater.from(context).inflate(R.layout.list_contact_item_layout, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false)
         }
         val holder = ViewHolder(view!!)
         heightWidthImage = holder.contactRoundedImageView!!.layoutParams.height

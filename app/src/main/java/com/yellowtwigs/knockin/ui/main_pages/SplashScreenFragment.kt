@@ -1,17 +1,15 @@
-package com.yellowtwigs.knockin.ui
+package com.yellowtwigs.knockin.ui.main_pages
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.FragmentSplashScreenBinding
+import com.yellowtwigs.knockin.ui.BaseFragment
 import com.yellowtwigs.knockin.utils.AppTheme.checkTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

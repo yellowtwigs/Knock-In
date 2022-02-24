@@ -47,7 +47,7 @@ import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.models.*
 import com.yellowtwigs.knockin.models.data.*
-import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
+import com.yellowtwigs.knockin.utils.SetupContactsList.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.NumberAndMailDB
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable

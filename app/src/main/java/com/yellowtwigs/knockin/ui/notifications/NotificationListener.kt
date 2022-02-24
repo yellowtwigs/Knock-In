@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.models.ContactManager
 import com.yellowtwigs.knockin.models.AppDatabase
 import com.yellowtwigs.knockin.models.DbWorkerThread
 import com.yellowtwigs.knockin.models.data.NotificationDB

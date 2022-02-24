@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.models.ContactManager
 import com.yellowtwigs.knockin.models.AppDatabase
 import com.yellowtwigs.knockin.models.data.Contact
 import com.yellowtwigs.knockin.models.data.GroupDB

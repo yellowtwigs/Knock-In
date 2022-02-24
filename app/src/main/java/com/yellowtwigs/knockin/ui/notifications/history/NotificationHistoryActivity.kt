@@ -38,7 +38,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
-import com.yellowtwigs.knockin.models.ContactManager
 import com.yellowtwigs.knockin.models.AppDatabase
 import com.yellowtwigs.knockin.models.DbWorkerThread
 import com.yellowtwigs.knockin.models.data.NotificationDB

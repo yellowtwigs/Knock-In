@@ -1,11 +1,10 @@
-package com.yellowtwigs.knockin.model.dao
+package com.yellowtwigs.knockin.models.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.yellowtwigs.knockin.model.data.GroupDB
-import com.yellowtwigs.knockin.model.data.GroupWithContact
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.models.data.GroupDB
+import com.yellowtwigs.knockin.models.data.GroupWithContact
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table groups

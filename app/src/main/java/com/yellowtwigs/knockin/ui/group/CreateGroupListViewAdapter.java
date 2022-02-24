@@ -73,7 +73,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact, parent, false);
 
         return new ContactViewHolder(view);
     }

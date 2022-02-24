@@ -1,9 +1,9 @@
-package com.yellowtwigs.knockin.model.dao
+package com.yellowtwigs.knockin.models.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.models.data.NotificationDB
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table notification

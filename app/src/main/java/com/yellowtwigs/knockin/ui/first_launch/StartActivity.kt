@@ -33,7 +33,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.contacts.ContactListActivity
-import com.yellowtwigs.knockin.models.ContactManager
 import com.yellowtwigs.knockin.models.DbWorkerThread
 import com.yellowtwigs.knockin.models.data.Contact
 import java.net.InetAddress

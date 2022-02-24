@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model.data
+package com.yellowtwigs.knockin.models.data
 
 import androidx.room.*
 
@@ -14,7 +14,7 @@ import androidx.room.*
                         childColumns = arrayOf("id_group"),
                         onDelete = ForeignKey.CASCADE
                 ),
-                ForeignKey(entity = ContactDB::class,
+                ForeignKey(entity = Contact::class,
                         parentColumns = arrayOf("id"),
                         childColumns = arrayOf("id_contact"),
                         onDelete = ForeignKey.CASCADE
@@ -26,7 +26,7 @@ data class LinkContactGroup(
          */
         @ColumnInfo(name = "id_group")  val idGroup: Int,
         /**
-         * Id du [contact][ContactDB] lié au groupe.
+         * Id du [contact][Contact] lié au groupe.
          */
         @ColumnInfo(name = "id_contact") val idContact: Int
 )
