@@ -144,8 +144,8 @@ interface ContactsDao {
      * @param id Int     Id du contact sélectionné
      */
 
-    @Query("UPDATE contacts_table SET contact_priority = 2 WHERE id= :id ")
-    fun setPriority2(id: Int)
+    @Query("UPDATE contacts_table SET contact_priority = :priority WHERE id= :id ")
+    fun setPriority(id: Int, priority: Int)
 
     /**
      * UPDATE la priorité d'un contact en priorité 2

@@ -176,7 +176,7 @@ class MultiSelectActivity : AppCompatActivity() {
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 val contactManag = ContactManager(contactList, this)
                 if (contactList.isNotEmpty()) {
-                    contactManag.setToContactInListPriority2()
+                    contactManag.setToContactInListPriority(2)
                 }
                 startActivity(
                     Intent(

@@ -474,4 +474,5 @@
     <string name="show_popup_positive_button">Nicht mehr anzeigen</string>
     <string name="alert_dialog_close">Nah dran</string>
     <string name="contact_vip_settings">VIP Parametern</string>
+    <string name="switch_1_to_0">Setzen Sie alle Ihre Kontakte von Priorität 1 auf 0</string>
 </resources>

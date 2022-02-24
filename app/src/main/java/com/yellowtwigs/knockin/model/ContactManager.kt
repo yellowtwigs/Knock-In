@@ -1477,11 +1477,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         return null
     }
 
-    fun setToContactInListPriority2() {
+    fun setToContactInListPriority(priority: Int) {
         for (contact in this.contactList) {
             val callDb = Callable {
-                //contactsDatabase!!.contactsDao().setPriority2(contact.getContactId())
-                contact.setPriority2(contactsDatabase)
+                contact.setPriority(contactsDatabase, priority)
             }
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
             val result = executorService.submit(callDb)

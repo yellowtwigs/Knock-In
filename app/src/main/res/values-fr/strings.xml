@@ -476,4 +476,5 @@
     <string name="show_popup_positive_button">Ne plus afficher</string>
     <string name="alert_dialog_close">Fermer</string>
     <string name="contact_vip_settings">Paramètres VIP</string>
+    <string name="switch_1_to_0">Mettre tous vos contacts de priorité 1 à 0</string>
 </resources>

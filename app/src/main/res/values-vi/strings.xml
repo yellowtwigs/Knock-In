@@ -476,4 +476,5 @@
     <string name="show_popup_positive_button">Không hiển thị nữa</string>
     <string name="alert_dialog_close">Đóng</string>
     <string name="contact_vip_settings">VIP đặt</string>
+    <string name="switch_1_to_0">Đặt tất cả các địa chỉ liên hệ của bạn từ ưu tiên 1 đến 0</string>
 </resources>

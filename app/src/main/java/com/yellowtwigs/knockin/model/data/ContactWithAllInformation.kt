@@ -90,32 +90,27 @@ class ContactWithAllInformation {
         return ""
     }
 
-    fun setPriority2(contactsDatabase: ContactsRoomDatabase?) {
-        val test = contactsDatabase!!.contactsDao().setPriority2(this.getContactId())
-        println("test getContactID $test")
+    fun setPriority(contactsDatabase: ContactsRoomDatabase?, priority: Int) {
+        contactsDatabase?.contactsDao()?.setPriority(this.getContactId(), priority)
     }
 
     fun setIsFavorite(contactsDatabase: ContactsRoomDatabase?) {
-        val test = contactsDatabase!!.contactsDao().setIsFavorite(this.getContactId())
-        println("test getContactID $test")
+        contactsDatabase?.contactsDao()?.setIsFavorite(this.getContactId())
     }
 
     fun setIsNotFavorite(contactsDatabase: ContactsRoomDatabase?) {
-        val test = contactsDatabase!!.contactsDao().setIsNotFavorite(this.getContactId())
-        println("test getContactID $test")
+        contactsDatabase?.contactsDao()?.setIsNotFavorite(this.getContactId())
     }
 
     fun setHasWhatsapp(contactsDatabase: ContactsRoomDatabase?) {
-        val test = contactsDatabase!!.contactsDao().setHasWhatsapp(this.getContactId())
-        println("test getContactID $test")
+        contactsDatabase?.contactsDao()?.setHasWhatsapp(this.getContactId())
     }
 
     fun setHasNotWhatsapp(contactsDatabase: ContactsRoomDatabase?) {
-        val test = contactsDatabase!!.contactsDao().setHasNotWhatsapp(this.getContactId())
-        println("test getContactID $test")
+        contactsDatabase?.contactsDao()?.setHasNotWhatsapp(this.getContactId())
     }
 
-    fun setNotification(contactsDatabase: ContactsRoomDatabase?, alarmTone:Int) {
+    fun setNotification(contactsDatabase: ContactsRoomDatabase?, alarmTone: Int) {
         contactDB?.id?.let { contactsDatabase?.contactsDao()?.setNotification(it, alarmTone) }
     }
 

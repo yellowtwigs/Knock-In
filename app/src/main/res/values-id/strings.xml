@@ -478,4 +478,5 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="show_popup_positive_button">Jangan tampilkan lagi</string>
     <string name="alert_dialog_close">Menutup</string>
     <string name="contact_vip_settings">VIP Pengaturan</string>
+    <string name="switch_1_to_0">Letakkan semua kontak Anda dari prioritas 1 hingga 0</string>
 </resources>

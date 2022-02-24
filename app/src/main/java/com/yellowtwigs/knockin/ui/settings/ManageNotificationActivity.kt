@@ -25,6 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
@@ -338,6 +340,16 @@ class ManageNotificationActivity : AppCompatActivity() {
         }
         noSoundCheckbox.setOnCheckedChangeListener { _, _ ->
             knockinCheckbox.isChecked = !noSoundCheckbox.isChecked
+        }
+
+        val switch1To0 = findViewById<AppCompatButton>(R.id.vip_0_switch)
+        switch1To0.setOnClickListener {
+            val contactManager = ContactManager(this.applicationContext)
+            for (contact in contactManager.contactList) {
+                if (contact.contactDB?.contactPriority == 1) {
+                    contact.setPriority(ContactsRoomDatabase.getDatabase(this), 0)
+                }
+            }
         }
     }
 

@@ -474,4 +474,5 @@
     <string name="show_popup_positive_button">artık gösterme</string>
     <string name="alert_dialog_close">Kapat</string>
     <string name="contact_vip_settings">VIP Ayarlar</string>
+    <string name="switch_1_to_0">Tüm kişilerinizi öncelik 1\'den 0\'a koyun</string>
 </resources>
