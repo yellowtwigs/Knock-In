@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.ui.notifications
 
-import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
 
@@ -12,19 +11,16 @@ import android.provider.Settings
 import android.text.TextUtils
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 import java.util.*
 
 class NotificationSender : BroadcastReceiver() {
-    @SuppressLint("ObsoleteSdkInt")
     override fun onReceive(context: Context, intent: Intent) {
-        println("received")
         val CHANNEL_ID = "my_channel"
 
-        println("extras test" + intent.extras!!.toString())
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
             /* Create or update. */
             val channel = NotificationChannel(CHANNEL_ID,
                     "Channel human readable title",
@@ -33,11 +29,11 @@ class NotificationSender : BroadcastReceiver() {
         }
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         if (!isNotificationServiceEnabled(context) && sharedPreferences.getBoolean("reminder",false)) {
-
             val main_ContactsDatabase: ContactsRoomDatabase?
             lateinit var main_mDbWorkerThread: DbWorkerThread
             main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
             main_mDbWorkerThread.start()
+
             main_ContactsDatabase = ContactsRoomDatabase.getDatabase(context)
             val runnableSendNotif = Runnable {
                 val list = main_ContactsDatabase!!.notificationsDao().getAllNotifications()
@@ -58,14 +54,16 @@ class NotificationSender : BroadcastReceiver() {
                             nbOfnotif++
                         }
                         i++
-                        println("before test nb$nbOfnotif")
                     }
                 }
-                println("after")
-                // calendar.time.after(Date(notificationDB.timestamp))
-                println("size of notif" + main_ContactsDatabase.notificationsDao().getIntTime().toString())
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
+                val resultIntent = Intent(context, NotificationHistoryActivity::class.java)
+                val pendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
+                    addNextIntentWithParentStack(resultIntent)
+                    getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
+
                 val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_letter_k)
                         .setContentTitle(context.getString(R.string.notification_sender_content_title))
@@ -75,7 +73,7 @@ class NotificationSender : BroadcastReceiver() {
                                         .bigText(String.format(context.getString(R.string.notification_sender_big_text), nbOfnotif))
                                         .setBigContentTitle(context.getString(R.string.notification_sender_content_title))
                                         .setSummaryText(""))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
 
@@ -83,9 +81,6 @@ class NotificationSender : BroadcastReceiver() {
                     manager.notify(0, notification.build())
             }
             main_mDbWorkerThread.postTask(runnableSendNotif)
-
-        } else {
-            println("in else")
         }
 
     }
@@ -105,7 +100,7 @@ class NotificationSender : BroadcastReceiver() {
             }
         }
         return false
-    }//TODO: enlever code duplicate
+    }
 
     private fun isMessagingApp(packageName: String): Boolean {
         if (packageName == NotificationListener.FACEBOOK_PACKAGE) {

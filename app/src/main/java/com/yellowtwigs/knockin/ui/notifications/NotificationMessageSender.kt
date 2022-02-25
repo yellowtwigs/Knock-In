@@ -35,26 +35,6 @@ class NotificationMessageSender : BroadcastReceiver() {
         val runnableSendNotif = Runnable {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-
-//                var nbOfnotif = 0
-//                val sharedPreferences = context.getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
-//                if (!sharedPreferences.getBoolean("filtre_message", true)) {
-//
-//                    while (nbOfnotif <= list.size - 1 && calendar.time.before(Date(list.get(nbOfnotif).timestamp))) {
-//                        nbOfnotif++
-//
-//                    }
-//                } else {
-//                    var i = 0
-//                    while (i <= list.size - 1 && calendar.time.before(Date(list[i].timestamp))) {
-//                        if (isMessagingApp(list[i].platform)) {
-//                            nbOfnotif++
-//                        }
-//                        i++
-//                        println("before test nb$nbOfnotif")
-//                    }
-//                }
-
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_letter_k)
                     .setContentTitle(context.getString(R.string.notification_sender_content_title))
