@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.media.MediaPlayer
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +18,11 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
 import com.yellowtwigs.knockin.model.*
+import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import kotlinx.coroutines.*
 
 class VipSettingsActivity : AppCompatActivity() {
 
@@ -37,7 +39,12 @@ class VipSettingsActivity : AppCompatActivity() {
     private var relaxToClose = false
     private var uploadToClose = false
 
+    private var audioFile = ""
+    private var fileId = ""
+
     private lateinit var alarmTonePreferences: SharedPreferences
+    private lateinit var fileIdPreferences: SharedPreferences
+    private lateinit var isCustomSoundPreferences: SharedPreferences
 
     private var numberDefault = 1
     private lateinit var binding: ActivityVipSettingsBinding
@@ -62,6 +69,9 @@ class VipSettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         alarmTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
+        fileIdPreferences = getSharedPreferences("File_Id", Context.MODE_PRIVATE)
+        isCustomSoundPreferences =
+            getSharedPreferences("isCustomSoundPreferences", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
@@ -320,22 +330,46 @@ class VipSettingsActivity : AppCompatActivity() {
             }
 
             uploadButton.setOnClickListener {
+                alarmSound?.stop()
                 checkRuntimePermission()
+            }
 
+            if (numberDefault == -1) {
+                audioFile = alarmTonePreferences.getString("Alarm_Custom_Tone", "").toString()
+            }
+
+            uploadCheckbox.isChecked = numberDefault == -1
+            uploadCheckbox.isVisible = numberDefault == -1
+
+            uploadCheckbox.setOnClickListener {
                 uncheckBoxAll()
+                uploadCheckbox.isChecked = true
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    alarmSound?.stop()
+                    alarmSound = MediaPlayer.create(this@VipSettingsActivity, Uri.parse(audioFile))
+                    alarmSound?.start()
+                    delay(15000)
+                    alarmSound?.stop()
+                }
+
+                numberDefault = -1
             }
         }
 
         //endregion
+
+        getAudioNameFromStorage(fileIdPreferences.getString("File_Id", ""))
     }
 
     //region ========================================== Functions ===========================================
 
     private fun checkIfUserBoughtCustomSound() {
         binding.apply {
-            uploadButton.isVisible = false
-            uploadSongsLayout.isVisible = false
-            uploadCustomSoundLayout.isVisible = false
+            uploadButton.isVisible = true
+            uploadSoundPath.isVisible = true
+            uploadSongsLayout.isVisible = true
+            uploadCustomSoundLayout.isVisible = true
         }
     }
 
@@ -346,6 +380,13 @@ class VipSettingsActivity : AppCompatActivity() {
         if (numberDefault != 1) {
             intentBack.putExtra("AlarmTone", numberDefault)
         }
+
+        if (binding.uploadCheckbox.isChecked) {
+            val edit = alarmTonePreferences.edit()
+            edit.putString("Alarm_Custom_Tone", audioFile)
+            edit.apply()
+        }
+
         startActivity(intentBack)
     }
 
@@ -412,7 +453,7 @@ class VipSettingsActivity : AppCompatActivity() {
 
     private fun saveAlarmToneChoose(id: Int) {
         val edit: SharedPreferences.Editor = alarmTonePreferences.edit()
-        edit.putString("Alarm_Custom_Tone", null)
+        edit.putString("Alarm_Custom_Tone", "")
         edit.apply()
 
         numberDefault = id
@@ -424,6 +465,7 @@ class VipSettingsActivity : AppCompatActivity() {
         uncheckBoxAllJazzy()
         uncheckBoxAllFunky()
         uncheckBoxAllRelax()
+        binding.uploadCheckbox.isChecked = false
     }
 
     private fun uncheckBoxAllJazzy() {
@@ -464,7 +506,6 @@ class VipSettingsActivity : AppCompatActivity() {
         uncheckBoxAll()
         binding.apply {
             when (numberDefault) {
-                1 -> {}
                 R.raw.moanin_jazz -> {
                     moaninCheckbox.isChecked = true
                 }
@@ -518,6 +559,9 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
                 R.raw.interstellar_main_theme -> {
                     interstellarThemeCheckbox.isChecked = true
+                }
+                else -> {
+                    uploadCheckbox.isChecked = true
                 }
             }
         }
@@ -589,12 +633,41 @@ class VipSettingsActivity : AppCompatActivity() {
     //endregion
 
     private fun getTones() {
-        val sharePath = Environment.getExternalStorageDirectory().path
-
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "audio/*"
         startActivityForResult(Intent.createChooser(intent, "Title"), 89)
+//        loadAudioFiles()
+    }
+
+    private fun getAudioNameFromStorage(audioId: String?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0"
+            val sortOrder = MediaStore.Audio.Media.TITLE + " ASC"
+            val cursor: Cursor? = contentResolver.query(
+                uri, null, selection, null,
+                sortOrder
+            )
+            if (cursor != null && cursor.moveToFirst()) {
+                val id: Int = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
+                val title: Int = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+                do {
+                    val audioFileId = cursor.getLong(id)
+                    if (audioFileId.toString() == audioId) {
+
+                        audioFile = cursor.getString(23)
+
+                        withContext(Dispatchers.Main) {
+                            binding.uploadSoundPath.isVisible = true
+                            binding.uploadSoundPath.text = cursor.getString(title)
+                        }
+                        break
+                    }
+
+                } while (cursor.moveToNext())
+            }
+        }
     }
 
     //check if you have permission or not
@@ -607,10 +680,8 @@ class VipSettingsActivity : AppCompatActivity() {
         when (requestCode) {
             ManageNotificationActivity.PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //permission from popup granted
                     getTones()
                 } else {
-                    //permission from popup denied
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -618,13 +689,9 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun checkRuntimePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                requestPermissions(permissions, ManageNotificationActivity.PERMISSION_CODE)
-            } else {
-                getTones()
-            }
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            requestPermissions(permissions, ManageNotificationActivity.PERMISSION_CODE)
         } else {
             getTones()
         }
@@ -634,17 +701,13 @@ class VipSettingsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 89 && resultCode == RESULT_OK) {
             if (data?.data != null) {
-                Log.i("customSound", "Data : ${data.data}")
-                Log.i("customSound", "Path : ${data.data?.path}")
-                val audioFileUri = data.data
-                // use uri to get path
-                val path = audioFileUri?.path
-                binding.uploadSoundPath.text = "From :$path"
-                val alarmTonePreferences: SharedPreferences =
-                    getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = alarmTonePreferences.edit()
-                edit.putString("Alarm_Custom_Tone", audioFileUri.toString())
+                fileId = data.data?.lastPathSegment?.split(":")?.get(1).toString()
+
+                val edit = fileIdPreferences.edit()
+                edit.putString("File_Id", fileId)
                 edit.apply()
+
+                getAudioNameFromStorage(fileId)
             }
         }
     }

@@ -108,7 +108,6 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
             }
         }
         final ContactDB contact = getItem(contactMap.get(position)).getContactDB();
-        System.out.println(contact.getId());
         assert contact != null;
 
         if (len == 0) {

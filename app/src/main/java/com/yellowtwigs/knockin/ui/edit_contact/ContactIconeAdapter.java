@@ -34,8 +34,6 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
     @NonNull
     @Override
     public ContactIconeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        System.out.println("test into contact adapter");
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.icone_adapter, parent, false);
         return new ViewHolder(view);
@@ -43,10 +41,6 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ContactIconeAdapter.ViewHolder holder, final int position) {
-
-        for (int i1 : iconeList) {
-            System.out.println("icone list" + i1);
-        }
         holder.imageViewIcone.setImageResource(iconeList[position]);
         holder.iconeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +79,6 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
 
     @Override
     public int getItemCount() {
-        System.out.println("icone list length" + iconeList.length);
         return iconeList.length;
     }
 

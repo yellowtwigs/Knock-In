@@ -941,45 +941,63 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/upload_songs_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/upload_custom_sound_layout">
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/notification_vip_message_tone_personal_sound"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/upload_button"
+                        app:layout_constraintEnd_toStartOf="@+id/upload_button"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/upload_button" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/upload_sound_path"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_toEndOf="@+id/title"
+                        android:textColor="?attr/textColor"
+                        android:textSize="15sp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/upload_button" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/upload_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/notification_vip_upload_tone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="8dp"
-                        android:text="@string/notification_vip_message_tone_personal_sound"
-                        android:textColor="?attr/textColor"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/upload_sound_path"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/upload_button"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:textColor="?attr/textColor"
-                        android:textSize="12sp"
-                        android:visibility="visible" />
-                </RelativeLayout>
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/notification_vip_upload_tone"
+                        app:layout_constraintEnd_toStartOf="@+id/upload_checkbox"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/upload_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:buttonTint="?attr/textColor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -1057,7 +1075,6 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
-
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="14dp"
                             android:text="@string/settings_notif_schedule_daytime"

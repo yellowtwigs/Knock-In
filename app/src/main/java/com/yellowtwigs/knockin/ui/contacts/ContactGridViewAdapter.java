@@ -687,7 +687,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
     @Override
     public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
-        System.out.println("menu select");
         if (selectMenu != null) {
             selectMenu.close(false);
         }
@@ -702,7 +701,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
      */
     @Override
     public void onMenuClosed(FloatingActionMenu floatingActionMenu) {
-        System.out.println("menu close");
         selectMenu = null;
     }
 

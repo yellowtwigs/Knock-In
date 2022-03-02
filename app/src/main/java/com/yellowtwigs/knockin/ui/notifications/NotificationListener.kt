@@ -2,15 +2,15 @@ package com.yellowtwigs.knockin.ui.notifications
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
+import android.database.Cursor
 import android.graphics.PixelFormat
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
+import android.provider.MediaStore
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.DisplayMetrics
@@ -26,12 +26,15 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.NotificationDB
 import com.yellowtwigs.knockin.model.data.VipNotificationsDB
 import com.yellowtwigs.knockin.model.data.VipSbnDB
-import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
+import java.io.File
+import java.io.FileInputStream
+
 
 /**
  * Service qui nous permet de traiter les notifications
@@ -47,13 +50,18 @@ class NotificationListener : NotificationListenerService() {
     private var windowManager: WindowManager? = null
     private var notificationPopupRecyclerView: RecyclerView? = null
 
-    private lateinit var popupViewSharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
-    private var sharedAlarmNotifDurationPreferences: SharedPreferences? = null
+    private lateinit var durationPreferences: SharedPreferences
     private var duration = 0
 
-    private var sharedAlarmNotifCanRingtonePreferences: SharedPreferences? = null
+    private lateinit var tonePreferences: SharedPreferences
+    private lateinit var alarmCustomTonePreferences: SharedPreferences
+    private var customSound = ""
+
+    private lateinit var canRingtonePreferences: SharedPreferences
     private var canRingtone = false
+
 
     /**
      * La première fois que le service est crée nous définnissons les valeurs pour les threads
@@ -81,13 +89,16 @@ class NotificationListener : NotificationListenerService() {
      */
     @SuppressLint("WrongConstant")
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-        popupViewSharedPreferences =
-            getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        canRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
+        durationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
+        tonePreferences = getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
+        alarmCustomTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
+
         val sbp = StatusBarParcelable(sbn)
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
 
-            sbp.castName()//permet de récupérer le vrai nom ou numéro du contact
+            sbp.castName()
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
             val app = convertPackageToString(sbp.appNotifier!!, this)
@@ -324,43 +335,14 @@ class NotificationListener : NotificationListenerService() {
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
     }
 
-    private fun displayLayoutWithSharedPreferences(
-        sbp: StatusBarParcelable,
-        idSound: Int?
-    ) {
-        val sharedAlarmNotifTonePreferences: SharedPreferences =
-            getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
-        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
-
-        sharedAlarmNotifDurationPreferences =
-            getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
-        duration = sharedAlarmNotifDurationPreferences!!.getInt("Alarm_Notif_Duration", 3892)
-
-        sharedAlarmNotifCanRingtonePreferences =
-            getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
-        canRingtone = sharedAlarmNotifCanRingtonePreferences!!.getBoolean("Can_RingTone", true)
-
-        val customSound = sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Tone", null)
-
-        if (canRingtone) {
-            if (customSound == null) {
-                if (idSound != null) {
-                    if (sound == idSound) {
-                        alertNotificationTone(sound)
-                    } else {
-                        alertNotificationTone(idSound)
-                    }
-                }
-            } else {
-                alertCustomNotificationTone(customSound.toString())
-            }
-        }
+    private fun displayLayoutWithSharedPreferences(sbp: StatusBarParcelable, idSound: Int?) {
+        soundRingtone(idSound)
 
         val handler = Handler()
         handler.postDelayed(object : Runnable {
             override fun run() {
                 canRingtone = true
-                val edit = sharedAlarmNotifCanRingtonePreferences?.edit()
+                val edit = canRingtonePreferences.edit()
                 edit?.putBoolean("Can_RingTone", canRingtone)
                 edit?.apply()
 
@@ -368,15 +350,15 @@ class NotificationListener : NotificationListenerService() {
             }
         }, duration.toLong())
 
-        if (appNotifiable(sbp) && popupViewSharedPreferences.getBoolean("popupNotif", false)) {
+        if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             if (adapterNotification == null) {
-                val edit = popupViewSharedPreferences.edit()
+                val edit = sharedPreferences.edit()
                 edit.putBoolean("view", false)
                 edit.apply()
             }
-            if (!popupViewSharedPreferences.getBoolean("view", false)) {
+            if (!sharedPreferences.getBoolean("view", false)) {
                 popupView = null
-                val edit = popupViewSharedPreferences.edit()
+                val edit = sharedPreferences.edit()
                 edit.putBoolean("view", true)
                 edit.apply()
                 displayLayout(sbp, idSound)
@@ -454,8 +436,6 @@ class NotificationListener : NotificationListenerService() {
                 return@setOnTouchListener true
             }
         } else {
-            val sharedPreferences =
-                getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
             if (sharedPreferences.getBoolean("first_notif", true)) {
                 val view = inflater.inflate(R.layout.layout_notification_pop_up, null)
                 val notifications: ArrayList<StatusBarParcelable> = ArrayList()
@@ -466,7 +446,7 @@ class NotificationListener : NotificationListenerService() {
                     windowManager!!,
                     view
                 )
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                val edit = sharedPreferences.edit()
                 edit.putBoolean("first_notif", false)
                 edit.apply()
             }
@@ -476,24 +456,28 @@ class NotificationListener : NotificationListenerService() {
     private fun positionXIntoScreen(popupX: Float, deplacementX: Float, popupSizeX: Float): Float {
         val metrics = DisplayMetrics()
         windowManager!!.defaultDisplay.getMetrics(metrics)
-        if (popupX + deplacementX < 0) {
-            return 0.0f
+        return if (popupX + deplacementX < 0) {
+            0.0f
         } else if (popupX + deplacementX + popupSizeX < metrics.widthPixels) {
-            return popupX + deplacementX
+            popupX + deplacementX
         } else {
-            return metrics.widthPixels.toFloat() - popupSizeX
+            metrics.widthPixels.toFloat() - popupSizeX
         }
     }
 
     private fun positionYIntoScreen(popupY: Float, deplacementY: Float, popupSizeY: Float): Float {
         val metrics = DisplayMetrics()
-        windowManager!!.defaultDisplay.getMetrics(metrics)
-        if (popupY + deplacementY < 0) {
-            return 0.0f
-        } else if (popupY + deplacementY + popupSizeY < metrics.heightPixels) {
-            return popupY + deplacementY
-        } else {
-            return metrics.heightPixels.toFloat() - popupSizeY
+        windowManager?.defaultDisplay?.getMetrics(metrics)
+        return when {
+            popupY + deplacementY < 0 -> {
+                0.0f
+            }
+            popupY + deplacementY + popupSizeY < metrics.heightPixels -> {
+                popupY + deplacementY
+            }
+            else -> {
+                metrics.heightPixels.toFloat() - popupSizeY
+            }
         }
     }
 
@@ -516,25 +500,7 @@ class NotificationListener : NotificationListenerService() {
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
 
-        val sharedAlarmNotifTonePreferences: SharedPreferences =
-            getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
-        val sound = sharedAlarmNotifTonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
-
-        if (notifications.size == 1) {
-            val customSound =
-                sharedAlarmNotifTonePreferences.getString("Alarm_Custom_Tone", null)
-            if (customSound == null) {
-                if (idSound != null) {
-                    if (sound == idSound) {
-                        alertNotificationTone(sound)
-                    } else {
-                        alertNotificationTone(idSound)
-                    }
-                }
-            } else {
-                alertCustomNotificationTone(customSound.toString())
-            }
-        }
+        soundRingtone(idSound)
 
         if (notifications.size == 0) {
             alarmSound?.stop()
@@ -551,7 +517,7 @@ class NotificationListener : NotificationListenerService() {
             popupView = null
             alarmSound?.stop()
 
-            val edit = popupViewSharedPreferences.edit()
+            val edit = sharedPreferences.edit()
             edit.putBoolean("view", false)
             edit.apply()
         }
@@ -570,42 +536,56 @@ class NotificationListener : NotificationListenerService() {
         return title.matches(pregMatchString.toRegex())
     }
 
-    fun alertNotificationTone(sound: Int) {
+    private fun alertNotificationTone(sound: Int) {
         alarmSound?.stop()
-        alarmSound = MediaPlayer.create(this, sound)
+        alarmSound = if (sound == -1) {
+            MediaPlayer.create(this, R.raw.sms_ring)
+        } else {
+            MediaPlayer.create(this, sound)
+        }
         alarmSound?.start()
 
-        val editDuration = sharedAlarmNotifDurationPreferences?.edit()
-        editDuration?.putInt(
-            "Alarm_Notif_Duration",
-            alarmSound!!.duration
-        )
-        editDuration?.apply()
+        val editDuration = durationPreferences.edit()
+        alarmSound?.duration?.let { editDuration.putInt("Alarm_Notif_Duration", it) }
+        editDuration.apply()
 
-        val editCanRingtone: SharedPreferences.Editor =
-            sharedAlarmNotifCanRingtonePreferences!!.edit()
+        val editCanRingtone = canRingtonePreferences.edit()
         editCanRingtone.putBoolean("Can_RingTone", canRingtone)
         editCanRingtone.apply()
     }
 
-    fun alertCustomNotificationTone(customSound: String) {
+    private fun alertCustomNotificationTone(customSound: String) {
         alarmSound?.stop()
-        alarmSound =
-            MediaPlayer.create(this, Uri.parse(customSound))
-        alarmSound!!.start()
+        alarmSound = MediaPlayer.create(applicationContext, Uri.parse(customSound))
+        alarmSound?.start()
 
-        val editDuration: SharedPreferences.Editor = sharedAlarmNotifDurationPreferences!!.edit()
-        editDuration.putInt(
-            "Alarm_Notif_Duration",
-            alarmSound!!.duration
-        )
+        val editDuration = durationPreferences.edit()
+        alarmSound?.duration?.let { editDuration.putInt("Alarm_Notif_Duration", it) }
         editDuration.apply()
 
-        val editCanRingtone: SharedPreferences.Editor =
-            sharedAlarmNotifCanRingtonePreferences!!.edit()
+        val editCanRingtone = canRingtonePreferences.edit()
         editCanRingtone.putBoolean("Can_RingTone", canRingtone)
         editCanRingtone.apply()
+    }
 
+    private fun soundRingtone(idSound: Int?) {
+        duration = durationPreferences.getInt("Alarm_Notif_Duration", 4000)
+        canRingtone = canRingtonePreferences.getBoolean("Can_RingTone", true)
+        customSound = alarmCustomTonePreferences.getString("Alarm_Custom_Tone", "").toString()
+
+        if (canRingtone) {
+            if (idSound != null) {
+                if (idSound != R.raw.sms_ring) {
+                    if (idSound == -1 && customSound.isNotEmpty()) {
+                        alertCustomNotificationTone(customSound)
+                    } else {
+                        alertNotificationTone(idSound)
+                    }
+                } else {
+                    alertNotificationTone(R.raw.sms_ring)
+                }
+            }
+        }
     }
 
     companion object {

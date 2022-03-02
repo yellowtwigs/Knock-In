@@ -27,8 +27,6 @@ class FirstLaunchActivity : AppCompatActivity() {
             height < 1100 -> setContentView(R.layout.activity_first_launch_mini_screen)
         }
 
-        println(height)
-
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val buttonAccept: Button = findViewById(R.id.first_launch_accept_politique)

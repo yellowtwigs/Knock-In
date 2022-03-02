@@ -219,7 +219,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_mail)))
                 intent.putExtra(Intent.EXTRA_SUBJECT, "")
                 intent.putExtra(Intent.EXTRA_TEXT, "")
-                println("intent " + intent.extras.toString())
                 startActivity(
                     Intent.createChooser(
                         intent,
