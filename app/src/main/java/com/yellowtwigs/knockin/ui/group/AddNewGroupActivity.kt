@@ -228,9 +228,7 @@ class AddNewGroupActivity : AppCompatActivity() {
             val groupId = contactsDatabase!!.GroupsDao().insert(group)
             listContact!!.forEach {
                 val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
-                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
             }
-            println(contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
             refreshActivity()
         }
     }

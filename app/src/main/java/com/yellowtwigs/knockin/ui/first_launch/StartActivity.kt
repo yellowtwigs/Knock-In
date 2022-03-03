@@ -181,14 +181,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     webview.loadUrl("https://www.yellowtwigs.com/france")
                 }
                 "de" -> {
-                    println("////////////////////////////")
                     println(importContactsButton!!.textSize)
                     importContactsButton!!.textSize = 10f
                     activateNotificationsButton!!.textSize = 10f
                     superpositionButton!!.textSize = 10f
                     permissionsButton!!.textSize = 10f
-                    println(importContactsButton!!.textSize)
-                    println("////////////////////////////")
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/germany")
                 }

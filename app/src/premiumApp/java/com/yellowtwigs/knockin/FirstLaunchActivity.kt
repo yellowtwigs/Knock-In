@@ -9,8 +9,8 @@ import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.yellowtwigs.knockin.controller.activity.MainActivity
-import com.yellowtwigs.knockin.controller.activity.firstLaunch.StartActivity
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.first_launch.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
 

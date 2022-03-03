@@ -84,12 +84,12 @@ class MultiChannelActivity : AppCompatActivity() {
         intent_listOfContactSelected = intent.getIntegerArrayListExtra("ListContactsSelected") as ArrayList<Int>
 
         gestionnaireContacts = ContactManager(this.applicationContext)
-        gestionnaireContacts!!.sortContactByFirstNameAZ()
+        gestionnaireContacts?.sortContactByFirstNameAZ()
 
         val iterator = (0 until intent_listOfContactSelected.size).iterator()
 
         for (i in iterator) {
-            multi_channel_listOfContactSelected.add(gestionnaireContacts!!.getContactById(intent_listOfContactSelected[i]))
+            multi_channel_listOfContactSelected.add(gestionnaireContacts?.getContactById(intent_listOfContactSelected[i]))
         }
 
         //endregion

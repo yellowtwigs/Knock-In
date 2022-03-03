@@ -29,7 +29,6 @@ class ContactWithAllInformation {
         val regex = "((\\+33)|0|(\\+33 ))([67])(( [0-9]{2})|([0-9]{2})){4}".toRegex()
         var onlyFix = ""
         for (detail in contactDetailList!!) {
-            println(detail.content + "matches with regex ?" + detail.content.matches(regex))
             if (detail.type == "phone" && detail.content.matches(regex)) {
                 return detail.content
             } else if (detail.type == "phone" && onlyFix == "") {

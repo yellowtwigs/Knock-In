@@ -110,7 +110,6 @@ class StatusBarParcelable : Parcelable {
         if (NameFromNotif.matches(pregMatchString.toRegex())) {
             return NameFromNotif.substring(0, TextUtils.lastIndexOf(NameFromNotif, '(')).dropLast(1)
         } else {
-            println("pregmatch fail" + NameFromNotif)
             return NameFromNotif
         }
     }

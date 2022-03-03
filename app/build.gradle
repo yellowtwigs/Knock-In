@@ -14,8 +14,8 @@ android {
         targetSdk 31
 //        versionCode 82
 //        versionName "2.0.2"
-        versionCode 130
-        versionName "2.2.1"
+        versionCode 132
+        versionName "2.2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {

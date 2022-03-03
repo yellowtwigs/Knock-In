@@ -13,6 +13,7 @@ import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
+import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.spanNameTextView
@@ -28,6 +29,7 @@ class MultiSelectAdapter(
     ) {
 
     val listContactSelect = arrayListOf<ContactWithAllInformation>()
+    val contactsDatabase = ContactsRoomDatabase.getDatabase(cxt)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -48,7 +50,6 @@ class MultiSelectAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contactWithAllInformation: ContactWithAllInformation, position: Int) {
-            Log.i("testScroll", "$listContactSelect")
             binding.apply {
                 val contact = contactWithAllInformation.contactDB
                 if (contact != null)
@@ -93,6 +94,10 @@ class MultiSelectAdapter(
                         }
                     }
                 }
+
+                if (contact?.contactPriority == 2) {
+                    setBorderColor(contactImage, R.color.priorityTwoColor)
+                }
             }
         }
 
@@ -120,8 +125,10 @@ class MultiSelectAdapter(
 
     fun itemSelected(position: Int) {
         val contact = getItem(position)
+
         if (listContactSelect.contains(contact)) {
             listContactSelect.remove(contact)
+            contact.setPriority(contactsDatabase, 1)
         } else {
             if (listContactSelect.size < 5 || contactUnlimited) {
                 listContactSelect.add(contact)

@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
@@ -20,6 +21,7 @@ import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
+import kotlinx.coroutines.*
 
 /**
  * Activité qui nous permet de faire un multiSelect sur nos contact afin de les prioriser
@@ -42,8 +44,6 @@ class MultiSelectActivity : AppCompatActivity() {
     private var contactsUnlimitedBought = true
     private var firstClick = true
     private var tooMuch = false
-
-    private val listOfIds = arrayListOf<Int>()
 
     //endregion
 
@@ -74,6 +74,8 @@ class MultiSelectActivity : AppCompatActivity() {
         contactManager = ContactManager(this)
         loadRecyclerView()
 
+        alreadyVip()
+
         binding.multiSelectTextView.text = String.format(
             applicationContext.resources.getString(R.string.multi_select_nb_contact),
             multiSelectAdapter.listContactSelect.size
@@ -81,11 +83,11 @@ class MultiSelectActivity : AppCompatActivity() {
 
         if (Resources.getSystem().configuration.locale.language == "ar") {
             binding.multiSelectTextView.text =
-                "${multiSelectAdapter.listContactSelect.size} ${getString(R.string.multi_select_nb_contact)}"
+                "${listItemSelect.size} ${getString(R.string.multi_select_nb_contact)}"
         } else {
             binding.multiSelectTextView.text = String.format(
                 applicationContext.resources.getString(R.string.multi_select_nb_contact),
-                multiSelectAdapter.listContactSelect.size
+                listItemSelect.size
             )
         }
     }
@@ -128,12 +130,20 @@ class MultiSelectActivity : AppCompatActivity() {
                 edit.apply()
             }
         }
-        multiSelectAdapter.submitList(null)
         binding.multiSelectRecyclerView.apply {
             adapter = multiSelectAdapter
             multiSelectAdapter.submitList(contactManager?.contactList)
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(cxt, 4, RecyclerView.VERTICAL, false)
+        }
+    }
+
+    private fun alreadyVip() {
+        for (contact in contactManager?.contactList!!) {
+            if (contact.contactDB?.contactPriority == 2) {
+                listItemSelect.add(contact)
+                multiSelectAdapter.listContactSelect.add(contact)
+            }
         }
     }
 
@@ -174,20 +184,26 @@ class MultiSelectActivity : AppCompatActivity() {
             .setMessage(message + applicationContext.resources.getString(R.string.multi_select_validate_selection))
             .setBackground(getDrawable(R.color.backgroundColor))
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                val contactManag = ContactManager(contactList, this)
-                if (contactList.isNotEmpty()) {
-                    contactManag.setToContactInListPriority(2)
-                }
+                setPriorityList()
                 startActivity(
                     Intent(
-                        this@MultiSelectActivity,
-                        MainActivity::class.java
+                        this@MultiSelectActivity, MainActivity::class.java
                     ).putExtra("fromStartActivity", true)
                 )
                 finish()
             }
             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
             }
+    }
+
+    private fun setPriorityList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val contactList = multiSelectAdapter.listContactSelect
+            val contactManag = ContactManager(contactList, applicationContext)
+            if (contactList.isNotEmpty()) {
+                contactManag.setToContactInListPriority(2)
+            }
+        }
     }
 
     fun selectedItem(
@@ -211,14 +227,6 @@ class MultiSelectActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    fun getListOfIds() {
-        listOfIds
-    }
-
-    private fun setBorderColor(cv: CircularImageView, res: Int) {
-        cv.setBorderColor(ResourcesCompat.getColor(cxt.resources, res, null))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

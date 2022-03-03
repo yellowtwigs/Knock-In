@@ -34,13 +34,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     private var mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
     private var contactsDatabase: ContactsRoomDatabase? = null
 
-    private val FACEBOOK_PACKAGE = "com.facebook.katana"
-    private val MESSENGER_PACKAGE = "com.facebook.orca"
-    private val WHATSAPP_SERVICE = "com.whatsapp"
-    private val GMAIL_PACKAGE = "com.google.android.gm"
-    private val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
-    private val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
-
     init {
         mDbWorkerThread.start()
         contactsDatabase = ContactsRoomDatabase.getDatabase(context)
@@ -464,7 +457,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                     .replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString()
                     .replace("\\s".toRegex(), "")
             ) {
-                println("IT = " + it[2] + " IDANDPHONE = " + idAndPhoneNumber[2])
                 return true
             }
         }
@@ -918,7 +910,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                 } else {
                                     var positionInSet = 3
                                     //on commence à serialiser le contact
-                                    println("CONTACT ALREADY EXIST = " + fullName.second + " " + fullName.first)
                                     val contact = getContactWithAndroidId(fullName.first, lastSync)
                                     if (contact != null) {
                                         set.add("0" + contact.contactDB!!.id)
@@ -1145,8 +1136,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             ContactsContract.Groups.TITLE + " ASC"
         )
         var allGroupMembers = listOf<Triple<Int, String?, String?>>()
-        println(phoneContact!!.columnNames)
-        while (phoneContact.moveToNext()) {
+        while (phoneContact?.moveToNext() == true) {
             //récupère l'id du groupe
             val groupId =
                 phoneContact.getString(phoneContact.getColumnIndex(ContactsContract.Groups._ID))
@@ -1176,7 +1166,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
 
             }
         }
-        phoneContact.close()
+        phoneContact?.close()
         return allGroupMembers
     }
 
@@ -1459,7 +1449,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             this.contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
-                println("contact " + dbContact.contactDB.toString() + " name of contact =" + name)
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
                     return contactInfo.id!!
                 }

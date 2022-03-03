@@ -29,6 +29,7 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import java.util.*
@@ -128,8 +129,8 @@ class ManageNotificationActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
+        actionbar?.setDisplayHomeAsUpEnabled(true)
+        actionbar?.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
 
         //endregion
 
@@ -207,7 +208,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //region ======================================== Listeners =========================================
 
-        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 val sharedCallPopupPreferences: SharedPreferences =
                     getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
@@ -223,9 +224,8 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
         }
 
-        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-
                 setTheme(R.style.AppThemeDark)
 //                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
@@ -253,7 +253,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
         }
 
-        switchPopupNotif!!.setOnCheckedChangeListener { _, _ ->
+        switchPopupNotif?.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchPopupNotif!!.isChecked) {
                 /*if (!isNotificationServiceEnabled) {
@@ -270,7 +270,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
         }
 
-        switchservice!!.setOnCheckedChangeListener { _, _ ->
+        switchservice?.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchservice!!.isChecked) {
                 if (!isNotificationServiceEnabled) {
@@ -342,14 +342,36 @@ class ManageNotificationActivity : AppCompatActivity() {
             knockinCheckbox.isChecked = !noSoundCheckbox.isChecked
         }
 
-        val switch1To0 = findViewById<AppCompatButton>(R.id.vip_0_switch)
-        switch1To0.setOnClickListener {
-            val contactManager = ContactManager(this.applicationContext)
-            for (contact in contactManager.contactList) {
-                if (contact.contactDB?.contactPriority == 1) {
-                    contact.setPriority(ContactsRoomDatabase.getDatabase(this), 0)
+        val switch1To0Checked = getSharedPreferences("switch1To0Checked", Context.MODE_PRIVATE)
+        val switch1To0 = findViewById<SwitchCompat>(R.id.vip_0_switch)
+        switch1To0.isChecked = switch1To0Checked.getBoolean("switch1To0Checked", false)
+        switch1To0.setOnCheckedChangeListener { button, isChecked ->
+            if (isChecked) {
+                val contactManager = ContactManager(this.applicationContext)
+                for (contact in contactManager.contactList) {
+                    if (contact.contactDB?.contactPriority == 1) {
+                        contact.setPriority(ContactsRoomDatabase.getDatabase(this), 0)
+                    }
                 }
+                val edit = switch1To0Checked.edit()
+                edit.putBoolean("switch1To0Checked", true)
+                edit.apply()
+            } else {
+                val contactManager = ContactManager(this.applicationContext)
+                for (contact in contactManager.contactList) {
+                    if (contact.contactDB?.contactPriority == 0) {
+                        contact.setPriority(ContactsRoomDatabase.getDatabase(this), 1)
+                    }
+                }
+                val edit = switch1To0Checked.edit()
+                edit.putBoolean("switch1To0Checked", false)
+                edit.apply()
             }
+        }
+
+        val multiSelectVipButton = findViewById<AppCompatButton>(R.id.vip_multi_select_button)
+        multiSelectVipButton.setOnClickListener {
+            startActivity(Intent(this@ManageNotificationActivity, MultiSelectActivity::class.java))
         }
     }
 
