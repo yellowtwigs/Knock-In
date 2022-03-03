@@ -11,7 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
@@ -19,10 +19,12 @@ import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
-import com.yellowtwigs.knockin.model.*
+import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import kotlinx.coroutines.*
+import java.text.DateFormat
+import java.util.*
 
 class VipSettingsActivity : AppCompatActivity() {
 
@@ -34,17 +36,17 @@ class VipSettingsActivity : AppCompatActivity() {
     private var jazzySoundBought: Boolean = false
     private var relaxSoundBought: Boolean = false
 
-    private var jazzyToClose = false
-    private var funkyToClose = false
-    private var relaxToClose = false
-    private var uploadToClose = false
+    private var jazzyToClose = true
+    private var funkyToClose = true
+    private var relaxToClose = true
+    private var uploadToClose = true
 
     private var audioFile = ""
     private var fileId = ""
 
     private lateinit var alarmTonePreferences: SharedPreferences
     private lateinit var fileIdPreferences: SharedPreferences
-    private lateinit var isCustomSoundPreferences: SharedPreferences
+    private lateinit var schedulePreferences: SharedPreferences
 
     private var numberDefault = 1
     private lateinit var binding: ActivityVipSettingsBinding
@@ -70,8 +72,7 @@ class VipSettingsActivity : AppCompatActivity() {
 
         alarmTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
         fileIdPreferences = getSharedPreferences("File_Id", Context.MODE_PRIVATE)
-        isCustomSoundPreferences =
-            getSharedPreferences("isCustomSoundPreferences", Context.MODE_PRIVATE)
+        schedulePreferences = getSharedPreferences("Schedule_VIP", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
@@ -120,7 +121,8 @@ class VipSettingsActivity : AppCompatActivity() {
                 openCloseUpload(uploadToClose)
             }
 
-            // Jazz Checkboxes
+            //region ================================ Jazz Checkboxes ================================
+
             moaninCheckbox.setOnClickListener {
                 uncheckBoxAll()
                 moaninCheckbox.isChecked = true
@@ -193,7 +195,10 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
             }
 
-            // Funky Checkboxes
+            //endregion
+
+            //region ================================ Funky Checkboxes ================================
+
             slapCheckbox.setOnClickListener {
                 uncheckBoxAll()
                 slapCheckbox.isChecked = true
@@ -261,7 +266,10 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
             }
 
-            // Relax Checkboxes
+            //endregion
+
+            //region ================================ Relax Checkboxes ================================
+
             xyloRelaxCheckbox.setOnClickListener {
                 uncheckBoxAll()
                 xyloRelaxCheckbox.isChecked = true
@@ -329,6 +337,8 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
             }
 
+            //endregion
+
             uploadButton.setOnClickListener {
                 alarmSound?.stop()
                 checkRuntimePermission()
@@ -354,6 +364,72 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
 
                 numberDefault = -1
+            }
+        }
+
+        binding.apply {
+            permanentRadioButton.setOnClickListener {
+                permanentRadioButton.isChecked = true
+                daytimeRadioButton.isChecked = false
+                workweekRadioButton.isChecked = false
+                scheduleMixRadioButton.isChecked = false
+
+                val edit = schedulePreferences.edit()
+                edit.putInt("Schedule_VIP", 1)
+                edit.apply()
+            }
+
+            daytimeRadioButton.setOnClickListener {
+                permanentRadioButton.isChecked = false
+                daytimeRadioButton.isChecked = true
+                workweekRadioButton.isChecked = false
+                scheduleMixRadioButton.isChecked = false
+
+                val edit = schedulePreferences.edit()
+                edit.putInt("Schedule_VIP", 2)
+                edit.apply()
+            }
+
+            workweekRadioButton.setOnClickListener {
+                permanentRadioButton.isChecked = false
+                daytimeRadioButton.isChecked = false
+                workweekRadioButton.isChecked = true
+                scheduleMixRadioButton.isChecked = false
+
+                val edit = schedulePreferences.edit()
+                edit.putInt("Schedule_VIP", 3)
+                edit.apply()
+            }
+
+            scheduleMixRadioButton.setOnClickListener {
+                permanentRadioButton.isChecked = false
+                daytimeRadioButton.isChecked = false
+                workweekRadioButton.isChecked = false
+                scheduleMixRadioButton.isChecked = true
+
+                val edit = schedulePreferences.edit()
+                edit.putInt("Schedule_VIP", 4)
+                edit.apply()
+            }
+        }
+
+        binding.apply {
+            when (schedulePreferences.getInt("Schedule_VIP", 1)) {
+                1 -> {
+                    permanentRadioButton.isChecked = true
+                }
+                2 -> {
+                    daytimeRadioButton.isChecked = true
+                }
+                3 -> {
+                    workweekRadioButton.isChecked = true
+                }
+                4 -> {
+                    scheduleMixRadioButton.isChecked = true
+                }
+                else -> {
+                    permanentRadioButton.isChecked = true
+                }
             }
         }
 
@@ -575,6 +651,7 @@ class VipSettingsActivity : AppCompatActivity() {
         openCloseAllJazzy(jazzyToClose)
         openCloseAllFunky(funkyToClose)
         openCloseAllRelax(relaxToClose)
+        openCloseUpload(uploadToClose)
     }
 
     private fun openCloseAllJazzy(isOpen: Boolean) {
@@ -626,7 +703,7 @@ class VipSettingsActivity : AppCompatActivity() {
         binding.apply {
             uploadSongsLayout.isVisible = !isOpen
             changeIconOpenLayout(uploadCloseIcon, isOpen)
-            relaxToClose = !relaxToClose
+            uploadToClose = !uploadToClose
         }
     }
 

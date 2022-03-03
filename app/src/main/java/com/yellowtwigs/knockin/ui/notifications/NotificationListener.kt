@@ -27,13 +27,13 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.StatusBarParcelable
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.model.data.NotificationDB
-import com.yellowtwigs.knockin.model.data.VipNotificationsDB
-import com.yellowtwigs.knockin.model.data.VipSbnDB
+import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 import java.io.File
 import java.io.FileInputStream
+import java.text.DateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -58,6 +58,8 @@ class NotificationListener : NotificationListenerService() {
     private lateinit var tonePreferences: SharedPreferences
     private lateinit var alarmCustomTonePreferences: SharedPreferences
     private var customSound = ""
+
+    private lateinit var schedulePreferences: SharedPreferences
 
     private lateinit var canRingtonePreferences: SharedPreferences
     private var canRingtone = false
@@ -94,6 +96,7 @@ class NotificationListener : NotificationListenerService() {
         durationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
         tonePreferences = getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
         alarmCustomTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
+        schedulePreferences = getSharedPreferences("Schedule_VIP", Context.MODE_PRIVATE)
 
         val sbp = StatusBarParcelable(sbn)
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
@@ -125,70 +128,44 @@ class NotificationListener : NotificationListenerService() {
                         notification.insertNotifications(database!!) //ajouter notification a la database
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                             if (contact != null) {
-                                when (contact.contactDB!!.contactPriority) {
+                                when (contact.contactDB?.contactPriority) {
                                     2 -> {
-                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                            var i = 0
-                                            val vipNotif = VipNotificationsDB(
-                                                null,
-                                                sbp.id,
-                                                sbp.appNotifier!!,
-                                                sbp.tailleList,
-                                                sbp.tickerText!!
-                                            )
-                                            val notifId =
-                                                database!!.VipNotificationsDao()
-                                                    .insert(vipNotif)
-                                            while (i < sbp.key.size) {
-                                                if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
-                                                    val vipSbn = VipSbnDB(
-                                                        null,
-                                                        notifId!!.toInt(),
-                                                        sbp.key[i],
-                                                        sbp.statusBarNotificationInfo[sbp.key[i]].toString()
-                                                    )
-                                                    database!!.VipSbnDao()
-                                                        .insert(vipSbn)
-                                                }
-                                                i++
-                                            }
-                                        }
+                                        val date = DateFormat.getTimeInstance().calendar.time
+                                        val cal = Calendar.getInstance()
+                                        cal.time = date
+                                        val hours = cal.get(Calendar.HOUR_OF_DAY)
+                                        val today = cal.get(Calendar.DAY_OF_WEEK)
 
-                                        val screenListener =
-                                            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                                        if (screenListener.isKeyguardLocked) {
-                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                                val i = Intent(
-                                                    this@NotificationListener,
-                                                    NotificationAlarmActivity::class.java
-                                                )
-                                                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                                i.putExtra("notification", sbp)
-                                                i.putExtra(
-                                                    "notificationSound",
-                                                    contact.contactDB?.notificationSound
-                                                )
-                                                this.cancelNotification(sbn.key)
-                                                cancelWhatsappNotif(sbn)
-                                                startActivity(i)
-                                            } else {
-                                                val i = Intent(
-                                                    this@NotificationListener,
-                                                    NotificationAlarmActivity::class.java
-                                                )
-                                                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                                i.putExtra("notification", sbp)
-                                                this.cancelNotification(sbn.key)
-                                                cancelWhatsappNotif(sbn)
-                                                startActivity(i)
+                                        when (schedulePreferences.getInt("Schedule_VIP", 1)) {
+                                            1 -> {
+                                                vipNotificationsDeployment(sbp, sbn, contact)
                                             }
-                                        } else {
-                                            this.cancelNotification(sbn.key)
-                                            cancelWhatsappNotif(sbn)
-                                            displayLayoutWithSharedPreferences(
-                                                sbp,
-                                                contact.contactDB!!.notificationSound
-                                            )
+                                            2 -> {
+                                                if (hours in 7..20) {
+                                                    vipNotificationsDeployment(sbp, sbn, contact)
+                                                }
+                                            }
+                                            3 -> {
+                                                if (today in 1..4 || today == 7) {
+                                                    vipNotificationsDeployment(sbp, sbn, contact)
+                                                }
+                                            }
+                                            4 -> {
+                                                if (hours in 7..20) {
+                                                    if (today == 5 || today == 6) {
+                                                        vipNotificationsDeployment(
+                                                            sbp,
+                                                            sbn,
+                                                            contact
+                                                        )
+                                                    }
+                                                } else if (today in 1..4 || today == 7) {
+                                                    vipNotificationsDeployment(sbp, sbn, contact)
+                                                }
+                                            }
+                                            else -> {
+                                                vipNotificationsDeployment(sbp, sbn, contact)
+                                            }
                                         }
                                     }
                                     1 -> {
@@ -333,6 +310,74 @@ class NotificationListener : NotificationListenerService() {
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Chat heads active")//Passer ces messages dans des strings
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Messenger")
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
+    }
+
+    private fun vipNotificationsDeployment(
+        sbp: StatusBarParcelable,
+        sbn: StatusBarNotification,
+        contact: ContactWithAllInformation
+    ) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            var i = 0
+            val vipNotif = VipNotificationsDB(
+                null,
+                sbp.id,
+                sbp.appNotifier!!,
+                sbp.tailleList,
+                sbp.tickerText!!
+            )
+            val notifId =
+                database?.VipNotificationsDao()?.insert(vipNotif)
+            while (i < sbp.key.size) {
+                if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
+                    val vipSbn = VipSbnDB(
+                        null,
+                        notifId!!.toInt(),
+                        sbp.key[i],
+                        sbp.statusBarNotificationInfo[sbp.key[i]].toString()
+                    )
+                    database!!.VipSbnDao()
+                        .insert(vipSbn)
+                }
+                i++
+            }
+        }
+        val screenListener =
+            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        if (screenListener.isKeyguardLocked) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                val i = Intent(
+                    this@NotificationListener,
+                    NotificationAlarmActivity::class.java
+                )
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                i.putExtra("notification", sbp)
+                i.putExtra(
+                    "notificationSound",
+                    contact.contactDB?.notificationSound
+                )
+                this.cancelNotification(sbn.key)
+                cancelWhatsappNotif(sbn)
+                startActivity(i)
+            } else {
+                val i = Intent(
+                    this@NotificationListener,
+                    NotificationAlarmActivity::class.java
+                )
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                i.putExtra("notification", sbp)
+                this.cancelNotification(sbn.key)
+                cancelWhatsappNotif(sbn)
+                startActivity(i)
+            }
+        } else {
+            this.cancelNotification(sbn.key)
+            cancelWhatsappNotif(sbn)
+            displayLayoutWithSharedPreferences(
+                sbp,
+                contact.contactDB!!.notificationSound
+            )
+        }
     }
 
     private fun displayLayoutWithSharedPreferences(sbp: StatusBarParcelable, idSound: Int?) {

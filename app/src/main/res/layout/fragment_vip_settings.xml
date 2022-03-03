@@ -1175,7 +1175,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/settings_choose_notif_schedule_title"
+                    android:id="@+id/schedule_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -1183,7 +1183,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/settings_choose_notif_schedule_title"
+                    android:text="@string/schedule_title"
                     android:textColor="?attr/textColor"
                     android:textSize="@dimen/settings_subtitle_size"
                     android:textStyle="normal" />
@@ -1200,14 +1200,14 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/settings_notif_schedule_permanent"
+                        android:id="@+id/schedule_permanent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="12dp"
-                        android:text="@string/settings_notif_schedule_permanent"
+                        android:text="@string/schedule_permanent"
                         android:textColor="?attr/textColor"
 
                         android:textSize="@dimen/settings_long_text_size"
@@ -1223,7 +1223,7 @@
                         android:layout_marginEnd="-1dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/settings_notif_schedule_permanent"
+                        app:layout_constraintStart_toEndOf="@+id/schedule_permanent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View

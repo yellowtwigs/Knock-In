@@ -147,8 +147,8 @@
     <string name="edit_contact_phone_number">Phone number</string>
     <string name="edit_contact_phone_number_mobile">Mobile</string>
     <string name="edit_contact_phone_number_home">Home</string>
-    <string name="settings_choose_notif_schedule_title" translatable="false">VIP Notifications Schedule</string>
-    <string name="settings_notif_schedule_permanent" translatable="false">Permanent</string>
+    <string name="schedule_title" translatable="false">VIP Notifications Schedule</string>
+    <string name="schedule_permanent" translatable="false">Permanent</string>
     <string name="settings_notif_schedule_daytime" translatable="false">Daytime Only</string>
     <string name="settings_notif_schedule_workweek" translatable="false">Work week</string>
     <string name="settings_notif_schedule_mix" translatable="false">Mix</string>
