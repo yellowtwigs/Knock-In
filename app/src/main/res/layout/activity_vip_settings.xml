@@ -128,7 +128,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/jazzy_sound_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/moanin_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/moanin_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/blue_bossa_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/blue_bossa_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/autumn_leaves_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -245,7 +245,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/autumn_leaves_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/dolphin_dance_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -284,7 +284,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dolphin_dance_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/freddie_freeloader_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -323,7 +323,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/freddie_freeloader_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/caravan_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -404,7 +404,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/funky_sound_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/slap_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -443,7 +443,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/slap_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/off_the_curve_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -482,7 +482,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/off_the_curve_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/funk_yall_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -521,7 +521,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/funk_yall_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/u_cant_hold_no_groove_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -560,7 +560,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/u_cant_hold_no_groove_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cold_sweat_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -599,7 +599,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cold_sweat_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/keyboard_funky_tone_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -679,7 +679,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/relax_sound_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/xylo_relax_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -718,7 +718,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/xylo_relax_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/interstellar_theme_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -757,7 +757,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/interstellar_theme_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/guitar_relax_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -796,7 +796,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/guitar_relax_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/slow_dancing_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -835,7 +835,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/slow_dancing_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/gravity_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -874,7 +874,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/gravity_layout">
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/scorpion_theme_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -993,7 +993,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/upload_checkbox"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <CheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/upload_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

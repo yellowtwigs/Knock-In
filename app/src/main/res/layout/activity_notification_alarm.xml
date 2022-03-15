@@ -8,8 +8,6 @@
     tools:context=".ui.notifications.NotificationAlarmActivity"
     tools:ignore="PrivateResource">
 
-    <!-- android:background="@drawable/space_background" -->
-
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
@@ -36,31 +34,31 @@
             android:focusable="true">
 
             <TextView
-                android:id="@+id/notification_alarm_receive_message_content"
+                android:id="@+id/message_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/notification_alarm_receive_message_image"
+                android:layout_toEndOf="@+id/message_icon"
                 android:text="2 nouveaux messages VIP"
                 android:textColor="@color/lightColor"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/notification_alarm_receive_message_sender"
+                android:id="@+id/sender_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/notification_alarm_receive_message_content"
+                android:layout_below="@+id/message_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/notification_alarm_receive_message_image"
+                android:layout_toEndOf="@+id/message_icon"
                 android:text="de 0065606"
                 android:textColor="@color/lightColor"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/notification_alarm_receive_message_image"
+                android:id="@+id/message_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
@@ -79,7 +77,7 @@
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/notification_alarm_shut_down"
+        android:id="@+id/shutdown_button"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:text="Ok"

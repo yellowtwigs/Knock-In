@@ -50,7 +50,8 @@ object ContactGesture {
             i.data = Uri.parse(url)
             context.startActivity(i)
         } catch (e: PackageManager.NameNotFoundException) {
-            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT)
+                .show()
             e.printStackTrace()
         }
     }
@@ -62,6 +63,16 @@ object ContactGesture {
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
 
         activity.startActivity(intent)
+    }
+
+    fun whatsappIsNotInstalled(context: Context): Boolean {
+        val pm = context.packageManager
+        return try {
+            pm.getApplicationInfo("com.whatsapp", 0)
+            false
+        } catch (e: Exception) {
+            true
+        }
     }
 
     fun callPhone(phoneNumber: String, context: Context) {
@@ -103,6 +114,23 @@ object ContactGesture {
                 numberForPermission = ""
             }
         }
+    }
+
+    private fun openSmsWithMessage(phoneNumber: String, message: String, context: Context) {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra("sms_body", message)
+
+        context.startActivity(intent)
+    }
+
+
+    fun openSmsNoMessage(phoneNumber: String, context: Context) {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        context.startActivity(intent)
+        (context as Activity).finish()
     }
 
     /*fun openMessenger(id: String, context: Context) {

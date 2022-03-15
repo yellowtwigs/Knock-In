@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.model.data.*
@@ -42,7 +42,7 @@ import kotlin.collections.ArrayList
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
     // Database && Thread
-    private var database: ContactsRoomDatabase? = null
+    private var database: ContactsDatabase? = null
     private lateinit var mDbWorkerThread: DbWorkerThread
     private var oldPosX: Float = 0.0f
     private var oldPosY: Float = 0.0f
@@ -72,7 +72,7 @@ class NotificationListener : NotificationListenerService() {
         super.onCreate()
         mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
-        database = ContactsRoomDatabase.getDatabase(this)
+        database = ContactsDatabase.getDatabase(this)
     }
 
     /**
@@ -100,36 +100,40 @@ class NotificationListener : NotificationListenerService() {
 
         val sbp = StatusBarParcelable(sbn)
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
-
             sbp.castName()
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
             val app = convertPackageToString(sbp.appNotifier!!, this)
 
-            val contactManager = ContactManager(this)
-            if (message == "Incoming voice call" || message == "Appel vocal entrant") {
+            Log.i("notificationVIP", "0 : ${app}")
 
-            } else {
+            val contactManager = ContactManager(this)
+            if (message != "Incoming voice call" || message != "Appel vocal entrant") {
                 val addNotification = Runnable {
                     val contact: ContactWithAllInformation?
 
                     if (isPhoneNumber(name)) {
                         contact = contactManager.getContactFromNumber(name)
+                        Log.i("notificationVIP", "0.5 : ${contact}")
                         if (contact != null)
                             sbp.changeToContactName(contact)
+                        Log.i("notificationVIP", "0.50 : ${contact}")
                     } else {
                         contact = contactManager.getContactWithName(name, app)
+                        Log.i("notificationVIP", "0.55 : ${contact}")
                     }
 
                     val notification = saveNotification(sbp, contactManager.getContactId(name))
                     if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName &&
                         sbp.appNotifier != "com.samsung.android.incallui"
                     ) {
-                        notification.insertNotifications(database!!) //ajouter notification a la database
+                        notification.insertNotifications(database!!)
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                            Log.i("notificationVIP", "1 : ${contact}")
                             if (contact != null) {
                                 when (contact.contactDB?.contactPriority) {
                                     2 -> {
+                                        Log.i("notificationVIP", "2 : ${contact}")
                                         val date = DateFormat.getTimeInstance().calendar.time
                                         val cal = Calendar.getInstance()
                                         cal.time = date
@@ -179,7 +183,9 @@ class NotificationListener : NotificationListenerService() {
                                 if (sbn.key.contains("whatsapp")) {
                                     cancelWhatsappNotif(sbn)
                                 } else {
-                                    if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE) {
+                                    if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE
+                                        || sbn.packageName == OUTLOOK_PACKAGE || sbn.packageName == GMAIL_PACKAGE
+                                    ) {
                                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                                             var i = 0
                                             val vipNotif = VipNotificationsDB(
@@ -190,8 +196,7 @@ class NotificationListener : NotificationListenerService() {
                                                 sbp.tickerText!!
                                             )
                                             val notifId =
-                                                database!!.VipNotificationsDao()
-                                                    .insert(vipNotif)
+                                                database?.VipNotificationsDao()?.insert(vipNotif)
                                             while (i < sbp.key.size) {
                                                 if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
                                                     val VipSbn = VipSbnDB(
@@ -216,7 +221,8 @@ class NotificationListener : NotificationListenerService() {
 
                                                 displayLayoutWithSharedPreferences(
                                                     sbp,
-                                                    null
+                                                    "",
+                                                    0
                                                 )
                                             } else {
                                                 val i = Intent(
@@ -236,7 +242,8 @@ class NotificationListener : NotificationListenerService() {
                                             }
                                             displayLayoutWithSharedPreferences(
                                                 sbp,
-                                                null
+                                                "",
+                                                0
                                             )
                                         }
                                     }
@@ -352,10 +359,6 @@ class NotificationListener : NotificationListenerService() {
                 )
                 i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 i.putExtra("notification", sbp)
-                i.putExtra(
-                    "notificationSound",
-                    contact.contactDB?.notificationSound
-                )
                 this.cancelNotification(sbn.key)
                 cancelWhatsappNotif(sbn)
                 startActivity(i)
@@ -375,13 +378,18 @@ class NotificationListener : NotificationListenerService() {
             cancelWhatsappNotif(sbn)
             displayLayoutWithSharedPreferences(
                 sbp,
-                contact.contactDB!!.notificationSound
+                contact.contactDB?.notificationTone!!,
+                contact.contactDB?.isCustomSound!!
             )
         }
     }
 
-    private fun displayLayoutWithSharedPreferences(sbp: StatusBarParcelable, idSound: Int?) {
-        soundRingtone(idSound)
+    private fun displayLayoutWithSharedPreferences(
+        sbp: StatusBarParcelable,
+        idSound: String,
+        customSound: Int
+    ) {
+        soundRingtone(idSound, customSound)
 
         val handler = Handler()
         handler.postDelayed(object : Runnable {
@@ -406,7 +414,7 @@ class NotificationListener : NotificationListenerService() {
                 val edit = sharedPreferences.edit()
                 edit.putBoolean("view", true)
                 edit.apply()
-                displayLayout(sbp, idSound)
+                displayLayout(sbp, idSound, customSound)
             } else {
                 adapterNotification?.addNotification(sbp)
             }
@@ -415,7 +423,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun displayLayout(
         sbp: StatusBarParcelable,
-        idSound: Int?
+        idSound: String, customSound: Int
     ) {
         val flag = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -438,7 +446,7 @@ class NotificationListener : NotificationListenerService() {
             popupView?.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-            notifLayout(sbp, popupView, idSound)
+            notifLayout(sbp, popupView, idSound, customSound)
             windowManager?.addView(popupView, parameters) // affichage de la popupview
             popupDropable?.setOnTouchListener { view, event ->
                 val metrics = DisplayMetrics()
@@ -527,8 +535,7 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun notifLayout(
-        sbp: StatusBarParcelable, view: View?,
-        idSound: Int?
+        sbp: StatusBarParcelable, view: View?, idSound: String, isCustomSound: Int
     ) {
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
@@ -545,7 +552,7 @@ class NotificationListener : NotificationListenerService() {
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
 
-        soundRingtone(idSound)
+        soundRingtone(idSound, isCustomSound)
 
         if (notifications.size == 0) {
             alarmSound?.stop()
@@ -581,12 +588,12 @@ class NotificationListener : NotificationListenerService() {
         return title.matches(pregMatchString.toRegex())
     }
 
-    private fun alertNotificationTone(sound: Int) {
+    private fun alertNotificationTone(idSound: String, isCustomSound: Int) {
         alarmSound?.stop()
-        alarmSound = if (sound == -1) {
-            MediaPlayer.create(this, R.raw.sms_ring)
+        alarmSound = if (isCustomSound == 1) {
+            MediaPlayer.create(this, Uri.parse(customSound))
         } else {
-            MediaPlayer.create(this, sound)
+            MediaPlayer.create(this, idSound.toInt())
         }
         alarmSound?.start()
 
@@ -599,38 +606,9 @@ class NotificationListener : NotificationListenerService() {
         editCanRingtone.apply()
     }
 
-    private fun alertCustomNotificationTone(customSound: String) {
-        alarmSound?.stop()
-        alarmSound = MediaPlayer.create(applicationContext, Uri.parse(customSound))
-        alarmSound?.start()
-
-        val editDuration = durationPreferences.edit()
-        alarmSound?.duration?.let { editDuration.putInt("Alarm_Notif_Duration", it) }
-        editDuration.apply()
-
-        val editCanRingtone = canRingtonePreferences.edit()
-        editCanRingtone.putBoolean("Can_RingTone", canRingtone)
-        editCanRingtone.apply()
-    }
-
-    private fun soundRingtone(idSound: Int?) {
+    private fun soundRingtone(idSound: String, isCustomSound: Int) {
         duration = durationPreferences.getInt("Alarm_Notif_Duration", 4000)
-        canRingtone = canRingtonePreferences.getBoolean("Can_RingTone", true)
-        customSound = alarmCustomTonePreferences.getString("Alarm_Custom_Tone", "").toString()
-
-        if (canRingtone) {
-            if (idSound != null) {
-                if (idSound != R.raw.sms_ring) {
-                    if (idSound == -1 && customSound.isNotEmpty()) {
-                        alertCustomNotificationTone(customSound)
-                    } else {
-                        alertNotificationTone(idSound)
-                    }
-                } else {
-                    alertNotificationTone(R.raw.sms_ring)
-                }
-            }
-        }
+        alertNotificationTone(idSound, isCustomSound)
     }
 
     companion object {

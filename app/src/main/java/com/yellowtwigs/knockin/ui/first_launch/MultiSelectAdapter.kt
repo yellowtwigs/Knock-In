@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.ui.first_launch
 
 import android.app.Activity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
@@ -11,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.spanNameTextView
@@ -29,7 +28,7 @@ class MultiSelectAdapter(
     ) {
 
     val listContactSelect = arrayListOf<ContactWithAllInformation>()
-    val contactsDatabase = ContactsRoomDatabase.getDatabase(cxt)
+    val contactsDatabase = ContactsDatabase.getDatabase(cxt)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =

@@ -27,7 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity

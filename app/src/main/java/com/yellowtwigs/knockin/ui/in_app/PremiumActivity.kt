@@ -19,7 +19,9 @@ import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.utils.DrawerLayoutSwitch.checkSwitchFromLeftDrawer
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkSwitchFromLeftDrawer
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import kotlinx.coroutines.*
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -49,16 +51,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkThemePreferences(this)
 
         binding = ActivityPremiumBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -77,7 +70,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         sharedCustomSoundPreferences =
             getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
 
-        setupLeftDrawerLayout(sharedThemePreferences)
+        setupLeftDrawerLayout(getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE))
         toolbarClick()
     }
 
@@ -154,12 +147,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             adapter = myProductAdapter
             myProductAdapter.submitList(skuDetailsList)
         }
-    }
-
-    private fun getAllSkuDetails(skuDetailsList: List<SkuDetails>) {
-//        CoroutineScope(Dispatchers.Main).launch {
-//            launchProgressBarSpin(3000)
-//        }
     }
 
     private suspend fun launchProgressBarSpin(time: Long) {

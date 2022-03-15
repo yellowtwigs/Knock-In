@@ -84,9 +84,9 @@ class ImportContactsActivity : AppCompatActivity() {
             runOnUiThread(displayLoading)
 
             if (listApp.contains("com.whatsapp")) {
-                val importWhatsappSharedPreferences: SharedPreferences = getSharedPreferences("importWhatsappPreferences", Context.MODE_PRIVATE)
+                val importWhatsappSharedPreferences: SharedPreferences = getSharedPreferences("importWhatsapp", Context.MODE_PRIVATE)
                 val edit: SharedPreferences.Editor = importWhatsappSharedPreferences.edit()
-                edit.putBoolean("importWhatsappPreferences", true)
+                edit.putBoolean("importWhatsapp", true)
                 edit.apply()
             }
         }
@@ -128,7 +128,7 @@ class ImportContactsActivity : AppCompatActivity() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
                 val sync = Runnable {
-                    ContactManager(this).getAllContacsInfoSync(contentResolver)
+//                    ContactManager(this).getAllContactsInfoSync(contentResolver)
 
                     val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1

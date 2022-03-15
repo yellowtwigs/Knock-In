@@ -57,7 +57,7 @@ public class ContactIconeAdapter extends RecyclerView.Adapter<ContactIconeAdapte
                     Canvas canvas = new Canvas(bitmap);
                     drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                     drawable.draw(canvas);
-                    ((EditContactDetailsActivity) context).addContactIcone(bitmap);
+                    ((EditContactDetailsActivity) context).addContactIcon(bitmap);
                 } else if (context instanceof AddNewContactActivity) {
                     Drawable drawable = context.getDrawable(iconeList[position]);
                     Bitmap bitmap = null;

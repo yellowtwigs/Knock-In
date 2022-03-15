@@ -9,123 +9,95 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
+import android.util.Log
 import android.view.WindowManager
-import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
-import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.databinding.ActivityNotificationAlarmBinding
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.utils.ContactGesture.openSmsNoMessage
+import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 
 
 class NotificationAlarmActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
-    private var notification_Alarm_Button_ShutDown: MaterialButton? = null
-
     private var sbp: StatusBarParcelable? = null
 
-    private var notification_alarm_ReceiveMessageLayout: RelativeLayout? = null
-    private var notification_alarm_ReceiveMessageContent: TextView? = null
-    private var notification_alarm_ReceiveMessageSender: TextView? = null
-    private var notification_alarm_ReceiveMessageImage: AppCompatImageView? = null
+    private var mediaPlayer: MediaPlayer? = null
 
-    private var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
+    private lateinit var sharedPreferences: SharedPreferences
 
-    private lateinit var sharedAlarmNotifDurationPreferences: SharedPreferences
+    private lateinit var durationPreferences: SharedPreferences
     private var duration = 0
 
-    private lateinit var sharedAlarmNotifCanRingtonePreferences: SharedPreferences
+    private lateinit var tonePreferences: SharedPreferences
+    private lateinit var alarmCustomTonePreferences: SharedPreferences
+    private var customSound = ""
+
+    private lateinit var schedulePreferences: SharedPreferences
+
+    private lateinit var canRingtonePreferences: SharedPreferences
     private var canRingtone = false
 
     private var isSMS = false
-    private var sound = 0
+
+    private lateinit var binding: ActivityNotificationAlarmBinding
 
     //endregion
 
     @SuppressLint("InvalidWakeLockTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notification_alarm)
+        binding = ActivityNotificationAlarmBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //region ==================================== SharedPreferences =====================================
 
-        val tonePreferences: SharedPreferences =
-            getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
-
-        sharedAlarmNotifDurationPreferences =
-            getSharedPreferences("ringtone_duration", Context.MODE_PRIVATE)
-        duration = sharedAlarmNotifDurationPreferences.getInt("ringtone_duration", 0)
-
-        sharedAlarmNotifCanRingtonePreferences =
-            getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
-        canRingtone = sharedAlarmNotifCanRingtonePreferences.getBoolean("Can_RingTone", false)
-
-        if (canRingtone) {
-            sound = tonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
-        }
-
-        //endregion
-
-        //region ====================================== FindViewById ========================================
-
-        notification_Alarm_Button_ShutDown = findViewById(R.id.notification_alarm_shut_down)
-
-        notification_alarm_ReceiveMessageLayout =
-            findViewById(R.id.notification_alarm_receive_message_layout)
-        notification_alarm_ReceiveMessageContent =
-            findViewById(R.id.notification_alarm_receive_message_content)
-        notification_alarm_ReceiveMessageSender =
-            findViewById(R.id.notification_alarm_receive_message_sender)
-        notification_alarm_ReceiveMessageImage =
-            findViewById(R.id.notification_alarm_receive_message_image)
+        sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        canRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
+        durationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
+        tonePreferences = getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
+        alarmCustomTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
+        schedulePreferences = getSharedPreferences("Schedule_VIP", Context.MODE_PRIVATE)
 
         //endregion
 
         //region ================================== StatusBarParcelable =====================================
 
-        sbp = intent.extras!!.get("notification") as StatusBarParcelable
+        sbp = intent.extras?.get("notification") as StatusBarParcelable
 
-        val sbp = intent.extras!!.get("notification") as StatusBarParcelable
-
-        val notificationSound = intent.extras?.get("notificationSound") as Int
-        if (notificationSound != null) {
-            sound = notificationSound
-        }
-
-        alartNotifTone(sound)
-
-        notification_alarm_ReceiveMessageSender!!.text =
-            sbp.statusBarNotificationInfo["android.title"] as String
-        notification_alarm_ReceiveMessageContent!!.text =
-            sbp.statusBarNotificationInfo["android.text"] as String
-
-        if (notification_alarm_ReceiveMessageContent!!.length() > 20)
-            notification_alarm_ReceiveMessageContent!!.text =
-                notification_alarm_ReceiveMessageContent!!.text.substring(0, 19) + ".."
-
-        val gestionnaireContacts = ContactManager(this.applicationContext)
+        val contactManager = ContactManager(this.applicationContext)
         val contact =
-            gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"] as String)
+            contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
 
-        when (sbp.appNotifier) {
-            "com.google.android.apps.messaging",
-            "com.android.mms", "com.samsung.android.messaging" -> {
-                isSMS = true
-                notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_sms_selector)
-            }
+//        soundRingtone(contact?.contactDB?.notificationSound)
 
-            "com.whatsapp" -> {
-                isSMS = false
-                notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_circular_whatsapp)
-            }
+        binding.apply {
+            senderName.text = sbp?.statusBarNotificationInfo?.get("android.title") as String
+            messageContent.text = sbp?.statusBarNotificationInfo?.get("android.text") as String
 
-            "com.google.android.gm" -> {
-                isSMS = false
-                notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_circular_gmail)
+            if (messageContent.length() > 20)
+                messageContent.text = messageContent.text.substring(0, 19) + ".."
+
+            when (sbp?.appNotifier) {
+                "com.google.android.apps.messaging",
+                "com.android.mms", "com.samsung.android.messaging" -> {
+                    isSMS = true
+                    messageIcon.setImageResource(R.drawable.ic_sms_selector)
+                }
+
+                "com.whatsapp" -> {
+                    isSMS = false
+                    messageIcon.setImageResource(R.drawable.ic_circular_whatsapp)
+                }
+
+                "com.google.android.gm" -> {
+                    isSMS = false
+                    messageIcon.setImageResource(R.drawable.ic_circular_gmail)
+                }
             }
         }
 
@@ -151,56 +123,34 @@ class NotificationAlarmActivity : AppCompatActivity() {
             )
         }
 
-        //region sound + vibration
-        /* sound.start()
-         sound.isLooping=true*/
-
-//        val vibration = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val thread = Thread {
-//                val timeWhenLaunch = System.currentTimeMillis()
-//                while (System.currentTimeMillis() - timeWhenLaunch < 20 * 1000) {
-//                    vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
-//                    Thread.sleep(1000)
-//                }
-//                finish()
-//
-//            }
-//            thread.start()
-//        } else {
-//            //deprecated in API 26
-//            vibration.vibrate(500)
-//        }
-
         val handler = Handler()
         handler.postDelayed(object : Runnable {
             override fun run() {
                 canRingtone = true
 
-                val edit: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
+                val edit: SharedPreferences.Editor = canRingtonePreferences.edit()
                 edit.putBoolean("Can_RingTone", canRingtone)
                 edit.apply()
 
                 handler.postDelayed(this, duration.toLong())
+                mediaPlayer?.stop()
             }
         }, duration.toLong())
 
-        //endregion
-
-        notification_alarm_ReceiveMessageLayout!!.setOnClickListener {
+        binding.messageContent.setOnClickListener {
             if (isSMS) {
                 if (contact != null) {
-                    openSms(contact.getFirstPhoneNumber())
+                    openSmsNoMessage(contact.getFirstPhoneNumber(), this)
                 } else {
-                    openSms(sbp.statusBarNotificationInfo["android.title"] as String)
+                    openSmsNoMessage(sbp?.statusBarNotificationInfo?.get("android.title") as String, this)
                 }
-            } else if (sbp.appNotifier == "com.whatsapp") {
+            } else if (sbp?.appNotifier == "com.whatsapp") {
                 if (contact != null) {
-                    openWhatsapp(contact.getFirstPhoneNumber())
+                    openWhatsapp(contact.getFirstPhoneNumber(), this)
                 } else {
-                    openWhatsapp(sbp.statusBarNotificationInfo["android.title"] as String)
+                    openWhatsapp(sbp?.statusBarNotificationInfo?.get("android.title") as String, this)
                 }
-            } else if (sbp.appNotifier == "com.google.android.gm") {
+            } else if (sbp?.appNotifier == "com.google.android.gm") {
                 val appIntent = Intent(Intent.ACTION_VIEW)
                 appIntent.setClassName(
                     "com.google.android.gm",
@@ -218,45 +168,19 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 }
             }
 
-            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-                notification_alarm_NotificationMessagesAlarmSound!!.stop()
+            if (mediaPlayer != null) {
+                mediaPlayer!!.stop()
             }
 
             finish()
         }
 
-        notification_Alarm_Button_ShutDown!!.setOnClickListener {
-
-            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-                notification_alarm_NotificationMessagesAlarmSound!!.stop()
+        binding.shutdownButton.setOnClickListener {
+            if (mediaPlayer != null) {
+                mediaPlayer?.stop()
             }
-
             finish()
         }
-    }
-
-    private fun openSms(phoneNumber: String) {
-        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-
-        startActivity(intent)
-        finish()
-    }
-
-    private fun openWhatsapp(phoneNumber: String) {
-
-        val intent = Intent(Intent.ACTION_VIEW)
-        val message = "phone=" + converter06To33(phoneNumber)
-        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
-
-        startActivity(intent)
-        finish()
-    }
-
-    private fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0] == '0') {
-            "+33 $phoneNumber"
-        } else phoneNumber
     }
 
     override fun onStop() {
@@ -264,9 +188,65 @@ class NotificationAlarmActivity : AppCompatActivity() {
         finish()
     }
 
-    fun alartNotifTone(sound: Int) {
-        notification_alarm_NotificationMessagesAlarmSound?.stop()
-        notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-        notification_alarm_NotificationMessagesAlarmSound?.start()
+    private fun soundRingtone(idSound: Int?) {
+        duration = durationPreferences.getInt("Alarm_Notif_Duration", 4000)
+        canRingtone = canRingtonePreferences.getBoolean("Can_RingTone", true)
+        customSound = alarmCustomTonePreferences.getString("Alarm_Custom_Tone", "").toString()
+
+        if (canRingtone) {
+            if (idSound != null) {
+                if (idSound != R.raw.sms_ring) {
+                    if (idSound == -1 && customSound.isNotEmpty()) {
+                        alertCustomNotificationTone(customSound)
+                    } else {
+                        alertNotificationTone(idSound)
+                    }
+                } else {
+                    alertNotificationTone(R.raw.sms_ring)
+                }
+            }
+        }
+    }
+
+    private fun alertNotificationTone(sound: Int) {
+        mediaPlayer?.stop()
+        mediaPlayer = if (sound == -1) {
+            MediaPlayer.create(this, R.raw.sms_ring)
+        } else {
+            MediaPlayer.create(this, sound)
+        }
+        mediaPlayer?.start()
+
+        val editDuration = durationPreferences.edit()
+        NotificationListener.alarmSound?.duration?.let {
+            editDuration.putInt(
+                "Alarm_Notif_Duration",
+                it
+            )
+        }
+        editDuration.apply()
+
+        val editCanRingtone = canRingtonePreferences.edit()
+        editCanRingtone.putBoolean("Can_RingTone", canRingtone)
+        editCanRingtone.apply()
+    }
+
+    private fun alertCustomNotificationTone(customSound: String) {
+        mediaPlayer?.stop()
+        mediaPlayer = MediaPlayer.create(applicationContext, Uri.parse(customSound))
+        mediaPlayer?.start()
+
+        val editDuration = durationPreferences.edit()
+        NotificationListener.alarmSound?.duration?.let {
+            editDuration.putInt(
+                "Alarm_Notif_Duration",
+                it
+            )
+        }
+        editDuration.apply()
+
+        val editCanRingtone = canRingtonePreferences.edit()
+        editCanRingtone.putBoolean("Can_RingTone", canRingtone)
+        editCanRingtone.apply()
     }
 }

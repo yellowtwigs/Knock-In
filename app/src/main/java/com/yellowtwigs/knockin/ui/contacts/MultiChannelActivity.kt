@@ -8,26 +8,24 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
-import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.ui.groups.GroupManagerActivity
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MultiChannelActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
     private var multi_channel_Listview: ListView? = null
 
-    private var intent_listOfContactSelected: ArrayList<Int> = ArrayList()
-
-    private var multi_channel_listOfContactSelected: ArrayList<ContactWithAllInformation?> = ArrayList()
-
-    private var gestionnaireContacts: ContactManager? = null
+    private var listContactsSelected: ArrayList<ContactWithAllInformation?> = ArrayList()
 
     private var multi_channel_listViewAdapter: ContactListViewAdapter? = null
 
@@ -39,6 +37,8 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private var sendValidate = false
     private var multiChannelActivity = false
+
+    private val viewModel: ContactsViewModel by viewModels()
 
     //endregion
 
@@ -65,9 +65,9 @@ class MultiChannelActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.multi_channel_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar.title = "Multi Channel"
+        actionbar?.setDisplayHomeAsUpEnabled(true)
+        actionbar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+        actionbar?.title = "Multi Channel"
 
         //endregion
 
@@ -81,22 +81,15 @@ class MultiChannelActivity : AppCompatActivity() {
 
         //region ================================= GetContactByIdFromIntent =================================
 
-        intent_listOfContactSelected = intent.getIntegerArrayListExtra("ListContactsSelected") as ArrayList<Int>
-
-        gestionnaireContacts = ContactManager(this.applicationContext)
-        gestionnaireContacts?.sortContactByFirstNameAZ()
-
-        val iterator = (0 until intent_listOfContactSelected.size).iterator()
-
-        for (i in iterator) {
-            multi_channel_listOfContactSelected.add(gestionnaireContacts?.getContactById(intent_listOfContactSelected[i]))
+        viewModel.listSelectedLiveData.observe(this) { contactsWithAllInfos ->
+            listContactsSelected.addAll(contactsWithAllInfos.sortedBy { it.contactDB?.firstName })
         }
 
         //endregion
 
         //region ================================== ContactListViewAdapter ==================================
 
-        multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected)
+        multi_channel_listViewAdapter = ContactListViewAdapter(this, listContactsSelected)
         multi_channel_Listview!!.adapter = multi_channel_listViewAdapter
 
         //endregion

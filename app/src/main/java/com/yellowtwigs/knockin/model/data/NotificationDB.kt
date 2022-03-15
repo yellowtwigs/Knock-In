@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.model.data
 
 import androidx.room.*
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 
 /**
  * Data class qui représente les notifications reçu
@@ -46,7 +46,7 @@ data class NotificationDB(
          */
         @ColumnInfo(name = "id_contact") val idContact: Int
 ) {
-    fun insertNotifications(database: ContactsRoomDatabase) {
+    fun insertNotifications(database: ContactsDatabase) {
         database.notificationsDao().insertNotifications(this)
     }
 

@@ -1,9 +1,8 @@
 package com.yellowtwigs.knockin.model.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.yellowtwigs.knockin.model.data.ContactDetailDB
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table contact detail
@@ -17,7 +16,7 @@ interface ContactDetailsDao {
      * @return [ContactDetailDB]
      */
     @Query("SELECT * FROM contact_details_table where tag='phone'AND id_contact=:id")
-    fun getPhoneNumberById(id: Int?): ContactDetailDB
+    fun getPhoneNumberById(id: Int): Flow<ContactDetailDB>
 
     /**
      * Récupère un [contact detail][ContactDetailDB] qui possède une addresse mail grâce à son id.
@@ -25,14 +24,14 @@ interface ContactDetailsDao {
      * @return [ContactDetailDB]
      */
     @Query("SELECT * FROM contact_details_table where tag='mail'AND id_contact=:id")
-    fun getMailById(id: Int?): ContactDetailDB
+    fun getMailById(id: Int): Flow<ContactDetailDB>
 
     /**
      * Récupère tout les [contactList details][ContactDetailDB] de la table.
      * @return List&lt[ContactDetailDB]&gt
      */
     @Query("SELECT * FROM contact_details_table")
-    fun getAllpropertiesEditContact(): List<ContactDetailDB>
+    fun getAllProperties(): Flow<List<ContactDetailDB>>
 
     /**
      * Récupère tout les [contactList details][ContactDetailDB] que possède un contact mail grâce à son id.
@@ -40,29 +39,29 @@ interface ContactDetailsDao {
      * @return List&lt[ContactDetailDB]&gt
      */
     @Query("SELECT * FROM contact_details_table WHERE id_contact=:contactID")
-    fun getDetailsForAContact(contactID: Int): List<ContactDetailDB>
+    fun getDetailsForAContact(contactID: Int): Flow<List<ContactDetailDB>>
 
     /**
      * Update un [contactList details][ContactDetailDB] grâce à son id.
      * @param id Int            Id du contact sélectionné
      * @param contactDetail     détail du contact (mail, numéro de tel, etc...)
      */
-    @Query("UPDATE contact_details_table SET content = :contactDetail WHERE id = :id")
-    fun updateContactDetailById(id: Int, contactDetail: String)
+    @Update
+    suspend fun updateContactDetail(contactDetailDB: ContactDetailDB)
 
     /**
      * Ajoute un [contact detail][ContactDetailDB] dans la base de données.
      * @param ContactDetailDB contactDetailDB    Objet [contact detail][ContactDetailDB]
      */
     @Insert
-    fun insert(contactDetailDB: ContactDetailDB)
+    suspend fun insert(contactDetailDB: ContactDetailDB)
 
     /**
      * Supprime un [contact detail][ContactDetailDB] dans la base de données.
      * @param id Int    id du detail
      */
-    @Query("DELETE FROM contact_details_table WHERE id = :id")
-    fun deleteDetailById(id: Int)
+    @Delete
+    suspend fun deleteDetail(contactDetailDB: ContactDetailDB)
 
     /**
      * Supprime tout les [contact detail][ContactDetailDB] d'un contact.

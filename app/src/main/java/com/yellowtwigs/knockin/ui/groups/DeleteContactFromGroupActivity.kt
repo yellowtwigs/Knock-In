@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.groups
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -27,7 +27,7 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
 
     //region ========================================= Var or Val ===========================================
 
-    private var contactsDatabase: ContactsRoomDatabase? = null
+    private var contactsDatabase: ContactsDatabase? = null
     private var main_GridView: RecyclerView? = null
     private var gridViewAdapter: CreateGroupGridViewAdapter? = null
     private var main_RecyclerView: RecyclerView? = null
@@ -62,7 +62,7 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         main_GridView = findViewById(R.id.delete_contact_to_group_grid_view_id)
         main_RecyclerView = findViewById(R.id.delete_contact_to_group_recycler_view_id)
         deleteContactFromGroupListView = findViewById(R.id.delete_contact_from_group_listview)
-        contactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        contactsDatabase = ContactsDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 
@@ -82,9 +82,9 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         val position = intent.getIntExtra("position", 0)
         var allContactInGroup = listOf<ContactWithAllInformation>()
         if (groupId != 0)
-            allContactInGroup = getContactInGroup(groupId)
-        deleteContactFromGroupAdapter = AddContactToGroupAdapter(this, allContactInGroup)
-        deleteContactFromGroupListView!!.adapter = deleteContactFromGroupAdapter
+//            allContactInGroup = getContactInGroup(groupId)
+//        deleteContactFromGroupAdapter = AddContactToGroupAdapter(this, allContactInGroup)
+//        deleteContactFromGroupListView!!.adapter = deleteContactFromGroupAdapter
 
         if (len <= 1) {
             main_GridView!!.visibility = View.GONE
@@ -179,9 +179,9 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
      */
     private fun deleteFromGroup(listContact: MutableList<ContactDB>, groupId: Int) {
 
-        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
-            removeFromFavorite()
-        }
+//        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
+//            removeFromFavorite()
+//        }
 
         var message: String
         when {
@@ -208,20 +208,20 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
                     .setTitle(R.string.delete_contact_from_group_title)
                     .setMessage(message)
                     .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
-                        listContact.forEach {
-                            contactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it.id!!, groupId)
-                        }
-                        var counter = 0
-
-                        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-//                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" || contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
-                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
-                                contactsDatabase?.GroupsDao()!!.deleteGroupById(contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
-                                break
-                            }
+//                        listContact.forEach {
+//                            contactsDatabase!!.LinkContactGroupDao().deleteContactInGroup(it.id!!, groupId)
+//                        }
+//                        var counter = 0
+//
+//                        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+////                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" || contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
+//                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
+//                                contactsDatabase?.GroupsDao()!!.deleteGroupById(contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
+//                                break
 //                            }
-                            counter++
-                        }
+////                            }
+//                            counter++
+//                        }
 
                         startActivity(Intent(this, GroupManagerActivity::class.java))
                     }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
@@ -232,24 +232,24 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
     /**
      * Enlever un contact du groupe favoris lui envleve aussi l'attribut favoris
      */
-    private fun removeFromFavorite() {
-        var counter = 0
-
-        while (counter < deleteContactFromGroupAdapter!!.allSelectContact.size) {
-            val contact = contactsDatabase?.contactsDao()?.getContact(deleteContactFromGroupAdapter!!.allSelectContact[counter].id!!)
-            contact!!.setIsNotFavorite(contactsDatabase)
-
-            counter++
-        }
-    }
+//    private fun removeFromFavorite() {
+//        var counter = 0
+//
+//        while (counter < deleteContactFromGroupAdapter!!.allSelectContact.size) {
+//            val contact = contactsDatabase?.contactsDao()?.getContact(deleteContactFromGroupAdapter!!.allSelectContact[counter].id!!)
+//            contact!!.setIsNotFavorite(contactsDatabase)
+//
+//            counter++
+//        }
+//    }
 
     /**
      * Récupère tous les contact dans le group
      * @param groupId [Int]
      */
-    private fun getContactInGroup(groupId: Int): List<ContactWithAllInformation> {
-        return contactsDatabase!!.contactsDao().getContactForGroup(groupId)
-    }
+//    private fun getContactInGroup(groupId: Int): List<ContactWithAllInformation> {
+//        return contactsDatabase!!.contactsDao().getContactForGroup(groupId)
+//    }
 
     //endregion
 }

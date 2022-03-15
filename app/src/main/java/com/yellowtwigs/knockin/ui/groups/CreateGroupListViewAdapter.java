@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group;
+package com.yellowtwigs.knockin.ui.groups;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -73,7 +73,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact, parent, false);
 
         return new ContactViewHolder(view);
     }
@@ -176,7 +176,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
                 ((AddNewGroupActivity) context).listMultiSelectItemClick(contactMap.get(position));
             }
             if (context instanceof AddContactToGroupActivity) {
-                ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
+//                ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
             }
             if (context instanceof DeleteContactFromGroupActivity) {
                 ((DeleteContactFromGroupActivity) context).multiSelectItemClick(contactMap.get(position));
@@ -399,11 +399,11 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
         ContactViewHolder(@NonNull View view) {
             super(view);
 
-            contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
-            contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
-            constraintLayout = view.findViewById(R.id.list_contact_item_layout);
-            constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
-            listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
+//            contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
+//            contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
+//            constraintLayout = view.findViewById(R.id.list_contact_item_layout);
+//            constraintLayoutMenu = view.findViewById(R.id.menu);
+//            listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
             open = false;
         }
     }

@@ -19,6 +19,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SwitchCompat
@@ -37,26 +38,29 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.NotificationDB
 import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactsViewModel
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * La Classe qui permet d'afficher l'historique des notifications
  * @author Florian Striebel
  */
+@AndroidEntryPoint
 class NotificationHistoryActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
@@ -76,7 +80,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private var notification_recyclerview_Adapter: NotificationsHistoryRecyclerViewAdapter? = null
     private var notification_history_RecyclerView: RecyclerView? = null
 
-    private var notification_history_NotificationsDatabase: ContactsRoomDatabase? = null
+    private var notification_history_NotificationsDatabase: ContactsDatabase? = null
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
 
     private val listOfItemSelected = ArrayList<NotificationDB>()
@@ -126,6 +130,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
             }
             false
         }
+
+    private val viewModel: ContactsViewModel by viewModels()
 
     //endregion
 
@@ -278,7 +284,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         //endregion
 
         //on get la base de données
-        notification_history_NotificationsDatabase = ContactsRoomDatabase.getDatabase(this)
+        notification_history_NotificationsDatabase = ContactsDatabase.getDatabase(this)
         updateFilter()
 
         //region ======================================== Listeners =========================================
@@ -886,9 +892,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
         if (notifList.size > 1) {
             var i = notifList.size - 1
             while (i > 0) {
-                val contact = notification_history_NotificationsDatabase!!.contactsDao()
-                    .getContact(notifList[i].idContact)
-                if (contact.contactDB!!.contactPriority != 0) {
+                var contact: ContactWithAllInformation? = null
+                viewModel.getContact(notifList[i].idContact).observe(this) {
+                    contact = it
+                }
+
+                if (contact?.contactDB?.contactPriority != 0) {
                     return i + 1
                 }
                 i--

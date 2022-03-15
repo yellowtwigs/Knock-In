@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/list_contact_item_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_selector_with_border"
@@ -13,65 +13,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/list_contact_item_contactFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toEndOf="@+id/list_contact_item_contactRoundedImageView"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="?attr/textColor"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/list_contact_item_contactLastName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toEndOf="@+id/list_contact_item_contactFirstName"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="?attr/textColor"
-            android:textSize="18sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/list_contact_item_favorite_shine"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_star_shine" />
-
         <com.yellowtwigs.knockin.ui.CircularImageView
-            android:id="@+id/list_contact_item_contactRoundedImageView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_centerVertical="true"
+            android:id="@+id/contact_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/ic_user_blue"
-            app:civ_border="true" />
-    </RelativeLayout>
+            app:civ_border="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/contact_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="?attr/textColor"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/contact_image"
+            app:layout_constraintEnd_toStartOf="@+id/favorite_icon"
+            app:layout_constraintStart_toEndOf="@+id/contact_image"
+            app:layout_constraintTop_toTopOf="@+id/contact_image" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/favorite_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_star_shine" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/list_contact_item_menu"
+        android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_selector"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_contact_item_layout">
+        app:layout_constraintTop_toBottomOf="@+id/layout_root">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -84,7 +74,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <RelativeLayout
-                android:id="@+id/list_contact_item_constraint_call"
+                android:id="@+id/call_layout"
                 android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
@@ -95,7 +85,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/list_contact_item_call_iv"
+                    android:id="@+id/call_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
@@ -104,18 +94,18 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/list_contact_item_constraint_sms"
+                android:id="@+id/sms_layout"
                 android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_call"
+                app:layout_constraintStart_toEndOf="@+id/call_layout"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/multi_channel_list_item_sms_iv"
+                    android:id="@+id/sms_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
@@ -125,18 +115,18 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/list_contact_item_constraint_whatsapp"
+                android:id="@+id/whatsapp_layout"
                 android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_sms"
+                app:layout_constraintStart_toEndOf="@+id/sms_layout"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/list_contact_item_whatsapp_iv"
+                    android:id="@+id/whatsapp_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
@@ -146,18 +136,18 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/list_contact_item_constraint_mail"
+                android:id="@+id/mail_layout"
                 android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_whatsapp"
+                app:layout_constraintStart_toEndOf="@+id/whatsapp_layout"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/list_contact_item_mail_iv"
+                    android:id="@+id/mail_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
@@ -167,18 +157,18 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/list_contact_item_constraint_edit"
+                android:id="@+id/edit_layout"
                 android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:background="@drawable/background_layout_selector"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_mail"
+                app:layout_constraintStart_toEndOf="@+id/mail_layout"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/list_contact_item_edit_iv"
+                    android:id="@+id/edit_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
@@ -187,8 +177,8 @@
 
             </RelativeLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/list_contact_item_constraint_messenger"
+            <RelativeLayout
+                android:id="@+id/messenger_layout"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_layout_selector"
@@ -196,35 +186,17 @@
                 android:focusable="true"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_edit"
+                app:layout_constraintStart_toEndOf="@+id/edit_layout"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/list_contact_item_messenger_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/list_contact_item_messenger"
-                    android:textColor="?attr/textColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/list_contact_item_messenger_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/background_layout_selector"
-                    app:layout_constraintBottom_toTopOf="@+id/list_contact_item_messenger_tv"
-                    app:layout_constraintEnd_toEndOf="@+id/list_contact_item_messenger_tv"
-                    app:layout_constraintStart_toStartOf="@+id/list_contact_item_messenger_tv"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/messenger_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_messenger" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -236,6 +208,6 @@
         android:background="?attr/darkColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_contact_item_menu" />
+        app:layout_constraintTop_toBottomOf="@+id/menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group;
+package com.yellowtwigs.knockin.ui.groups;
 
 import android.content.Context;
 
@@ -259,7 +259,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
                     ((AddNewGroupActivity) context).gridMultiSelectItemClick(contactMap.get(position));
                 }
                 if (context instanceof AddContactToGroupActivity) {
-                    ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
+//                    ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
                 }
                 if (context instanceof DeleteContactFromGroupActivity) {
                     ((DeleteContactFromGroupActivity) context).multiSelectItemClick(contactMap.get(position));

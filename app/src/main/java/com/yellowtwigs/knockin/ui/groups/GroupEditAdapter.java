@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group;
+package com.yellowtwigs.knockin.ui.groups;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -14,7 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase;
+import com.yellowtwigs.knockin.model.ContactsDatabase;
 import com.yellowtwigs.knockin.model.DbWorkerThread;
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
 import com.yellowtwigs.knockin.model.data.GroupDB;
@@ -49,14 +49,14 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                     .setTitle(R.string.delete_contact_from_group_alert_dialog_title)
                     .setMessage(String.format(context.getString(R.string.delete_contact_from_group_alert_dialog_message), Objects.requireNonNull(contact.getContactDB()).getFirstName() + " " + contact.getContactDB().getLastName(), listGroup.get(position).getName()))
                     .setPositiveButton(R.string.edit_contact_validate, (dialog, which) -> {
-                        ContactsRoomDatabase ContactsDatabase = ContactsRoomDatabase.Companion.getDatabase(context);
-                        DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-                        mDbWorkerThread.start();
-                        assert ContactsDatabase != null;
-                        ContactsDatabase.LinkContactGroupDao().deleteContactIngroup(contact.getContactId(), Objects.requireNonNull(listGroup.get(position).getId()).intValue());
-
-                        listGroup.remove(position);
-                        notifyDataSetChanged();
+//                        ContactsDatabase ContactsDatabase = ContactsDatabase.Companion.getDatabase(context);
+//                        DbWorkerThread mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
+//                        mDbWorkerThread.start();
+//                        assert ContactsDatabase != null;
+//                        ContactsDatabase.LinkContactGroupDao().deleteContactInGroup(contact.getContactId(), Objects.requireNonNull(listGroup.get(position).getId()).intValue());
+//
+//                        listGroup.remove(position);
+//                        notifyDataSetChanged();
                     }).setNegativeButton(R.string.alert_dialog_cancel, (dialog, which) -> {
 
             }).show();

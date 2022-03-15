@@ -1,9 +1,10 @@
 package com.yellowtwigs.knockin.model.data
 
 import android.content.Context
+import androidx.lifecycle.asLiveData
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 
 class ContactWithAllInformation {
     @Embedded
@@ -89,28 +90,28 @@ class ContactWithAllInformation {
         return ""
     }
 
-    fun setPriority(contactsDatabase: ContactsRoomDatabase?, priority: Int) {
+    fun setPriority(contactsDatabase: ContactsDatabase?, priority: Int) {
         contactsDatabase?.contactsDao()?.setPriority(this.getContactId(), priority)
     }
 
-    fun setIsFavorite(contactsDatabase: ContactsRoomDatabase?) {
+    fun setIsFavorite(contactsDatabase: ContactsDatabase?) {
         contactsDatabase?.contactsDao()?.setIsFavorite(this.getContactId())
     }
 
-    fun setIsNotFavorite(contactsDatabase: ContactsRoomDatabase?) {
+    fun setIsNotFavorite(contactsDatabase: ContactsDatabase?) {
         contactsDatabase?.contactsDao()?.setIsNotFavorite(this.getContactId())
     }
 
-    fun setHasWhatsapp(contactsDatabase: ContactsRoomDatabase?) {
+    fun setHasWhatsapp(contactsDatabase: ContactsDatabase?) {
         contactsDatabase?.contactsDao()?.setHasWhatsapp(this.getContactId())
     }
 
-    fun setHasNotWhatsapp(contactsDatabase: ContactsRoomDatabase?) {
+    fun setHasNotWhatsapp(contactsDatabase: ContactsDatabase?) {
         contactsDatabase?.contactsDao()?.setHasNotWhatsapp(this.getContactId())
     }
 
-    fun setNotification(contactsDatabase: ContactsRoomDatabase?, alarmTone: Int) {
-        contactDB?.id?.let { contactsDatabase?.contactsDao()?.setNotification(it, alarmTone) }
+    fun setNotification(contactsDatabase: ContactsDatabase?, alarmTone: Int) {
+        contactDB?.id?.let { contactsDatabase?.contactsDao()?.setNotification(it, alarmTone.toString()) }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -127,11 +128,11 @@ class ContactWithAllInformation {
     }
 
     fun getFirstGroup(context: Context): GroupDB? {
-        val contactRoom = ContactsRoomDatabase.getDatabase(context)
-        if (groupList != null && groupList!!.isNotEmpty()) {
-            return contactRoom!!.GroupsDao().getGroup(groupList!![0].idGroup)
+        val contactRoom = ContactsDatabase.getDatabase(context)
+        return if (groupList != null && groupList?.isNotEmpty() == true) {
+            groupList?.get(0)?.idGroup?.let { contactRoom?.GroupsDao()?.getGroupById(it)?.asLiveData()?.value }
         } else {
-            return null
+            null
         }
     }
 }

@@ -35,7 +35,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
@@ -526,7 +526,7 @@ class CockpitActivity : AppCompatActivity() {
                     Intent(
                         this@CockpitActivity,
                         AddNewContactActivity::class.java
-                    ).putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString())
+                    ).putExtra("numberFromCockpit", cockpit_PhoneNumberEditText!!.text.toString())
                 )
             } else {
                 Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
@@ -913,17 +913,14 @@ class CockpitActivity : AppCompatActivity() {
     ) {
         when (requestCode) {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
-                cockpit_IncomingCallButton!!.isEnabled = true
+                cockpit_IncomingCallButton?.isEnabled = true
             }
         }
     }
 
     private fun phoneCall(phoneNumber: String) {
         if (!TextUtils.isEmpty(phoneNumber)) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.CALL_PHONE
-                ) != PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(                   this,                    Manifest.permission.CALL_PHONE                ) != PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
                     this,

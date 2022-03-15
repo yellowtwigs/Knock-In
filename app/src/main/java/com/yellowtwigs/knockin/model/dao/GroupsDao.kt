@@ -1,11 +1,10 @@
 package com.yellowtwigs.knockin.model.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.yellowtwigs.knockin.model.data.GroupDB
 import com.yellowtwigs.knockin.model.data.GroupWithContact
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table groups
@@ -17,48 +16,29 @@ interface GroupsDao {
      * Récupère touts les [groupes][GroupDB] trier par prénom A->Z
      * @return List&lt[ContactWithAllInformation]&gt
      */
-    //get touts les groupes de la database trié par nom de A à Z
     @Query("SELECT * FROM groups_table ORDER BY name ASC")
-    fun getAllGroupsByNameAZ(): List<GroupWithContact>
+    fun getAllGroups(): Flow<List<GroupWithContact>>
 
     @Query("SELECT * FROM groups_table WHERE name = :groupName")
-    fun getGroupWithName(groupName: String): GroupDB
-
-    //get touts les groupes de la database trié par nom de Z à A
-    @Query("SELECT * FROM groups_table ORDER BY name DESC")
-    fun getAllGroupsByNameZA(): List<GroupDB>
-
-    //get un groupe grace à son id
-    @Query("SELECT * FROM groups_table WHERE id = :id")
-    fun getGroup(id: Int): GroupDB
+    fun getGroupWithName(groupName: String): Flow<GroupDB>
 
     @Query("SELECT * FROM groups_table WHERE id = :id")
-    fun getGroupWithContact(id: Int): GroupWithContact
+    fun getGroupById(id: Int): Flow<GroupDB>
 
     @Query("SELECT * FROM groups_table INNER JOIN link_contact_group_table ON groups_table.id = link_contact_group_table.id_group WHERE id_contact = :contactId")
-    fun getGroupForContact(contactId: Int): List<GroupDB>
+    fun getGroupsForContact(contactId: Int): Flow<List<GroupDB>>
 
-    //get nb of member in a group
-
-    //insert le groupe dans la database
     @Insert
-    fun insert(groups: GroupDB): Long?
+    suspend fun insertGroup(group: GroupDB): Long
 
-    //update le nom du groupe grâce à son id
-    @Query("UPDATE groups_table SET name = :name WHERE id = :id")
-    fun updateGroupNameById(id: Int, name: String)
+    @Update
+    suspend fun updateGroup(group: GroupDB)
 
-    //update la section d'un groupe grâce à son id
     @Query("UPDATE groups_table SET section_color = :section_color WHERE id = :id")
-    fun updateGroupSectionColorById(id: Int, section_color: Int)
+    suspend fun updateGroupSectionColorById(id: Int, section_color: Int)
 
-    //delete un groupe grace à son id
-    @Query("DELETE FROM groups_table WHERE id = :id")
-    fun deleteGroupById(id: Int)
-
-    //delete tout les groupes de la database
-    @Query("DELETE FROM groups_table")
-    fun deleteAll()
+    @Delete
+    suspend fun deleteGroup(group: GroupDB)
 
     @Query("SELECT MAX(id)  FROM groups_table")
     fun getIdNeverUsed(): Int

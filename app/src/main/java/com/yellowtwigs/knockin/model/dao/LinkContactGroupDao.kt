@@ -4,15 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LinkContactGroupDao {
     @Query("SELECT * FROM link_contact_group_table")
-    fun getAllLinkContactGroup(): List<LinkContactGroup>
-    //insert le lien dans la database
+    fun getAllLinkContactGroup(): Flow<List<LinkContactGroup>>
+
     @Insert
-    fun insert(linkContactGroup : LinkContactGroup)
+    suspend fun insert(linkContactGroup : LinkContactGroup)
 
     @Query("DELETE FROM link_contact_group_table WHERE id_contact = :idContact AND id_group=:idGroup")
-    fun deleteContactIngroup(idContact:Int,idGroup:Int)
+    suspend fun deleteContactInGroup(idContact:Int, idGroup:Int)
 }

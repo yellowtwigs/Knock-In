@@ -7,7 +7,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.widget.SwitchCompat
 import com.yellowtwigs.knockin.R
 
-object DrawerLayoutSwitch {
+object EveryActivityUtils {
     fun callPopupSwitch(switchCompat: SwitchCompat, activity: Activity) {
         switchCompat.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -65,5 +65,14 @@ object DrawerLayoutSwitch {
 
         callPopupSwitch(callPopupSwitch, cxt)
         themeSwitch(themeSwitch, cxt, sharedThemePreferences)
+    }
+
+    fun checkThemePreferences(cxt: Activity) {
+        val sharedThemePreferences = cxt.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            cxt.setTheme(R.style.AppThemeDark)
+        } else {
+            cxt.setTheme(R.style.AppTheme)
+        }
     }
 }

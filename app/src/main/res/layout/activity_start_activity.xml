@@ -16,14 +16,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <VideoView
-            android:id="@+id/start_activity_video"
+            android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="650dp"
             android:layout_centerHorizontal="true"
             android:visibility="gone" />
 
         <WebView
-            android:id="@+id/start_activity_webview"
+            android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="600dp"
             android:layout_centerHorizontal="true"
@@ -49,15 +49,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/start_activity_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:text="@string/start_activity_title"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
@@ -71,26 +75,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/start_activity_import_title"
             android:textColor="@color/lightColor"
-            android:textSize="21sp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/import_contacts_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/import_contacts_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/import_contacts_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
             android:layout_marginEnd="8dp"
             android:text="@string/start_activity_import_subtitle"
             android:textColor="@color/darkGreyColorDark"
             android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/activate_notifications_title"
             app:layout_constraintEnd_toStartOf="@+id/import_contacts_button"
-            app:layout_constraintStart_toStartOf="@+id/import_contacts_title"
-            app:layout_constraintTop_toBottomOf="@+id/import_contacts_title" />
+            app:layout_constraintStart_toStartOf="@+id/import_contacts_title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/import_contacts_check"
@@ -131,26 +135,27 @@
             android:id="@+id/activate_notifications_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/start_activity_notification_title"
             android:textColor="@color/lightColor"
-            android:textSize="21sp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/activate_notifications_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/activate_notifications_button"
-            app:layout_constraintStart_toStartOf="@+id/import_contacts_subtitle"
-            app:layout_constraintTop_toBottomOf="@+id/import_contacts_subtitle" />
+            app:layout_constraintStart_toStartOf="@+id/import_contacts_subtitle" />
 
         <TextView
             android:id="@+id/activate_notifications_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/start_activity_notification_subtitle"
             android:textColor="@color/darkGreyColorDark"
             android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/view"
             app:layout_constraintEnd_toStartOf="@+id/activate_notifications_button"
-            app:layout_constraintStart_toStartOf="@+id/activate_notifications_title"
-            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_title" />
+            app:layout_constraintStart_toStartOf="@+id/activate_notifications_title" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/activate_notifications_button"
@@ -165,7 +170,7 @@
             app:layout_constraintTop_toBottomOf="@+id/activate_notifications_title" />
 
         <ProgressBar
-            android:id="@+id/start_activity_activate_notifications_loading"
+            android:id="@+id/activate_notifications_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
@@ -186,17 +191,26 @@
             app:layout_constraintTop_toTopOf="@+id/activate_notifications_button"
             app:srcCompat="@drawable/ic_check" />
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="0.5dp"
+            android:layout_height="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/superposition_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/superposition_title"
             android:textColor="@color/lightColor"
-            android:textSize="21sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/superposition_button"
             app:layout_constraintStart_toStartOf="@+id/activate_notifications_subtitle"
-            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_subtitle" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
             android:id="@+id/superposition_subtitle"
@@ -247,13 +261,14 @@
 
         <TextView
             android:id="@+id/permissions_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/permissions_title"
             android:textColor="@color/lightColor"
-            android:textSize="21sp"
-            app:layout_constraintStart_toStartOf="@+id/superposition_subtitle"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/permissions_button"
+            app:layout_constraintStart_toStartOf="@+id/activate_notifications_subtitle"
             app:layout_constraintTop_toBottomOf="@+id/superposition_subtitle" />
 
         <TextView
@@ -265,8 +280,8 @@
             android:text="@string/permissions_subtitle"
             android:textColor="@color/darkGreyColorDark"
             android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/activate_notifications_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/permissions_button"
-            app:layout_constraintStart_toStartOf="@+id/permissions_title"
             app:layout_constraintTop_toBottomOf="@+id/permissions_title" />
 
         <com.google.android.material.button.MaterialButton
@@ -331,4 +346,6 @@
             app:layout_constraintTop_toBottomOf="@+id/permissions_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

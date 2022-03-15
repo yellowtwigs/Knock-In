@@ -4,34 +4,34 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
+import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.ui.contacts.ContactsViewModel
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
 /**
  * Activité qui nous permet de faire un multiSelect sur nos contact afin de les prioriser
  * @author Florian Striebel, Kenzy Suon
  */
+@AndroidEntryPoint
 class MultiSelectActivity : AppCompatActivity() {
 
     //region ========================================= Var or Val ===========================================
 
-    private var contactManager: ContactManager? = null
     private var listItemSelect = ArrayList<ContactWithAllInformation>()
 
     private val cxt = this
@@ -40,10 +40,13 @@ class MultiSelectActivity : AppCompatActivity() {
 
     private lateinit var numberOfContactsVIPref: SharedPreferences
     private lateinit var contactsUnlimitedPref: SharedPreferences
+    private var listOfContacts = arrayListOf<ContactWithAllInformation>()
 
     private var contactsUnlimitedBought = true
     private var firstClick = true
     private var tooMuch = false
+
+    private val contactsViewModel: ContactsViewModel by viewModels()
 
     //endregion
 
@@ -71,9 +74,7 @@ class MultiSelectActivity : AppCompatActivity() {
 
         //endregion
 
-        contactManager = ContactManager(this)
         loadRecyclerView()
-
         alreadyVip()
 
         binding.multiSelectTextView.text = String.format(
@@ -96,8 +97,7 @@ class MultiSelectActivity : AppCompatActivity() {
         multiSelectAdapter = MultiSelectAdapter(this, contactsUnlimitedBought) { position ->
             multiSelectAdapter.itemSelected(position)
 
-            contactManager?.contactList?.get(position)
-                ?.let { selectedItem(listItemSelect, it) }
+            selectedItem(listItemSelect, listOfContacts[position])
 
             if (tooMuch && !contactsUnlimitedBought) {
                 MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -132,14 +132,21 @@ class MultiSelectActivity : AppCompatActivity() {
         }
         binding.multiSelectRecyclerView.apply {
             adapter = multiSelectAdapter
-            multiSelectAdapter.submitList(contactManager?.contactList)
+            getContactsFromViewModel()
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(cxt, 4, RecyclerView.VERTICAL, false)
         }
     }
 
+    private fun getContactsFromViewModel() {
+        contactsViewModel.getContactAllInfo().observe(this) { contacts ->
+            listOfContacts.addAll(contacts.sortedBy { it.contactDB?.firstName })
+            multiSelectAdapter.submitList(contacts)
+        }
+    }
+
     private fun alreadyVip() {
-        for (contact in contactManager?.contactList!!) {
+        for (contact in listOfContacts) {
             if (contact.contactDB?.contactPriority == 2) {
                 listItemSelect.add(contact)
                 multiSelectAdapter.listContactSelect.add(contact)
@@ -198,10 +205,25 @@ class MultiSelectActivity : AppCompatActivity() {
 
     private fun setPriorityList() {
         CoroutineScope(Dispatchers.IO).launch {
-            val contactList = multiSelectAdapter.listContactSelect
-            val contactManag = ContactManager(contactList, applicationContext)
-            if (contactList.isNotEmpty()) {
-                contactManag.setToContactInListPriority(2)
+            for (contact in listItemSelect) {
+                contactsViewModel.updateContact(
+                    ContactDB(
+                        contact.contactDB?.id,
+                        contact.contactDB?.firstName.toString(),
+                        contact.contactDB?.lastName.toString(),
+                        contact.contactDB?.mail_name.toString(),
+                        contact.contactDB?.profilePicture!!,
+                        2,
+                        contact.contactDB?.profilePicture64.toString(),
+                        0,
+                        "",
+                        0,
+                        R.raw.sms_ring.toString(),
+                        0,
+                        1,
+                        ""
+                    )
+                )
             }
         }
     }

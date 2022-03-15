@@ -33,12 +33,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity;
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity;
+import com.yellowtwigs.knockin.ui.groups.GroupManagerActivity;
 import com.yellowtwigs.knockin.utils.ContactGesture;
-import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.data.ContactDB;
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
-import com.yellowtwigs.knockin.model.data.NotificationDB;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
@@ -51,7 +49,7 @@ import java.util.ArrayList;
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridViewAdapter.ViewHolder> implements FloatingActionMenu.MenuStateChangeListener {
-    private ContactManager gestionnaireContact;
+    private ArrayList<ContactWithAllInformation> listContacts;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
@@ -60,13 +58,11 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     private String numberForPermission = "";
     private Boolean modeMultiSelect = false;
     private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
-    private ArrayList<NotificationDB> listOfInteractions = new ArrayList<>();
-    private int heightAndWidth;
     private int heightWidthImage;
 
-    public ContactGridViewAdapter(Context context, ContactManager contactManager, Integer len) {
+    public ContactGridViewAdapter(Context context, ArrayList<ContactWithAllInformation> listContacts, Integer len) {
         this.context = context;
-        this.gestionnaireContact = contactManager;
+        this.listContacts = listContacts;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -80,19 +76,18 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
 
-    public void setGestionnaireContact(ContactManager gestionnaireContact) {
-        this.gestionnaireContact = gestionnaireContact;
+    public void setContactsList(ArrayList<ContactWithAllInformation> listContacts) {
+        this.listContacts = listContacts;
     }
 
     public ContactWithAllInformation getItem(int position) {
-        return gestionnaireContact.getContactList().get(position);
+        return listContacts.get(position);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
-//        parentGrid = ((GridView) parent);
         ContactGridViewAdapter.ViewHolder holder = new ContactGridViewAdapter.ViewHolder(view);
 
         heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
@@ -102,7 +97,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final ContactDB contact = this.gestionnaireContact.getContactList().get(position).getContactDB();
+        final ContactDB contact = listContacts.get(position).getContactDB();
 
         int height = heightWidthImage;
         int width = heightWidthImage;
@@ -110,7 +105,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
-        if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContactList().get(position))) {
+        if (!modeMultiSelect || !listOfItemSelected.contains(listContacts.get(position))) {
             assert contact != null;
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -119,7 +114,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
             }
         } else {
-            // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
             holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
 
@@ -214,15 +208,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         if (firstname.isEmpty()) {
             holder.contactFirstNameView.setVisibility(View.GONE);
         }
-
-     /*   if (!contact.getProfilePicture64().equals("")) {
-            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-
-            holder.contactRoundedImageView.setImageBitmap(bitmap);
-        } else {
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
-        }
-       */ //region circular menu
 
         //final ImageView buttonMessenger = new ImageView(context);
         final ImageView buttonCall = new ImageView(context);
@@ -374,14 +359,9 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 int firstPosVis;
                 closeMenu();
                 modeMultiSelect = true;
-                listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
+                listOfItemSelected.add(listContacts.get(position));
 
-                if (position < 2 * len) {
-                    firstPosVis = 0;
-                } else {
-                    firstPosVis = 0;
-//                    firstPosVisfirstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
-                }
+                firstPosVis = 0;
                 if (context instanceof MainActivity) {
                     ((MainActivity) context).gridMultiSelectItemClick(position);
                 } else {
@@ -394,8 +374,8 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
         View.OnClickListener gridItemClick = v -> {
             if (modeMultiSelect) {
-                if (listOfItemSelected.contains(gestionnaireContact.getContactList().get(position))) {
-                    listOfItemSelected.remove(gestionnaireContact.getContactList().get(position));
+                if (listOfItemSelected.contains(listContacts.get(position))) {
+                    listOfItemSelected.remove(listContacts.get(position));
 
                     if (!contact.getProfilePicture64().equals("")) {
                         Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -407,7 +387,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                         modeMultiSelect = false;
                     }
                 } else {
-                    listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
+                    listOfItemSelected.add(listContacts.get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
                 ((MainActivity) context).gridMultiSelectItemClick(position);
@@ -428,27 +408,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             return true;
         });
 
-     /*   holder.groupWordingConstraint.setOnClickListener(v -> {
-            DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-            main_mDbWorkerThread.start();
-            ArrayList<Integer> listPosition = new ArrayList<>();
-
-            if (!secondClick) {
-                System.out.println("list contact grid size" + gestionnaireContact.getContactList().size());
-                for (int i = 0; i < gestionnaireContact.getContactList().size(); i++) {
-                    if (gestionnaireContact.getContactList().get(i).getFirstGroup(context) != null) {
-                        if (Objects.equals(gestionnaireContact.getContactList().get(i).getFirstGroup(context).getId(), Objects.requireNonNull(gestionnaireContact.getContactList().get(position).getFirstGroup(context)).getId())) {
-                            System.out.println("id egale a l'autre ");
-                            listPosition.add(i);
-                        } else {
-                            System.out.println(gestionnaireContact.getContactList().get(i).getFirstGroup(context).getId() + " id different a " + gestionnaireContact.getContactList().get(position).getFirstGroup(context).getId());
-                        }
-                    }
-                }
-                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick, true);
-            }
-        });*/
-
         holder.gridContactItemLayout.setOnLongClickListener(gridlongClick);
         holder.contactRoundedImageView.setOnLongClickListener(gridlongClick);
 
@@ -461,14 +420,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         buttonEdit.setOnClickListener(buttonListener);
         buttonMail.setOnClickListener(buttonListener);
 //        buttonMessenger.setOnClickListener(buttonListener);
-
-//        holder.gridContactItemLayout.setOnClickListener(v -> {
-//            if (selectMenu.isOpen()) {
-//                selectMenu.close(false);
-//            } else {
-//                selectMenu.open(false);
-//            }
-//        });
     }
 
     @Override
@@ -478,7 +429,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
     @Override
     public int getItemCount() {
-        return gestionnaireContact.getContactList().size();
+        return listContacts.size();
     }
 
     private String converter06To33(String phoneNumber) {

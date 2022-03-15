@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.groups
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -27,6 +27,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
@@ -36,7 +37,7 @@ import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import java.util.*
@@ -47,11 +48,6 @@ import java.util.*
  * @author Florian Striebel
  */
 class GroupAdapter(private val context: Context,
-                   /**
-                    * renvoi le contact manager de l'adapter
-                    *
-                    * @return [ContactManager]
-                    */
                    private val contactManager: ContactManager, private val len: Int) : RecyclerView.Adapter<GroupAdapter.ViewHolder>(), MenuStateChangeListener {
     private var selectMenu: FloatingActionMenu? = null
     private val listCircularMenu = ArrayList<FloatingActionMenu>()
@@ -76,7 +72,7 @@ class GroupAdapter(private val context: Context,
         view = if (len >= 4) {
             LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false)
         } else {
-            LayoutInflater.from(context).inflate(R.layout.list_contact_item_layout, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false)
         }
         val holder = ViewHolder(view!!)
         heightWidthImage = holder.contactRoundedImageView!!.layoutParams.height
@@ -520,9 +516,9 @@ class GroupAdapter(private val context: Context,
                 contactLastNameView = view.findViewById(R.id.grid_adapter_contactLastName)
                 heightWidthImage = contactRoundedImageView!!.height
             } else {
-                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
-                contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName)
-                contactLastNameView = view.findViewById(R.id.list_contact_item_contactLastName)
+//                contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView)
+//                contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName)
+//                contactLastNameView = view.findViewById(R.id.list_contact_item_contactLastName)
                 heightWidthImage = contactRoundedImageView!!.height
                 open = false
             }
@@ -737,8 +733,8 @@ class GroupAdapter(private val context: Context,
         val contactsDatabase = getDatabase(context)
         val main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
-        val group = contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ()[position]
-        return group.getListContact(context)
+        val group = contactsDatabase!!.GroupsDao().getAllGroups().asLiveData().value?.get(position)
+        return group?.getListContact(context)!!
     }
 
     /**

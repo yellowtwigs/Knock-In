@@ -5,27 +5,32 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.database.Cursor
+import android.database.SQLException
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
-import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.ui.contacts.ContactsViewModel
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import java.text.DateFormat
-import java.util.*
 
+@AndroidEntryPoint
 class VipSettingsActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
@@ -42,39 +47,35 @@ class VipSettingsActivity : AppCompatActivity() {
     private var uploadToClose = true
 
     private var audioFile = ""
-    private var fileId = ""
+    private var currentSound = ""
+    private var isCustomSound = false
+    private var vipScheduleValue = 1
+    private var hourLimit = ""
 
-    private lateinit var alarmTonePreferences: SharedPreferences
-    private lateinit var fileIdPreferences: SharedPreferences
-    private lateinit var schedulePreferences: SharedPreferences
+    private lateinit var permissionsPreferences: SharedPreferences
 
     private var numberDefault = 1
     private lateinit var binding: ActivityVipSettingsBinding
+
+    private lateinit var currentContact: ContactWithAllInformation
+
+    private val contactsViewModel: ContactsViewModel by viewModels()
 
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkThemePreferences(this)
 
         binding = ActivityVipSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        alarmTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
-        fileIdPreferences = getSharedPreferences("File_Id", Context.MODE_PRIVATE)
-        schedulePreferences = getSharedPreferences("Schedule_VIP", Context.MODE_PRIVATE)
+        permissionsPreferences =
+            getSharedPreferences("PermissionsPreferences", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
+//        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
         jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
@@ -83,20 +84,20 @@ class VipSettingsActivity : AppCompatActivity() {
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
 
-        //region ========================================== Intent ==========================================
+        contactsViewModel.contactLiveData.observe(this) {
+            currentContact = it
+        }
 
-        val contactId = intent.getIntExtra("ContactId", 0)
-        val contactList = ContactManager(this)
-        val contact = contactList.getContactById(contactId)
-
-        //endregion
-
-        val contactName = "${contact?.contactDB?.firstName} ${contact?.contactDB?.lastName}"
+        val contactName =
+            "${currentContact.contactDB?.firstName} ${currentContact.contactDB?.lastName}"
         binding.contactName.text = contactName
 
-        if (contact?.contactDB?.notificationSound != null) {
-            numberDefault = contact.contactDB?.notificationSound!!
+        if (currentContact.contactDB?.notificationTone != null) {
+            currentSound = currentContact.contactDB?.notificationTone!!
+            isCustomSound = currentContact.contactDB?.isCustomSound == 1
         }
+
+        vipScheduleValue = currentContact.contactDB?.vipSchedule!!
 
         refreshChecked()
         checkIfUserBoughtCustomSound()
@@ -106,7 +107,7 @@ class VipSettingsActivity : AppCompatActivity() {
 
         binding.apply {
             backIcon.setOnClickListener {
-                backIconClick(contactId)
+                backIconClick()
             }
             jazzySoundLayout.setOnClickListener {
                 openCloseAllJazzy(jazzyToClose)
@@ -121,300 +122,174 @@ class VipSettingsActivity : AppCompatActivity() {
                 openCloseUpload(uploadToClose)
             }
 
-            //region ================================ Jazz Checkboxes ================================
+            //region =================================== Jazz Checkboxes ====================================
 
             moaninCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                moaninCheckbox.isChecked = true
-                playAlarmSound(R.raw.moanin_jazz)
-
-                if (jazzySoundBought) {
-                    saveAlarmToneChoose(R.raw.moanin_jazz)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickFirstCheckbox(moaninCheckbox, R.raw.moanin_jazz.toString(), jazzySoundBought)
             }
             blueBossaCheckbox.setOnClickListener {
-                stopAlarmSound()
-                uncheckBoxAll()
-                blueBossaCheckbox.isChecked = true
-
-                if (jazzySoundBought) {
-                    playAlarmSound(R.raw.blue_bossa)
-                    saveAlarmToneChoose(R.raw.blue_bossa)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(blueBossaCheckbox, R.raw.blue_bossa.toString(), jazzySoundBought)
             }
             caravanCheckbox.setOnClickListener {
-                stopAlarmSound()
-                uncheckBoxAll()
-                caravanCheckbox.isChecked = true
-
-                if (jazzySoundBought) {
-                    playAlarmSound(R.raw.caravan)
-                    saveAlarmToneChoose(R.raw.caravan)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(caravanCheckbox, R.raw.caravan.toString(), jazzySoundBought)
             }
             dolphinDanceCheckbox.setOnClickListener {
-                stopAlarmSound()
-                uncheckBoxAll()
-                dolphinDanceCheckbox.isChecked = true
-
-                if (jazzySoundBought) {
-                    playAlarmSound(R.raw.dolphin_dance)
-                    saveAlarmToneChoose(R.raw.dolphin_dance)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    dolphinDanceCheckbox,
+                    R.raw.dolphin_dance.toString(),
+                    jazzySoundBought
+                )
             }
             autumnLeavesCheckbox.setOnClickListener {
-                stopAlarmSound()
-                uncheckBoxAll()
-                autumnLeavesCheckbox.isChecked = true
-
-                if (jazzySoundBought) {
-                    playAlarmSound(R.raw.autumn_leaves)
-                    saveAlarmToneChoose(R.raw.autumn_leaves)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    autumnLeavesCheckbox,
+                    R.raw.autumn_leaves.toString(),
+                    jazzySoundBought
+                )
             }
             freddieFreeloaderCheckbox.setOnClickListener {
-                stopAlarmSound()
-                uncheckBoxAll()
-                freddieFreeloaderCheckbox.isChecked = true
-
-                if (jazzySoundBought) {
-                    playAlarmSound(R.raw.freddie_freeloader)
-                    saveAlarmToneChoose(R.raw.freddie_freeloader)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    freddieFreeloaderCheckbox,
+                    R.raw.freddie_freeloader.toString(),
+                    jazzySoundBought
+                )
             }
 
             //endregion
 
-            //region ================================ Funky Checkboxes ================================
+            //region =================================== Funky Checkboxes ===================================
 
             slapCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                slapCheckbox.isChecked = true
-                playAlarmSound(R.raw.bass_slap)
-
-                if (funkySoundBought) {
-                    saveAlarmToneChoose(R.raw.bass_slap)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickFirstCheckbox(slapCheckbox, R.raw.bass_slap.toString(), funkySoundBought)
             }
             offTheCurveCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                offTheCurveCheckbox.isChecked = true
-
-                if (funkySoundBought) {
-                    playAlarmSound(R.raw.off_the_curve_groove)
-                    saveAlarmToneChoose(R.raw.off_the_curve_groove)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    offTheCurveCheckbox,
+                    R.raw.off_the_curve_groove.toString(),
+                    funkySoundBought
+                )
             }
             funkYallCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                funkYallCheckbox.isChecked = true
-
-                if (funkySoundBought) {
-                    playAlarmSound(R.raw.funk_yall)
-                    saveAlarmToneChoose(R.raw.funk_yall)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(funkYallCheckbox, R.raw.funk_yall.toString(), funkySoundBought)
             }
             keyboardFunkyToneCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                keyboardFunkyToneCheckbox.isChecked = true
-
-                if (funkySoundBought) {
-                    playAlarmSound(R.raw.keyboard_funky_tone)
-                    saveAlarmToneChoose(R.raw.keyboard_funky_tone)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    keyboardFunkyToneCheckbox,
+                    R.raw.keyboard_funky_tone.toString(),
+                    funkySoundBought
+                )
             }
             uCantHoldNoGrooveCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                uCantHoldNoGrooveCheckbox.isChecked = true
-
-                if (funkySoundBought) {
-                    playAlarmSound(R.raw.u_cant_hold_no_groove)
-                    saveAlarmToneChoose(R.raw.u_cant_hold_no_groove)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    uCantHoldNoGrooveCheckbox,
+                    R.raw.u_cant_hold_no_groove.toString(),
+                    funkySoundBought
+                )
             }
             coldSweatCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                coldSweatCheckbox.isChecked = true
-
-                if (funkySoundBought) {
-                    playAlarmSound(R.raw.cold_sweat)
-                    saveAlarmToneChoose(R.raw.cold_sweat)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(coldSweatCheckbox, R.raw.cold_sweat.toString(), funkySoundBought)
             }
 
             //endregion
 
-            //region ================================ Relax Checkboxes ================================
+            //region =================================== Relax Checkboxes ===================================
 
             xyloRelaxCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                xyloRelaxCheckbox.isChecked = true
-                playAlarmSound(R.raw.xylophone_tone)
-
-                if (relaxSoundBought) {
-                    saveAlarmToneChoose(R.raw.xylophone_tone)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickFirstCheckbox(
+                    xyloRelaxCheckbox,
+                    R.raw.xylophone_tone.toString(),
+                    relaxSoundBought
+                )
             }
             guitarRelaxCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                guitarRelaxCheckbox.isChecked = true
-
-                if (relaxSoundBought) {
-                    playAlarmSound(R.raw.beautiful_chords_progression)
-                    saveAlarmToneChoose(R.raw.beautiful_chords_progression)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    guitarRelaxCheckbox,
+                    R.raw.beautiful_chords_progression.toString(),
+                    relaxSoundBought
+                )
             }
             gravityCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                gravityCheckbox.isChecked = true
-
-                if (relaxSoundBought) {
-                    playAlarmSound(R.raw.gravity)
-                    saveAlarmToneChoose(R.raw.gravity)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(gravityCheckbox, R.raw.gravity.toString(), relaxSoundBought)
             }
             slowDancingCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                slowDancingCheckbox.isChecked = true
-
-                if (relaxSoundBought) {
-                    playAlarmSound(R.raw.slow_dancing)
-                    saveAlarmToneChoose(R.raw.slow_dancing)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    slowDancingCheckbox,
+                    R.raw.slow_dancing.toString(),
+                    relaxSoundBought
+                )
             }
             scorpionThemeCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                scorpionThemeCheckbox.isChecked = true
-
-                if (relaxSoundBought) {
-                    playAlarmSound(R.raw.fade_to_black)
-                    saveAlarmToneChoose(R.raw.fade_to_black)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    scorpionThemeCheckbox,
+                    R.raw.fade_to_black.toString(),
+                    relaxSoundBought
+                )
             }
             interstellarThemeCheckbox.setOnClickListener {
-                uncheckBoxAll()
-                interstellarThemeCheckbox.isChecked = true
-
-                if (relaxSoundBought) {
-                    playAlarmSound(R.raw.interstellar_main_theme)
-                    saveAlarmToneChoose(R.raw.interstellar_main_theme)
-                } else {
-                    alertDialogBuySound()
-                }
+                onClickCheckbox(
+                    interstellarThemeCheckbox,
+                    R.raw.interstellar_main_theme.toString(),
+                    relaxSoundBought
+                )
             }
 
             //endregion
+
+            uploadCheckbox.isChecked = isCustomSound
+            uploadCheckbox.isVisible = isCustomSound
 
             uploadButton.setOnClickListener {
                 alarmSound?.stop()
                 checkRuntimePermission()
             }
 
-            if (numberDefault == -1) {
-                audioFile = alarmTonePreferences.getString("Alarm_Custom_Tone", "").toString()
-            }
-
-            uploadCheckbox.isChecked = numberDefault == -1
-            uploadCheckbox.isVisible = numberDefault == -1
-
             uploadCheckbox.setOnClickListener {
+                onClickCheckbox(uploadCheckbox, currentSound, true)
                 uncheckBoxAll()
                 uploadCheckbox.isChecked = true
 
                 CoroutineScope(Dispatchers.Main).launch {
                     alarmSound?.stop()
-                    alarmSound = MediaPlayer.create(this@VipSettingsActivity, Uri.parse(audioFile))
+                    alarmSound =
+                        MediaPlayer.create(this@VipSettingsActivity, Uri.parse(currentSound))
                     alarmSound?.start()
-                    delay(15000)
+                    delay(7000)
                     alarmSound?.stop()
                 }
-
-                numberDefault = -1
             }
-        }
-
-        binding.apply {
             permanentRadioButton.setOnClickListener {
+                vipScheduleValue = 1
                 permanentRadioButton.isChecked = true
                 daytimeRadioButton.isChecked = false
                 workweekRadioButton.isChecked = false
                 scheduleMixRadioButton.isChecked = false
-
-                val edit = schedulePreferences.edit()
-                edit.putInt("Schedule_VIP", 1)
-                edit.apply()
             }
 
             daytimeRadioButton.setOnClickListener {
+                vipScheduleValue = 2
                 permanentRadioButton.isChecked = false
                 daytimeRadioButton.isChecked = true
                 workweekRadioButton.isChecked = false
                 scheduleMixRadioButton.isChecked = false
-
-                val edit = schedulePreferences.edit()
-                edit.putInt("Schedule_VIP", 2)
-                edit.apply()
             }
 
             workweekRadioButton.setOnClickListener {
+                vipScheduleValue = 3
                 permanentRadioButton.isChecked = false
                 daytimeRadioButton.isChecked = false
                 workweekRadioButton.isChecked = true
                 scheduleMixRadioButton.isChecked = false
-
-                val edit = schedulePreferences.edit()
-                edit.putInt("Schedule_VIP", 3)
-                edit.apply()
             }
 
             scheduleMixRadioButton.setOnClickListener {
+                vipScheduleValue = 4
                 permanentRadioButton.isChecked = false
                 daytimeRadioButton.isChecked = false
                 workweekRadioButton.isChecked = false
                 scheduleMixRadioButton.isChecked = true
-
-                val edit = schedulePreferences.edit()
-                edit.putInt("Schedule_VIP", 4)
-                edit.apply()
             }
-        }
 
-        binding.apply {
-            when (schedulePreferences.getInt("Schedule_VIP", 1)) {
+            when (vipScheduleValue) {
                 1 -> {
                     permanentRadioButton.isChecked = true
                 }
@@ -435,41 +310,59 @@ class VipSettingsActivity : AppCompatActivity() {
 
         //endregion
 
-        getAudioNameFromStorage(fileIdPreferences.getString("File_Id", ""))
+        if (permissionsPreferences.getBoolean("permissionsPreferences", false) && isCustomSound) {
+            getAudioNameFromStorage(currentSound)
+        }
     }
 
     //region ========================================== Functions ===========================================
 
     private fun checkIfUserBoughtCustomSound() {
         binding.apply {
-            uploadButton.isVisible = true
-            uploadSoundPath.isVisible = true
-            uploadSongsLayout.isVisible = true
-            uploadCustomSoundLayout.isVisible = true
+            val isBought = jazzySoundBought || relaxSoundBought || funkySoundBought
+            uploadButton.isVisible = isBought
+            uploadSoundPath.isVisible = isBought
+            uploadSongsLayout.isVisible = isBought
+            uploadCustomSoundLayout.isVisible = isBought
         }
     }
 
-    private fun backIconClick(id: Int) {
-        stopAlarmSound()
+    private fun onClickFirstCheckbox(
+        checkBox: AppCompatCheckBox, sound: String, isBought: Boolean
+    ) {
+        uncheckBoxAll()
+        checkBox.isChecked = true
+        currentSound = sound
+        playAlarmSound()
+
+        if (!isBought) {
+            currentSound = currentContact.contactDB?.notificationTone.toString()
+            alertDialogBuySound()
+        }
+    }
+
+    private fun onClickCheckbox(checkBox: AppCompatCheckBox, sound: String, isBought: Boolean) {
+        uncheckBoxAll()
+        checkBox.isChecked = true
+
+        if (isBought) {
+            currentSound = sound
+            playAlarmSound()
+        } else {
+            currentSound = currentContact.contactDB?.notificationTone.toString()
+            alertDialogBuySound()
+        }
+    }
+
+    private fun backIconClick() {
+        alarmSound?.stop()
         val intentBack = Intent(this, EditContactDetailsActivity::class.java)
-        fillIntent(intentBack, id)
-        if (numberDefault != 1) {
-            intentBack.putExtra("AlarmTone", numberDefault)
-        }
-
-        if (binding.uploadCheckbox.isChecked) {
-            val edit = alarmTonePreferences.edit()
-            edit.putString("Alarm_Custom_Tone", audioFile)
-            edit.apply()
-        }
-
+        fillIntent(intentBack)
         startActivity(intentBack)
     }
 
-    private fun fillIntent(intentBack: Intent, id: Int) {
+    private fun fillIntent(intentBack: Intent) {
         intentBack.apply {
-            putExtra("ContactId", id)
-
             if (intent.getBooleanExtra("hasChanged", false)) {
                 putExtra("FirstName", intent.getStringExtra("FirstName"))
                 putExtra("Lastname", intent.getStringExtra("Lastname"))
@@ -480,6 +373,14 @@ class VipSettingsActivity : AppCompatActivity() {
                 putExtra("Priority", intent.getIntExtra("Priority", 0))
                 putExtra("isFavorite", intent.getBooleanExtra("isFavorite", false))
                 putExtra("hasChanged", intent.getBooleanExtra("hasChanged", false))
+                putExtra("currentSound", currentSound)
+                if (isCustomSound) {
+                    putExtra("isCustomSound", 1)
+                } else {
+                    putExtra("isCustomSound", 0)
+                }
+                putExtra("vipScheduleValue", vipScheduleValue)
+                putExtra("hourLimit", hourLimit)
             }
         }
     }
@@ -517,22 +418,18 @@ class VipSettingsActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun stopAlarmSound() {
-        alarmSound?.stop()
-    }
-
-    private fun playAlarmSound(id: Int) {
-        stopAlarmSound()
-        alarmSound = MediaPlayer.create(this@VipSettingsActivity, id)
-        alarmSound?.start()
-    }
-
-    private fun saveAlarmToneChoose(id: Int) {
-        val edit: SharedPreferences.Editor = alarmTonePreferences.edit()
-        edit.putString("Alarm_Custom_Tone", "")
-        edit.apply()
-
-        numberDefault = id
+    private fun playAlarmSound() {
+        CoroutineScope(Dispatchers.Main).launch {
+            alarmSound?.stop()
+            alarmSound = if (isCustomSound) {
+                MediaPlayer.create(this@VipSettingsActivity, Uri.parse(currentSound))
+            } else {
+                MediaPlayer.create(this@VipSettingsActivity, currentSound.toInt())
+            }
+            alarmSound?.start()
+            delay(7000)
+            alarmSound?.stop()
+        }
     }
 
     //region ======================================= CheckboxGesture ========================================
@@ -578,7 +475,7 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun refreshChecked() {
-        stopAlarmSound()
+        alarmSound?.stop()
         uncheckBoxAll()
         binding.apply {
             when (numberDefault) {
@@ -714,26 +611,42 @@ class VipSettingsActivity : AppCompatActivity() {
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "audio/*"
         startActivityForResult(Intent.createChooser(intent, "Title"), 89)
-//        loadAudioFiles()
     }
 
     private fun getAudioNameFromStorage(audioId: String?) {
         CoroutineScope(Dispatchers.IO).launch {
-            val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            val uri = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+                MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+            } else {
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
             val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0"
             val sortOrder = MediaStore.Audio.Media.TITLE + " ASC"
-            val cursor: Cursor? = contentResolver.query(
+            val cursor = contentResolver.query(
                 uri, null, selection, null,
                 sortOrder
             )
+
             if (cursor != null && cursor.moveToFirst()) {
-                val id: Int = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
-                val title: Int = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+                val id = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
+                val title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+
                 do {
                     val audioFileId = cursor.getLong(id)
                     if (audioFileId.toString() == audioId) {
 
-                        audioFile = cursor.getString(23)
+                        for (i in 0..title) {
+                            try {
+                                if (cursor.getString(i)?.contains("storage") == true &&
+                                    cursor.getString(i)?.contains(".mp3") == true
+                                ) {
+                                    currentSound = cursor.getString(i)
+                                    break
+                                }
+                            } catch (e: SQLException) {
+                                Log.i("audioFile", "$i : ${cursor.getBlob(i)}")
+                            }
+                        }
 
                         withContext(Dispatchers.Main) {
                             binding.uploadSoundPath.isVisible = true
@@ -747,7 +660,6 @@ class VipSettingsActivity : AppCompatActivity() {
         }
     }
 
-    //check if you have permission or not
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -770,6 +682,9 @@ class VipSettingsActivity : AppCompatActivity() {
             val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
             requestPermissions(permissions, ManageNotificationActivity.PERMISSION_CODE)
         } else {
+            val edit = permissionsPreferences.edit()
+            edit.putBoolean("PermissionsPreferences", true)
+            edit.apply()
             getTones()
         }
     }
@@ -778,19 +693,20 @@ class VipSettingsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 89 && resultCode == RESULT_OK) {
             if (data?.data != null) {
-                fileId = data.data?.lastPathSegment?.split(":")?.get(1).toString()
+                audioFile = data.data.toString()
+                binding.uploadSoundPath.isVisible = true
+                binding.uploadSoundPath.text =
+                    data.data?.lastPathSegment?.split(":")?.get(1).toString()
 
-                val edit = fileIdPreferences.edit()
-                edit.putString("File_Id", fileId)
-                edit.apply()
+                binding.uploadCheckbox.isVisible = true
 
-                getAudioNameFromStorage(fileId)
+                getAudioNameFromStorage(audioFile)
             }
         }
     }
 
     override fun onBackPressed() {
-        stopAlarmSound()
+        alarmSound?.stop()
         super.onBackPressed()
     }
 

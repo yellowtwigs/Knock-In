@@ -159,17 +159,6 @@
                     android:layout_height="wrap_content"
                     android:indeterminate="true" />
             </RelativeLayout>
-            <!--            <GridView-->
-            <!--                android:id="@+id/main_grid_view_id"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginStart="8dp"-->
-            <!--                android:layout_marginEnd="8dp"-->
-            <!--                android:backgroundTint="?attr/backgroundColor"-->
-            <!--                android:columnWidth="120dp"-->
-            <!--                android:gravity="center"-->
-            <!--                android:numColumns="auto_fit"-->
-            <!--                android:visibility="gone" />-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_grid_view_id"
@@ -180,7 +169,7 @@
                 android:columnWidth="120dp"
                 android:gravity="center"
                 android:numColumns="auto_fit"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_recycler_view_id"

@@ -72,7 +72,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         holder.contactFirstNameView = listview.findViewById(R.id.multi_channel_list_item_contactFirstName);
 
         holder.constraintLayout = listview.findViewById(R.id.multi_channel_list_item_layout);
-        holder.smsCl = listview.findViewById(R.id.multi_channel_list_item_sms_iv);
+        holder.smsCl = listview.findViewById(R.id.sms_icon);
         holder.mailCl = listview.findViewById(R.id.multi_channel_list_item_mail_iv);
 
         assert contact != null;

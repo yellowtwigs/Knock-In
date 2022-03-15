@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.groups
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,21 +18,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.GroupDB
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import com.yellowtwigs.knockin.ui.contacts.ContactsViewModel
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Activité qui nous permet de créer un groupe
  * @author Florian Striebel
  */
+@AndroidEntryPoint
 class AddNewGroupActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
-    private var contactsDatabase: ContactsRoomDatabase? = null
+    private var contactsDatabase: ContactsDatabase? = null
     private var addNewGroupListView: ListView? = null
     private var createGroupAdapter: AddContactToGroupAdapter? = null
     private var addNewGroupName: TextView? = null
@@ -46,28 +52,22 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
 
     private var gestionnaireContacts: ContactManager? = null
-    private val selectContact: MutableList<ContactDB>? = mutableListOf()
+    private val selectContact: MutableList<ContactDB> = mutableListOf()
+
+    private val contactsViewModel: ContactsViewModel by viewModels()
+    private val groupsViewModel: GroupsViewModel by viewModels()
 
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkThemePreferences(this)
 
         setContentView(R.layout.activity_add_new_group)
         addNewGroupListView = findViewById(R.id.add_new_group_list_view)
         addNewGroupName = findViewById(R.id.add_new_group_name)
-        contactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        contactsDatabase = ContactsDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 
@@ -139,11 +139,24 @@ class AddNewGroupActivity : AppCompatActivity() {
                 main_RecyclerView!!.layoutManager!!.scrollToPosition(position)
             }
         }
-
-        val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
-        createGroupAdapter = AddContactToGroupAdapter(this, allContact)
-        addNewGroupListView!!.adapter = createGroupAdapter
     }
+
+//    private fun initRecyclerView() {
+//        val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
+//
+//        contactsViewModel.allContacts.observe(this) { contacts ->
+//            createGroupAdapter = AddContactToGroupAdapter(this@AddNewGroupActivity)
+//            contacts
+//            createGroupAdapter.submitList()
+//            addNewGroupListView?.adapter = createGroupAdapter
+//
+//
+//        }
+//
+//        layoutManager = LinearLayoutManager(this@AddContactToGroupActivity)
+//        addContactToGroupAdapter = AddContactToGroupAdapter(this@AddContactToGroupActivity)
+//        adapter = addContactToGroupAdapter
+//    }
 
     /**
      * Pour le menu de l'activité nous affectons la ressource menu [menu_toolbar_validate_skip]
@@ -210,27 +223,27 @@ class AddNewGroupActivity : AppCompatActivity() {
      * @param name [String]
      */
     private fun addToGroup(listContact: List<ContactDB>?, name: String) {
-        val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
-        var counter = 0
-        var alreadyExist = false
-
-        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
-            if (name == contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name) {
-                alreadyExist = true
-                break
-            }
-            counter++
-        }
-
-        if (alreadyExist) {//Si il existe Nous prévenons l'utilisateur sinon nous créons le groupe
-            Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
-        } else {
-            val groupId = contactsDatabase!!.GroupsDao().insert(group)
-            listContact!!.forEach {
-                val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
-            }
-            refreshActivity()
-        }
+//        val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
+//        var counter = 0
+//        var alreadyExist = false
+//
+//        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
+//            if (name == contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name) {
+//                alreadyExist = true
+//                break
+//            }
+//            counter++
+//        }
+//
+//        if (alreadyExist) {//Si il existe Nous prévenons l'utilisateur sinon nous créons le groupe
+//            Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
+//        } else {
+//            val groupId = contactsDatabase!!.GroupsDao().insert(group)
+//            listContact!!.forEach {
+//                val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
+//            }
+//            refreshActivity()
+//        }
     }
 
     private fun refreshActivity() {

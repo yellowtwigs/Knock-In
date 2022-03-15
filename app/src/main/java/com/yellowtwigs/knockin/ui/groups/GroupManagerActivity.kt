@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.groups
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.GroupWithContact
@@ -52,7 +52,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     //region ========================================= Val or Var ===========================================
 
     private var group_manager_DrawerLayout: DrawerLayout? = null
-    private var group_manager_ContactsDatabase: ContactsRoomDatabase? = null
+    private var group_manager_ContactsDatabase: ContactsDatabase? = null
     private lateinit var group_mDbWorkerThread: DbWorkerThread
 
     private var group_manager_MainLayout: ConstraintLayout? = null
@@ -254,15 +254,12 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ===================================== WorkerThread =========================================
 
-        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        group_manager_ContactsDatabase = ContactsDatabase.getDatabase(this)
 
         group_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         group_mDbWorkerThread.start()
         val group: ArrayList<GroupWithContact> = ArrayList()
-        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
-        println("group size" + group.size)
-        for (aGroup in group)
-            println("group content" + aGroup.ContactIdList)
+//        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
 
         val sharedPreferences = getSharedPreferences("Gridview_column", MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 1)
@@ -361,15 +358,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         group_manager_FloatingButtonSend!!.setOnClickListener {
             val intent = Intent(this@GroupManagerActivity, MultiChannelActivity::class.java)
-            val iterator: IntIterator?
-            val listOfIdContactSelected: ArrayList<Int> = ArrayList()
 
-            iterator = (0 until listOfItemSelected.size).iterator()
-
-            for (i in iterator) {
-                listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
-            }
-            intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
+//            viewModel.setListSelectedLiveData(listOfItemSelected)
 
             startActivity(intent)
             finish()
@@ -592,18 +582,16 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 group_manager_FloatingButtonMail!!.layoutParams as ViewGroup.MarginLayoutParams
             params.bottomMargin = margin
             group_manager_FloatingButtonMail!!.layoutParams = params
-            println("height of floating mail" + group_manager_FloatingButtonMail!!.height)
         } else {
-            println("false mail")
             group_manager_FloatingButtonMail!!.visibility = View.GONE
         }
 
     }
 
     fun refreshList() {
-        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        group_manager_ContactsDatabase = ContactsDatabase.getDatabase(this)
         val group: ArrayList<GroupWithContact> = ArrayList()
-        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
+//        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
         val sharedPreferences = getSharedPreferences("group", MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", recyclerLen)
         val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
