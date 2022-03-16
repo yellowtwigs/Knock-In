@@ -9,8 +9,6 @@ import android.util.Log
 
 object Converter {
     fun convertPackageToString(packageName: String, context: Context): String {
-//        Log.i("displayLayout", Telephony.Sms.getDefaultSmsPackage(context))
-//        Log.i("displayLayout", packageName)
         if (packageName == "com.facebook.katana") {
             return "Facebook"
         } else if (packageName == "com.facebook.orca") {

@@ -70,8 +70,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_manage_notification)
 
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
 
         //region ======================================= FindViewById =======================================
 

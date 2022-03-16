@@ -313,7 +313,7 @@
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Số liên hệ đã được chọn: %1s</string>
-    <string name="multi_select_title">Chọn các VIP của bạn</string>
+    <string name="multi_select_title">Cập nhật danh sách VIP của bạn</string>
     <!-- region Alert Dialog -->
     <string name="multi_select_alert_dialog_title">Hiển thị thông báo</string>
     <string name="multi_select_alert_dialog_message">Bạn có cho phép Knock In để hiển thị thông báo ưu tiên cao không</string>
@@ -476,5 +476,10 @@
     <string name="show_popup_positive_button">Không hiển thị nữa</string>
     <string name="alert_dialog_close">Đóng</string>
     <string name="contact_vip_settings">VIP đặt</string>
-    <string name="switch_1_to_0">Đặt tất cả các địa chỉ liên hệ của bạn từ ưu tiên 1 đến 0</string>
+    <string name="switch_1_to_0">Đặt tất cả các thông báo không phải VIP thành im lặng</string>
+    <string name="schedule_permanent">Luôn bật (24/7)</string>
+    <string name="schedule_title">Lịch thông báo VIP</string>
+    <string name="schedule_daytime">Chỉ thời gian làm việc (5j/7)</string>
+    <string name="schedule_weekend">Cuối tuần (24h / 24)</string>
+    <string name="schedule_custom">Lịch biểu tùy chỉnh</string>
 </resources>

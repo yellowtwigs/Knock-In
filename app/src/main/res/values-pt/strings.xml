@@ -312,7 +312,7 @@
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Número de contatos selecionados: %1s</string>
-    <string name="multi_select_title">Selecione seu VIPs</string>
+    <string name="multi_select_title">Atualize sua lista VIP</string>
     <!-- region Alert Dialog -->
     <string name="multi_select_alert_dialog_title">Exibição de notificações</string>
     <string name="multi_select_alert_dialog_message">Você autoriza o Knock In a exibir notificações de alta prioridade</string>
@@ -474,5 +474,10 @@
     <string name="show_popup_positive_button">Não exibir mais</string>
     <string name="alert_dialog_close">Fechar</string>
     <string name="contact_vip_settings">VIP Configuração</string>
-    <string name="switch_1_to_0">Coloque todos os seus contatos de prioridade 1 a 0</string>
+    <string name="switch_1_to_0">Defina todas as notificações não VIP como silenciosas</string>
+    <string name="schedule_permanent">Permanente (24 horas por dia, 7 dias por semana)</string>
+    <string name="schedule_title">Agenda de notificações VIP</string>
+    <string name="schedule_daytime">Apenas horário de trabalho (5j/7)</string>
+    <string name="schedule_weekend">Fim de semana (24h/24)</string>
+    <string name="schedule_custom">Agenda personalizada</string>
 </resources>

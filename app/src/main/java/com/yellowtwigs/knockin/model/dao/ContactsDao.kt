@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.model.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.yellowtwigs.knockin.model.data.ContactDetailDB
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
@@ -118,8 +119,8 @@ interface ContactsDao {
     @Query("UPDATE contacts_table SET notification_Sound = :notificationSound WHERE id = :id")
     fun updateSoundById(id: Int, notificationSound:Int)
 
-
-
+    @Update
+    suspend fun updateContact(contact:ContactDB)
 
     /**
      * Update un [contact][ContactDB] sans image de profil grace à son id

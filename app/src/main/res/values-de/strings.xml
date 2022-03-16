@@ -312,7 +312,7 @@
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Anzahl der ausgewählten Kontakte: %1s</string>
-    <string name="multi_select_title">Wählen Sie Ihre VIPs aus</string>
+    <string name="multi_select_title">Aktualisieren Sie Ihre VIP-Liste</string>
     <!-- region Alert Dialog -->
     <string name="multi_select_alert_dialog_title">Benachrichtigungen werden angezeigt</string>
     <string name="multi_select_alert_dialog_message">Gestatten Sie Knock In, um Benachrichtigungen mit hoher Priorität anzuzeigen?</string>
@@ -474,5 +474,10 @@
     <string name="show_popup_positive_button">Nicht mehr anzeigen</string>
     <string name="alert_dialog_close">Nah dran</string>
     <string name="contact_vip_settings">VIP Parametern</string>
-    <string name="switch_1_to_0">Setzen Sie alle Ihre Kontakte von Priorität 1 auf 0</string>
+    <string name="switch_1_to_0">Stellen Sie alle Nicht-VIP-Benachrichtigungen auf lautlos</string>
+    <string name="schedule_permanent">Dauerhaft (24 Stunden am Tag, 7 Tage die Woche)</string>
+    <string name="schedule_title">Zeitplan für VIP-Benachrichtigungen</string>
+    <string name="schedule_daytime">Nur Arbeitszeit (5j/7)</string>
+    <string name="schedule_weekend">Wochenende (24h/24)</string>
+    <string name="schedule_custom">Benutzerdefinierter Zeitplan</string>
 </resources>

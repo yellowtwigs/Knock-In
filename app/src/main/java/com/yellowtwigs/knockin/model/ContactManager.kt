@@ -319,7 +319,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             "",
             0,
             "",
-            defaultTone
+            defaultTone,
+            0,
+            1,
+            ""
         )
         val contactInfo = ContactWithAllInformation()
         contactInfo.contactDB = contact
@@ -881,7 +884,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                     "",
                                     0,
                                     "",
-                                    defaultTone
+                                    defaultTone,
+                                    0,
+                                    1,
+                                    ""
                                 )
                                 //on recupere la liste des contactList récuperer lors de la derniere synchro sous format idAndroid:id
                                 lastSync = sharedPreferences.getString("last_sync_2", "")!!
@@ -978,7 +984,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                     "",
                                     0,
                                     "",
-                                    defaultTone
+                                    defaultTone,
+                                    0,
+                                    1,
+                                    ""
                                 )
                                 phoneContactsList.add(contacts)
                                 if (!isDuplicate(allcontacts, contacts)) {
@@ -1049,7 +1058,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 "",
                 0,
                 "",
-                defaultTone
+                defaultTone,
+                0,
+                1,
+                ""
             ), detailList
         )
         return allContacts

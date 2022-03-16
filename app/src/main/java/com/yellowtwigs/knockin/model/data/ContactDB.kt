@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.model.data
 
 import androidx.room.*
+import com.yellowtwigs.knockin.R
 
 /**
  * Data class qui représente un contact
@@ -50,5 +51,17 @@ data class ContactDB(
          */
         @ColumnInfo(name = "has_whatsapp") val hasWhatsapp: Int,
         @ColumnInfo(name = "notification_tone") var notificationTone: String,
-        @ColumnInfo(name = "notification_Sound") var notificationSound: Int
+        @ColumnInfo(name = "notification_Sound") var notificationSound: Int = R.raw.sms_ring,
+        /**
+         * Le champ si Oui = 1 ou Non = 0, l'utisateur a configuré un son customisé
+         */
+        @ColumnInfo(name = "is_custom_sound") var isCustomSound: Int,
+        /**
+         * Si 1 = Permanent, 2 = Daytime, 3 = Workweek, 4 = ScheduleMix
+         */
+        @ColumnInfo(name = "vip_schedule") var vipSchedule: Int,
+        /**
+         * 10h30 to 19h30
+         */
+        @ColumnInfo(name = "hour_limit_for_notification") var hourLimitForNotification: String
 )

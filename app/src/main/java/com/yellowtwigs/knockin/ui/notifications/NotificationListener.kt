@@ -53,17 +53,6 @@ class NotificationListener : NotificationListenerService() {
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var durationPreferences: SharedPreferences
-    private var duration = 0
-
-    private lateinit var tonePreferences: SharedPreferences
-    private lateinit var alarmCustomTonePreferences: SharedPreferences
-    private var customSound = ""
-
-    private lateinit var schedulePreferences: SharedPreferences
-
-    private lateinit var canRingtonePreferences: SharedPreferences
-    private var canRingtone = false
-
 
     /**
      * La première fois que le service est crée nous définnissons les valeurs pour les threads
@@ -80,9 +69,7 @@ class NotificationListener : NotificationListenerService() {
      */
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            requestRebind(ComponentName(this, NotificationListenerService::class.java))
-        }
+        requestRebind(ComponentName(this, NotificationListenerService::class.java))
     }
 
     /**
@@ -92,11 +79,7 @@ class NotificationListener : NotificationListenerService() {
     @SuppressLint("WrongConstant")
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-        canRingtonePreferences = getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
         durationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
-        tonePreferences = getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
-        alarmCustomTonePreferences = getSharedPreferences("Alarm_Custom_Tone", Context.MODE_PRIVATE)
-        schedulePreferences = getSharedPreferences("Schedule_VIP", Context.MODE_PRIVATE)
 
         val sbp = StatusBarParcelable(sbn)
         if (sharedPreferences.getBoolean("serviceNotif", false) && messagesNotUseless(sbp)) {
@@ -125,7 +108,7 @@ class NotificationListener : NotificationListenerService() {
                     if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName &&
                         sbp.appNotifier != "com.samsung.android.incallui"
                     ) {
-                        notification.insertNotifications(database!!) //ajouter notification a la database
+                        notification.insertNotifications(database!!)
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                             if (contact != null) {
                                 when (contact.contactDB?.contactPriority) {
@@ -134,33 +117,113 @@ class NotificationListener : NotificationListenerService() {
                                         val cal = Calendar.getInstance()
                                         cal.time = date
                                         val hours = cal.get(Calendar.HOUR_OF_DAY)
+                                        val minutes = cal.get(Calendar.MINUTE)
                                         val today = cal.get(Calendar.DAY_OF_WEEK)
 
-                                        when (schedulePreferences.getInt("Schedule_VIP", 1)) {
+                                        when (contact.contactDB?.vipSchedule) {
                                             1 -> {
                                                 vipNotificationsDeployment(sbp, sbn, contact)
                                             }
                                             2 -> {
-                                                if (hours in 7..20) {
-                                                    vipNotificationsDeployment(sbp, sbn, contact)
+                                                val startTime =
+                                                    convertTimeToStartTime(contact.contactDB?.hourLimitForNotification.toString())
+                                                val hourStart = convertTimeToHour(startTime)
+                                                val minutesStart =
+                                                    convertTimeToMinutes(startTime)
+
+                                                val endTime =
+                                                    convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
+                                                val hourEnd = convertTimeToHour(endTime)
+                                                val minutesEnd = convertTimeToMinutes(endTime)
+                                                if (today in 1..4 || today == 7) {
+                                                    if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
+                                                        if (hourStart.toInt() == hours) {
+                                                            if (minutes >= minutesStart.toInt()) {
+                                                                if (hourEnd.toInt() == hours) {
+                                                                    if (minutes <= minutesEnd.toInt()) {
+                                                                        vipNotificationsDeployment(
+                                                                            sbp,
+                                                                            sbn,
+                                                                            contact
+                                                                        )
+                                                                    }
+                                                                } else {
+                                                                    vipNotificationsDeployment(
+                                                                        sbp,
+                                                                        sbn,
+                                                                        contact
+                                                                    )
+                                                                }
+                                                            }
+                                                        } else if (hourEnd.toInt() == hours) {
+                                                            if (minutes <= minutesEnd.toInt()) {
+                                                                vipNotificationsDeployment(
+                                                                    sbp,
+                                                                    sbn,
+                                                                    contact
+                                                                )
+                                                            }
+                                                        } else {
+                                                            vipNotificationsDeployment(
+                                                                sbp,
+                                                                sbn,
+                                                                contact
+                                                            )
+                                                        }
+                                                    }
                                                 }
                                             }
                                             3 -> {
-                                                if (today in 1..4 || today == 7) {
+                                                if (today == 5 || today == 6) {
                                                     vipNotificationsDeployment(sbp, sbn, contact)
                                                 }
                                             }
                                             4 -> {
-                                                if (hours in 7..20) {
-                                                    if (today == 5 || today == 6) {
+
+                                                val startTime =
+                                                    convertTimeToStartTime(contact.contactDB?.hourLimitForNotification.toString())
+                                                val hourStart = convertTimeToHour(startTime)
+                                                val minutesStart =
+                                                    convertTimeToMinutes(startTime)
+
+                                                val endTime =
+                                                    convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
+                                                val hourEnd = convertTimeToHour(endTime)
+                                                val minutesEnd = convertTimeToMinutes(endTime)
+                                                if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
+                                                    if (hourStart.toInt() == hours) {
+                                                        if (minutes >= minutesStart.toInt()) {
+                                                            if (hourEnd.toInt() == hours) {
+                                                                if (minutes <= minutesEnd.toInt()) {
+                                                                    vipNotificationsDeployment(
+                                                                        sbp,
+                                                                        sbn,
+                                                                        contact
+                                                                    )
+                                                                }
+                                                            } else {
+                                                                vipNotificationsDeployment(
+                                                                    sbp,
+                                                                    sbn,
+                                                                    contact
+                                                                )
+                                                            }
+                                                        }
+                                                    } else if (hourEnd.toInt() == hours) {
+                                                        if (minutes <= minutesEnd.toInt()) {
+                                                            vipNotificationsDeployment(
+                                                                sbp,
+                                                                sbn,
+                                                                contact
+                                                            )
+                                                        }
+                                                    } else {
                                                         vipNotificationsDeployment(
                                                             sbp,
                                                             sbn,
                                                             contact
                                                         )
                                                     }
-                                                } else if (today in 1..4 || today == 7) {
-                                                    vipNotificationsDeployment(sbp, sbn, contact)
                                                 }
                                             }
                                             else -> {
@@ -179,65 +242,69 @@ class NotificationListener : NotificationListenerService() {
                                 if (sbn.key.contains("whatsapp")) {
                                     cancelWhatsappNotif(sbn)
                                 } else {
-                                    if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE) {
-                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                            var i = 0
-                                            val vipNotif = VipNotificationsDB(
-                                                null,
-                                                sbp.id,
-                                                sbp.appNotifier!!,
-                                                sbp.tailleList,
-                                                sbp.tickerText!!
-                                            )
-                                            val notifId =
-                                                database!!.VipNotificationsDao()
-                                                    .insert(vipNotif)
-                                            while (i < sbp.key.size) {
-                                                if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
-                                                    val VipSbn = VipSbnDB(
-                                                        null,
-                                                        notifId!!.toInt(),
-                                                        sbp.key[i],
-                                                        sbp.statusBarNotificationInfo[sbp.key[i]].toString()
-                                                    )
-                                                    database!!.VipSbnDao()
-                                                        .insert(VipSbn)
-                                                }
-                                                i++
-                                            }
-                                            //this.cancelNotification(sbn.key)
-                                        }
-                                        val screenListener: KeyguardManager =
-                                            this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                                        if (screenListener.isKeyguardLocked) {
-                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                                this.cancelNotification(sbn.key)
-                                                cancelWhatsappNotif(sbn)
+                                    if (sbn.packageName == OUTLOOK_PACKAGE || sbn.packageName == GMAIL_PACKAGE) {
 
+                                    } else {
+                                        if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE) {
+                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                                                var i = 0
+                                                val vipNotif = VipNotificationsDB(
+                                                    null,
+                                                    sbp.id,
+                                                    sbp.appNotifier!!,
+                                                    sbp.tailleList,
+                                                    sbp.tickerText!!
+                                                )
+                                                val notifId =
+                                                    database!!.VipNotificationsDao()
+                                                        .insert(vipNotif)
+                                                while (i < sbp.key.size) {
+                                                    if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
+                                                        val VipSbn = VipSbnDB(
+                                                            null,
+                                                            notifId!!.toInt(),
+                                                            sbp.key[i],
+                                                            sbp.statusBarNotificationInfo[sbp.key[i]].toString()
+                                                        )
+                                                        database!!.VipSbnDao()
+                                                            .insert(VipSbn)
+                                                    }
+                                                    i++
+                                                }
+                                                //this.cancelNotification(sbn.key)
+                                            }
+                                            val screenListener: KeyguardManager =
+                                                this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                                            if (screenListener.isKeyguardLocked) {
+                                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                                                    this.cancelNotification(sbn.key)
+                                                    cancelWhatsappNotif(sbn)
+
+                                                    displayLayoutWithSharedPreferences(
+                                                        sbp,
+                                                        null
+                                                    )
+                                                } else {
+                                                    val i = Intent(
+                                                        this@NotificationListener,
+                                                        NotificationAlarmActivity::class.java
+                                                    )
+                                                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                    i.putExtra("notification", sbp)
+                                                    this.cancelNotification(sbn.key)
+                                                    cancelWhatsappNotif(sbn)
+                                                    startActivity(i)
+                                                }
+                                            } else {
+                                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                                                    this.cancelNotification(sbn.key)
+                                                    cancelWhatsappNotif(sbn)
+                                                }
                                                 displayLayoutWithSharedPreferences(
                                                     sbp,
                                                     null
                                                 )
-                                            } else {
-                                                val i = Intent(
-                                                    this@NotificationListener,
-                                                    NotificationAlarmActivity::class.java
-                                                )
-                                                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                                i.putExtra("notification", sbp)
-                                                this.cancelNotification(sbn.key)
-                                                cancelWhatsappNotif(sbn)
-                                                startActivity(i)
                                             }
-                                        } else {
-                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                                this.cancelNotification(sbn.key)
-                                                cancelWhatsappNotif(sbn)
-                                            }
-                                            displayLayoutWithSharedPreferences(
-                                                sbp,
-                                                null
-                                            )
                                         }
                                     }
                                 }
@@ -248,6 +315,26 @@ class NotificationListener : NotificationListenerService() {
                 mDbWorkerThread.postTask(addNotification)
             }
         }
+    }
+
+    private fun convertTimeToHour(time: String): String {
+        val parts = time.split("h").toTypedArray()
+        return parts[0]
+    }
+
+    private fun convertTimeToMinutes(time: String): String {
+        val parts = time.split("h").toTypedArray()
+        return parts[1]
+    }
+
+    private fun convertTimeToStartTime(time: String): String {
+        val parts = time.split(" to").toTypedArray()
+        return parts[0]
+    }
+
+    private fun convertTimeToEndTime(time: String): String {
+        val parts = time.split("to ").toTypedArray()
+        return parts[1]
     }
 
     private fun cancelWhatsappNotif(sbn: StatusBarNotification) {
@@ -375,25 +462,22 @@ class NotificationListener : NotificationListenerService() {
             cancelWhatsappNotif(sbn)
             displayLayoutWithSharedPreferences(
                 sbp,
-                contact.contactDB!!.notificationSound
+                contact.contactDB!!
             )
         }
     }
 
-    private fun displayLayoutWithSharedPreferences(sbp: StatusBarParcelable, idSound: Int?) {
-        soundRingtone(idSound)
-
-        val handler = Handler()
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                canRingtone = true
-                val edit = canRingtonePreferences.edit()
-                edit?.putBoolean("Can_RingTone", canRingtone)
-                edit?.apply()
-
-                handler.postDelayed(this, duration.toLong())
+    private fun displayLayoutWithSharedPreferences(
+        sbp: StatusBarParcelable,
+        contactDB: ContactDB?
+    ) {
+        if (contactDB != null) {
+            if (contactDB.isCustomSound == 1) {
+                alertCustomNotificationTone(contactDB.notificationTone)
+            } else {
+                alertNotificationTone(contactDB.notificationSound)
             }
-        }, duration.toLong())
+        }
 
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
             if (adapterNotification == null) {
@@ -406,7 +490,7 @@ class NotificationListener : NotificationListenerService() {
                 val edit = sharedPreferences.edit()
                 edit.putBoolean("view", true)
                 edit.apply()
-                displayLayout(sbp, idSound)
+                displayLayout(sbp, contactDB)
             } else {
                 adapterNotification?.addNotification(sbp)
             }
@@ -415,7 +499,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun displayLayout(
         sbp: StatusBarParcelable,
-        idSound: Int?
+        contactDB: ContactDB?
     ) {
         val flag = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -438,7 +522,7 @@ class NotificationListener : NotificationListenerService() {
             popupView?.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-            notifLayout(sbp, popupView, idSound)
+            notifLayout(sbp, popupView, contactDB)
             windowManager?.addView(popupView, parameters) // affichage de la popupview
             popupDropable?.setOnTouchListener { view, event ->
                 val metrics = DisplayMetrics()
@@ -528,7 +612,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun notifLayout(
         sbp: StatusBarParcelable, view: View?,
-        idSound: Int?
+        contactDB: ContactDB?
     ) {
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
@@ -545,7 +629,13 @@ class NotificationListener : NotificationListenerService() {
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
         itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
 
-        soundRingtone(idSound)
+        if (contactDB != null) {
+            if (contactDB.isCustomSound == 1) {
+                alertCustomNotificationTone(contactDB.notificationTone)
+            } else {
+                alertNotificationTone(contactDB.notificationSound)
+            }
+        }
 
         if (notifications.size == 0) {
             alarmSound?.stop()
@@ -593,10 +683,6 @@ class NotificationListener : NotificationListenerService() {
         val editDuration = durationPreferences.edit()
         alarmSound?.duration?.let { editDuration.putInt("Alarm_Notif_Duration", it) }
         editDuration.apply()
-
-        val editCanRingtone = canRingtonePreferences.edit()
-        editCanRingtone.putBoolean("Can_RingTone", canRingtone)
-        editCanRingtone.apply()
     }
 
     private fun alertCustomNotificationTone(customSound: String) {
@@ -607,30 +693,6 @@ class NotificationListener : NotificationListenerService() {
         val editDuration = durationPreferences.edit()
         alarmSound?.duration?.let { editDuration.putInt("Alarm_Notif_Duration", it) }
         editDuration.apply()
-
-        val editCanRingtone = canRingtonePreferences.edit()
-        editCanRingtone.putBoolean("Can_RingTone", canRingtone)
-        editCanRingtone.apply()
-    }
-
-    private fun soundRingtone(idSound: Int?) {
-        duration = durationPreferences.getInt("Alarm_Notif_Duration", 4000)
-        canRingtone = canRingtonePreferences.getBoolean("Can_RingTone", true)
-        customSound = alarmCustomTonePreferences.getString("Alarm_Custom_Tone", "").toString()
-
-        if (canRingtone) {
-            if (idSound != null) {
-                if (idSound != R.raw.sms_ring) {
-                    if (idSound == -1 && customSound.isNotEmpty()) {
-                        alertCustomNotificationTone(customSound)
-                    } else {
-                        alertNotificationTone(idSound)
-                    }
-                } else {
-                    alertNotificationTone(R.raw.sms_ring)
-                }
-            }
-        }
     }
 
     companion object {

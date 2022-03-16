@@ -147,11 +147,10 @@
     <string name="edit_contact_phone_number">Phone number</string>
     <string name="edit_contact_phone_number_mobile">Mobile</string>
     <string name="edit_contact_phone_number_home">Home</string>
-    <string name="schedule_title" translatable="false">VIP Notifications Schedule</string>
-    <string name="schedule_permanent" translatable="false">Permanent</string>
-    <string name="settings_notif_schedule_daytime" translatable="false">Daytime Only</string>
-    <string name="settings_notif_schedule_workweek" translatable="false">Work week</string>
-    <string name="settings_notif_schedule_mix" translatable="false">Mix</string>
+    <string name="schedule_title">VIP Notifications Schedule</string>
+    <string name="schedule_permanent">Permanent (24h/24, 7 j/7)</string>
+    <string name="schedule_daytime">Worktime Only (5j/7)</string>
+    <string name="schedule_custom">Custom Schedule</string>
     <string name="contact_vip_settings">VIP Settings</string>
 
     <string-array name="edit_contact_phone_number_arrays">
@@ -324,7 +323,7 @@
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Number of selected contacts: %1s </string>
-    <string name="multi_select_title">Select your VIPs</string>
+    <string name="multi_select_title">Update your VIP list</string>
     <!-- region Alert Dialog -->
     <string name="multi_select_alert_dialog_title">Notifications display</string>
     <string name="multi_select_alert_dialog_message">Do you authorize Knock In to display high priority notifications</string>
@@ -487,5 +486,6 @@
     <string name="alert_dialog_vip_custom_settings_msg">You can now customize your notifications for each of your VIPs</string>
     <string name="show_popup_positive_button">Don\'t display anymore</string>
     <string name="alert_dialog_close">Close</string>
-    <string name="switch_1_to_0">Put all your contacts from priority 1 to 0</string>
+    <string name="switch_1_to_0">Set all non-VIP notifications silent</string>
+    <string name="schedule_weekend">Weekend  (24h/24)</string>
 </resources>

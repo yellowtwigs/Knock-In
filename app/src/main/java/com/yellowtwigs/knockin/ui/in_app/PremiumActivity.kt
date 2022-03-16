@@ -19,7 +19,7 @@ import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.utils.DrawerLayoutSwitch.checkSwitchFromLeftDrawer
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkSwitchFromLeftDrawer
 import kotlinx.coroutines.*
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {

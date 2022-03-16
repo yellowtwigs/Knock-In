@@ -4,4 +4,121 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/schedule_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/schedule_permanent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/schedule_permanent"
+            android:textColor="?attr/textColor"
+            android:textSize="@dimen/settings_long_text_size"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/schedule_permanent_radiobutton"
+            app:layout_constraintEnd_toStartOf="@+id/schedule_permanent_radiobutton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/schedule_permanent_radiobutton" />
+
+        <RadioButton
+            android:id="@+id/schedule_permanent_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/darkGreyColor"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_permanent_radiobutton" />
+
+        <TextView
+            android:id="@+id/schedule_daytime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/schedule_daytime"
+            android:textColor="?attr/textColor"
+            android:textSize="@dimen/settings_long_text_size"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/schedule_daytime_radiobutton"
+            app:layout_constraintEnd_toStartOf="@+id/schedule_daytime_radiobutton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/schedule_daytime_radiobutton" />
+
+        <RadioButton
+            android:id="@+id/schedule_daytime_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_permanent_radiobutton"
+            android:layout_marginEnd="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/darkGreyColor"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_daytime_radiobutton" />
+
+        <TextView
+            android:id="@+id/schedule_weekend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/schedule_weekend"
+            android:textColor="?attr/textColor"
+            android:textSize="@dimen/settings_long_text_size"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/schedule_workweek_radiobutton"
+            app:layout_constraintEnd_toStartOf="@+id/schedule_workweek_radiobutton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/schedule_workweek_radiobutton" />
+
+        <RadioButton
+            android:id="@+id/schedule_workweek_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_daytime_radiobutton"
+            android:layout_marginEnd="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/darkGreyColor"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_workweek_radiobutton" />
+
+        <TextView
+            android:id="@+id/schedule_custom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/schedule_custom"
+            android:textColor="?attr/textColor"
+            android:textSize="@dimen/settings_long_text_size"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/schedule_custom_radiobutton"
+            app:layout_constraintEnd_toStartOf="@+id/schedule_custom_radiobutton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/schedule_custom_radiobutton" />
+
+        <RadioButton
+            android:id="@+id/schedule_custom_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_workweek_radiobutton"
+            android:layout_marginEnd="8dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -316,7 +316,7 @@ Para aceptarlos, haga clic en "Aceptar y continuar"</string>
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Número de contactos seleccionados: %1s </string>
-    <string name="multi_select_title">Seleccione sus VIPs</string>
+    <string name="multi_select_title">Actualiza tu lista VIP</string>
     <!-- region Alert Dialog -->
     <string name="multi_select_alert_dialog_title">Visualización de notificaciones</string>
     <string name="multi_select_alert_dialog_message">Permitir a Knock In a visualizar notificaiones de prioridad alta</string>
@@ -480,5 +480,10 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="show_popup_positive_button">No mostrar</string>
     <string name="alert_dialog_close">Cerca</string>
     <string name="contact_vip_settings">VIP Ajustes</string>
-    <string name="switch_1_to_0">Pon todos tus contactos de prioridad 1 a 0</string>
+    <string name="switch_1_to_0">Configure todas las notificaciones que no sean VIP en silencio</string>
+    <string name="schedule_permanent">Siempre activo (24/7)</string>
+    <string name="schedule_title">Calendario de notificaciones VIP</string>
+    <string name="schedule_daytime">Solo tiempo de trabajo (5j/7)</string>
+    <string name="schedule_weekend">Fin de semana (24h/24)</string>
+    <string name="schedule_custom">Horario personalizado</string>
 </resources>

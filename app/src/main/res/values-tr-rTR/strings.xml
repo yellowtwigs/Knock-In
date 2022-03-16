@@ -312,7 +312,7 @@
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Seçilen kişi sayısı: %1s</string>
-    <string name="multi_select_title">VIPlerinizi seçin</string>
+    <string name="multi_select_title">VIP listenizi güncelleyin</string>
     <!-- region Alert Dialog -->
     <string name="multi_select_alert_dialog_title">Bildirimler ekranı</string>
     <string name="multi_select_alert_dialog_message">Knock In\'e yüksek öncelikli bildirimleri görüntüleme yetkisi veriyor musunuz?</string>
@@ -474,5 +474,10 @@
     <string name="show_popup_positive_button">artık gösterme</string>
     <string name="alert_dialog_close">Kapat</string>
     <string name="contact_vip_settings">VIP Ayarlar</string>
-    <string name="switch_1_to_0">Tüm kişilerinizi öncelik 1\'den 0\'a koyun</string>
+    <string name="switch_1_to_0">VIP olmayan tüm bildirimleri sessize al</string>
+    <string name="schedule_permanent">Her zaman açık (24/7)</string>
+    <string name="schedule_title">VIP bildirim programı</string>
+    <string name="schedule_daytime">Yalnızca Çalışma Süresi (5j/7)</string>
+    <string name="schedule_weekend">Haftasonu (24s/24)</string>
+    <string name="schedule_custom">Özel Program</string>
 </resources>

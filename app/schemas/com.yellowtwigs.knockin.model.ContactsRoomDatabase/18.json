@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 18,
-    "identityHash": "860686cbd48a45d4a64a6af94a17b03d",
+    "identityHash": "4886b0e03208d954fd4bc1adba61a481",
     "entities": [
       {
         "tableName": "contacts_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `mail_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL, `messenger_id` TEXT NOT NULL, `has_whatsapp` INTEGER NOT NULL, `notification_tone` TEXT NOT NULL, `notification_Sound` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `mail_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `contact_priority` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL, `messenger_id` TEXT NOT NULL, `has_whatsapp` INTEGER NOT NULL, `notification_tone` TEXT NOT NULL, `notification_Sound` INTEGER NOT NULL, `is_custom_sound` INTEGER NOT NULL, `vip_schedule` INTEGER NOT NULL, `hour_limit_for_notification` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -78,6 +78,24 @@
             "fieldPath": "notificationSound",
             "columnName": "notification_Sound",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isCustomSound",
+            "columnName": "is_custom_sound",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vipSchedule",
+            "columnName": "vip_schedule",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hourLimitForNotification",
+            "columnName": "hour_limit_for_notification",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -405,7 +423,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '860686cbd48a45d4a64a6af94a17b03d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4886b0e03208d954fd4bc1adba61a481')"
     ]
   }
 }

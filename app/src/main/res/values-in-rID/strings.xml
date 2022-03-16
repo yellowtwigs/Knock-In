@@ -314,7 +314,7 @@
     <!-- endregion -->
     <!-- region Multi Select in First Launch-->
     <string name="multi_select_nb_contact">Jumlah kontak terpilih: %1s</string>
-    <string name="multi_select_title">Pilih VIP anda</string>
+    <string name="multi_select_title">Perbarui daftar VIP Anda</string>
     <!-- region Alert Dialog -->
     <string name="multi_select_alert_dialog_title">Tampilan notifikasi</string>
     <string name="multi_select_alert_dialog_message">Apakah Anda mengizinkan Knock In untuk menampilkan pemberitahuan prioritas tinggi?</string>
@@ -476,5 +476,10 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="show_popup_positive_button">Jangan tampilkan lagi</string>
     <string name="alert_dialog_close">Menutup</string>
     <string name="contact_vip_settings">VIP Pengaturan</string>
-    <string name="switch_1_to_0">Letakkan semua kontak Anda dari prioritas 1 hingga 0</string>
+    <string name="switch_1_to_0">Setel semua notifikasi non-VIP ke senyap</string>
+    <string name="schedule_permanent">Permanen (24 jam sehari, 7 hari seminggu)</string>
+    <string name="schedule_title">Jadwal pemberitahuan VIP</string>
+    <string name="schedule_daytime">Hanya waktu kerja (5j/7)</string>
+    <string name="schedule_weekend">Akhir Pekan (24j/24)</string>
+    <string name="schedule_custom">Jadwal Kustom</string>
 </resources>

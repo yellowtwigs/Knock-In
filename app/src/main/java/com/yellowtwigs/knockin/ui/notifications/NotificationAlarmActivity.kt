@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.ui.notifications
 
-import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -33,40 +32,27 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var notification_alarm_ReceiveMessageSender: TextView? = null
     private var notification_alarm_ReceiveMessageImage: AppCompatImageView? = null
 
-    private var notification_alarm_NotificationMessagesAlarmSound: MediaPlayer? = null
+    private var alarmSound: MediaPlayer? = null
 
     private lateinit var sharedAlarmNotifDurationPreferences: SharedPreferences
     private var duration = 0
 
-    private lateinit var sharedAlarmNotifCanRingtonePreferences: SharedPreferences
-    private var canRingtone = false
-
     private var isSMS = false
-    private var sound = 0
+    private var isCustomSound = false
+    private var notificationSound = 0
+    private var notificationTone = ""
 
     //endregion
 
-    @SuppressLint("InvalidWakeLockTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_alarm)
 
         //region ==================================== SharedPreferences =====================================
 
-        val tonePreferences: SharedPreferences =
-            getSharedPreferences("Alarm_Tone", Context.MODE_PRIVATE)
-
         sharedAlarmNotifDurationPreferences =
             getSharedPreferences("ringtone_duration", Context.MODE_PRIVATE)
         duration = sharedAlarmNotifDurationPreferences.getInt("ringtone_duration", 0)
-
-        sharedAlarmNotifCanRingtonePreferences =
-            getSharedPreferences("Can_RingTone", Context.MODE_PRIVATE)
-        canRingtone = sharedAlarmNotifCanRingtonePreferences.getBoolean("Can_RingTone", false)
-
-        if (canRingtone) {
-            sound = tonePreferences.getInt("Alarm_Tone", R.raw.sms_ring)
-        }
 
         //endregion
 
@@ -91,13 +77,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         val sbp = intent.extras!!.get("notification") as StatusBarParcelable
 
-        val notificationSound = intent.extras?.get("notificationSound") as Int
-        if (notificationSound != null) {
-            sound = notificationSound
-        }
-
-        alartNotifTone(sound)
-
         notification_alarm_ReceiveMessageSender!!.text =
             sbp.statusBarNotificationInfo["android.title"] as String
         notification_alarm_ReceiveMessageContent!!.text =
@@ -110,6 +89,15 @@ class NotificationAlarmActivity : AppCompatActivity() {
         val gestionnaireContacts = ContactManager(this.applicationContext)
         val contact =
             gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"] as String)
+
+        if (contact != null) {
+            contact.contactDB
+            notificationSound = contact.contactDB?.notificationSound!!
+            notificationTone = contact.contactDB?.notificationTone.toString()
+            isCustomSound = contact.contactDB?.isCustomSound == 1
+
+            soundRingtone()
+        }
 
         when (sbp.appNotifier) {
             "com.google.android.apps.messaging",
@@ -150,41 +138,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
                         or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
             )
         }
-
-        //region sound + vibration
-        /* sound.start()
-         sound.isLooping=true*/
-
-//        val vibration = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val thread = Thread {
-//                val timeWhenLaunch = System.currentTimeMillis()
-//                while (System.currentTimeMillis() - timeWhenLaunch < 20 * 1000) {
-//                    vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
-//                    Thread.sleep(1000)
-//                }
-//                finish()
-//
-//            }
-//            thread.start()
-//        } else {
-//            //deprecated in API 26
-//            vibration.vibrate(500)
-//        }
-
-        val handler = Handler()
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                canRingtone = true
-
-                val edit: SharedPreferences.Editor = sharedAlarmNotifCanRingtonePreferences!!.edit()
-                edit.putBoolean("Can_RingTone", canRingtone)
-                edit.apply()
-
-                handler.postDelayed(this, duration.toLong())
-            }
-        }, duration.toLong())
-
         //endregion
 
         notification_alarm_ReceiveMessageLayout!!.setOnClickListener {
@@ -218,8 +171,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 }
             }
 
-            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-                notification_alarm_NotificationMessagesAlarmSound!!.stop()
+            if (alarmSound != null) {
+                alarmSound!!.stop()
             }
 
             finish()
@@ -227,8 +180,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         notification_Alarm_Button_ShutDown!!.setOnClickListener {
 
-            if (notification_alarm_NotificationMessagesAlarmSound != null) {
-                notification_alarm_NotificationMessagesAlarmSound!!.stop()
+            if (alarmSound != null) {
+                alarmSound!!.stop()
             }
 
             finish()
@@ -264,9 +217,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
         finish()
     }
 
-    fun alartNotifTone(sound: Int) {
-        notification_alarm_NotificationMessagesAlarmSound?.stop()
-        notification_alarm_NotificationMessagesAlarmSound = MediaPlayer.create(this, sound)
-        notification_alarm_NotificationMessagesAlarmSound?.start()
+    fun soundRingtone() {
+        alarmSound?.stop()
+        alarmSound = if(isCustomSound){
+            MediaPlayer.create(this, Uri.parse(notificationTone))
+        }else{
+            MediaPlayer.create(this, notificationSound)
+        }
+        alarmSound?.start()
     }
 }
