@@ -29,8 +29,6 @@ import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import kotlinx.coroutines.*
-import java.text.DateFormat
-import java.util.*
 
 class VipSettingsActivity : AppCompatActivity() {
 
@@ -254,7 +252,7 @@ class VipSettingsActivity : AppCompatActivity() {
                     alarmSound =
                         MediaPlayer.create(this@VipSettingsActivity, Uri.parse(notificationTone))
                     alarmSound?.start()
-                    delay(7000)
+                    delay(15000)
                     alarmSound?.stop()
                 }
             }
@@ -329,10 +327,13 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
             }
 
-            startTime.isVisible = scheduleCustomRadioButton.isChecked
-            endTime.isVisible = scheduleCustomRadioButton.isChecked
-            startTimeEditText.isVisible = scheduleCustomRadioButton.isChecked
-            endTimeEditText.isVisible = scheduleCustomRadioButton.isChecked
+            startTime.isVisible =
+                scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
+            endTime.isVisible = scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
+            startTimeEditText.isVisible =
+                scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
+            endTimeEditText.isVisible =
+                scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
 
             if (currentContact.contactDB?.hourLimitForNotification.toString().contains("to")) {
                 binding.startTimeEditText.setText(
@@ -349,7 +350,6 @@ class VipSettingsActivity : AppCompatActivity() {
             }
         }
 
-
         //endregion
 
         editTextTimePicker()
@@ -357,8 +357,7 @@ class VipSettingsActivity : AppCompatActivity() {
         if (currentContact.contactDB?.isCustomSound == 1) {
             notificationTone = currentContact.contactDB?.notificationTone.toString()
             binding.uploadSoundPath.isVisible = true
-            binding.uploadSoundPath.text = currentContact.contactDB?.notificationTone
-            getAudioNameFromStorage(notificationTone)
+            binding.uploadSoundPath.text = currentContact.contactDB?.audioFileName
         }
     }
 
@@ -371,9 +370,15 @@ class VipSettingsActivity : AppCompatActivity() {
             val timePickerDialog = TimePickerDialog(
                 this,
                 { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
-                    binding.startTimeEditText.setText(
-                        hourOfDay.toString() + "h" + minutes
-                    )
+                    if (minutes < 10) {
+                        binding.startTimeEditText.setText(
+                            hourOfDay.toString() + "h0" + minutes
+                        )
+                    } else {
+                        binding.startTimeEditText.setText(
+                            hourOfDay.toString() + "h" + minutes
+                        )
+                    }
 
                 }, 0, 0, true
             )
@@ -383,9 +388,15 @@ class VipSettingsActivity : AppCompatActivity() {
             val timePickerDialog = TimePickerDialog(
                 this,
                 { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
-                    binding.endTimeEditText.setText(
-                        hourOfDay.toString() + "h" + minutes
-                    )
+                    if (minutes < 10) {
+                        binding.endTimeEditText.setText(
+                            hourOfDay.toString() + "h0" + minutes
+                        )
+                    } else {
+                        binding.endTimeEditText.setText(
+                            hourOfDay.toString() + "h" + minutes
+                        )
+                    }
                 }, 0, 0, true
             )
             timePickerDialog.show()
@@ -469,6 +480,9 @@ class VipSettingsActivity : AppCompatActivity() {
                 putExtra("hasChanged", intent.getBooleanExtra("hasChanged", false))
             }
             putExtra("notificationTone", notificationTone)
+            Log.i("notificationTone", "1 : ${notificationTone}")
+            Log.i("notificationTone", "2 : ${binding.uploadSoundPath.text}")
+            Log.i("notificationTone", "3 : ${isCustomSound}")
             putExtra("notification_Sound", notificationSound)
             if (isCustomSound) {
                 putExtra("isCustomSound", 1)
@@ -476,6 +490,7 @@ class VipSettingsActivity : AppCompatActivity() {
                 putExtra("isCustomSound", 0)
             }
             putExtra("vipScheduleValue", vipScheduleValue)
+            putExtra("audioFileName", binding.uploadSoundPath.text.toString())
 
             if (binding.startTimeEditText.text.isNullOrBlank() || binding.endTimeEditText.text.isNullOrBlank()) {
             } else {
@@ -535,7 +550,7 @@ class VipSettingsActivity : AppCompatActivity() {
         }
     }
 
-//region ======================================= CheckboxGesture ========================================
+    //region ======================================= CheckboxGesture ========================================
 
     private fun uncheckBoxAll() {
         uncheckBoxAllJazzy()
@@ -645,7 +660,7 @@ class VipSettingsActivity : AppCompatActivity() {
 
 //endregion
 
-//region ======================================= OpenCloseLayout ========================================
+    //region ======================================= OpenCloseLayout ========================================
 
     private fun ringToneLayoutClosed() {
         openCloseAllJazzy(jazzyToClose)
@@ -739,17 +754,18 @@ class VipSettingsActivity : AppCompatActivity() {
                                 if (cursor.getString(i)?.contains("storage") == true &&
                                     cursor.getString(i)?.contains(".mp3") == true
                                 ) {
-                                    notificationTone = cursor.getString(i)
+                                    withContext(Dispatchers.Main) {
+                                        Log.i("audioFile", "2 : ${cursor.getString(title)}")
+                                        Log.i("audioFile", "3 : ${cursor.getString(i)}")
+                                        binding.uploadSoundPath.isVisible = true
+                                        binding.uploadSoundPath.text = cursor.getString(title)
+                                        notificationTone = cursor.getString(i)
+                                    }
                                     break
                                 }
                             } catch (e: SQLException) {
                                 Log.i("audioFile", "$i : ${cursor.getBlob(i)}")
                             }
-                        }
-
-                        withContext(Dispatchers.Main) {
-                            binding.uploadSoundPath.isVisible = true
-                            binding.uploadSoundPath.text = cursor.getString(title)
                         }
                         break
                     }
@@ -792,8 +808,8 @@ class VipSettingsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 89 && resultCode == RESULT_OK) {
             if (data?.data != null) {
-                audioFile = data.data.toString()
                 notificationTone = data.data.toString()
+                Log.i("audioFile", "1 : ${data.data}")
                 isCustomSound = true
                 binding.uploadSoundPath.isVisible = true
                 binding.uploadSoundPath.text =

@@ -322,6 +322,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             defaultTone,
             0,
             1,
+            "",
             ""
         )
         val contactInfo = ContactWithAllInformation()
@@ -887,6 +888,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                     defaultTone,
                                     0,
                                     1,
+                                    "",
                                     ""
                                 )
                                 //on recupere la liste des contactList récuperer lors de la derniere synchro sous format idAndroid:id
@@ -987,6 +989,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                     defaultTone,
                                     0,
                                     1,
+                                    "",
                                     ""
                                 )
                                 phoneContactsList.add(contacts)
@@ -1061,6 +1064,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 defaultTone,
                 0,
                 1,
+                "",
                 ""
             ), detailList
         )
@@ -1419,7 +1423,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 }
             }
         } else {
+            Log.i("notificationTone", "1 : ${name}")
+
             val array = name.toCharArray().toList()
+            Log.i("notificationTone", "2 : ${array}")
             val array2 = arrayListOf<Char>()
             array.forEach { char ->
                 if (char.isLetter() || char == '-') {
@@ -1430,22 +1437,33 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             contactList.forEach { dbContact ->
                 val contactInfo = dbContact.contactDB!!
 
+                Log.i("notificationTone", "3 : ${name1}")
+                Log.i("notificationTone", "4 : ${contactInfo.firstName}")
+                Log.i("notificationTone", "5 : ${contactInfo.lastName}")
+                Log.i("notificationTone", "6 : ${contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name ||
+                        contactInfo.firstName == name1 && contactInfo.lastName == ""
+                }")
+
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name ||
                     contactInfo.firstName == name1 && contactInfo.lastName == ""
                 ) {
                     return dbContact
-                } else {
-                    if (name.isNotEmpty()) {
-                        var entireName = name.replace(name[0], ' ')
-                        entireName = entireName.replace(name[entireName.length - 1], ' ')
-
-                        if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
-                            return dbContact
-                        }
-                    }
                 }
             }
         }
+        contactList.forEach { dbContact ->
+            val contactInfo = dbContact.contactDB!!
+
+            if (name.isNotEmpty()) {
+                var entireName = name.replace(name[0], ' ')
+                entireName = entireName.replace(name[entireName.length - 1], ' ')
+
+                if (' ' + contactInfo.firstName + " " + contactInfo.lastName + ' ' == entireName || ' ' + contactInfo.firstName + ' ' == entireName || ' ' + contactInfo.lastName + ' ' == entireName) {
+                    return dbContact
+                }
+            }
+        }
+
         return null
     }
 

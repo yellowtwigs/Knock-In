@@ -317,10 +317,7 @@ class ContactRecyclerViewAdapter(
             }
         }
         if (len == 1) {
-
-            Log.i("Whatsapp", "Whatsapp : ${contact.hasWhatsapp}")
-            Log.i("Whatsapp", "Whatsapp : ${whatsappIsNotInstalled()}")
-            if (whatsappIsNotInstalled() && contact.hasWhatsapp == 0) {
+            if (whatsappIsNotInstalled()) {
                 holder.whatsappCl.visibility = View.GONE
             } else {
                 holder.whatsappCl.visibility = View.VISIBLE

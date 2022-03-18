@@ -268,6 +268,7 @@ class AddNewContactActivity : AppCompatActivity() {
                                 defaultTone,
                                 0,
                                 1,
+                                "",
                                 ""
                             )
 
@@ -398,6 +399,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             defaultTone,
                             0,
                             1,
+                            "",
                             ""
                         )
 

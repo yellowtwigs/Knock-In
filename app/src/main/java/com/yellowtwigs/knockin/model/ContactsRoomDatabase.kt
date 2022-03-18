@@ -13,7 +13,7 @@ import com.yellowtwigs.knockin.model.dao.*
  * La Classe qui permet de créer la base de données et de la garder à jour
  * @author Ryan Granet
  */
-@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class, VipNotificationsDB::class, VipSbnDB::class], version = 18)
+@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class, VipNotificationsDB::class, VipSbnDB::class], version = 19)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -52,6 +52,7 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
                         .addMigrations(MIGRATION_15_16)
                         .addMigrations(MIGRATION_16_17)
                         .addMigrations(MIGRATION_17_18)
+                        .addMigrations(MIGRATION_18_19)
                         .allowMainThreadQueries()
                         .build()
                 return INSTANCE
@@ -154,6 +155,11 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
         private val MIGRATION_17_18 = object : Migration(17, 18) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN notification_Sound INTEGER DEFAULT 0 NOT NULL")
+            }
+        }
+        private val MIGRATION_18_19 = object : Migration(18, 19) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN audio_file_name TEXT DEFAULT '' NOT NULL")
             }
         }
     }

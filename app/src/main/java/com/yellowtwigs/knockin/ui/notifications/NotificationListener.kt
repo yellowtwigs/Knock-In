@@ -102,6 +102,11 @@ class NotificationListener : NotificationListenerService() {
                             sbp.changeToContactName(contact)
                     } else {
                         contact = contactManager.getContactWithName(name, app)
+
+                        Log.i("notificationTone", "100 : ${contact?.contactDB?.firstName}")
+//                        Log.i("notificationTone", "1 : ${contact?.contactDB?.firstName}")
+//                        Log.i("notificationTone", "1 : ${contact?.contactDB?.isCustomSound}")
+//                        Log.i("notificationTone", "2 : ${contact?.contactDB?.notificationTone}")
                     }
 
                     val notification = saveNotification(sbp, contactManager.getContactId(name))
@@ -131,10 +136,18 @@ class NotificationListener : NotificationListenerService() {
                                                 val minutesStart =
                                                     convertTimeToMinutes(startTime)
 
+
+                                                Log.i("minutes", "hour : $hourStart")
+                                                Log.i("minutes", "minutes : $minutesStart")
+
                                                 val endTime =
                                                     convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
                                                 val hourEnd = convertTimeToHour(endTime)
                                                 val minutesEnd = convertTimeToMinutes(endTime)
+
+                                                Log.i("minutes", "hour : $hourEnd")
+                                                Log.i("minutes", "minutes : $minutesEnd")
+
                                                 if (today in 1..4 || today == 7) {
                                                     if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
                                                         if (hourStart.toInt() == hours) {
@@ -179,7 +192,6 @@ class NotificationListener : NotificationListenerService() {
                                                 }
                                             }
                                             4 -> {
-
                                                 val startTime =
                                                     convertTimeToStartTime(contact.contactDB?.hourLimitForNotification.toString())
                                                 val hourStart = convertTimeToHour(startTime)
@@ -318,23 +330,51 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun convertTimeToHour(time: String): String {
-        val parts = time.split("h").toTypedArray()
-        return parts[0]
+        return if (time.contains("h")) {
+            val parts = time.split("h").toTypedArray()
+            parts[0]
+        } else {
+            "0"
+        }
     }
 
     private fun convertTimeToMinutes(time: String): String {
-        val parts = time.split("h").toTypedArray()
-        return parts[1]
+        Log.i("minutes", "$time")
+        val array = arrayListOf<Char>()
+        return if (time.contains("h")) {
+            // 02h53
+            val parts = time.split("h").toTypedArray()
+            parts[1].forEach {
+                if (!it.isWhitespace()) {
+                    array.add(it)
+                }
+            }
+            String(array.toCharArray())
+        } else {
+            "0"
+        }
     }
 
     private fun convertTimeToStartTime(time: String): String {
-        val parts = time.split(" to").toTypedArray()
-        return parts[0]
+        return if (time.contains("to")) {
+            val parts = time.split(" to").toTypedArray()
+            parts[0]
+        } else {
+            val customTime = "0h0 to 23h59"
+            val parts = customTime.split(" to").toTypedArray()
+            parts[0]
+        }
     }
 
     private fun convertTimeToEndTime(time: String): String {
-        val parts = time.split("to ").toTypedArray()
-        return parts[1]
+        return if (time.contains("to")) {
+            val parts = time.split("to ").toTypedArray()
+            parts[1]
+        } else {
+            val customTime = "0h0 to 23h59"
+            val parts = customTime.split("to ").toTypedArray()
+            parts[1]
+        }
     }
 
     private fun cancelWhatsappNotif(sbn: StatusBarNotification) {
@@ -439,10 +479,6 @@ class NotificationListener : NotificationListenerService() {
                 )
                 i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 i.putExtra("notification", sbp)
-                i.putExtra(
-                    "notificationSound",
-                    contact.contactDB?.notificationSound
-                )
                 this.cancelNotification(sbn.key)
                 cancelWhatsappNotif(sbn)
                 startActivity(i)

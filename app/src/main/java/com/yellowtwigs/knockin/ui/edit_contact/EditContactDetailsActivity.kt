@@ -147,6 +147,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
     private var isCustomSound = 0
     private var vipScheduleValue = 1
     private var hourLimit = ""
+    private var audioFileName = ""
 
     private var position: Int? = null
 
@@ -318,6 +319,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
             contactPriorityBorder(contact.contactDB!!, edit_contact_RoundedImageView!!, this)
 
+            edit_contact_imgString = edit_contact_image64
+
             notificationTone = currentContact.contactDB?.notificationTone.toString()
             notificationSound = currentContact.contactDB?.notificationSound!!
             isCustomSound = currentContact.contactDB?.isCustomSound!!
@@ -409,11 +412,17 @@ class EditContactDetailsActivity : AppCompatActivity() {
             edit_contact_priority = 2
         }
         if (intent.getBooleanExtra("fromVipSettings", false)) {
+
             notificationSound = intent.getIntExtra("notification_Sound", 0)
             notificationTone = intent.getStringExtra("notificationTone").toString()
             isCustomSound = intent.getIntExtra("isCustomSound", 0)
             vipScheduleValue = intent.getIntExtra("vipScheduleValue", 1)
             hourLimit = intent.getStringExtra("hourLimit").toString()
+            audioFileName = intent.getStringExtra("audioFileName").toString()
+
+            Log.i("notificationTone", "4 : ${notificationTone}")
+            Log.i("notificationTone", "5 : ${audioFileName}")
+            Log.i("notificationTone", "6 : ${isCustomSound}")
         }
 
         //region ========================================== Tags ============================================
@@ -795,6 +804,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                     vipScheduleValue != currentContact.contactDB?.vipSchedule ||
                     hourLimit != currentContact.contactDB?.hourLimitForNotification
                 ) {
+                    Log.i("notificationTone", "7 : test")
+
                     setCustomAlarmTone()
                     editContactValidation()
                     if (fromGroupActivity) {
@@ -1059,6 +1070,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                     edit_contact_ContactsDatabase!!.contactDetailsDao().insert(detail)
                 }
 
+                Log.i("notificationTone", "6.5 : ${notificationTone}")
+                Log.i("notificationTone", "7.0 : ${isCustomSound}")
                 CoroutineScope(Dispatchers.IO).launch {
                     if (isFavorite == true) {
                         edit_contact_ContactsDatabase?.contactsDao()?.updateContact(
@@ -1069,7 +1082,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 edit_contact_Mail_Name!!.editText!!.text.toString(),
                                 edit_contact_rounded_image,
                                 prioritySpinner!!.selectedItemPosition,
-                                edit_contact_image64,
+                                edit_contact_imgString,
                                 1,
                                 "",
                                 1,
@@ -1077,7 +1090,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 notificationSound,
                                 isCustomSound,
                                 vipScheduleValue,
-                                hourLimit
+                                hourLimit,
+                                audioFileName
                             )
                         )
                     } else {
@@ -1089,7 +1103,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 edit_contact_Mail_Name!!.editText!!.text.toString(),
                                 edit_contact_rounded_image,
                                 prioritySpinner!!.selectedItemPosition,
-                                edit_contact_image64,
+                                edit_contact_imgString,
                                 0,
                                 "",
                                 1,
@@ -1097,7 +1111,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 notificationSound,
                                 isCustomSound,
                                 vipScheduleValue,
-                                hourLimit
+                                hourLimit,
+                                audioFileName
                             )
                         )
                     }
@@ -1361,7 +1376,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
     }
 
     private fun selectImage() {
-
         val builderBottom = BottomSheetDialog(this)
         builderBottom.setContentView(R.layout.alert_dialog_select_contact_picture_layout)
         val gallery =
@@ -1372,12 +1386,12 @@ class EditContactDetailsActivity : AppCompatActivity() {
             builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
         val layoutManager =
             LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView!!.layoutManager = layoutManager
+        recyclerView?.layoutManager = layoutManager
         val adapter =
             ContactIconeAdapter(this)
-        recyclerView.adapter = adapter
+        recyclerView?.adapter = adapter
 
-        gallery!!.setOnClickListener {
+        gallery?.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -1402,7 +1416,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 builderBottom.dismiss()
             }
         }
-        camera!!.setOnClickListener {
+        camera?.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.CAMERA
@@ -1479,7 +1493,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 bitmap =
                     Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 //set l'image et la convertit en base64 pour la mettre plus tard dans la DB
-                edit_contact_RoundedImageView!!.setImageBitmap(bitmap)
+                edit_contact_RoundedImageView?.setImageBitmap(bitmap)
                 edit_contact_imgString = bitmap.bitmapToBase64()
                 edit_contact_imgStringChanged = true
 
