@@ -368,7 +368,7 @@ class ManageNotificationActivity : AppCompatActivity() {
             }
         }
 
-        val multiSelectVipButton = findViewById<AppCompatButton>(R.id.vip_multi_select_button)
+        val multiSelectVipButton = findViewById<AppCompatImageView>(R.id.vip_multi_select_button)
         multiSelectVipButton.setOnClickListener {
             startActivity(Intent(this@ManageNotificationActivity, MultiSelectActivity::class.java))
         }

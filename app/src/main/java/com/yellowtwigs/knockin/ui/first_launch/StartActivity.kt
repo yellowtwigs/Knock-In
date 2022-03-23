@@ -76,7 +76,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var sharedJazzySoundPreferences: SharedPreferences? = null
     private var sharedRelaxationSoundPreferences: SharedPreferences? = null
     private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
-    private var sharedCustomSoundPreferences: SharedPreferences? = null
 
     private lateinit var workerThread: DbWorkerThread
     private var activityNotificationVisible = false
@@ -90,7 +89,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onCreate(savedInstanceState)
 
         setContentView()
-
         val listApp = getAppOnPhone()
 
         sharedFunkySoundPreferences =
@@ -101,8 +99,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         sharedContactsUnlimitedPreferences =
             getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
-        sharedCustomSoundPreferences =
-            getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
 
         setupBillingClient()
 
@@ -538,7 +534,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_funk_theme")
         skuList.add("notifications_vip_jazz_theme")
         skuList.add("notifications_vip_relaxation_theme")
-        skuList.add("notifications_vip_custom_tones_theme")
 
         val params = SkuDetailsParams.newBuilder()
             .setSkusList(skuList)
@@ -579,12 +574,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     "Contacts_Unlimited_Bought",
                                     true
                                 )
-                                edit?.apply()
-                            }
-                            purchase.originalJson.contains("notifications_vip_custom_tones_theme") -> {
-                                val edit =
-                                    sharedCustomSoundPreferences?.edit()
-                                edit?.putBoolean("Custom_Sound_Bought", true)
                                 edit?.apply()
                             }
                         }

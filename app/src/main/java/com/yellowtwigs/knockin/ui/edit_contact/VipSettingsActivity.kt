@@ -75,10 +75,10 @@ class VipSettingsActivity : AppCompatActivity() {
         jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
-        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)
+        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", true)
 
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
-        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
+        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", true)
 
         //region ========================================== Intent ==========================================
 
@@ -440,6 +440,8 @@ class VipSettingsActivity : AppCompatActivity() {
         if (!isBought) {
             notificationSound = currentContact.contactDB?.notificationSound!!
             alertDialogBuySound()
+        } else {
+            isCustomSound = false
         }
     }
 
@@ -450,6 +452,7 @@ class VipSettingsActivity : AppCompatActivity() {
         if (isBought) {
             notificationSound = sound
             playAlarmSound()
+            isCustomSound = false
         } else {
             notificationSound = currentContact.contactDB?.notificationSound!!
             alertDialogBuySound()

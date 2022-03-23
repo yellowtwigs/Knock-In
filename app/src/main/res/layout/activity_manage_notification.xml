@@ -45,23 +45,23 @@
                     android:id="@+id/vip_multi_select_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/multi_select_title"
                     android:textColor="?attr/textColor"
-                    android:layout_marginEnd="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/vip_multi_select_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/vip_multi_select_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
                     android:text="VIP"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_circular_vip_icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

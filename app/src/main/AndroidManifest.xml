@@ -19,8 +19,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<!--    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"-->
-    <!--        tools:ignore="ProtectedPermissions" />-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -83,7 +81,6 @@
         <activity android:name=".ui.CockpitActivity" />
         <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
-        <activity android:name=".controller.activity.EditInformationsActivity" />
         <activity android:name=".ui.settings.ManageNotificationActivity" />
         <activity android:name=".ui.notifications.history.NotificationHistoryActivity" />
         <activity
