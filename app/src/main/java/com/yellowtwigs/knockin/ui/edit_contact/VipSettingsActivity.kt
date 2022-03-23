@@ -54,7 +54,6 @@ class VipSettingsActivity : AppCompatActivity() {
 
     private lateinit var permissionsPref: SharedPreferences
 
-    private var numberDefault = 1
     private lateinit var binding: ActivityVipSettingsBinding
 
     private lateinit var currentContact: ContactWithAllInformation
@@ -72,13 +71,13 @@ class VipSettingsActivity : AppCompatActivity() {
         permissionsPref = getSharedPreferences("PermissionsPreferences", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
-        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
+        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
-        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", true)
+        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)
 
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
-        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", true)
+        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
 
         //region ========================================== Intent ==========================================
 
@@ -235,9 +234,6 @@ class VipSettingsActivity : AppCompatActivity() {
 
             //endregion
 
-            uploadCheckbox.isChecked = isCustomSound
-            uploadCheckbox.isVisible = isCustomSound
-
             uploadButton.setOnClickListener {
                 alarmSound?.stop()
                 checkRuntimePermission()
@@ -246,6 +242,7 @@ class VipSettingsActivity : AppCompatActivity() {
             uploadCheckbox.setOnClickListener {
                 uncheckBoxAll()
                 uploadCheckbox.isChecked = true
+                isCustomSound = true
 
                 CoroutineScope(Dispatchers.Main).launch {
                     alarmSound?.stop()
@@ -354,10 +351,15 @@ class VipSettingsActivity : AppCompatActivity() {
 
         editTextTimePicker()
 
-        if (currentContact.contactDB?.isCustomSound == 1) {
-            notificationTone = currentContact.contactDB?.notificationTone.toString()
-            binding.uploadSoundPath.isVisible = true
-            binding.uploadSoundPath.text = currentContact.contactDB?.audioFileName
+        currentContact.contactDB?.notificationTone.toString().apply {
+            if (isNotBlank() && isNotEmpty() && this != "") {
+                notificationTone = currentContact.contactDB?.notificationTone.toString()
+                binding.apply {
+                    uploadSoundPath.isVisible = true
+                    uploadSoundPath.text = currentContact.contactDB?.audioFileName
+                    uploadCheckbox.isVisible = true
+                }
+            }
         }
     }
 
@@ -493,6 +495,7 @@ class VipSettingsActivity : AppCompatActivity() {
                 putExtra("isCustomSound", 0)
             }
             putExtra("vipScheduleValue", vipScheduleValue)
+            Log.i("testAudioFile", "${binding.uploadSoundPath.text.toString()}")
             putExtra("audioFileName", binding.uploadSoundPath.text.toString())
 
             if (binding.startTimeEditText.text.isNullOrBlank() || binding.endTimeEditText.text.isNullOrBlank()) {
@@ -599,65 +602,69 @@ class VipSettingsActivity : AppCompatActivity() {
         alarmSound?.stop()
         uncheckBoxAll()
         binding.apply {
-            when (numberDefault) {
-                R.raw.moanin_jazz -> {
-                    moaninCheckbox.isChecked = true
-                }
-                R.raw.blue_bossa -> {
-                    blueBossaCheckbox.isChecked = true
-                }
-                R.raw.caravan -> {
-                    caravanCheckbox.isChecked = true
-                }
-                R.raw.dolphin_dance -> {
-                    dolphinDanceCheckbox.isChecked = true
-                }
-                R.raw.autumn_leaves -> {
-                    autumnLeavesCheckbox.isChecked = true
-                }
-                R.raw.freddie_freeloader -> {
-                    freddieFreeloaderCheckbox.isChecked = true
-                }
-                R.raw.bass_slap -> {
-                    slapCheckbox.isChecked = true
-                }
-                R.raw.funk_yall -> {
-                    funkYallCheckbox.isChecked = true
-                }
-                R.raw.off_the_curve_groove -> {
-                    offTheCurveCheckbox.isChecked = true
-                }
-                R.raw.keyboard_funky_tone -> {
-                    keyboardFunkyToneCheckbox.isChecked = true
-                }
-                R.raw.u_cant_hold_no_groove -> {
-                    uCantHoldNoGrooveCheckbox.isChecked = true
-                }
-                R.raw.cold_sweat -> {
-                    coldSweatCheckbox.isChecked = true
-                }
-                R.raw.beautiful_chords_progression -> {
-                    guitarRelaxCheckbox.isChecked = true
-                }
-                R.raw.gravity -> {
-                    gravityCheckbox.isChecked = true
-                }
-                R.raw.fade_to_black -> {
-                    scorpionThemeCheckbox.isChecked = true
-                }
-                R.raw.slow_dancing -> {
-                    slowDancingCheckbox.isChecked = true
-                }
-                R.raw.relax_sms -> {
-                    xyloRelaxCheckbox.isChecked = true
-                }
-                R.raw.interstellar_main_theme -> {
-                    interstellarThemeCheckbox.isChecked = true
-                }
-                else -> {
-                    uploadCheckbox.isChecked = true
+            if (currentContact.contactDB?.isCustomSound == 1) {
+                binding.uploadCheckbox.isChecked = true
+            } else {
+                when (notificationSound) {
+                    R.raw.moanin_jazz -> {
+                        moaninCheckbox.isChecked = true
+                    }
+                    R.raw.blue_bossa -> {
+                        blueBossaCheckbox.isChecked = true
+                    }
+                    R.raw.caravan -> {
+                        caravanCheckbox.isChecked = true
+                    }
+                    R.raw.dolphin_dance -> {
+                        dolphinDanceCheckbox.isChecked = true
+                    }
+                    R.raw.autumn_leaves -> {
+                        autumnLeavesCheckbox.isChecked = true
+                    }
+                    R.raw.freddie_freeloader -> {
+                        freddieFreeloaderCheckbox.isChecked = true
+                    }
+                    R.raw.bass_slap -> {
+                        slapCheckbox.isChecked = true
+                    }
+                    R.raw.funk_yall -> {
+                        funkYallCheckbox.isChecked = true
+                    }
+                    R.raw.off_the_curve_groove -> {
+                        offTheCurveCheckbox.isChecked = true
+                    }
+                    R.raw.keyboard_funky_tone -> {
+                        keyboardFunkyToneCheckbox.isChecked = true
+                    }
+                    R.raw.u_cant_hold_no_groove -> {
+                        uCantHoldNoGrooveCheckbox.isChecked = true
+                    }
+                    R.raw.cold_sweat -> {
+                        coldSweatCheckbox.isChecked = true
+                    }
+                    R.raw.beautiful_chords_progression -> {
+                        guitarRelaxCheckbox.isChecked = true
+                    }
+                    R.raw.gravity -> {
+                        gravityCheckbox.isChecked = true
+                    }
+                    R.raw.fade_to_black -> {
+                        scorpionThemeCheckbox.isChecked = true
+                    }
+                    R.raw.slow_dancing -> {
+                        slowDancingCheckbox.isChecked = true
+                    }
+                    R.raw.relax_sms -> {
+                        xyloRelaxCheckbox.isChecked = true
+                    }
+                    R.raw.interstellar_main_theme -> {
+                        interstellarThemeCheckbox.isChecked = true
+                    }
+                    else -> {
+                    }
                 }
             }
+
         }
     }
 
@@ -758,8 +765,6 @@ class VipSettingsActivity : AppCompatActivity() {
                                     cursor.getString(i)?.contains(".mp3") == true
                                 ) {
                                     withContext(Dispatchers.Main) {
-                                        Log.i("audioFile", "2 : ${cursor.getString(title)}")
-                                        Log.i("audioFile", "3 : ${cursor.getString(i)}")
                                         binding.uploadSoundPath.isVisible = true
                                         binding.uploadSoundPath.text = cursor.getString(title)
                                         notificationTone = cursor.getString(i)
@@ -812,8 +817,7 @@ class VipSettingsActivity : AppCompatActivity() {
         if (requestCode == 89 && resultCode == RESULT_OK) {
             if (data?.data != null) {
                 notificationTone = data.data.toString()
-                Log.i("audioFile", "1 : ${data.data}")
-                isCustomSound = true
+
                 binding.uploadSoundPath.isVisible = true
                 binding.uploadSoundPath.text =
                     data.data?.lastPathSegment?.split(":")?.get(1).toString()
