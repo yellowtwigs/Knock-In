@@ -478,7 +478,7 @@
     <string name="switch_1_to_0">Установите беззвучный режим для всех не-VIP-уведомлений.</string>
     <string name="schedule_permanent">Постоянный (24 часа в сутки, 7 дней в неделю)</string>
     <string name="schedule_title">График VIP-уведомлений</string>
-    <string name="schedule_daytime">Только рабочее время (5j/7)</string>
+    <string name="schedule_daytime">Только рабочее время (5/7)</string>
     <string name="schedule_weekend">Выходные (круглосуточно)</string>
-    <string name="schedule_custom">Пользовательское расписание</string>
+    <string name="schedule_custom">Пользовательское расписание (7/7)</string>
 </resources>

@@ -476,7 +476,7 @@
     <string name="switch_1_to_0">将所有非 VIP 通知设置为静音</string>
     <string name="schedule_permanent">永久（每天 24 小时，每周 7 天）</string>
     <string name="schedule_title">VIP通知时间表</string>
-    <string name="schedule_daytime">" 仅工作时间 (5j/7)"</string>
+    <string name="schedule_daytime">" 仅工作时间 (5/7)"</string>
     <string name="schedule_weekend">周末（24 小时/24 小时）</string>
     <string name="schedule_custom">自定义时间表</string>
 </resources>

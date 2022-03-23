@@ -478,7 +478,7 @@
     <string name="switch_1_to_0">اضبط جميع الإشعارات التي لا تخص VIP على صامت</string>
     <string name="schedule_permanent">دائم (24 ساعة في اليوم ، 7 أيام في الأسبوع)</string>
     <string name="schedule_title">جدول إخطارات VIP</string>
-    <string name="schedule_daytime">وقت العمل فقط (5j/7)</string>
+    <string name="schedule_daytime">وقت العمل فقط (5/7)</string>
     <string name="schedule_weekend">عطلة نهاية الأسبوع (24 ساعة / 24)</string>
-    <string name="schedule_custom">جدول مخصص</string>
+    <string name="schedule_custom">جدول مخصص  (7/7)</string>
 </resources>

@@ -477,7 +477,7 @@
     <string name="switch_1_to_0">Imposta tutte le notifiche non VIP in modalità silenziosa</string>
     <string name="schedule_permanent">Sempre attivo (24 ore su 24, 7 giorni su 7)</string>
     <string name="schedule_title">Programma di notifica VIP</string>
-    <string name="schedule_daytime">Solo orario di lavoro (5j/7)</string>
-    <string name="schedule_weekend">Fine settimana (24h/24)</string>
-    <string name="schedule_custom">Programma personalizzato</string>
+    <string name="schedule_daytime">Solo orario di lavoro (5/7)</string>
+    <string name="schedule_weekend">Fine settimana (24/24)</string>
+    <string name="schedule_custom">Programma personalizzato (7/7)</string>
 </resources>

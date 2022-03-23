@@ -477,7 +477,7 @@
     <string name="switch_1_to_0">Stellen Sie alle Nicht-VIP-Benachrichtigungen auf lautlos</string>
     <string name="schedule_permanent">Dauerhaft (24 Stunden am Tag, 7 Tage die Woche)</string>
     <string name="schedule_title">Zeitplan für VIP-Benachrichtigungen</string>
-    <string name="schedule_daytime">Nur Arbeitszeit (5j/7)</string>
-    <string name="schedule_weekend">Wochenende (24h/24)</string>
-    <string name="schedule_custom">Benutzerdefinierter Zeitplan</string>
+    <string name="schedule_daytime">Nur Arbeitszeit (5/7)</string>
+    <string name="schedule_weekend">Wochenende (24/24)</string>
+    <string name="schedule_custom">Benutzerdefinierter Zeitplan (7/7)</string>
 </resources>

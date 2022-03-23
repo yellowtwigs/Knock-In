@@ -479,7 +479,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="switch_1_to_0">Setel semua notifikasi non-VIP ke senyap</string>
     <string name="schedule_permanent">Permanen (24 jam sehari, 7 hari seminggu)</string>
     <string name="schedule_title">Jadwal pemberitahuan VIP</string>
-    <string name="schedule_daytime">Hanya waktu kerja (5j/7)</string>
-    <string name="schedule_weekend">Akhir Pekan (24j/24)</string>
-    <string name="schedule_custom">Jadwal Kustom</string>
+    <string name="schedule_daytime">Hanya waktu kerja (5/7)</string>
+    <string name="schedule_weekend">Akhir Pekan (24/24)</string>
+    <string name="schedule_custom">Jadwal Kustom (7/7)</string>
 </resources>

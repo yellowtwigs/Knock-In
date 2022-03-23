@@ -481,5 +481,5 @@
     <string name="schedule_title">"Calendrier des notifications VIP  "</string>
     <string name="schedule_daytime">Temps de travail uniquement (5j/7)</string>
     <string name="schedule_weekend">Week-end (24h/24)</string>
-    <string name="schedule_custom">Horaire personnalisé</string>
+    <string name="schedule_custom">Horaire personnalisé  (7j/7)</string>
 </resources>

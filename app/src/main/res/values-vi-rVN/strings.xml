@@ -476,7 +476,7 @@
     <string name="switch_1_to_0">Đặt tất cả các thông báo không phải VIP thành im lặng</string>
     <string name="schedule_permanent">Luôn bật (24/7)</string>
     <string name="schedule_title">Lịch thông báo VIP</string>
-    <string name="schedule_daytime">Chỉ thời gian làm việc (5j/7)</string>
-    <string name="schedule_weekend">Cuối tuần (24h / 24)</string>
-    <string name="schedule_custom">Lịch biểu tùy chỉnh</string>
+    <string name="schedule_daytime">Chỉ thời gian làm việc (5/7)</string>
+    <string name="schedule_weekend">Cuối tuần (24/ 24)</string>
+    <string name="schedule_custom">Lịch biểu tùy chỉnh (7/7)</string>
 </resources>

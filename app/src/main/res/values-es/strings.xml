@@ -483,7 +483,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="switch_1_to_0">Configure todas las notificaciones que no sean VIP en silencio</string>
     <string name="schedule_permanent">Siempre activo (24/7)</string>
     <string name="schedule_title">Calendario de notificaciones VIP</string>
-    <string name="schedule_daytime">Solo tiempo de trabajo (5j/7)</string>
-    <string name="schedule_weekend">Fin de semana (24h/24)</string>
-    <string name="schedule_custom">Horario personalizado</string>
+    <string name="schedule_daytime">Solo tiempo de trabajo (5/7)</string>
+    <string name="schedule_weekend">Fin de semana (24/24)</string>
+    <string name="schedule_custom">Horario personalizado (7/7)</string>
 </resources>

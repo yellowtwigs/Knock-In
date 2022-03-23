@@ -148,9 +148,9 @@
     <string name="edit_contact_phone_number_mobile">Mobile</string>
     <string name="edit_contact_phone_number_home">Home</string>
     <string name="schedule_title">VIP Notifications Schedule</string>
-    <string name="schedule_permanent">Permanent (24h/24, 7 j/7)</string>
-    <string name="schedule_daytime">Worktime Only (5j/7)</string>
-    <string name="schedule_custom">Custom Schedule</string>
+    <string name="schedule_permanent">Permanent (24h/24, 7d/7)</string>
+    <string name="schedule_daytime">Worktime Only (5d/7)</string>
+    <string name="schedule_custom">Custom Schedule (7d/7)</string>
     <string name="contact_vip_settings">VIP Settings</string>
 
     <string-array name="edit_contact_phone_number_arrays">

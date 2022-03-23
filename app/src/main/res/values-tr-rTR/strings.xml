@@ -477,7 +477,7 @@
     <string name="switch_1_to_0">VIP olmayan tüm bildirimleri sessize al</string>
     <string name="schedule_permanent">Her zaman açık (24/7)</string>
     <string name="schedule_title">VIP bildirim programı</string>
-    <string name="schedule_daytime">Yalnızca Çalışma Süresi (5j/7)</string>
-    <string name="schedule_weekend">Haftasonu (24s/24)</string>
-    <string name="schedule_custom">Özel Program</string>
+    <string name="schedule_daytime">Yalnızca Çalışma Süresi (5/7)</string>
+    <string name="schedule_weekend">Haftasonu (24/24)</string>
+    <string name="schedule_custom">Özel Program (7/7)</string>
 </resources>
