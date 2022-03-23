@@ -26,6 +26,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
@@ -501,7 +502,7 @@ class ContactRecyclerViewAdapter(
             val sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
             val popup = sharedPreferences.getBoolean("popup", true)
             if (popup && phonePermission.isEmpty()) {
-                AlertDialog.Builder(context)
+                MaterialAlertDialogBuilder(context, R.style.AlertDialog)
                     .setTitle(R.string.main_contact_grid_title)
                     .setMessage(R.string.main_contact_grid_message)
                     .setPositiveButton(android.R.string.yes) { dialog: DialogInterface?, id: Int ->

@@ -182,7 +182,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                val alertDialog = AlertDialog.Builder(this, R.style.AlertDialog)
+                val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 alertDialog.setTitle(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_title))
                 alertDialog.setMessage(applicationContext.resources.getString(R.string.add_new_contact_alert_dialog_cancel_message))
 

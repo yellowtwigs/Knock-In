@@ -28,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
@@ -455,7 +456,7 @@ class GroupAdapter(private val context: Context,
             val sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
             val popup = sharedPreferences.getBoolean("popup", true)
             if (popup && numberForPermission.isEmpty()) {
-                AlertDialog.Builder(context)
+                MaterialAlertDialogBuilder(context, R.style.AlertDialog)
                         .setTitle(R.string.main_contact_grid_title)
                         .setMessage(R.string.main_contact_grid_message)
                         .setPositiveButton(android.R.string.yes) { dialog: DialogInterface?, id: Int -> context.startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))) }
