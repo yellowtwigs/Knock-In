@@ -150,7 +150,8 @@
     <string name="schedule_title">VIP Notifications Schedule</string>
     <string name="schedule_permanent">Permanent (24h/24, 7d/7)</string>
     <string name="schedule_daytime">Worktime Only (5d/7)</string>
-    <string name="schedule_custom">Custom Schedule (7d/7)</string>
+    <string name="schedule_custom">Custom Timeframe (7d/7)</string>
+    <string name="schedule_weekend">Weekend Only (24h/24)</string>
     <string name="contact_vip_settings">VIP Settings</string>
 
     <string-array name="edit_contact_phone_number_arrays">
@@ -487,5 +488,4 @@
     <string name="show_popup_positive_button">Don\'t display anymore</string>
     <string name="alert_dialog_close">Close</string>
     <string name="switch_1_to_0">Set all non-VIP notifications silent</string>
-    <string name="schedule_weekend">Weekend  (24h/24)</string>
 </resources>

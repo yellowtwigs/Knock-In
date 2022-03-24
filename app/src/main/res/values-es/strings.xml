@@ -484,6 +484,6 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="schedule_permanent">Siempre activo (24/7)</string>
     <string name="schedule_title">Calendario de notificaciones VIP</string>
     <string name="schedule_daytime">Solo tiempo de trabajo (5/7)</string>
-    <string name="schedule_weekend">Fin de semana (24/24)</string>
+    <string name="schedule_weekend">Solo fin de semana (24/24)</string>
     <string name="schedule_custom">Horario personalizado (7/7)</string>
 </resources>

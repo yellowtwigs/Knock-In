@@ -478,6 +478,6 @@
     <string name="schedule_permanent">Dauerhaft (24 Stunden am Tag, 7 Tage die Woche)</string>
     <string name="schedule_title">Zeitplan für VIP-Benachrichtigungen</string>
     <string name="schedule_daytime">Nur Arbeitszeit (5/7)</string>
-    <string name="schedule_weekend">Wochenende (24/24)</string>
+    <string name="schedule_weekend">Nur Wochenende (24/24)</string>
     <string name="schedule_custom">Benutzerdefinierter Zeitplan (7/7)</string>
 </resources>
