@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -259,23 +261,43 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
         builderIcon.setContentView(buttonCall);
 
+
         int startAngle;
         int endAngle;
-        if (position % len == 0) {
-            startAngle = 90;
-            endAngle = -90;
-        } else if (position % len == len - 1) {
-            startAngle = 90;
-            endAngle = 270;
+        int diametreButton;
+        int radiusMenu;
+
+        if (Resources.getSystem().getConfiguration().locale.getLanguage().equals("ar")) {
+            if (position % len == 0) {
+                startAngle = 90;
+                endAngle = 270;
+            } else if (position % len == len - 1) {
+                startAngle = 90;
+                endAngle = -90;
+            } else {
+                startAngle = 0;
+                endAngle = -180;
+            }
+            DisplayMetrics metrics = new DisplayMetrics();
+            ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            diametreButton = (int) (0.38 * metrics.densityDpi);
+            radiusMenu = (int) (0.50 * metrics.densityDpi);
         } else {
-            startAngle = 0;
-            endAngle = -180;
+            if (position % len == 0) {
+                startAngle = 90;
+                endAngle = -90;
+            } else if (position % len == len - 1) {
+                startAngle = 90;
+                endAngle = 270;
+            } else {
+                startAngle = 0;
+                endAngle = -180;
+            }
+            DisplayMetrics metrics = new DisplayMetrics();
+            ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            diametreButton = (int) (0.38 * metrics.densityDpi);
+            radiusMenu = (int) (0.50 * metrics.densityDpi);
         }
-        DisplayMetrics metrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int diametreBoutton = (int) (0.38 * metrics.densityDpi);
-        int radiusMenu = (int) (0.50 * metrics.densityDpi);
-        int border = (int) (0.0625 * metrics.densityDpi);
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(5, 5, 5, 5);
@@ -284,29 +306,30 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 .setStartAngle(startAngle)
                 .setEndAngle(endAngle)
                 .setRadius(radiusMenu)
-                .addSubActionView(builderIcon.setContentView(buttonEdit, layoutParams).build(), diametreBoutton, diametreBoutton)
+                .addSubActionView(builderIcon.setContentView(buttonEdit, layoutParams).build(), diametreButton, diametreButton)
                 .attachTo(holder.contactRoundedImageView)
                 .setStateChangeListener(this)
                 .disableAnimations();
+
         if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("") && contact.getHasWhatsapp() == 1) {
-            builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreBoutton, diametreBoutton);
+            builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreButton, diametreButton);
         }
         if (!getItem(position).getFirstMail().equals("")) {
-            builder.addSubActionView(builderIcon.setContentView(buttonMail, layoutParams).build(), diametreBoutton, diametreBoutton);
+            builder.addSubActionView(builderIcon.setContentView(buttonMail, layoutParams).build(), diametreButton, diametreButton);
         }
         if (!getItem(position).getFirstPhoneNumber().equals("")) {
-            builder.addSubActionView(builderIcon.setContentView(buttonSMS, layoutParams).build(), diametreBoutton, diametreBoutton)
-                    .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
+            builder.addSubActionView(builderIcon.setContentView(buttonSMS, layoutParams).build(), diametreButton, diametreButton)
+                    .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreButton, diametreButton);
         }
         if (!getItem(position).getMessengerID().equals("")) {
-//            builder.addSubActionView(builderIcon.setContentView(buttonMessenger, layoutParams).build(), diametreBoutton, diametreBoutton);
+//            builder.addSubActionView(builderIcon.setContentView(buttonMessenger, layoutParams).build(), diametreButton, diametreButton);
         }
         /*if (!getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber()).equals("")) {
-            builder.addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreBoutton, diametreBoutton);
+            builder.addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreButton, diametreButton);
         }*/
 
        /* if( appIsInstalled( "com.facebook.orca")){
-            builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreBoutton,diametreBoutton);
+            builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreButton,diametreButton);
         }*/
 
         final FloatingActionMenu quickMenu = builder.build();
@@ -377,12 +400,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 modeMultiSelect = true;
                 listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
 
-                if (position < 2 * len) {
-                    firstPosVis = 0;
-                } else {
-                    firstPosVis = 0;
-//                    firstPosVisfirstPosVis = ((GridView) parent).getFirstVisiblePosition() + len;
-                }
+                firstPosVis = 0;
                 if (context instanceof MainActivity) {
                     ((MainActivity) context).gridMultiSelectItemClick(position);
                 } else {
@@ -428,27 +446,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             }
             return true;
         });
-
-     /*   holder.groupWordingConstraint.setOnClickListener(v -> {
-            DbWorkerThread main_mDbWorkerThread = new DbWorkerThread("dbWorkerThread");
-            main_mDbWorkerThread.start();
-            ArrayList<Integer> listPosition = new ArrayList<>();
-
-            if (!secondClick) {
-                System.out.println("list contact grid size" + gestionnaireContact.getContactList().size());
-                for (int i = 0; i < gestionnaireContact.getContactList().size(); i++) {
-                    if (gestionnaireContact.getContactList().get(i).getFirstGroup(context) != null) {
-                        if (Objects.equals(gestionnaireContact.getContactList().get(i).getFirstGroup(context).getId(), Objects.requireNonNull(gestionnaireContact.getContactList().get(position).getFirstGroup(context)).getId())) {
-                            System.out.println("id egale a l'autre ");
-                            listPosition.add(i);
-                        } else {
-                            System.out.println(gestionnaireContact.getContactList().get(i).getFirstGroup(context).getId() + " id different a " + gestionnaireContact.getContactList().get(position).getFirstGroup(context).getId());
-                        }
-                    }
-                }
-                ((GroupActivity) context).clickGroupGrid(len, listPosition, ((GridView) parent).getFirstVisiblePosition(), secondClick, true);
-            }
-        });*/
 
         holder.gridContactItemLayout.setOnLongClickListener(gridlongClick);
         holder.contactRoundedImageView.setOnLongClickListener(gridlongClick);

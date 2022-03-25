@@ -1140,7 +1140,7 @@
                         android:layout_height="wrap_content"
                         android:cursorVisible="false"
                         android:focusable="false"
-                        android:hint="From"
+                        android:hint="@string/start_time"
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1161,7 +1161,7 @@
                         android:layout_height="wrap_content"
                         android:cursorVisible="false"
                         android:focusable="false"
-                        android:hint="To"
+                        android:hint="@string/end_time"
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
