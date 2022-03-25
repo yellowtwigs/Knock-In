@@ -481,4 +481,8 @@
     <string name="schedule_daytime">Только рабочее время (5/7)</string>
     <string name="schedule_weekend">Только выходные</string>
     <string name="schedule_custom">Пользовательское расписание (7/7)</string>
+    <string name="notification_vip_message_choose_tone">Персональный рингтон</string>
+    <string name="notification_vip_upload_tone">Загрузить</string>
+    <string name="start_time">Время начала</string>
+    <string name="end_time">Время окончания</string>
 </resources>

@@ -486,4 +486,8 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="schedule_daytime">Solo tiempo de trabajo (5/7)</string>
     <string name="schedule_weekend">Solo fin de semana (24/24)</string>
     <string name="schedule_custom">Horario personalizado (7/7)</string>
+    <string name="notification_vip_message_choose_tone">Tono de llamada personal</string>
+    <string name="notification_vip_upload_tone">Subir</string>
+    <string name="start_time">Hora de inicio</string>
+    <string name="end_time">Hora de finalización</string>
 </resources>

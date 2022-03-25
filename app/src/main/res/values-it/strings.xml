@@ -480,4 +480,8 @@
     <string name="schedule_daytime">Solo orario di lavoro (5/7)</string>
     <string name="schedule_weekend">Solo fine settimana (24/24)</string>
     <string name="schedule_custom">Programma personalizzato (7/7)</string>
+    <string name="notification_vip_message_choose_tone">Suoneria personale</string>
+    <string name="notification_vip_upload_tone">Caricamento</string>
+    <string name="start_time">Ora di inizio</string>
+    <string name="end_time">Tempo scaduto</string>
 </resources>

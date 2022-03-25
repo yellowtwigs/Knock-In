@@ -479,4 +479,8 @@
     <string name="schedule_daytime">" 仅工作时间 (5/7)"</string>
     <string name="schedule_weekend">周末（24 小时/24 小时）</string>
     <string name="schedule_custom">自定义时间表</string>
+    <string name="notification_vip_message_choose_tone">个人铃声</string>
+    <string name="notification_vip_upload_tone">上传</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">时间结束</string>
 </resources>

@@ -480,4 +480,8 @@
     <string name="schedule_daytime">Yalnızca Çalışma Süresi (5/7)</string>
     <string name="schedule_weekend">Haftasonu (24/24)</string>
     <string name="schedule_custom">Özel Program (7/7)</string>
+    <string name="notification_vip_message_choose_tone">Kişisel Zil Sesi</string>
+    <string name="notification_vip_upload_tone">Yüklemek</string>
+    <string name="start_time">Başlangıç ​​saati</string>
+    <string name="end_time">Bitiş zamanı</string>
 </resources>
