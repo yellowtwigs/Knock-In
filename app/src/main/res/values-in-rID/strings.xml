@@ -486,4 +486,5 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="notification_vip_upload_tone">Mengunggah</string>
     <string name="start_time">Waktu mulai</string>
     <string name="end_time">Akhir waktu</string>
+    <string name="upload_your_own_ringtone">Unggah nada dering Anda sendiri</string>
 </resources>

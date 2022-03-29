@@ -578,6 +578,14 @@ class EditContactDetailsActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        edit_contact_Mail_Identifier_Help?.setOnClickListener {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setTitle(getString(R.string.add_new_contact_mail_identifier))
+                .setView(R.layout.alert_dialog_mail_identifier_help)
+                .setMessage(getString(R.string.add_new_contact_mail_identifier_help))
+                .show()
+        }
+
         edit_contact_DeleteContact?.setOnClickListener {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(getString(R.string.edit_contact_delete_contact))

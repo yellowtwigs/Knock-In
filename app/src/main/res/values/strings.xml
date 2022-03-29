@@ -253,7 +253,7 @@
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_personal_sound" translatable="false">Personal Sound</string>
+    <string name="notification_vip_message_tone_personal_sound">Personal Sound</string>
     <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
     <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
     <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>
@@ -490,4 +490,5 @@
     <string name="switch_1_to_0">Set all non-VIP notifications silent</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
+    <string name="upload_your_own_ringtone">Upload your own ringtone</string>
 </resources>

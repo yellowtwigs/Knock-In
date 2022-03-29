@@ -484,4 +484,5 @@
     <string name="notification_vip_upload_tone">Yüklemek</string>
     <string name="start_time">Başlangıç ​​saati</string>
     <string name="end_time">Bitiş zamanı</string>
+    <string name="upload_your_own_ringtone">Kendi zil sesinizi yükleyin</string>
 </resources>

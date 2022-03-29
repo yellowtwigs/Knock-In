@@ -484,4 +484,5 @@
     <string name="notification_vip_upload_tone">Carregar</string>
     <string name="start_time">Hora de início</string>
     <string name="end_time">Fim do tempo</string>
+    <string name="upload_your_own_ringtone">Carregue seu próprio toque</string>
 </resources>

@@ -73,22 +73,18 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         //region ================================== StatusBarParcelable =====================================
 
-        sbp = intent.extras!!.get("notification") as StatusBarParcelable
+        sbp = intent.extras?.get("notification") as StatusBarParcelable
 
-        val sbp = intent.extras!!.get("notification") as StatusBarParcelable
+        sbp?.apply {
+            notification_alarm_ReceiveMessageSender?.text = statusBarNotificationInfo["android.title"] as String
+            notification_alarm_ReceiveMessageContent?.text = statusBarNotificationInfo["android.text"] as String
 
-        notification_alarm_ReceiveMessageSender!!.text =
-            sbp.statusBarNotificationInfo["android.title"] as String
-        notification_alarm_ReceiveMessageContent!!.text =
-            sbp.statusBarNotificationInfo["android.text"] as String
+            if (notification_alarm_ReceiveMessageContent?.length()!! > 20)
+                notification_alarm_ReceiveMessageContent?.text = notification_alarm_ReceiveMessageContent?.text?.substring(0, 19) + ".."
+        }
 
-        if (notification_alarm_ReceiveMessageContent!!.length() > 20)
-            notification_alarm_ReceiveMessageContent!!.text =
-                notification_alarm_ReceiveMessageContent!!.text.substring(0, 19) + ".."
-
-        val gestionnaireContacts = ContactManager(this.applicationContext)
-        val contact =
-            gestionnaireContacts.getContact(sbp.statusBarNotificationInfo["android.title"] as String)
+        val contactManager = ContactManager(this.applicationContext)
+        val contact = contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
 
         if (contact != null) {
             contact.contactDB
@@ -99,21 +95,22 @@ class NotificationAlarmActivity : AppCompatActivity() {
             soundRingtone()
         }
 
-        when (sbp.appNotifier) {
-            "com.google.android.apps.messaging",
-            "com.android.mms", "com.samsung.android.messaging" -> {
+        when (sbp?.appNotifier) {
+            "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
                 isSMS = true
-                notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_sms_selector)
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_sms_selector)
             }
-
             "com.whatsapp" -> {
                 isSMS = false
-                notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_circular_whatsapp)
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_circular_whatsapp)
             }
-
             "com.google.android.gm" -> {
                 isSMS = false
-                notification_alarm_ReceiveMessageImage!!.setImageResource(R.drawable.ic_circular_gmail)
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_circular_gmail)
+            }
+            "com.microsoft.office.outlook" -> {
+                isSMS = false
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_circular_mail)
             }
         }
 
@@ -140,45 +137,47 @@ class NotificationAlarmActivity : AppCompatActivity() {
         }
         //endregion
 
-        notification_alarm_ReceiveMessageLayout!!.setOnClickListener {
-            if (isSMS) {
-                if (contact != null) {
-                    openSms(contact.getFirstPhoneNumber())
-                } else {
-                    openSms(sbp.statusBarNotificationInfo["android.title"] as String)
-                }
-            } else if (sbp.appNotifier == "com.whatsapp") {
-                if (contact != null) {
-                    openWhatsapp(contact.getFirstPhoneNumber())
-                } else {
-                    openWhatsapp(sbp.statusBarNotificationInfo["android.title"] as String)
-                }
-            } else if (sbp.appNotifier == "com.google.android.gm") {
-                val appIntent = Intent(Intent.ACTION_VIEW)
-                appIntent.setClassName(
-                    "com.google.android.gm",
-                    "com.google.android.gm.ConversationListActivityGmail"
-                )
-                try {
-                    startActivity(appIntent)
-                } catch (e: ActivityNotFoundException) {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://gmail.com/")
-                        )
+        sbp?.apply {
+            notification_alarm_ReceiveMessageLayout!!.setOnClickListener {
+                if (isSMS) {
+                    if (contact != null) {
+                        openSms(contact.getFirstPhoneNumber())
+                    } else {
+                        openSms(statusBarNotificationInfo["android.title"] as String)
+                    }
+                } else if (appNotifier == "com.whatsapp") {
+                    if (contact != null) {
+                        openWhatsapp(contact.getFirstPhoneNumber())
+                    } else {
+                        openWhatsapp(statusBarNotificationInfo["android.title"] as String)
+                    }
+                } else if (appNotifier == "com.google.android.gm") {
+                    val appIntent = Intent(Intent.ACTION_VIEW)
+                    appIntent.setClassName(
+                        "com.google.android.gm",
+                        "com.google.android.gm.ConversationListActivityGmail"
                     )
+                    try {
+                        startActivity(appIntent)
+                    } catch (e: ActivityNotFoundException) {
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://gmail.com/")
+                            )
+                        )
+                    }
                 }
-            }
 
-            if (alarmSound != null) {
-                alarmSound!!.stop()
-            }
+                if (alarmSound != null) {
+                    alarmSound!!.stop()
+                }
 
-            finish()
+                finish()
+            }
         }
 
-        notification_Alarm_Button_ShutDown!!.setOnClickListener {
+        notification_Alarm_Button_ShutDown?.setOnClickListener {
 
             if (alarmSound != null) {
                 alarmSound!!.stop()

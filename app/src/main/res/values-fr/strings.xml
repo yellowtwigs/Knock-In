@@ -486,4 +486,5 @@
     <string name="notification_vip_upload_tone">Charger</string>
     <string name="start_time">Heure de début</string>
     <string name="end_time">Heure de fin</string>
+    <string name="upload_your_own_ringtone">Téléchargez votre propre sonnerie</string>
 </resources>

@@ -916,7 +916,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/scorpion_theme_layout">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -924,7 +924,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:text="Upload Songs"
+                        android:text="@string/upload_your_own_ringtone"
                         android:textColor="?attr/textColor"
                         android:textSize="@dimen/settings_long_text_size"
                         android:textStyle="normal" />

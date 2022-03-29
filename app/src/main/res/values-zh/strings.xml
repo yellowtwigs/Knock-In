@@ -483,4 +483,5 @@
     <string name="notification_vip_upload_tone">上传</string>
     <string name="start_time">开始时间</string>
     <string name="end_time">时间结束</string>
+    <string name="upload_your_own_ringtone">上传自己的铃声</string>
 </resources>

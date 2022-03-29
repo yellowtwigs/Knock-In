@@ -283,7 +283,6 @@ class NotificationListener : NotificationListenerService() {
                                                     }
                                                     i++
                                                 }
-                                                //this.cancelNotification(sbn.key)
                                             }
                                             val screenListener: KeyguardManager =
                                                 this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
@@ -291,7 +290,6 @@ class NotificationListener : NotificationListenerService() {
                                                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                                                     this.cancelNotification(sbn.key)
                                                     cancelWhatsappNotif(sbn)
-
                                                     displayLayoutWithSharedPreferences(
                                                         sbp,
                                                         null

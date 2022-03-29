@@ -484,4 +484,5 @@
     <string name="notification_vip_upload_tone">Caricamento</string>
     <string name="start_time">Ora di inizio</string>
     <string name="end_time">Tempo scaduto</string>
+    <string name="upload_your_own_ringtone">Carica la tua suoneria</string>
 </resources>

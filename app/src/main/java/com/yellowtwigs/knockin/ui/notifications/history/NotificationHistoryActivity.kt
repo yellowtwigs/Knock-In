@@ -861,26 +861,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             refreshActivity()
         }
     }
-
-//    private fun phoneCall() {
-//        val i = packageManager.getLaunchIntentForPackage("com.android.incallui")
-//        try {
-//            startActivity(i)
-//        } catch (e: ActivityNotFoundException) {
-//        }
-//    }
-
     //endregion
-
-    private fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String) {
-        val smsManager = SmsManager.getDefault()
-        smsManager.sendTextMessage(phoneNumber, null, msg, null, null)
-
-        Toast.makeText(
-            this, R.string.notif_adapter_message_sent,
-            Toast.LENGTH_LONG
-        ).show()
-    }
 
     private fun firstContactPrio0(notifList: List<NotificationDB>): Int {
         if (notifList.size > 1) {
@@ -997,6 +978,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             NotificationListener.MESSENGER_PACKAGE -> true
             NotificationListener.WHATSAPP_SERVICE -> true
             NotificationListener.GMAIL_PACKAGE -> true
+            NotificationListener.OUTLOOK_PACKAGE -> true
             NotificationListener.MESSAGE_PACKAGE, NotificationListener.MESSAGE_SAMSUNG_PACKAGE, NotificationListener.XIAOMI_MESSAGE_PACKAGE -> true
             Telephony.Sms.getDefaultSmsPackage(this) -> true
             NotificationListener.TELEGRAM_PACKAGE -> true

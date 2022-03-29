@@ -490,4 +490,5 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="notification_vip_upload_tone">Subir</string>
     <string name="start_time">Hora de inicio</string>
     <string name="end_time">Hora de finalización</string>
+    <string name="upload_your_own_ringtone">Sube tu propio tono de llamada</string>
 </resources>
