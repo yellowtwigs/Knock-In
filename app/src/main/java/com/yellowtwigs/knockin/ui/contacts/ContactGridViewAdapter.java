@@ -46,6 +46,7 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -54,7 +55,7 @@ import java.util.ArrayList;
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridViewAdapter.ViewHolder> implements FloatingActionMenu.MenuStateChangeListener {
-    private ContactManager gestionnaireContact;
+    private List<ContactWithAllInformation> listOfContacts;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
@@ -67,9 +68,9 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     private int heightAndWidth;
     private int heightWidthImage;
 
-    public ContactGridViewAdapter(Context context, ContactManager contactManager, Integer len) {
+    public ContactGridViewAdapter(Context context, List<ContactWithAllInformation> listOfContacts, Integer len) {
         this.context = context;
-        this.gestionnaireContact = contactManager;
+        this.listOfContacts = listOfContacts;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -83,12 +84,12 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
 
-    public void setGestionnaireContact(ContactManager gestionnaireContact) {
-        this.gestionnaireContact = gestionnaireContact;
+    public void setGestionnaireContact(List<ContactWithAllInformation> listOfContacts) {
+        this.listOfContacts = listOfContacts;
     }
 
     public ContactWithAllInformation getItem(int position) {
-        return gestionnaireContact.getContactList().get(position);
+        return listOfContacts.get(position);
     }
 
     @NonNull
@@ -104,8 +105,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        final ContactDB contact = this.gestionnaireContact.getContactList().get(position).getContactDB();
+        final ContactDB contact = listOfContacts.get(position).getContactDB();
 
         int height = heightWidthImage;
         int width = heightWidthImage;
@@ -113,7 +113,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
-        if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContactList().get(position))) {
+        if (!modeMultiSelect || !listOfItemSelected.contains(listOfContacts.get(position))) {
             assert contact != null;
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -122,7 +122,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
             }
         } else {
-            // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
             holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
 
@@ -398,7 +397,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 int firstPosVis;
                 closeMenu();
                 modeMultiSelect = true;
-                listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
+                listOfItemSelected.add(listOfContacts.get(position));
 
                 firstPosVis = 0;
                 if (context instanceof MainActivity) {
@@ -413,8 +412,8 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
         View.OnClickListener gridItemClick = v -> {
             if (modeMultiSelect) {
-                if (listOfItemSelected.contains(gestionnaireContact.getContactList().get(position))) {
-                    listOfItemSelected.remove(gestionnaireContact.getContactList().get(position));
+                if (listOfItemSelected.contains(listOfContacts.get(position))) {
+                    listOfItemSelected.remove(listOfContacts.get(position));
 
                     if (!contact.getProfilePicture64().equals("")) {
                         Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -426,7 +425,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                         modeMultiSelect = false;
                     }
                 } else {
-                    listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
+                    listOfItemSelected.add(listOfContacts.get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
                 ((MainActivity) context).gridMultiSelectItemClick(position);
@@ -476,7 +475,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
     @Override
     public int getItemCount() {
-        return gestionnaireContact.getContactList().size();
+        return listOfContacts.size();
     }
 
     private String converter06To33(String phoneNumber) {

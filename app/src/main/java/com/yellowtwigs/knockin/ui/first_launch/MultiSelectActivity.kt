@@ -132,6 +132,9 @@ class MultiSelectActivity : AppCompatActivity() {
         }
         binding.multiSelectRecyclerView.apply {
             adapter = multiSelectAdapter
+            contactManager?.contactList?.sortBy {
+                it.contactDB?.firstName + it.contactDB?.lastName
+            }
             multiSelectAdapter.submitList(contactManager?.contactList)
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(cxt, 4, RecyclerView.VERTICAL, false)

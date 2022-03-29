@@ -196,12 +196,9 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         filterList: ArrayList<String>,
         name: String
     ): List<ContactWithAllInformation> {
-        //get tout les contact en appliquant les filtres
         val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
-        //get tout les contact en appliquant la searchbar
         val contactList = getContactByName(name) //TODO inverser avec ligne 189
         if (contactFilterList != null) {
-            //get uniquement les contact en commun dans les 2 list
             return intersectContactWithAllInformation(contactList, contactFilterList)
         }
         return contactList

@@ -44,10 +44,9 @@ import java.util.*
  */
 class ContactRecyclerViewAdapter(
     private val context: Context,
-    private var gestionnaireContacts: ContactManager,
+    private var listContacts: List<ContactWithAllInformation>,
     private val len: Int
 ) : RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder>() {
-    private val listContacts: List<ContactWithAllInformation>
     private var view: View? = null
     private var modeMultiSelect = false
     private var lastClick = false
@@ -61,8 +60,8 @@ class ContactRecyclerViewAdapter(
         return listContacts[position]
     }
 
-    fun setGestionnaireContact(gestionnaireContact: ContactManager) {
-        gestionnaireContacts = gestionnaireContact
+    fun setGestionnaireContact(listContacts: List<ContactWithAllInformation>) {
+        this.listContacts = listContacts
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
@@ -162,7 +161,7 @@ class ContactRecyclerViewAdapter(
             roundedLayout.setColorFilter(firstGroup.section_color, PorterDuff.Mode.MULTIPLY)
         }
         if (modeMultiSelect) {
-            if (listOfItemSelected.contains(gestionnaireContacts.contactList[position])) {
+            if (listOfItemSelected.contains(listContacts[position])) {
                 if (context is GroupManagerActivity && len == 0) {
                 } else {
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
@@ -214,9 +213,9 @@ class ContactRecyclerViewAdapter(
                 holder.constraintLayoutMenu!!.visibility = View.GONE
             }
             view!!.tag = holder
-            val contactDB = gestionnaireContacts.contactList[position].contactDB!!
-            if (listOfItemSelected.contains(gestionnaireContacts.contactList[position])) {
-                listOfItemSelected.remove(gestionnaireContacts.contactList[position])
+            val contactDB = listContacts[position].contactDB!!
+            if (listOfItemSelected.contains(listContacts[position])) {
+                listOfItemSelected.remove(listContacts[position])
                 if (contactDB.profilePicture64 != "") {
                     val bitmap = base64ToBitmap(contactDB.profilePicture64)
                     holder.contactRoundedImageView.setImageBitmap(bitmap)
@@ -224,7 +223,7 @@ class ContactRecyclerViewAdapter(
                     holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.profilePicture))
                 }
             } else {
-                listOfItemSelected.add(gestionnaireContacts.contactList[position])
+                listOfItemSelected.add(listContacts[position])
                 if (context is GroupManagerActivity && len == 0) {
                 } else {
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
@@ -248,9 +247,9 @@ class ContactRecyclerViewAdapter(
                     holder.constraintLayoutMenu!!.visibility = View.GONE
                 }
                 view!!.tag = holder
-                val contactDB = gestionnaireContacts.contactList[position].contactDB!!
-                if (listOfItemSelected.contains(gestionnaireContacts.contactList[position])) {
-                    listOfItemSelected.remove(gestionnaireContacts.contactList[position])
+                val contactDB = listContacts[position].contactDB!!
+                if (listOfItemSelected.contains(listContacts[position])) {
+                    listOfItemSelected.remove(listContacts[position])
                     if (contactDB.profilePicture64 != "") {
                         val bitmap = base64ToBitmap(contactDB.profilePicture64)
                         holder.contactRoundedImageView.setImageBitmap(bitmap)
@@ -258,7 +257,7 @@ class ContactRecyclerViewAdapter(
                         holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.profilePicture))
                     }
                 } else {
-                    listOfItemSelected.add(gestionnaireContacts.contactList[position])
+                    listOfItemSelected.add(listContacts[position])
                     if (context is GroupManagerActivity && len == 0) {
                     } else {
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
@@ -565,7 +564,7 @@ class ContactRecyclerViewAdapter(
     }
 
     init {
-        listContacts = gestionnaireContacts.contactList
+        listContacts = listContacts
         lastSelectMenuLen1 = null
     }
 }

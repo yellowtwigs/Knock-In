@@ -38,9 +38,9 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var duration = 0
 
     private var isSMS = false
-    private var isCustomSound = false
-    private var notificationSound = 0
-    private var notificationTone = ""
+    private var currentIsCustomSound = false
+    private var currentNotificationSound = 0
+    private var currentNotificationTone = ""
 
     //endregion
 
@@ -76,23 +76,28 @@ class NotificationAlarmActivity : AppCompatActivity() {
         sbp = intent.extras?.get("notification") as StatusBarParcelable
 
         sbp?.apply {
-            notification_alarm_ReceiveMessageSender?.text = statusBarNotificationInfo["android.title"] as String
-            notification_alarm_ReceiveMessageContent?.text = statusBarNotificationInfo["android.text"] as String
+            notification_alarm_ReceiveMessageSender?.text =
+                statusBarNotificationInfo["android.title"] as String
+            notification_alarm_ReceiveMessageContent?.text =
+                statusBarNotificationInfo["android.text"] as String
 
             if (notification_alarm_ReceiveMessageContent?.length()!! > 20)
-                notification_alarm_ReceiveMessageContent?.text = notification_alarm_ReceiveMessageContent?.text?.substring(0, 19) + ".."
+                notification_alarm_ReceiveMessageContent?.text =
+                    notification_alarm_ReceiveMessageContent?.text?.substring(0, 19) + ".."
         }
 
         val contactManager = ContactManager(this.applicationContext)
-        val contact = contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
+        val contact =
+            contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
 
         if (contact != null) {
-            contact.contactDB
-            notificationSound = contact.contactDB?.notificationSound!!
-            notificationTone = contact.contactDB?.notificationTone.toString()
-            isCustomSound = contact.contactDB?.isCustomSound == 1
+            contact.contactDB?.apply {
+                currentNotificationSound = notificationSound
+                currentNotificationTone = notificationTone
+                currentIsCustomSound = isCustomSound == 1
 
-            soundRingtone()
+                soundRingtone()
+            }
         }
 
         when (sbp?.appNotifier) {
@@ -138,7 +143,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
         //endregion
 
         sbp?.apply {
-            notification_alarm_ReceiveMessageLayout!!.setOnClickListener {
+            notification_alarm_ReceiveMessageLayout?.setOnClickListener {
                 if (isSMS) {
                     if (contact != null) {
                         openSms(contact.getFirstPhoneNumber())
@@ -178,9 +183,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
         }
 
         notification_Alarm_Button_ShutDown?.setOnClickListener {
-
             if (alarmSound != null) {
-                alarmSound!!.stop()
+                alarmSound?.stop()
             }
 
             finish()
@@ -216,12 +220,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
         finish()
     }
 
-    fun soundRingtone() {
+    private fun soundRingtone() {
         alarmSound?.stop()
-        alarmSound = if(isCustomSound){
-            MediaPlayer.create(this, Uri.parse(notificationTone))
-        }else{
-            MediaPlayer.create(this, notificationSound)
+        alarmSound = if (currentIsCustomSound) {
+            MediaPlayer.create(this, Uri.parse(currentNotificationTone))
+        } else {
+            MediaPlayer.create(this, currentNotificationSound)
         }
         alarmSound?.start()
     }

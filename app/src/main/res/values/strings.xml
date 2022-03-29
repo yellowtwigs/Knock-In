@@ -58,7 +58,7 @@
     <string name="main_search_hint">Search your contacts</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="main_tri_title">Filter by:</string>
-    <string name="main_tri_par_nom">Firstname</string>
+    <string name="main_tri_par_nom">Name</string>
     <string name="main_tri_par_lastname">Name</string>
     <string name="main_tri_par_priorite">Priority</string>
     <string name="main_tri_par_favoris">Favorite</string>

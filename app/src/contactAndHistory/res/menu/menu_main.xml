@@ -25,10 +25,6 @@
             android:title="@string/main_tri_par_nom"
             app:showAsAction="collapseActionView" />
         <item
-            android:id="@+id/tri_par_lastname"
-            android:title="@string/main_tri_par_lastname"
-            app:showAsAction="collapseActionView"/>
-        <item
             android:id="@+id/tri_par_priorite"
             android:title="@string/main_tri_par_priorite"
             app:showAsAction="collapseActionView"
