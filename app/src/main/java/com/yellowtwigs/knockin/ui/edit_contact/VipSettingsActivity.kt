@@ -71,13 +71,13 @@ class VipSettingsActivity : AppCompatActivity() {
         permissionsPref = getSharedPreferences("PermissionsPreferences", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
-        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
+        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
-        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)
+        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", true)
 
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
-        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
+        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", true)
 
         //region ========================================== Intent ==========================================
 

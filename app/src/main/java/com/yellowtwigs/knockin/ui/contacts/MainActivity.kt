@@ -19,6 +19,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
@@ -37,7 +38,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.share.Share
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_FloatingButtonGroup: FloatingActionButton? = null
 
     internal var main_search_bar_value = ""
-    private var main_filter = arrayListOf<String>()
+    private var filterName = arrayListOf<String>()
     private var main_SearchBar: AppCompatEditText? = null
 
     // Custom Toolbar
@@ -526,9 +526,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         navSyncContact.setOnMenuItemClickListener {
             fromStartActivity = true
 
-            mainDrawerLayout!!.closeDrawers()
-            main_GridView!!.visibility = View.GONE
-            main_RecyclerView!!.visibility = View.GONE
+            mainDrawerLayout?.closeDrawers()
+            main_GridView?.visibility = View.GONE
+            main_RecyclerView?.visibility = View.GONE
             //check les permissions
             val sync = Runnable {
                 if (ActivityCompat.checkSelfPermission(
@@ -547,23 +547,20 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         Manifest.permission.READ_CONTACTS
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    //on affiche le loading
                     val displayLoading = Runnable {
-                        main_loadingPanel!!.visibility = View.VISIBLE
+                        main_loadingPanel?.visibility = View.VISIBLE
                     }
                     runOnUiThread(displayLoading)
 
-                    //on effectue la sync
                     gestionnaireContacts?.getAllContacsInfoSync(contentResolver)
 
-                    //on get tout les contact qui on été modifié lors de la last sync et on les stock dans une arrayList
                     val sharedPreferencesSync =
                         getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1
                     var stringSet = listOf<String>()
                     if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
                         stringSet =
-                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                            sharedPreferencesSync.getStringSet(index.toString(), null)?.sorted()!!
                     val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(
                             index.toString(),
@@ -571,7 +568,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         ) != null && stringSet.isNotEmpty()
                     ) {
                         stringSet =
-                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                            sharedPreferencesSync.getStringSet(index.toString(), null)?.sorted()!!
                         changedContactList.add(gestionnaireContacts!!.setToContactList(stringSet))
                         index++
                     }
@@ -621,19 +618,20 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         }
 
                         refreshActivity()
-                        mainDrawerLayout!!.closeDrawers()
+                        mainDrawerLayout?.closeDrawers()
                     }
                     runOnUiThread(displaySync)
                 }
             }
             main_mDbWorkerThread.postTask(sync)
 
-            importWhatsappContacts(main_ContactsDatabase!!.contactsDao().getAllContacts())
+            main_ContactsDatabase?.contactsDao()?.getAllContacts()
+                ?.let { it1 -> importWhatsappContacts(it1) }
 
             true
         }
 
-        main_constraintLayout!!.setOnTouchListener { _, _ ->
+        main_constraintLayout?.setOnTouchListener { _, _ ->
             val v = this@MainActivity.currentFocus
             val imm =
                 this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -644,16 +642,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         // Lors du click sur le bouton hamburger  dans la toolbar, nous ouvrons le drawer layout
-        main_toolbar_OpenDrawer!!.setOnClickListener {
+        main_toolbar_OpenDrawer?.setOnClickListener {
             if (gridViewAdapter != null) {
-                gridViewAdapter!!.closeMenu()
+                gridViewAdapter?.closeMenu()
             }
-            mainDrawerLayout!!.openDrawer(GravityCompat.START)
+            mainDrawerLayout?.openDrawer(GravityCompat.START)
             hideKeyboard()
         }
 
         // Lors du click sur le bouton Help dans la toolbar, nous ouvrons le Tutorial
-        main_toolbar_Help!!.setOnClickListener {
+        main_toolbar_Help?.setOnClickListener {
             if (Resources.getSystem().configuration.locale.language == "fr") {
                 val browserIntent = Intent(
                     Intent.ACTION_VIEW,
@@ -670,7 +668,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         // En mode Multiselect, le click sur la croix permet de fermer de ce mode
-        main_ToolbarMultiSelectModeClose!!.setOnClickListener {
+        main_ToolbarMultiSelectModeClose?.setOnClickListener {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
                 .show()
             startActivity(Intent(this@MainActivity, MainActivity::class.java))
@@ -678,7 +676,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         // En mode Multiselect, le click sur le menu permettant de faire un Select All
-        main_ToolbarMultiSelectModeMenu!!.setOnClickListener {
+        main_ToolbarMultiSelectModeMenu?.setOnClickListener {
             val popupMenu = PopupMenu(this, it)
             popupMenu.inflate(R.menu.toolbar_menu_main_multiselect_mode)
 
@@ -1036,11 +1034,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             if (position == 0) {
                 val index = sharedPreferences.getInt("index", 0)
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                main_RecyclerView!!.scrollToPosition(index)
+                main_RecyclerView?.scrollToPosition(index)
                 edit.putInt("index", 0)
                 edit.apply()
             } else {
-                main_RecyclerView!!.layoutManager?.scrollToPosition(position)
+                main_RecyclerView?.layoutManager?.scrollToPosition(position)
             }
 
             main_RecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -1085,7 +1083,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         len
                     )
                 }
-            main_RecyclerView!!.adapter = recyclerViewAdapter
+            main_RecyclerView?.adapter = recyclerViewAdapter
         }
     }
 
@@ -1138,30 +1136,30 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     @SuppressLint("ShowToast")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (gridViewAdapter != null) {
-            gridViewAdapter!!.closeMenu()
+            gridViewAdapter?.closeMenu()
         }
         when (item.itemId) {
             R.id.sms_filter -> {
                 if (item.isChecked) {
                     item.isChecked = false
-                    main_filter.remove("sms")
-                    sortBySharedPref(ContactManager(this), item.isChecked)
+                    filterName.remove("sms")
+                    sortBySharedPref(filterName)
                 } else {
                     item.isChecked = true
-                    main_filter.add("sms")
-                    sortBySharedPref(ContactManager(this), item.isChecked)
+                    filterName.add("sms")
+                    sortBySharedPref(filterName)
                 }
                 return true
             }
             R.id.mail_filter -> {
                 if (item.isChecked) {
                     item.isChecked = false
-                    main_filter.remove("mail")
-                    sortBySharedPref(ContactManager(this), item.isChecked)
+                    filterName.remove("mail")
+                    sortBySharedPref(filterName)
                 } else {
                     item.isChecked = true
-                    main_filter.add("mail")
-                    sortBySharedPref(ContactManager(this), item.isChecked)
+                    filterName.add("mail")
+                    sortBySharedPref(filterName)
                 }
                 return true
             }
@@ -1223,9 +1221,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         )
     }
 
-    /**
-     *  Ferme la keyboard
-     */
     private fun hideKeyboard() {
         val view = this.currentFocus
 
@@ -1254,7 +1249,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      */
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
         if (gridViewAdapter != null) {
-            gridViewAdapter!!.closeMenu()
+            gridViewAdapter?.closeMenu()
         }
     }
 
@@ -1272,7 +1267,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      */
     override fun onDrawerOpened(drawerView: View) {
         if (gridViewAdapter != null) {
-            gridViewAdapter!!.closeMenu()
+            gridViewAdapter?.closeMenu()
         }
     }
 
@@ -1306,20 +1301,20 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val len = sharedPreferences.getInt("gridview", 4)
             gridViewAdapter =
                 ContactGridViewAdapter(this@MainActivity, gestionnaireContacts?.contactList, len)
-            main_GridView!!.layoutManager = GridLayoutManager(this, len)
-            main_GridView!!.adapter = gridViewAdapter
+            main_GridView?.layoutManager = GridLayoutManager(this, len)
+            main_GridView?.adapter = gridViewAdapter
 
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
                 .show()
 
-            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
+            main_FloatingButtonAddNewContact?.visibility = View.VISIBLE
 
             switchMultiSelectToNormalMode()
-            main_FloatingButtonGroup!!.visibility = View.GONE
+            main_FloatingButtonGroup?.visibility = View.GONE
         } else if (listOfItemSelected.size == 1) {
             firstClick = false
-            main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
-            main_ToolbarLayout!!.visibility = View.GONE
+            main_ToolbarMultiSelectModeLayout?.visibility = View.VISIBLE
+            main_ToolbarLayout?.visibility = View.GONE
         }
 
         val i = listOfItemSelected.size
@@ -1339,14 +1334,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param position [Int]
      */
     fun recyclerMultiSelectItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+        if (listOfItemSelected.contains(gestionnaireContacts?.contactList?.get(position))) {
+            listOfItemSelected.remove(gestionnaireContacts?.contactList?.get(position))
             verifiedContactsChannel(listOfItemSelected)
         } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+            gestionnaireContacts?.contactList?.get(position)?.let { listOfItemSelected.add(it) }
 
-            main_FloatingButtonAddNewContact!!.visibility = View.GONE
-            main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE
+            main_FloatingButtonAddNewContact?.visibility = View.GONE
+            main_FloatingButtonMultiChannel?.visibility = View.VISIBLE
 
             verifiedContactsChannel(listOfItemSelected)
         }
@@ -1356,34 +1351,34 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (listOfItemSelected.size == 1 && firstClick) {
             Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT)
                 .show()
-            main_FloatingButtonAddNewContact!!.visibility = View.GONE
-            main_FloatingButtonMultiChannel!!.visibility = View.VISIBLE
+            main_FloatingButtonAddNewContact?.visibility = View.GONE
+            main_FloatingButtonMultiChannel?.visibility = View.VISIBLE
             firstClick = false
             multiChannelMode = true
-            main_ToolbarMultiSelectModeLayout!!.visibility = View.VISIBLE
-            main_ToolbarLayout!!.visibility = View.GONE
+            main_ToolbarMultiSelectModeLayout?.visibility = View.VISIBLE
+            main_ToolbarLayout?.visibility = View.GONE
 
         } else if (listOfItemSelected.size == 0) {
             Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
                 .show()
 
-            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
-            main_FloatingButtonMultiChannel!!.visibility = View.GONE
-            main_FloatingButtonSMS!!.visibility = View.GONE
-            main_FloatingButtonMail!!.visibility = View.GONE
-            main_FloatingButtonGroup!!.visibility = View.GONE
+            main_FloatingButtonAddNewContact?.visibility = View.VISIBLE
+            main_FloatingButtonMultiChannel?.visibility = View.GONE
+            main_FloatingButtonSMS?.visibility = View.GONE
+            main_FloatingButtonMail?.visibility = View.GONE
+            main_FloatingButtonGroup?.visibility = View.GONE
 
-            main_ToolbarMultiSelectModeLayout!!.visibility = View.GONE
-            main_ToolbarLayout!!.visibility = View.VISIBLE
+            main_ToolbarMultiSelectModeLayout?.visibility = View.GONE
+            main_ToolbarLayout?.visibility = View.VISIBLE
 
             firstClick = true
         }
 
         if (listOfItemSelected.size == 1) {
-            main_ToolbarMultiSelectModeTitle!!.text =
+            main_ToolbarMultiSelectModeTitle?.text =
                 i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
         } else if (listOfItemSelected.size > 1) {
-            main_ToolbarMultiSelectModeTitle!!.text =
+            main_ToolbarMultiSelectModeTitle?.text =
                 i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
         }
     }
@@ -1412,31 +1407,27 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val metrics = DisplayMetrics()
         this.windowManager.defaultDisplay.getMetrics(metrics)
         val margin = (0.5 * metrics.densityDpi).toInt()
-        println("metric smartphone" + metrics.densityDpi)
         if (allContactsHavePhoneNumber) {
-            main_FloatingButtonSMS!!.visibility = View.VISIBLE
+            main_FloatingButtonSMS?.visibility = View.VISIBLE
             i++
         } else {
-            println("false phoneNumber")
-            main_FloatingButtonSMS!!.visibility = View.GONE
+            main_FloatingButtonSMS?.visibility = View.GONE
         }
         if (allContactsHaveMail) {
-            main_FloatingButtonMail!!.visibility = View.VISIBLE
+            main_FloatingButtonMail?.visibility = View.VISIBLE
             val params: ViewGroup.MarginLayoutParams =
-                main_FloatingButtonMail!!.layoutParams as ViewGroup.MarginLayoutParams
+                main_FloatingButtonMail?.layoutParams as ViewGroup.MarginLayoutParams
             params.bottomMargin = margin * i
-            main_FloatingButtonMail!!.layoutParams = params
-            println("height of floating mail" + main_FloatingButtonMail!!.height)
+            main_FloatingButtonMail?.layoutParams = params
             i++
         } else {
-            println("false mail")
-            main_FloatingButtonMail!!.visibility = View.GONE
+            main_FloatingButtonMail?.visibility = View.GONE
         }
-        main_FloatingButtonGroup!!.visibility = View.VISIBLE
+        main_FloatingButtonGroup?.visibility = View.VISIBLE
         val params: ViewGroup.MarginLayoutParams =
-            main_FloatingButtonGroup!!.layoutParams as ViewGroup.MarginLayoutParams
+            main_FloatingButtonGroup?.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin = margin * i
-        main_FloatingButtonGroup!!.layoutParams = params
+        main_FloatingButtonGroup?.layoutParams = params
 
     }
 
@@ -1445,7 +1436,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param listOfPhoneNumber [ArrayList<String>]
      */
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
-
         var message = "smsto:" + listOfPhoneNumber[0]
         for (i in 0 until listOfPhoneNumber.size) {
             message += ";" + listOfPhoneNumber[i]
@@ -1753,7 +1743,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             null
         )
 
-        //ArrayList for Store Whatsapp Contact
         val myWhatsappContacts = ArrayList<String>()
 
         if (contactCursor != null) {
@@ -1818,56 +1807,82 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
     }
 
-    private fun sortBySharedPref(contactListDb: ContactManager, isChecked: Boolean) {
-        main_search_bar_value = main_SearchBar!!.text.toString()
+    private fun sortBySharedPref(filterBy: ArrayList<String>) {
+        main_search_bar_value = main_SearchBar?.text.toString()
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 4)
-        val filteredContact =
-            gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
-        when {
-            sharedPreferences.getString(
-                "tri",
-                "nom"
-            ) == "prenom" -> contactListDb.sortContactByFirstNameAZ()
-            sharedPreferences.getString(
-                "tri",
-                "nom"
-            ) == "lastname" -> contactListDb.sortContactByLastname()
-            sharedPreferences.getString(
-                "tri",
-                "nom"
-            ) == "priorite" -> contactListDb.sortContactByPriority()
-            sharedPreferences.getString(
-                "tri",
-                "nom"
-            ) == "favoris" -> contactListDb.sortContactByFavorite()
-            else -> contactListDb.sortContactByGroup()
+        var filteredContact = if (filterBy.contains("sms")) {
+            gestionnaireContacts?.contactList?.filter {
+                it.getFirstPhoneNumber() != ""
+            }
+        } else if (filterBy.contains("mail")) {
+            gestionnaireContacts?.contactList?.filter {
+                it.getFirstMail() != ""
+            }
+        } else if (filterBy.contains("mail") && filterBy.contains("sms")) {
+            gestionnaireContacts?.contactList?.filter {
+                it.getFirstPhoneNumber() != ""
+            }?.filter {
+                it.getFirstMail() != ""
+            }
+        } else {
+            gestionnaireContacts?.contactList
         }
 
-        if (isChecked) {
-            contactListDb.contactList.retainAll(filteredContact)
-            gestionnaireContacts?.contactList?.clear()
-            gestionnaireContacts?.contactList?.addAll(contactListDb.contactList)
-        } else {
-            gestionnaireContacts?.contactList?.retainAll(filteredContact)
+        filteredContact = when {
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "name" -> {
+                filteredContact?.sortedBy {
+                    it.contactDB?.firstName + it.contactDB?.lastName
+                }
+            }
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "priorite" -> {
+                filteredContact?.sortedBy {
+                    it.contactDB?.firstName + it.contactDB?.lastName
+                }?.sortedByDescending {
+                    it.contactDB?.contactPriority
+                }
+            }
+            sharedPreferences.getString(
+                "tri",
+                "nom"
+            ) == "favoris" -> {
+                filteredContact?.sortedBy {
+                    it.contactDB?.firstName + it.contactDB?.lastName
+                }?.sortedByDescending {
+                    it.contactDB?.favorite
+                }
+            }
+            else -> {
+                filteredContact?.sortedBy {
+                    it.contactDB?.firstName + it.contactDB?.lastName
+                }?.sortedByDescending {
+                    it.contactDB?.contactPriority
+                }
+            }
         }
 
         if (len > 1) {
             gridViewAdapter =
-                ContactGridViewAdapter(this@MainActivity, gestionnaireContacts?.contactList, len)
-            main_GridView!!.adapter = gridViewAdapter
+                ContactGridViewAdapter(this@MainActivity, filteredContact, len)
+            main_GridView?.adapter = gridViewAdapter
         } else {
             recyclerViewAdapter =
-                gestionnaireContacts?.contactList?.let {
+                filteredContact?.let {
                     ContactRecyclerViewAdapter(
                         this@MainActivity,
                         it,
                         len
                     )
                 }
-            main_RecyclerView!!.adapter = recyclerViewAdapter
+            main_RecyclerView?.adapter = recyclerViewAdapter
         }
-        refreshActivity()
+//        refreshActivity()
     }
 
     private fun sortBy(keyword: String, item: MenuItem) {

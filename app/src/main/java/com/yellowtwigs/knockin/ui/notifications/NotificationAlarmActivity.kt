@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
+import android.util.Log
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -17,6 +18,10 @@ import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class NotificationAlarmActivity : AppCompatActivity() {
@@ -34,9 +39,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private var alarmSound: MediaPlayer? = null
 
-    private lateinit var sharedAlarmNotifDurationPreferences: SharedPreferences
-    private var duration = 0
-
     private var isSMS = false
     private var currentIsCustomSound = false
     private var currentNotificationSound = 0
@@ -47,14 +49,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_alarm)
-
-        //region ==================================== SharedPreferences =====================================
-
-        sharedAlarmNotifDurationPreferences =
-            getSharedPreferences("ringtone_duration", Context.MODE_PRIVATE)
-        duration = sharedAlarmNotifDurationPreferences.getInt("ringtone_duration", 0)
-
-        //endregion
 
         //region ====================================== FindViewById ========================================
 
@@ -87,8 +81,21 @@ class NotificationAlarmActivity : AppCompatActivity() {
         }
 
         val contactManager = ContactManager(this.applicationContext)
-        val contact =
+
+        val contact = if (sbp?.appNotifier == "com.google.android.gm") {
+            contactManager.getContactFromMail(sbp?.statusBarNotificationInfo?.get("android.title") as String)
+        } else {
             contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
+        }
+
+        Log.i(
+            "getContact",
+            "contact name 1 : ${sbp?.statusBarNotificationInfo?.get("android.title")}"
+        )
+        Log.i("getContact", "contact name 2 : ${contact?.contactDB?.firstName}")
+        Log.i("getContact", "is custom sound : ${contact?.contactDB?.isCustomSound}")
+        Log.i("getContact", "notification sound : ${contact?.contactDB?.notificationSound}")
+        Log.i("getContact", "notification tone : ${contact?.contactDB?.notificationTone}")
 
         if (contact != null) {
             contact.contactDB?.apply {
@@ -117,6 +124,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 isSMS = false
                 notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_circular_mail)
             }
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(3500)
+
+            alarmSound?.stop()
         }
 
         //endregion
@@ -175,7 +188,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 }
 
                 if (alarmSound != null) {
-                    alarmSound!!.stop()
+                    alarmSound?.stop()
                 }
 
                 finish()
@@ -222,6 +235,9 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private fun soundRingtone() {
         alarmSound?.stop()
+        Log.i("getContact", "currentIsCustomSound : ${currentIsCustomSound}")
+        Log.i("getContact", "currentNotificationSound : ${currentNotificationSound}")
+        Log.i("getContact", "currentNotificationTone : ${currentNotificationTone}")
         alarmSound = if (currentIsCustomSound) {
             MediaPlayer.create(this, Uri.parse(currentNotificationTone))
         } else {

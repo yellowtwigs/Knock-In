@@ -96,7 +96,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false);
-//        parentGrid = ((GridView) parent);
         ContactGridViewAdapter.ViewHolder holder = new ContactGridViewAdapter.ViewHolder(view);
 
         heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
@@ -310,7 +309,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 .setStateChangeListener(this)
                 .disableAnimations();
 
-        if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("") && contact.getHasWhatsapp() == 1) {
+        if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreButton, diametreButton);
         }
         if (!getItem(position).getFirstMail().equals("")) {
@@ -659,7 +658,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             numberForPermission = phoneNumber;
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
-            Boolean popup = sharedPreferences.getBoolean("popup", true);
+            boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup && numberForPermission.isEmpty()) {
                 new MaterialAlertDialogBuilder(context, R.style.AlertDialog)
                         .setTitle(R.string.main_contact_grid_title)

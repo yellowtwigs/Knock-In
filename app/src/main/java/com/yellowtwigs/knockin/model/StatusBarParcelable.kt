@@ -17,10 +17,10 @@ import java.util.HashMap
  */
 class StatusBarParcelable : Parcelable {
     var id: Int = 0
-    var appNotifier: String? = "" // application qui poste la notification
-    var tickerText: String? = "" // ex: Jean-Luc Paulin : Bonjour
-    var tailleList: Int = 0 //Taille de la list contenant tous les champs de la notification
-    var key = ArrayList<String>() //List des clés des attributs de la notification
+    var appNotifier: String? = ""
+    var tickerText: String? = ""
+    var tailleList: Int = 0
+    var key = ArrayList<String>()
 
     var statusBarNotificationInfo = HashMap<String, Any?>()
 
@@ -44,8 +44,6 @@ class StatusBarParcelable : Parcelable {
                 statusBarNotificationInfo[keySbn] = ""
             }
         }
-        //Log.i(TAG, "ID:" + sbn.getId());
-        //Log.i(TAG, "Posted by:" + sbn.getPackageName());
     }
 
     constructor(NotifId: Int, listSize: Int, appliNotifier: String, sbnKey: ArrayList<String>, sbnInfo: HashMap<String, Any?>) {
@@ -78,8 +76,6 @@ class StatusBarParcelable : Parcelable {
 
         }
         dest.writeString(appNotifier)
-        //dest.writeList(key);
-        //dest.writeMap(statusBarNotificationInfo);
     }
 
     /**

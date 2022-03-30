@@ -197,7 +197,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         name: String
     ): List<ContactWithAllInformation> {
         val contactFilterList: List<ContactWithAllInformation>? = getAllContactFilter(filterList)
-        val contactList = getContactByName(name) //TODO inverser avec ligne 189
+        val contactList = getContactByName(name)
         if (contactFilterList != null) {
             return intersectContactWithAllInformation(contactList, contactFilterList)
         }
@@ -1250,19 +1250,12 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
      * @param main_contentResolver ContentResolver
      */
     fun getAllContacsInfoSync(main_contentResolver: ContentResolver) {
-        //récupère le prénom et nom complet de tout les contactList
         val phoneStructName = getStructuredNameSync(main_contentResolver)
-        //récupère tout les numéros de téléphone et l'image de profil de chaque contact
         val contactNumberAndPic = getPhoneNumberSync(main_contentResolver)
-        //récupère tout les mails de chaque contact
         val contactMail = getContactMailSync(main_contentResolver)
-        //récupère tout les groupes de chaque contact
         val contactGroup = getContactGroupSync(main_contentResolver)
-        //fusionne dans contactDetail la list contactNumberAndPic et contactMail
         val contactDetail = contactNumberAndPic.union(contactMail)
-        //clear la liste des contactList de la classe ContactManager(ContactWithAllInformation)
         contactList.clear()
-        //fonction qui va stocker dans la database tout les element récuperé plus haut
         createListContactsSync(phoneStructName, contactDetail.toList(), contactGroup, this)
     }
 
@@ -1304,7 +1297,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         return null
     }
 
-    // get la priorité grace à la liste
     fun getContact(name: String): ContactWithAllInformation? {
         if (name.contains(" ")) {
             val array = name.toCharArray().toList()
@@ -1420,10 +1412,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 }
             }
         } else {
-            Log.i("notificationTone", "1 : ${name}")
-
             val array = name.toCharArray().toList()
-            Log.i("notificationTone", "2 : ${array}")
             val array2 = arrayListOf<Char>()
             array.forEach { char ->
                 if (char.isLetter() || char == '-') {
@@ -1437,9 +1426,12 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 Log.i("notificationTone", "3 : ${name1}")
                 Log.i("notificationTone", "4 : ${contactInfo.firstName}")
                 Log.i("notificationTone", "5 : ${contactInfo.lastName}")
-                Log.i("notificationTone", "6 : ${contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name ||
-                        contactInfo.firstName == name1 && contactInfo.lastName == ""
-                }")
+                Log.i(
+                    "notificationTone", "6 : ${
+                        contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name ||
+                                contactInfo.firstName == name1 && contactInfo.lastName == ""
+                    }"
+                )
 
                 if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name ||
                     contactInfo.firstName == name1 && contactInfo.lastName == ""
@@ -1461,6 +1453,79 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             }
         }
 
+        return null
+    }
+
+    fun getContactFromMail(name: String): ContactWithAllInformation? {
+        if (name.contains(" ")) {
+            val array = name.toCharArray().toList()
+            val array2 = arrayListOf<Char>()
+            var canSpace = false
+            var oneTime = true
+            array.forEach { char ->
+                if (char.isLetter() || char == '-' || canSpace) {
+                    array2.add(char)
+                    canSpace = oneTime
+                    if (char.isWhitespace()) {
+                        canSpace = false
+                        oneTime = false
+                    }
+                }
+            }
+
+            val name1 = String(array2.toCharArray())
+            this.contactList.forEach { dbContact ->
+                val contactInfo = dbContact.contactDB!!
+
+                val firstnameList: ArrayList<Char> = arrayListOf()
+                var firstname = ""
+                val lastnameList: ArrayList<Char> = arrayListOf()
+                var lastname = ""
+
+                var cpt = 0
+
+                while (name[cpt] != ' ') {
+                    firstnameList.add(name[cpt]) // Kj, " " = 2
+                    cpt++
+                }
+                cpt++
+
+                for (i in 0 until firstnameList.size) {
+                    firstname += firstnameList[i]
+                }
+
+                while (cpt < name.length) {
+                    lastnameList.add(name[cpt]) // Kent, " " = 2
+                    cpt++
+                }
+
+                for (i in 0 until lastnameList.size) {
+                    lastname += lastnameList[i]
+                }
+
+                if (dbContact.contactDB?.mail_name == name ||
+                    dbContact.contactDB?.mail_name == name1
+                ) {
+                    return dbContact
+                }
+            }
+        } else {
+            val array = name.toCharArray().toList()
+            val array2 = arrayListOf<Char>()
+            array.forEach { char ->
+                if (char.isLetter() || char == '-') {
+                    array2.add(char)
+                }
+            }
+            val name1 = String(array2.toCharArray())
+            contactList.forEach { dbContact ->
+                val contactInfo = dbContact.contactDB!!
+
+                if (contactInfo.mail_name == name || contactInfo.mail_name == name1) {
+                    return dbContact
+                }
+            }
+        }
         return null
     }
 
