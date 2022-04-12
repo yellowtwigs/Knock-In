@@ -1,6 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-       <string name="app_name">Knock In</string>
-    <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <!-- region Help Tutorial -->
     <string name="help">Aide</string>
@@ -57,8 +55,8 @@
     <string name="main_search_hint">Rechercher</string>
     <string name="main_change_format_phone_book">Aide</string>
     <string name="main_tri_title">Trier par :</string>
-    <string name="main_tri_par_nom">Nom</string>
-    <string name="main_tri_par_lastname">Nom</string>
+    <string name="main_tri_par_nom">Prénom</string>
+    <string name="main_tri_par_lastname">Nom de famille</string>
     <string name="main_tri_par_priorite">Priorité</string>
     <string name="main_tri_par_favoris">Favoris</string>
     <string name="main_tri_par_groupe">Groupe</string>

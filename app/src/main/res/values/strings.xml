@@ -1,6 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--    <string name="app_name">Knock In</string>-->
-    <string name="app_name_by">by YellowTwigs</string>
     <string name="contact_mail">contact@yellowtwigs.com</string>
     <string name="location_on_playstore" translatable="false"><a>https://play.google.com/store/apps/details?id=com.yellowtwigs.Knockin.notification</a></string>
     <!-- region Help Tutorial -->
@@ -58,8 +56,8 @@
     <string name="main_search_hint">Search your contacts</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="main_tri_title">Filter by:</string>
-    <string name="main_tri_par_nom">Name</string>
-    <string name="main_tri_par_lastname">Name</string>
+    <string name="main_tri_par_nom">Firstname</string>
+    <string name="main_tri_par_lastname">Lastname</string>
     <string name="main_tri_par_priorite">Priority</string>
     <string name="main_tri_par_favoris">Favorite</string>
     <string name="main_tri_par_groupe">Group</string>
@@ -253,7 +251,7 @@
     <string name="notification_vip_message_tone_autumn_leaves">Autumn Leaves</string>
     <string name="notification_vip_message_tone_freddie_freeloader">Freddie Freeloader</string>
     <string name="notification_vip_message_tone_caravan">Caravan</string>
-    <string name="notification_vip_message_tone_personal_sound">Personal Sound</string>
+    <string name="notification_vip_message_tone_personal_sound" translatable="false">Personal Sound</string>
     <string name="notification_vip_message_tone_funky_slap">Funky Slap</string>
     <string name="notification_vip_message_tone_off_the_curve">Off the Curve</string>
     <string name="notification_vip_message_tone_funk_yall">Funk Yall</string>

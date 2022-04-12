@@ -1,8 +1,10 @@
 package com.yellowtwigs.knockin.ui.contacts;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,7 +18,6 @@ import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,6 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -55,7 +55,7 @@ import java.util.List;
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridViewAdapter.ViewHolder> implements FloatingActionMenu.MenuStateChangeListener {
-    private List<ContactWithAllInformation> listOfContacts;
+    private ContactManager contactManager;
     private LayoutInflater layoutInflater;
     private Context context;
     private Integer len;
@@ -68,9 +68,9 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
     private int heightAndWidth;
     private int heightWidthImage;
 
-    public ContactGridViewAdapter(Context context, List<ContactWithAllInformation> listOfContacts, Integer len) {
+    public ContactGridViewAdapter(Context context, ContactManager contactManager, Integer len) {
         this.context = context;
-        this.listOfContacts = listOfContacts;
+        this.contactManager = contactManager;
         this.len = len;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -84,12 +84,12 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
 
-    public void setGestionnaireContact(List<ContactWithAllInformation> listOfContacts) {
-        this.listOfContacts = listOfContacts;
+    public void setContactManager(ContactManager contactManager) {
+        this.contactManager = contactManager;
     }
 
     public ContactWithAllInformation getItem(int position) {
-        return listOfContacts.get(position);
+        return contactManager.getContactList().get(position);
     }
 
     @NonNull
@@ -102,17 +102,15 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         return holder;
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final ContactDB contact = listOfContacts.get(position).getContactDB();
-
-        int height = heightWidthImage;
-        int width = heightWidthImage;
+        final ContactDB contact = this.contactManager.getContactList().get(position).getContactDB();
 
         RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
 
-        if (!modeMultiSelect || !listOfItemSelected.contains(listOfContacts.get(position))) {
+        if (!modeMultiSelect || !listOfItemSelected.contains(contactManager.getContactList().get(position))) {
             assert contact != null;
             if (!contact.getProfilePicture64().equals("")) {
                 Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -121,15 +119,11 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
             }
         } else {
+            // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
             holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
         }
 
-        if (len == 3) {
-            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.05));
-            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.05));
-            layoutParamsTV.topMargin = 30;
-            layoutParamsIV.topMargin = 10;
-        } else if (len == 4) {
+        if (len == 4) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.25));
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.25));
             layoutParamsTV.topMargin = 10;
@@ -137,11 +131,6 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         } else if (len == 5) {
             holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.40));
             holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.40));
-            layoutParamsTV.topMargin = 0;
-            layoutParamsIV.topMargin = 0;
-        } else if (len == 6) {
-            holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.50));
-            holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.50));
             layoutParamsTV.topMargin = 0;
             layoutParamsIV.topMargin = 0;
         }
@@ -158,22 +147,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         String firstname = contact.getFirstName();
         String lastName = contact.getLastName();
 
-        if (len == 6) {
-            if (contact.getFirstName().length() > 8)
-                firstname = contact.getFirstName().substring(0, 7).concat("..");
-
-            holder.contactFirstNameView.setText(firstname);
-            Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-            span.setSpan(new RelativeSizeSpan(0.81f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(span);
-            if (contact.getLastName().length() > 8)
-                lastName = contact.getLastName().substring(0, 7).concat("..");
-
-            Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactLastNameView.setText(spanLastName);
-
-        } else if (len == 5) {
+        if (len == 5) {
             if (contact.getFirstName().length() > 11)
                 firstname = contact.getFirstName().substring(0, 9).concat("..");
 
@@ -202,46 +176,28 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             Spannable spanLastName = new SpannableString(lastName);
             spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.contactLastNameView.setText(spanLastName);
-        } else if (len == 3) {
-            Spannable spanFistName = new SpannableString(firstname);
-            spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactFirstNameView.setText(spanFistName);
-            Spannable spanLastName = new SpannableString(lastName);
-            spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.contactLastNameView.setText(spanLastName);
-            //holder.contactFirstNameView.;
         }
 
         if (firstname.isEmpty()) {
             holder.contactFirstNameView.setVisibility(View.GONE);
         }
 
-     /*   if (!contact.getProfilePicture64().equals("")) {
-            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-
-            holder.contactRoundedImageView.setImageBitmap(bitmap);
-        } else {
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture())); //////////////
-        }
-       */ //region circular menu
-
-        //final ImageView buttonMessenger = new ImageView(context);
         final ImageView buttonCall = new ImageView(context);
         final ImageView buttonWhatsApp = new ImageView(context);
         final ImageView buttonSMS = new ImageView(context);
         final ImageView buttonEdit = new ImageView(context);
         final ImageView buttonMail = new ImageView(context);
-//        final ImageView buttonMessenger = new ImageView(context);
+        final ImageView buttonMessenger = new ImageView(context);
+        final ImageView buttonSignal = new ImageView(context);
 
-        //  buttonMessenger.setId(0);
         buttonCall.setId(1);
         buttonSMS.setId(2);
         buttonWhatsApp.setId(3);
         buttonEdit.setId(4);
         buttonMail.setId(5);
-//        buttonMessenger.setId(6);
+        buttonMessenger.setId(6);
+        buttonSignal.setId(6);
 
-        //buttonMessenger.setImageDrawable(iconMessenger);
         if (contact.getFavorite() == 1) {
             holder.gridAdapterFavoriteShine.setVisibility(View.VISIBLE);
         } else {
@@ -252,8 +208,9 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
         buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp);
         buttonSMS.setImageResource(R.drawable.ic_sms_selector);
         buttonEdit.setImageResource(R.drawable.ic_circular_edit);
-        buttonMail.setImageResource(R.drawable.ic_circular_mail); // toto
-//        buttonMessenger.setImageResource(R.drawable.ic_circular_messenger);
+        buttonMail.setImageResource(R.drawable.ic_circular_mail);
+        buttonMessenger.setImageResource(R.drawable.ic_circular_messenger);
+        buttonSignal.setImageResource(R.drawable.ic_circular_signal);
 
         SubActionButton.Builder builderIcon = new SubActionButton.Builder((Activity) context);
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular));
@@ -309,7 +266,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 .setStateChangeListener(this)
                 .disableAnimations();
 
-        if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("")) {
+        if (appIsInstalled() && !getItem(position).getFirstPhoneNumber().equals("") && contact.getHasWhatsapp() == 1) {
             builder.addSubActionView(builderIcon.setContentView(buttonWhatsApp, layoutParams).build(), diametreButton, diametreButton);
         }
         if (!getItem(position).getFirstMail().equals("")) {
@@ -320,7 +277,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                     .addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreButton, diametreButton);
         }
         if (!getItem(position).getMessengerID().equals("")) {
-//            builder.addSubActionView(builderIcon.setContentView(buttonMessenger, layoutParams).build(), diametreButton, diametreButton);
+            builder.addSubActionView(builderIcon.setContentView(buttonMessenger, layoutParams).build(), diametreButton, diametreButton);
         }
         /*if (!getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber()).equals("")) {
             builder.addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreButton, diametreButton);
@@ -380,14 +337,11 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 context.startActivity(intent);
             }
-
-//            else if (v.getId() == buttonMessenger.getId()) {
-//
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + getItem(position).getMessengerID()));
-//                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-//
-//            }
+            else if (v.getId() == buttonMessenger.getId()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/" + getItem(position).getMessengerID()));
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
             selectMenu.close(false);
         };
 
@@ -396,7 +350,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                 int firstPosVis;
                 closeMenu();
                 modeMultiSelect = true;
-                listOfItemSelected.add(listOfContacts.get(position));
+                listOfItemSelected.add(contactManager.getContactList().get(position));
 
                 firstPosVis = 0;
                 if (context instanceof MainActivity) {
@@ -411,8 +365,8 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
         View.OnClickListener gridItemClick = v -> {
             if (modeMultiSelect) {
-                if (listOfItemSelected.contains(listOfContacts.get(position))) {
-                    listOfItemSelected.remove(listOfContacts.get(position));
+                if (listOfItemSelected.contains(contactManager.getContactList().get(position))) {
+                    listOfItemSelected.remove(contactManager.getContactList().get(position));
 
                     if (!contact.getProfilePicture64().equals("")) {
                         Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
@@ -424,7 +378,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
                         modeMultiSelect = false;
                     }
                 } else {
-                    listOfItemSelected.add(listOfContacts.get(position));
+                    listOfItemSelected.add(contactManager.getContactList().get(position));
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
                 }
                 ((MainActivity) context).gridMultiSelectItemClick(position);
@@ -474,7 +428,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
 
     @Override
     public int getItemCount() {
-        return listOfContacts.size();
+        return contactManager.getContactList().size();
     }
 
     private String converter06To33(String phoneNumber) {
@@ -658,7 +612,7 @@ public class ContactGridViewAdapter extends RecyclerView.Adapter<ContactGridView
             numberForPermission = phoneNumber;
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE);
-            boolean popup = sharedPreferences.getBoolean("popup", true);
+            Boolean popup = sharedPreferences.getBoolean("popup", true);
             if (popup && numberForPermission.isEmpty()) {
                 new MaterialAlertDialogBuilder(context, R.style.AlertDialog)
                         .setTitle(R.string.main_contact_grid_title)

@@ -101,13 +101,7 @@ class AddNewGroupActivity : AppCompatActivity() {
 
         if (main_GridView!!.visibility != View.GONE) {
 
-            gridViewAdapter =
-                CreateGroupGridViewAdapter(
-                    this,
-                    gestionnaireContacts!!,
-                    len,
-                    null
-                )
+            gridViewAdapter = CreateGroupGridViewAdapter(this, gestionnaireContacts!!, len, null)
             main_GridView!!.adapter = gridViewAdapter
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)
@@ -228,7 +222,9 @@ class AddNewGroupActivity : AppCompatActivity() {
             val groupId = contactsDatabase!!.GroupsDao().insert(group)
             listContact!!.forEach {
                 val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
+                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
             }
+            println(contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
             refreshActivity()
         }
     }

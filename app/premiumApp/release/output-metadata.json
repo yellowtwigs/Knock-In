@@ -1,18 +1,20 @@
 {
-  "version": 2,
+  "version": 3,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
   },
   "applicationId": "com.yellowtwigs.Knockin.notification",
-  "variantName": "processPremiumAppReleaseResources",
+  "variantName": "premiumAppRelease",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 73,
-      "versionName": "2.0.1",
+      "attributes": [],
+      "versionCode": 138,
+      "versionName": "2.2.7",
       "outputFile": "app-premiumApp-release.apk"
     }
-  ]
+  ],
+  "elementType": "File"
 }

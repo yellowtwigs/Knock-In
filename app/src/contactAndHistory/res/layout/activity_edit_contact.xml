@@ -401,18 +401,6 @@
 
         </RelativeLayout>
 
-        <ListView
-            android:id="@+id/edit_contact_field_added"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/backgroundColor"
-            android:divider="@null"
-            android:textColor="?attr/textColor"
-            android:textColorHint="?attr/textColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/edit_contact_priority_layout"
             android:layout_width="wrap_content"
@@ -449,19 +437,6 @@
             app:layout_constraintStart_toEndOf="@+id/edit_contact_priority_layout"
             app:layout_constraintTop_toBottomOf="@+id/edit_contact_phone_mail_layout"
             android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/edit_contact_add_field_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/backgroundColor"
-            android:text="@string/edit_contact_add_field"
-            android:textColor="?attr/textColor"
-            android:textColorHint="?attr/textColor"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/edit_contact_group_constraint_layout"

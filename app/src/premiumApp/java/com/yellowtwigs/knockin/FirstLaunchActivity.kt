@@ -45,7 +45,14 @@ class FirstLaunchActivity : AppCompatActivity() {
 
         val buttonAccept: Button = findViewById(R.id.first_launch_accept_politique)
         val textView = findViewById<TextView>(R.id.first_launch_welcome)
-        textView.setText(String.format(getString(R.string.first_launch_welcome,getString(R.string.app_name))))
+        textView.setText(
+            String.format(
+                getString(
+                    R.string.first_launch_welcome,
+                    getString(R.string.app_name)
+                )
+            )
+        )
         val textViewCLUF = findViewById<TextView>(R.id.first_launch_politique)
         textViewCLUF.movementMethod = LinkMovementMethod.getInstance()
 

@@ -124,7 +124,7 @@
             android:src="@drawable/ic_gmail_floating"
             android:visibility="gone"
             app:backgroundTint="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_sms"
+            app:layout_constraintBottom_toTopOf="@id/group_manager_floating_button_send_id"
             app:layout_constraintEnd_toEndOf="parent"
             tools:targetApi="P" />
 

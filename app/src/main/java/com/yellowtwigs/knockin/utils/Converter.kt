@@ -17,6 +17,8 @@ object Converter {
             return "WhatsApp"
         } else if (packageName == "com.google.android.gm") {
             return "Gmail"
+        } else if (packageName == "org.thoughtcrime.securesms") {
+            return "Signal"
         } else if (packageName == "com.microsoft.office.outlook") {
             return "Outlook"
         } else if (packageName == "com.google.android.apps.messaging" || packageName == "com.samsung.android.messaging" ||

@@ -31,33 +31,10 @@
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/left_drawer_settings" />
-        <item
-            android:id="@+id/nav_go_to_kin"
-            android:icon="@drawable/ic_knockin_logo"
-            android:title="@string/knockin_notif" />
     </group>
 
     <group
-        android:id="@+id/menu_bottom"
         android:checkableBehavior="none">
-        <item
-            android:id="@+id/nav_data_access"
-            android:enabled="false"
-            android:visible="false"
-            android:icon="@drawable/ic_folder"
-            android:title="@string/left_drawer_data_access" />
-        <item
-            android:id="@+id/nav_knockons"
-            android:enabled="false"
-            android:visible="false"
-            android:icon="@drawable/ic_app_image"
-            android:title="@string/left_drawer_knockons" />
-        <item
-            android:id="@+id/nav_statistics"
-            android:enabled="false"
-            android:visible="false"
-            android:icon="@drawable/ic_statistics"
-            android:title="@string/left_drawer_statistics" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"

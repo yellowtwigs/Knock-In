@@ -174,9 +174,9 @@ class AddContactToGroupActivity : AppCompatActivity() {
             R.id.nav_validate -> {
                 if (selectContact!!.isEmpty()) {
                     MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                            .setTitle(R.string.add_contact_to_group_alert_dialog_title)
-                            .setMessage(getString(R.string.add_contact_to_group_alert_dialog_message))
-                            .show()
+                        .setTitle(R.string.add_contact_to_group_alert_dialog_title)
+                        .setMessage(getString(R.string.add_contact_to_group_alert_dialog_message))
+                        .show()
                 } else {
                     addToGroup(selectContact, groupId)
                     refreshActivity()

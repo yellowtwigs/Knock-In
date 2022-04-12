@@ -2,11 +2,13 @@ package com.yellowtwigs.knockin.utils
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -51,7 +53,8 @@ object ContactGesture {
             i.data = Uri.parse(url)
             context.startActivity(i)
         } catch (e: PackageManager.NameNotFoundException) {
-            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT)
+                .show()
             e.printStackTrace()
         }
     }
@@ -103,6 +106,21 @@ object ContactGesture {
                 )
                 numberForPermission = ""
             }
+        }
+    }
+
+    fun goToSignal(context: Activity) {
+        val appIntent = context.packageManager.getLaunchIntentForPackage("org.thoughtcrime.securesms")
+        try {
+            context.startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            Log.i("resolveInfoList", "$e")
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://signal.org/")
+                )
+            )
         }
     }
 

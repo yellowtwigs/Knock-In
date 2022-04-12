@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.ui.group;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -42,6 +43,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         return new ViewHolder(view);
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onBindViewHolder(@NonNull final GroupEditAdapter.ViewHolder holder, final int position) {
         holder.close.setOnClickListener(v -> {

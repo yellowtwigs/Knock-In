@@ -979,6 +979,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
             NotificationListener.WHATSAPP_SERVICE -> true
             NotificationListener.GMAIL_PACKAGE -> true
             NotificationListener.OUTLOOK_PACKAGE -> true
+            NotificationListener.SIGNAL_PACKAGE -> true
             NotificationListener.MESSAGE_PACKAGE, NotificationListener.MESSAGE_SAMSUNG_PACKAGE, NotificationListener.XIAOMI_MESSAGE_PACKAGE -> true
             Telephony.Sms.getDefaultSmsPackage(this) -> true
             NotificationListener.TELEGRAM_PACKAGE -> true

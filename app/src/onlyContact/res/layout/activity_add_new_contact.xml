@@ -459,16 +459,5 @@
             app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view"
             tools:visibility="gone" />
 
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/add_new_contact_add_field_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/backgroundColor"
-            android:text="@string/add_new_contact_add_field"
-            android:textColor="?attr/textColor"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_contact_add_field_view" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

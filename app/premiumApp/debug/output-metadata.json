@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.yellowtwigs.Knockin.notification",
+  "variantName": "premiumAppDebug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 138,
+      "versionName": "2.2.7",
+      "outputFile": "app-premiumApp-debug.apk"
+    }
+  ],
+  "elementType": "File"
+}

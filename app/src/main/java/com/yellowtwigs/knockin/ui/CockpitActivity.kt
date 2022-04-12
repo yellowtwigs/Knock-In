@@ -13,6 +13,7 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -42,6 +43,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
+import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import java.util.*
 
 /**
@@ -96,6 +98,7 @@ class CockpitActivity : AppCompatActivity() {
     private var link_socials_networks_Skype: AppCompatImageView? = null
     private var link_socials_networks_Linkedin: AppCompatImageView? = null
     private var link_socials_networks_Twitter: AppCompatImageView? = null
+    private var signalIcon: AppCompatImageView? = null
 
     private var cockpit_CallBackSpace: ImageView? = null
     private var cockpit_ButtonAddContact: ImageView? = null
@@ -213,21 +216,18 @@ class CockpitActivity : AppCompatActivity() {
         link_socials_networks_Linkedin = findViewById(R.id.linkedin_link_socials_networks)
         link_socials_networks_Twitter = findViewById(R.id.twitter_link_socials_networks)
         link_socials_networks_Whatsapp = findViewById(R.id.whatsapp_link_socials_networks)
+        signalIcon = findViewById(R.id.signal_icon)
 
         cockpit_CallBackSpace = findViewById(R.id.cockpit_call_back_space)
         cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
 
-        val group_manager_MainLayout = findViewById<RelativeLayout>(R.id.cockpit_layout)
         val settings_left_drawer_ThemeSwitch =
             findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
 
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch!!.isChecked = true
-//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
+            settings_left_drawer_ThemeSwitch?.isChecked = true
+//            group_manager_MainLayout?.setBackgroundResource(R.drawable.dark_background)
         }
-
-        val main_SettingsLeftDrawerLayout =
-            findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
 
         //region ================================ Call Popup from LeftDrawer ================================
 
@@ -242,13 +242,13 @@ class CockpitActivity : AppCompatActivity() {
 
         //endregion
 
-        bottomNavigationView!!.menu.getItem(3).isChecked = true
-        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavigationView?.menu?.getItem(3)?.isChecked = true
+        bottomNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        if (cockpit_PhoneNumberEditText!!.text!!.isEmpty()) {
-            cockpit_EditTextLayout!!.visibility = View.GONE
+        if (cockpit_PhoneNumberEditText?.text?.isEmpty() == true) {
+            cockpit_EditTextLayout?.visibility = View.GONE
         } else {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
         }
 
         //region ======================================= DrawerLayout =======================================
@@ -260,11 +260,11 @@ class CockpitActivity : AppCompatActivity() {
         val navItem = menu.findItem(R.id.nav_home)
         navItem.isChecked = true
 
-        navigationView!!.menu.getItem(0).isChecked = true
+        navigationView?.menu?.getItem(0)?.isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            cockpit_DrawerLayout!!.closeDrawers()
+            cockpit_DrawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(
@@ -305,8 +305,7 @@ class CockpitActivity : AppCompatActivity() {
                 )
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.cockpit_drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)
+            cockpit_DrawerLayout?.closeDrawer(GravityCompat.START)
             true
         }
 
@@ -314,7 +313,7 @@ class CockpitActivity : AppCompatActivity() {
 
         //region ========================================== Listener ========================================
 
-        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 val sharedCallPopupPreferences: SharedPreferences =
                     getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
@@ -330,7 +329,7 @@ class CockpitActivity : AppCompatActivity() {
             }
         }
 
-        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setTheme(R.style.AppThemeDark)
 //                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
@@ -349,8 +348,8 @@ class CockpitActivity : AppCompatActivity() {
         }
 
         if (!listApp.contains("com.facebook.katana")) {
-            link_socials_networks_Messenger!!.setImageResource(R.drawable.ic_facebook_disable)
-            link_socials_networks_Messenger!!.setOnClickListener {
+            link_socials_networks_Messenger?.setImageResource(R.drawable.ic_facebook_disable)
+            link_socials_networks_Messenger?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_facebook_not_install,
@@ -358,12 +357,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Messenger!!.setOnClickListener { gotToFacebookPage("") }
+            link_socials_networks_Messenger?.setOnClickListener { gotToFacebookPage("") }
         }
 
         if (!listApp.contains("com.instagram.android")) {
-            link_socials_networks_Instagram!!.setImageResource(R.drawable.ic_instagram_disable)
-            link_socials_networks_Instagram!!.setOnClickListener {
+            link_socials_networks_Instagram?.setImageResource(R.drawable.ic_instagram_disable)
+            link_socials_networks_Instagram?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_instagram_not_install,
@@ -371,12 +370,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Instagram!!.setOnClickListener { goToInstagramPage() }
+            link_socials_networks_Instagram?.setOnClickListener { goToInstagramPage() }
         }
 
         if (!listApp.contains("com.whatsapp")) {
-            link_socials_networks_Whatsapp!!.setImageResource(R.drawable.ic_whatsapp_disable)
-            link_socials_networks_Whatsapp!!.setOnClickListener {
+            link_socials_networks_Whatsapp?.setImageResource(R.drawable.ic_whatsapp_disable)
+            link_socials_networks_Whatsapp?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_whatsapp_not_install,
@@ -384,12 +383,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Whatsapp!!.setOnClickListener { goToWhatsapp() }
+            link_socials_networks_Whatsapp?.setOnClickListener { goToWhatsapp() }
         }
 
         if (!listApp.contains("com.facebook.orca")) {
-            link_socials_networks_Facebook!!.setImageResource(R.drawable.ic_messenger_disable)
-            link_socials_networks_Facebook!!.setOnClickListener {
+            link_socials_networks_Facebook?.setImageResource(R.drawable.ic_messenger_disable)
+            link_socials_networks_Facebook?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_messenger_not_install,
@@ -397,12 +396,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Facebook!!.setOnClickListener { goToFacebook() }
+            link_socials_networks_Facebook?.setOnClickListener { goToFacebook() }
         }
 
         if (!listApp.contains("com.google.android.youtube")) {
-            link_socials_networks_Youtube!!.setImageResource(R.drawable.ic_youtube_disable)
-            link_socials_networks_Youtube!!.setOnClickListener {
+            link_socials_networks_Youtube?.setImageResource(R.drawable.ic_youtube_disable)
+            link_socials_networks_Youtube?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_youtube_not_install,
@@ -410,12 +409,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Youtube!!.setOnClickListener { goToYoutube() }
+            link_socials_networks_Youtube?.setOnClickListener { goToYoutube() }
         }
 
         if (!listApp.contains("com.google.android.gm")) {
-            link_socials_networks_Gmail!!.setImageResource(R.drawable.ic_gmail_disable)
-            link_socials_networks_Gmail!!.setOnClickListener {
+            link_socials_networks_Gmail?.setImageResource(R.drawable.ic_gmail_disable)
+            link_socials_networks_Gmail?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_gmail_not_install,
@@ -423,12 +422,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Gmail!!.setOnClickListener { goToGmail() }
+            link_socials_networks_Gmail?.setOnClickListener { goToGmail() }
         }
 
         if (!listApp.contains("com.snapchat.android")) {
-            link_socials_networks_Snapchat!!.setImageResource(R.drawable.ic_snapchat_disable)
-            link_socials_networks_Snapchat!!.setOnClickListener {
+            link_socials_networks_Snapchat?.setImageResource(R.drawable.ic_snapchat_disable)
+            link_socials_networks_Snapchat?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_snapchat_not_install,
@@ -436,12 +435,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Snapchat!!.setOnClickListener { goToSnapchat() }
+            link_socials_networks_Snapchat?.setOnClickListener { goToSnapchat() }
         }
 
         if (!listApp.contains("org.telegram.messenger")) {
-            link_socials_networks_Telegram!!.setImageResource(R.drawable.ic_telegram_disable)
-            link_socials_networks_Telegram!!.setOnClickListener {
+            link_socials_networks_Telegram?.setImageResource(R.drawable.ic_telegram_disable)
+            link_socials_networks_Telegram?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_telegram_not_install,
@@ -449,12 +448,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Telegram!!.setOnClickListener { goToTelegram() }
+            link_socials_networks_Telegram?.setOnClickListener { goToTelegram() }
         }
 
         if (!listApp.contains("com.microsoft.office.outlook")) {
-            link_socials_networks_Outlook!!.setImageResource(R.drawable.ic_outlook_disable)
-            link_socials_networks_Outlook!!.setOnClickListener {
+            link_socials_networks_Outlook?.setImageResource(R.drawable.ic_outlook_disable)
+            link_socials_networks_Outlook?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_outlook_not_install,
@@ -462,12 +461,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Outlook!!.setOnClickListener { goToOutlook() }
+            link_socials_networks_Outlook?.setOnClickListener { goToOutlook() }
         }
 
         if (!listApp.contains("com.skype.raider")) {
-            link_socials_networks_Skype!!.setImageResource(R.drawable.ic_skype_disable)
-            link_socials_networks_Skype!!.setOnClickListener {
+            link_socials_networks_Skype?.setImageResource(R.drawable.ic_skype_disable)
+            link_socials_networks_Skype?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_skype_not_install,
@@ -475,12 +474,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Skype!!.setOnClickListener { goToSkype() }
+            link_socials_networks_Skype?.setOnClickListener { goToSkype() }
         }
 
         if (!listApp.contains("com.linkedin.android")) {
-            link_socials_networks_Linkedin!!.setImageResource(R.drawable.ic_linkedin_disable)
-            link_socials_networks_Linkedin!!.setOnClickListener {
+            link_socials_networks_Linkedin?.setImageResource(R.drawable.ic_linkedin_disable)
+            link_socials_networks_Linkedin?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_linkedin_not_install,
@@ -488,12 +487,12 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Linkedin!!.setOnClickListener { goToLinkedin() }
+            link_socials_networks_Linkedin?.setOnClickListener { goToLinkedin() }
         }
 
         if (!listApp.contains("com.twitter.android")) {
-            link_socials_networks_Twitter!!.setImageResource(R.drawable.ic_twitter_disable)
-            link_socials_networks_Twitter!!.setOnClickListener {
+            link_socials_networks_Twitter?.setImageResource(R.drawable.ic_twitter_disable)
+            link_socials_networks_Twitter?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_twitter_not_install,
@@ -501,17 +500,22 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Twitter!!.setOnClickListener { goToTwitter() }
+            link_socials_networks_Twitter?.setOnClickListener { goToTwitter() }
         }
 
-
-        cockpit_IncomingCallButton!!.setOnClickListener {
-            phoneCall(cockpit_PhoneNumberEditText!!.text.toString())
+        if (!listApp.contains("org.thoughtcrime.securesms")) {
+            signalIcon?.setImageResource(R.drawable.ic_signal_disable)
+        } else {
+            signalIcon?.setOnClickListener { goToSignal(this) }
         }
 
-        cockpit_SendMessage!!.setOnClickListener {
-            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                val phone = cockpit_PhoneNumberEditText!!.text.toString()
+        cockpit_IncomingCallButton?.setOnClickListener {
+            phoneCall(cockpit_PhoneNumberEditText?.text.toString())
+        }
+
+        cockpit_SendMessage?.setOnClickListener {
+            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
+                val phone = cockpit_PhoneNumberEditText?.text.toString()
                 val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null))
                 startActivity(i)
             } else {
@@ -520,8 +524,8 @@ class CockpitActivity : AppCompatActivity() {
             }
         }
 
-        cockpit_ButtonAddContact!!.setOnClickListener {
-            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
+        cockpit_ButtonAddContact?.setOnClickListener {
+            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
                 startActivity(
                     Intent(
                         this@CockpitActivity,
@@ -534,103 +538,101 @@ class CockpitActivity : AppCompatActivity() {
             }
         }
 
-        cockpit_ButtonOpen!!.setOnClickListener {
-
+        cockpit_ButtonOpen?.setOnClickListener {
             val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
 
             slideUp(cockpit_EditTextLayout!!)
             slideUp(cockpit_KeyboardView!!)
             slideUp(cockpit_CallLayout!!)
-            cockpit_ButtonOpen!!.startAnimation(slideLeft)
+            cockpit_ButtonOpen?.startAnimation(slideLeft)
 
-            cockpit_CallLayout!!.visibility = View.VISIBLE
-            cockpit_KeyboardView!!.visibility = View.VISIBLE
-            cockpit_ButtonOpen!!.visibility = View.GONE
+            cockpit_CallLayout?.visibility = View.VISIBLE
+            cockpit_KeyboardView?.visibility = View.VISIBLE
+            cockpit_ButtonOpen?.visibility = View.GONE
         }
 
-        cockpit_ButtonClose!!.setOnClickListener {
-
+        cockpit_ButtonClose?.setOnClickListener {
             val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
             val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
 
-            cockpit_EditTextLayout!!.startAnimation(slideDown)
-            cockpit_KeyboardView!!.startAnimation(slideDown)
-            cockpit_CallLayout!!.startAnimation(slideDown)
-            cockpit_ButtonOpen!!.startAnimation(slideRight)
+            cockpit_EditTextLayout?.startAnimation(slideDown)
+            cockpit_KeyboardView?.startAnimation(slideDown)
+            cockpit_CallLayout?.startAnimation(slideDown)
+            cockpit_ButtonOpen?.startAnimation(slideRight)
 
-            cockpit_CallLayout!!.visibility = View.GONE
-            cockpit_KeyboardView!!.visibility = View.GONE
-            cockpit_EditTextLayout!!.visibility = View.GONE
-            cockpit_ButtonOpen!!.visibility = View.VISIBLE
+            cockpit_CallLayout?.visibility = View.GONE
+            cockpit_KeyboardView?.visibility = View.GONE
+            cockpit_EditTextLayout?.visibility = View.GONE
+            cockpit_ButtonOpen?.visibility = View.VISIBLE
         }
 
         //region ========================================== Keyboard ========================================
 
-        cockpit_CallKeyboard_1!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 1)
+        cockpit_CallKeyboard_1?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 1)
         }
-        cockpit_CallKeyboard_2!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 2)
+        cockpit_CallKeyboard_2?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 2)
         }
-        cockpit_CallKeyboard_3!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 3)
+        cockpit_CallKeyboard_3?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 3)
         }
-        cockpit_CallKeyboard_4!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 4)
+        cockpit_CallKeyboard_4?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 4)
         }
-        cockpit_CallKeyboard_5!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 5)
+        cockpit_CallKeyboard_5?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 5)
         }
-        cockpit_CallKeyboard_6!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 6)
+        cockpit_CallKeyboard_6?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 6)
         }
-        cockpit_CallKeyboard_7!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 7)
+        cockpit_CallKeyboard_7?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 7)
         }
-        cockpit_CallKeyboard_8!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 8)
+        cockpit_CallKeyboard_8?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 8)
         }
-        cockpit_CallKeyboard_9!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 9)
+        cockpit_CallKeyboard_9?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 9)
         }
-        cockpit_CallKeyboard_Star!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + "*")
+        cockpit_CallKeyboard_Star?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + "*")
         }
-        cockpit_CallKeyboard_0!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + 0)
+        cockpit_CallKeyboard_0?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 0)
         }
-        cockpit_CallKeyboard_Sharp!!.setOnClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + "#")
+        cockpit_CallKeyboard_Sharp?.setOnClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + "#")
         }
-        cockpit_CallKeyboard_0!!.setOnLongClickListener {
-            cockpit_EditTextLayout!!.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText!!.setText(cockpit_PhoneNumberEditText!!.text.toString() + "+")
+        cockpit_CallKeyboard_0?.setOnLongClickListener {
+            cockpit_EditTextLayout?.visibility = View.VISIBLE
+            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + "+")
             true
         }
-        cockpit_CallBackSpace!!.setOnClickListener {
-            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                cockpit_PhoneNumberEditText!!.text!!.delete(
-                    cockpit_PhoneNumberEditText!!.length() - 1,
-                    cockpit_PhoneNumberEditText!!.length()
+        cockpit_CallBackSpace?.setOnClickListener {
+            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
+                cockpit_PhoneNumberEditText?.text?.delete(
+                    cockpit_PhoneNumberEditText?.length()!! - 1,
+                    cockpit_PhoneNumberEditText?.length()!!
                 )
             }
         }
 
-        cockpit_CallBackSpace!!.setOnLongClickListener {
-            if (cockpit_PhoneNumberEditText!!.text!!.isNotEmpty()) {
-                cockpit_PhoneNumberEditText!!.setText("")
+        cockpit_CallBackSpace?.setOnLongClickListener {
+            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
+                cockpit_PhoneNumberEditText?.setText("")
             }
             true
         }
@@ -667,7 +669,7 @@ class CockpitActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                cockpit_DrawerLayout!!.openDrawer(GravityCompat.START)
+                cockpit_DrawerLayout?.openDrawer(GravityCompat.START)
                 hideKeyboard()
                 return true
             }
@@ -913,7 +915,7 @@ class CockpitActivity : AppCompatActivity() {
     ) {
         when (requestCode) {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
-                cockpit_IncomingCallButton!!.isEnabled = true
+                cockpit_IncomingCallButton?.isEnabled = true
             }
         }
     }

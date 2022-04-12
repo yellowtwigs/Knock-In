@@ -1,18 +1,10 @@
 package com.yellowtwigs.knockin.ui.contacts
 
-import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.net.Uri
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
@@ -23,10 +15,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
@@ -34,8 +23,15 @@ import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
+import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
+import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
+import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
+import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import java.sql.DriverManager
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * La Classe qui permet de remplir la RecyclerView avec les bon éléments
@@ -44,13 +40,15 @@ import java.util.*
  */
 class ContactRecyclerViewAdapter(
     private val context: Context,
-    private var listContacts: List<ContactWithAllInformation>,
+    private var contactManager: ContactManager,
     private val len: Int
 ) : RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder>() {
+    private val listContacts: List<ContactWithAllInformation>
     private var view: View? = null
     private var modeMultiSelect = false
     private var lastClick = false
     private var lastSelectMenuLen1: ConstraintLayout?
+    private lateinit var listApp: ArrayList<String>
 
     var listOfItemSelected = ArrayList<ContactWithAllInformation>()
     var phonePermission = ""
@@ -60,11 +58,12 @@ class ContactRecyclerViewAdapter(
         return listContacts[position]
     }
 
-    fun setGestionnaireContact(listContacts: List<ContactWithAllInformation>) {
-        this.listContacts = listContacts
+    fun setGestionnaireContact(gestionnaireContact: ContactManager) {
+        contactManager = gestionnaireContact
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
+        listApp = getAppOnPhone()
         view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_contact_item_layout, parent, false)
         return ContactViewHolder(view!!)
@@ -122,7 +121,12 @@ class ContactRecyclerViewAdapter(
             val bitmap = base64ToBitmap(contact.profilePicture64)
             holder.contactRoundedImageView.setImageBitmap(bitmap)
         } else {
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.profilePicture))
+            holder.contactRoundedImageView.setImageResource(
+                randomDefaultImage(
+                    contact.profilePicture,
+                    context
+                )
+            )
         }
         val contactName = contact.firstName + " " + contact.lastName
         holder.contactFirstNameView.text = contactName
@@ -161,7 +165,7 @@ class ContactRecyclerViewAdapter(
             roundedLayout.setColorFilter(firstGroup.section_color, PorterDuff.Mode.MULTIPLY)
         }
         if (modeMultiSelect) {
-            if (listOfItemSelected.contains(listContacts[position])) {
+            if (listOfItemSelected.contains(contactManager.contactList[position])) {
                 if (context is GroupManagerActivity && len == 0) {
                 } else {
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
@@ -180,7 +184,15 @@ class ContactRecyclerViewAdapter(
                     )
                 }
                 holder.callCl.id -> {
-                    callPhone(getItem(position).getFirstPhoneNumber())
+                    callPhone(getItem(position).getFirstPhoneNumber(), context)
+                }
+                holder.messengerCl.id -> {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.messenger.com/t/" + getItem(position).getMessengerID())
+                    )
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
                 }
                 holder.whatsappCl.id -> {
                     val contactWithAllInformation = getItem(position)
@@ -198,6 +210,9 @@ class ContactRecyclerViewAdapter(
                     )
                     context.startActivity(intent)
                 }
+                holder.signalCl.id -> {
+                    goToSignal(context as Activity)
+                }
             }
             if (len == 1) {
                 if (v.id == holder.editCl!!.id) {
@@ -213,17 +228,22 @@ class ContactRecyclerViewAdapter(
                 holder.constraintLayoutMenu!!.visibility = View.GONE
             }
             view!!.tag = holder
-            val contactDB = listContacts[position].contactDB!!
-            if (listOfItemSelected.contains(listContacts[position])) {
-                listOfItemSelected.remove(listContacts[position])
+            val contactDB = contactManager.contactList[position].contactDB!!
+            if (listOfItemSelected.contains(contactManager.contactList[position])) {
+                listOfItemSelected.remove(contactManager.contactList[position])
                 if (contactDB.profilePicture64 != "") {
                     val bitmap = base64ToBitmap(contactDB.profilePicture64)
                     holder.contactRoundedImageView.setImageBitmap(bitmap)
                 } else {
-                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.profilePicture))
+                    holder.contactRoundedImageView.setImageResource(
+                        randomDefaultImage(
+                            contactDB.profilePicture,
+                            context
+                        )
+                    )
                 }
             } else {
-                listOfItemSelected.add(listContacts[position])
+                listOfItemSelected.add(contactManager.contactList[position])
                 if (context is GroupManagerActivity && len == 0) {
                 } else {
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
@@ -247,17 +267,22 @@ class ContactRecyclerViewAdapter(
                     holder.constraintLayoutMenu!!.visibility = View.GONE
                 }
                 view!!.tag = holder
-                val contactDB = listContacts[position].contactDB!!
-                if (listOfItemSelected.contains(listContacts[position])) {
-                    listOfItemSelected.remove(listContacts[position])
+                val contactDB = contactManager.contactList[position].contactDB!!
+                if (listOfItemSelected.contains(contactManager.contactList[position])) {
+                    listOfItemSelected.remove(contactManager.contactList[position])
                     if (contactDB.profilePicture64 != "") {
                         val bitmap = base64ToBitmap(contactDB.profilePicture64)
                         holder.contactRoundedImageView.setImageBitmap(bitmap)
                     } else {
-                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.profilePicture))
+                        holder.contactRoundedImageView.setImageResource(
+                            randomDefaultImage(
+                                contactDB.profilePicture,
+                                context
+                            )
+                        )
                     }
                 } else {
-                    listOfItemSelected.add(listContacts[position])
+                    listOfItemSelected.add(contactManager.contactList[position])
                     if (context is GroupManagerActivity && len == 0) {
                     } else {
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
@@ -297,57 +322,52 @@ class ContactRecyclerViewAdapter(
                 }
             }
         }
-        if (len == 0) {
-            if (whatsappIsNotInstalled() || contact.hasWhatsapp == 0) {
-                holder.whatsappCl.visibility = View.INVISIBLE
-            } else {
-                holder.whatsappCl.visibility = View.VISIBLE
-            }
-            if (getItem(position).getFirstMail().isEmpty()) {
-                holder.mailCl.visibility = View.INVISIBLE
-            } else {
-                holder.mailCl.visibility = View.VISIBLE
-            }
-            if (getItem(position).getFirstPhoneNumber().isEmpty()) {
-                holder.callCl.visibility = View.INVISIBLE
-                holder.smsCl.visibility = View.INVISIBLE
-            } else {
-                holder.callCl.visibility = View.VISIBLE
-                holder.smsCl.visibility = View.VISIBLE
-            }
+        if (!isWhatsappInstalled(context)) {
+            holder.whatsappCl.visibility = View.GONE
+        } else {
+            holder.whatsappCl.visibility = View.VISIBLE
         }
-        if (len == 1) {
-            if (whatsappIsNotInstalled()) {
-                holder.whatsappCl.visibility = View.GONE
-            } else {
-                holder.whatsappCl.visibility = View.VISIBLE
-            }
-            if (getItem(position).getFirstMail().isEmpty()) {
-                holder.mailCl.visibility = View.GONE
-            } else {
-                holder.mailCl.visibility = View.VISIBLE
-            }
-            if (getItem(position).getFirstPhoneNumber().isEmpty()) {
-                holder.callCl.visibility = View.GONE
-                holder.smsCl.visibility = View.GONE
-            } else {
-                holder.callCl.visibility = View.VISIBLE
-                holder.smsCl.visibility = View.VISIBLE
-            }
+        if (getItem(position).getFirstMail().isEmpty()) {
+            holder.mailCl.visibility = View.GONE
+        } else {
+            holder.mailCl.visibility = View.VISIBLE
         }
+        if (getItem(position).getFirstPhoneNumber().isEmpty()) {
+            holder.callCl.visibility = View.GONE
+            holder.smsCl.visibility = View.GONE
+        } else {
+            holder.callCl.visibility = View.VISIBLE
+            holder.smsCl.visibility = View.VISIBLE
+        }
+        if (getItem(position).getMessengerID().isEmpty()) {
+            holder.messengerCl.visibility = View.GONE
+        } else {
+            holder.messengerCl.visibility = View.VISIBLE
+        }
+
+
+        if (!listApp.contains("org.thoughtcrime.securesms")) {
+            holder.signalCl.visibility = View.GONE
+
+        } else {
+            holder.signalCl.visibility = View.VISIBLE
+        }
+
         if (holder.constraintLayout != null) {
-            holder.constraintLayout!!.setOnLongClickListener(longClick)
-            holder.constraintLayout!!.setOnClickListener(listItemClick)
+            holder.constraintLayout?.setOnLongClickListener(longClick)
+            holder.constraintLayout?.setOnClickListener(listItemClick)
         }
         holder.mailCl.setOnClickListener(listener)
         holder.whatsappCl.setOnClickListener(listener)
         holder.callCl.setOnClickListener(listener)
         holder.smsCl.setOnClickListener(listener)
-        holder.callCl.setOnLongClickListener { v: View? ->
+        holder.messengerCl.setOnClickListener(listener)
+        holder.signalCl.setOnClickListener(listener)
+        holder.callCl.setOnLongClickListener {
             val phoneNumber =
                 getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber())
-            if (!phoneNumber.isEmpty()) {
-                callPhone(phoneNumber)
+            if (phoneNumber.isNotEmpty()) {
+                callPhone(phoneNumber, context)
             }
             true
         }
@@ -365,6 +385,20 @@ class ContactRecyclerViewAdapter(
         return listContacts.size.toLong()
     }
 
+    private fun getAppOnPhone(): ArrayList<String> {
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+        val resolveInfoList =
+            (context as MainActivity).packageManager.queryIntentActivities(intent, 0)
+        val packageNameList = ArrayList<String>()
+        for (resolveInfo in resolveInfoList) {
+            val activityInfo = resolveInfo.activityInfo
+            packageNameList.add(activityInfo.applicationInfo.packageName)
+        }
+        return packageNameList
+    }
+
     /**
      * Returns the total number of items in the data set held by the adapter.
      *
@@ -372,165 +406,6 @@ class ContactRecyclerViewAdapter(
      */
     override fun getItemCount(): Int {
         return listContacts.size
-    }
-
-    //    private String converter06To33(String phoneNumber) {
-    //        if (phoneNumber.charAt(0) == '0') {
-    //            return "+33" + phoneNumber;
-    //        }
-    //        return phoneNumber;
-    //    }
-    private fun randomDefaultImage(avatarId: Int): Int {
-        val sharedPreferencesIsMultiColor =
-            context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
-        val multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
-        val sharedPreferencesContactsColor =
-            context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
-        val contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0)
-        return if (multiColor == 0) {
-            when (avatarId) {
-                0 -> R.drawable.ic_user_purple
-                1 -> R.drawable.ic_user_blue
-                2 -> R.drawable.ic_user_cyan_teal
-                3 -> R.drawable.ic_user_green
-                4 -> R.drawable.ic_user_om
-                5 -> R.drawable.ic_user_orange
-                6 -> R.drawable.ic_user_red
-                else -> R.drawable.ic_user_blue
-            }
-        } else {
-            when (contactsColorPosition) {
-                0 -> when (avatarId) {
-                    0 -> R.drawable.ic_user_blue
-                    1 -> R.drawable.ic_user_blue_indigo1
-                    2 -> R.drawable.ic_user_blue_indigo2
-                    3 -> R.drawable.ic_user_blue_indigo3
-                    4 -> R.drawable.ic_user_blue_indigo4
-                    5 -> R.drawable.ic_user_blue_indigo5
-                    6 -> R.drawable.ic_user_blue_indigo6
-                    else -> R.drawable.ic_user_om
-                }
-                1 -> when (avatarId) {
-                    0 -> R.drawable.ic_user_green
-                    1 -> R.drawable.ic_user_green_lime1
-                    2 -> R.drawable.ic_user_green_lime2
-                    3 -> R.drawable.ic_user_green_lime3
-                    4 -> R.drawable.ic_user_green_lime4
-                    5 -> R.drawable.ic_user_green_lime5
-                    else -> R.drawable.ic_user_green_lime6
-                }
-                2 -> when (avatarId) {
-                    0 -> R.drawable.ic_user_purple
-                    1 -> R.drawable.ic_user_purple_grape1
-                    2 -> R.drawable.ic_user_purple_grape2
-                    3 -> R.drawable.ic_user_purple_grape3
-                    4 -> R.drawable.ic_user_purple_grape4
-                    5 -> R.drawable.ic_user_purple_grape5
-                    else -> R.drawable.ic_user_purple
-                }
-                3 -> when (avatarId) {
-                    0 -> R.drawable.ic_user_red
-                    1 -> R.drawable.ic_user_red1
-                    2 -> R.drawable.ic_user_red2
-                    3 -> R.drawable.ic_user_red3
-                    4 -> R.drawable.ic_user_red4
-                    5 -> R.drawable.ic_user_red5
-                    else -> R.drawable.ic_user_red
-                }
-                4 -> when (avatarId) {
-                    0 -> R.drawable.ic_user_grey
-                    1 -> R.drawable.ic_user_grey1
-                    2 -> R.drawable.ic_user_grey2
-                    3 -> R.drawable.ic_user_grey3
-                    4 -> R.drawable.ic_user_grey4
-                    else -> R.drawable.ic_user_grey1
-                }
-                5 -> when (avatarId) {
-                    0 -> R.drawable.ic_user_orange
-                    1 -> R.drawable.ic_user_orange1
-                    2 -> R.drawable.ic_user_orange2
-                    3 -> R.drawable.ic_user_orange3
-                    4 -> R.drawable.ic_user_orange4
-                    else -> R.drawable.ic_user_orange3
-                }
-                6 -> when (avatarId) {
-                    0 -> R.drawable.ic_user_cyan_teal
-                    1 -> R.drawable.ic_user_cyan_teal1
-                    2 -> R.drawable.ic_user_cyan_teal2
-                    3 -> R.drawable.ic_user_cyan_teal3
-                    4 -> R.drawable.ic_user_cyan_teal4
-                    else -> R.drawable.ic_user_cyan_teal
-                }
-                else -> when (avatarId) {
-                    0 -> R.drawable.ic_user_purple
-                    1 -> R.drawable.ic_user_blue
-                    2 -> R.drawable.ic_user_cyan_teal
-                    3 -> R.drawable.ic_user_green
-                    4 -> R.drawable.ic_user_om
-                    5 -> R.drawable.ic_user_orange
-                    6 -> R.drawable.ic_user_red
-                    else -> R.drawable.ic_user_blue
-                }
-            }
-        }
-    }
-
-    private fun base64ToBitmap(base64: String): Bitmap {
-        val decodedString = Base64.decode(base64, Base64.DEFAULT)
-        val options = BitmapFactory.Options()
-        //options.inSampleSize = 2;
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size, options)
-    }
-
-    fun callPhone(phoneNumber: String) {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CALL_PHONE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val PERMISSION_CALL_RESULT = 1
-            ActivityCompat.requestPermissions(
-                (context as Activity),
-                arrayOf(Manifest.permission.CALL_PHONE),
-                PERMISSION_CALL_RESULT
-            )
-            phonePermission = phoneNumber
-        } else {
-            //Intent intent=new Intent(Intent.ACTION_CALL);
-            //intent.setData(Uri.parse(getItem(position).getFirstPhoneNumber()));
-            val sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-            val popup = sharedPreferences.getBoolean("popup", true)
-            if (popup && phonePermission.isEmpty()) {
-                MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-                    .setTitle(R.string.main_contact_grid_title)
-                    .setMessage(R.string.main_contact_grid_message)
-                    .setPositiveButton(android.R.string.yes) { dialog: DialogInterface?, id: Int ->
-                        context.startActivity(
-                            Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
-                        )
-                    }
-                    .setNegativeButton(android.R.string.no, null)
-                    .show()
-            } else {
-                context.startActivity(
-                    Intent(
-                        Intent.ACTION_CALL,
-                        Uri.fromParts("tel", phoneNumber, null)
-                    )
-                )
-                phonePermission = ""
-            }
-        }
-    } //code duplicate à mettre dans contactAllInfo
-
-    private fun whatsappIsNotInstalled(): Boolean {
-        val pm = context.packageManager
-        return try {
-            pm.getApplicationInfo("com.whatsapp", 0)
-            false
-        } catch (e: Exception) {
-            true
-        }
     }
 
     private fun slideUp(view: View?) {
@@ -561,10 +436,13 @@ class ContactRecyclerViewAdapter(
             view.findViewById(R.id.list_contact_item_constraint_whatsapp)
         var mailCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_mail)
         var editCl: RelativeLayout? = view.findViewById(R.id.list_contact_item_constraint_edit)
+        var messengerCl: RelativeLayout =
+            view.findViewById(R.id.list_contact_item_constraint_messenger)
+        var signalCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_signal)
     }
 
     init {
-        listContacts = listContacts
+        listContacts = contactManager.contactList
         lastSelectMenuLen1 = null
     }
 }

@@ -733,6 +733,7 @@ class NotificationListener : NotificationListenerService() {
         const val WHATSAPP_SERVICE = "com.whatsapp"
         const val GMAIL_PACKAGE = "com.google.android.gm"
         const val OUTLOOK_PACKAGE = "com.microsoft.office.outlook"
+        const val SIGNAL_PACKAGE = "org.thoughtcrime.securesms"
         const val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
         const val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
         const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
