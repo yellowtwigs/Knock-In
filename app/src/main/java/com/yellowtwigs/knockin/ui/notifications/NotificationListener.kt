@@ -102,8 +102,6 @@ class NotificationListener : NotificationListenerService() {
                             sbp.changeToContactName(contact)
                     } else {
                         contact = contactManager.getContactWithName(name, app)
-
-                        Log.i("notificationTone", "100 : ${contact?.contactDB?.firstName}")
                     }
 
                     val notification = saveNotification(sbp, contactManager.getContactId(name))

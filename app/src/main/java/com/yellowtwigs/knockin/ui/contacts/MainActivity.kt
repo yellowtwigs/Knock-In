@@ -56,6 +56,7 @@ import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
+import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -745,13 +746,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         listOfItemSelected.clear()
                         listOfItemSelected.addAll(gestionnaireContacts!!.contactList)
                         if (len > 1) {
-                            gridViewAdapter!!.listOfItemSelected = listOfItemSelected
-                            gridViewAdapter!!.notifyDataSetChanged()
+                            gridViewAdapter?.listOfItemSelected = listOfItemSelected
+                            gridViewAdapter?.notifyDataSetChanged()
                         } else {
-                            recyclerViewAdapter!!.notifyDataSetChanged()
-                            recyclerViewAdapter!!.listOfItemSelected = listOfItemSelected
+                            recyclerViewAdapter?.notifyDataSetChanged()
+                            recyclerViewAdapter?.listOfItemSelected = listOfItemSelected
                         }
-                        main_ToolbarMultiSelectModeTitle!!.text =
+                        main_ToolbarMultiSelectModeTitle?.text =
                             listOfItemSelected.size.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
 
                     }
@@ -859,7 +860,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 //en fonction de l'affichage on update soit la grid soit la list view
                 if (length > 1) {
                     gridViewAdapter =
-                        ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, length)
+                        ContactGridViewAdapter(this@MainActivity, gestionnaireContacts!!, length)
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
                     recyclerViewAdapter = ContactRecyclerViewAdapter(
@@ -924,30 +925,30 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             if (len >= 3) {
                 gridViewAdapter =
-                    ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                main_GridView!!.adapter = gridViewAdapter
-                main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
-                main_FloatingButtonMultiChannel!!.visibility = View.GONE
+                    ContactGridViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+                main_GridView?.adapter = gridViewAdapter
+                main_FloatingButtonAddNewContact?.visibility = View.VISIBLE
+                main_FloatingButtonMultiChannel?.visibility = View.GONE
 
-                main_FloatingButtonMail!!.visibility = View.GONE
-                main_FloatingButtonSMS!!.visibility = View.GONE
-                main_FloatingButtonGroup!!.visibility = View.GONE
+                main_FloatingButtonMail?.visibility = View.GONE
+                main_FloatingButtonSMS?.visibility = View.GONE
+                main_FloatingButtonGroup?.visibility = View.GONE
             } else {
-                main_RecyclerView!!.adapter =
+                main_RecyclerView?.adapter =
                     ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
-                main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
-                main_FloatingButtonMultiChannel!!.visibility = View.GONE
+                main_FloatingButtonAddNewContact?.visibility = View.VISIBLE
+                main_FloatingButtonMultiChannel?.visibility = View.GONE
 
-                main_FloatingButtonMail!!.visibility = View.GONE
-                main_FloatingButtonSMS!!.visibility = View.GONE
-                main_FloatingButtonGroup!!.visibility = View.GONE
+                main_FloatingButtonMail?.visibility = View.GONE
+                main_FloatingButtonSMS?.visibility = View.GONE
+                main_FloatingButtonGroup?.visibility = View.GONE
             }
 
             refreshActivity()
         }
 
         // En mode Multiselect, lors du click sur le Floating Button Group, ouvre une Popup création de groupe
-        main_FloatingButtonGroup!!.setOnClickListener {
+        main_FloatingButtonGroup?.setOnClickListener {
             val iterator: IntIterator?
             val listOfContactSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
@@ -964,7 +965,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         if (fromStartActivity) {
             val sortByPriority = Runnable {
-                gestionnaireContacts!!.sortContactByPriority()
+                gestionnaireContacts?.sortContactByPriority()
                 val sharedDefaultTriPreferences =
                     getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                 val len = sharedDefaultTriPreferences.getInt("gridview", 1)
@@ -975,19 +976,19 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 runOnUiThread {
                     if (len > 1) {
                         gridViewAdapter =
-                            ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-                        main_GridView!!.adapter = gridViewAdapter
-                        main_GridView!!.visibility = View.VISIBLE
+                            ContactGridViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+                        main_GridView?.adapter = gridViewAdapter
+                        main_GridView?.visibility = View.VISIBLE
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(
                             this@MainActivity,
                             gestionnaireContacts!!,
                             len
                         )
-                        main_RecyclerView!!.adapter = recyclerViewAdapter
-                        main_RecyclerView!!.visibility = View.VISIBLE
+                        main_RecyclerView?.adapter = recyclerViewAdapter
+                        main_RecyclerView?.visibility = View.VISIBLE
                     }
-                    main_loadingPanel!!.visibility = View.GONE
+                    main_loadingPanel?.visibility = View.GONE
                 }
             }
             main_mDbWorkerThread.postTask(sortByPriority)
@@ -1054,12 +1055,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 1)
         if (len > 1) {
-            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
-            main_GridView!!.adapter = gridViewAdapter
+            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
+            main_GridView?.adapter = gridViewAdapter
         } else {
             recyclerViewAdapter =
                 ContactRecyclerViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
-            main_RecyclerView!!.adapter = recyclerViewAdapter
+            main_RecyclerView?.adapter = recyclerViewAdapter
         }
     }
 
@@ -1285,7 +1286,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (listOfItemSelected.size == 0) {
             val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val len = sharedPreferences.getInt("gridview", 4)
-            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.adapter = gridViewAdapter
 
@@ -1686,8 +1687,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             PERMISSION_CALL_RESULT -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (main_GridView!!.visibility == View.VISIBLE) {
-                        gridViewAdapter!!.callPhone(gridViewAdapter!!.phonePermission)
+                    if (main_GridView?.visibility == View.VISIBLE) {
+                        callPhone(gridViewAdapter?.phonePermission.toString(), this)
                     } else {
                         Toast.makeText(
                             this,
@@ -1833,7 +1834,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         }
 
         if (len > 1) {
-            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+            gridViewAdapter = ContactGridViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
             main_GridView!!.adapter = gridViewAdapter
         } else {
             recyclerViewAdapter =
@@ -1880,7 +1881,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 item.isChecked = true
                 if (len > 1) {
                     gridViewAdapter =
-                        ContactGridViewAdapter(this@MainActivity, gestionnaireContacts, len)
+                        ContactGridViewAdapter(this@MainActivity, gestionnaireContacts!!, len)
                     main_GridView!!.adapter = gridViewAdapter
                     main_GridView!!.visibility = View.VISIBLE
                 } else {

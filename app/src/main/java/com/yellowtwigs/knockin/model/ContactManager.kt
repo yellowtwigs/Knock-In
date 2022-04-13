@@ -514,13 +514,13 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         while (phonecontact!!.moveToNext()) {
             //recupert l'id du contact
             val phoneId =
-                phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+                phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
             //recupert l'email du contact
             var phoneEmail =
-                phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
+                phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
             //recupert le tag de l'email
             var phoneTag =
-                phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
+                phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE))
             if (phoneEmail == null)
                 phoneEmail = ""
             if (phoneTag == null) {
@@ -562,16 +562,16 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         while (phonecontact!!.moveToNext()) {
             //récupère l'id d'un contact
             val phoneId =
-                phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
+                phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
             //récupère le numéro de téléphone d'un contact
             var phoneNumber =
-                phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             //récupère l'id de la photo de profile d'un contact
             var phonePic =
-                phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+                phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
             //récupère le tag du numéro de téléphone
             var phoneTag =
-                phonecontact?.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
+                phonecontact.getString(phonecontact.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
             if (phoneNumber == null)
                 phoneNumber = ""
             //on check si le contact possède une photo
@@ -1287,6 +1287,12 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             "outlook" -> {
                 return getContact(name)
             }
+            "Signal" -> {
+                return getContact(name)
+            }
+            "signal" -> {
+                return getContact(name)
+            }
             "Messenger" -> {
                 return getContact(name)
             }
@@ -1298,6 +1304,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     }
 
     fun getContact(name: String): ContactWithAllInformation? {
+        Log.i("getContact", "$name")
         if (name.contains(" ")) {
             val array = name.toCharArray().toList()
             val array2 = arrayListOf<Char>()

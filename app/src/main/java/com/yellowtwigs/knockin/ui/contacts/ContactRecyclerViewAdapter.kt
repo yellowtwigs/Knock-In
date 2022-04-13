@@ -28,6 +28,7 @@ import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import java.sql.DriverManager
 import java.util.*
@@ -63,7 +64,7 @@ class ContactRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        listApp = getAppOnPhone()
+        listApp = getAppOnPhone(context as MainActivity)
         view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_contact_item_layout, parent, false)
         return ContactViewHolder(view!!)
@@ -383,20 +384,6 @@ class ContactRecyclerViewAdapter(
 
     override fun getItemId(position: Int): Long {
         return listContacts.size.toLong()
-    }
-
-    private fun getAppOnPhone(): ArrayList<String> {
-        val intent = Intent(Intent.ACTION_MAIN, null)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-        val resolveInfoList =
-            (context as MainActivity).packageManager.queryIntentActivities(intent, 0)
-        val packageNameList = ArrayList<String>()
-        for (resolveInfo in resolveInfoList) {
-            val activityInfo = resolveInfo.activityInfo
-            packageNameList.add(activityInfo.applicationInfo.packageName)
-        }
-        return packageNameList
     }
 
     /**

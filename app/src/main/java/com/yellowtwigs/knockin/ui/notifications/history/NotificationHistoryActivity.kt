@@ -51,6 +51,7 @@ import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 
 
 /**
@@ -609,6 +610,8 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             "com.twitter.android" -> goToTwitter()
 
+            "org.thoughtcrime.securesms" -> goToSignal(this)
+
             "com.skype.raider" -> goToSkype()
 
             "com.linkedin.android" -> goToLinkedin()
@@ -616,7 +619,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     fun recyclerLongClick(position: Int) {
-
         updateFilterMultiSelect()
 
         if (listOfItemSelected.contains(notification_history_ListOfNotificationDB[position])) {
@@ -655,44 +657,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     //endregion
-
-    private fun sendMail(addressMail: String, msg: String) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL, addressMail)
-        intent.data = Uri.parse("mailto:")
-        intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, msg)
-
-        startActivity(intent)
-    }
-
-    private fun sendMessageWithWhatsapp(phoneNumber: String, msg: String) {
-
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        val message = "phone=" + converter06To33(phoneNumber)
-        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
-
-        startActivity(intent)
-    }
-
-    private fun appIsInstalled(): Boolean {
-        val pm = packageManager
-        return try {
-            pm.getApplicationInfo("com.whatsapp", 0)
-            true
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    private fun openSms(phoneNumber: String, message: String) {
-        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.putExtra("sms_body", message)
-
-        startActivity(intent)
-    }
 
     private fun goToSkype() {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
