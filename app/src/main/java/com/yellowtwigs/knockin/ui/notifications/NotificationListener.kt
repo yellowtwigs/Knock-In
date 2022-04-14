@@ -131,17 +131,10 @@ class NotificationListener : NotificationListenerService() {
                                                 val minutesStart =
                                                     convertTimeToMinutes(startTime)
 
-
-                                                Log.i("minutes", "hour : $hourStart")
-                                                Log.i("minutes", "minutes : $minutesStart")
-
                                                 val endTime =
                                                     convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
                                                 val hourEnd = convertTimeToHour(endTime)
                                                 val minutesEnd = convertTimeToMinutes(endTime)
-
-                                                Log.i("minutes", "hour : $hourEnd")
-                                                Log.i("minutes", "minutes : $minutesEnd")
 
                                                 if (today in 1..4 || today == 7) {
                                                     if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {

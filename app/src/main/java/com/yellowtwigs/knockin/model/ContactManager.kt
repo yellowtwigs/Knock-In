@@ -1299,6 +1299,12 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             "messenger" -> {
                 return getContact(name)
             }
+            "Telegram" -> {
+                return getContact(name)
+            }
+            "telegram" -> {
+                return getContact(name)
+            }
         }
         return null
     }

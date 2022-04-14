@@ -12,12 +12,20 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
+import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
+import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
+import com.yellowtwigs.knockin.utils.ContactGesture.openSms
+import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -88,15 +96,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
             contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
         }
 
-        Log.i(
-            "getContact",
-            "contact name 1 : ${sbp?.statusBarNotificationInfo?.get("android.title")}"
-        )
-        Log.i("getContact", "contact name 2 : ${contact?.contactDB?.firstName}")
-        Log.i("getContact", "is custom sound : ${contact?.contactDB?.isCustomSound}")
-        Log.i("getContact", "notification sound : ${contact?.contactDB?.notificationSound}")
-        Log.i("getContact", "notification tone : ${contact?.contactDB?.notificationTone}")
-
         if (contact != null) {
             contact.contactDB?.apply {
                 currentNotificationSound = notificationSound
@@ -106,6 +105,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 soundRingtone()
             }
         }
+
+        Log.i("appNotifier", "${sbp?.appNotifier}")
 
         when (sbp?.appNotifier) {
             "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
@@ -122,7 +123,19 @@ class NotificationAlarmActivity : AppCompatActivity() {
             }
             "com.microsoft.office.outlook" -> {
                 isSMS = false
-                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_circular_mail)
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_outlook)
+            }
+            "org.thoughtcrime.securesms" -> {
+                isSMS = false
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_circular_signal)
+            }
+            "org.telegram.messenger" -> {
+                isSMS = false
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_telegram)
+            }
+            "com.facebook.katana" -> {
+                isSMS = false
+                notification_alarm_ReceiveMessageImage?.setImageResource(R.drawable.ic_circular_messenger)
             }
         }
 
@@ -159,31 +172,64 @@ class NotificationAlarmActivity : AppCompatActivity() {
             notification_alarm_ReceiveMessageLayout?.setOnClickListener {
                 if (isSMS) {
                     if (contact != null) {
-                        openSms(contact.getFirstPhoneNumber())
+                        openSms(contact.getFirstPhoneNumber(), this@NotificationAlarmActivity)
                     } else {
-                        openSms(statusBarNotificationInfo["android.title"] as String)
-                    }
-                } else if (appNotifier == "com.whatsapp") {
-                    if (contact != null) {
-                        openWhatsapp(contact.getFirstPhoneNumber())
-                    } else {
-                        openWhatsapp(statusBarNotificationInfo["android.title"] as String)
-                    }
-                } else if (appNotifier == "com.google.android.gm") {
-                    val appIntent = Intent(Intent.ACTION_VIEW)
-                    appIntent.setClassName(
-                        "com.google.android.gm",
-                        "com.google.android.gm.ConversationListActivityGmail"
-                    )
-                    try {
-                        startActivity(appIntent)
-                    } catch (e: ActivityNotFoundException) {
-                        startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://gmail.com/")
-                            )
+                        openSms(
+                            statusBarNotificationInfo["android.title"] as String,
+                            this@NotificationAlarmActivity
                         )
+                    }
+                } else {
+                    when (appNotifier) {
+                        "com.whatsapp" -> {
+                            if (contact != null) {
+                                openWhatsapp(
+                                    contact.getFirstPhoneNumber(),
+                                    this@NotificationAlarmActivity
+                                )
+                            } else {
+                                openWhatsapp(
+                                    statusBarNotificationInfo["android.title"] as String,
+                                    this@NotificationAlarmActivity
+                                )
+                            }
+                        }
+                        "com.google.android.gm" -> {
+                            val appIntent = Intent(Intent.ACTION_VIEW)
+                            appIntent.setClassName(
+                                "com.google.android.gm",
+                                "com.google.android.gm.ConversationListActivityGmail"
+                            )
+                            try {
+                                startActivity(appIntent)
+                            } catch (e: ActivityNotFoundException) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://gmail.com/")
+                                    )
+                                )
+                            }
+                        }
+                        "com.microsoft.office.outlook" -> {
+                            goToOutlook(this@NotificationAlarmActivity)
+                        }
+                        "org.thoughtcrime.securesms" -> {
+                            goToSignal(this@NotificationAlarmActivity)
+                        }
+                        "org.telegram.messenger" -> {
+                            goToTelegram(this@NotificationAlarmActivity)
+                        }
+                        "com.facebook.katana" -> {
+                            if (contact != null) {
+                                openMessenger(
+                                    contact.getMessengerID(),
+                                    this@NotificationAlarmActivity
+                                )
+                            } else {
+                                openMessenger("", this@NotificationAlarmActivity)
+                            }
+                        }
                     }
                 }
 
@@ -204,30 +250,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
         }
     }
 
-    private fun openSms(phoneNumber: String) {
-        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-
-        startActivity(intent)
-        finish()
-    }
-
-    private fun openWhatsapp(phoneNumber: String) {
-
-        val intent = Intent(Intent.ACTION_VIEW)
-        val message = "phone=" + converter06To33(phoneNumber)
-        intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message")
-
-        startActivity(intent)
-        finish()
-    }
-
-    private fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0] == '0') {
-            "+33 $phoneNumber"
-        } else phoneNumber
-    }
-
     override fun onStop() {
         super.onStop()
         finish()
@@ -235,9 +257,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private fun soundRingtone() {
         alarmSound?.stop()
-        Log.i("getContact", "currentIsCustomSound : ${currentIsCustomSound}")
-        Log.i("getContact", "currentNotificationSound : ${currentNotificationSound}")
-        Log.i("getContact", "currentNotificationTone : ${currentNotificationTone}")
         alarmSound = if (currentIsCustomSound) {
             MediaPlayer.create(this, Uri.parse(currentNotificationTone))
         } else {

@@ -51,6 +51,7 @@ import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 
 
@@ -606,7 +607,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
             "com.instagram.android" -> goToInstagramPage()
 
-            "com.microsoft.office.outlook" -> goToOutlook()
+            "com.microsoft.office.outlook" -> goToOutlook(this)
 
             "com.twitter.android" -> goToTwitter()
 
@@ -697,20 +698,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse("https://twitter.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToOutlook() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("ms-outlook://emails"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://outlook.com/")
                 )
             )
         }

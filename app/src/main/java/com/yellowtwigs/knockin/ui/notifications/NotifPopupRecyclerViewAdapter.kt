@@ -31,6 +31,9 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.StatusBarParcelable
+import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
+import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import java.util.*
@@ -125,6 +128,16 @@ class NotifPopupRecyclerViewAdapter(
                 holder.buttonSend?.visibility = View.INVISIBLE
                 holder.messageToSendEditText?.visibility = View.INVISIBLE
             }
+            "Telegram" -> {
+                holder.callButton?.visibility = View.INVISIBLE
+                holder.buttonSend?.visibility = View.INVISIBLE
+                holder.messageToSendEditText?.visibility = View.INVISIBLE
+            }
+            "Signal" -> {
+                holder.callButton?.visibility = View.INVISIBLE
+                holder.buttonSend?.visibility = View.INVISIBLE
+                holder.messageToSendEditText?.visibility = View.INVISIBLE
+            }
         }
 
         if (newMessage && System.currentTimeMillis() - NotificationListener.adapterNotification!!.getlastChangeMillis() <= 10000) {
@@ -152,7 +165,6 @@ class NotifPopupRecyclerViewAdapter(
 
         holder.notifContent?.text =
             sbp.statusBarNotificationInfo["android.title"].toString() + ":" + sbp.statusBarNotificationInfo["android.text"]
-        //appImg.setImageResource(getApplicationNotifier(sbp));
 
         holder.goToAppButton?.setOnClickListener {
             NotificationListener.alarmSound?.stop()
@@ -174,9 +186,9 @@ class NotifPopupRecyclerViewAdapter(
                     closeNotificationPopup()
                 }
                 "Messenger" -> {
-                    contact!!.getMessengerID()
-                    if (contact.getMessengerID() != "") {
-                        openMessenger(contact.getMessengerID())
+                    contact?.getMessengerID()
+                    if (contact?.getMessengerID() != "") {
+                        contact?.getMessengerID()?.let { it1 -> openMessenger(it1, context) }
                     } else {
                         val intent =
                             Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/"))
@@ -214,6 +226,12 @@ class NotifPopupRecyclerViewAdapter(
                         openSms(sbp.statusBarNotificationInfo["android.title"].toString(), "")
                     }
                     closeNotificationPopup()
+                }
+                "Signal" -> {
+                    goToSignal(context)
+                }
+                "Telegram" -> {
+                    goToTelegram(context)
                 }
             }
         }
@@ -289,10 +307,12 @@ class NotifPopupRecyclerViewAdapter(
 
                 when (convertPackageToString(sbp.appNotifier!!, context)) {
                     "WhatsApp" -> {
-                        sendMessageWithWhatsapp(
-                            contact!!.getFirstPhoneNumber(),
-                            holder.messageToSendEditText!!.text.toString()
-                        )
+                        contact?.let {
+                            sendMessageWithWhatsapp(
+                                it.getFirstPhoneNumber(),
+                                holder.messageToSendEditText?.text.toString()
+                            )
+                        }
                         closeNotificationPopup()
                     }
                     "Gmail" -> {
@@ -302,18 +322,17 @@ class NotifPopupRecyclerViewAdapter(
                             sendMail(
                                 contact.getFirstMail(),
                                 sbp.statusBarNotificationInfo["android.text"].toString(),
-                                holder.messageToSendEditText!!.text.toString()
+                                holder.messageToSendEditText?.text.toString()
                             )
                         } else {
                             sendMail(
                                 "",
                                 sbp.statusBarNotificationInfo["android.text"].toString(),
-                                holder.messageToSendEditText!!.text.toString()
+                                holder.messageToSendEditText?.text.toString()
                             )
                         }
                     }
                     "Message" -> {
-//                        if (checkPermission(Manifest.permission.SEND_SMS)) {
                         if (contact != null) {
                             sendMessageWithAndroidMessage(
                                 contact.getFirstPhoneNumber(),
@@ -446,13 +465,6 @@ class NotifPopupRecyclerViewAdapter(
         intent.putExtra(Intent.EXTRA_SUBJECT, mailSubject)
         intent.flags = FLAG_ACTIVITY_NEW_TASK
 
-        context.startActivity(intent)
-    }
-
-    private fun openMessenger(messengerId: String) {
-        val intent =
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$messengerId"))
-        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
 

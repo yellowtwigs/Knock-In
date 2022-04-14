@@ -109,8 +109,61 @@ object ContactGesture {
         }
     }
 
-    fun goToSignal(context: Activity) {
-        val appIntent = context.packageManager.getLaunchIntentForPackage("org.thoughtcrime.securesms")
+    fun goToOutlook(context: Context) {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("ms-outlook://emails"))
+        try {
+            context.startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://outlook.com/")
+                )
+            )
+        }
+    }
+
+    fun goToTelegram(context: Context) {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
+        try {
+            appIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://web.telegram.org/")
+                )
+            )
+        }
+    }
+
+    fun openMessenger(id: String, context: Context) {
+        try {
+            val intent = if (id == "") {
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/"))
+            } else {
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
+            }
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
+            context.startActivity(intent)
+        }
+    }
+
+    fun openSms(phoneNumber: String, context: Activity) {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        context.startActivity(intent)
+        context.finish()
+    }
+
+    fun goToSignal(context: Context) {
+        val appIntent =
+            context.packageManager.getLaunchIntentForPackage("org.thoughtcrime.securesms")
         try {
             context.startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {

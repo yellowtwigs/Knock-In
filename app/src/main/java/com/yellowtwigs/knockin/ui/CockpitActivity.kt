@@ -43,7 +43,10 @@ import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
+import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 import java.util.*
 
 /**
@@ -448,7 +451,9 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Telegram?.setOnClickListener { goToTelegram() }
+            link_socials_networks_Telegram?.setOnClickListener {
+                goToTelegram(this@CockpitActivity)
+            }
         }
 
         if (!listApp.contains("com.microsoft.office.outlook")) {
@@ -461,7 +466,7 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Outlook?.setOnClickListener { goToOutlook() }
+            link_socials_networks_Outlook?.setOnClickListener { goToOutlook(this@CockpitActivity) }
         }
 
         if (!listApp.contains("com.skype.raider")) {
@@ -824,20 +829,6 @@ class CockpitActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToOutlook() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("ms-outlook://emails"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://outlook.com/")
-                )
-            )
-        }
-    }
-
     private fun goToSkype() {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
         try {
@@ -847,20 +838,6 @@ class CockpitActivity : AppCompatActivity() {
                 Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse("https://skype.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToTelegram() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://web.telegram.org/")
                 )
             )
         }
