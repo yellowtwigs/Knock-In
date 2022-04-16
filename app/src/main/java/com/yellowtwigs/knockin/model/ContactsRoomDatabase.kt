@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
+import androidx.room.ColumnInfo
 import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.model.dao.*
 
@@ -13,7 +14,10 @@ import com.yellowtwigs.knockin.model.dao.*
  * La Classe qui permet de créer la base de données et de la garder à jour
  * @author Ryan Granet
  */
-@Database(entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class, VipNotificationsDB::class, VipSbnDB::class], version = 19)
+@Database(
+    entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class, VipNotificationsDB::class, VipSbnDB::class],
+    version = 20
+)
 abstract class ContactsRoomDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
@@ -32,29 +36,31 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
             }
             synchronized(this) {
                 INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        ContactsRoomDatabase::class.java,
-                        "Contact_database")
-                        .addMigrations(MIGRATION_1_2)
-                        .addMigrations(MIGRATION_2_3)
-                        .addMigrations(MIGRATION_3_4)
-                        .addMigrations(MIGRATION_4_5)
-                        .addMigrations(MIGRATION_5_6)
-                        .addMigrations(MIGRATION_6_7)
-                        .addMigrations(MIGRATION_7_8)
-                        .addMigrations(MIGRATION_8_9)
-                        .addMigrations(MIGRATION_9_10)
-                        .addMigrations(MIGRATION_10_11)
-                        .addMigrations(MIGRATION_11_12)
-                        .addMigrations(MIGRATION_12_13)
-                        .addMigrations(MIGRATION_13_14)
-                        .addMigrations(MIGRATION_14_15)
-                        .addMigrations(MIGRATION_15_16)
-                        .addMigrations(MIGRATION_16_17)
-                        .addMigrations(MIGRATION_17_18)
-                        .addMigrations(MIGRATION_18_19)
-                        .allowMainThreadQueries()
-                        .build()
+                    context.applicationContext,
+                    ContactsRoomDatabase::class.java,
+                    "Contact_database"
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_2_3)
+                    .addMigrations(MIGRATION_3_4)
+                    .addMigrations(MIGRATION_4_5)
+                    .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_6_7)
+                    .addMigrations(MIGRATION_7_8)
+                    .addMigrations(MIGRATION_8_9)
+                    .addMigrations(MIGRATION_9_10)
+                    .addMigrations(MIGRATION_10_11)
+                    .addMigrations(MIGRATION_11_12)
+                    .addMigrations(MIGRATION_12_13)
+                    .addMigrations(MIGRATION_13_14)
+                    .addMigrations(MIGRATION_14_15)
+                    .addMigrations(MIGRATION_15_16)
+                    .addMigrations(MIGRATION_16_17)
+                    .addMigrations(MIGRATION_17_18)
+                    .addMigrations(MIGRATION_18_19)
+                    .addMigrations(MIGRATION_19_20)
+                    .allowMainThreadQueries()
+                    .build()
                 return INSTANCE
             }
         }
@@ -160,6 +166,12 @@ abstract class ContactsRoomDatabase : RoomDatabase() {
         private val MIGRATION_18_19 = object : Migration(18, 19) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN audio_file_name TEXT DEFAULT '' NOT NULL")
+            }
+        }
+        private val MIGRATION_19_20 = object : Migration(19, 20) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN has_telegram INTEGER DEFAULT 0 NOT NULL")
+                database.execSQL("ALTER TABLE contacts_table " + " ADD COLUMN has_signal INTEGER DEFAULT 0 NOT NULL")
             }
         }
     }

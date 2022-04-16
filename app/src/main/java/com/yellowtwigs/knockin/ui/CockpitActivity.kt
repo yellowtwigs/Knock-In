@@ -452,7 +452,7 @@ class CockpitActivity : AppCompatActivity() {
             }
         } else {
             link_socials_networks_Telegram?.setOnClickListener {
-                goToTelegram(this@CockpitActivity)
+                goToTelegram(this@CockpitActivity, "")
             }
         }
 

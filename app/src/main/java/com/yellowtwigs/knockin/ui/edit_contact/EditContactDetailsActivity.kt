@@ -113,6 +113,10 @@ class EditContactDetailsActivity : AppCompatActivity() {
     private var edit_contact_image64: String = ""
     private var edit_contact_priority: Int = 1
 
+    private var hasWhatsapp = 0
+    private var hasTelegram = 0
+    private var hasSignal = 0
+
     private var alarmTone = 1
 
     private var edit_contact_GroupConstraintLayout: ConstraintLayout? = null
@@ -266,6 +270,9 @@ class EditContactDetailsActivity : AppCompatActivity() {
             edit_contact_mail_name = contact.contactDB?.mail_name!!
             edit_contact_image64 = contact.contactDB?.profilePicture64!!
             edit_contact_RoundedImageView?.setImageBitmap(base64ToBitmap(edit_contact_image64))
+            hasWhatsapp = contact.contactDB?.hasWhatsapp!!
+            hasTelegram = contact.contactDB?.hasTelegram!!
+            hasSignal = contact.contactDB?.hasSignal!!
         } else {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
             val callDb = Callable {
@@ -321,6 +328,10 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 val image64 = edit_contact_image64
                 edit_contact_RoundedImageView!!.setImageBitmap(base64ToBitmap(image64))
             }
+
+            hasWhatsapp = contact.contactDB?.hasWhatsapp!!
+            hasTelegram = contact.contactDB?.hasTelegram!!
+            hasSignal   = contact.contactDB?.hasSignal!!
 
             contactPriorityBorder(contact.contactDB!!, edit_contact_RoundedImageView!!, this)
 
@@ -1086,13 +1097,15 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 edit_contact_imgString,
                                 1,
                                 messengerInput.editText?.text?.toString()!!,
-                                1,
+                                hasWhatsapp,
                                 notificationTone,
                                 notificationSound,
                                 isCustomSound,
                                 vipScheduleValue,
                                 hourLimit,
-                                audioFileName
+                                audioFileName,
+                                hasTelegram,
+                                hasSignal
                             )
                         )
                     } else {
@@ -1107,13 +1120,15 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 edit_contact_imgString,
                                 0,
                                 messengerInput.editText?.text?.toString()!!,
-                                1,
+                                hasWhatsapp,
                                 notificationTone,
                                 notificationSound,
                                 isCustomSound,
                                 vipScheduleValue,
                                 hourLimit,
-                                audioFileName
+                                audioFileName,
+                                hasTelegram,
+                                hasSignal
                             )
                         )
                     }

@@ -67,5 +67,7 @@ data class ContactDB(
     /**
      * 10h30 to 19h30
      */
-    @ColumnInfo(name = "audio_file_name") var audioFileName: String
+    @ColumnInfo(name = "audio_file_name") var audioFileName: String,
+    @ColumnInfo(name = "has_telegram") val hasTelegram: Int,
+    @ColumnInfo(name = "has_signal") val hasSignal: Int
 )

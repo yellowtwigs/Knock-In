@@ -1,21 +1,14 @@
 package com.yellowtwigs.knockin.ui.contacts
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
-import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,10 +21,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
@@ -39,19 +30,18 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
+import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
-import java.sql.DriverManager
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 /**
  * La Classe qui permet de remplir la convertView avec les bon éléments
@@ -211,6 +201,7 @@ class ContactGridViewAdapter(
         val buttonMail = ImageView(context)
         val buttonMessenger = ImageView(context)
         val buttonSignal = ImageView(context)
+        val buttonTelegram = ImageView(context)
 
         buttonCall.id = 1
         buttonSMS.id = 2
@@ -219,6 +210,7 @@ class ContactGridViewAdapter(
         buttonMail.id = 5
         buttonMessenger.id = 6
         buttonSignal.id = 7
+        buttonTelegram.id = 8
 
         if (contact?.favorite == 1) {
             holder.gridAdapterFavoriteShine.visibility = View.VISIBLE
@@ -233,6 +225,7 @@ class ContactGridViewAdapter(
         buttonMail.setImageResource(R.drawable.ic_circular_mail)
         buttonMessenger.setImageResource(R.drawable.ic_circular_messenger)
         buttonSignal.setImageResource(R.drawable.ic_circular_signal)
+        buttonTelegram.setImageResource(R.drawable.ic_circular_telegram)
 
         val builderIcon = SubActionButton.Builder(context as Activity)
         builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular))
@@ -297,13 +290,7 @@ class ContactGridViewAdapter(
             .attachTo(holder.contactRoundedImageView)
             .setStateChangeListener(this)
             .disableAnimations()
-        if (appIsInstalled() && getItem(position).getFirstPhoneNumber() != "" && contact?.hasWhatsapp == 1) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonWhatsApp, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
+
         if (getItem(position).getFirstMail() != "") {
             builder.addSubActionView(
                 builderIcon.setContentView(buttonMail, layoutParams).build(),
@@ -330,20 +317,31 @@ class ContactGridViewAdapter(
                 diametreButton
             )
         }
-        if (listApp.contains("org.thoughtcrime.securesms")) {
+
+        if (isWhatsappInstalled(context) && contact?.hasWhatsapp == 1) {
+            builder.addSubActionView(
+                builderIcon.setContentView(buttonWhatsApp, layoutParams).build(),
+                diametreButton,
+                diametreButton
+            )
+        }
+
+        if (listApp.contains("org.thoughtcrime.securesms") && contact?.hasSignal == 1) {
             builder.addSubActionView(
                 builderIcon.setContentView(buttonSignal, layoutParams).build(),
                 diametreButton,
                 diametreButton
             )
         }
-        /*if (!getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber()).equals("")) {
-            builder.addSubActionView(builderIcon.setContentView(buttonCall, layoutParams).build(), diametreButton, diametreButton);
-        }*/
 
-        /* if( appIsInstalled( "com.facebook.orca")){
-            builder.addSubActionView(builderIcon.setContentView(buttonMessenger,layoutParams).build(),diametreButton,diametreButton);
-        }*/
+        if (listApp.contains("org.telegram.messenger") && contact?.hasTelegram == 1) {
+            builder.addSubActionView(
+                builderIcon.setContentView(buttonTelegram, layoutParams).build(),
+                diametreButton,
+                diametreButton
+            )
+        }
+
         val quickMenu = builder.build()
         listCircularMenu.add(quickMenu)
 
@@ -394,6 +392,12 @@ class ContactGridViewAdapter(
                 }
                 buttonSignal.id -> {
                     goToSignal(context as MainActivity)
+                }
+                buttonTelegram.id -> {
+                    goToTelegram(
+                        context,
+                        contactManager.contactList[position].getFirstPhoneNumber()
+                    )
                 }
             }
             selectMenu?.close(false)
@@ -481,6 +485,7 @@ class ContactGridViewAdapter(
         buttonEdit.setOnClickListener(buttonListener)
         buttonMail.setOnClickListener(buttonListener)
         buttonSignal.setOnClickListener(buttonListener)
+        buttonTelegram.setOnClickListener(buttonListener)
     }
 
     override fun getItemId(position: Int): Long {
@@ -529,16 +534,6 @@ class ContactGridViewAdapter(
             contactRoundedImageView = view.findViewById(R.id.contactRoundedImageView)
             gridAdapterFavoriteShine = view.findViewById(R.id.grid_adapter_favorite_shine)
             //            heightWidthImage = holder.contactRoundedImageView.getLayoutParams().height;
-        }
-    }
-
-    private fun appIsInstalled(): Boolean {
-        val pm = context.packageManager
-        return try {
-            pm.getApplicationInfo("com.whatsapp", 0)
-            true
-        } catch (e: Exception) {
-            false
         }
     }
 

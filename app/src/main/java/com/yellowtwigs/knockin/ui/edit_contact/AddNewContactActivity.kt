@@ -256,7 +256,6 @@ class AddNewContactActivity : AppCompatActivity() {
                                 null,
                                 add_new_contact_FirstName!!.editText!!.text.toString(),
                                 add_new_contact_LastName!!.editText!!.text.toString(),
-
                                 add_new_contact_Mail_Identifier!!.editText!!.text.toString(),
                                 avatar,
                                 add_new_contact_Priority!!.selectedItemPosition,
@@ -269,7 +268,9 @@ class AddNewContactActivity : AppCompatActivity() {
                                 0,
                                 1,
                                 "",
-                                ""
+                                "",
+                                0,
+                                0
                             )
 
 
@@ -400,7 +401,9 @@ class AddNewContactActivity : AppCompatActivity() {
                             0,
                             1,
                             "",
-                            ""
+                            "",
+                            0,
+                            0
                         )
 
                         println(contactData)

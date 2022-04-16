@@ -218,7 +218,15 @@ class NotificationAlarmActivity : AppCompatActivity() {
                             goToSignal(this@NotificationAlarmActivity)
                         }
                         "org.telegram.messenger" -> {
-                            goToTelegram(this@NotificationAlarmActivity)
+                            if (contact != null) {
+                                Log.i("openuTeleguramu", "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}")
+//                                goToTelegram(
+//                                    this@NotificationAlarmActivity,
+//                                    "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}"
+//                                )
+                            } else {
+                                goToTelegram(this@NotificationAlarmActivity, "")
+                            }
                         }
                         "com.facebook.katana" -> {
                             if (contact != null) {

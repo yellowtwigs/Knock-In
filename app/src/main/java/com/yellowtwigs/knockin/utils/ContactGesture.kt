@@ -10,12 +10,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
+
 
 /**
  * L'objet qui permet d'ouvrir messenger, whatsapp et gmail
@@ -123,10 +123,25 @@ object ContactGesture {
         }
     }
 
-    fun goToTelegram(context: Context) {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
+    fun goToTelegram(context: Context, phoneNumber: String) {
+        val appIntent = if (phoneNumber == "") {
+            Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
+        } else {
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                    "https://t.me/${
+                        converter06To33(phoneNumber).replace(
+                            "\\s".toRegex(),
+                            ""
+                        )
+                    }"
+                )
+            )
+        }
         try {
             appIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            appIntent.setPackage("org.telegram.messenger")
             context.startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
             context.startActivity(

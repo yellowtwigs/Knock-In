@@ -242,6 +242,26 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/list_contact_item_constraint_telegram"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/background_layout_selector"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_signal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/list_contact_item_telegram_iv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_telegram" />
+
+            </RelativeLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

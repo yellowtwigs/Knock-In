@@ -26,6 +26,7 @@ import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
@@ -214,9 +215,12 @@ class ContactRecyclerViewAdapter(
                 holder.signalCl.id -> {
                     goToSignal(context as Activity)
                 }
+                holder.telegramCl.id -> {
+                    goToTelegram(context, getItem(position).getFirstPhoneNumber())
+                }
             }
             if (len == 1) {
-                if (v.id == holder.editCl!!.id) {
+                if (v.id == holder.editCl?.id) {
                     val intent = Intent(context, EditContactDetailsActivity::class.java)
                     intent.putExtra("ContactId", contact.id)
                     intent.putExtra("position", position)
@@ -323,11 +327,25 @@ class ContactRecyclerViewAdapter(
                 }
             }
         }
-        if (!isWhatsappInstalled(context)) {
-            holder.whatsappCl.visibility = View.GONE
-        } else {
+
+        if (isWhatsappInstalled(context) && contact.hasWhatsapp == 1) {
             holder.whatsappCl.visibility = View.VISIBLE
+        } else {
+            holder.whatsappCl.visibility = View.GONE
         }
+
+        if (listApp.contains("org.thoughtcrime.securesms") && contact.hasSignal == 1) {
+            holder.signalCl.visibility = View.VISIBLE
+        } else {
+            holder.signalCl.visibility = View.GONE
+        }
+
+        if (listApp.contains("org.telegram.messenger") && contact.hasTelegram == 1) {
+            holder.telegramCl.visibility = View.VISIBLE
+        } else {
+            holder.telegramCl.visibility = View.GONE
+        }
+
         if (getItem(position).getFirstMail().isEmpty()) {
             holder.mailCl.visibility = View.GONE
         } else {
@@ -344,14 +362,6 @@ class ContactRecyclerViewAdapter(
             holder.messengerCl.visibility = View.GONE
         } else {
             holder.messengerCl.visibility = View.VISIBLE
-        }
-
-
-        if (!listApp.contains("org.thoughtcrime.securesms")) {
-            holder.signalCl.visibility = View.GONE
-
-        } else {
-            holder.signalCl.visibility = View.VISIBLE
         }
 
         if (holder.constraintLayout != null) {
@@ -426,6 +436,8 @@ class ContactRecyclerViewAdapter(
         var messengerCl: RelativeLayout =
             view.findViewById(R.id.list_contact_item_constraint_messenger)
         var signalCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_signal)
+        var telegramCl: RelativeLayout =
+            view.findViewById(R.id.list_contact_item_constraint_telegram)
     }
 
     init {

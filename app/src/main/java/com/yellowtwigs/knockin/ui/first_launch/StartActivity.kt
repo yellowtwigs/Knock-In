@@ -177,19 +177,18 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     webview.loadUrl("https://www.yellowtwigs.com/france")
                 }
                 "de" -> {
-                    println(importContactsButton!!.textSize)
-                    importContactsButton!!.textSize = 10f
-                    activateNotificationsButton!!.textSize = 10f
-                    superpositionButton!!.textSize = 10f
-                    permissionsButton!!.textSize = 10f
+                    importContactsButton?.textSize = 10f
+                    activateNotificationsButton?.textSize = 10f
+                    superpositionButton?.textSize = 10f
+                    permissionsButton?.textSize = 10f
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/germany")
                 }
                 "in" -> {
-                    importContactsButton!!.textSize = 9f
-                    activateNotificationsButton!!.textSize = 9f
-                    superpositionButton!!.textSize = 9f
-                    permissionsButton!!.textSize = 9f
+                    importContactsButton?.textSize = 9f
+                    activateNotificationsButton?.textSize = 9f
+                    superpositionButton?.textSize = 9f
+                    permissionsButton?.textSize = 9f
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/indonesia")
                 }
@@ -214,10 +213,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     webview.loadUrl("https://www.yellowtwigs.com/arabic")
                 }
                 "ru" -> {
-                    importContactsButton!!.textSize = 7f
-                    activateNotificationsButton!!.textSize = 7f
-                    superpositionButton!!.textSize = 7f
-                    permissionsButton!!.textSize = 7f
+                    importContactsButton?.textSize = 7f
+                    activateNotificationsButton?.textSize = 7f
+                    superpositionButton?.textSize = 7f
+                    permissionsButton?.textSize = 7f
                     webview.visibility = View.VISIBLE
                     webview.loadUrl("https://www.yellowtwigs.com/russia")
                 }
@@ -305,10 +304,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 arrayOf(Manifest.permission.READ_CONTACTS),
                 ImportContactsActivity.REQUEST_CODE_READ_CONTACT
             )
-            importContactsButton!!.visibility = View.INVISIBLE
+            importContactsButton?.visibility = View.INVISIBLE
 
             val displayLoading = Runnable {
-                importContactsLoading!!.visibility = View.VISIBLE
+                importContactsLoading?.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
 
@@ -329,7 +328,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             val SPLASH_DISPLAY_LENGHT = 2000
 
             val displayLoading = Runnable {
-                activateNotificationsLoading!!.visibility = View.VISIBLE
+                activateNotificationsLoading?.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
             //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
@@ -339,11 +338,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 }
                 if (isNotificationServiceEnabled()) {
                     val displayLoading = Runnable {
-                        //start_activity_ActivateNotificationsLoading!!.visibility = View.INVISIBLE
-                        //start_activity_ActivateNotificationsCheck!!.visibility = View.VISIBLE
                         Handler().postDelayed({
-                            activateNotificationsLoading!!.visibility = View.INVISIBLE
-                            activateNotificationsCheck!!.visibility = View.VISIBLE
+                            activateNotificationsLoading?.visibility = View.INVISIBLE
+                            activateNotificationsCheck?.visibility = View.VISIBLE
                             val sharedPreferences: SharedPreferences =
                                 getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
@@ -363,8 +360,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     runOnUiThread(displayLoading)
                 } else {
                     val displayLoading = Runnable {
-                        activateNotificationsLoading!!.visibility = View.INVISIBLE
-                        activateNotificationsButton!!.visibility = View.VISIBLE
+                        activateNotificationsLoading?.visibility = View.INVISIBLE
+                        activateNotificationsButton?.visibility = View.VISIBLE
                     }
                     runOnUiThread(displayLoading)
                 }
@@ -390,8 +387,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)),
                 REQUEST_CODE_SMS_AND_CALL
             )
-            permissionsButton!!.visibility = View.INVISIBLE
-            permissionsLoading!!.visibility = View.VISIBLE
+            permissionsButton?.visibility = View.INVISIBLE
+            permissionsLoading?.visibility = View.VISIBLE
             allIsCheckedGOEdition()
         }
 
@@ -588,16 +585,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         return am.isLowRamDevice
     }
 
-    private fun isNetworkConnected(): Boolean {
-        try {
-            val address: InetAddress = InetAddress.getByName("www.google.com");
-            return !address.equals("")
-        } catch (e: UnknownHostException) {
-            println("OI OI OI")
-        }
-        return false
-    }
-
     /**
      *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
      */
@@ -612,7 +599,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
                 val sync = Runnable {
-                    ContactManager(this).getAllContacsInfoSync(contentResolver)
+                    ContactManager(this).getAllContactsInfoSync(contentResolver)
 
                     val sharedPreferencesSync =
                         getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
@@ -633,7 +620,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     }
 
                     val runnable = Runnable {
-                        importContactsLoading!!.visibility = View.INVISIBLE
+                        importContactsLoading?.visibility = View.INVISIBLE
                         importContactsCheck?.visibility = View.VISIBLE
                         allIsChecked()
                         allIsCheckedGOEdition()
@@ -642,15 +629,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 }
                 workerThread.postTask(sync)
             } else {
-                importContactsLoading!!.visibility = View.INVISIBLE
-                importContactsButton!!.visibility = View.VISIBLE
+                importContactsLoading?.visibility = View.INVISIBLE
+                importContactsButton?.visibility = View.VISIBLE
             }
         }
 
         if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
 
-            permissionsLoading!!.visibility = View.INVISIBLE
-            permissionsCheck!!.visibility = View.VISIBLE
+            permissionsLoading?.visibility = View.INVISIBLE
+            permissionsCheck?.visibility = View.VISIBLE
         }
         allIsChecked()
         allIsCheckedGOEdition()
@@ -764,8 +751,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
      * Si toutes les autorisations sont validées et que les contacts ont fini d'être charger alors nous changeons le bouton passer pour un bouton suivant
      */
     private fun allIsChecked() {
-        if (activateNotificationsCheck!!.visibility == View.VISIBLE &&
-            importContactsCheck!!.visibility == View.VISIBLE
+        if (activateNotificationsCheck?.visibility == View.VISIBLE &&
+            importContactsCheck?.visibility == View.VISIBLE
         ) {
             startActivityNext?.visibility = View.VISIBLE
             startActivitySkip?.visibility = View.GONE
@@ -773,8 +760,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun allIsCheckedGOEdition() {
-        if (importContactsCheck!!.visibility == View.VISIBLE &&
-            permissionsCheck!!.visibility == View.VISIBLE
+        if (importContactsCheck?.visibility == View.VISIBLE &&
+            permissionsCheck?.visibility == View.VISIBLE
         ) {
             startActivityNext?.visibility = View.VISIBLE
             startActivitySkip?.visibility = View.GONE

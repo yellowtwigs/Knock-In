@@ -4,9 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_app_image.xml" value="0.2425" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_circular_messenger.xml" value="0.2535" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_circular_signal.xml" value="0.2535" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_circular_telegram.xml" value="0.2535" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_contact_by_line1_blue.xml" value="0.24144736842105263" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_signal.xml" value="0.2425" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_signal_disable.xml" value="0.3005" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_telegram.xml" value="0.2535" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_whatsapp_disable.xml" value="0.2425" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_cockpit.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_compose_message.xml" value="0.18802083333333333" />

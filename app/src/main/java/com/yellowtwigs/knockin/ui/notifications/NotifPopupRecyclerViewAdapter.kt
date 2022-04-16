@@ -12,6 +12,7 @@ import android.net.Uri
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -231,7 +232,15 @@ class NotifPopupRecyclerViewAdapter(
                     goToSignal(context)
                 }
                 "Telegram" -> {
-                    goToTelegram(context)
+                    if (contact != null) {
+                        Log.i("openuTeleguramu", "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}")
+//                        goToTelegram(
+//                            context,
+//                            "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}"
+//                        )
+                    } else {
+                        goToTelegram(context, "")
+                    }
                 }
             }
         }

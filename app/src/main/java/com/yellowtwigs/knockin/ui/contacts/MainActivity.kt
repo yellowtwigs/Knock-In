@@ -621,7 +621,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     runOnUiThread(displayLoading)
 
                     //on effectue la sync
-                    gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                    gestionnaireContacts!!.getAllContactsInfoSync(contentResolver)
 
                     //on get tout les contact qui on été modifié lors de la last sync et on les stock dans une arrayList
                     val sharedPreferencesSync =
@@ -1700,7 +1700,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             PERMISSION_READ_CONTACT -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 println("permission accept")
-                gestionnaireContacts!!.getAllContacsInfoSync(contentResolver)
+                gestionnaireContacts!!.getAllContactsInfoSync(contentResolver)
                 recreate()
             }
         }
