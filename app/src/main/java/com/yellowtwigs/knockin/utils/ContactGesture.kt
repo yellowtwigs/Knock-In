@@ -153,6 +153,22 @@ object ContactGesture {
         }
     }
 
+    fun goToTelegram(context: Context) {
+        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
+        try {
+            appIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            appIntent.setPackage("org.telegram.messenger")
+            context.startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://web.telegram.org/")
+                )
+            )
+        }
+    }
+
     fun openMessenger(id: String, context: Context) {
         try {
             val intent = if (id == "") {

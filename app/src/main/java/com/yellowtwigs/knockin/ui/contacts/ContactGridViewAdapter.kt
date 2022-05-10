@@ -10,7 +10,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
@@ -21,7 +20,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
@@ -30,6 +28,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
@@ -41,7 +40,6 @@ import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
-
 
 /**
  * La Classe qui permet de remplir la convertView avec les bon éléments
@@ -73,7 +71,7 @@ class ContactGridViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        listApp = getAppOnPhone(context as MainActivity)
+        listApp = getAppOnPhone(context as Activity)
         val view =
             LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false)
         val holder = ViewHolder(view)
@@ -96,7 +94,8 @@ class ContactGridViewAdapter(
                 holder.contactRoundedImageView.setImageResource(
                     randomDefaultImage(
                         contact.profilePicture,
-                        context
+                        context,
+                        "Get"
                     )
                 )
             }
@@ -433,7 +432,8 @@ class ContactGridViewAdapter(
                         holder.contactRoundedImageView.setImageResource(
                             randomDefaultImage(
                                 contact.profilePicture,
-                                context
+                                context,
+                                "Get"
                             )
                         )
                     }
@@ -446,22 +446,16 @@ class ContactGridViewAdapter(
                 }
                 (context as MainActivity).gridMultiSelectItemClick(position)
             } else {
-                val contactGreyPreferences =
-                    context.getSharedPreferences("contactGrey", Context.MODE_PRIVATE)
-//                (context as MainActivity).startActivity(Intent(context, ContactSelectedWithAppsActivity::class.java).putExtra("id", getItem(position).getContactId()))
-                if (quickMenu.isOpen) {
-                    quickMenu.close(true)
-                } else {
-//                    val edit = contactGreyPreferences.edit()
-//                    edit.putInt("contactGrey", position)
-//                    edit.apply()
-                    quickMenu.open(true)
-                }
-
-//                if (contactGreyPreferences.getInt("contactGrey", 0) == 0) {
-//                    holder.gridContactItemLayout.setBackgroundColor(R.color.greyColor)
-//                    holder.gridContactItemLayout.isEnabled = false
+                (context as MainActivity).startActivity(
+                    Intent(
+                        context,
+                        ContactSelectedWithAppsActivity::class.java
+                    ).putExtra("id", getItem(position).getContactId())
+                )
+//                if (quickMenu.isOpen) {
+//                    quickMenu.close(true)
 //                } else {
+//                    quickMenu.open(true)
 //                }
             }
         }
@@ -498,7 +492,7 @@ class ContactGridViewAdapter(
 
     override fun onMenuOpened(floatingActionMenu: FloatingActionMenu) {
         if (selectMenu != null) {
-            selectMenu!!.close(false)
+            selectMenu?.close(false)
         }
         if (multiSelectMode()) {
             floatingActionMenu.close(false)

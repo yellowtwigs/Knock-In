@@ -29,6 +29,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import com.android.billingclient.api.*
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
@@ -39,6 +44,8 @@ import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactDetailDB
 import java.net.InetAddress
 import java.net.UnknownHostException
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Activité qui nous permet d'importer nos contacts et accepter toutes les autorisations liées aux notifications appel et message
@@ -83,6 +90,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var activitySuperpositionVisible = false
     private var clickSuperpositionButton = false
 
+//    private lateinit var callbackManager: CallbackManager
+
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +110,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
 
         setupBillingClient()
+//        setupFacebookLogin()
 
         //region ======================================= FindViewById =======================================
 
@@ -698,7 +708,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
      */
     private fun buildLeaveAlertDialog(): AlertDialog {
         val message = if (importContactsButton?.visibility == View.VISIBLE) {
-            //vérifie que le téléphone ne charge pas les contacts sinon celui-ci prévient l'utilisateur que ces contact ne seront pas tous chargés
             getString(R.string.start_activity_skip_alert_dialog_message_importation)
         } else {
             getString(R.string.start_activity_skip_alert_dialog_message)
@@ -786,6 +795,34 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     //endregion
+
+//    private fun setupFacebookLogin() {
+//        val loginButton = findViewById<LoginButton>(R.id.login_button)
+//        callbackManager = CallbackManager.Factory.create()
+//        loginButton.setPermissions(listOf("user_gender, user_friends"))
+//        loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+//            override fun onSuccess(result: LoginResult) {
+//                Log.d("loginButtonResult", "${result?.accessToken}")
+//                Log.d("loginButtonResult", "Login Successful!")
+//            }
+//
+//            override fun onCancel() {
+//                Log.d("loginButtonResult", "Login Canceled!")
+//            }
+//
+//            override fun onError(error: FacebookException) {
+//                Log.d("loginButtonResult", "${error}")
+//                Log.d("loginButtonResult", "${error?.message}")
+//                Log.d("loginButtonResult", "${error?.cause}")
+//                Log.d("loginButtonResult", "Login Error!")
+//            }
+//        })
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        callbackManager.onActivityResult(requestCode, resultCode, data)
+//        super.onActivityResult(requestCode, resultCode, data)
+//    }
 
     //region =========================================== Lifecycle ==========================================
 

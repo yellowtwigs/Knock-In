@@ -31,7 +31,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.facebook.internal.Utility.arrayList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,6 +52,7 @@ import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 
 
 /**
@@ -82,7 +82,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     private lateinit var notification_history_mDbWorkerThread: DbWorkerThread
 
     private val listOfItemSelected = ArrayList<NotificationDB>()
-    private val notification_history_ListOfNotificationDB = arrayList<NotificationDB>()
+    private val notification_history_ListOfNotificationDB = arrayListOf<NotificationDB>()
 
     private var fromPopup: Boolean = false
 
@@ -574,6 +574,14 @@ class NotificationHistoryActivity : AppCompatActivity() {
             )
 
             "com.facebook.katana" -> goToFacebook()
+
+            "org.telegram.messenger" -> {
+                if (contact != null) {
+                    goToTelegram(this, contact.getFirstPhoneNumber())
+                } else {
+                    goToTelegram(this)
+                }
+            }
 
             "com.facebook.orca" -> {
                 if (contact != null) {

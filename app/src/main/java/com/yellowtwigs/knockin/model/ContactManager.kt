@@ -401,14 +401,17 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                     }
                     if (!isNumeric) {
                         if (firstName != null) {
-                            if (!firstName.contains("Telegram") && !firstName.contains("WhatsApp") && !firstName.contains(
-                                    "com.google"
-                                ) && !firstName.contains("Signal")
+                            if (!firstName.contains("Telegram") && !firstName.contains("WhatsApp") &&
+                                !firstName.contains("com.google") && !firstName.contains("Signal")
                             ) {
                                 if (lastName != null) {
-                                    listOfTriple.add(Triple(firstName, lastName, appsInPhone))
+                                    if (appsInPhone != "com.google") {
+                                        listOfTriple.add(Triple(firstName, lastName, appsInPhone))
+                                    }
                                 } else {
-                                    listOfTriple.add(Triple(firstName, "", appsInPhone))
+                                    if (appsInPhone != "com.google") {
+                                        listOfTriple.add(Triple(firstName, "", appsInPhone))
+                                    }
                                 }
                             }
                         } else {
@@ -417,7 +420,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                         "com.google"
                                     ) && !lastName.contains("Signal")
                                 )
-                                    listOfTriple.add(Triple("", lastName, appsInPhone))
+                                    if (appsInPhone != "com.google") {
+                                        listOfTriple.add(Triple("", lastName, appsInPhone))
+
+                                    }
                             }
                         }
                     }
@@ -451,6 +457,11 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             }
         }
         phoneContact?.close()
+        for(item in listOfTriple){
+            Log.i("listOfTriple", "$item")
+        }
+//        Log.i("listOfTriple", "$listOfTriple")
+//        Log.i("listOfTriple", "${listOfTriple.size}")
         return phoneContactsList
     }
 
@@ -1228,11 +1239,10 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                 phoneContact?.getString(phoneContact.getColumnIndex(ContactsContract.Data.DISPLAY_NAME))
             member = Triple(contactId!!.toInt(), contactName, groupeName)
             if (!groupMembers.contains(member)) {
-                //ajoute le contact à la liste des membre du groupe
                 groupMembers.add(member)
             }
         }
-        phoneContact?.close()
+        phoneContact.close()
         return groupMembers
     }
 
