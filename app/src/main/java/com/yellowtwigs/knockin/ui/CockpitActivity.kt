@@ -13,7 +13,6 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -43,7 +42,6 @@ import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
-import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -89,9 +87,9 @@ class CockpitActivity : AppCompatActivity() {
     private var cockpit_CallKeyboard_Sharp: RelativeLayout? = null
 
     //social network
+    private var link_socials_networks_Facebook: AppCompatImageView? = null
     private var link_socials_networks_Messenger: AppCompatImageView? = null
     private var link_socials_networks_Instagram: AppCompatImageView? = null
-    private var link_socials_networks_Facebook: AppCompatImageView? = null
     private var link_socials_networks_Whatsapp: AppCompatImageView? = null
     private var link_socials_networks_Youtube: AppCompatImageView? = null
     private var link_socials_networks_Gmail: AppCompatImageView? = null
@@ -161,7 +159,7 @@ class CockpitActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView()
+        setContentView(R.layout.activity_cockpit)
         hideKeyboard()
         val listApp = getAppOnPhone()
 
@@ -207,9 +205,9 @@ class CockpitActivity : AppCompatActivity() {
         cockpit_CallKeyboard_0 = findViewById(R.id.cockpit_call_keyboard_0)
         cockpit_CallKeyboard_Sharp = findViewById(R.id.cockpit_call_keyboard_sharp)
 
+        link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
         link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
         link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
-        link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
         link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
         link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
         link_socials_networks_Snapchat = findViewById(R.id.snapchat_link_socials_networks)
@@ -351,8 +349,8 @@ class CockpitActivity : AppCompatActivity() {
         }
 
         if (!listApp.contains("com.facebook.katana")) {
-            link_socials_networks_Messenger?.setImageResource(R.drawable.ic_facebook_disable)
-            link_socials_networks_Messenger?.setOnClickListener {
+            link_socials_networks_Facebook?.setImageResource(R.drawable.ic_facebook_disable)
+            link_socials_networks_Facebook?.setOnClickListener {
                 Toast.makeText(
                     this,
                     R.string.cockpit_toast_facebook_not_install,
@@ -360,7 +358,20 @@ class CockpitActivity : AppCompatActivity() {
                 ).show()
             }
         } else {
-            link_socials_networks_Messenger?.setOnClickListener { gotToFacebookPage("") }
+            link_socials_networks_Facebook?.setOnClickListener { goToFacebook() }
+        }
+
+        if (!listApp.contains("com.facebook.orca")) {
+            link_socials_networks_Messenger?.setImageResource(R.drawable.ic_messenger_disable)
+            link_socials_networks_Messenger?.setOnClickListener {
+                Toast.makeText(
+                    this,
+                    R.string.cockpit_toast_messenger_not_install,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } else {
+            link_socials_networks_Messenger?.setOnClickListener { openMessenger("") }
         }
 
         if (!listApp.contains("com.instagram.android")) {
@@ -387,19 +398,6 @@ class CockpitActivity : AppCompatActivity() {
             }
         } else {
             link_socials_networks_Whatsapp?.setOnClickListener { goToWhatsapp() }
-        }
-
-        if (!listApp.contains("com.facebook.orca")) {
-            link_socials_networks_Facebook?.setImageResource(R.drawable.ic_messenger_disable)
-            link_socials_networks_Facebook?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_messenger_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Facebook?.setOnClickListener { goToFacebook() }
         }
 
         if (!listApp.contains("com.google.android.youtube")) {
@@ -649,21 +647,6 @@ class CockpitActivity : AppCompatActivity() {
 
     //region ========================================== Functions ===========================================
 
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_cockpit)
-            height in 1800..2499 -> setContentView(R.layout.activity_cockpit)
-            height in 1100..1799 -> setContentView(R.layout.activity_cockpit_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_cockpit_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu_help, menu)
@@ -725,7 +708,7 @@ class CockpitActivity : AppCompatActivity() {
         return packageNameList
     }
 
-    private fun gotToFacebookPage(id: String) {
+    private fun openMessenger(id: String) {
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
             startActivity(intent)

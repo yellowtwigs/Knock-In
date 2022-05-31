@@ -485,4 +485,6 @@
     <string name="start_time">Heure de début</string>
     <string name="end_time">Heure de fin</string>
     <string name="upload_your_own_ringtone">Téléchargez votre propre sonnerie</string>
+    <string name="in_app_popup_apps_support_message">Dans la version Freemium, vous ne pouvez pas dépasser 4 applications, vous souhaitez vous rendre en boutique ?</string>
+    <string name="in_app_popup_apps_support_title">Nombre d\'applications prises en charge atteintes</string>
 </resources>

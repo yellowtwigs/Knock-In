@@ -483,4 +483,6 @@
     <string name="start_time">Hora de início</string>
     <string name="end_time">Fim do tempo</string>
     <string name="upload_your_own_ringtone">Carregue seu próprio toque</string>
+    <string name="in_app_popup_apps_support_message">Na versão Freemium não pode ultrapassar 4 apps, quer ir até a loja?</string>
+    <string name="in_app_popup_apps_support_title">Número de suporte de aplicativos alcançado</string>
 </resources>

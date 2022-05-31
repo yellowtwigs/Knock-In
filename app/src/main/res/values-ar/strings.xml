@@ -484,4 +484,6 @@
     <string name="start_time">وقت البدء</string>
     <string name="end_time">وقت النهاية</string>
     <string name="upload_your_own_ringtone">قم بتحميل نغمة الرنين الخاصة بك</string>
+    <string name="in_app_popup_apps_support_message">في إصدار Freemium ، لا يمكنك تجاوز 4 تطبيقات ، هل تريد الذهاب إلى المتجر؟</string>
+    <string name="in_app_popup_apps_support_title">تم الوصول إلى عدد التطبيقات التي تم دعمها</string>
 </resources>

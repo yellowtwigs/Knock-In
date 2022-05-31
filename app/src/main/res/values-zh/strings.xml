@@ -482,4 +482,6 @@
     <string name="start_time">开始时间</string>
     <string name="end_time">时间结束</string>
     <string name="upload_your_own_ringtone">上传自己的铃声</string>
+    <string name="in_app_popup_apps_support_message">免费增值版中，不能超过4个应用，要不要去商店？</string>
+    <string name="in_app_popup_apps_support_title">达到的应用程序支持数量</string>
 </resources>

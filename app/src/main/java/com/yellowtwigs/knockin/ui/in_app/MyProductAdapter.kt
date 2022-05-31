@@ -55,59 +55,67 @@ class MyProductAdapter(
                 val customPref = cxt.getSharedPreferences("Custom_Sound_Bought", modePrivate)
                 val customSoundBought = customPref.getBoolean("Custom_Sound_Bought", false)
 
+                val appsSupportPref = cxt.getSharedPreferences("Apps_Support_Bought", modePrivate)
+                val appsSupportBought = appsSupportPref.getBoolean("Apps_Support_Bought", false)
+
                 val unlimitedPref =
                     cxt.getSharedPreferences("Contacts_Unlimited_Bought", modePrivate)
                 val contactsUnlimitedBought =
                     unlimitedPref.getBoolean("Contacts_Unlimited_Bought", false)
 
-                val productName = skuDetails.title
-                val text = productName.split("\\(").toTypedArray()
-                productItemName.text = text[0]
+                val skuDetailsTitle = skuDetails.title
+                val titleTransformed = skuDetailsTitle.split("\\(").toTypedArray()
+                val productName = titleTransformed[0].split("(").toTypedArray()[0]
+                productItemName.text = productName
 
-                if (productName.contains("VIP")) {
-                    productItemImage.setImageResource(R.drawable.ic_circular_vip_icon)
+                with(productName) {
+                    when {
+                        contains("Jazzy") || contains("jazzy") -> {
+                            productItemImage.setImageResource(R.drawable.ic_circular_jazz_trumpet)
 
-                    if (contactsUnlimitedBought) {
-                        changeBackgroundToDarkGrey()
-                    }
+                            if (jazzySoundBought) {
+                                changeBackgroundToDarkGrey()
+                            }
+                        }
+                        contains("Funky") || contains("funky") -> {
+                            productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
 
-                } else if (productName.contains("Jazzy") || productName.contains(
-                        "jazzy"
-                    )
-                ) {
-                    productItemImage.setImageResource(R.drawable.ic_circular_jazz_trumpet)
+                            if (funkySoundBought) {
+                                changeBackgroundToDarkGrey()
+                            }
+                        }
+                        contains("Relaxation") || contains("Relajación") ||
+                                contains("relaxation") || contains("relajación") -> {
+                            productItemImage.setImageResource(R.drawable.ic_circular_relax)
 
-                    if (jazzySoundBought) {
-                        changeBackgroundToDarkGrey()
-                    }
-                } else if (productName.contains("Funky") || productName.contains(
-                        "funky"
-                    )
-                ) {
-                    productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
+                            if (relaxationSoundBought) {
+                                changeBackgroundToDarkGrey()
+                            }
+                        }
+                        contains("Custom") || contains("custom") -> {
+                            productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
 
-                    if (funkySoundBought) {
-                        changeBackgroundToDarkGrey()
-                    }
-                } else if (productName.contains("Relaxation") || productName.contains(
-                        "Relajación"
-                    ) || productName.contains("Relajación")
-                ) {
-                    productItemImage.setImageResource(R.drawable.ic_circular_relax)
+                            if (customSoundBought) {
+                                changeBackgroundToDarkGrey()
+                            }
+                        }
+                        contains("VIP") || contains("vip") -> {
+                            productItemImage.setImageResource(R.drawable.ic_circular_vip_icon)
 
-                    if (relaxationSoundBought) {
-                        changeBackgroundToDarkGrey()
-                    }
-                } else if (productName.contains("Custom") || productName.contains(
-                        "custom"
-                    )
-                ) {
-                    productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
+                            if (contactsUnlimitedBought) {
+                                changeBackgroundToDarkGrey()
+                            }
+                        }
+                        contains("Applications") || contains("applications") -> {
+                            productItemImage.setImageResource(R.drawable.ic_social_media)
 
-                    if (customSoundBought) {
-                        changeBackgroundToDarkGrey()
+                            if (appsSupportBought) {
+                                changeBackgroundToDarkGrey()
+                            }
+                        }
                     }
                 }
+
                 productItemBuyImage.icon = ResourcesCompat.getDrawable(
                     cxt.resources,
                     R.drawable.ic_buying_in_app,

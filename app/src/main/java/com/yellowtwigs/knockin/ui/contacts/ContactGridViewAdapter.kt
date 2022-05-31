@@ -193,214 +193,12 @@ class ContactGridViewAdapter(
             holder.contactFirstNameView.visibility = View.GONE
         }
 
-        val buttonCall = ImageView(context)
-        val buttonWhatsApp = ImageView(context)
-        val buttonSMS = ImageView(context)
-        val buttonEdit = ImageView(context)
-        val buttonMail = ImageView(context)
-        val buttonMessenger = ImageView(context)
-        val buttonSignal = ImageView(context)
-        val buttonTelegram = ImageView(context)
-
-        buttonCall.id = 1
-        buttonSMS.id = 2
-        buttonWhatsApp.id = 3
-        buttonEdit.id = 4
-        buttonMail.id = 5
-        buttonMessenger.id = 6
-        buttonSignal.id = 7
-        buttonTelegram.id = 8
-
         if (contact?.favorite == 1) {
             holder.gridAdapterFavoriteShine.visibility = View.VISIBLE
         } else {
             holder.gridAdapterFavoriteShine.visibility = View.GONE
         }
 
-        buttonCall.setImageResource(R.drawable.ic_google_call)
-        buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp)
-        buttonSMS.setImageResource(R.drawable.ic_sms_selector)
-        buttonEdit.setImageResource(R.drawable.ic_circular_edit)
-        buttonMail.setImageResource(R.drawable.ic_circular_mail)
-        buttonMessenger.setImageResource(R.drawable.ic_circular_messenger)
-        buttonSignal.setImageResource(R.drawable.ic_circular_signal)
-        buttonTelegram.setImageResource(R.drawable.ic_circular_telegram)
-
-        val builderIcon = SubActionButton.Builder(context as Activity)
-        builderIcon.setBackgroundDrawable(context.getDrawable(R.drawable.ic_circular))
-        builderIcon.setContentView(buttonCall)
-        val startAngle: Int
-        val endAngle: Int
-        val diametreButton: Int
-        val radiusMenu: Int
-        if (Resources.getSystem().configuration.locale.language == "ar") {
-            when {
-                position % len == 0 -> {
-                    startAngle = 90
-                    endAngle = 270
-                }
-                position % len == len - 1 -> {
-                    startAngle = 90
-                    endAngle = -90
-                }
-                else -> {
-                    startAngle = 0
-                    endAngle = -360
-                }
-            }
-            val metrics = DisplayMetrics()
-            context.windowManager.defaultDisplay.getMetrics(metrics)
-            diametreButton = (0.38 * metrics.densityDpi).toInt()
-            radiusMenu = (0.50 * metrics.densityDpi).toInt()
-        } else {
-            when {
-                position % len == 0 -> {
-                    startAngle = 110
-                    endAngle = -110
-                }
-                position % len == len - 1 -> {
-                    startAngle = 77
-                    endAngle = 285
-                }
-                else -> {
-                    startAngle = 0
-                    endAngle = -360
-                }
-            }
-            val metrics = DisplayMetrics()
-            context.windowManager.defaultDisplay.getMetrics(metrics)
-            diametreButton = (0.32 * metrics.densityDpi).toInt()
-            radiusMenu = (0.50 * metrics.densityDpi).toInt()
-        }
-        val layoutParams = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT
-        )
-        layoutParams.setMargins(5, 5, 5, 5)
-        val builder = FloatingActionMenu.Builder(context)
-            .setStartAngle(startAngle)
-            .setEndAngle(endAngle)
-            .setRadius(radiusMenu)
-            .addSubActionView(
-                builderIcon.setContentView(buttonEdit, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-            .attachTo(holder.contactRoundedImageView)
-            .setStateChangeListener(this)
-            .disableAnimations()
-
-        if (getItem(position).getFirstMail() != "") {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonMail, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-        if (getItem(position).getFirstPhoneNumber() != "") {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonSMS, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-                .addSubActionView(
-                    builderIcon.setContentView(buttonCall, layoutParams).build(),
-                    diametreButton,
-                    diametreButton
-                )
-        }
-        if (getItem(position).getMessengerID() != "") {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonMessenger, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        if (isWhatsappInstalled(context) && contact?.hasWhatsapp == 1) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonWhatsApp, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        if (listApp.contains("org.thoughtcrime.securesms") && contact?.hasSignal == 1) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonSignal, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        if (listApp.contains("org.telegram.messenger") && contact?.hasTelegram == 1) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonTelegram, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        val quickMenu = builder.build()
-        listCircularMenu.add(quickMenu)
-
-        //quickMenu.addSubActionView(builderIcon.setContentView(buttonSMS,layoutParams).build(),diametreBoutton,diametreBoutton);
-        val buttonListener = View.OnClickListener { v: View ->
-            when (v.id) {
-                buttonWhatsApp.id -> {
-                    val contactWithAllInformation = getItem(position)
-                    openWhatsapp(
-                        converter06To33(contactWithAllInformation.getFirstPhoneNumber()),
-                        context
-                    )
-                }
-                buttonEdit.id -> {
-                    val intent = Intent(context, EditContactDetailsActivity::class.java)
-                    intent.putExtra("ContactId", contact!!.id)
-                    intent.putExtra("position", position)
-                    if (context is GroupManagerActivity) {
-                        intent.putExtra("fromGroupActivity", true)
-                    }
-                    context.startActivity(intent)
-                }
-                buttonCall.id -> {
-                    callPhone(getItem(position).getFirstPhoneNumber(), context)
-                }
-                buttonSMS.id -> {
-                    val phone = getItem(position).getFirstPhoneNumber()
-                    val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null))
-                    context.startActivity(i)
-                }
-                buttonMail.id -> {
-                    val mail = getItem(position).getFirstMail()
-                    val intent = Intent(Intent.ACTION_SENDTO)
-                    intent.data = Uri.parse("mailto:")
-                    //intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "")
-                    intent.putExtra(Intent.EXTRA_TEXT, "")
-                    context.startActivity(intent)
-                }
-                buttonMessenger.id -> {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.messenger.com/t/" + getItem(position).getMessengerID())
-                    )
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
-                }
-                buttonSignal.id -> {
-                    goToSignal(context as MainActivity)
-                }
-                buttonTelegram.id -> {
-                    goToTelegram(
-                        context,
-                        contactManager.contactList[position].getFirstPhoneNumber()
-                    )
-                }
-            }
-            selectMenu?.close(false)
-        }
         val gridlongClick = OnLongClickListener { v: View? ->
             if (!modeMultiSelect) {
                 val firstPosVis: Int
@@ -452,34 +250,12 @@ class ContactGridViewAdapter(
                         ContactSelectedWithAppsActivity::class.java
                     ).putExtra("id", getItem(position).getContactId())
                 )
-//                if (quickMenu.isOpen) {
-//                    quickMenu.close(true)
-//                } else {
-//                    quickMenu.open(true)
-//                }
             }
         }
-//        buttonCall.setOnLongClickListener { v: View? ->
-//            val phoneNumber =
-//                getItem(position).getSecondPhoneNumber(getItem(position).getFirstPhoneNumber())
-//            if (phoneNumber.isNotEmpty()) {
-//                callPhone(phoneNumber, context)
-//            }
-//            true
-//        }
         holder.gridContactItemLayout.setOnLongClickListener(gridlongClick)
         holder.contactRoundedImageView.setOnLongClickListener(gridlongClick)
         holder.gridContactItemLayout.setOnClickListener(gridItemClick)
         holder.contactRoundedImageView.setOnClickListener(gridItemClick)
-
-        buttonMessenger.setOnClickListener(buttonListener)
-        buttonWhatsApp.setOnClickListener(buttonListener)
-        buttonCall.setOnClickListener(buttonListener)
-        buttonSMS.setOnClickListener(buttonListener)
-        buttonEdit.setOnClickListener(buttonListener)
-        buttonMail.setOnClickListener(buttonListener)
-        buttonSignal.setOnClickListener(buttonListener)
-        buttonTelegram.setOnClickListener(buttonListener)
     }
 
     override fun getItemId(position: Int): Long {

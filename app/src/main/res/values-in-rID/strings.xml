@@ -485,4 +485,6 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="start_time">Waktu mulai</string>
     <string name="end_time">Akhir waktu</string>
     <string name="upload_your_own_ringtone">Unggah nada dering Anda sendiri</string>
+    <string name="in_app_popup_apps_support_message">Dalam versi Freemium, Anda tidak dapat melebihi 4 aplikasi, apakah Anda ingin pergi ke toko?</string>
+    <string name="in_app_popup_apps_support_title">Jumlah dukungan aplikasi tercapai</string>
 </resources>

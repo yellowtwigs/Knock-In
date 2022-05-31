@@ -399,11 +399,21 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                     } catch (e: NumberFormatException) {
                         false
                     }
+
+
+
                     if (!isNumeric) {
                         if (firstName != null) {
                             if (!firstName.contains("Telegram") && !firstName.contains("WhatsApp") &&
                                 !firstName.contains("com.google") && !firstName.contains("Signal")
                             ) {
+                                if (firstName.contains("Minvielle")) {
+                                    Log.i("phoneContact", "appsInPhone : $appsInPhone")
+                                }
+//                                Log.i("phoneContact", "firstName : $firstName")
+//                                Log.i("phoneContact", "lastName : $lastName")
+//                                Log.i("phoneContact", "appsInPhone : $appsInPhone")
+
                                 if (lastName != null) {
                                     if (appsInPhone != "com.google") {
                                         listOfTriple.add(Triple(firstName, lastName, appsInPhone))
@@ -416,14 +426,9 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                             }
                         } else {
                             if (lastName != null) {
-                                if (!lastName.contains("Telegram") && !lastName.contains("WhatsApp") && !lastName.contains(
-                                        "com.google"
-                                    ) && !lastName.contains("Signal")
-                                )
-                                    if (appsInPhone != "com.google") {
-                                        listOfTriple.add(Triple("", lastName, appsInPhone))
-
-                                    }
+                                if (appsInPhone != "com.google") {
+                                    listOfTriple.add(Triple("", lastName, appsInPhone))
+                                }
                             }
                         }
                     }
@@ -457,11 +462,9 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             }
         }
         phoneContact?.close()
-        for(item in listOfTriple){
-            Log.i("listOfTriple", "$item")
+        for (item in listOfTriple) {
+            Log.i("phoneContact", "$item")
         }
-//        Log.i("listOfTriple", "$listOfTriple")
-//        Log.i("listOfTriple", "${listOfTriple.size}")
         return phoneContactsList
     }
 
@@ -872,7 +875,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         val callDb = Callable {
             val allcontacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
             var modifiedContact = 0
-            phoneStructName?.forEachIndexed { index, fullName ->
+            phoneStructName?.forEachIndexed { _, fullName ->
                 val set = mutableSetOf<String>()
                 contactNumberAndPic.forEach { numberPic ->
                     val id = numberPic[1].toString().toInt()
@@ -882,18 +885,43 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                         if (fullName.first == numberPic[1]) {
                             lastId.add(id)
                             val listOfApps = arrayListOf<String>()
-                            var isEntered = false
+
                             for (triple in listOfTriple) {
-                                if (fullName.second.first == triple.first && fullName.second.third == triple.second) {
-                                    Log.i("phoneContact", "index : ${index}")
-                                    Log.i("phoneContact", "firstName : ${triple.first}")
-                                    Log.i("phoneContact", "lastName : ${triple.second}")
-                                    Log.i("phoneContact", "app : ${triple.third}")
+                                if (fullName.second.third != "") {
+                                    if (triple.first != "" && triple.second != "") {
+                                        if (fullName.second.third.contains(triple.first) &&
+                                            fullName.second.third.contains(triple.second)
+                                        ) {
+                                            listOfApps.add(triple.third)
+                                        }
+                                    }
+                                }
+                                if (fullName.second.first == triple.first && fullName.second.third == triple.second
+                                ) {
                                     listOfApps.add(triple.third)
-                                    isEntered = true
-                                } else {
-                                    if (isEntered) {
-                                        break
+                                } else if (fullName.second.third != "" && triple.first != "") {
+                                    if (fullName.second.third == triple.first) {
+                                        listOfApps.add(triple.third)
+                                    }
+                                } else if (fullName.second.first == "${triple.first} ${triple.second}" ||
+                                    fullName.second.third == "${triple.first} ${triple.second}"
+                                ) {
+                                    listOfApps.add(triple.third)
+                                } else if (fullName.second.third != "") {
+                                    if (triple.first != "" && triple.second != "") {
+                                        if (fullName.second.third.contains(triple.first) &&
+                                            fullName.second.third.contains(triple.second)
+                                        ) {
+                                            Log.i(
+                                                "phoneContact",
+                                                "fullName.second.first  : ${fullName.second.first}"
+                                            )
+                                            Log.i(
+                                                "phoneContact",
+                                                "fullName.second.third  : ${fullName.second.third}"
+                                            )
+                                            listOfApps.add(triple.third)
+                                        }
                                     }
                                 }
                             }
@@ -917,6 +945,19 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                             }
 
                             if (fullName.second.second == "") {
+                                if (fullName.second.third == "D Minvielle") {
+//                                    Log.i(
+//                                        "phoneContact",
+//                                        "fullName.second.first  : ${fullName.second.first}"
+//                                    )
+//                                    Log.i(
+//                                        "phoneContact",
+//                                        "fullName.second.third  : ${fullName.second.third}"
+//                                    )
+//                                    Log.i("phoneContact", "hasTelegram  : ${hasTelegram}")
+//                                    Log.i("phoneContact", "hasWhatsapp  : ${hasWhatsapp}")
+//                                    Log.i("phoneContact", "hasSignal  : ${hasSignal}")
+                                }
                                 val contacts = ContactDB(
                                     null,
                                     fullName.second.first,

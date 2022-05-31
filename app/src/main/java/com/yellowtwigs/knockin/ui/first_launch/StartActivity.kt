@@ -83,6 +83,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var sharedJazzySoundPreferences: SharedPreferences? = null
     private var sharedRelaxationSoundPreferences: SharedPreferences? = null
     private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
+    private var appsSupportPref: SharedPreferences? = null
 
     private lateinit var workerThread: DbWorkerThread
     private var activityNotificationVisible = false
@@ -108,6 +109,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         sharedContactsUnlimitedPreferences =
             getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
+        appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
         setupBillingClient()
 //        setupFacebookLogin()
@@ -541,6 +543,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_funk_theme")
         skuList.add("notifications_vip_jazz_theme")
         skuList.add("notifications_vip_relaxation_theme")
+        skuList.add("additional_applications_support")
 
         val params = SkuDetailsParams.newBuilder()
             .setSkusList(skuList)
@@ -579,6 +582,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     sharedContactsUnlimitedPreferences?.edit()
                                 edit?.putBoolean(
                                     "Contacts_Unlimited_Bought",
+                                    true
+                                )
+                                edit?.apply()
+                            }
+                            purchase.originalJson.contains("additional_applications_support") -> {
+                                val edit =
+                                    appsSupportPref?.edit()
+                                edit?.putBoolean(
+                                    "Apps_Support_Bought",
                                     true
                                 )
                                 edit?.apply()

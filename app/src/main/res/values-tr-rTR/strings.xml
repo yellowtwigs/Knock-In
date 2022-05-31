@@ -483,4 +483,6 @@
     <string name="start_time">Başlangıç ​​saati</string>
     <string name="end_time">Bitiş zamanı</string>
     <string name="upload_your_own_ringtone">Kendi zil sesinizi yükleyin</string>
+    <string name="in_app_popup_apps_support_message">Freemium versiyonunda 4 uygulamayı geçemezsiniz, mağazaya gitmek ister misiniz?</string>
+    <string name="in_app_popup_apps_support_title">Ulaşılan uygulama desteği sayısı</string>
 </resources>

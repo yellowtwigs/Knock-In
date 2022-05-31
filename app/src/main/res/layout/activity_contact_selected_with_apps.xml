@@ -4,26 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     tools:context=".ui.contacts.contact_selected.ContactSelectedWithAppsActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_apps"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/grid_contact_item_layout" />
-
     <View
-        android:layout_width="0dp"
+        android:id="@+id/view"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#DDeeeeee"
+        android:background="?attr/lightGreyColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contact_layout"
@@ -44,63 +34,103 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <com.yellowtwigs.knockin.ui.CircularImageView-->
-<!--        android:id="@+id/sms_icon"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/ic_sms"-->
-<!--        android:layout_marginBottom="50dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/contact_layout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_circle_blue" />
 
-<!--    <com.yellowtwigs.knockin.ui.CircularImageView-->
-<!--        android:id="@+id/mail_icon"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/ic_circular_mail"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/contact_layout"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/edit_icon" />-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sms_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="50dp"
+        android:src="@drawable/ic_sms"
+        app:layout_constraintBottom_toTopOf="@+id/contact_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-<!--    <com.yellowtwigs.knockin.ui.CircularImageView-->
-<!--        android:id="@+id/call_icon"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/ic_google_call"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/contact_layout"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/contact_layout"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/contact_layout"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/mail_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/ic_circular_mail"
+        app:layout_constraintBottom_toTopOf="@+id/edit_icon"
+        app:layout_constraintEnd_toStartOf="@+id/edit_icon"
+        app:layout_constraintStart_toEndOf="@+id/sms_icon"
+        app:layout_constraintTop_toBottomOf="@+id/sms_icon" />
 
-<!--    <com.yellowtwigs.knockin.ui.CircularImageView-->
-<!--        android:id="@+id/edit_icon"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/ic_circular_edit"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/contact_layout"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/contact_layout"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/contact_layout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/call_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_google_call"
+        app:layout_constraintBottom_toBottomOf="@+id/contact_layout"
+        app:layout_constraintEnd_toStartOf="@+id/contact_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contact_layout" />
 
-<!--    <com.yellowtwigs.knockin.ui.CircularImageView-->
-<!--        android:id="@+id/whatsapp_icon"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/ic_circular_whatsapp"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/contact_layout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/edit_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_circular_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/contact_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contact_layout"
+        app:layout_constraintTop_toTopOf="@+id/contact_layout" />
 
-<!--    <com.yellowtwigs.knockin.ui.CircularImageView-->
-<!--        android:id="@+id/telegram_icon"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/ic_circular_telegram"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/contact_layout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/whatsapp_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ic_circular_whatsapp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_layout" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/telegram_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_circular_telegram"
+        app:layout_constraintBottom_toTopOf="@+id/whatsapp_icon"
+        app:layout_constraintEnd_toStartOf="@+id/edit_icon"
+        app:layout_constraintStart_toEndOf="@+id/whatsapp_icon"
+        app:layout_constraintTop_toBottomOf="@+id/edit_icon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/signal_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="60dp"
+        android:src="@drawable/ic_circular_signal"
+        app:layout_constraintBottom_toTopOf="@+id/whatsapp_icon"
+        app:layout_constraintEnd_toStartOf="@+id/whatsapp_icon"
+        app:layout_constraintStart_toEndOf="@+id/call_icon"
+        app:layout_constraintTop_toBottomOf="@+id/call_icon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/messenger_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/ic_circular_messenger"
+        app:layout_constraintBottom_toTopOf="@+id/call_icon"
+        app:layout_constraintEnd_toStartOf="@+id/sms_icon"
+        app:layout_constraintStart_toEndOf="@+id/call_icon"
+        app:layout_constraintTop_toBottomOf="@+id/sms_icon" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -118,7 +148,7 @@
             android:layout_marginTop="1dp"
             android:maxLines="1"
             android:text="Bla bla"
-            android:textColor="?attr/textColor"
+            android:textColor="@color/lightColor"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -132,10 +162,37 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Bla bla"
-            android:textColor="?attr/textColor"
+            android:textColor="@color/lightColor"
             android:textSize="25sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/ic_left_arrow_white" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:background="?attr/darkGreyColor"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

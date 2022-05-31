@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.ui.contacts.contact_selected
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -10,7 +11,10 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.yellowtwigs.knockin.R
@@ -20,6 +24,7 @@ import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.ui.contacts.ContactGridViewAdapter
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
+import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -28,26 +33,29 @@ import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 
-class ContactSelectedWithAppsActivity : AppCompatActivity(),
-    FloatingActionMenu.MenuStateChangeListener {
+class ContactSelectedWithAppsActivity : AppCompatActivity() {
 
-    private val listCircularMenu = ArrayList<FloatingActionMenu>()
-    private lateinit var selectMenu: FloatingActionMenu
+    private var appsSupportPref: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityContactSelectedWithAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
+
         val id = intent.getIntExtra("id", 0)
         val currentContact = ContactManager(this).getContactById(id)
 
-        initRecyclerView(binding)
         if (currentContact != null) {
             initCircularMenu(binding, id, currentContact)
         }
 
         currentContact?.contactDB?.let { initUserData(binding, it) }
+
+        binding.backIcon.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initUserData(binding: ActivityContactSelectedWithAppsBinding, contact: ContactDB) {
@@ -69,27 +77,6 @@ class ContactSelectedWithAppsActivity : AppCompatActivity(),
         }
     }
 
-    private fun initRecyclerView(binding: ActivityContactSelectedWithAppsBinding) {
-        val contactManager = ContactManager(this.applicationContext)
-        contactManager.sortContactByFirstNameAZ()
-        val contactAdapter = ContactSelectedListAdapter(this)
-
-        binding.apply {
-            val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-            val nbGrid = sharedPreferences.getInt("gridview", 1)
-            listApps.apply {
-                adapter = contactAdapter
-                layoutManager = GridLayoutManager(this@ContactSelectedWithAppsActivity, nbGrid)
-                contactAdapter.submitList(contactManager.contactList.sortedByDescending {
-                    it.contactDB?.contactPriority
-                })
-                setHasFixedSize(true)
-                recycledViewPool.setMaxRecycledViews(0, 0)
-            }
-            listApps.isEnabled = false
-        }
-    }
-
     private fun initCircularMenu(
         binding: ActivityContactSelectedWithAppsBinding,
         id: Int,
@@ -97,187 +84,117 @@ class ContactSelectedWithAppsActivity : AppCompatActivity(),
     ) {
         val listApp = getAppOnPhone(this)
 
-        val buttonCall = ImageView(this)
-        val buttonWhatsApp = ImageView(this)
-        val buttonSMS = ImageView(this)
-        val buttonEdit = ImageView(this)
-        val buttonMail = ImageView(this)
-        val buttonMessenger = ImageView(this)
-        val buttonSignal = ImageView(this)
-        val buttonTelegram = ImageView(this)
+        binding.apply {
+            currentContact.apply {
+                mailIcon.isVisible = getFirstMail() != ""
+                smsIcon.isVisible = getFirstPhoneNumber() != ""
+                messengerIcon.isVisible =
+                    getMessengerID() != "" && listApp.contains("com.facebook.orca")
+                whatsappIcon.isVisible =
+                    isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && currentContact.contactDB?.hasWhatsapp == 1
+                signalIcon.isVisible =
+                    listApp.contains("org.thoughtcrime.securesms") && currentContact.contactDB?.hasSignal == 1
+                telegramIcon.isVisible =
+                    listApp.contains("org.telegram.messenger") && currentContact.contactDB?.hasTelegram == 1
+            }
 
-        buttonCall.id = 1
-        buttonSMS.id = 2
-        buttonWhatsApp.id = 3
-        buttonEdit.id = 4
-        buttonMail.id = 5
-        buttonMessenger.id = 6
-        buttonSignal.id = 7
-        buttonTelegram.id = 8
+            if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+                signalIcon.setImageResource(R.drawable.ic_signal_disable)
+                telegramIcon.setImageResource(R.drawable.ic_telegram_disable)
+                messengerIcon.setImageResource(R.drawable.ic_messenger_disable)
+            }
 
-        buttonCall.setImageResource(R.drawable.ic_google_call)
-        buttonWhatsApp.setImageResource(R.drawable.ic_circular_whatsapp)
-        buttonSMS.setImageResource(R.drawable.ic_sms_selector)
-        buttonEdit.setImageResource(R.drawable.ic_circular_edit)
-        buttonMail.setImageResource(R.drawable.ic_circular_mail)
-        buttonMessenger.setImageResource(R.drawable.ic_circular_messenger)
-        buttonSignal.setImageResource(R.drawable.ic_circular_signal)
-        buttonTelegram.setImageResource(R.drawable.ic_circular_telegram)
-
-        val builderIcon = SubActionButton.Builder(this)
-        builderIcon.setBackgroundDrawable(getDrawable(R.drawable.ic_circular))
-        builderIcon.setContentView(buttonCall)
-        val diametreButton: Int
-        val radiusMenu: Int
-        val startAngle = 0
-        val endAngle = -360
-        val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
-        diametreButton = (0.35 * metrics.densityDpi).toInt()
-        radiusMenu = (0.65 * metrics.densityDpi).toInt()
-        val layoutParams = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT
-        )
-        layoutParams.setMargins(5, 5, 5, 5)
-        val builder = FloatingActionMenu.Builder(this)
-            .setStartAngle(startAngle)
-            .setEndAngle(endAngle)
-            .setRadius(radiusMenu)
-            .addSubActionView(
-                builderIcon.setContentView(buttonEdit, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-            .attachTo(binding.contactLayout)
-            .setStateChangeListener(this)
-            .disableAnimations()
-
-        if (currentContact.getFirstMail() != "") {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonMail, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-        if (currentContact.getFirstPhoneNumber() != "") {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonSMS, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-                .addSubActionView(
-                    builderIcon.setContentView(buttonCall, layoutParams).build(),
-                    diametreButton,
-                    diametreButton
-                )
-        }
-        if (currentContact.getMessengerID() != "" && listApp.contains("com.facebook.katana")) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonMessenger, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        if (isWhatsappInstalled(this) && currentContact.contactDB?.hasWhatsapp == 1) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonWhatsApp, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        if (listApp.contains("org.thoughtcrime.securesms") && currentContact.contactDB?.hasSignal == 1) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonSignal, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        if (listApp.contains("org.telegram.messenger") && currentContact.contactDB?.hasTelegram == 1) {
-            builder.addSubActionView(
-                builderIcon.setContentView(buttonTelegram, layoutParams).build(),
-                diametreButton,
-                diametreButton
-            )
-        }
-
-        val quickMenu = builder.build()
-        listCircularMenu.add(quickMenu)
-
-        val buttonListener = View.OnClickListener { v: View ->
-            when (v.id) {
-                buttonWhatsApp.id -> {
-                    ContactGesture.openWhatsapp(
-                        Converter.converter06To33(currentContact.getFirstPhoneNumber()),
-                        this
-                    )
-                }
-                buttonEdit.id -> {
-                    val intent = Intent(this, EditContactDetailsActivity::class.java)
-                    intent.putExtra("ContactId", id)
-                    startActivity(intent)
-                }
-                buttonCall.id -> {
-                    ContactGesture.callPhone(currentContact.getFirstPhoneNumber(), this)
-                }
-                buttonSMS.id -> {
-                    val phone = currentContact.getFirstPhoneNumber()
-                    val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null))
-                    startActivity(i)
-                }
-                buttonMail.id -> {
-                    val mail = currentContact.getFirstMail()
-                    val intent = Intent(Intent.ACTION_SENDTO)
-                    intent.data = Uri.parse("mailto:")
-                    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "")
-                    intent.putExtra(Intent.EXTRA_TEXT, "")
-                    startActivity(intent)
-                }
-                buttonMessenger.id -> {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.messenger.com/t/" + currentContact.getMessengerID())
-                    )
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                }
-                buttonSignal.id -> {
-                    goToSignal(this)
-                }
-                buttonTelegram.id -> {
-                    goToTelegram(this, currentContact.getFirstPhoneNumber())
+            val buttonListener = View.OnClickListener { v: View ->
+                when (v.id) {
+                    whatsappIcon.id -> {
+                        ContactGesture.openWhatsapp(
+                            Converter.converter06To33(currentContact.getFirstPhoneNumber()),
+                            this@ContactSelectedWithAppsActivity
+                        )
+                    }
+                    editIcon.id -> {
+                        val intent = Intent(
+                            this@ContactSelectedWithAppsActivity,
+                            EditContactDetailsActivity::class.java
+                        )
+                        intent.putExtra("ContactId", id)
+                        startActivity(intent)
+                    }
+                    callIcon.id -> {
+                        ContactGesture.callPhone(
+                            currentContact.getFirstPhoneNumber(),
+                            this@ContactSelectedWithAppsActivity
+                        )
+                    }
+                    smsIcon.id -> {
+                        val phone = currentContact.getFirstPhoneNumber()
+                        val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null))
+                        startActivity(i)
+                    }
+                    mailIcon.id -> {
+                        val mail = currentContact.getFirstMail()
+                        val intent = Intent(Intent.ACTION_SENDTO)
+                        intent.data = Uri.parse("mailto:")
+                        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+                        intent.putExtra(Intent.EXTRA_TEXT, "")
+                        startActivity(intent)
+                    }
+                    messengerIcon.id -> {
+                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+                            showInAppAlertDialog()
+                        } else {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.messenger.com/t/" + currentContact.getMessengerID())
+                            )
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        }
+                    }
+                    signalIcon.id -> {
+                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+                            showInAppAlertDialog()
+                        } else {
+                            goToSignal(this@ContactSelectedWithAppsActivity)
+                        }
+                    }
+                    telegramIcon.id -> {
+                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+                            showInAppAlertDialog()
+                        } else {
+                            goToTelegram(
+                                this@ContactSelectedWithAppsActivity,
+                                currentContact.getFirstPhoneNumber()
+                            )
+                        }
+                    }
                 }
             }
-        }
 
-        binding.image.setOnClickListener {
-            if (quickMenu.isOpen) {
-                quickMenu.close(true)
-            } else {
-                quickMenu.open(true)
-            }
-        }
-
-        buttonMessenger.setOnClickListener(buttonListener)
-        buttonWhatsApp.setOnClickListener(buttonListener)
-        buttonCall.setOnClickListener(buttonListener)
-        buttonSMS.setOnClickListener(buttonListener)
-        buttonEdit.setOnClickListener(buttonListener)
-        buttonMail.setOnClickListener(buttonListener)
-        buttonSignal.setOnClickListener(buttonListener)
-        buttonTelegram.setOnClickListener(buttonListener)
-    }
-
-    override fun onMenuOpened(floatingActionMenu: FloatingActionMenu?) {
-        if (floatingActionMenu != null) {
-            selectMenu = floatingActionMenu
+            messengerIcon.setOnClickListener(buttonListener)
+            whatsappIcon.setOnClickListener(buttonListener)
+            callIcon.setOnClickListener(buttonListener)
+            smsIcon.setOnClickListener(buttonListener)
+            editIcon.setOnClickListener(buttonListener)
+            mailIcon.setOnClickListener(buttonListener)
+            signalIcon.setOnClickListener(buttonListener)
+            telegramIcon.setOnClickListener(buttonListener)
         }
     }
 
-    override fun onMenuClosed(p0: FloatingActionMenu?) {
+    private fun showInAppAlertDialog() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+            .setTitle(getString(R.string.in_app_popup_apps_support_title)) //
+            .setMessage(getString(R.string.in_app_popup_apps_support_message)) //
+            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                startActivity(Intent(this, PremiumActivity::class.java))
+                finish()
+            }
+            .setNegativeButton(R.string.alert_dialog_later) { dialog , _ ->
+                dialog.dismiss()
+                dialog.cancel()
+            }
+            .show()
     }
 }

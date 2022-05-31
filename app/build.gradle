@@ -12,7 +12,7 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 31
-        versionCode 146
+        versionCode 148
         versionName "2.2.8"
 //        versionName "2.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -130,7 +130,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
     implementation 'com.facebook.android:facebook-login:13.0.0'
 
-    def billing_version = "4.1.0"
+    def billing_version = "5.0.0"
     implementation("com.android.billingclient:billing-ktx:$billing_version")
 }
 

@@ -176,8 +176,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================== Theme Dark ========================================
 
-        //On affecte le Thème light ou le dark en fonction de ce que l'utilisateur à choisi
-        //Ce thème est enregistré dans une sharedPreferences c'est un fichier android qui est sauvegardé par l'application
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)

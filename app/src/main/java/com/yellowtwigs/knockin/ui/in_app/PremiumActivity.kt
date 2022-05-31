@@ -34,6 +34,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var sharedRelaxationSoundPreferences: SharedPreferences? = null
     private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
     private var sharedCustomSoundPreferences: SharedPreferences? = null
+    private var appsSupportPref: SharedPreferences? = null
 
     private var fromManageNotification = false
 
@@ -76,6 +77,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
         sharedCustomSoundPreferences =
             getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
+        appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
         setupLeftDrawerLayout(sharedThemePreferences)
         toolbarClick()
@@ -156,22 +158,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
-    private fun getAllSkuDetails(skuDetailsList: List<SkuDetails>) {
-//        CoroutineScope(Dispatchers.Main).launch {
-//            launchProgressBarSpin(3000)
-//        }
-    }
-
-    private suspend fun launchProgressBarSpin(time: Long) {
-        binding.apply {
-            progressBar.visibility = View.VISIBLE
-            recyclerProduct.visibility = View.INVISIBLE
-            delay(time)
-            progressBar.visibility = View.INVISIBLE
-            recyclerProduct.visibility = View.VISIBLE
-        }
-    }
-
     private fun setupBillingClient() {
         billingClient = BillingClient.newBuilder(this)
             .setListener(this)
@@ -202,6 +188,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_funk_theme")
         skuList.add("notifications_vip_jazz_theme")
         skuList.add("notifications_vip_relaxation_theme")
+        skuList.add("additional_applications_support")
 
         params = SkuDetailsParams.newBuilder()
             .setSkusList(skuList)
@@ -327,6 +314,26 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             val edit = sharedCustomSoundPreferences!!.edit()
                             edit.putBoolean("Custom_Sound_Bought", true)
                             edit.apply()
+                            backToManageNotifAfterBuying()
+                        }
+                }
+                purchases[0].originalJson.contains("additional_applications_support") -> {
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
+                        if (!purchases[0].isAcknowledged) {
+                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchases[0].purchaseToken)
+                            billingClient.acknowledgePurchase(
+                                acknowledgePurchaseParams.build(),
+                                acknowledgePurchaseResponseListener
+                            )
+                            Toast.makeText(
+                                this,
+                                getString(R.string.in_app_purchase_made_message),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val edit = appsSupportPref?.edit()
+                            edit?.putBoolean("Apps_Support_Bought", true)
+                            edit?.apply()
                             backToManageNotifAfterBuying()
                         }
                 }

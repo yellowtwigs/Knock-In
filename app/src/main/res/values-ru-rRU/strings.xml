@@ -484,4 +484,6 @@
     <string name="start_time">Время начала</string>
     <string name="end_time">Время окончания</string>
     <string name="upload_your_own_ringtone">Загрузить свой рингтон</string>
+    <string name="in_app_popup_apps_support_message">В версии Freemium вы не можете использовать более 4 приложений, хотите пойти в магазин?</string>
+    <string name="in_app_popup_apps_support_title">Достигнуто количество поддерживаемых приложений</string>
 </resources>

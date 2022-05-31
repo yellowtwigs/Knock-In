@@ -483,4 +483,6 @@
     <string name="start_time">Ora di inizio</string>
     <string name="end_time">Tempo scaduto</string>
     <string name="upload_your_own_ringtone">Carica la tua suoneria</string>
+    <string name="in_app_popup_apps_support_message">Nella versione Freemium non puoi superare le 4 app, vuoi passare in negozio?</string>
+    <string name="in_app_popup_apps_support_title">Numero di app supportate raggiunto</string>
 </resources>
