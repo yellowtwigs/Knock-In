@@ -190,10 +190,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val importWhatsapp =
             importWhatsappSharedPreferences.getBoolean("importWhatsappPreferences", false)
 
-        //On affecte à notre activity son layout correspondant
         setContentView()
 
-        // Si un contact est supprimé, un message s'affichera
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
             Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
@@ -222,21 +220,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
         }
 
-//        MobileAds.initialize(this)
-//
-//        val mAdView = findViewById<com.google.android.gms.ads.AdView>(R.id.adView)
-//        val adRequest = AdRequest.Builder().build()
-//        mAdView.loadAd(adRequest)
-
         //endregion
 
         //region ====================================== Worker Thread =======================================
 
-        // on init WorkerThread
         main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         main_mDbWorkerThread.start()
 
-        //on get la base de données
         main_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
 
         //endregion
@@ -410,22 +400,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         // sinon il sera sous forme de gridView
 
         if (len <= 1) {
-            main_GridView!!.visibility = View.GONE
-            main_RecyclerView!!.visibility = View.VISIBLE
+            main_GridView?.visibility = View.GONE
+            main_RecyclerView?.visibility = View.VISIBLE
         } else {
-            main_GridView!!.visibility = View.VISIBLE
-            main_RecyclerView!!.visibility = View.GONE
+            main_GridView?.visibility = View.VISIBLE
+            main_RecyclerView?.visibility = View.GONE
         }
 
         if (position != 0) {
-            main_GridView!!.smoothScrollToPosition(position)
+            main_GridView?.smoothScrollToPosition(position)
         }
 
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ===================================== set ListContact ======================================
 
-        //Verification du mode de tri des contacts pour afficher le bon tri
         when {
             sharedPreferences.getString(
                 "tri",
@@ -446,61 +435,54 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             else -> gestionnaireContacts!!.sortContactByFavorite()
         }
 
-        //Selon le mode d'affichage set pour la list ou pour la grid les contacts triés
-        if (main_GridView!!.visibility != View.GONE) {
+        if (main_GridView?.visibility != View.GONE) {
             gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts!!, len)
-            main_GridView!!.adapter = gridViewAdapter
-            main_GridView!!.layoutManager = GridLayoutManager(this, len)
-            main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+            main_GridView?.adapter = gridViewAdapter
+            main_GridView?.layoutManager = GridLayoutManager(this, len)
+            main_GridView?.recycledViewPool?.setMaxRecycledViews(0, 0)
 
-            val index = sharedPreferences.getInt("index", 0)
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
-//            main_GridView!!.setSelection(index)
             edit.apply()
 
-            // La gridView va mettre en place un écouteur sur l'action Scroll,
-            // nous avons alors défini un ensemble d'action à effectuer lorsque la gridView détecte ce scroll
-            main_GridView!!.setOnScrollChangeListener { _, _, _, _, _ ->
+            main_GridView?.setOnScrollChangeListener { _, _, _, _, _ ->
                 if (gridViewAdapter != null) {
-                    gridViewAdapter!!.closeMenu()
+                    gridViewAdapter?.closeMenu()
                 }
             }
         }
 
-        if (main_RecyclerView!!.visibility != View.GONE) {
+        if (main_RecyclerView?.visibility != View.GONE) {
             recyclerViewAdapter = ContactRecyclerViewAdapter(this, gestionnaireContacts!!, len)
-            main_RecyclerView!!.adapter = recyclerViewAdapter
-            main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
-            main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
+            main_RecyclerView?.adapter = recyclerViewAdapter
+            main_RecyclerView?.layoutManager = LinearLayoutManager(this)
+            main_RecyclerView?.recycledViewPool?.setMaxRecycledViews(0, 0)
 
             if (position == 0) {
                 val index = sharedPreferences.getInt("index", 0)
                 val edit: SharedPreferences.Editor = sharedPreferences.edit()
-                main_RecyclerView!!.scrollToPosition(index)
+                main_RecyclerView?.scrollToPosition(index)
                 edit.putInt("index", 0)
                 edit.apply()
             } else {
-                main_RecyclerView!!.layoutManager!!.scrollToPosition(position)
+                main_RecyclerView?.layoutManager?.scrollToPosition(position)
             }
 
-            main_RecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
+            main_RecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    println("dx $dx dy$dy")
                     if (dy > 10) {
-                        if (main_FloatingButtonAddNewContact!!.visibility == View.VISIBLE) {
+                        if (main_FloatingButtonAddNewContact?.visibility == View.VISIBLE) {
                             val disparition =
                                 AnimationUtils.loadAnimation(baseContext, R.anim.disappear)
-                            main_FloatingButtonAddNewContact!!.startAnimation(disparition)
-                            main_FloatingButtonAddNewContact!!.visibility = View.GONE
+                            main_FloatingButtonAddNewContact?.startAnimation(disparition)
+                            main_FloatingButtonAddNewContact?.visibility = View.GONE
                         }
                     } else if (dy < -10) {
-                        if (main_FloatingButtonAddNewContact!!.visibility == View.GONE) {
+                        if (main_FloatingButtonAddNewContact?.visibility == View.GONE) {
                             val apparition =
                                 AnimationUtils.loadAnimation(baseContext, R.anim.reapparrition)
-                            main_FloatingButtonAddNewContact!!.startAnimation(apparition)
-                            main_FloatingButtonAddNewContact!!.visibility = View.VISIBLE
+                            main_FloatingButtonAddNewContact?.startAnimation(apparition)
+                            main_FloatingButtonAddNewContact?.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -516,31 +498,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
          */
         //region ======================================== Listeners =========================================
 
-//        mAdView.adListener = object : AdListener() {
-//            override fun onAdLoaded() {
-//                // Code to be executed when an ad finishes loading.
-//            }
-//
-//            override fun onAdFailedToLoad(adError: LoadAdError) {
-//                // Code to be executed when an ad request fails.
-//            }
-//
-//            override fun onAdOpened() {
-//                // Code to be executed when an ad opens an overlay that
-//                // covers the screen.
-//            }
-//
-//            override fun onAdClicked() {
-//                // Code to be executed when the user clicks on an ad.
-//            }
-//
-//            override fun onAdClosed() {
-//                // Code to be executed when the user is about to return
-//                // to the app after tapping on an ad.
-//            }
-//        }
-
-        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 val sharedCallPopupPreferences: SharedPreferences =
                     getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
@@ -555,7 +513,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 edit.apply()
             }
         }
-        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setTheme(R.style.AppThemeDark)
 //                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)

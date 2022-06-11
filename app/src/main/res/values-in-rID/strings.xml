@@ -487,4 +487,6 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="upload_your_own_ringtone">Unggah nada dering Anda sendiri</string>
     <string name="in_app_popup_apps_support_message">Dalam versi Freemium, Anda tidak dapat melebihi 4 aplikasi, apakah Anda ingin pergi ke toko?</string>
     <string name="in_app_popup_apps_support_title">Jumlah dukungan aplikasi tercapai</string>
+    <string name="messenger_identifier_title">Pengidentifikasi Utusan</string>
+    <string name="messenger_identifier_message">Sesuai dengan pengidentifikasi yang terlihat pada tautan percakapan di situs Messenger.com</string>
 </resources>

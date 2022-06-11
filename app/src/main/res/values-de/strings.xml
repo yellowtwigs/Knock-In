@@ -485,4 +485,6 @@
     <string name="upload_your_own_ringtone">Laden Sie Ihren eigenen Klingelton hoch</string>
     <string name="in_app_popup_apps_support_message">In der Freemium-Version können Sie 4 Apps nicht überschreiten, möchten Sie zum Shop gehen?</string>
     <string name="in_app_popup_apps_support_title">Anzahl der unterstützten Apps erreicht</string>
+    <string name="messenger_identifier_title">Messenger-ID</string>
+    <string name="messenger_identifier_message">Entspricht der Kennung, die auf dem Link einer Konversation auf der Messenger.com-Site sichtbar ist</string>
 </resources>

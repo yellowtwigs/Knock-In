@@ -923,6 +923,8 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                             listOfApps.add(triple.third)
                                         }
                                     }
+                                } else if (fullName.second.third != "D Minvielle" && triple.second == "D Minvielle") {
+                                    listOfApps.add(triple.third)
                                 }
                             }
 

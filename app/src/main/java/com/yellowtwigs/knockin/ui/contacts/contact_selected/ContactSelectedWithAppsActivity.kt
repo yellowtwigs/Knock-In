@@ -5,24 +5,17 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.MotionEvent
+import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactSelectedWithAppsBinding
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.ui.contacts.ContactGridViewAdapter
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.ContactGesture
@@ -39,6 +32,18 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //region ======================================== Theme Dark ========================================
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            setTheme(R.style.AppThemeDark)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
+
+        //endregion
+
         val binding = ActivityContactSelectedWithAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -51,10 +56,32 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
             initCircularMenu(binding, id, currentContact)
         }
 
+        initContactsList(binding)
         currentContact?.contactDB?.let { initUserData(binding, it) }
 
         binding.backIcon.setOnClickListener {
+            onBackPressed()
             finish()
+        }
+    }
+
+    private fun initContactsList(binding: ActivityContactSelectedWithAppsBinding) {
+        val adapter = ContactSelectedListAdapter(this)
+
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val len = sharedPreferences.getInt("gridview", 1)
+
+        val contactManager = ContactManager(this)
+
+        binding.recyclerView.apply {
+            contactManager.contactList.sortBy {
+                it.contactDB?.firstName + it.contactDB?.lastName
+            }
+            this.adapter = adapter
+            adapter.submitList(contactManager.contactList)
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(this@ContactSelectedWithAppsActivity, len)
+            recycledViewPool.setMaxRecycledViews(0, 0)
         }
     }
 
@@ -90,10 +117,15 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 smsIcon.isVisible = getFirstPhoneNumber() != ""
                 messengerIcon.isVisible =
                     getMessengerID() != "" && listApp.contains("com.facebook.orca")
-                whatsappIcon.isVisible =
-                    isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && currentContact.contactDB?.hasWhatsapp == 1
+
+                if (isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && currentContact.contactDB?.hasWhatsapp == 1) {
+                    whatsappIcon.visibility = View.VISIBLE
+                } else {
+                    whatsappIcon.visibility = View.INVISIBLE
+                }
                 signalIcon.isVisible =
                     listApp.contains("org.thoughtcrime.securesms") && currentContact.contactDB?.hasSignal == 1
+
                 telegramIcon.isVisible =
                     listApp.contains("org.telegram.messenger") && currentContact.contactDB?.hasTelegram == 1
             }
@@ -191,7 +223,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 startActivity(Intent(this, PremiumActivity::class.java))
                 finish()
             }
-            .setNegativeButton(R.string.alert_dialog_later) { dialog , _ ->
+            .setNegativeButton(R.string.alert_dialog_later) { dialog, _ ->
                 dialog.dismiss()
                 dialog.cancel()
             }

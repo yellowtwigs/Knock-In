@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/grid_contact_item_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?attr/backgroundColor"
+    android:clickable="true"
+    android:focusable="true">
+
+    <com.yellowtwigs.knockin.ui.CircularImageView
+        android:id="@+id/contactRoundedImageView"
+        android:layout_width="@dimen/rounded_image_view_height_width"
+        android:layout_height="@dimen/rounded_image_view_height_width"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_app_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactRoundedImageView">
+
+        <TextView
+            android:id="@+id/grid_adapter_contactFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1dp"
+            android:maxLines="1"
+            android:text="Bla bla"
+            android:textColor="?attr/textColor"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/grid_adapter_contactLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/grid_adapter_contactFirstName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Bla bla"
+            android:textColor="?attr/textColor"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

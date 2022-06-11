@@ -485,4 +485,6 @@
     <string name="upload_your_own_ringtone">Kendi zil sesinizi yükleyin</string>
     <string name="in_app_popup_apps_support_message">Freemium versiyonunda 4 uygulamayı geçemezsiniz, mağazaya gitmek ister misiniz?</string>
     <string name="in_app_popup_apps_support_title">Ulaşılan uygulama desteği sayısı</string>
+    <string name="messenger_identifier_title">Messenger Tanımlayıcısı</string>
+    <string name="messenger_identifier_message">Messenger.com sitesinde bir konuşmanın bağlantısında görünen tanımlayıcıya karşılık gelir</string>
 </resources>

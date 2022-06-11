@@ -491,4 +491,6 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="upload_your_own_ringtone">Sube tu propio tono de llamada</string>
     <string name="in_app_popup_apps_support_message">En la versión Freemium no puedes pasar de 4 apps, ¿quieres ir a la tienda?</string>
     <string name="in_app_popup_apps_support_title">Número de soporte de aplicaciones alcanzado</string>
+    <string name="messenger_identifier_title">Identificador de mensajero</string>
+    <string name="messenger_identifier_message">Corresponde al identificador visible en el enlace de una conversación en el sitio Messenger.com</string>
 </resources>

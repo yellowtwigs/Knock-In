@@ -51,7 +51,6 @@ class ContactGridViewAdapter(
     private var contactManager: ContactManager,
     private val len: Int
 ) : RecyclerView.Adapter<ContactGridViewAdapter.ViewHolder>(), MenuStateChangeListener {
-    private val listCircularMenu = ArrayList<FloatingActionMenu>()
     var selectMenu: FloatingActionMenu? = null
         private set
     var phonePermission = ""
@@ -117,7 +116,6 @@ class ContactGridViewAdapter(
             layoutParamsTV.topMargin = 0
             layoutParamsIV.topMargin = 0
         }
-        assert(contact != null)
         when (contact?.contactPriority) {
             0 -> {
                 holder.contactRoundedImageView.setBorderColor(

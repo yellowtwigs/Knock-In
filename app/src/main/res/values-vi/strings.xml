@@ -487,4 +487,6 @@
     <string name="upload_your_own_ringtone">Tải lên nhạc chuông của riêng bạn</string>
     <string name="in_app_popup_apps_support_message">Trong phiên bản Freemium không được vượt quá 4 ứng dụng, bạn có muốn vào quán không?</string>
     <string name="in_app_popup_apps_support_title">Đã đạt đến số lượng ứng dụng hỗ trợ</string>
+    <string name="messenger_identifier_title">Mã nhận dạng Messenger</string>
+    <string name="messenger_identifier_message">Tương ứng với số nhận dạng hiển thị trên liên kết của một cuộc trò chuyện trên trang Messenger.com</string>
 </resources>

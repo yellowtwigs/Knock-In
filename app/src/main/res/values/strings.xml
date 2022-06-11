@@ -491,4 +491,6 @@
     <string name="upload_your_own_ringtone">Upload your own ringtone</string>
     <string name="in_app_popup_apps_support_message">In the Freemium version, you cannot exceed 4 apps, do you want to go to the shop?</string>
     <string name="in_app_popup_apps_support_title">Number of apps support reached</string>
+    <string name="messenger_identifier_title">Messenger Identifier</string>
+    <string name="messenger_identifier_message">Corresponds to the identifier visible on the link of a conversation on the Messenger.com site</string>
 </resources>

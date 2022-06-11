@@ -808,34 +808,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //endregion
 
-//    private fun setupFacebookLogin() {
-//        val loginButton = findViewById<LoginButton>(R.id.login_button)
-//        callbackManager = CallbackManager.Factory.create()
-//        loginButton.setPermissions(listOf("user_gender, user_friends"))
-//        loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-//            override fun onSuccess(result: LoginResult) {
-//                Log.d("loginButtonResult", "${result?.accessToken}")
-//                Log.d("loginButtonResult", "Login Successful!")
-//            }
-//
-//            override fun onCancel() {
-//                Log.d("loginButtonResult", "Login Canceled!")
-//            }
-//
-//            override fun onError(error: FacebookException) {
-//                Log.d("loginButtonResult", "${error}")
-//                Log.d("loginButtonResult", "${error?.message}")
-//                Log.d("loginButtonResult", "${error?.cause}")
-//                Log.d("loginButtonResult", "Login Error!")
-//            }
-//        })
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        callbackManager.onActivityResult(requestCode, resultCode, data)
-//        super.onActivityResult(requestCode, resultCode, data)
-//    }
-
     //region =========================================== Lifecycle ==========================================
 
     override fun onRestart() {

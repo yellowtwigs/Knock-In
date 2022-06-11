@@ -95,15 +95,12 @@ class GroupAdapter(
      */
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val height = heightWidthImage
-        val width = heightWidthImage
-        println(" layout params height $height width $width")
         val layoutParamsTV =
-            holder.contactFirstNameView!!.layoutParams as RelativeLayout.LayoutParams
+            holder.contactFirstNameView?.layoutParams as RelativeLayout.LayoutParams
         val layoutParamsIV = if (len != 1) {
-            holder.contactRoundedImageView!!.layoutParams as ConstraintLayout.LayoutParams
+            holder.contactRoundedImageView?.layoutParams as ConstraintLayout.LayoutParams
         } else {
-            holder.contactRoundedImageView!!.layoutParams as RelativeLayout.LayoutParams
+            holder.contactRoundedImageView?.layoutParams as RelativeLayout.LayoutParams
         }
 
         when (len) {
@@ -116,36 +113,48 @@ class GroupAdapter(
                 layoutParamsIV.topMargin = 10
             }
             4 -> {
-                holder.contactRoundedImageView!!.layoutParams.height =
+                holder.contactRoundedImageView?.layoutParams?.height =
                     (heightWidthImage - heightWidthImage * 0.25).toInt()
-                holder.contactRoundedImageView!!.layoutParams.width =
+                holder.contactRoundedImageView?.layoutParams?.width =
                     (heightWidthImage - heightWidthImage * 0.25).toInt()
                 layoutParamsTV.topMargin = 10
                 layoutParamsIV.topMargin = 10
             }
+            5 -> {
+                holder.contactRoundedImageView?.layoutParams?.height =
+                    (heightWidthImage - heightWidthImage * 0.40).toInt()
+                holder.contactRoundedImageView?.layoutParams?.width =
+                    (heightWidthImage - heightWidthImage * 0.40).toInt()
+                layoutParamsTV.topMargin = 0
+                layoutParamsIV.topMargin = 0
+            }
         }
         val contact = contactManager.contactList[position].contactDB!!
-        if (contact.contactPriority == 0) {
-            holder.contactRoundedImageView!!.setBorderColor(
-                context.resources.getColor(
-                    R.color.priorityZeroColor,
-                    null
+        when (contact.contactPriority) {
+            0 -> {
+                holder.contactRoundedImageView?.setBorderColor(
+                    context.resources.getColor(
+                        R.color.priorityZeroColor,
+                        null
+                    )
                 )
-            )
-        } else if (contact.contactPriority == 1) {
-            holder.contactRoundedImageView!!.setBorderColor(
-                context.resources.getColor(
-                    R.color.transparentColor,
-                    null
+            }
+            1 -> {
+                holder.contactRoundedImageView?.setBorderColor(
+                    context.resources.getColor(
+                        R.color.transparentColor,
+                        null
+                    )
                 )
-            )
-        } else if (contact.contactPriority == 2) {
-            holder.contactRoundedImageView!!.setBorderColor(
-                context.resources.getColor(
-                    R.color.priorityTwoColor,
-                    null
+            }
+            2 -> {
+                holder.contactRoundedImageView?.setBorderColor(
+                    context.resources.getColor(
+                        R.color.priorityTwoColor,
+                        null
+                    )
                 )
-            )
+            }
         }
         if (modeMultiSelect && listOfItemSelected.contains(contactManager.contactList[position])) {
             holder.contactRoundedImageView!!.setImageResource(R.drawable.ic_item_selected)
@@ -221,7 +230,6 @@ class GroupAdapter(
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 holder.contactFirstNameView!!.text = span
-                //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
                 if (contact.lastName.length > 11) lastName = contact.lastName.substring(0, 9) + ".."
                 val spanLastName: Spannable = SpannableString(lastName)
                 spanLastName.setSpan(
@@ -481,18 +489,6 @@ class GroupAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return position
-    }
-
-    /**
-     * rajoute un indicatif au numéro
-     *
-     * @param phoneNumber [String]
-     * @return [String]
-     */
-    private fun converter06To33(phoneNumber: String): String {
-        return if (phoneNumber[0] == '0') {
-            "+33$phoneNumber"
-        } else phoneNumber
     }
 
     /**

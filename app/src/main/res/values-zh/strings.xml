@@ -484,4 +484,6 @@
     <string name="upload_your_own_ringtone">上传自己的铃声</string>
     <string name="in_app_popup_apps_support_message">免费增值版中，不能超过4个应用，要不要去商店？</string>
     <string name="in_app_popup_apps_support_title">达到的应用程序支持数量</string>
+    <string name="messenger_identifier_title">信使标识符</string>
+    <string name="messenger_identifier_message">对应于 Messenger.com 网站上对话链接上可见的标识符</string>
 </resources>

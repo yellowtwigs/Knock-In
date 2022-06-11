@@ -148,7 +148,7 @@
                 app:srcCompat="@drawable/ic_linkedin" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/youtube_link_socials_networks"
+                android:id="@+id/signal_icon"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="18dp"
@@ -157,7 +157,7 @@
                 android:focusable="true"
                 app:layout_constraintStart_toEndOf="@+id/linkedin_link_socials_networks"
                 app:layout_constraintTop_toBottomOf="@+id/snapchat_link_socials_networks"
-                app:srcCompat="@drawable/ic_youtube" />
+                app:srcCompat="@drawable/ic_signal" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/telegram_link_socials_networks"
@@ -170,19 +170,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/outlook_link_socials_networks"
                 app:srcCompat="@drawable/ic_telegram" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/signal_icon"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="18dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skype_link_socials_networks"
-                app:srcCompat="@drawable/ic_signal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -858,7 +845,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
-        android:visibility="gone"
+        android:visibility="visible"
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"

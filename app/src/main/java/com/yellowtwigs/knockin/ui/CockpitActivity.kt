@@ -6,10 +6,8 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.Resources
-import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -19,7 +17,10 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TableLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
@@ -35,17 +36,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
+import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
+import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
-import java.util.*
 
 /**
  * La Classe qui permet d'afficher la liste des appels reçu
@@ -91,7 +91,6 @@ class CockpitActivity : AppCompatActivity() {
     private var link_socials_networks_Messenger: AppCompatImageView? = null
     private var link_socials_networks_Instagram: AppCompatImageView? = null
     private var link_socials_networks_Whatsapp: AppCompatImageView? = null
-    private var link_socials_networks_Youtube: AppCompatImageView? = null
     private var link_socials_networks_Gmail: AppCompatImageView? = null
     private var link_socials_networks_Snapchat: AppCompatImageView? = null
     private var link_socials_networks_Telegram: AppCompatImageView? = null
@@ -103,9 +102,6 @@ class CockpitActivity : AppCompatActivity() {
 
     private var cockpit_CallBackSpace: ImageView? = null
     private var cockpit_ButtonAddContact: ImageView? = null
-
-    //    private var cockpit_Calls: TextView? = null
-    /*private var cockpit_CallsListView: ListView? = null*/
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -208,7 +204,6 @@ class CockpitActivity : AppCompatActivity() {
         link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
         link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
         link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
-        link_socials_networks_Youtube = findViewById(R.id.youtube_link_socials_networks)
         link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
         link_socials_networks_Snapchat = findViewById(R.id.snapchat_link_socials_networks)
         link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
@@ -398,19 +393,6 @@ class CockpitActivity : AppCompatActivity() {
             }
         } else {
             link_socials_networks_Whatsapp?.setOnClickListener { goToWhatsapp() }
-        }
-
-        if (!listApp.contains("com.google.android.youtube")) {
-            link_socials_networks_Youtube?.setImageResource(R.drawable.ic_youtube_disable)
-            link_socials_networks_Youtube?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_youtube_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Youtube?.setOnClickListener { goToYoutube() }
         }
 
         if (!listApp.contains("com.google.android.gm")) {
@@ -841,25 +823,10 @@ class CockpitActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToYoutube() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("http://youtube.com/")
-                )
-            )
-        }
-    }
-
     override fun onBackPressed() {
     }
 
     private fun hideKeyboard() {
-        // Check if no view has focus:
         val view = this.currentFocus
 
         view?.let { v ->

@@ -158,12 +158,8 @@ class ContactRecyclerViewAdapter(
                     ), PorterDuff.Mode.MULTIPLY
                 )
             }
-            //Drawable roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group);
-            //roundedLayout.setColorFilter(Color.parseColor("#f0f0f0"), PorterDuff.Mode.MULTIPLY);
-            //holder.groupWordingConstraint.setBackground(roundedLayout);
         } else {
             val roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group)!!
-            //            roundedLayout.setColorFilter(firstGroup.randomColorGroup(this.context), PorterDuff.Mode.MULTIPLY);
             roundedLayout.setColorFilter(firstGroup.section_color, PorterDuff.Mode.MULTIPLY)
         }
         if (modeMultiSelect) {

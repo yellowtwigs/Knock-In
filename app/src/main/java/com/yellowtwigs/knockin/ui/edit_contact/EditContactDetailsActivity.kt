@@ -79,7 +79,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
     private var vipSettingsIcon: AppCompatImageView? = null
     private lateinit var contactVipSettingsText: TextView
 
-    private var edit_contact_Mail_Identifier_Help: AppCompatImageView? = null
+    private var mailIdentifierHelp: AppCompatImageView? = null
+    private var messengerIdentifierHelp: AppCompatImageView? = null
 
     private var edit_contact_RoundedImageView: CircularImageView? = null
     private var prioritySpinner: Spinner? = null
@@ -222,7 +223,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
         edit_contact_Mail_Property = findViewById(R.id.edit_contact_mail_spinner_id)
         messengerInput = findViewById(R.id.edit_contact_messenger_id_edit_text)
         mailNameInput = findViewById(R.id.edit_contact_mail_id_edit_text)
-        edit_contact_Mail_Identifier_Help = findViewById(R.id.edit_contact_mail_id_help)
+        mailIdentifierHelp = findViewById(R.id.edit_contact_mail_id_help)
+        messengerIdentifierHelp = findViewById(R.id.edit_contact_messenger_id_help)
         prioritySpinner = findViewById(R.id.edit_contact_priority)
         edit_contact_Phone_Property = findViewById(R.id.edit_contact_phone_number_spinner)
         edit_contact_Fix_Property = findViewById(R.id.edit_contact_phone_number_spinner_fix)
@@ -331,7 +333,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
             hasWhatsapp = contact.contactDB?.hasWhatsapp!!
             hasTelegram = contact.contactDB?.hasTelegram!!
-            hasSignal   = contact.contactDB?.hasSignal!!
+            hasSignal = contact.contactDB?.hasSignal!!
 
             contactPriorityBorder(contact.contactDB!!, edit_contact_RoundedImageView!!, this)
 
@@ -593,11 +595,19 @@ class EditContactDetailsActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        edit_contact_Mail_Identifier_Help?.setOnClickListener {
+        mailIdentifierHelp?.setOnClickListener {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(getString(R.string.add_new_contact_mail_identifier))
                 .setView(R.layout.alert_dialog_mail_identifier_help)
                 .setMessage(getString(R.string.add_new_contact_mail_identifier_help))
+                .show()
+        }
+
+        messengerIdentifierHelp?.setOnClickListener {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setTitle(getString(R.string.messenger_identifier_title))
+                .setView(R.layout.alert_dialog_messenger_identifier_help)
+                .setMessage(getString(R.string.messenger_identifier_message))
                 .show()
         }
 
@@ -735,6 +745,10 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 putExtra(
                                     ContactsContract.Intents.Insert.PHONE,
                                     phoneNumberInput.editText?.text.toString()
+                                )
+                                putExtra(
+                                    ContactsContract.Intents.Insert.TERTIARY_PHONE,
+                                    messengerInput.editText?.text.toString()
                                 )
 
                                 putExtra(
