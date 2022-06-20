@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Cockpit</string>
+    <string name="cockpit_toolbar_title">Ứng dụng nhắn tin</string>
     <string name="cockpit_toast_phone_number_empty">Nhập số điện thoại</string>
     <string name="cockpit_toast_number_valid">Xin vui lòng nhập một số điện thoại hợp lệ</string>
     <string name="cockpit_toast_facebook_not_install">Facebook chưa được cài đặt</string>
@@ -485,7 +485,7 @@
     <string name="start_time">Thời gian bắt đầu</string>
     <string name="end_time">Thời gian kết thúc</string>
     <string name="upload_your_own_ringtone">Tải lên nhạc chuông của riêng bạn</string>
-    <string name="in_app_popup_apps_support_message">Trong phiên bản Freemium không được vượt quá 4 ứng dụng, bạn có muốn vào quán không?</string>
+    <string name="in_app_popup_apps_support_message">Để sử dụng ứng dụng này với Knock In, hãy truy cập Cửa hàng</string>
     <string name="in_app_popup_apps_support_title">Đã đạt đến số lượng ứng dụng hỗ trợ</string>
     <string name="messenger_identifier_title">Mã nhận dạng Messenger</string>
     <string name="messenger_identifier_message">Tương ứng với số nhận dạng hiển thị trên liên kết của một cuộc trò chuyện trên trang Messenger.com</string>

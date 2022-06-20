@@ -258,7 +258,7 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Centro de control</string>
+    <string name="cockpit_toolbar_title">Aplicaciones de mensajería</string>
     <string name="cockpit_toast_phone_number_empty">Introduzca un número de teléfono </string>
     <string name="cockpit_toast_number_valid"> Introduzca un número de teléfono válido </string>
     <string name="cockpit_toast_facebook_not_install">Facebook no está instalado</string>
@@ -489,7 +489,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="start_time">Hora de inicio</string>
     <string name="end_time">Hora de finalización</string>
     <string name="upload_your_own_ringtone">Sube tu propio tono de llamada</string>
-    <string name="in_app_popup_apps_support_message">En la versión Freemium no puedes pasar de 4 apps, ¿quieres ir a la tienda?</string>
+    <string name="in_app_popup_apps_support_message">Para usar esta aplicación con Knock In, vaya a la Tienda</string>
     <string name="in_app_popup_apps_support_title">Número de soporte de aplicaciones alcanzado</string>
     <string name="messenger_identifier_title">Identificador de mensajero</string>
     <string name="messenger_identifier_message">Corresponde al identificador visible en el enlace de una conversación en el sitio Messenger.com</string>

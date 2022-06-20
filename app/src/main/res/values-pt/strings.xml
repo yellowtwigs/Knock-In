@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Cockpit</string>
+    <string name="cockpit_toolbar_title">Aplicativos de mensagens</string>
     <string name="cockpit_toast_phone_number_empty">Digite </string>
     <string name="cockpit_toast_number_valid">Por favor, insira um número de telefone válido</string>
     <string name="cockpit_toast_facebook_not_install">Facebook não está instalado</string>
@@ -483,7 +483,7 @@
     <string name="start_time">Hora de início</string>
     <string name="end_time">Fim do tempo</string>
     <string name="upload_your_own_ringtone">Carregue seu próprio toque</string>
-    <string name="in_app_popup_apps_support_message">Na versão Freemium não pode ultrapassar 4 apps, quer ir até a loja?</string>
+    <string name="in_app_popup_apps_support_message">Para usar este aplicativo com Knock In, acesse a Loja</string>
     <string name="in_app_popup_apps_support_title">Número de suporte de aplicativos alcançado</string>
     <string name="messenger_identifier_title">Identificador do Messenger</string>
     <string name="messenger_identifier_message">Corresponde ao identificador visível no link de uma conversa no site Messenger.com</string>

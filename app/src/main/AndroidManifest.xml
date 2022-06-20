@@ -44,6 +44,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".ui.teleworking.TeleworkingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.contacts.contact_selected.ContactSelectedWithAppsActivity"
             android:exported="false" />
         <activity
@@ -60,15 +63,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.settings.SettingsActivity" />
-        <activity
-            android:name=".ui.first_launch.StartActivity"
-            android:exported="true">
-<!--             <intent-filter>-->
-<!--                 <action android:name="android.intent.action.MAIN" />-->
-
-<!--                 <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
-        </activity>
+        <activity android:name=".ui.first_launch.StartActivity" />
         <activity android:name=".FirstLaunchActivity" />
         <activity android:name=".ui.group.AddNewGroupActivity" />
         <activity android:name=".ui.group.DeleteContactFromGroupActivity" />

@@ -31,7 +31,6 @@ class FirstLaunchActivity : AppCompatActivity() {
 
         //region ======================================= First Launch =======================================
 
-        //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         if (sharedFirstLaunch.getBoolean("first_launch", false)) {
             startActivity(Intent(this@FirstLaunchActivity, MainActivity::class.java))

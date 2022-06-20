@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Cokpit</string>
+    <string name="cockpit_toolbar_title">Aplikasi Perpesanan</string>
     <string name="cockpit_toast_phone_number_empty">Masukkan nomor telepon</string>
     <string name="cockpit_toast_number_valid">Silakan masukkan nomor telepon yang valid</string>
     <string name="cockpit_toast_facebook_not_install">Facebook tidak diinstal</string>
@@ -487,7 +487,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="start_time">Waktu mulai</string>
     <string name="end_time">Akhir waktu</string>
     <string name="upload_your_own_ringtone">Unggah nada dering Anda sendiri</string>
-    <string name="in_app_popup_apps_support_message">Dalam versi Freemium, Anda tidak dapat melebihi 4 aplikasi, apakah Anda ingin pergi ke toko?</string>
+    <string name="in_app_popup_apps_support_message">Untuk menggunakan aplikasi ini dengan Knock In, buka Toko</string>
     <string name="in_app_popup_apps_support_title">Jumlah dukungan aplikasi tercapai</string>
     <string name="messenger_identifier_title">Pengidentifikasi Utusan</string>
     <string name="messenger_identifier_message">Sesuai dengan pengidentifikasi yang terlihat pada tautan percakapan di situs Messenger.com</string>

@@ -249,7 +249,6 @@ class CockpitActivity : AppCompatActivity() {
 
         //region ======================================= DrawerLayout =======================================
 
-        // Drawerlayout
         cockpit_DrawerLayout = findViewById(R.id.cockpit_drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.cockpit_nav_view)
         val menu = navigationView.menu

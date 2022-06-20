@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">控制台</string>
+    <string name="cockpit_toolbar_title">消息应用程序</string>
     <string name="cockpit_toast_phone_number_empty">输入电话号码</string>
     <string name="cockpit_toast_number_valid">请输入有效电话号码</string>
     <string name="cockpit_toast_facebook_not_install">未安装Facebook</string>
@@ -482,7 +482,7 @@
     <string name="start_time">开始时间</string>
     <string name="end_time">时间结束</string>
     <string name="upload_your_own_ringtone">上传自己的铃声</string>
-    <string name="in_app_popup_apps_support_message">免费增值版中，不能超过4个应用，要不要去商店？</string>
+    <string name="in_app_popup_apps_support_message">要在 Knock In 中使用此应用程序，请前往商店</string>
     <string name="in_app_popup_apps_support_title">达到的应用程序支持数量</string>
     <string name="messenger_identifier_title">信使标识符</string>
     <string name="messenger_identifier_message">对应于 Messenger.com 网站上对话链接上可见的标识符</string>

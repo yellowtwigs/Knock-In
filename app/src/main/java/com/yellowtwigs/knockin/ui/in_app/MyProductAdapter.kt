@@ -106,7 +106,7 @@ class MyProductAdapter(
                                 changeBackgroundToDarkGrey()
                             }
                         }
-                        contains("Applications") || contains("applications") -> {
+                        contains("Support") || contains("support") -> {
                             productItemImage.setImageResource(R.drawable.ic_social_media)
 
                             if (appsSupportBought) {

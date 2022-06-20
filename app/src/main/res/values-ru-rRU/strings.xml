@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Панель</string>
+    <string name="cockpit_toolbar_title">Приложения для обмена сообщениями</string>
     <string name="cockpit_toast_phone_number_empty">Введите номер телефона</string>
     <string name="cockpit_toast_number_valid">Пожалуйста, введите действительный номер телефона</string>
     <string name="cockpit_toast_facebook_not_install">Facebook не установлен</string>
@@ -484,7 +484,7 @@
     <string name="start_time">Время начала</string>
     <string name="end_time">Время окончания</string>
     <string name="upload_your_own_ringtone">Загрузить свой рингтон</string>
-    <string name="in_app_popup_apps_support_message">В версии Freemium вы не можете использовать более 4 приложений, хотите пойти в магазин?</string>
+    <string name="in_app_popup_apps_support_message">Чтобы использовать это приложение с Knock In, перейдите в магазин.</string>
     <string name="in_app_popup_apps_support_title">Достигнуто количество поддерживаемых приложений</string>
     <string name="messenger_identifier_title">Идентификатор мессенджера</string>
     <string name="messenger_identifier_message">Соответствует идентификатору, который виден по ссылке беседы на сайте Messenger.com.</string>

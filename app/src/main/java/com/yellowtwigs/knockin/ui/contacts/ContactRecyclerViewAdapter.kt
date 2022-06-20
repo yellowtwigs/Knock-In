@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.ui.contacts
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.view.LayoutInflater
@@ -324,6 +325,8 @@ class ContactRecyclerViewAdapter(
             }
         }
 
+        val appsSupportPref = context.getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
+
         if (isWhatsappInstalled(context) && contact.hasWhatsapp == 1) {
             holder.whatsappCl.visibility = View.VISIBLE
         } else {
@@ -332,12 +335,21 @@ class ContactRecyclerViewAdapter(
 
         if (listApp.contains("org.thoughtcrime.securesms") && contact.hasSignal == 1) {
             holder.signalCl.visibility = View.VISIBLE
+
+            if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+                holder.signalIv.setImageResource(R.drawable.ic_signal_disable)
+            }
         } else {
             holder.signalCl.visibility = View.GONE
         }
 
         if (listApp.contains("org.telegram.messenger") && contact.hasTelegram == 1) {
             holder.telegramCl.visibility = View.VISIBLE
+
+            if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+                holder.telegramIv.setImageResource(R.drawable.ic_signal_disable)
+                messengerIcon.setImageResource(R.drawable.ic_messenger_disable)
+            }
         } else {
             holder.telegramCl.visibility = View.GONE
         }
@@ -358,6 +370,10 @@ class ContactRecyclerViewAdapter(
             holder.messengerCl.visibility = View.GONE
         } else {
             holder.messengerCl.visibility = View.VISIBLE
+
+            if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+                holder.messengerIv.setImageResource(R.drawable.ic_signal_disable)
+            }
         }
 
         if (holder.constraintLayout != null) {
@@ -431,9 +447,12 @@ class ContactRecyclerViewAdapter(
         var editCl: RelativeLayout? = view.findViewById(R.id.list_contact_item_constraint_edit)
         var messengerCl: RelativeLayout =
             view.findViewById(R.id.list_contact_item_constraint_messenger)
+        var messengerIv : AppCompatImageView = view.findViewById(R.id.messenger_iv)
         var signalCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_signal)
+        var signalIv : AppCompatImageView = view.findViewById(R.id.signal_iv)
         var telegramCl: RelativeLayout =
             view.findViewById(R.id.list_contact_item_constraint_telegram)
+        var telegramIv : AppCompatImageView = view.findViewById(R.id.telegram_iv)
     }
 
     init {

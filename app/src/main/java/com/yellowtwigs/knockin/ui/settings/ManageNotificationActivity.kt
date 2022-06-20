@@ -467,8 +467,8 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     private fun negativeAlertDialogButtonClick(alertDialog: androidx.appcompat.app.AlertDialog) {
-        switchPopupNotif!!.isChecked = false
-        switchservice!!.isChecked = false
+        switchPopupNotif?.isChecked = false
+        switchservice?.isChecked = false
         alertDialog.cancel()
     }
 

@@ -38,8 +38,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
         //region ======================================== Theme Dark ========================================
 
-        //On affecte le Thème light ou le dark en fonction de ce que l'utilisateur à choisi
-        //Ce thème est enregistré dans une sharedPreferences c'est un fichier android qui est sauvegardé par l'application
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             setTheme(R.style.AppThemeDark)
@@ -80,20 +78,20 @@ class SplashScreenActivity : AppCompatActivity() {
         )
 
         Handler().postDelayed({
-            splashScreenActivityAppNameCenter!!.startAnimation(slideDown)
+            splashScreenActivityAppNameCenter?.startAnimation(slideDown)
         }, SPLASH_DISPLAY_LENGHT_ANIMATION.toLong())
 
 
         Handler().postDelayed({
-            splashScreenActivityAppNameCenter!!.visibility = View.INVISIBLE
-            splashScreenActivityAppNameDown!!.visibility = View.VISIBLE
+            splashScreenActivityAppNameCenter?.visibility = View.INVISIBLE
+            splashScreenActivityAppNameDown?.visibility = View.VISIBLE
 
-            splashScreenActivityAppIcon!!.startAnimation(reappartion)
-            splashScreenActivityAppIcon!!.visibility = View.VISIBLE
-            splashScreenActivityYellowTwigs!!.startAnimation(reappartion)
-            splashScreenActivityYellowTwigs!!.visibility = View.VISIBLE
-            splashScreenActivitySubtitle!!.startAnimation(reappartion)
-            splashScreenActivitySubtitle!!.visibility = View.VISIBLE
+            splashScreenActivityAppIcon?.startAnimation(reappartion)
+            splashScreenActivityAppIcon?.visibility = View.VISIBLE
+            splashScreenActivityYellowTwigs?.startAnimation(reappartion)
+            splashScreenActivityYellowTwigs?.visibility = View.VISIBLE
+            splashScreenActivitySubtitle?.startAnimation(reappartion)
+            splashScreenActivitySubtitle?.visibility = View.VISIBLE
         }, SPLASH_DISPLAY_LENGHT.toLong())
 
 

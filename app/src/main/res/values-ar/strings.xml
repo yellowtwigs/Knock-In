@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">مركز التحكم</string>
+    <string name="cockpit_toolbar_title">تطبيقات المراسلة</string>
     <string name="cockpit_toast_phone_number_empty">أدخل رقم هاتف</string>
     <string name="cockpit_toast_number_valid">يرجى إدخال رقم هاتف صالح</string>
     <string name="cockpit_toast_facebook_not_install">Facebook غير مثبت</string>
@@ -484,7 +484,7 @@
     <string name="start_time">وقت البدء</string>
     <string name="end_time">وقت النهاية</string>
     <string name="upload_your_own_ringtone">قم بتحميل نغمة الرنين الخاصة بك</string>
-    <string name="in_app_popup_apps_support_message">في إصدار Freemium ، لا يمكنك تجاوز 4 تطبيقات ، هل تريد الذهاب إلى المتجر؟</string>
+    <string name="in_app_popup_apps_support_message">لاستخدام هذا التطبيق مع Knock In ، انتقل إلى المتجر</string>
     <string name="in_app_popup_apps_support_title">تم الوصول إلى عدد التطبيقات التي تم دعمها</string>
     <string name="messenger_identifier_title">معرّف Messenger</string>
     <string name="messenger_identifier_message">يتوافق مع المعرف المرئي على رابط محادثة على موقع Messenger.com</string>
