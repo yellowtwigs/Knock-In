@@ -16,19 +16,19 @@
         android:id="@+id/notif_group_tri"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/notif_tri_par_date"
-            android:title="@string/notif_tri_date"
+            android:id="@+id/sort_by_date"
+            android:title="@string/sort_by_date"
             app:showAsAction="collapseActionView"
             android:checked="true"/>
 
         <item
-            android:id="@+id/notif_tri_par_contact"
-            android:title="@string/notif_tri_par_contact"
+            android:id="@+id/sort_by_contact"
+            android:title="@string/sort_by_contact"
             app:showAsAction="collapseActionView" />
 
         <item
-            android:id="@+id/notif_tri_par_priorite"
-            android:title="@string/main_tri_par_priorite"
+            android:id="@+id/sort_by_priority"
+            android:title="@string/sort_by_priority"
             app:showAsAction="collapseActionView" />
 
     </group>
@@ -42,7 +42,7 @@
         android:id="@+id/messagefilter"
         android:checked="true"
         android:checkable="true"
-        android:title="@string/notif_filtre_message" />
+        android:title="@string/notif_filter_by_msg_apps" />
     </group>
 
 

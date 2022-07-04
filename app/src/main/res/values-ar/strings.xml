@@ -57,15 +57,15 @@
     <string name="main_tri_title">الترتيب حسب :</string>
     <string name="main_tri_par_nom">الإسم الشخصي</string>
     <string name="main_tri_par_lastname">الإسم العائلي</string>
-    <string name="main_tri_par_priorite">الأولوية</string>
+    <string name="sort_by_priority">الأولوية</string>
     <string name="main_tri_par_favoris">المفضلة</string>
     <string name="main_tri_par_groupe">المجموعة</string>
     <string name="main_filtre_title">مصنف بواسطة :</string>
     <string name="notif_filtre_app">اشعارات التطبيق</string>
-    <string name="notif_filtre_message">اشعارات الرسائل</string>
+    <string name="notif_filter_by_msg_apps">اشعارات الرسائل</string>
     <string name="notif_filtre_systeme">اشعارات النظام</string>
-    <string name="notif_tri_date">التاريخ و الساعة</string>
-    <string name="notif_tri_par_contact">جهات الاتصال</string>
+    <string name="sort_by_date">التاريخ و الساعة</string>
+    <string name="sort_by_contact">جهات الاتصال</string>
     <string name="main_toast_delete_contact">لقد قمت للتو بحذف جهة اتصال !</string>
     <string name="main_toast_multi_select_actived">تم تنشيط وضع الاختيار المتعدد</string>
     <string name="main_toast_multi_select_deactived">تم تعطيل وضع الاختيار المتعدد </string>
@@ -488,4 +488,7 @@
     <string name="in_app_popup_apps_support_title">تم الوصول إلى عدد التطبيقات التي تم دعمها</string>
     <string name="messenger_identifier_title">معرّف Messenger</string>
     <string name="messenger_identifier_message">يتوافق مع المعرف المرئي على رابط محادثة على موقع Messenger.com</string>
+    <string name="activate_teleworking_mode">قم بتنشيط وضع العمل عن بعد</string>
+    <string name="modify">تعديل</string>
+    <string name="work_schedule_title">جدول العمل (الاثنين - الجمعة)</string>
 </resources>

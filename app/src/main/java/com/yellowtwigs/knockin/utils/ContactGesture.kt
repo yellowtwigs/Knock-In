@@ -59,6 +59,20 @@ object ContactGesture {
         }
     }
 
+    fun openWhatsapp(context: Context) {
+        val i = context.packageManager.getLaunchIntentForPackage("com.whatsapp")
+        try {
+            context.startActivity(i)
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://whatsapp.com/")
+                )
+            )
+        }
+    }
+
     fun sendMessageWithWhatsapp(phoneNumber: String, msg: String, activity: Activity) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

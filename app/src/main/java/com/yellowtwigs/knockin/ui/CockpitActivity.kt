@@ -43,6 +43,7 @@ import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActiv
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -119,6 +120,15 @@ class CockpitActivity : AppCompatActivity() {
                         Intent(
                             this@CockpitActivity,
                             GroupManagerActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_teleworking -> {
+                    startActivity(
+                        Intent(
+                            this@CockpitActivity,
+                            TeleworkingActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -220,6 +230,8 @@ class CockpitActivity : AppCompatActivity() {
         val settings_left_drawer_ThemeSwitch =
             findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
 
+        //endregion
+
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             settings_left_drawer_ThemeSwitch?.isChecked = true
 //            group_manager_MainLayout?.setBackgroundResource(R.drawable.dark_background)
@@ -233,8 +245,6 @@ class CockpitActivity : AppCompatActivity() {
         if (sharedPreferencePopup.getBoolean("popup", true)) {
             settings_CallPopupSwitch!!.isChecked = true
         }
-
-        //endregion
 
         //endregion
 

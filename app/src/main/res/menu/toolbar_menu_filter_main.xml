@@ -22,7 +22,7 @@
             app:showAsAction="collapseActionView"/>
         <item
             android:id="@+id/tri_par_priorite"
-            android:title="@string/main_tri_par_priorite"
+            android:title="@string/sort_by_priority"
             app:showAsAction="collapseActionView" />
         <item
             android:id="@+id/tri_par_favoris"

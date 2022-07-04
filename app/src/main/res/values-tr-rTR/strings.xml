@@ -56,15 +56,15 @@
     <string name="main_tri_title">Filtrele</string>
     <string name="main_tri_par_nom">İsim</string>
     <string name="main_tri_par_lastname">İsim</string>
-    <string name="main_tri_par_priorite">Öncelik</string>
+    <string name="sort_by_priority">Öncelik</string>
     <string name="main_tri_par_favoris">Favori</string>
     <string name="main_tri_par_groupe">Grup</string>
     <string name="main_filtre_title">Bildirim filtresi:</string>
     <string name="notif_filtre_app">Uygulama</string>
-    <string name="notif_filtre_message">Mesaj</string>
+    <string name="notif_filter_by_msg_apps">Mesaj</string>
     <string name="notif_filtre_systeme">Sistem</string>
-    <string name="notif_tri_date">Tarih ve saat</string>
-    <string name="notif_tri_par_contact">İletişim</string>
+    <string name="sort_by_date">Tarih ve saat</string>
+    <string name="sort_by_contact">İletişim</string>
     <string name="main_toast_delete_contact">Bir kişiyi kaldırdınız!</string>
     <string name="main_toast_multi_select_actived">Çoklu Seçim modunu etkinleştir</string>
     <string name="main_toast_multi_select_deactived">Çoklu Seçim modunu devre dışı bırak</string>
@@ -483,8 +483,11 @@
     <string name="start_time">Başlangıç ​​saati</string>
     <string name="end_time">Bitiş zamanı</string>
     <string name="upload_your_own_ringtone">Kendi zil sesinizi yükleyin</string>
-    <string name="in_app_popup_apps_support_message">Bu uygulamayı Knock In ile kullanmak için Mağaza'ya gidin</string>
+    <string name="in_app_popup_apps_support_message">Bu uygulamayı Knock In ile kullanmak için Mağaza\'ya gidin</string>
     <string name="in_app_popup_apps_support_title">Ulaşılan uygulama desteği sayısı</string>
     <string name="messenger_identifier_title">Messenger Tanımlayıcısı</string>
     <string name="messenger_identifier_message">Messenger.com sitesinde bir konuşmanın bağlantısında görünen tanımlayıcıya karşılık gelir</string>
+    <string name="activate_teleworking_mode">Uzaktan çalışma modunu etkinleştir</string>
+    <string name="modify">değiştir</string>
+    <string name="work_schedule_title">Çalışma programı (Pazartesi - Cuma)</string>
 </resources>

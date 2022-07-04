@@ -56,15 +56,15 @@
     <string name="main_tri_title">筛选条件:</string>
     <string name="main_tri_par_nom">名字</string>
     <string name="main_tri_par_lastname">全名</string>
-    <string name="main_tri_par_priorite">优先级</string>
+    <string name="sort_by_priority">优先级</string>
     <string name="main_tri_par_favoris">收藏</string>
     <string name="main_tri_par_groupe">组别</string>
     <string name="main_filtre_title">通知过滤器</string>
     <string name="notif_filtre_app">应用</string>
-    <string name="notif_filtre_message">信息</string>
+    <string name="notif_filter_by_msg_apps">信息</string>
     <string name="notif_filtre_systeme">系统</string>
-    <string name="notif_tri_date">日期与时间</string>
-    <string name="notif_tri_par_contact">联系人</string>
+    <string name="sort_by_date">日期与时间</string>
+    <string name="sort_by_contact">联系人</string>
     <string name="main_toast_delete_contact">您成功移除了该联系人！</string>
     <string name="main_toast_multi_select_actived">启用多选模式</string>
     <string name="main_toast_multi_select_deactived">禁用多选模式</string>
@@ -486,4 +486,7 @@
     <string name="in_app_popup_apps_support_title">达到的应用程序支持数量</string>
     <string name="messenger_identifier_title">信使标识符</string>
     <string name="messenger_identifier_message">对应于 Messenger.com 网站上对话链接上可见的标识符</string>
+    <string name="activate_teleworking_mode">激活远程办公模式</string>
+    <string name="modify">调整</string>
+    <string name="work_schedule_title">工作时间表（周一至周五）</string>
 </resources>

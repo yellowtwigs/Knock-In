@@ -56,15 +56,15 @@
     <string name="main_tri_title">Lọc theo:</string>
     <string name="main_tri_par_nom">Tên</string>
     <string name="main_tri_par_lastname">Tên đầy đủ</string>
-    <string name="main_tri_par_priorite">Quyền ưu tiên</string>
+    <string name="sort_by_priority">Quyền ưu tiên</string>
     <string name="main_tri_par_favoris">Yêu thích</string>
     <string name="main_tri_par_groupe">Nhóm</string>
     <string name="main_filtre_title">Bộ lọc thông báo:</string>
     <string name="notif_filtre_app">Ứng dụng</string>
-    <string name="notif_filtre_message">Tin nhắn</string>
+    <string name="notif_filter_by_msg_apps">Tin nhắn</string>
     <string name="notif_filtre_systeme">Hệ thống</string>
-    <string name="notif_tri_date">Ngày và giờ</string>
-    <string name="notif_tri_par_contact">Liên hệ </string>
+    <string name="sort_by_date">Ngày và giờ</string>
+    <string name="sort_by_contact">Liên hệ </string>
     <string name="main_toast_delete_contact">Bạn đã xóa một liên hệ!</string>
     <string name="main_toast_multi_select_actived">Bật chế độ đa lựa chọn</string>
     <string name="main_toast_multi_select_deactived">Tắt chế độ đa lựa chọn</string>
@@ -486,4 +486,7 @@
     <string name="in_app_popup_apps_support_title">Đã đạt đến số lượng ứng dụng hỗ trợ</string>
     <string name="messenger_identifier_title">Mã nhận dạng Messenger</string>
     <string name="messenger_identifier_message">Tương ứng với số nhận dạng hiển thị trên liên kết của một cuộc trò chuyện trên trang Messenger.com</string>
+    <string name="activate_teleworking_mode">Kích hoạt chế độ Teleworking</string>
+    <string name="modify">Biến đổi</string>
+    <string name="work_schedule_title">Lịch làm việc (Thứ Hai - Thứ Sáu)</string>
 </resources>

@@ -41,6 +41,7 @@ import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 /**
  * Activité qui nous affiche les groupes de contact sous forme de section
@@ -101,6 +102,15 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         Intent(
                             this@GroupManagerActivity,
                             NotificationHistoryActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_teleworking -> {
+                    startActivity(
+                        Intent(
+                            this@GroupManagerActivity,
+                            TeleworkingActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true

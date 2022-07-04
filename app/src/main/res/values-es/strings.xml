@@ -56,15 +56,15 @@
     <string name="main_tri_title">Filtrar por:</string>
     <string name="main_tri_par_nom">Nombre</string>
     <string name="main_tri_par_lastname">Apellidos</string>
-    <string name="main_tri_par_priorite">Prioridad</string>
+    <string name="sort_by_priority">Prioridad</string>
     <string name="main_tri_par_favoris">Favoritos</string>
     <string name="main_tri_par_groupe">Grupo</string>
     <string name="main_filtre_title">Filtrar notificaciones por:</string>
     <string name="notif_filtre_app">Aplicación</string>
-    <string name="notif_filtre_message">Mensaje</string>
+    <string name="notif_filter_by_msg_apps">Mensaje</string>
     <string name="notif_filtre_systeme">Sistema</string>
-    <string name="notif_tri_date">Fecha y hora</string>
-    <string name="notif_tri_par_contact">Contactos</string>
+    <string name="sort_by_date">Fecha y hora</string>
+    <string name="sort_by_contact">Contactos</string>
     <string name="main_toast_delete_contact"> Contacto borrado! </string>
     <string name="main_toast_multi_select_actived">Active modo Multi-Select </string>
     <string name="main_toast_multi_select_deactived">Desactive modo Multi-Select </string>
@@ -493,4 +493,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="in_app_popup_apps_support_title">Número de soporte de aplicaciones alcanzado</string>
     <string name="messenger_identifier_title">Identificador de mensajero</string>
     <string name="messenger_identifier_message">Corresponde al identificador visible en el enlace de una conversación en el sitio Messenger.com</string>
+    <string name="activate_teleworking_mode">Activar modo Teletrabajo</string>
+    <string name="modify">Modificar</string>
+    <string name="work_schedule_title">Horario de trabajo (lunes a viernes)</string>
 </resources>

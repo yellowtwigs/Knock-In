@@ -41,7 +41,6 @@ import kotlin.collections.ArrayList
  */
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
-    // Database && Thread
     private var database: ContactsRoomDatabase? = null
     private lateinit var mDbWorkerThread: DbWorkerThread
     private var oldPosX: Float = 0.0f
@@ -90,7 +89,9 @@ class NotificationListener : NotificationListenerService() {
             val app = convertPackageToString(sbp.appNotifier!!, this)
 
             val contactManager = ContactManager(this)
-            if (message == "Incoming voice call" || message == "Appel vocal entrant") {
+            if (message.contains("call") || message.contains("Incoming") || message.contains("Incoming call")
+                || message.contains("Incoming Call") || message.contains("Appel entrant") || message == "appel entrant"
+            ) {
 
             } else {
                 val addNotification = Runnable {

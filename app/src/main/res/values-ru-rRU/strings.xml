@@ -56,15 +56,15 @@
     <string name="main_tri_title">Отсортировать по:</string>
     <string name="main_tri_par_nom">Имя</string>
     <string name="main_tri_par_lastname">Фамилия</string>
-    <string name="main_tri_par_priorite">Приоритет</string>
+    <string name="sort_by_priority">Приоритет</string>
     <string name="main_tri_par_favoris">Избранный</string>
     <string name="main_tri_par_groupe">Группа</string>
     <string name="main_filtre_title">Фильтр уведомлений:</string>
     <string name="notif_filtre_app">Применение</string>
-    <string name="notif_filtre_message">Сообщение</string>
+    <string name="notif_filter_by_msg_apps">Сообщение</string>
     <string name="notif_filtre_systeme">Система</string>
-    <string name="notif_tri_date">Дата и время</string>
-    <string name="notif_tri_par_contact">Контакт</string>
+    <string name="sort_by_date">Дата и время</string>
+    <string name="sort_by_contact">Контакт</string>
     <string name="main_toast_delete_contact">Вы удалили контакт!</string>
     <string name="main_toast_multi_select_actived">Активируйте режим множественного выбора</string>
     <string name="main_toast_multi_select_deactived">Деактивируйте режим множественного выбора</string>
@@ -488,4 +488,7 @@
     <string name="in_app_popup_apps_support_title">Достигнуто количество поддерживаемых приложений</string>
     <string name="messenger_identifier_title">Идентификатор мессенджера</string>
     <string name="messenger_identifier_message">Соответствует идентификатору, который виден по ссылке беседы на сайте Messenger.com.</string>
+    <string name="activate_teleworking_mode">Активировать режим удаленной работы</string>
+    <string name="modify">Изменить</string>
+    <string name="work_schedule_title">График работы (понедельник - пятница)</string>
 </resources>

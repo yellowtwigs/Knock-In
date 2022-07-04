@@ -56,6 +56,7 @@ import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import java.util.*
 import java.util.concurrent.Callable
@@ -127,7 +128,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private lateinit var sharedFromSplashScreen: SharedPreferences
     private lateinit var sharedShowPopup: SharedPreferences
 
-    //On crée un listener pour la bottomNavigationBar pour changer d'activité lors d'un click
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -138,6 +138,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         Intent(
                             this@MainActivity,
                             GroupManagerActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_teleworking -> {
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            TeleworkingActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true

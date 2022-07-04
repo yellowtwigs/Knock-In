@@ -41,7 +41,7 @@ class NotificationSender : BroadcastReceiver() {
                 calendar.add(Calendar.DATE, -1)
                 var nbOfnotif = 0
                 val sharedPreferences = context.getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
-                if (!sharedPreferences.getBoolean("filtre_message", true)) {
+                if (!sharedPreferences.getBoolean("filter_by_msg_apps", true)) {
 
                     while (nbOfnotif <= list.size - 1 && calendar.time.before(Date(list.get(nbOfnotif).timestamp))) {
                         nbOfnotif++

@@ -103,11 +103,35 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 image.setImageBitmap(bitmap)
             } else {
                 image.setImageResource(
-                    RandomDefaultImage.randomDefaultImage(
-                        contact.profilePicture,
-                        this@ContactSelectedWithAppsActivity
-                    )
+                    randomDefaultImage(contact.profilePicture)
                 )
+            }
+
+            when (contact.contactPriority) {
+                0 -> {
+                    image.setBorderColor(
+                        resources.getColor(
+                            R.color.priorityZeroColor,
+                            null
+                        )
+                    )
+                }
+                1 -> {
+                    image.setBorderColor(
+                        resources.getColor(
+                            R.color.transparentColor,
+                            null
+                        )
+                    )
+                }
+                2 -> {
+                    image.setBorderColor(
+                        resources.getColor(
+                            R.color.priorityTwoColor,
+                            null
+                        )
+                    )
+                }
             }
         }
     }
@@ -223,6 +247,101 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
         }
     }
 
+    private fun randomDefaultImage(avatarId: Int): Int {
+        val sharedPreferencesIsMultiColor =
+            getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
+        val multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
+        val sharedPreferencesContactsColor =
+            getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
+        val contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0)
+        return if (multiColor == 0) {
+            when (avatarId) {
+                0 -> R.drawable.ic_user_purple
+                1 -> R.drawable.ic_user_blue
+                2 -> R.drawable.ic_user_cyan_teal
+                3 -> R.drawable.ic_user_green
+                4 -> R.drawable.ic_user_om
+                5 -> R.drawable.ic_user_orange
+                6 -> R.drawable.ic_user_red
+                else -> R.drawable.ic_user_blue
+            }
+        } else {
+            when (contactsColorPosition) {
+                0 -> when (avatarId) {
+                    0 -> R.drawable.ic_user_blue
+                    1 -> R.drawable.ic_user_blue_indigo1
+                    2 -> R.drawable.ic_user_blue_indigo2
+                    3 -> R.drawable.ic_user_blue_indigo3
+                    4 -> R.drawable.ic_user_blue_indigo4
+                    5 -> R.drawable.ic_user_blue_indigo5
+                    6 -> R.drawable.ic_user_blue_indigo6
+                    else -> R.drawable.ic_user_om
+                }
+                1 -> when (avatarId) {
+                    0 -> R.drawable.ic_user_green
+                    1 -> R.drawable.ic_user_green_lime1
+                    2 -> R.drawable.ic_user_green_lime2
+                    3 -> R.drawable.ic_user_green_lime3
+                    4 -> R.drawable.ic_user_green_lime4
+                    5 -> R.drawable.ic_user_green_lime5
+                    else -> R.drawable.ic_user_green_lime6
+                }
+                2 -> when (avatarId) {
+                    0 -> R.drawable.ic_user_purple
+                    1 -> R.drawable.ic_user_purple_grape1
+                    2 -> R.drawable.ic_user_purple_grape2
+                    3 -> R.drawable.ic_user_purple_grape3
+                    4 -> R.drawable.ic_user_purple_grape4
+                    5 -> R.drawable.ic_user_purple_grape5
+                    else -> R.drawable.ic_user_purple
+                }
+                3 -> when (avatarId) {
+                    0 -> R.drawable.ic_user_red
+                    1 -> R.drawable.ic_user_red1
+                    2 -> R.drawable.ic_user_red2
+                    3 -> R.drawable.ic_user_red3
+                    4 -> R.drawable.ic_user_red4
+                    5 -> R.drawable.ic_user_red5
+                    else -> R.drawable.ic_user_red
+                }
+                4 -> when (avatarId) {
+                    0 -> R.drawable.ic_user_grey
+                    1 -> R.drawable.ic_user_grey1
+                    2 -> R.drawable.ic_user_grey2
+                    3 -> R.drawable.ic_user_grey3
+                    4 -> R.drawable.ic_user_grey4
+                    else -> R.drawable.ic_user_grey1
+                }
+                5 -> when (avatarId) {
+                    0 -> R.drawable.ic_user_orange
+                    1 -> R.drawable.ic_user_orange1
+                    2 -> R.drawable.ic_user_orange2
+                    3 -> R.drawable.ic_user_orange3
+                    4 -> R.drawable.ic_user_orange4
+                    else -> R.drawable.ic_user_orange3
+                }
+                6 -> when (avatarId) {
+                    0 -> R.drawable.ic_user_cyan_teal
+                    1 -> R.drawable.ic_user_cyan_teal1
+                    2 -> R.drawable.ic_user_cyan_teal2
+                    3 -> R.drawable.ic_user_cyan_teal3
+                    4 -> R.drawable.ic_user_cyan_teal4
+                    else -> R.drawable.ic_user_cyan_teal
+                }
+                else -> when (avatarId) {
+                    0 -> R.drawable.ic_user_purple
+                    1 -> R.drawable.ic_user_blue
+                    2 -> R.drawable.ic_user_cyan_teal
+                    3 -> R.drawable.ic_user_green
+                    4 -> R.drawable.ic_user_om
+                    5 -> R.drawable.ic_user_orange
+                    6 -> R.drawable.ic_user_red
+                    else -> R.drawable.ic_user_blue
+                }
+            }
+        }
+    }
+
     private fun showInAppAlertDialog() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
             .setTitle(getString(R.string.in_app_popup_apps_support_title))
@@ -239,26 +358,33 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
     }
 
     private fun animationAppsIcons(binding: ActivityContactSelectedWithAppsBinding) {
-        val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
         val reapparrition = AnimationUtils.loadAnimation(this, R.anim.reapparrition)
-        val slideToTop = AnimationUtils.loadAnimation(this, R.anim.slide_to_top)
-        val slideOutTop = AnimationUtils.loadAnimation(this, R.anim.slide_out_top)
-        val slideOutBottom = AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom)
-        val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
-        val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
 
         CoroutineScope(Dispatchers.Main).launch {
-//            binding.smsIcon.visibility = View.GONE
-//            binding.smsIcon.startAnimation(slideOutBottom)
-            binding.smsFakeIcon.visibility = View.VISIBLE
-            binding.smsIcon.visibility = View.GONE
-            binding.smsFakeIcon.startAnimation(slideToTop)
-//            binding.smsIcon.startAnimation(slideOutTop)
-            delay(700)
-            binding.smsIcon.startAnimation(reapparrition)
-            binding.smsIcon.visibility = View.VISIBLE
-            binding.smsFakeIcon.visibility = View.GONE
-//            binding.smsIcon.visibility = View.VISIBLE
+            binding.apply {
+                smsIcon.visibility = View.GONE
+                callIcon.visibility = View.GONE
+                mailIcon.visibility = View.GONE
+                messengerIcon.visibility = View.GONE
+                signalIcon.visibility = View.GONE
+                editIcon.visibility = View.GONE
+                telegramIcon.visibility = View.GONE
+                delay(500)
+                binding.smsIcon.startAnimation(reapparrition)
+                binding.callIcon.startAnimation(reapparrition)
+                binding.mailIcon.startAnimation(reapparrition)
+                binding.messengerIcon.startAnimation(reapparrition)
+                binding.signalIcon.startAnimation(reapparrition)
+                binding.editIcon.startAnimation(reapparrition)
+                binding.telegramIcon.startAnimation(reapparrition)
+                smsIcon.visibility = View.VISIBLE
+                callIcon.visibility = View.VISIBLE
+                mailIcon.visibility = View.VISIBLE
+                messengerIcon.visibility = View.VISIBLE
+                signalIcon.visibility = View.VISIBLE
+                editIcon.visibility = View.VISIBLE
+                telegramIcon.visibility = View.VISIBLE
+            }
         }
     }
 }

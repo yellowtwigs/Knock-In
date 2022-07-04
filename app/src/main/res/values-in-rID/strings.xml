@@ -56,15 +56,15 @@
     <string name="main_tri_title">Filter oleh:</string>
     <string name="main_tri_par_nom">Nama depan</string>
     <string name="main_tri_par_lastname">Nama</string>
-    <string name="main_tri_par_priorite">Pengutamaan</string>
+    <string name="sort_by_priority">Pengutamaan</string>
     <string name="main_tri_par_favoris">Kecintaan</string>
     <string name="main_tri_par_groupe">Kelompok</string>
     <string name="main_filtre_title">Filter notifikasi:</string>
     <string name="notif_filtre_app">Lamaran</string>
-    <string name="notif_filtre_message">Pesan</string>
+    <string name="notif_filter_by_msg_apps">Pesan</string>
     <string name="notif_filtre_systeme">Sistem</string>
-    <string name="notif_tri_date">Tanggal dan waktucomment</string>
-    <string name="notif_tri_par_contact">Hubungan</string>
+    <string name="sort_by_date">Tanggal dan waktucomment</string>
+    <string name="sort_by_contact">Hubungan</string>
     <string name="main_toast_delete_contact">Kau menghilangkan kontak!</string>
     <string name="main_toast_multi_select_actived">Aktifkan mode Multi-Select</string>
     <string name="main_toast_multi_select_deactived">Nonaktifkan mode Multi-Select</string>
@@ -489,4 +489,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="in_app_popup_apps_support_title">Jumlah dukungan aplikasi tercapai</string>
     <string name="messenger_identifier_title">Pengidentifikasi Utusan</string>
     <string name="messenger_identifier_message">Sesuai dengan pengidentifikasi yang terlihat pada tautan percakapan di situs Messenger.com</string>
+    <string name="activate_teleworking_mode">Aktifkan mode Teleworking</string>
+    <string name="modify">Memodifikasi</string>
+    <string name="work_schedule_title">Jadwal kerja (Senin - Jumat)</string>
 </resources>

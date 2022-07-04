@@ -1,36 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/space_background">
 
-    <RelativeLayout
-        android:id="@+id/start_activity_video_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <VideoView
-            android:id="@+id/start_activity_video"
-            android:layout_width="match_parent"
-            android:layout_height="650dp"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
-
-        <WebView
-            android:id="@+id/start_activity_webview"
-            android:layout_width="match_parent"
-            android:layout_height="600dp"
-            android:layout_centerHorizontal="true"
-            android:scrollbars="none"
-            android:visibility="gone" />
-
-    </RelativeLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/video_skip"
@@ -43,20 +23,20 @@
         android:textColor="#000000"
         android:textSize="15sp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/start_activity_video_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-<!--    <com.facebook.login.widget.LoginButton-->
-<!--        android:id="@+id/login_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:layout_marginBottom="30dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <com.facebook.login.widget.LoginButton-->
+    <!--        android:id="@+id/login_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center_horizontal"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:layout_marginBottom="30dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/start_activity_layout"

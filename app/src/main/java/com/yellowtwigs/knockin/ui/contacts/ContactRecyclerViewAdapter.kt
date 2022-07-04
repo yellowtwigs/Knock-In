@@ -6,12 +6,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
+import android.widget.HorizontalScrollView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
@@ -50,7 +52,7 @@ class ContactRecyclerViewAdapter(
     private var view: View? = null
     private var modeMultiSelect = false
     private var lastClick = false
-    private var lastSelectMenuLen1: ConstraintLayout?
+    private var lastSelectMenuLen1: HorizontalScrollView?
     private lateinit var listApp: ArrayList<String>
 
     var listOfItemSelected = ArrayList<ContactWithAllInformation>()
@@ -74,44 +76,24 @@ class ContactRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = getItem(position).contactDB!!
-        if (len == 0) {
-            if (contact.contactPriority == 0) {
-            } else if (contact.contactPriority == 1) {
-                val sharedPreferences =
-                    context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-                if (sharedPreferences.getBoolean("darkTheme", false)) {
-                } else {
-                    holder.contactFirstNameView.setTextColor(
-                        context.resources.getColor(
-                            R.color.textColorDark,
-                            null
-                        )
-                    )
-                }
-            } else if (contact.contactPriority == 2) {
-                holder.contactFirstNameView.setTextColor(
-                    context.resources.getColor(
-                        R.color.colorPrimaryDark,
-                        null
-                    )
-                )
-            }
-        } else {
-            if (contact.contactPriority == 0) {
+        when (contact.contactPriority) {
+            0 -> {
                 holder.contactRoundedImageView.setBorderColor(
                     context.resources.getColor(
                         R.color.priorityZeroColor,
                         null
                     )
                 )
-            } else if (contact.contactPriority == 1) {
+            }
+            1 -> {
                 holder.contactRoundedImageView.setBorderColor(
                     context.resources.getColor(
                         R.color.transparentColor,
                         null
                     )
                 )
-            } else if (contact.contactPriority == 2) {
+            }
+            2 -> {
                 holder.contactRoundedImageView.setBorderColor(
                     context.resources.getColor(
                         R.color.priorityTwoColor,
@@ -226,8 +208,8 @@ class ContactRecyclerViewAdapter(
             }
         }
         val longClick = OnLongClickListener { v: View? ->
-            if (listOfItemSelected.size == 0 && len == 1 && holder.constraintLayoutMenu != null) {
-                holder.constraintLayoutMenu!!.visibility = View.GONE
+            if (listOfItemSelected.size == 0 && len == 1) {
+                holder.constraintLayoutMenu.visibility = View.GONE
             }
             view!!.tag = holder
             val contactDB = contactManager.contactList[position].contactDB!!
@@ -266,9 +248,9 @@ class ContactRecyclerViewAdapter(
         val listItemClick = View.OnClickListener { v: View? ->
             if (modeMultiSelect) {
                 if (listOfItemSelected.size == 0 && len == 1 && holder.constraintLayoutMenu != null) {
-                    holder.constraintLayoutMenu!!.visibility = View.GONE
+                    holder.constraintLayoutMenu.visibility = View.GONE
                 }
-                view!!.tag = holder
+                view?.tag = holder
                 val contactDB = contactManager.contactList[position].contactDB!!
                 if (listOfItemSelected.contains(contactManager.contactList[position])) {
                     listOfItemSelected.remove(contactManager.contactList[position])
@@ -304,36 +286,35 @@ class ContactRecyclerViewAdapter(
                 if (lastClick) {
                     lastClick = false
                 } else {
-                    if (len == 1) {
-                        if (holder.constraintLayoutMenu != null) {
-                            if (holder.constraintLayoutMenu!!.visibility == View.GONE) {
-                                holder.constraintLayoutMenu!!.visibility = View.VISIBLE
-                                slideUp(holder.constraintLayoutMenu)
-                                if (lastSelectMenuLen1 != null) lastSelectMenuLen1!!.visibility =
-                                    View.GONE
-                                lastSelectMenuLen1 = holder.constraintLayoutMenu
-                            } else {
-                                holder.constraintLayoutMenu!!.visibility = View.GONE
-                                val slideDown =
-                                    AnimationUtils.loadAnimation(context, R.anim.slide_down)
-                                holder.constraintLayoutMenu!!.startAnimation(slideDown)
-                                lastSelectMenuLen1 = null
-                            }
-                        }
+                    Log.i("cpt", "${contact.firstName + " " + contact.lastName}")
+
+                    if (holder.constraintLayoutMenu.visibility == View.GONE) {
+                        val slideUp = AnimationUtils.loadAnimation(context, R.anim.slide_up)
+                        holder.constraintLayoutMenu.startAnimation(slideUp)
+                        holder.constraintLayoutMenu.visibility = View.VISIBLE
+                        if (lastSelectMenuLen1 != null) lastSelectMenuLen1?.visibility = View.GONE
+                        lastSelectMenuLen1 = holder.constraintLayoutMenu
+                    } else {
+                        holder.constraintLayoutMenu.visibility = View.GONE
+                        lastSelectMenuLen1 = null
                     }
                 }
             }
         }
+        var cpt = 1
 
-        val appsSupportPref = context.getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
+        val appsSupportPref =
+            context.getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
         if (isWhatsappInstalled(context) && contact.hasWhatsapp == 1) {
+            cpt += 1
             holder.whatsappCl.visibility = View.VISIBLE
         } else {
             holder.whatsappCl.visibility = View.GONE
         }
 
         if (listApp.contains("org.thoughtcrime.securesms") && contact.hasSignal == 1) {
+            cpt += 1
             holder.signalCl.visibility = View.VISIBLE
 
             if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
@@ -344,11 +325,11 @@ class ContactRecyclerViewAdapter(
         }
 
         if (listApp.contains("org.telegram.messenger") && contact.hasTelegram == 1) {
+            cpt += 1
             holder.telegramCl.visibility = View.VISIBLE
 
             if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
-                holder.telegramIv.setImageResource(R.drawable.ic_signal_disable)
-                messengerIcon.setImageResource(R.drawable.ic_messenger_disable)
+                holder.telegramIv.setImageResource(R.drawable.ic_telegram_disable)
             }
         } else {
             holder.telegramCl.visibility = View.GONE
@@ -357,22 +338,26 @@ class ContactRecyclerViewAdapter(
         if (getItem(position).getFirstMail().isEmpty()) {
             holder.mailCl.visibility = View.GONE
         } else {
+            cpt += 1
             holder.mailCl.visibility = View.VISIBLE
         }
         if (getItem(position).getFirstPhoneNumber().isEmpty()) {
             holder.callCl.visibility = View.GONE
             holder.smsCl.visibility = View.GONE
         } else {
+            cpt += 2
             holder.callCl.visibility = View.VISIBLE
             holder.smsCl.visibility = View.VISIBLE
         }
+
         if (getItem(position).getMessengerID().isEmpty()) {
             holder.messengerCl.visibility = View.GONE
         } else {
+            cpt += 1
             holder.messengerCl.visibility = View.VISIBLE
 
             if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
-                holder.messengerIv.setImageResource(R.drawable.ic_signal_disable)
+                holder.messengerIv.setImageResource(R.drawable.ic_messenger_disable)
             }
         }
 
@@ -395,12 +380,33 @@ class ContactRecyclerViewAdapter(
             true
         }
         if (holder.editCl != null) {
-            holder.editCl!!.setOnClickListener(listener)
+            holder.editCl?.setOnClickListener(listener)
         }
         if (contact.favorite == 1) {
             holder.listContactItemFavoriteShine.visibility = View.VISIBLE
         } else {
             holder.listContactItemFavoriteShine.visibility = View.GONE
+        }
+
+        val param = holder.constraintLayoutMenu.layoutParams as ViewGroup.MarginLayoutParams
+
+        when (cpt) {
+            3 -> {
+                param.setMargins(230, 0, 0, 0)
+                holder.constraintLayoutMenu.layoutParams = param
+            }
+            4 -> {
+                param.setMargins(150, 0, 0, 0)
+                holder.constraintLayoutMenu.layoutParams = param
+            }
+            5 -> {
+                param.setMargins(50, 0, 0, 0)
+                holder.constraintLayoutMenu.layoutParams = param
+            }
+            6 -> {
+                param.setMargins(0, 0, 0, 0)
+                holder.constraintLayoutMenu.layoutParams = param
+            }
         }
     }
 
@@ -408,33 +414,32 @@ class ContactRecyclerViewAdapter(
         return listContacts.size.toLong()
     }
 
-    /**
-     * Returns the total number of items in the data set held by the adapter.
-     *
-     * @return The total number of items in this adapter.
-     */
     override fun getItemCount(): Int {
         return listContacts.size
     }
 
     private fun slideUp(view: View?) {
-        view!!.visibility = View.VISIBLE
-        val animate = TranslateAnimation(
-            0.toFloat(),  // fromXDelta
-            0.toFloat(),  // toXDelta
-            view.height.toFloat(),  // fromYDelta
-            0.toFloat()
-        ) // toYDelta
-        animate.duration = 500
-        animate.fillAfter = true
-        view.startAnimation(animate)
+        view?.let {
+            it.visibility = View.VISIBLE
+            val animate = TranslateAnimation(
+                0.toFloat(),
+                0.toFloat(),
+                view.height.toFloat(),
+                0.toFloat()
+            )
+            animate.duration = 500
+            animate.fillAfter = true
+            it.startAnimation(animate)
+        }
     }
 
     class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var contactFirstNameView: TextView =
             view.findViewById(R.id.list_contact_item_contactFirstName)
+        var root: ConstraintLayout = view.findViewById(R.id.root)
         var constraintLayout: RelativeLayout? = view.findViewById(R.id.list_contact_item_layout)
-        var constraintLayoutMenu: ConstraintLayout? = view.findViewById(R.id.list_contact_item_menu)
+        var constraintLayoutMenu: HorizontalScrollView =
+            view.findViewById(R.id.list_contact_item_menu)
         var listContactItemFavoriteShine: AppCompatImageView =
             view.findViewById(R.id.list_contact_item_favorite_shine)
         var contactRoundedImageView: CircularImageView =
@@ -447,12 +452,12 @@ class ContactRecyclerViewAdapter(
         var editCl: RelativeLayout? = view.findViewById(R.id.list_contact_item_constraint_edit)
         var messengerCl: RelativeLayout =
             view.findViewById(R.id.list_contact_item_constraint_messenger)
-        var messengerIv : AppCompatImageView = view.findViewById(R.id.messenger_iv)
+        var messengerIv: AppCompatImageView = view.findViewById(R.id.messenger_iv)
         var signalCl: RelativeLayout = view.findViewById(R.id.list_contact_item_constraint_signal)
-        var signalIv : AppCompatImageView = view.findViewById(R.id.signal_iv)
+        var signalIv: AppCompatImageView = view.findViewById(R.id.signal_iv)
         var telegramCl: RelativeLayout =
             view.findViewById(R.id.list_contact_item_constraint_telegram)
-        var telegramIv : AppCompatImageView = view.findViewById(R.id.telegram_iv)
+        var telegramIv: AppCompatImageView = view.findViewById(R.id.telegram_iv)
     }
 
     init {
