@@ -490,4 +490,5 @@
     <string name="activate_teleworking_mode">Ativar o modo de teletrabalho</string>
     <string name="modify">Modificar</string>
     <string name="work_schedule_title">Horário de trabalho (segunda a sexta)</string>
+    <string name="edit_reminder_hour_title">Tempo de lembrete diário para notificações não VIP:</string>
 </resources>

@@ -492,4 +492,5 @@
     <string name="activate_teleworking_mode">Kích hoạt chế độ Teleworking</string>
     <string name="modify">Biến đổi</string>
     <string name="work_schedule_title">Lịch làm việc (Thứ Hai - Thứ Sáu)</string>
+    <string name="edit_reminder_hour_title">Thời gian nhắc hàng ngày cho các thông báo không phải VIP:</string>
 </resources>

@@ -32,6 +32,8 @@ import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import java.util.*
 
 /**
@@ -60,13 +62,10 @@ class ManageNotificationActivity : AppCompatActivity() {
         //region ======================================== Theme Dark ========================================
 
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
+        checkThemePreferences(this)
 
         //endregion
+
 
         setContentView(R.layout.activity_manage_notification)
 
@@ -104,12 +103,12 @@ class ManageNotificationActivity : AppCompatActivity() {
         //endregion
 
         if (this.isNotificationServiceEnabled) {
-            switchPopupNotif!!.isChecked = sharedPreferences.getBoolean("popupNotif", false)
-            switchservice!!.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
+            switchPopupNotif?.isChecked = sharedPreferences.getBoolean("popupNotif", false)
+            switchservice?.isChecked = sharedPreferences.getBoolean("serviceNotif", false)
             switchReminder.isChecked = sharedPreferences.getBoolean("reminder", false)
         } else {
-            switchPopupNotif!!.isChecked = false
-            switchservice!!.isChecked = false
+            switchPopupNotif?.isChecked = false
+            switchservice?.isChecked = false
             switchReminder.isChecked = false
         }
         if (!switchReminder.isChecked) {
@@ -144,7 +143,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            drawerLayout!!.closeDrawers()
+            drawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
@@ -198,8 +197,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 }
             }
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_manage_notif)
-            drawer.closeDrawer(GravityCompat.START)
+            drawerLayout?.closeDrawer(GravityCompat.START)
             true
         }
 

@@ -11,8 +11,7 @@
     <item
         android:id="@+id/navigation_teleworking"
         android:icon="@drawable/ic_teleworking"
-        android:title="@string/teleworking"
-        android:visible="false" />
+        android:title="@string/teleworking" />
     <item
         android:id="@+id/navigation_notifcations"
         android:icon="@drawable/ic_notification"

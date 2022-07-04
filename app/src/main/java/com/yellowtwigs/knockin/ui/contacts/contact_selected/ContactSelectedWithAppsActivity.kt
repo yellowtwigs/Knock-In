@@ -26,6 +26,8 @@ import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import kotlinx.coroutines.CoroutineScope
@@ -40,21 +42,10 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkThemePreferences(this)
 
         val binding = ActivityContactSelectedWithAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        animationAppsIcons(binding)
 
         appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
@@ -145,21 +136,41 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
 
         binding.apply {
             currentContact.apply {
-                mailIcon.isVisible = getFirstMail() != ""
-                smsIcon.isVisible = getFirstPhoneNumber() != ""
-                messengerIcon.isVisible =
-                    getMessengerID() != "" && listApp.contains("com.facebook.orca")
-
-                if (isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && currentContact.contactDB?.hasWhatsapp == 1) {
-                    whatsappIcon.visibility = View.VISIBLE
-                } else {
-                    whatsappIcon.visibility = View.INVISIBLE
+                val reapparrition = AnimationUtils.loadAnimation(
+                    this@ContactSelectedWithAppsActivity,
+                    R.anim.reapparrition
+                )
+                CoroutineScope(Dispatchers.Main).launch {
+                    smsIcon.visibility = View.GONE
+                    callIcon.visibility = View.GONE
+                    mailIcon.visibility = View.GONE
+                    messengerIcon.visibility = View.GONE
+                    signalIcon.visibility = View.GONE
+                    editIcon.visibility = View.GONE
+                    telegramIcon.visibility = View.GONE
+                    whatsappIcon.visibility = View.GONE
+                    delay(500)
+                    binding.smsIcon.startAnimation(reapparrition)
+                    binding.callIcon.startAnimation(reapparrition)
+                    binding.mailIcon.startAnimation(reapparrition)
+                    binding.messengerIcon.startAnimation(reapparrition)
+                    binding.signalIcon.startAnimation(reapparrition)
+                    binding.editIcon.startAnimation(reapparrition)
+                    binding.telegramIcon.startAnimation(reapparrition)
+                    binding.whatsappIcon.startAnimation(reapparrition)
+                    smsIcon.isVisible = getFirstPhoneNumber() != ""
+                    callIcon.isVisible = getFirstPhoneNumber() != ""
+                    mailIcon.isVisible = getFirstMail() != ""
+                    messengerIcon.isVisible =
+                        getMessengerID() != "" && listApp.contains("com.facebook.orca")
+                    signalIcon.isVisible =
+                        listApp.contains("org.thoughtcrime.securesms") && currentContact.contactDB?.hasSignal == 1
+                    editIcon.isVisible = true
+                    telegramIcon.isVisible =
+                        listApp.contains("org.telegram.messenger") && currentContact.contactDB?.hasTelegram == 1
+                    whatsappIcon.isVisible =
+                        isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && currentContact.contactDB?.hasWhatsapp == 1
                 }
-                signalIcon.isVisible =
-                    listApp.contains("org.thoughtcrime.securesms") && currentContact.contactDB?.hasSignal == 1
-
-                telegramIcon.isVisible =
-                    listApp.contains("org.telegram.messenger") && currentContact.contactDB?.hasTelegram == 1
             }
 
             if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
@@ -355,36 +366,5 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 dialog.cancel()
             }
             .show()
-    }
-
-    private fun animationAppsIcons(binding: ActivityContactSelectedWithAppsBinding) {
-        val reapparrition = AnimationUtils.loadAnimation(this, R.anim.reapparrition)
-
-        CoroutineScope(Dispatchers.Main).launch {
-            binding.apply {
-                smsIcon.visibility = View.GONE
-                callIcon.visibility = View.GONE
-                mailIcon.visibility = View.GONE
-                messengerIcon.visibility = View.GONE
-                signalIcon.visibility = View.GONE
-                editIcon.visibility = View.GONE
-                telegramIcon.visibility = View.GONE
-                delay(500)
-                binding.smsIcon.startAnimation(reapparrition)
-                binding.callIcon.startAnimation(reapparrition)
-                binding.mailIcon.startAnimation(reapparrition)
-                binding.messengerIcon.startAnimation(reapparrition)
-                binding.signalIcon.startAnimation(reapparrition)
-                binding.editIcon.startAnimation(reapparrition)
-                binding.telegramIcon.startAnimation(reapparrition)
-                smsIcon.visibility = View.VISIBLE
-                callIcon.visibility = View.VISIBLE
-                mailIcon.visibility = View.VISIBLE
-                messengerIcon.visibility = View.VISIBLE
-                signalIcon.visibility = View.VISIBLE
-                editIcon.visibility = View.VISIBLE
-                telegramIcon.visibility = View.VISIBLE
-            }
-        }
     }
 }

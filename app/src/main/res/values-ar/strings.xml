@@ -491,4 +491,5 @@
     <string name="activate_teleworking_mode">قم بتنشيط وضع العمل عن بعد</string>
     <string name="modify">تعديل</string>
     <string name="work_schedule_title">جدول العمل (الاثنين - الجمعة)</string>
+    <string name="edit_reminder_hour_title">وقت التذكير اليومي لإخطارات غير VIP:</string>
 </resources>

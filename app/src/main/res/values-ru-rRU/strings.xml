@@ -491,4 +491,5 @@
     <string name="activate_teleworking_mode">Активировать режим удаленной работы</string>
     <string name="modify">Изменить</string>
     <string name="work_schedule_title">График работы (понедельник - пятница)</string>
+    <string name="edit_reminder_hour_title">Время ежедневного напоминания для не-VIP уведомлений:</string>
 </resources>

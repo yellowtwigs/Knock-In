@@ -496,4 +496,5 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="activate_teleworking_mode">Activar modo Teletrabajo</string>
     <string name="modify">Modificar</string>
     <string name="work_schedule_title">Horario de trabajo (lunes a viernes)</string>
+    <string name="edit_reminder_hour_title">Tiempo de recordatorio diario para notificaciones no VIP:</string>
 </resources>

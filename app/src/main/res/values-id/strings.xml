@@ -494,4 +494,5 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="activate_teleworking_mode">Aktifkan mode Teleworking</string>
     <string name="modify">Memodifikasi</string>
     <string name="work_schedule_title">Jadwal kerja (Senin - Jumat)</string>
+    <string name="edit_reminder_hour_title">Waktu pengingat harian untuk notifikasi non-VIP :</string>
 </resources>

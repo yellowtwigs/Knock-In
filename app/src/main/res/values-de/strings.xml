@@ -490,4 +490,5 @@
     <string name="activate_teleworking_mode">Aktivieren Sie den Telearbeitsmodus</string>
     <string name="modify">Ändern</string>
     <string name="work_schedule_title">Arbeitsplan (Montag - Freitag)</string>
+    <string name="edit_reminder_hour_title">Tägliche Erinnerungszeit für Nicht-VIP-Benachrichtigungen:</string>
 </resources>

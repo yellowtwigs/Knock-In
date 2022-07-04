@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/background_layout_selector">
 
-
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/notification_image"
         android:layout_width="45dp"

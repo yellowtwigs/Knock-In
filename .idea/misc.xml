@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/background_layout_no_pressed.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/background_layout_no_pressed_with_border.xml" value="0.1395" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/background_layout_pressed.xml" value="0.2435" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/background_layout_selector.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/background_layout_selector_with_border.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/border_selected_grey.xml" value="0.1395" />
@@ -83,6 +84,7 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_first_launch.xml" value="0.19882246376811594" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_first_launch_mini_screen.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_group_manager.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_help.xml" value="0.24456521739130435" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_import_contacts.xml" value="0.213768115942029" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_main.xml" value="0.15539617486338797" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_manage_knockons.xml" value="0.18802083333333333" />
@@ -95,6 +97,7 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_notifications_vip_ringtone_layout.xml" value="0.23125" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_premium.xml" value="0.23125" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_premium_smaller_screen.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_settings.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_start_activity.xml" value="0.33" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_start_activity_bigger.xml" value="0.27309782608695654" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_teleworking.xml" value="0.35208333333333336" />

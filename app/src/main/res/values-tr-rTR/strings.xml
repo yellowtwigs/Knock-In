@@ -490,4 +490,5 @@
     <string name="activate_teleworking_mode">Uzaktan çalışma modunu etkinleştir</string>
     <string name="modify">değiştir</string>
     <string name="work_schedule_title">Çalışma programı (Pazartesi - Cuma)</string>
+    <string name="edit_reminder_hour_title">VIP olmayan bildirimler için günlük hatırlatma zamanı:</string>
 </resources>
