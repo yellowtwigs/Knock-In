@@ -25,6 +25,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
@@ -348,9 +349,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         sliderItems.add(SliderItem(R.drawable.carrousel_2))
         sliderItems.add(SliderItem(R.drawable.carrousel_3))
         sliderItems.add(SliderItem(R.drawable.carrousel_4))
+        val sliderAdapter = SliderAdapter(sliderItems)
+
+        val radioButton1 = findViewById<AppCompatRadioButton>(R.id.radio_button_1)
+        val radioButton2 = findViewById<AppCompatRadioButton>(R.id.radio_button_2)
+        val radioButton3 = findViewById<AppCompatRadioButton>(R.id.radio_button_3)
+        val radioButton4 = findViewById<AppCompatRadioButton>(R.id.radio_button_4)
 
         viewPager.apply {
-            adapter = SliderAdapter(sliderItems, viewPager)
+            adapter = sliderAdapter
             clipToPadding = false
             clipChildren = false
             offscreenPageLimit = 3
@@ -374,11 +381,39 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         currentItem += 1
                     }
 
+                    when (position) {
+                        0 -> {
+                            radioButton1.isChecked = true
+                            radioButton2.isChecked = false
+                            radioButton3.isChecked = false
+                            radioButton4.isChecked = false
+                        }
+                        1 -> {
+                            radioButton1.isChecked = false
+                            radioButton2.isChecked = true
+                            radioButton3.isChecked = false
+                            radioButton4.isChecked = false
+                        }
+                        2 -> {
+                            radioButton1.isChecked = false
+                            radioButton2.isChecked = false
+                            radioButton3.isChecked = true
+                            radioButton4.isChecked = false
+                        }
+                        3 -> {
+                            radioButton1.isChecked = false
+                            radioButton2.isChecked = false
+                            radioButton3.isChecked = false
+                            radioButton4.isChecked = true
+                        }
+                    }
+
                     sliderHandler.removeCallbacks(sliderRunnable)
                     sliderHandler.postDelayed(sliderRunnable, 10000)
                 }
             })
         }
+
     }
 
     private fun openOverlaySettings() {

@@ -7,8 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.yellowtwigs.knockin.databinding.SlideItemContainerBinding
 
 class SliderAdapter(
-    private val sliderItems: MutableList<SliderItem>,
-    private val viewPager2: ViewPager2
+    private val sliderItems: MutableList<SliderItem>
 ) : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {

@@ -12,6 +12,51 @@
         android:layout_height="match_parent"
         android:visibility="visible" />
 
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintEnd_toStartOf="@+id/radio_button_2" />
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintEnd_toStartOf="@+id/view2" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0.5dp"
+        android:layout_height="0.5dp"
+        android:buttonTint="@color/lightColor"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintEnd_toEndOf="@+id/view_pager"
+        app:layout_constraintStart_toStartOf="@+id/view_pager" />
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintStart_toEndOf="@+id/view2" />
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintStart_toEndOf="@+id/radio_button_3" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/video_skip"
         android:layout_width="0dp"
@@ -26,17 +71,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/view_pager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!--    <com.facebook.login.widget.LoginButton-->
-    <!--        android:id="@+id/login_button"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="center_horizontal"-->
-    <!--        android:layout_marginTop="30dp"-->
-    <!--        android:layout_marginBottom="30dp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/start_activity_layout"
