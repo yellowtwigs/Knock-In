@@ -6,18 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/background_layout_selector">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/notification_image"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars[0]" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/notification_sender_name"
         android:layout_width="0dp"
@@ -57,5 +45,17 @@
         app:layout_constraintStart_toEndOf="@+id/notification_sender_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="28/06/2022 13:46" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/notification_image"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars[0]" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

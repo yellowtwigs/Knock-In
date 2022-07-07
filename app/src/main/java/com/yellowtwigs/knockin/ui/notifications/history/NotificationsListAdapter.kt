@@ -126,7 +126,6 @@ class NotificationsListAdapter(private val context: Context) :
                             lastClick = true
                         }
 
-                        Log.i("notifications", "${modeMultiSelect}")
                         modeMultiSelect
                     }
 

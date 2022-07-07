@@ -128,6 +128,17 @@ class NotificationHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //region ======================================== Theme Dark ========================================
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            setTheme(R.style.AppThemeDark)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
+
+        //endregion
+
         binding = ActivityNotificationHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
