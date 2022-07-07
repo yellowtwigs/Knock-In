@@ -390,6 +390,9 @@ class ContactRecyclerViewAdapter(
 
         val param = holder.constraintLayoutMenu.layoutParams as ViewGroup.MarginLayoutParams
 
+        holder.constraintLayoutMenu.scrollBarFadeDuration = 20000
+        holder.constraintLayoutMenu.scrollBarSize = 25
+        holder.constraintLayoutMenu.scrollBarStyle = View.SCROLLBARS_OUTSIDE_OVERLAY
         when (cpt) {
             3 -> {
                 param.setMargins(230, 0, 0, 0)
@@ -416,21 +419,6 @@ class ContactRecyclerViewAdapter(
 
     override fun getItemCount(): Int {
         return listContacts.size
-    }
-
-    private fun slideUp(view: View?) {
-        view?.let {
-            it.visibility = View.VISIBLE
-            val animate = TranslateAnimation(
-                0.toFloat(),
-                0.toFloat(),
-                view.height.toFloat(),
-                0.toFloat()
-            )
-            animate.duration = 500
-            animate.fillAfter = true
-            it.startAnimation(animate)
-        }
     }
 
     class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
