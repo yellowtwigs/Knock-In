@@ -487,7 +487,7 @@
     <string name="in_app_popup_apps_support_message">لاستخدام هذا التطبيق مع Knock In ، انتقل إلى المتجر</string>
     <string name="in_app_popup_apps_support_title">تم الوصول إلى عدد التطبيقات التي تم دعمها</string>
     <string name="messenger_identifier_title">معرّف Messenger</string>
-    <string name="messenger_identifier_message">يتوافق مع المعرف المرئي على رابط محادثة على موقع Messenger.com</string>
+    <string name="messenger_identifier_message">يتوافق مع المعرف المرئي على رابط محادثة على موقع Messenger.com (أو facebook.com ، إذا سمحت لبرنامج messenger من صفحة Facebook الخاصة بك)</string>
     <string name="activate_teleworking_mode">قم بتنشيط وضع العمل عن بعد</string>
     <string name="modify">تعديل</string>
     <string name="work_schedule_title">جدول العمل (الاثنين - الجمعة)</string>

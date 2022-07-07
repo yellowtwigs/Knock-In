@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- region Universal Color -->
-
     <color name="colorPrimary">#fcd74c</color>
     <color name="colorPrimaryVariant">#ffc000</color>
     <color name="colorSecondary">#2D53C0</color>

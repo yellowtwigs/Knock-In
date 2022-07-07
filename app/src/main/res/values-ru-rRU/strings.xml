@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Приложения для обмена сообщениями</string>
+    <string name="cockpit_toolbar_title">Мои приложения</string>
     <string name="cockpit_toast_phone_number_empty">Введите номер телефона</string>
     <string name="cockpit_toast_number_valid">Пожалуйста, введите действительный номер телефона</string>
     <string name="cockpit_toast_facebook_not_install">Facebook не установлен</string>
@@ -487,7 +487,7 @@
     <string name="in_app_popup_apps_support_message">Чтобы использовать это приложение с Knock In, перейдите в магазин.</string>
     <string name="in_app_popup_apps_support_title">Достигнуто количество поддерживаемых приложений</string>
     <string name="messenger_identifier_title">Идентификатор мессенджера</string>
-    <string name="messenger_identifier_message">Соответствует идентификатору, который виден по ссылке беседы на сайте Messenger.com.</string>
+    <string name="messenger_identifier_message">Соответствует идентификатору, который виден по ссылке переписки на сайте Messenger.com (или facebook.com, если вы авторизуете мессенджер со своей страницы в фейсбуке)</string>
     <string name="activate_teleworking_mode">Активировать режим удаленной работы</string>
     <string name="modify">Изменить</string>
     <string name="work_schedule_title">График работы (понедельник - пятница)</string>

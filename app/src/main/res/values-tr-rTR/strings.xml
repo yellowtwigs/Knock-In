@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Mesajlaşma Uygulamaları</string>
+    <string name="cockpit_toolbar_title">Benim uygulamalarım</string>
     <string name="cockpit_toast_phone_number_empty">Bir telefon numarası girin</string>
     <string name="cockpit_toast_number_valid">Lütfen geçerli bir telefon numarası girin</string>
     <string name="cockpit_toast_facebook_not_install">Facebook kurulu değil</string>
@@ -486,7 +486,7 @@
     <string name="in_app_popup_apps_support_message">Bu uygulamayı Knock In ile kullanmak için Mağaza\'ya gidin</string>
     <string name="in_app_popup_apps_support_title">Ulaşılan uygulama desteği sayısı</string>
     <string name="messenger_identifier_title">Messenger Tanımlayıcısı</string>
-    <string name="messenger_identifier_message">Messenger.com sitesinde bir konuşmanın bağlantısında görünen tanımlayıcıya karşılık gelir</string>
+    <string name="messenger_identifier_message">Messenger.com sitesinde (veya facebook sayfanızdan messenger\'a yetki veriyorsanız facebook.com\'da) bir konuşmanın bağlantısında görünen tanımlayıcıya karşılık gelir.</string>
     <string name="activate_teleworking_mode">Uzaktan çalışma modunu etkinleştir</string>
     <string name="modify">değiştir</string>
     <string name="work_schedule_title">Çalışma programı (Pazartesi - Cuma)</string>

@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Aplicativos de mensagens</string>
+    <string name="cockpit_toolbar_title">Meus aplicativos</string>
     <string name="cockpit_toast_phone_number_empty">Digite </string>
     <string name="cockpit_toast_number_valid">Por favor, insira um número de telefone válido</string>
     <string name="cockpit_toast_facebook_not_install">Facebook não está instalado</string>
@@ -486,7 +486,7 @@
     <string name="in_app_popup_apps_support_message">Para usar este aplicativo com Knock In, acesse a Loja</string>
     <string name="in_app_popup_apps_support_title">Número de suporte de aplicativos alcançado</string>
     <string name="messenger_identifier_title">Identificador do Messenger</string>
-    <string name="messenger_identifier_message">Corresponde ao identificador visível no link de uma conversa no site Messenger.com</string>
+    <string name="messenger_identifier_message">Corresponde ao identificador visível no link de uma conversa no site Messenger.com (ou facebook.com, se você autorizar o messenger na sua página do facebook)</string>
     <string name="activate_teleworking_mode">Ativar o modo de teletrabalho</string>
     <string name="modify">Modificar</string>
     <string name="work_schedule_title">Horário de trabalho (segunda a sexta)</string>

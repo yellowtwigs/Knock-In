@@ -267,7 +267,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Messaging Applications</string>
+    <string name="cockpit_toolbar_title">My Applications</string>
     <string name="cockpit_toast_phone_number_empty">Enter a phone number</string>
     <string name="cockpit_toast_number_valid">Please enter a valid phone number</string>
     <string name="cockpit_toast_facebook_not_install">Facebook is not installed</string>
@@ -492,7 +492,7 @@
     <string name="in_app_popup_apps_support_message">To use this app with Knock In, go to the Store</string>
     <string name="in_app_popup_apps_support_title">Number of apps support reached</string>
     <string name="messenger_identifier_title">Messenger Identifier</string>
-    <string name="messenger_identifier_message">Corresponds to the identifier visible on the link of a conversation on the Messenger.com site</string>
+    <string name="messenger_identifier_message">Corresponds to the identifier visible on the link of a conversation on the Messenger.com site (or facebook.com, if you authorize messenger from your facebook page)</string>
     <string name="teleworking" translatable="false">Teleworking</string>
     <string name="activate_teleworking_mode">Activate Teleworking mode</string>
     <string name="modify">Modify</string>

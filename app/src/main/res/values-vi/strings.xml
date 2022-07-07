@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Ứng dụng nhắn tin</string>
+    <string name="cockpit_toolbar_title">Những ứng dụng của tôi</string>
     <string name="cockpit_toast_phone_number_empty">Nhập số điện thoại</string>
     <string name="cockpit_toast_number_valid">Xin vui lòng nhập một số điện thoại hợp lệ</string>
     <string name="cockpit_toast_facebook_not_install">Facebook chưa được cài đặt</string>
@@ -488,7 +488,7 @@
     <string name="in_app_popup_apps_support_message">Để sử dụng ứng dụng này với Knock In, hãy truy cập Cửa hàng</string>
     <string name="in_app_popup_apps_support_title">Đã đạt đến số lượng ứng dụng hỗ trợ</string>
     <string name="messenger_identifier_title">Mã nhận dạng Messenger</string>
-    <string name="messenger_identifier_message">Tương ứng với số nhận dạng hiển thị trên liên kết của một cuộc trò chuyện trên trang Messenger.com</string>
+    <string name="messenger_identifier_message">Tương ứng với số nhận dạng hiển thị trên liên kết của một cuộc trò chuyện trên trang Messenger.com (hoặc facebook.com, nếu bạn cho phép messenger từ trang facebook của mình)</string>
     <string name="activate_teleworking_mode">Kích hoạt chế độ Teleworking</string>
     <string name="modify">Biến đổi</string>
     <string name="work_schedule_title">Lịch làm việc (Thứ Hai - Thứ Sáu)</string>

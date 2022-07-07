@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">消息应用程序</string>
+    <string name="cockpit_toolbar_title">我的应用</string>
     <string name="cockpit_toast_phone_number_empty">输入电话号码</string>
     <string name="cockpit_toast_number_valid">请输入有效电话号码</string>
     <string name="cockpit_toast_facebook_not_install">未安装Facebook</string>
@@ -485,7 +485,7 @@
     <string name="in_app_popup_apps_support_message">要在 Knock In 中使用此应用程序，请前往商店</string>
     <string name="in_app_popup_apps_support_title">达到的应用程序支持数量</string>
     <string name="messenger_identifier_title">信使标识符</string>
-    <string name="messenger_identifier_message">对应于 Messenger.com 网站上对话链接上可见的标识符</string>
+    <string name="messenger_identifier_message">对应于 Messenger.com 网站（或 facebook.com，如果您从您的 facebook 页面授权 messenger）上对话链接上可见的标识符</string>
     <string name="activate_teleworking_mode">激活远程办公模式</string>
     <string name="modify">调整</string>
     <string name="work_schedule_title">工作时间表（周一至周五）</string>
