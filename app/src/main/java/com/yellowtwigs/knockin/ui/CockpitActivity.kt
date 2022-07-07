@@ -171,16 +171,8 @@ class CockpitActivity : AppCompatActivity() {
 
         //region ========================================== Toolbar =========================================
 
-        val cockpit_Toolbar = findViewById<Toolbar>(R.id.cockpit_toolbar)
-        setSupportActionBar(cockpit_Toolbar)
-        val actionbar = supportActionBar
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        actionbar?.setDisplayHomeAsUpEnabled(true)
-        actionbar?.run {
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-        }
-        cockpit_Toolbar?.setTitle(R.string.cockpit_toolbar_title)
+        val cockpitOpenDrawer = findViewById<AppCompatImageView>(R.id.cockpit_open_drawer)
+        val cockpitHelp = findViewById<AppCompatImageView>(R.id.cockpit_toolbar_help)
 
         //endregion
 
@@ -243,7 +235,7 @@ class CockpitActivity : AppCompatActivity() {
         val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
 
         if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch!!.isChecked = true
+            settings_CallPopupSwitch?.isChecked = true
         }
 
         //endregion
@@ -317,6 +309,27 @@ class CockpitActivity : AppCompatActivity() {
         //endregion
 
         //region ========================================== Listener ========================================
+
+        cockpitOpenDrawer.setOnClickListener {
+            cockpit_DrawerLayout?.openDrawer(GravityCompat.START)
+            hideKeyboard()
+
+        }
+        cockpitHelp.setOnClickListener {
+            if (Resources.getSystem().configuration.locale.language == "fr") {
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit")
+                )
+                startActivity(browserIntent)
+            } else {
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.yellowtwigs.com/help-cockpit")
+                )
+                startActivity(browserIntent)
+            }
+        }
 
         settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -637,40 +650,6 @@ class CockpitActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions ===========================================
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.toolbar_menu_help, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    @SuppressLint("ShowToast")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                cockpit_DrawerLayout?.openDrawer(GravityCompat.START)
-                hideKeyboard()
-                return true
-            }
-            R.id.item_help -> {
-                if (Resources.getSystem().configuration.locale.language == "fr") {
-                    val browserIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit")
-                    )
-                    startActivity(browserIntent)
-                } else {
-                    val browserIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.yellowtwigs.com/help-cockpit")
-                    )
-                    startActivity(browserIntent)
-                }
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     // slide the view from below itself to the current position
     private fun slideUp(view: View) {
