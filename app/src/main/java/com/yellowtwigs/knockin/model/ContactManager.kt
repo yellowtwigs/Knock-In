@@ -41,17 +41,14 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
         if (contactList.isEmpty()) {
             val executorService: ExecutorService = Executors.newFixedThreadPool(1)
             val callDb = Callable {
-                contactsDatabase!!.contactsDao()
-                    .getContactAllInfo()
+                contactsDatabase!!.contactsDao().getContactAllInfo()
             }
             val result = executorService.submit(callDb)
             val tmp: ArrayList<ContactWithAllInformation> = arrayListOf()
             tmp.addAll(result.get())
-            if (tmp.isEmpty()) {
-                contactList = buildContactListFromJson(context)
-            } else {
-                contactList = tmp
-            }
+            contactList = tmp
+//            buildContactListFromJson(context)
+
         }
     }
 

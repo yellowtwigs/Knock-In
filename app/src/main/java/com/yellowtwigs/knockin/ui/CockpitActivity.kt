@@ -240,7 +240,7 @@ class CockpitActivity : AppCompatActivity() {
 
         //endregion
 
-        bottomNavigationView?.menu?.getItem(3)?.isChecked = true
+        bottomNavigationView?.menu?.getItem(4)?.isChecked = true
         bottomNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         if (cockpit_PhoneNumberEditText?.text?.isEmpty() == true) {

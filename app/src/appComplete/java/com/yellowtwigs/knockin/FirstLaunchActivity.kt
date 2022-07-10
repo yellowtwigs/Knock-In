@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.ui.first_launch.StartActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
 
