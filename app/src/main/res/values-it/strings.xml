@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Le mie applicazionica</string>
+    <string name="cockpit_toolbar_title">Le mie applicazione</string>
     <string name="cockpit_toast_phone_number_empty">Inserisci un numero di telefono </string>
     <string name="cockpit_toast_number_valid">Introdurre un numero di telefono valido</string>
     <string name="cockpit_toast_facebook_not_install">Facebook non e\’ installato</string>
