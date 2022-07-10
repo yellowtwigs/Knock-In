@@ -1,11 +1,10 @@
-package com.yellowtwigs.knockin.ui.first_launch
+package com.yellowtwigs.knockin.ui.first_launch.start
 
 import android.Manifest
 import android.app.ActivityManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.net.ConnectivityManager
@@ -17,10 +16,8 @@ import android.provider.Settings
 import android.provider.Telephony
 import android.text.TextUtils
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import android.webkit.WebChromeClient
-import android.webkit.WebView
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -34,11 +31,6 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.android.billingclient.api.*
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
@@ -47,11 +39,8 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactDetailDB
-import com.yellowtwigs.knockin.ui.first_launch.start.SliderAdapter
-import com.yellowtwigs.knockin.ui.first_launch.start.SliderItem
-import java.net.InetAddress
-import java.net.UnknownHostException
-import java.util.*
+import com.yellowtwigs.knockin.ui.first_launch.ImportContactsActivity
+import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 
@@ -98,6 +87,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private var activitySuperpositionVisible = false
     private var clickSuperpositionButton = false
+
+    private lateinit var radioButton1: AppCompatRadioButton
+    private lateinit var radioButton2: AppCompatRadioButton
+    private lateinit var radioButton3: AppCompatRadioButton
+    private lateinit var radioButton4: AppCompatRadioButton
 
     //endregion
 
@@ -150,6 +144,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         superpositionCheck =
             findViewById(R.id.superposition_check)
         permissionsCheck = findViewById(R.id.permissions_check)
+
+        radioButton1 = findViewById(R.id.radio_button_1)
+        radioButton2 = findViewById(R.id.radio_button_2)
+        radioButton3 = findViewById(R.id.radio_button_3)
+        radioButton4 = findViewById(R.id.radio_button_4)
 
         setSliderContainer()
 
@@ -209,6 +208,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             findViewById<ViewPager2>(R.id.view_pager).visibility = View.INVISIBLE
             video_skip.visibility = View.INVISIBLE
             start_activity_layout.visibility = View.VISIBLE
+            radioButton1.visibility = View.INVISIBLE
+            radioButton2.visibility = View.INVISIBLE
+            radioButton3.visibility = View.INVISIBLE
+            radioButton4.visibility = View.INVISIBLE
 
             Toast.makeText(
                 this,
@@ -351,11 +354,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         sliderItems.add(SliderItem(R.drawable.carrousel_4))
         val sliderAdapter = SliderAdapter(sliderItems)
 
-        val radioButton1 = findViewById<AppCompatRadioButton>(R.id.radio_button_1)
-        val radioButton2 = findViewById<AppCompatRadioButton>(R.id.radio_button_2)
-        val radioButton3 = findViewById<AppCompatRadioButton>(R.id.radio_button_3)
-        val radioButton4 = findViewById<AppCompatRadioButton>(R.id.radio_button_4)
-
         viewPager.apply {
             adapter = sliderAdapter
             clipToPadding = false
@@ -372,13 +370,28 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
             setPageTransformer(compositePageTransformer)
 
+            var currentPosition = 0
+
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     val sliderHandler = Handler()
 
                     val sliderRunnable = Runnable {
-                        currentItem += 1
+                        if (currentItem == 3) {
+                            currentItem = 0
+                        } else {
+                            currentItem += 1
+                        }
+                        Log.i("viewPager", "position : ${position}")
+                        Log.i("viewPager", "currentItem : ${currentItem}")
+//                        currentItem += 1
+
+//                        if (position == 3) {
+//                            currentItem = currentItem - 2
+//                        } else {
+//                            currentItem += 1
+//                        }
                     }
 
                     when (position) {
@@ -408,8 +421,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         }
                     }
 
-                    sliderHandler.removeCallbacks(sliderRunnable)
-                    sliderHandler.postDelayed(sliderRunnable, 10000)
+//                    sliderHandler.removeCallbacks(sliderRunnable)
+//                    sliderHandler.postDelayed(sliderRunnable, 10000)
                 }
             })
         }
