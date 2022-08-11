@@ -9,7 +9,7 @@ import com.yellowtwigs.knockin.model.data.LinkContactGroup
 interface LinkContactGroupDao {
     @Query("SELECT * FROM link_contact_group_table")
     fun getAllLinkContactGroup(): List<LinkContactGroup>
-    //insert le lien dans la database
+
     @Insert
     fun insert(linkContactGroup : LinkContactGroup)
 
