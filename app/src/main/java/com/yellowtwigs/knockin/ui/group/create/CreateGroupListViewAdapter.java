@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group;
+package com.yellowtwigs.knockin.ui.group.create;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,6 +21,8 @@ import com.yellowtwigs.knockin.ui.CircularImageView;
 import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.data.ContactDB;
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
+import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +75,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item_layout, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact_list, parent, false);
 
         return new ContactViewHolder(view);
     }

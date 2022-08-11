@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
-import androidx.appcompat.app.AlertDialog
 import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -29,13 +28,12 @@ import com.yellowtwigs.knockin.*
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.model.*
 import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactDetailDB
 import com.yellowtwigs.knockin.model.data.GroupDB
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import java.io.ByteArrayOutputStream
 

@@ -65,16 +65,16 @@
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.first_launch.start.StartActivity" />
         <activity android:name=".FirstLaunchActivity" />
-        <activity android:name=".ui.group.AddNewGroupActivity" />
+        <activity android:name=".ui.group.create.AddNewGroupActivity" />
         <activity android:name=".ui.group.DeleteContactFromGroupActivity" />
-        <activity android:name=".ui.group.AddContactToGroupActivity" />
+        <activity android:name=".ui.group.create.AddContactToGroupActivity" />
         <activity android:name=".ui.contacts.MultiChannelActivity" />
         <activity
             android:name=".ui.notifications.NotificationAlarmActivity"
             android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
         <activity android:name=".ui.first_launch.MultiSelectActivity" />
-        <activity android:name=".ui.group.GroupManagerActivity" />
+        <activity android:name=".ui.group.list.GroupManagerActivity" />
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
         <activity android:name=".ui.CockpitActivity" />
         <activity android:name=".ui.HelpActivity" />
@@ -88,7 +88,7 @@
             android:name=".ui.edit_contact.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".ui.contacts.MainActivity"
+            android:name=".ui.contacts.list.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden" />

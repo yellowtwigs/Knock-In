@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group;
+package com.yellowtwigs.knockin.ui.group.create;
 
 import android.content.Context;
 
@@ -32,6 +32,7 @@ import com.yellowtwigs.knockin.model.ContactManager;
 
 import com.yellowtwigs.knockin.model.data.ContactDB;
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
+import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

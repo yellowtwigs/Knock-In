@@ -20,7 +20,4 @@ class GroupWithContact {
 
     @Relation(parentColumn = "id", entityColumn = "id_group", entity = LinkContactGroup::class, projection = ["id_contact"])
     var ContactIdList: List<Int>? = null
-
-    //var contactList:List<ContactDB>?= null
-
 }

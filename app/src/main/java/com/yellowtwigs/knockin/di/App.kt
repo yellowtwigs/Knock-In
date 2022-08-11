@@ -2,6 +2,6 @@ package com.yellowtwigs.knockin.di
 
 import android.app.Application
 
-@HiltAndroidApp
+//@HiltAndroidApp
 class App : Application() {
 }

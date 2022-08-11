@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.group.list
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -22,10 +22,12 @@ import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.BuildConfig
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity
+import com.yellowtwigs.knockin.ui.group.GroupAdapter
+import com.yellowtwigs.knockin.ui.group.create.AddContactToGroupActivity
 import java.util.*
 
 class SectionGroupAdapter(private val mContext: Context, private val mSectionResourceId: Int, recyclerView: RecyclerView,

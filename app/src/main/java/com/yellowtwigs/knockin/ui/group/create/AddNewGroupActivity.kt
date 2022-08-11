@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.group.create
 
 import android.content.Context
 import android.content.Intent
@@ -22,6 +22,7 @@ import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.GroupDB
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 
 /**
  * Activité qui nous permet de créer un groupe
@@ -101,7 +102,13 @@ class AddNewGroupActivity : AppCompatActivity() {
 
         if (main_GridView!!.visibility != View.GONE) {
 
-            gridViewAdapter = CreateGroupGridViewAdapter(this, gestionnaireContacts!!, len, null)
+            gridViewAdapter =
+                CreateGroupGridViewAdapter(
+                    this,
+                    gestionnaireContacts!!,
+                    len,
+                    null
+                )
             main_GridView!!.adapter = gridViewAdapter
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)
@@ -135,7 +142,11 @@ class AddNewGroupActivity : AppCompatActivity() {
         }
 
         val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
-        createGroupAdapter = AddContactToGroupAdapter(this, allContact)
+        createGroupAdapter =
+            AddContactToGroupAdapter(
+                this,
+                allContact
+            )
         addNewGroupListView!!.adapter = createGroupAdapter
     }
 

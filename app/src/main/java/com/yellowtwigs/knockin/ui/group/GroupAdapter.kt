@@ -15,13 +15,10 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.util.Base64
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -30,17 +27,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
-import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
+import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import java.util.*
 
 /**
@@ -80,7 +74,7 @@ class GroupAdapter(
         view = if (len >= 4) {
             LayoutInflater.from(context).inflate(R.layout.grid_contact_item_layout, parent, false)
         } else {
-            LayoutInflater.from(context).inflate(R.layout.list_contact_item_layout, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_contact_list, parent, false)
         }
         val holder = ViewHolder(view!!)
         heightWidthImage = holder.contactRoundedImageView!!.layoutParams.height

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.contacts
+package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -19,7 +19,6 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
@@ -49,8 +48,10 @@ import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.contacts.ContactGridViewAdapter
+import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
@@ -59,7 +60,6 @@ import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
-import java.io.DataOutputStream
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService

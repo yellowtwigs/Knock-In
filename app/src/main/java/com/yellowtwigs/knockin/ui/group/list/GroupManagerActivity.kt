@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.group.list
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -36,8 +36,10 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
+import com.yellowtwigs.knockin.ui.group.GroupAdapter
+import com.yellowtwigs.knockin.ui.group.create.AddNewGroupActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
@@ -612,7 +614,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             println("false mail")
             group_manager_FloatingButtonMail!!.visibility = View.GONE
         }
-
     }
 
     fun refreshList() {

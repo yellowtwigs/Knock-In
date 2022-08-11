@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.widget.SwitchCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
 
 object EveryActivityUtils {
     fun callPopupSwitch(switchCompat: SwitchCompat, activity: Activity) {

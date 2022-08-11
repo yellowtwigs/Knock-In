@@ -1,9 +1,8 @@
-package com.yellowtwigs.knockin.ui.contacts
+package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.util.Log
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.animation.TranslateAnimation
 import android.widget.HorizontalScrollView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -22,11 +20,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -70,7 +67,7 @@ class ContactRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         listApp = getAppOnPhone(context as MainActivity)
         view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_contact_item_layout, parent, false)
+            .inflate(R.layout.item_contact_list, parent, false)
         return ContactViewHolder(view!!)
     }
 

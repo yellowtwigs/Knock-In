@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
-import android.provider.Telephony
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -34,11 +33,10 @@ import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactDetailDB
 import com.yellowtwigs.knockin.ui.first_launch.ImportContactsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import kotlin.collections.ArrayList

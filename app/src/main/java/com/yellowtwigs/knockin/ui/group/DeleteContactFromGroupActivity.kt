@@ -19,6 +19,10 @@ import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.ui.group.create.AddContactToGroupAdapter
+import com.yellowtwigs.knockin.ui.group.create.CreateGroupGridViewAdapter
+import com.yellowtwigs.knockin.ui.group.create.CreateGroupListViewAdapter
+import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 
 /**
  * Activité qui nous permet de supprimmer les contact d'un groupe
@@ -83,7 +87,11 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         var allContactInGroup = listOf<ContactWithAllInformation>()
         if (groupId != 0)
             allContactInGroup = getContactInGroup(groupId)
-        deleteContactFromGroupAdapter = AddContactToGroupAdapter(this, allContactInGroup)
+        deleteContactFromGroupAdapter =
+            AddContactToGroupAdapter(
+                this,
+                allContactInGroup
+            )
         deleteContactFromGroupListView!!.adapter = deleteContactFromGroupAdapter
 
         if (len <= 1) {

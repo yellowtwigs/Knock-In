@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.group.create
 
 import android.content.Context
 import android.content.Intent
@@ -20,6 +20,7 @@ import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.model.ContactManager
+import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 
 /**
  * Activité qui nous permet d'ajouter des contacts a un groupe précis
@@ -88,7 +89,11 @@ class AddContactToGroupActivity : AppCompatActivity() {
         var allContactNotInGroup = listOf<ContactWithAllInformation>()
         if (groupId != 0)
             allContactNotInGroup = getContactNotInGroup(groupId)
-        addContactToGroupAdapter = AddContactToGroupAdapter(this, allContactNotInGroup)
+        addContactToGroupAdapter =
+            AddContactToGroupAdapter(
+                this,
+                allContactNotInGroup
+            )
         addContactToGroupListView!!.adapter = addContactToGroupAdapter
 
         if (len <= 1) {

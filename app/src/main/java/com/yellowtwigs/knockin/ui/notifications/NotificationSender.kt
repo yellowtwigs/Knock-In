@@ -5,7 +5,7 @@ import android.content.*
 
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
